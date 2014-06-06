@@ -19,7 +19,6 @@ import org.jboss.modules.ModuleLoader;
 import ceylon.language.Annotated;
 import ceylon.language.Anything;
 import ceylon.language.Array;
-import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.Entry;

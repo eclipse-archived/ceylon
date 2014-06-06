@@ -87,7 +87,7 @@ public final class Tuple<Element, First extends Element,
         if (array.length==0 || 
                 length == 0 ||
                 array.length <= first) {
-            throw new AssertionError("ArraySequence may not have zero elements");
+            throw new AssertionError("Tuple may not have zero elements");
         }
         if (first + length > array.length) {
             throw new AssertionError("Overflow :" + 
@@ -481,65 +481,6 @@ public final class Tuple<Element, First extends Element,
     
     @Ignore
     private TypeDescriptor $reifiedElement;
-    
-    @Ignore
-    private static <Element> java.lang.Object[] 
-    copyOrNot_array$hidden(TypeDescriptor $reifiedElement,
-            Iterable<? extends Element, ?> elements) {
-        if (elements instanceof ArraySequence) {
-            return ((ArraySequence<?>)elements).array;
-        } else {
-            // Note we trim the array which means copyOrNot_length$hidden() 
-            // can use USE_ARRAY_SIZE
-            return new SequenceBuilder<Element>($reifiedElement)
-                    .appendAll(elements).trim$priv().array;
-        }
-    }
-    
-    @Ignore
-    private static <Element> int 
-    copyOrNot_first$hidden(
-            Iterable<? extends Element, ?> elements) {
-        if (elements instanceof ArraySequence) {
-            return ((ArraySequence<?>) elements).first;
-        }
-        return 0;
-    }
-    
-    @Ignore
-    private static <Element> long 
-    copyOrNot_length$hidden(
-            Iterable<? extends Element, ?> elements) {
-        if (elements instanceof ArraySequence) {
-            return ((ArraySequence<?>) elements).length;
-        }
-        return USE_ARRAY_SIZE;
-    }
-
-    private static <Element> ArraySequence<Element> 
-    instance(@Ignore TypeDescriptor $reifiedElement, 
-            java.lang.Object[] array) {
-        return new ArraySequence<Element>($reifiedElement, 
-                array, 0, array.length, true);
-    }
-    
-    /** 
-     * <p>Creates an {@code ArraySequence} backed by the given elements of the 
-     * given array <strong>without copying it</strong>, so don't go changing those 
-     * elements after calling this if the returned instance has escaped to 
-     * user code.</p>
-     * 
-     * Has $hidden in name in case this is ever a vsible Ceylon class that can 
-     * be subclassed. Not $priv because it's public so that ceylon.language 
-     * can use it. 
-     */
-    @Ignore
-    static <Element> ArraySequence<Element> 
-    backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, 
-            Element[] array, long first, long length) {
-        return new ArraySequence<Element>($reifiedElement, 
-                array, first, length, false);
-    }
     
     @Ignore
     @Override

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Array;
-import ceylon.language.ArraySequence;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;

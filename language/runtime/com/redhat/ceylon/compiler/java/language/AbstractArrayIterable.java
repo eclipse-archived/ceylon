@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;

@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java;
 
 import java.util.Arrays;
 
-import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Finished;
