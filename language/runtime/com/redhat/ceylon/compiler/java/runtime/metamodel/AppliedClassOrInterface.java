@@ -959,7 +959,7 @@ public abstract class AppliedClassOrInterface<Type>
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
-        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberInterface.class, $reifiedContainer, $reifiedType);
         SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
                 new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
 
