@@ -1,7 +1,7 @@
 """A _tuple_ is a typed linked list. Each instance of 
    `Tuple` represents the value and type of a single link.
    The attributes `first` and `rest` allow us to retrieve a 
-   value form the list without losing its static type 
+   value from the list without losing its static type 
    information.
    
        value point = Tuple(0.0, Tuple(0.0, Tuple("origin")));
