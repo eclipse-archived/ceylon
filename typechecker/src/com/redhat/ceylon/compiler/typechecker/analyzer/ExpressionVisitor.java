@@ -3328,7 +3328,9 @@ public class ExpressionVisitor extends Visitor {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
-                    "left operand must be of numeric type");
+                    that instanceof Tree.SumOp ?
+                            "left operand must be of summable type" :
+                            "left operand must be of numeric type");
             if (nt!=null) {
                 List<ProducedType> tal = nt.getTypeArgumentList();
                 if (tal.isEmpty()) return;
@@ -3343,6 +3345,8 @@ public class ExpressionVisitor extends Visitor {
                     ot = tt;
                 }
                 checkAssignable(rhst, ot, that, 
+                        that instanceof Tree.SumOp ?
+                        "right operand must be of compatible summable type" :
                         "right operand must be of compatible numeric type");
             }
         }
@@ -3360,14 +3364,18 @@ public class ExpressionVisitor extends Visitor {
                     lhst.getSupertype(fd)!=null) {
                 rhst = fd.getType();
             }
-            ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
-                    "operand expression must be of numeric type");
+            ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(),
+                    that instanceof Tree.AddAssignOp ?
+                            "operand expression must be of summable type" :
+                            "operand expression must be of numeric type");
             that.setTypeModel(lhst);
             if (nt!=null) {
                 ProducedType t = nt.getTypeArgumentList().get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 checkAssignable(rhst, t, that, 
-                        "operands must be of compatible numeric type");
+                        that instanceof Tree.AddAssignOp ?
+                                "right operand must be of compatible summable type" :
+                                "right operand must be of compatible numeric type");
                 checkAssignable(t, lhst, that, 
                         "result type must be assignable to declared type");
             }
