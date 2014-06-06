@@ -20,18 +20,22 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -146,21 +150,30 @@ public abstract class LazyModule extends Module {
     }
 
     public void loadPackageList(ArtifactResult artifact) {
-        ZipFile zipFile;
-        try {
-            zipFile = new ZipFile(artifact.artifact());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try{
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while(entries.hasMoreElements())
-                loadPackageList(entries.nextElement());
-        }finally{
-            try {
-                zipFile.close();
-            } catch (IOException e) {
-                // ignore
+        if (artifact instanceof ContentAwareArtifactResult) {
+            for (String entry : ((ContentAwareArtifactResult) artifact).getEntries()) {
+                addPackageForPath(entry);
+            }
+        } else {
+            File file = artifact.artifact();
+            if (file != null) {
+                ZipFile zipFile;
+                try {
+                    zipFile = new ZipFile(artifact.artifact());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try{
+                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                    while(entries.hasMoreElements())
+                        loadPackageList(entries.nextElement());
+                }finally{
+                    try {
+                        zipFile.close();
+                    } catch (IOException e) {
+                        // ignore
+                    }
+                }
             }
         }
     }
@@ -168,15 +181,19 @@ public abstract class LazyModule extends Module {
     private void loadPackageList(ZipEntry entry) {
         if(!entry.isDirectory()){
             String path = entry.getName();
-            if(path.toLowerCase().endsWith(".class")){
-                int sep = path.lastIndexOf('/');
-                if(sep != -1)
-                    path = path.substring(0, sep);
-                String pkg = path.replace('/', '.');
-                // make sure we unquote any package part
-                pkg = pkg.replace("$", "");
-                jarPackages.add(pkg);
-            }
+            addPackageForPath(path);
+        }
+    }
+
+    private void addPackageForPath(String path) {
+        if(path.toLowerCase().endsWith(".class")){
+            int sep = path.lastIndexOf('/');
+            if(sep != -1)
+                path = path.substring(0, sep);
+            String pkg = path.replace('/', '.');
+            // make sure we unquote any package part
+            pkg = pkg.replace("$", "");
+            jarPackages.add(pkg);
         }
     }
 

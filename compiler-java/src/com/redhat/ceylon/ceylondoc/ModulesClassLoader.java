@@ -19,9 +19,9 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.File;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 
 /**
@@ -44,8 +44,8 @@ class ModulesClassLoader extends ClassLoader {
         return super.findClass(name);
     }
 
-    public void addJar(File file, boolean skipContents) {
-        jars.addJar(file, skipContents);
+    public void addJar(ArtifactResult artifact, boolean skipContents) {
+        jars.addJar(artifact, skipContents);
     }
 
     public boolean packageExists(String name) {
