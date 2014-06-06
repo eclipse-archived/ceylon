@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;

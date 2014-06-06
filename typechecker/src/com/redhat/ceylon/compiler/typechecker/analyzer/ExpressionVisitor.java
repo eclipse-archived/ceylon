@@ -5530,8 +5530,8 @@ public class ExpressionVisitor extends Visitor {
                     if (!(type.getDeclaration() instanceof TypeParameter)) {
                         //it's not a self type
                         if (type!=null) {
-                            checkAssignable(type, td.getType(), t, 
-                                    "case type must be a subtype of enumerated type");
+                            checkAssignable(type, td.getType(), t,
+                                    getCaseTypeExplanation(td, type));
                             //note: this is a better, faster way to call 
                             //      validateEnumeratedSupertypeArguments()
                             //      but unfortunately it winds up displaying
@@ -5557,13 +5557,23 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (type!=null) {
                     checkAssignable(type, td.getType(), bme, 
-                            "case type must be a subtype of enumerated type");
+                            getCaseTypeExplanation(td, type));
                 }
             }
         }
         
         //TODO: get rid of this awful hack:
         td.setCaseTypes(cases);
+    }
+
+    private String getCaseTypeExplanation(TypeDeclaration td, 
+            ProducedType type) {
+        String message = "case type must be a subtype of enumerated type";
+        if (!td.getTypeParameters().isEmpty() &&
+                type.getDeclaration().inherits(td)) {
+            message += " for every type argument of the generic enumerated type";
+        }
+        return message;
     }
 
     private void checkCasesDisjoint(ProducedType type, ProducedType other,
