@@ -1,0 +1,28 @@
+<maven-overrides>
+    <artifact groupId="org.apache.camel" artifactId="camel-jetty" version="2.9.4">
+        <add groupId="org.apache.camel" artifactId="camel-http" version="2.9.4" shared="true"/>
+        <add groupId="org.apache.camel" artifactId="camel-core" version="2.9.4" shared="true"/>
+        <add groupId="org.slf4j" artifactId="slf4j-api" version="1.6.1"/>
+    </artifact>
+    <artifact groupId="org.apache.camel" artifactId="camel-http" version="2.9.4">
+        <add groupId="org.apache.camel" artifactId="camel-core" version="2.9.4" shared="true"/>
+        <add groupId="org.slf4j" artifactId="slf4j-api" version="1.6.1"/>
+    </artifact>
+    <artifact groupId="org.eclipse.jetty" artifactId="jetty-server" version="7.5.4.v20111024">
+        <add groupId="org.eclipse.jetty" artifactId="jetty-util" version="7.5.4.v20111024" shared="true"/>
+    </artifact>
+    <artifact groupId="org.eclipse.jetty" artifactId="jetty-servlet" version="7.5.4.v20111024">
+        <add groupId="org.eclipse.jetty" artifactId="jetty-server" version="7.5.4.v20111024" shared="true"/>
+        <add groupId="javax.servlet" artifactId="servlet-api" version="2.5"/>
+    </artifact>
+    <artifact groupId="org.eclipse.jetty" artifactId="jetty-client" version="7.5.4.v20111024">
+        <add groupId="org.eclipse.jetty" artifactId="jetty-util" version="7.5.4.v20111024" shared="true"/>
+        <add groupId="org.eclipse.jetty" artifactId="jetty-http" version="7.5.4.v20111024" shared="true"/>
+        <add groupId="org.eclipse.jetty" artifactId="jetty-io" version="7.5.4.v20111024" shared="true"/>
+    </artifact>
+    <artifact groupId="org.eclipse.jetty" artifactId="jetty-http" version="7.5.4.v20111024">
+        <add groupId="javax.servlet" artifactId="servlet-api" version="2.5"/>
+        <add groupId="org.eclipse.jetty" artifactId="jetty-util" version="7.5.4.v20111024" shared="true"/>
+        <add groupId="org.eclipse.jetty" artifactId="jetty-io" version="7.5.4.v20111024" shared="true"/>
+    </artifact>
+</maven-overrides>

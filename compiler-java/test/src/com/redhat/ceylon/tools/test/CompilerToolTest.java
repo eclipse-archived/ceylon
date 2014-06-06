@@ -19,15 +19,20 @@
  */
 package com.redhat.ceylon.tools.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.ToolFactory;
@@ -54,6 +59,14 @@ public class CompilerToolTest extends CompilerTest {
         return ret;
     }
     
+    private File destFile(String f) {
+        return new File(destDir, f);
+    }
+    
+    private File cacheFile(String f) {
+        return new File(cacheDir, f);
+    }
+    
     @Test
     public void testCompile()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
@@ -61,6 +74,38 @@ public class CompilerToolTest extends CompilerTest {
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
                 options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
+    }
+    
+    @Test
+    public void testCompileCwd()  throws Exception {
+        File destDir = destFile("compilecwdtest");
+        FileUtil.delete(destDir);
+        destDir.mkdirs();
+        FileUtil.copy(new File("test/src/com/redhat/ceylon/tools/test/cwdtest"), destDir);
+        
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList(
+                        "--cwd", destDir.getPath(),
+                        "--src=src",
+                        "--resource=res",
+                        "--out=mod",
+                        "--rep", "aether",
+                        "--maven-overrides", "overrides.xml",
+                        "--javac=-cp=" + getClassPathAsPath(), // Unfortunately --cwd doesn't affect Java options
+                        "cwdtest"));
+        tool.run();
+        
+        File carFile = getModuleArchive("cwdtest", "1", (new File(destDir, "mod")).getPath());
+        assertTrue(carFile.exists());
+        
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry entry = car.getEntry("cwdtest/test.txt");
+        assertNotNull(entry);
+
+        car.close();
     }
     
     @Test
