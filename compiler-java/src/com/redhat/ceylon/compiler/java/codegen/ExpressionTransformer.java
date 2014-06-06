@@ -1461,7 +1461,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         JCExpression tail = null;
-        JCExpression reifiedTypeArg = makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(0));
         List<JCExpression> elems = List.<JCExpression>nil();
         for (int i = 0; i < expressions.size(); i++) {
             Tree.PositionalArgument expr = expressions.get(i);
@@ -1470,8 +1469,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 elems = elems.append(elem);
             } else if (expr instanceof Tree.SpreadArgument) {
                 Tree.SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
-                tail = transformExpression(spreadExpr.getExpression());
-                if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
+                // make sure we get a spread part of the right type
+                ProducedType spreadType = spreadExpr.getExpression().getTypeModel();
+                ProducedType sequentialSpreadType = spreadType.getSupertype(typeFact().getSequentialDeclaration());
+                if(sequentialSpreadType != null){
+                    tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, sequentialSpreadType);
+                }else {
+                    // must at least be an Iterable then
+                    ProducedType iterableSpreadType = spreadType.getSupertype(typeFact().getIterableDeclaration());
+                    tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
                     tail = utilInvocation().sequentialInstance(tail);
                     ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     ProducedType sequentialType = typeFact().getSequentialType(elementType);
@@ -1496,6 +1502,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (!elems.isEmpty()) {
+            JCExpression reifiedTypeArg = makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(0));
             List<JCExpression> args = List.<JCExpression>of(reifiedTypeArg);
             args = args.append(make().NewArray(make().Type(syms().objectType), List.<JCExpression>nil(), elems));
             if (tail != null) {
