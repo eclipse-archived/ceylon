@@ -132,15 +132,6 @@
 	</target>
 	
 	<target name="ide-quick-internal">
-        <copy 
-            overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-            <fileset dir="${build.dist.repo}">
-                <include name="**/*"/>
-                <exclude name="**/module-doc/**/*"/>
-                <exclude name="**/*.src*"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="dist"
