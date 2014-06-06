@@ -5628,17 +5628,19 @@ public class ExpressionVisitor extends Visitor {
                     if (arg==null) arg = new UnknownType(unit).getType();
                     TypeDeclaration std = param.getSelfTypedDeclaration();
                     ProducedType at;
+                    TypeDeclaration mtd;
                     if (param.getContainer().equals(std)) {
                         at = td.getType();
+                        mtd = td;
                     }
                     else {
                         //TODO: lots wrong here?
-                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null, false);
+                        mtd = (TypeDeclaration) td.getMember(std.getName(), null, false);
                         at = mtd==null ? null : mtd.getType();
                     }
                     if (at!=null && !at.isSubtypeOf(arg) && 
-                            !(td.getSelfType()!=null && 
-                                td.getSelfType().isExactly(arg))) {
+                            !(mtd.getSelfType()!=null && 
+                                mtd.getSelfType().isExactly(arg))) {
                         String help;
                         TypeDeclaration ad = arg.getDeclaration();
                         if (ad instanceof TypeParameter &&
