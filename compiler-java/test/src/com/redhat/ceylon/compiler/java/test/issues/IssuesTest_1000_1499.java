@@ -558,7 +558,10 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     
     @Test
     public void testBug1328() {
-        compareWithJavaSource("bug13xx/Bug1328");
+        // disabled because although we can compile them, we can't invoke them: https://github.com/ceylon/ceylon-compiler/issues/1664
+        assertErrors("bug13xx/Bug1328",
+                new CompilerError(29, "refined member type parameter Thing of make in Bug1328_Factory with upper bound which member type parameter Thing2 does not satisfy not yet supported: Things"),
+                new CompilerError(-1, "com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328 is not abstract and does not override abstract method <Thing>make(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor,Thing) in com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory"));
     }
 
     @Test
