@@ -1936,6 +1936,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // keep the RHS type then, since floats are not integers, the whole thing is resolved in the Java impl of Float with
             // special hidden operator methods
             rightType = typeFact().getIntegerDeclaration().getType();
+            // Also keep the LHS type as Float since it's final and the special methods wouldn't be found in any supertype of compountType
+            leftType = typeFact().getFloatDeclaration().getType();
         }
         return transformOverridableBinaryOperator(op, leftType, rightType);
     }
