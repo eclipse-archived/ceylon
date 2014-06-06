@@ -11,8 +11,6 @@ import ceylon.language.Empty;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.impl.SequenceBuilder;
-import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration$impl;
-import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member;

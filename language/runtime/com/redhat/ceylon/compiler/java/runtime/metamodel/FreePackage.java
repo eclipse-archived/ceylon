@@ -4,7 +4,6 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.Annotated$impl;
 import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 
