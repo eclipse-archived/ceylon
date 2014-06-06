@@ -29,7 +29,6 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -294,14 +293,21 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 !javac.contains("-version")) {
             throw new IllegalStateException("Argument moduleOrFile should appear at least 1 time(s)");
         }
+        
         arguments = new ArrayList<>();
-        for (File source : this.sources) {
+        
+        if (cwd != null) {
+            arguments.add("-cwd");
+            arguments.add(cwd.getPath());
+        }
+        
+        for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
             options.addMulti(OptionName.SOURCEPATH, source.getPath());
         }
         
-        for (File resource : this.resources) {
+        for (File resource : applyCwd(this.resources)) {
             arguments.add("-res");
             arguments.add(resource.getPath());
             //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
@@ -322,7 +328,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (mavenOverrides != null) {
             arguments.add("-maven-overrides");
-            arguments.add(mavenOverrides);
+            if (mavenOverrides.startsWith("classpath:")) {
+                arguments.add(mavenOverrides);
+            } else {
+                arguments.add(applyCwd(new File(mavenOverrides)).getPath());
+            }
         }
 
         if (noOsgi) {
@@ -395,7 +405,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
         
-        List<File> srcs = FileUtil.applyCwd(this.cwd, this.sources);
+        List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
         if (expandedModulesOrFiles.isEmpty()) {
             throw new IllegalArgumentException("No modules or source files to compile");
@@ -411,12 +421,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 if (moduleOrFile.endsWith(Constants.CEYLON_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JAVA_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JS_SUFFIX)) {
-                    if (LanguageCompiler.getSrcDir(this.sources, file) == null) {
+                    if (LanguageCompiler.getSrcDir(srcs, file) == null) {
                         String srcPath = this.sources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                 } else {
-                    if (LanguageCompiler.getSrcDir(this.resources, file) == null) {
+                    if (LanguageCompiler.getSrcDir(applyCwd(this.resources), file) == null) {
                         String resrcPath = this.resources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
