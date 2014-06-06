@@ -131,7 +131,7 @@ public class AetherUtils {
         ArtifactOverrides ao = findArtifactOverrides(mc);
         if (ao != null && ao.getReplace() != null) {
             DependencyOverride replace = ao.getReplace();
-            log.info(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getMvn()));
+            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replace.getMvn()));
             // replace fetched dependency
             groupId = replace.getMvn().getGroupId();
             artifactId = replace.getMvn().getArtifactId();
@@ -163,11 +163,11 @@ public class AetherUtils {
 
                     if (ao != null){
                         if(ao.isRemoved(dCo)) {
-                            log.info(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
+                            log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
                         if(ao.isAdded(dCo)) {
-                            log.info(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
+                            log.debug(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
                     }
@@ -179,7 +179,7 @@ public class AetherUtils {
                 if (ao != null) {
                     for (DependencyOverride addon : ao.getAdd()) {
                         dependencies.add(createArtifactResult(addon.getMvn(), addon.isShared(), repositoryDisplayString));
-                        log.info(String.format("[Maven-Overrides] Added %s to %s.", addon.getMvn(), mc));
+                        log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getMvn(), mc));
                     }
                 }
 
