@@ -1,4 +1,4 @@
-import ceylon.language.meta.model {Method}
+import ceylon.language.meta.model {...}
 import ceylon.language.meta.declaration {...}
 
 void test<T>() {
@@ -344,8 +344,11 @@ void testMethodOfGeneric() {
 }
 
 void objectMemberRefs() {
-    FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
     ValueDeclaration processValueDec = `value process`;
     ClassDeclaration processClassDec = `class process`; 
+    FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
     ValueDeclaration processArgumentsDec = `value process.arguments`;
+    Value<Basic,Nothing> obj = `process`;
+    Function<Anything,[]|[String]> fun = `process.writeLine`;
+    Value<String[],Nothing> att = `process.arguments`;
 }
