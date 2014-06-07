@@ -1963,7 +1963,8 @@ case (hexadecimal) {
             not be declared using the keyword <literal>function</literal>.</para>
             
             <para>A toplevel function may not be forward-declared. A method of an interface
-            may not be forward-declared.</para>
+            may not be forward-declared. A method annotated <literal>default<literal> may 
+            not be forward-declared.</para>
             
             <para>If a <literal>shared</literal> method is forward-declared, its 
             implementation must be definitely specified by all conditional paths in the
@@ -2068,8 +2069,9 @@ case (hexadecimal) {
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a lazy specifier, or a block).</para>
             
-            <para>A method annotated <literal>default</literal> may specify an
-            implementation (a lazy specifier, or a block), or may be forward-declared.</para>
+            <para>A method annotated <literal>default</literal> must specify an
+            implementation (a lazy specifier, or a block), and may not be 
+            forward-declared.</para>
             
             <para>Every <literal>formal</literal> method must explicitly specify a type. 
             It may not be declared using the keyword <literal>function</literal>.</para>
@@ -2476,7 +2478,8 @@ print(greeting);</programlisting>
             not be declared using the keyword <literal>value</literal>.</para>
         
             <para>A toplevel value may not be forward-declared. An attribute of an 
-            interface may not be forward-declared.</para>
+            interface may not be forward-declared. An attribute annotated 
+            <literal>default<literal> may not be forward-declared.</para>
             
             <para>A forward-declared getter may not have a setter.</para>
             
@@ -2522,8 +2525,8 @@ print(greeting);</programlisting>
             implementation (a specifier, lazy specifier, or a block). Nor may there be 
             a setter for a formal attribute.</para>
         
-            <para>An attribute annotated <literal>default</literal> may specify an
-            implementation (a specifier, lazy specifier, or a block), or may be 
+            <para>An attribute annotated <literal>default</literal> must specify an
+            implementation (a specifier, lazy specifier, or a block), and may not be 
             forward-declared.</para>
         
             <para>Every <literal>formal</literal> attribute must explicitly specify a type. 
