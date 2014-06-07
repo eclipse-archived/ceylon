@@ -145,7 +145,9 @@ Array$proto.items = function(keys) {
     }
     return this.seq$?ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}}):seq.reifyCeylonType(this.$$targs$$.Element$Iterable);
 }
-atr$(Array$proto, 'keys', function(){ return TypeCategory(this, {t:Integer}); });
+atr$(Array$proto, 'keys', function(){ 
+    return this.size>0?Range(0,0+this.size-1,{Element$Sequential:{t:Integer}}):getEmpty(); 
+});
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
         if (elem.equals(this[i])) {
