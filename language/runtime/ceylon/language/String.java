@@ -335,12 +335,12 @@ public final class String
 
     @Override
     @Ignore
-    public Category<? super ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this.getKeys();
+    public Sequential<? extends ceylon.language.Integer> getKeys() {
+        return $ceylon$language$List$this.getKeys();
     }
 
     @Ignore
-    public static Category<? super ceylon.language.Integer> 
+    public static Sequential<? extends ceylon.language.Integer> 
     getKeys(java.lang.String value) {
         // TODO We're still boxing here!
         return instance(value).getKeys();

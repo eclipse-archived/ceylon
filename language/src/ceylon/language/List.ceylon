@@ -175,6 +175,9 @@ shared interface List<out Element>
         }
     }
     
+    "A sequence containing all indexes of this list."
+    shared actual default Integer[] keys => 0:size;
+    
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this list."
     see (`function following`)

@@ -430,8 +430,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     @Ignore
-    public Category<? super ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this.getKeys();
+    public Sequential<? extends ceylon.language.Integer> getKeys() {
+        return $ceylon$language$List$this.getKeys();
     }
 
     @Override

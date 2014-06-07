@@ -885,8 +885,8 @@ public final class Array<Element>
 
     @Override
     @Ignore
-    public Category<? super ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this.getKeys();
+    public Sequential<? extends ceylon.language.Integer> getKeys() {
+        return $ceylon$language$List$this.getKeys();
     }
 
     @Override
