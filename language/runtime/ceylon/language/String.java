@@ -1032,9 +1032,9 @@ public final class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();
-        if (elem != finished_.get_()) {
+        if (!(elem instanceof Finished)) {
             result.append(elem);
-            for (;!((elem = it.next()) instanceof Finished);) {
+            while (!((elem = it.next()) instanceof Finished)) {
                 result.append(value).append(elem);
             }
         }
