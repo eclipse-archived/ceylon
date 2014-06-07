@@ -24,10 +24,12 @@ shared final native class Array<Element>({Element*} elements)
             "The new element."
             Element element);
     
-    "Reverse this array, returning a new array."
+    "A new array, containing the current elements of this 
+     array, in reverse order."
     shared actual native Array<Element> reversed;
 
-    "The rest of the array, without the first element."
+    "A new array, containing the current elements of this 
+     array, except for the first element."
     shared actual native Array<Element> rest;
 
     "Efficiently copy the elements in the segment
