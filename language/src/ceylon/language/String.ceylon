@@ -101,13 +101,13 @@ shared native final class String(characters)
     "A sequence containing all indexes of this string."
     shared actual native Integer[] keys => 0:size;
     
-    "Join the given [[strings]], using this string as a 
-     separator."
-    shared native String join({String*} strings);
+    "Join the [[string representations|Object.string]] of 
+     the given [[objects]], using this string as a separator."
+    shared native String join({Object*} objects);
     
     "Split the string into lines of text."
     shared native {String*} lines => split('\n'.equals);
-
+    
     "This string, after discarding 
      [[whitespace|Character.whitespace]] from the beginning 
      and end of the string."

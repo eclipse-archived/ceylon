@@ -761,7 +761,7 @@ shared interface Iterable<out Element, out Absent=Null>
 
 String commaList({Anything*} elements) 
         => ", ".join { for (element in elements)
-                       element?.string else "<null>" };
+                       element else "<null>" };
 
 Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {

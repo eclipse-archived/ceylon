@@ -391,15 +391,17 @@ atr$(String$proto, 'last', function(){ return this.size>0?this.$_get(this.size.p
 atr$(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['$','Category','$at','keys']}});
-String$proto.join = function(strings) {
-    var it = strings.iterator();
-    var str = it.next();
-    if (str === getFinished()) {return String$("", 0);}
+String$proto.join = function(objects) {
+    var it = objects.iterator();
+    var obj = it.next();
+    if (obj === getFinished()) {return String$("", 0);}
     if (this.codePoints === undefined) {this.codePoints = countCodepoints(this)}
+    var str = obj.string;
     var result = str;
     var len = str.codePoints;
-    while ((str = it.next()) !== getFinished()) {
+    while ((obj = it.next()) !== getFinished()) {
         result += this;
+        str = obj.string;
         result += str;
         len += this.codePoints + str.codePoints;
     }
