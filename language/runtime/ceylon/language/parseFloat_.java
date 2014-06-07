@@ -113,8 +113,13 @@ public final class parseFloat_
                     if (sep != -1 && ((digitIndex+1) % 4) != 0) {//
                         return null;
                     }
-                    if (sep == -1) {// at most three digits before the first _
-                        sep = digitIndex + 1;
+                    if (sep == -1) {
+                        // must have exactly three digits before the first _
+                        if (digitIndex+1 == 4) {
+                            sep = digitIndex + 1;
+                        } else {
+                            return null;
+                        }
                     }
                     break;
                 case '0':
@@ -138,11 +143,7 @@ public final class parseFloat_
                 }
             }
             
-            // check for insufficient digits after the last _
-            if (sep != -1 
-                    && ((digitIndex + 1) % 4) != 0) {
-                return null;
-            } else if (digitIndex == 0) {
+            if (digitIndex == 0) {
                 return null;
             }
             
