@@ -179,9 +179,8 @@ shared interface Iterable<out Element, out Absent=Null>
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream."
-    shared default Element[] sequence {
-        return [*this];
-    }
+    shared default Element[] sequence
+            => [*this];
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
