@@ -38,7 +38,7 @@ shared interface Correspondence<in Key, out Item>
     "The `Category` of all keys for which a value is 
      defined by this `Correspondence`."
     see (`function Correspondence.defines`)
-    shared default Category<Key> keys => Keys(this);
+    shared default Category<Key> keys => KeyCategory(this);
     
     "Determines if this `Correspondence` defines a value
      for every one of the given keys."
@@ -75,3 +75,12 @@ shared interface Correspondence<in Key, out Item>
             [ for (key in keys) get(key) ];
     
 }
+
+class KeyCategory<in Key>
+            (Correspondence<Key,Anything> correspondence)
+        satisfies Category<Key>
+        given Key satisfies Object {
+    contains(Key key) 
+            => correspondence.defines(key);
+}
+

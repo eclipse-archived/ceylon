@@ -329,21 +329,26 @@ public final class String
 
     @Ignore
     public static boolean defines(java.lang.String value, long key) {
-        long index = key;
-        return index >= 0 && index < getSize(value);
+        return key >= 0 && key < getSize(value);
     }
 
     @Override
-    @Ignore
     public Sequential<? extends ceylon.language.Integer> getKeys() {
-        return $ceylon$language$List$this.getKeys();
+        return getKeys(value);
     }
 
     @Ignore
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Sequential<? extends ceylon.language.Integer> 
     getKeys(java.lang.String value) {
-        // TODO We're still boxing here!
-        return instance(value).getKeys();
+        long size = value.length();
+        if (size==0) {
+            return (Sequential) empty_.get_();
+        }
+        else {
+            return new Range<Integer>(Integer.$TypeDescriptor$, 
+                    Integer.instance(0), Integer.instance(size-1));
+        }
     }
 
     @Override
@@ -1161,7 +1166,6 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
     public String getReversed() {
         return instance(getReversed(value));
     }

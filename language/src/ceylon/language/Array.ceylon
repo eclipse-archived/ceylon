@@ -24,14 +24,6 @@ shared final native class Array<Element>({Element*} elements)
             "The new element."
             Element element);
     
-    "A new array, containing the current elements of this 
-     array, in reverse order."
-    shared actual native Array<Element> reversed;
-
-    "A new array, containing the current elements of this 
-     array, except for the first element."
-    shared actual native Array<Element> rest;
-
     "Efficiently copy the elements in the segment
      `sourcePosition:length` of this array to the segment 
      `destinationPosition:length` of the given 

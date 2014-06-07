@@ -98,6 +98,9 @@ shared native final class String(characters)
     "The rest of the string, without the first element."
     shared actual native String rest;
     
+    "A sequence containing all indexes of this string."
+    shared actual native Integer[] keys => 0:size;
+    
     "Join the given [[strings]], using this string as a 
      separator."
     shared native String join({String*} strings);

@@ -40,6 +40,10 @@ shared interface Sequence<out Element>
      least one element."
     shared actual Boolean empty => false;
     
+    "A nonempty sequence containing all indexes of this 
+     sequence."
+    shared actual default [Integer+] keys => 0..lastIndex;
+    
     "Reverse this sequence, returning a new nonempty
      sequence."
     shared actual formal [Element+] reversed;

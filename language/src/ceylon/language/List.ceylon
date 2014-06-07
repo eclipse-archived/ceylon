@@ -57,7 +57,7 @@ shared interface List<out Element>
             => size>length;
     
     "The rest of the list, without the first element."
-    shared actual formal List<Element> rest;
+    shared actual default List<Element> rest => Rest(1);
     
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
@@ -88,9 +88,9 @@ shared interface List<out Element>
         return listIterator;
     }
     
-    "A `List` containing the elements of this list in 
-     reverse order."
-    shared formal List<Element> reversed;
+    "A list containing the elements of this list in reverse 
+     order."
+    shared default List<Element> reversed => Reversed();
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
@@ -175,8 +175,8 @@ shared interface List<out Element>
         }
     }
     
-    "A sequence containing all indexes of this list."
-    shared actual default Integer[] keys => 0:size;
+    "A list containing all indexes of this list."
+    shared actual default List<Integer> keys => Indexes();
     
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this list."
@@ -481,5 +481,112 @@ shared interface List<out Element>
     //    => [this[...index-1], this[index...]];
     
     shared actual formal List<Element> clone();
+    
+    
+    class Indexes()
+            extends Object()
+            satisfies List<Integer> {
+        
+        lastIndex => outer.lastIndex;
+        
+        get(Integer index) => defines(index) then index;
+        
+        segment(Integer from, Integer length)
+                => clone()[from:length];
+        
+        clone() => 0:size;
+        
+        span(Integer from, Integer to)
+                => clone()[from..to];
+        spanFrom(Integer from) => clone()[from...];
+        spanTo(Integer to) => clone()[...to];
+        
+    }
+    
+    class Rest(Integer from)
+            extends Object()
+            satisfies List<Element> {
+        
+        assert (from>=0);
+        
+        shared actual Element? get(Integer index) {
+            if (index<from) {
+                return null;
+            }
+            else {
+                return outer[index+from];
+            }
+        }
+        
+        shared actual Integer? lastIndex {
+            if (exists index = outer.lastIndex, 
+                index>=from) {
+                return index-from;
+            }
+            else {
+                return null; 
+            }
+        }
+        
+        segment(Integer from, Integer length) 
+                => outer[from+this.from:length];
+        
+        span(Integer from, Integer to) 
+                => outer[from+this.from..to+this.from];
+        spanFrom(Integer from) => outer[from+this.from...];
+        spanTo(Integer to) => outer[this.from..to+this.from];
+        
+        clone() => outer.clone().Rest(from);
+        
+    }
+    
+    class Reversed()
+            extends Object()
+            satisfies List<Element> {
+        
+        lastIndex => outer.lastIndex;
+        
+        shared actual Element? get(Integer index) {
+            if (exists lastIndex) {
+                return outer[lastIndex-index];
+            }
+            else {
+                return null;
+            }
+        }
+        
+        shared actual List<Element> segment(Integer from, Integer length) {
+            if (exists lastIndex, length>1) {
+                value start = lastIndex-from;
+                return outer[start..start-length+1];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        span(Integer from, Integer to) => outer[to..from];
+        
+        shared actual List<Element> spanFrom(Integer from) {
+            if (exists lastIndex, from<=lastIndex) { 
+                return outer[lastIndex-from..0];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        shared actual List<Element> spanTo(Integer to) {
+            if (exists lastIndex, to>=0) { 
+                return outer[lastIndex..lastIndex-to];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        clone() => outer.clone().reversed;
+        
+    }
     
 }

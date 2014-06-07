@@ -21,9 +21,11 @@ shared interface Sequential<out Element>
     "This sequence."
     shared actual default Element[] sequence => this;
     
-    "The rest of the sequence, without the first 
-     element."
+    "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
+    
+    "A sequence containing all indexes of this sequence."
+    shared actual default Integer[] keys => 0:size;
     
     "Returns a sequence formed by repeating the elements of 
      this sequence the given number of times, or an empty 

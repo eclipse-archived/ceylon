@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
@@ -530,54 +531,126 @@ public final class Array<Element>
                 toIndex = fromIndex;
                 fromIndex = _tmp;
             }
-            java.lang.Object a;
+            java.lang.Object arr;
             if (array instanceof char[]) {
-                a = copyOfRange((char[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(toIndex+1));
+                char[] a = copyOfRange((char[])array, 
+                        toInt(fromIndex), 
+                        toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        char temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof byte[]) {
-                a = copyOfRange((byte[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(toIndex+1));
+                byte[] a = copyOfRange((byte[])array, 
+                        toInt(fromIndex), 
+                        toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        byte temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof short[]) {
-                a = copyOfRange((short[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(toIndex+1));
+                short[] a = copyOfRange((short[])array, 
+                        toInt(fromIndex), 
+                        toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        short temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof int[]) {
-                a = copyOfRange((int[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(toIndex+1));
+                int[] a = copyOfRange((int[])array, 
+                        toInt(fromIndex), 
+                        toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        int temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof long[]) {
-                a = copyOfRange((long[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(toIndex+1));
+                long[] a = copyOfRange((long[])array, 
+                    toInt(fromIndex), 
+                    toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        long temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof float[]) {
-                a = copyOfRange((float[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(toIndex+1));
+                float[] a = copyOfRange((float[])array, 
+                    toInt(fromIndex), 
+                    toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        float temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof double[]) {
-                a = copyOfRange((double[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(toIndex+1));
+                double[] a = copyOfRange((double[])array, 
+                    toInt(fromIndex), 
+                    toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        double temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else if (array instanceof boolean[]) {
-                a = copyOfRange((boolean[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(toIndex+1));
+                boolean[] a = copyOfRange((boolean[])array, 
+                    toInt(fromIndex), 
+                    toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        boolean temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
             else {
-                a = copyOfRange((java.lang.Object[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(toIndex+1));
+                java.lang.Object[] a = 
+                        copyOfRange((java.lang.Object[])array, 
+                    toInt(fromIndex), 
+                    toInt(toIndex+1));
+                if (revert) {
+                    for (int i = 0; i<a.length/2; i++) {
+                        java.lang.Object temp = a[i];
+                        a[i] = a[a.length-1-i];
+                        a[a.length-1-i] = temp;
+                    }
+                }
+                arr = a;
             }
-            Array<Element> rval = new Array<Element>($reifiedElement, a);
-            return revert ? rval.getReversed() : rval;
+            return new Array<Element>($reifiedElement, arr);
         }
     }
 
@@ -596,48 +669,48 @@ public final class Array<Element>
             java.lang.Object a;
             if (array instanceof char[]) {
                 a = copyOfRange((char[])array, 
-                    Util.toInt(fromIndex), 
-                    Util.toInt(resultFromIndex));
+                    toInt(fromIndex), 
+                    toInt(resultFromIndex));
             }
             else if (array instanceof byte[]) {
                 a = copyOfRange((byte[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof short[]) {
                 a = copyOfRange((short[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof int[]) {
                 a = copyOfRange((int[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof long[]) {
                 a = copyOfRange((long[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof float[]) {
                 a = copyOfRange((float[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof double[]) {
                 a = copyOfRange((double[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else if (array instanceof boolean[]) {
                 a = copyOfRange((boolean[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             else {
                 a = copyOfRange((java.lang.Object[])array, 
-                        Util.toInt(fromIndex), 
-                        Util.toInt(resultFromIndex));
+                        toInt(fromIndex), 
+                        toInt(resultFromIndex));
             }
             return new Array<Element>($reifiedElement, a);
         }
@@ -719,7 +792,7 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element get(@Name("index") Integer key) {
-        int i = Util.toInt(key.longValue());
+        int i = toInt(key.longValue());
         return get(i);
     }
 
@@ -812,7 +885,7 @@ public final class Array<Element>
     				" must be less than size of array " + size);
     	}
     	else {
-    		int idx = Util.toInt(index);
+    		int idx = toInt(index);
             if (array instanceof char[]) {
             	((char[])array)[idx] = 
             			((java.lang.Character)element).charValue();
@@ -885,7 +958,7 @@ public final class Array<Element>
 
     @Override
     @Ignore
-    public Sequential<? extends ceylon.language.Integer> getKeys() {
+    public List<? extends ceylon.language.Integer> getKeys() {
         return $ceylon$language$List$this.getKeys();
     }
 
@@ -991,46 +1064,6 @@ public final class Array<Element>
     }
     
     @Override
-    public Array<Element> getRest() {
-        // ok to cast here, since we know the size must fit in an int
-        int size = (int)getSize();
-        if (size < 2) {
-            return new Array<Element>($reifiedElement, EMPTY_ARRAY);
-        }
-        else {
-        	java.lang.Object a;
-            if (array instanceof char[]) {
-            	a = copyOfRange((char[])array, 1, size);
-            } 
-            else if (array instanceof byte[]) {
-            	a = copyOfRange((byte[])array, 1, size);
-            } 
-            else if (array instanceof short[]) {
-            	a = copyOfRange((short[])array, 1, size);
-            } 
-            else if (array instanceof int[]) {
-            	a = copyOfRange((int[])array, 1, size);
-            } 
-            else if (array instanceof long[]) {
-            	a = copyOfRange((long[])array, 1, size);
-            } 
-            else if (array instanceof float[]) {
-            	a = copyOfRange((float[])array, 1, size);
-            } 
-            else if (array instanceof double[]) {
-            	a = copyOfRange((double[])array, 1, size);
-            } 
-            else if (array instanceof boolean[]) {
-            	a = copyOfRange((boolean[])array, 1, size);
-            } 
-            else {
-                a = copyOfRange((java.lang.Object[])array, 1, size);
-            }
-            return new Array<Element>($reifiedElement, a);
-        }
-    }
-    
-    @Override
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
@@ -1050,88 +1083,17 @@ public final class Array<Element>
         final int size = (int)getSize();
         return size > 0 ? unsafeItem(size-1) : null;
     }
-
+    
     @Override
-    @Annotations({@Annotation("actual"), @Annotation("formal")})
-    public Array<Element> getReversed() {
-    	java.lang.Object a;
-        if (getSize() < 2) {
-            return this;
-        }
-        else if (array instanceof char[]) {
-            char[] arr = (char[])array;
-            char[] rev = new char[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-            a = rev;
-        }
-        else if (array instanceof byte[]) {
-            byte[] arr = (byte[])array;
-            byte[] rev = new byte[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof short[]) {
-            short[] arr = (short[])array;
-            short[] rev = new short[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof int[]) {
-            int[] arr = (int[])array;
-            int[] rev = new int[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof long[]) {
-            long[] arr = (long[])array;
-            long[] rev = new long[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof float[]) {
-            float[] arr = (float[])array;
-            float[] rev = new float[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof double[]) {
-            double[] arr = (double[])array;
-            double[] rev = new double[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else if (array instanceof boolean[]) {
-            boolean[] arr = (boolean[])array;
-            boolean[] rev = new boolean[arr.length];
-            for (int i = 0, j=arr.length-1; i < arr.length; i++, j--) {
-                rev[i] = arr[j];
-            }
-        	a = rev;
-        }
-        else {
-        	java.lang.Object[] arr = (java.lang.Object[])array;
-        	java.lang.Object[] rev = (java.lang.Object[])java.lang.reflect.Array
-        			.newInstance(arr.getClass().getComponentType(), arr.length);
-        	for (int i = 0, j=arr.length-1; i<arr.length; i++, j--) {
-        		rev[i] = arr[j];
-        	}
-        	a = rev;
-        }
-        return new Array<Element>($reifiedElement, a);
+    @Ignore
+    public List<? extends Element> getRest() {
+        return $ceylon$language$List$this.getRest();
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Element> getReversed() {
+        return $ceylon$language$List$this.getReversed();
     }
 
     @Override @Ignore
@@ -1223,7 +1185,7 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
     skip(@Name("skipit") long skip) {
-        int intSkip = Util.toInt(skip);
+        int intSkip = toInt(skip);
         // ok to cast here, since we know the size must fit in an int
         int length = (int)getSize();
         if (skip <= 0) {
@@ -1244,7 +1206,7 @@ public final class Array<Element>
 	        return this;
 	    }
 		return new ArrayIterable(this.array, 0, 
-		        Math.max(Util.toInt(take), 0), 1);
+		        Math.max(toInt(take), 0), 1);
 	}
 
 	@Override
@@ -1258,8 +1220,8 @@ public final class Array<Element>
 	        return this;
 	    }
 		return new ArrayIterable(array, 0, 
-		        Util.toInt((getSize()+step-1)/step), 
-		        Util.toInt(step));
+		        toInt((getSize()+step-1)/step), 
+		        toInt(step));
 	}
 	
     @Override @Ignore

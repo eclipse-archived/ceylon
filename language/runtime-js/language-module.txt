@@ -22,7 +22,7 @@ Sequential,Sequence,Empty,StringBuilder
 #native process
 
 #this requires impl of keys requires reified generics
-Keys,Correspondence,Finished
+Correspondence,Finished
 
 Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
 #Number
