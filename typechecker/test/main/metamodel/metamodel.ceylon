@@ -1,4 +1,5 @@
 import ceylon.language.meta.model {Method}
+import ceylon.language.meta.declaration {...}
 
 void test<T>() {
     @type:"ClassDeclaration" 
@@ -342,3 +343,9 @@ void testMethodOfGeneric() {
     Method<Integer, Integer, [Integer]> plus2 = `Integer.plus`;
 }
 
+void objectMemberRefs() {
+    FunctionDeclaration processWriteLineDec = `function process.writeLine`; 
+    ValueDeclaration processValueDec = `value process`;
+    ClassDeclaration processClassDec = `class process`; 
+    ValueDeclaration processArgumentsDec = `value process.arguments`;
+}
