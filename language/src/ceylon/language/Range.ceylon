@@ -117,6 +117,14 @@ shared final class Range<Element>(first, last)
         }
     }
     
+    "This range in reverse, with [[first]] and [[last]]
+     interchanged.
+     
+     For any two range endpoints, `x` and `y`: 
+     
+         `(x..y).reversed == y..x`."
+    shared actual Range<Element> reversed => last..first;
+    
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
      may be inefficient for large ranges."
@@ -415,9 +423,6 @@ shared final class Range<Element>(first, last)
     shared actual Range<Element>|[] spanFrom(Integer from) {
         return span(from, size);
     }
-
-    "Reverse this range, returning a new range."
-    shared actual Range<Element> reversed => Range(last,first);
     
     shared actual Range<Element>|[] skip(Integer skipit) {
         if (skipit <= 0) {
