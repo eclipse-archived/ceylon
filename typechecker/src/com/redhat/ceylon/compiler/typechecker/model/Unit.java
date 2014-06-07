@@ -402,10 +402,6 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
     
-    public Interface getCloseableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Closeable");
-    }
-    
     public Interface getDestroyableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Destroyable");
     }
