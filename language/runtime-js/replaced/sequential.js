@@ -113,6 +113,6 @@ Sequence$proto.sort = function(comp) {
     return internalSort(comp, this, this.$$targs$$);
 }
 Sequence$proto.collect = function(f, $$$mptypes) {
-    return this.map(f, $$$mptypes).getSequence();
+    return this.map(f, $$$mptypes).sequence();
 }
 Sequence$proto.clone = function() { return this; }

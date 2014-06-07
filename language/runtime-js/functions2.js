@@ -50,7 +50,7 @@ function unflatten(ff, $$$mptypes) {
       var a = [];
       for (var i = 0; i < _lim; i++) {
         if (pmeta[i]&&pmeta[i]['seq']) {
-          a.push(seq.skip(i).sequence);
+          a.push(seq.skip(i).sequence());
           break;//we're done
         } else if (seq.size > i) {
           a.push(seq.$_get(i));

@@ -92,12 +92,12 @@ String$proto.notLargerThan=function(o){
 }
 String$proto.notLargerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
   $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','notLargerThan']};};
-atr$(String$proto,'sequence',function(){
+String$proto.sequence=function(){
   return ArraySequence(this,{Element$Iterable:{t:Character}});
-},undefined,function(){return{
-  mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
-  $an:function(){return[actual(),shared()]}
-};});
+}
+String$proto.sequence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,
+  a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
+  $an:function(){return[actual(),shared()]}};};
 atr$(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','uppercased']}});
 atr$(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{

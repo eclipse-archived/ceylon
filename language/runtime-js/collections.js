@@ -18,9 +18,10 @@ var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
-atr$(Comprehension$proto, 'sequence', function() {
+Comprehension$proto.sequence = function() {
     return sequential(this,{Element$sequential:this.$$targs$$.Element$Iterable});
-},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$at','sequence']});
+}
+Comprehension$proto.sequence.$crtmm$={$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$at','sequence']}
 ex$.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, $$targs$$, it) {

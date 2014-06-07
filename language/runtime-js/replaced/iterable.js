@@ -22,7 +22,7 @@ Iterable$proto.getFirst = function() {
 Iterable$proto.getRest = function() {
     return this.skipping(1);
 }
-Iterable$proto.getSequence = function() {
+Iterable$proto.sequence = function() {
     var a = [];
     var iter = this.getIterator();
     var next;
@@ -197,10 +197,10 @@ Iterable$proto.getLast = function() {
     return l;
 }
 Iterable$proto.collect = function(collecting) {
-    return this.$map(collecting).getSequence();
+    return this.$map(collecting).sequence();
 }
 Iterable$proto.select = function(selecting) {
-    return this.$filter(selecting).getSequence();
+    return this.$filter(selecting).sequence();
 }
 Iterable$proto.group = function(grouping, $$$mptypes) {
     var map = HashMap();

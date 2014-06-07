@@ -60,13 +60,13 @@ List$proto.withLeading = function(other, $$$mptypes) {
     var sb = SequenceBuilder({Element:{t:'u',l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     sb.append(other);
     sb.appendAll(this);
-    return sb.getSequence();
+    return sb.sequence();
 }
 List$proto.withTrailing = function(other, $$$mptypes) {
     var sb = SequenceBuilder({Element:{t:'u',l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     sb.appendAll(this);
     sb.append(other);
-    return sb.getSequence();
+    return sb.sequence();
 }
 exports.List=List;
 

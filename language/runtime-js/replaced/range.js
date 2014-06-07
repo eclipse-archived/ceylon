@@ -146,7 +146,7 @@ Range$proto.taking = function(take) {
     }
     return this.includes(e) ? new Range(this.first, e, this.$$targs$$) : this;
 }
-Range$proto.getSequence = function() { return this; }
+Range$proto.sequence = function() { return this; }
 Range$proto.getCoalesced = function() { return this; }
 Range$proto.count = function(f) {
     var e = this.getFirst();

@@ -85,8 +85,10 @@ Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
     return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
-atr$(Array$proto,'sequence',function(){return this.seq$?this:ArraySequence(this,this.$$targs$$);},undefined,function(){return{
-  mod:$CCMM$,d:['$','Iterable','$at','sequence']};});
+Array$proto.sequence = function() {
+    return this.seq$?this:ArraySequence(this,this.$$targs$$);
+}
+Array$proto.sequence.$crtmm$ = function(){return{mod:$CCMM$,d:['$','Iterable','$at','sequence']};};
 atr$(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
   undefined,function(){return{mod:$CCMM$,d:['$','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
 atr$(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },
