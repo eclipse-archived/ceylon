@@ -21,9 +21,8 @@ by ("Gavin")
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Object {
     
-    "Returns the value defined for the given key, or 
-     `null` if there is no value defined for the given 
-     key."
+    "Returns the value defined for the given key, or `null` 
+     if there is no value defined for the given key."
     see (`function Correspondence.items`)
     shared formal Item? get(Key key);
     
@@ -32,16 +31,21 @@ shared interface Correspondence<in Key, out Item>
     see (`function Correspondence.definesAny`, 
          `function Correspondence.definesEvery`, 
          `value Correspondence.keys`)
-    shared default Boolean defines(Key key) => 
-            get(key) exists;
+    shared default Boolean defines(Key key) 
+            => get(key) exists;
     
-    "The `Category` of all keys for which a value is 
-     defined by this `Correspondence`."
+    "The `Category` of all keys for which a value is defined
+     by this `Correspondence`."
     see (`function Correspondence.defines`)
-    shared default Category<Key> keys => KeyCategory(this);
+    shared default Category<Key> keys {
+        object keys satisfies Category<Key> {
+            contains(Key key) => defines(key);
+        }
+        return keys;
+    }
     
-    "Determines if this `Correspondence` defines a value
-     for every one of the given keys."
+    "Determines if this `Correspondence` defines a value for
+     every one of the given keys."
     see (`function Correspondence.defines`)
     shared default Boolean definesEvery({Key*} keys) {
         for (key in keys) {
@@ -54,8 +58,8 @@ shared interface Correspondence<in Key, out Item>
         }
     }
     
-    "Determines if this `Correspondence` defines a value
-     for any one of the given keys."
+    "Determines if this `Correspondence` defines a value for
+     any one of the given keys."
     see (`function Correspondence.defines`)
     shared default Boolean definesAny({Key*} keys) {
         for (key in keys) {
@@ -68,19 +72,12 @@ shared interface Correspondence<in Key, out Item>
         }
     }
     
-    "Returns the items defined for the given keys, in
-     the same order as the corresponding keys."
+    "Returns the items defined for the given keys, in the 
+     same order as the corresponding keys. For any key which 
+     does not have an item defined, the resulting sequence 
+     contains the value `null`."
     see (`function Correspondence.get`)
-    shared default Item?[] items({Key*} keys) =>
-            [ for (key in keys) get(key) ];
+    shared default Item?[] items({Key*} keys) 
+            => [ for (key in keys) get(key) ];
     
 }
-
-class KeyCategory<in Key>
-            (Correspondence<Key,Anything> correspondence)
-        satisfies Category<Key>
-        given Key satisfies Object {
-    contains(Key key) 
-            => correspondence.defines(key);
-}
-
