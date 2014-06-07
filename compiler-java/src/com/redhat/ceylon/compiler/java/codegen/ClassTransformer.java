@@ -338,7 +338,7 @@ public class ClassTransformer extends AbstractTransformer {
                             array.makeIdent(), 
                             make().Exec(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "append"), 
                                     List.<JCExpression>of(instantiateAnnotationClass(iteratedType, element.makeIdent()))))));
-                    stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "getSequence"), List.<JCExpression>nil())));
+                    stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "sequence"), List.<JCExpression>nil())));
                     classBuilder.method(
                             MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
                                 .ignoreModelAnnotations()

@@ -3119,7 +3119,7 @@ public abstract class AbstractTransformer implements Transformation {
      * its <tt>getSequence()</tt> method.
      */
     JCExpression iterableToSequential(JCExpression iterable){
-        return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
+        return make().Apply(null, makeSelect(iterable, "sequence"), List.<JCExpression>nil());
     }
 
     /**

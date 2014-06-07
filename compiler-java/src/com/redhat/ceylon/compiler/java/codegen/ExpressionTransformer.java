@@ -3632,7 +3632,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression spread = make().LetExpr(stmts, 
                 make().Apply(
                         List.<JCExpression>nil(), 
-                        naming.makeQualIdent(builderVar.makeIdent(), "getSequence"), 
+                        naming.makeQualIdent(builderVar.makeIdent(), "sequence"), 
                         List.<JCExpression>nil()));
         
         // Do we *statically* know the result must be a Sequence 
