@@ -2213,28 +2213,42 @@ while (n&lt;=max) {
             </itemizedlist>
             
             <para>The <literal>try</literal> block may have a list of <emphasis>resource
-            expressions</emphasis>, each of which may be either:</para>
+            expressions</emphasis>, each of which may produce either:</para>
             
             <itemizedlist>
-                <!--listitem><para>an unqualified value reference to a non-<literal>variable</literal> 
-                reference,</para></listitem-->
-                <listitem><para>an instantiation expression, or</para></listitem>
-                <listitem><para>an inline variable declaration together with an 
-                instantiation expression.</para></listitem>
+                <listitem><para>a <emphasis>destroyable resource</emphasis>, or</para></listitem>
+                <listitem><para>an <emphasis>obtainable resource</emphasis>.</para></listitem>
             </itemizedlist>
             
-            <para>A resource expresson produces a heavyweight object that must be 
-            released when execution of the <literal>try</literal> terminates. Each 
-            resource expression must be of type assignable to <literal>Closeable</literal>
-            in <literal>ceylon.language</literal>.</para>
+            <synopsis>Resource: Expression | Variable Specifier</synopsis>
             
-            <synopsis>Resource: Invocation | Variable Specifier </synopsis>
+            <para>A destroyable resource expression is:</para>
             
-            <para>If no type is explicitly specified for a resource variable, the type of 
-            the variable is inferred to be the type of the instantiation expression.</para>
+            <itemizedlist>
+                <listitem><para>an instantiation expression, or</para></listitem>
+                <listitem><para>an inline variable declaration together with 
+                an instantiation expression.</para></listitem>
+            </itemizedlist>
             
-            <programlisting>try (file = File(path)) {
-    file.open(readOnly);
+            <para>The instantiation expression must be of type assignable to
+            <literal>Destroyable</literal> in <literal>ceylon.language</literal>.</para>
+            
+            <para>An obtainable resource expression is:</para>
+            
+            <itemizedlist>
+                <listitem><para>an expression, or</para></listitem>
+                <listitem><para>an inline variable declaration together with 
+                an expression.</para></listitem>
+            </itemizedlist>
+            
+            <para>The expression must be of type assignable to 
+            <literal>Obtainable</literal> in <literal>ceylon.language</literal>.</para>
+            
+            <para>If no type is explicitly specified for a resource variable, the 
+            type of the variable is inferred to be the type of the expression.</para>
+            
+            <programlisting>try (File(path).lock) {
+    file.open(write);
     ...
 }
 catch (FileNotFoundException fnfe) {

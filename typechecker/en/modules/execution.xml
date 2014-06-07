@@ -761,16 +761,19 @@ String result = middleObject.string;</programlisting>
              <itemizedlist>
                  <listitem>
                      <para>the resource expressions, if any, are evaluated in the order
-                     they occur, and then <literal>open()</literal> is called on each 
-                     resulting resource instance, in the same order, then</para>
+                     they occur, and then <literal>obtain()</literal> is called on each 
+                     resulting resource instance of type <literal>Obtainable</literal>, 
+                     in the same order, then</para>
                  </listitem>
                  <listitem>
                      <para>the <literal>try</literal> block is executed, then</para>
                  </listitem>
                  <listitem>
-                     <para><literal>close()</literal> is called on the resource instances, 
+                     <para><literal>destroy()</literal> is called on each resource instance
+                     of type <literal>Destroyable</literal>, and <literal>obtain()</literal> 
+                     is called on each resource instance of type <literal>Obtainable</literal>, 
                      if any, in the reverse order that the resource expressions occur, 
-                     with the exception that propagated out of the <literal>try</literal> 
+                     passing the exception that propagated out of the <literal>try</literal> 
                      block, if any, then</para>
                  </listitem>
                  <listitem>
