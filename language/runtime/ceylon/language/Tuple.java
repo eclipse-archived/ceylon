@@ -288,6 +288,7 @@ public final class Tuple<Element, First extends Element,
         return super.contains(element);
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Annotations({
         @Annotation("shared"),
         @Annotation("actual")})

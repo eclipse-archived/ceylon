@@ -20,6 +20,7 @@ final class internalSort_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Sequential<Element>")
+    @SuppressWarnings("unchecked")
     static <Element> Sequential<? extends Element> internalSort(@Ignore TypeDescriptor $reifiedElement,
         @Name("comparing")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison|ceylon.language::Null,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")

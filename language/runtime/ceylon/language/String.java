@@ -55,7 +55,8 @@ public final class String
     @Ignore
     public final java.lang.String value;
 
-    public String(@Name("characters") 
+    @SuppressWarnings("rawtypes")
+    public String(@Name("characters")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     final Iterable<? extends Character, ?> characters) {
         this.$ceylon$language$Category$this = 
@@ -77,7 +78,7 @@ public final class String
         } else {
             java.lang.String s = null;
             if (characters instanceof Array.ArrayIterable) {
-                s = ((Array.ArrayIterable)characters).stringValue();
+                s = ((Array.ArrayIterable) characters).stringValue();
             }
             if (s != null) {
                 value = s;
@@ -409,10 +410,11 @@ public final class String
         return instance(value).items(keys);
     }
 
-    @Ignore
+    @Ignore 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Sequential<? extends Character> 
     items(java.lang.String value) {
-        return (Sequential)empty_.get_();
+        return (Sequential) empty_.get_();
     }
 
     @Ignore
@@ -1346,6 +1348,7 @@ public final class String
     }
     
     @Ignore
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static
     Tuple<String,? extends String,
     		? extends Tuple<String,? extends String,
@@ -1792,12 +1795,14 @@ public final class String
     		?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
+    
     @Ignore
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Iterable<? extends Entry<? extends Integer, ? extends Character>, 
     		?> 
     getIndexed(java.lang.String value) {
         if (value.isEmpty()) {
-            return (Iterable)instance(value);
+            return (Iterable) instance(value);
         } else {
             return instance(value).getIndexed();
         }
@@ -1814,6 +1819,7 @@ public final class String
     }
     
     @Ignore
+    @SuppressWarnings("rawtypes")
     public static <Other,Absent> Iterable 
     chain(@Ignore TypeDescriptor $reifiedOther, 
     		@Ignore TypeDescriptor $reifiedOtherAbsent, 
@@ -1828,7 +1834,7 @@ public final class String
         }
     }
     
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore 
     public <Other> Iterable 
     following(@Ignore TypeDescriptor $reifiedOther, 
@@ -1838,6 +1844,7 @@ public final class String
     }
     
     @Ignore
+    @SuppressWarnings("rawtypes")
     public static <Other> Iterable 
     following(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other other) {
