@@ -231,7 +231,7 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
     }
 
     @Override
-    public Sequential<? extends Element> getSequence() {
+    public Sequential<? extends Element> sequence() {
         // Note: Sequential is immutable, and we don't know where the array
         // came from, so however we create the sequence we must take a copy
         return this.getEmpty() ? empty_.get_() : new ArraySequence($reified$Element, this);

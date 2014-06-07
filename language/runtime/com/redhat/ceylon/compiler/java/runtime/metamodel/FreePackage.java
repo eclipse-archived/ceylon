@@ -125,7 +125,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
                 members.append(member);
             }
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

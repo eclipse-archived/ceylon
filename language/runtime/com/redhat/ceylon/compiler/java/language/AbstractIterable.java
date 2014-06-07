@@ -93,8 +93,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Override
     @Ignore
-    public final Sequential<? extends Element> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+    public final Sequential<? extends Element> sequence() {
+        return $ceylon$language$Iterable$this.sequence();
     }
     
     @Override

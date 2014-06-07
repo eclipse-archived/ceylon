@@ -3,7 +3,7 @@
    
      iterable.empty then empty else ArraySequence(iterable)
 
- Note in particular that `iterable.sequence` is not used, since 
+ Note in particular that `iterable.sequence()` is not used, since 
  this is used for evaluating `[*iterable]`.
 "
 shared Element[] sequential<Element>({Element*} iterable) {

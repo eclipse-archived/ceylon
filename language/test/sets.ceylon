@@ -65,12 +65,12 @@ class ArrayBuilder<Element>() {
         return this;
     }
     shared actual String string {
-        return sequence.string;
+        return sequence().string;
     }
     
-    shared Element[] sequence {
+    shared Element[] sequence() {
         if (exists s=storage) {
-            return s.take(length).sequence;
+            return s.take(length).sequence();
         }
         return empty;
     }
@@ -83,7 +83,7 @@ class ArrayBuilder<Element>() {
 class SetTest<Element>(Element* element) extends Object()
             satisfies SetTestBase<Element>
             given Element satisfies Object {
-    shared actual Element[] elements = element.sequence;
+    shared actual Element[] elements = element.sequence();
     shared actual Integer size { return elements.size; }
     shared actual Boolean empty { return elements.empty; }
     shared actual SetTest<Element> clone() { return this; }
@@ -99,7 +99,7 @@ class SetTest<Element>(Element* element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(*sb.sequence);
+        return SetTest(*sb.sequence());
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -114,7 +114,7 @@ class SetTest<Element>(Element* element) extends Object()
         //        }
         //    }
         //}
-        //return SetTest(sb.sequence*);
+        //return SetTest(sb.sequence()*);
         return nothing;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
@@ -134,7 +134,7 @@ class SetTest<Element>(Element* element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(*sb.sequence);
+        return SetTest(*sb.sequence());
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -146,7 +146,7 @@ class SetTest<Element>(Element* element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(*sb.sequence);
+        return SetTest(*sb.sequence());
     }
 }
 

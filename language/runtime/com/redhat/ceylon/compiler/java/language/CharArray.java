@@ -362,7 +362,7 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
-        public Sequential<? extends ceylon.language.Character> getSequence() {
+        public Sequential<? extends ceylon.language.Character> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
             return this.getEmpty() ? empty_.get_() : new ArraySequence(ceylon.language.Character.$TypeDescriptor$, this);

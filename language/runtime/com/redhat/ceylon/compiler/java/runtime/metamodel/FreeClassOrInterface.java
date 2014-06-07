@@ -210,7 +210,7 @@ public abstract class FreeClassOrInterface
                 members.append((Kind) decl);
             }
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -227,7 +227,7 @@ public abstract class FreeClassOrInterface
                 members.append((Kind) decl);
             }
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

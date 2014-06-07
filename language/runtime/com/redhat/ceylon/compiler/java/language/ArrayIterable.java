@@ -117,8 +117,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 
     @Override
     @Ignore
-    public Sequence<? extends Element> getSequence() {
-        Sequential<? extends Element> restSequence = rest.getSequence();
+    public Sequence<? extends Element> sequence() {
+        Sequential<? extends Element> restSequence = rest.sequence();
         // copy our part of the array
         int inArray = (int) (array.length - first);
         java.lang.Object[] elems = new java.lang.Object[(int) (inArray + restSequence.getSize())];

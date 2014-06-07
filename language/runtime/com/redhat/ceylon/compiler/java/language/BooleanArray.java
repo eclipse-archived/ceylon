@@ -362,7 +362,7 @@ public final class BooleanArray implements ReifiedType {
         }
         
         @Override
-        public Sequential<? extends ceylon.language.Boolean> getSequence() {
+        public Sequential<? extends ceylon.language.Boolean> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
             return this.getEmpty() ? empty_.get_() : new ArraySequence(ceylon.language.Boolean.$TypeDescriptor$, this);

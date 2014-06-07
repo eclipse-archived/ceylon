@@ -49,7 +49,7 @@ shared interface Sequence<out Element>
     shared actual formal [Element+] reversed;
     
     "This nonempty sequence."
-    shared default actual [Element+] sequence => this;
+    shared default actual [Element+] sequence() => this;
     
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
@@ -71,7 +71,7 @@ shared interface Sequence<out Element>
     shared default actual [Result+] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) {
-        value s = map(collecting).sequence;
+        value s = map(collecting).sequence();
         assert (nonempty s);
         return s;
     }

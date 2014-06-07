@@ -35,7 +35,7 @@ shared class LazyList<out Element>(elements)
      original `Iterable` will no longer be reflected in 
      the new `List`."
     shared actual List<Element> reversed 
-            => elements.sequence.reversed;
+            => elements.sequence().reversed;
     
     clone() => this;
     
@@ -61,7 +61,7 @@ shared class LazyList<out Element>(elements)
                     then elements.skip(toIndex)
                     else elements;
             return seq.take(fromIndex-toIndex+1)
-                    .sequence.reversed;
+                    .sequence().reversed;
         }
     }
     

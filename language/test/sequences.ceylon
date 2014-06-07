@@ -16,7 +16,7 @@ void test_singleton() {
         }*/
         for (element in singleton.reversed) {
         }
-        Sequence<String> s = singleton.sequence;
+        Sequence<String> s = singleton.sequence();
     }
     else {
         fail("singleton nonempty");
@@ -98,7 +98,7 @@ void test_nullsingleton() {
         }*/
         for (element in singleton.reversed) {
         }
-        Sequence<Anything> s = singleton.sequence;
+        Sequence<Anything> s = singleton.sequence();
     }
     else {
         fail("singleton nonempty");
@@ -161,7 +161,7 @@ void test_concatenate() {
     value l3 = {7,8,9};
     value concatenated = concatenate(l1, l2, l3);
     check(concatenated.size==l1.size+l2.size+l3.size, "concatenate [1]");
-    check(concatenate("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}.sequence, "concatenate [2]");
+    check(concatenate("aa", "bb", "cc").sequence()=={'a', 'a', 'b', 'b', 'c', 'c'}.sequence(), "concatenate [2]");
 }
 
 void test_zip() {
@@ -216,8 +216,8 @@ shared void arraySequence() {
     check(2==abc.lastIndex, "abc.lastIndex");
     
     check("a"==abc.first, "abc.first");
-    check({"b", "c"}.sequence==abc.rest, "abc.rest");
-    check({"c"}.sequence==abc.rest.rest, "abc.rest.rest");
+    check({"b", "c"}.sequence()==abc.rest, "abc.rest");
+    check({"c"}.sequence()==abc.rest.rest, "abc.rest.rest");
     check({}==abc.rest.rest.rest, "abc.rest.rest.rest");
     
     check(abc.defines(0), "abc.defines(0)");
@@ -234,44 +234,44 @@ shared void arraySequence() {
     check(abc.reversed.reversed==abc, "abc.reversed.reversed");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
-    check(abc.span(-1, 0)=={"a"}.sequence, "abc.span(-1,0)");
-    check(abc.span(-1, 1)=={"a", "b"}.sequence , "abc.span(-1,1)");
+    check(abc.span(-1, 0)=={"a"}.sequence(), "abc.span(-1,0)");
+    check(abc.span(-1, 1)=={"a", "b"}.sequence() , "abc.span(-1,1)");
     check(abc.span(-1, 2)==abc, "abc.span(-1,2)");
     check(abc.span(-1, 3)==abc, "abc.span(-1,3)");
     
-    check(abc.span(0,-1)=={"a"}.sequence, "abc.span(0,-1)");
-    check(abc.span(0, 0)=={"a"}.sequence, "abc.span(0,0)");
-    check(abc.span(0, 1)=={"a", "b"}.sequence , "abc.span(0,1)");
+    check(abc.span(0,-1)=={"a"}.sequence(), "abc.span(0,-1)");
+    check(abc.span(0, 0)=={"a"}.sequence(), "abc.span(0,0)");
+    check(abc.span(0, 1)=={"a", "b"}.sequence() , "abc.span(0,1)");
     check(abc.span(0, 2)==abc, "abc.span(0,2)");
     check(abc.span(0, 3)==abc, "abc.span(0,3)");
     
-    check(abc.span(1,-1)=={"b", "a"}.sequence, "abc.span(1,-1)");
-    check(abc.span(1, 0)=={"b", "a"}.sequence, "abc.span(1,0)");
-    check(abc.span(1, 1)=={"b"}.sequence , "abc.span(1,1)");
-    check(abc.span(1, 2)=={"b", "c"}.sequence, "abc.span(1,2)");
-    check(abc.span(1, 3)=={"b", "c"}.sequence, "abc.span(1,3)");
+    check(abc.span(1,-1)=={"b", "a"}.sequence(), "abc.span(1,-1)");
+    check(abc.span(1, 0)=={"b", "a"}.sequence(), "abc.span(1,0)");
+    check(abc.span(1, 1)=={"b"}.sequence() , "abc.span(1,1)");
+    check(abc.span(1, 2)=={"b", "c"}.sequence(), "abc.span(1,2)");
+    check(abc.span(1, 3)=={"b", "c"}.sequence(), "abc.span(1,3)");
     
-    check(abc.span(2,-1)=={"c", "b", "a"}.sequence, "abc.span(2,-1)");
-    check(abc.span(2, 0)=={"c", "b", "a"}.sequence, "abc.span(2,0)");
-    check(abc.span(2, 1)=={"c", "b"}.sequence , "abc.span(2,1)");
-    check(abc.span(2, 2)=={"c"}.sequence, "abc.span(2,2)");
-    check(abc.span(2, 3)=={"c"}.sequence, "abc.span(2,3)");
+    check(abc.span(2,-1)=={"c", "b", "a"}.sequence(), "abc.span(2,-1)");
+    check(abc.span(2, 0)=={"c", "b", "a"}.sequence(), "abc.span(2,0)");
+    check(abc.span(2, 1)=={"c", "b"}.sequence() , "abc.span(2,1)");
+    check(abc.span(2, 2)=={"c"}.sequence(), "abc.span(2,2)");
+    check(abc.span(2, 3)=={"c"}.sequence(), "abc.span(2,3)");
     
-    check(abc.span(3,-1)=={"c", "b", "a"}.sequence, "abc.span(3,-1) ``abc.span(3,-1)``");
-    check(abc.span(3, 0)=={"c", "b", "a"}.sequence, "abc.span(3,0)");
-    check(abc.span(3, 1)=={"c", "b"}.sequence , "abc.span(3,1)");
-    check(abc.span(3, 2)=={"c"}.sequence, "abc.span(3,1)");
+    check(abc.span(3,-1)=={"c", "b", "a"}.sequence(), "abc.span(3,-1) ``abc.span(3,-1)``");
+    check(abc.span(3, 0)=={"c", "b", "a"}.sequence(), "abc.span(3,0)");
+    check(abc.span(3, 1)=={"c", "b"}.sequence() , "abc.span(3,1)");
+    check(abc.span(3, 2)=={"c"}.sequence(), "abc.span(3,1)");
     check(abc.span(3, 3)=={}, "abc.span(3,3)");
     
     check(abc.spanFrom(-1)==abc, "abc.spanFrom(-1)");
     check(abc.spanFrom(0)==abc, "abc.spanFrom(0)");
-    check(abc.spanFrom(1)=={"b", "c"}.sequence , "abc.spanFrom(1)");
-    check(abc.spanFrom(2)=={"c"}.sequence, "abc.spanFrom(2)");
+    check(abc.spanFrom(1)=={"b", "c"}.sequence() , "abc.spanFrom(1)");
+    check(abc.spanFrom(2)=={"c"}.sequence(), "abc.spanFrom(2)");
     check(abc.spanFrom(3)=={}, "abc.spanFrom(3)");
     
     check(abc.spanTo(-1)=={}, "abc.spanTo(-1)");
-    check(abc.spanTo(0)=={"a"}.sequence, "abc.spanTo(0)");
-    check(abc.spanTo(1)=={"a", "b"}.sequence , "abc.spanTo(1)");
+    check(abc.spanTo(0)=={"a"}.sequence(), "abc.spanTo(0)");
+    check(abc.spanTo(1)=={"a", "b"}.sequence() , "abc.spanTo(1)");
     check(abc.spanTo(2)==abc, "abc.spanTo(2)");
     check(abc.spanTo(3)==abc, "abc.spanTo(3)");
     
@@ -279,26 +279,26 @@ shared void arraySequence() {
     check(abc.segment(-1,-1)=={}, "abc.segment(-1,-1)");
     check(abc.segment(-1, 0)=={}, "abc.segment(-1,0)");
     check(abc.segment(-1, 1)=={} , "abc.segment(-1,1)");
-    check(abc.segment(-1, 2)=={"a"}.sequence, "abc.segment(-1,2)");
-    check(abc.segment(-1, 3)=={"a", "b"}.sequence, "abc.segment(-1,3)");
+    check(abc.segment(-1, 2)=={"a"}.sequence(), "abc.segment(-1,2)");
+    check(abc.segment(-1, 3)=={"a", "b"}.sequence(), "abc.segment(-1,3)");
     
     check(abc.segment(0,-1)=={}, "abc.segment(0,-1)");
     check(abc.segment(0, 0)=={}, "abc.segment(0,0)");
-    check(abc.segment(0, 1)=={"a"}.sequence , "abc.segment(0,1)");
-    check(abc.segment(0, 2)=={"a", "b"}.sequence, "abc.segment(0,2)");
+    check(abc.segment(0, 1)=={"a"}.sequence() , "abc.segment(0,1)");
+    check(abc.segment(0, 2)=={"a", "b"}.sequence(), "abc.segment(0,2)");
     check(abc.segment(0, 3)==abc, "abc.segment(0,3)");
     
     check(abc.segment(1,-1)=={}, "abc.segment(1,-1)");
     check(abc.segment(1, 0)=={}, "abc.segment(1,0)");
-    check(abc.segment(1, 1)=={"b"}.sequence , "abc.segment(1,1)");
-    check(abc.segment(1, 2)=={"b", "c"}.sequence, "abc.segment(1,2)");
-    check(abc.segment(1, 3)=={"b", "c"}.sequence, "abc.segment(1,3)");
+    check(abc.segment(1, 1)=={"b"}.sequence() , "abc.segment(1,1)");
+    check(abc.segment(1, 2)=={"b", "c"}.sequence(), "abc.segment(1,2)");
+    check(abc.segment(1, 3)=={"b", "c"}.sequence(), "abc.segment(1,3)");
     
     check(abc.segment(2,-1)=={}, "abc.segment(2,-1)");
     check(abc.segment(2, 0)=={}, "abc.segment(2,0)");
-    check(abc.segment(2, 1)=={"c"}.sequence , "abc.segment(2,1)");
-    check(abc.segment(2, 2)=={"c"}.sequence, "abc.segment(2,2)");
-    check(abc.segment(2, 3)=={"c"}.sequence, "abc.segment(2,3)");
+    check(abc.segment(2, 1)=={"c"}.sequence() , "abc.segment(2,1)");
+    check(abc.segment(2, 2)=={"c"}.sequence(), "abc.segment(2,2)");
+    check(abc.segment(2, 3)=={"c"}.sequence(), "abc.segment(2,3)");
     
     check(abc.segment(3,-1)=={}, "abc.segment(3,-1)");
     check(abc.segment(3, 0)=={}, "abc.segment(3,0)");
@@ -325,7 +325,7 @@ shared void sequences() {
     check(!bare.segment(1, 2) nonempty, "bare sequence segment");
     check(bare.string=="[]", "bare.string");
     check(bare.reversed==bare, "bare reversed");
-    check(bare.sequence==bare, "bare.sequence");
+    check(bare.sequence()==bare, "bare.sequence()");
 
     String[] result = ArraySequence{"hello", "world"};
     check(result.size==2, "sequence size");
@@ -342,7 +342,7 @@ shared void sequences() {
     else {
         fail("sequence first");
     }
-    check(result.sequence==result, "sequence.sequence");
+    check(result.sequence()==result, "sequence.sequence()");
     if (exists last = result.last) {
         check(last=="world", "sequence last");
     }
@@ -372,7 +372,7 @@ shared void sequences() {
     check(!result.segment(0,0) nonempty, "!nonempty sequence.segment(0,0)");
     //check(!result.segment(1,-1) nonempty, "!nonempty sequence.segment(1,-1)");
     
-    check(result.reversed.sequence=={"world", "hello"}.sequence, "sequence.reversed");
+    check(result.reversed.sequence()=={"world", "hello"}.sequence(), "sequence.reversed");
 
     if (exists str = result[0]) {
         check(str=="hello", "sequence item");
@@ -433,7 +433,7 @@ shared void sequences() {
     value seq = [ 1, 2, 3, 4 ];
     check(seq.size==4, "sequence size");
     check(seq.string=="[1, 2, 3, 4]", "sequence.string 4: " + seq.string);
-    check(seq.reversed=={4, 3, 2, 1}.sequence, "sequence reversed");
+    check(seq.reversed=={4, 3, 2, 1}.sequence(), "sequence reversed");
     check(seq.first==1, "sequence first");
     check(seq.rest.string=="[2, 3, 4]", "sequence.rest.string " + seq.rest.string);
     variable value i=0;
@@ -476,7 +476,7 @@ shared void sequences() {
     }
     check(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls).sequence;
+    value coalesced = coalesce(nulls).sequence();
     check(coalesced.size==2, "coalesce size");
     check(coalesced.string=="[hello, world]", "coalesce.string");
     check(coalesced.keys.contains(0), "coalesced keys");
@@ -485,7 +485,7 @@ shared void sequences() {
     check(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     check(coalesced nonempty, "nonempty coalesced");
-    //value coal2 = coalesce { for (c in "hElLo") null }.sequence;
+    //value coal2 = coalesce { for (c in "hElLo") null }.sequence();
     //check(!coal2 nonempty, "nonempty coalesced2");
     //check(coal2.size == 0, "coalesced2.size");
     //check(!'h' in coal2, "coalesced2.contains");
@@ -504,8 +504,8 @@ shared void sequences() {
     }
 
     value sequenceEntries = entries { "X1", "X2", "X3" };
-    check(sequenceEntries.sequence.size==3, "entries size");
-    check(sequenceEntries.sequence nonempty, "nonempty entries");
+    check(sequenceEntries.sequence().size==3, "entries size");
+    check(sequenceEntries.sequence() nonempty, "nonempty entries");
     value primero = sequenceEntries.first;
     check(primero==Entry(0, "X1"), "entries first");
     for (nat->str in sequenceEntries) {
@@ -525,8 +525,8 @@ shared void sequences() {
     check(["world"].withLeading("hello").first=="hello", "sequence with trailing");
     
     //collect
-    check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }.sequence, "Sequence<Integer>.collect");
-    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}.sequence, "Sequence<String>.collect");
+    check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }.sequence(), "Sequence<Integer>.collect");
+    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}.sequence(), "Sequence<String>.collect");
     
     check([1,2,3,4,5].longerThan(4), "Sequence.longerThan");
     check(![1,2,3].longerThan(3), "Sequence.longerThan");

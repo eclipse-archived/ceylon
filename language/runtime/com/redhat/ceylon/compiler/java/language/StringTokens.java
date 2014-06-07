@@ -282,8 +282,8 @@ public class StringTokens
     
     @Override
     @Ignore
-    public Sequential<? extends String> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+    public Sequential<? extends String> sequence() {
+        return $ceylon$language$Iterable$this.sequence();
     }
     @Override @Ignore
     public String find(Callable<? extends Boolean> f) {

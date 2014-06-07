@@ -225,8 +225,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Entry<Key,Item>>")
-    public Sequential<? extends Entry<? extends Key, ? extends Item>> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+    public Sequential<? extends Entry<? extends Key, ? extends Item>> sequence() {
+        return $ceylon$language$Iterable$this.sequence();
     }
 
     @Override

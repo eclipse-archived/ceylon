@@ -156,8 +156,8 @@ public class StringInclusions implements Iterable<Integer,java.lang.Object>, Rei
     
     @Override
     @Ignore
-    public Sequential<? extends Integer> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+    public Sequential<? extends Integer> sequence() {
+        return $ceylon$language$Iterable$this.sequence();
     }
     @Override @Ignore
     public Integer find(Callable<? extends Boolean> f) {

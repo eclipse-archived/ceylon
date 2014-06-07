@@ -96,7 +96,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
                 }
                 sb.append(new FreeImport(this, moduleImport));
             }
-            this.dependencies = sb.getSequence();
+            this.dependencies = sb.sequence();
         }
         return this.dependencies;
     }

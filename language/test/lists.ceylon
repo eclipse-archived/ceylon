@@ -18,34 +18,34 @@ shared void lists() {
     value b = LazyList({1,2,3,4,5,6,7,8});
     check(LazyList({}).size==0, "empty LazyList()");
     //withLeading
-    check({}.withLeading("A")=={"A"}.sequence, "Empty.withLeading(A)");
+    check({}.withLeading("A")=={"A"}.sequence(), "Empty.withLeading(A)");
     check({}.withLeading("foo").size==1, "{}.withLeading.size");
-    check(Array{}.withLeading(1)=={1}.sequence, "empty array.withLeading(1)");
-    check(Array{1,2}.withLeading("A")=={"A",1,2}.sequence, "Array.withLeading(a)`` Array{1,2}.withLeading("A") ``");
-    check([1,2].withLeading("a")=={"a",1,2}.sequence, "Sequence.withLeading(a)`` [1,2].withLeading("a") ``");
+    check(Array{}.withLeading(1)=={1}.sequence(), "empty array.withLeading(1)");
+    check(Array{1,2}.withLeading("A")=={"A",1,2}.sequence(), "Array.withLeading(a)`` Array{1,2}.withLeading("A") ``");
+    check([1,2].withLeading("a")=={"a",1,2}.sequence(), "Sequence.withLeading(a)`` [1,2].withLeading("a") ``");
     check([1,2].withLeading("foo").size==3, "Sequence.withLeading.size`` [1,2].withLeading("foo").size ``");
-    check(Singleton(1).withLeading("a")=={"a",1}.sequence, "Singleton.withLeading(a)`` Singleton(1).withLeading("a") ``");
-    check((1..3).withLeading("a")=={"a",1,2,3}.sequence, "Range.withLeading(a)");
+    check(Singleton(1).withLeading("a")=={"a",1}.sequence(), "Singleton.withLeading(a)`` Singleton(1).withLeading("a") ``");
+    check((1..3).withLeading("a")=={"a",1,2,3}.sequence(), "Range.withLeading(a)");
     check((1..3).withLeading(0).first==0, "Range.withLeading(a).first");
     check((1..3).withLeading(0).last==3, "Range.withLeading(a).last");
-    check("abc".withLeading(1)=={1,'a','b','c'}.sequence, "String.withLeading(1)" +"abc".withLeading(1).string);
-    check("".withLeading(1)=={1}.sequence, "\"\".withLeading(1)");
+    check("abc".withLeading(1)=={1,'a','b','c'}.sequence(), "String.withLeading(1)" +"abc".withLeading(1).string);
+    check("".withLeading(1)=={1}.sequence(), "\"\".withLeading(1)");
     check(b[100...]=={}, "LazyList[100...]");
     check(b[1...]==b.rest, "LazyList[1...]");
 
     //withTrailing
-    check({}.withTrailing("A")=={"A"}.sequence, "Empty.withTrailing(A)");
+    check({}.withTrailing("A")=={"A"}.sequence(), "Empty.withTrailing(A)");
     check({}.withTrailing("foo").size==1, "{}.withTrailing.size");
-    check(Array{}.withTrailing(1)=={1}.sequence, "empty array.withTrailing(1)");
-    check(Array{1,2}.withTrailing("A")=={1,2,"A"}.sequence, "Array.withTrailing(a)");
-    check([1,2].withTrailing("a")=={1,2,"a"}.sequence, "Sequence.withTrailing(a)");
+    check(Array{}.withTrailing(1)=={1}.sequence(), "empty array.withTrailing(1)");
+    check(Array{1,2}.withTrailing("A")=={1,2,"A"}.sequence(), "Array.withTrailing(a)");
+    check([1,2].withTrailing("a")=={1,2,"a"}.sequence(), "Sequence.withTrailing(a)");
     check([1,2].withTrailing("foo").size==3, "Sequence.withTrailing.size");
-    check(Singleton(1).withTrailing("a")=={1,"a"}.sequence, "Singleton.withTrailing(a)");
-    check((1..3).withTrailing(4)=={1,2,3,4}.sequence, "Range.withTrailing(a)");
+    check(Singleton(1).withTrailing("a")=={1,"a"}.sequence(), "Singleton.withTrailing(a)");
+    check((1..3).withTrailing(4)=={1,2,3,4}.sequence(), "Range.withTrailing(a)");
     check((1..3).withTrailing(4).first==1, "Range.withTrailing(a).first");
     check((1..3).withTrailing(4).last==4, "Range.withTrailing(a).last");
-    check("abc".withTrailing(1)=={'a','b','c',1}.sequence, "String.withTrailing(1)");
-    check("".withTrailing(1)=={1}.sequence, "\"\".withTrailing(1)");
+    check("abc".withTrailing(1)=={'a','b','c',1}.sequence(), "String.withTrailing(1)");
+    check("".withTrailing(1)=={1}.sequence(), "\"\".withTrailing(1)");
 
     //LazyList
     check(b.size == 8, "LazyList.size");
@@ -57,15 +57,15 @@ shared void lists() {
     } else { fail("LazyList.item"); }
     check(b.span(-2,-1)=={}, "LazyList.span(-2,-1) & equals");
     check(b.span(-1,-2)=={}, "LazyList.span(-1,-2) & equals");
-    check(b.span(-2,2)=={1,2,3}.sequence, "LazyList.span(-2,2) & equals");
-    check(b.span(2,-2)=={3,2,1}.sequence, "LazyList.span(2,-2) & equals");
-    check(b.span(2,4)=={3,4,5}.sequence, "LazyList.span(2,4) & equals: `` b.span(2,4) `` instead of {3,4,5}");
-    check(b.span(6,10)=={7,8}.sequence, "LazyList.span(6,10) & equals: `` b.span(6,10) `` instead of {7,8}");
-    check(b.spanFrom(4)=={5,6,7,8}.sequence, "LazyList.spanFrom(4) & equals: `` b.spanFrom(4) `` instead of {5,6,7,8}");
+    check(b.span(-2,2)=={1,2,3}.sequence(), "LazyList.span(-2,2) & equals");
+    check(b.span(2,-2)=={3,2,1}.sequence(), "LazyList.span(2,-2) & equals");
+    check(b.span(2,4)=={3,4,5}.sequence(), "LazyList.span(2,4) & equals: `` b.span(2,4) `` instead of {3,4,5}");
+    check(b.span(6,10)=={7,8}.sequence(), "LazyList.span(6,10) & equals: `` b.span(6,10) `` instead of {7,8}");
+    check(b.spanFrom(4)=={5,6,7,8}.sequence(), "LazyList.spanFrom(4) & equals: `` b.spanFrom(4) `` instead of {5,6,7,8}");
     check(b.spanFrom(10)=={}, "LazyList.spanFrom(10) & equals");
-    check(b.spanTo(4)=={1,2,3,4,5}.sequence, "LazyList.spanTo(4) & equals");
+    check(b.spanTo(4)=={1,2,3,4,5}.sequence(), "LazyList.spanTo(4) & equals");
     check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
-    check(b.segment(2,3)=={3,4,5}.sequence, "LazyList.segment: `` b.segment(2,3) `` instead of {3,4,5}");
+    check(b.segment(2,3)=={3,4,5}.sequence(), "LazyList.segment: `` b.segment(2,3) `` instead of {3,4,5}");
     if (exists e=b.findLast((Integer x) => true)) {
         check(e==8, "LazyList.findLast");
     } else { fail("LazyList.findLast"); }
@@ -111,7 +111,7 @@ shared void lists() {
     check(![1,2,3,4,5,6,7].includes(b), "List.occursIn [4]");
 
     //#451
-    check(b.indexesWhere((Integer i)=>i%2==0).sequence == [1,3,5,7], "List.indexesWhere");
+    check(b.indexesWhere((Integer i)=>i%2==0).sequence() == [1,3,5,7], "List.indexesWhere");
     if (exists fi=b.firstIndexWhere((Integer i)=>i>5)) {
         check(fi == 5, "List.firstIndexWhere expected 5 got ``fi``");
     } else {
@@ -129,7 +129,7 @@ shared void lists() {
     if (exists fi=b.lastIndexWhere(Integer.negative)) {
         fail("List.lastIndexWhere should not exist");
     }
-    check("Probando Novedades".indexesWhere((Character c)=>c.uppercase).sequence == [0,9], "String.indexesWhere");
+    check("Probando Novedades".indexesWhere((Character c)=>c.uppercase).sequence() == [0,9], "String.indexesWhere");
     if (exists fi="Probando".firstIndexWhere((Character c)=>c.lowercase)) {
         check(fi == 1, "String.firstIndexWhere expected 1 got ``fi``");
     } else {

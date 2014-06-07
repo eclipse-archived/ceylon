@@ -586,8 +586,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     @Ignore
-    public Sequence<? extends Element> getSequence() {
-        return $ceylon$language$Sequence$this.getSequence();
+    public Sequence<? extends Element> sequence() {
+        return $ceylon$language$Sequence$this.sequence();
     }
 
     @Override @Ignore

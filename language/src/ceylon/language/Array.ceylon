@@ -54,7 +54,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Boolean defines(Integer index);
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);
-    shared actual native Element[] sequence;
+    shared actual native Element[] sequence();
     
     shared actual native Integer count(Boolean selecting(Element element));
     

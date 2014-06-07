@@ -73,7 +73,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
         return this;
     }
     
-    public Sequential<? extends Element> getSequence() {
+    public Sequential<? extends Element> sequence() {
         if (array==null || length == 0) {
             return (Sequential<? extends Element>)empty_.get_();
         }

@@ -1517,15 +1517,15 @@ public final class String
 
     @Override
     @Ignore
-    public Sequential<? extends Character> getSequence() {
+    public Sequential<? extends Character> sequence() {
         return (Sequential<? extends Character>)
-        		$ceylon$language$Iterable$this.getSequence();
+        		$ceylon$language$Iterable$this.sequence();
     }
 
     @Ignore
     public static Sequential<? extends Character> 
-    getSequence(java.lang.String value) {
-        return instance(value).getSequence();
+    sequence(java.lang.String value) {
+        return instance(value).sequence();
     }
 
     @Override @Ignore
@@ -1775,7 +1775,7 @@ public final class String
         }
         else {
             return instance(new String(instance(value)
-            		.by(step).getSequence()));
+            		.by(step).sequence()));
         }
     }
 

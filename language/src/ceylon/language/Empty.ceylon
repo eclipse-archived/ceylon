@@ -45,7 +45,7 @@ shared interface Empty of e
     shared actual [] reversed => this;
     
     "Returns an `Empty`."
-    shared actual [] sequence => this;
+    shared actual [] sequence() => this;
     
     "Returns a string description of the empty sequence: 
      `[]`."

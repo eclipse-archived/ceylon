@@ -50,16 +50,16 @@ public class PrimitiveArrayIterableTest {
         
         // getRest
         Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", 
-                zero_ten.getRest().getSequence().toString());
+                zero_ten.getRest().sequence().toString());
         Assert.assertEquals(1, zero_ten.getRest().getFirst().value);
         Assert.assertEquals(10, zero_ten.getRest().getLast().value);
         Assert.assertEquals("[2, 3, 4, 5, 6, 7, 8, 9, 10]", 
-                zero_ten.getRest().getRest().getSequence().toString());
-        Assert.assertEquals("[]", ten.getRest().getSequence().toString());
-        Assert.assertEquals("[]", ten.getRest().getRest().getSequence().toString());
+                zero_ten.getRest().getRest().sequence().toString());
+        Assert.assertEquals("[]", ten.getRest().sequence().toString());
+        Assert.assertEquals("[]", ten.getRest().getRest().sequence().toString());
         
         // getSequence
-        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", zero_ten.getSequence().toString());
+        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", zero_ten.sequence().toString());
         
         // longerThan
         Assert.assertTrue(zero_ten.longerThan(10));
@@ -141,15 +141,15 @@ public class PrimitiveArrayIterableTest {
         
         // taking
         IntArrayIterable zero_seven = zero_ten.take(8);
-        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.getSequence().toString());
+        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.sequence().toString());
         
         // skipping
         IntArrayIterable two_seven = zero_ten.take(8).skip(2);
-        Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.getSequence().toString());
+        Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.sequence().toString());
         
         // by
         IntArrayIterable zero_ten_evens = zero_ten.by(2);
-        Assert.assertEquals("[0, 2, 4, 6, 8, 10]", zero_ten_evens.getSequence().toString());
+        Assert.assertEquals("[0, 2, 4, 6, 8, 10]", zero_ten_evens.sequence().toString());
         Assert.assertEquals(6, zero_ten_evens.getSize());
         Assert.assertTrue(zero_ten_evens.longerThan(5));
         Assert.assertFalse(zero_ten_evens.longerThan(6));
@@ -159,10 +159,10 @@ public class PrimitiveArrayIterableTest {
         Assert.assertFalse(zero_ten_evens.shorterThan(6));
         Assert.assertTrue(zero_ten_evens.shorterThan(7));
         
-        Assert.assertEquals("[0, 4, 8]", zero_ten_evens.by(2).getSequence().toString());
+        Assert.assertEquals("[0, 4, 8]", zero_ten_evens.by(2).sequence().toString());
         Assert.assertEquals(3, zero_ten_evens.by(2).getSize());
         
-        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.take(5).skip(1).getSequence().toString());
+        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.take(5).skip(1).sequence().toString());
         
     }
     
@@ -214,16 +214,16 @@ public class PrimitiveArrayIterableTest {
         
         // getRest
         Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", 
-                zero_ten.getRest().getSequence().toString());
+                zero_ten.getRest().sequence().toString());
         Assert.assertEquals(Integer.instance(1), zero_ten.getRest().getFirst());
         Assert.assertEquals(Integer.instance(10), zero_ten.getRest().getLast());
         Assert.assertEquals("[2, 3, 4, 5, 6, 7, 8, 9, 10]", 
-                zero_ten.getRest().getRest().getSequence().toString());
-        Assert.assertEquals("[]", ten.getRest().getSequence().toString());
-        Assert.assertEquals("[]", ten.getRest().getRest().getSequence().toString());
+                zero_ten.getRest().getRest().sequence().toString());
+        Assert.assertEquals("[]", ten.getRest().sequence().toString());
+        Assert.assertEquals("[]", ten.getRest().getRest().sequence().toString());
         
         // getSequence
-        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", zero_ten.getSequence().toString());
+        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", zero_ten.sequence().toString());
         
         // longerThan
         Assert.assertTrue(zero_ten.longerThan(10));
@@ -305,15 +305,15 @@ public class PrimitiveArrayIterableTest {
         
         // taking
         ObjectArrayIterable<Integer> zero_seven = zero_ten.take(8);
-        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.getSequence().toString());
+        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.sequence().toString());
         
         // skipping
         ObjectArrayIterable<Integer> two_seven = zero_ten.take(8).skip(2);
-        Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.getSequence().toString());
+        Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.sequence().toString());
         
         // by
         ObjectArrayIterable<Integer> zero_ten_evens = zero_ten.by(2);
-        Assert.assertEquals("[0, 2, 4, 6, 8, 10]", zero_ten_evens.getSequence().toString());
+        Assert.assertEquals("[0, 2, 4, 6, 8, 10]", zero_ten_evens.sequence().toString());
         Assert.assertEquals(6, zero_ten_evens.getSize());
         Assert.assertTrue(zero_ten_evens.longerThan(5));
         Assert.assertFalse(zero_ten_evens.longerThan(6));
@@ -323,10 +323,10 @@ public class PrimitiveArrayIterableTest {
         Assert.assertFalse(zero_ten_evens.shorterThan(6));
         Assert.assertTrue(zero_ten_evens.shorterThan(7));
         
-        Assert.assertEquals("[0, 4, 8]", zero_ten_evens.by(2).getSequence().toString());
+        Assert.assertEquals("[0, 4, 8]", zero_ten_evens.by(2).sequence().toString());
         Assert.assertEquals(3, zero_ten_evens.by(2).getSize());
         
-        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.take(5).skip(1).getSequence().toString());
+        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.take(5).skip(1).sequence().toString());
     }
     
 }

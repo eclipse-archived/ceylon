@@ -546,7 +546,7 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, reifiedGet, reifiedSet);
         }
-        return members.getSequence();
+        return members.sequence();
     }
     
     @SuppressWarnings("unchecked")
@@ -625,7 +625,7 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, qualifyingType, reifiedGet, reifiedSet);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -688,7 +688,7 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -752,7 +752,7 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })
@@ -834,7 +834,7 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -898,7 +898,7 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })
@@ -976,7 +976,7 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, reifiedType);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -1036,7 +1036,7 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, members, decl, qualifyingType, reifiedType);
         }
-        return members.getSequence();
+        return members.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })

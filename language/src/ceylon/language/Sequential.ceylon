@@ -19,7 +19,7 @@ shared interface Sequential<out Element>
     shared actual formal Element[] reversed;
     
     "This sequence."
-    shared actual default Element[] sequence => this;
+    shared actual default Element[] sequence() => this;
     
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;

@@ -1254,7 +1254,7 @@ public final class Array<Element>
     
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public Sequential<? extends Element> getSequence() {
+    public Sequential<? extends Element> sequence() {
         // ok to cast here, since we know the size must fit in an int
         int size = (int)getSize();
         java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();

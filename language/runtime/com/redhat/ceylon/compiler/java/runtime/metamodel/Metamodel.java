@@ -846,7 +846,7 @@ public class Metamodel {
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
             addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
-        return ceylonAnnotations.getSequence();
+        return ceylonAnnotations.sequence();
     }
 
     public static String getJavaMethodName(Method method) {

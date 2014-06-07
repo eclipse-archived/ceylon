@@ -27,12 +27,12 @@ shared void misc() {
     check(!x exists, "while exists");
     
     variable value s = "hello";
-    while (nonempty chars = s.sequence) { 
+    while (nonempty chars = s.sequence()) { 
         s=""; 
     }
     check(s=="", "while nonempty");
     
-    for (n->e in entries(Array(0..10).sequence)) {
+    for (n->e in entries(Array(0..10).sequence())) {
         check(n==e, "entry iteration ``n`` != ``e``");
     }
     

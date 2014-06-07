@@ -466,7 +466,7 @@ shared final class Range<Element>(first, last)
     shared actual Range<Element> coalesced => this;
     
     "Returns this range."
-    shared actual Range<Element> sequence => this;
+    shared actual Range<Element> sequence() => this;
     
 }
 

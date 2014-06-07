@@ -1168,7 +1168,7 @@ public class Util {
 
     /** 
      * Converts an Iterable to a Sequential without calling 
-     * Iterable.getSequence(). This is used for spread arguments in 
+     * Iterable.sequence(). This is used for spread arguments in 
      * tuple literals: {@code [*foo]}
      * a 
      */

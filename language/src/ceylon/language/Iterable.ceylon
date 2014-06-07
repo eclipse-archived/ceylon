@@ -179,7 +179,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream."
-    shared default Element[] sequence => [*this];
+    shared default Element[] sequence() => [*this];
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
@@ -317,7 +317,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) 
-            => map(collecting).sequence;
+            => map(collecting).sequence();
     
     "Produces a sequence containing all elements of this 
      stream that satisfy the [[given predicate|selecting]].
@@ -326,7 +326,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) 
-             => filter(selecting).sequence;
+             => filter(selecting).sequence();
     
     "Determines if there is at least one element of this 
      stream that satisfies the [[given predicate 
@@ -754,7 +754,7 @@ shared interface Iterable<out Element, out Absent=Null>
      [[cycle]]."
     see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
-        return cycle(times).sequence;
+        return cycle(times).sequence();
     }
     
 }

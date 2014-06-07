@@ -24,8 +24,8 @@ shared void strings() {
     
     check(hello.size==5, "string size 1");
     check("".size==0, "empty string size 2");
-    check(!"".sequence nonempty);
-    check("a".sequence nonempty);
+    check(!"".sequence() nonempty);
+    check("a".sequence() nonempty);
     check(!"".lastIndex exists, "empty string last index");
     check(!""[0] exists, "empty string first element exists");
     check(!(hello of Object) is Identifiable, "string is Identifiable");
@@ -167,7 +167,7 @@ shared void strings() {
         fail("string last occurrence not found");
     }
         
-    value chars = hello.sequence;
+    value chars = hello.sequence();
     if (exists char = chars[0]) {
         check(char=='h', "string characters 1");
     }
@@ -196,7 +196,7 @@ shared void strings() {
     else {
         fail("string characters nonempty");
     }
-    if (nonempty nochars = "".sequence) {
+    if (nonempty nochars = "".sequence()) {
         fail("string characters empty");
     }
     
@@ -249,12 +249,12 @@ shared void strings() {
     check("hello world".initial(11)=="hello world", "string initial 6");
     check("hello world".terminal(11)=="hello world", "string terminal 6");
     check("hello".by(2)=="hlo", "string.by");
-    check(" world".following("hello").sequence==["hello", ' ','w','o','r','l','d'], "string.following: ``" world".following("hello")``");
+    check(" world".following("hello").sequence()==["hello", ' ','w','o','r','l','d'], "string.following: ``" world".following("hello")``");
     check("hello".skip(3)=="lo", "string.skip");
     check("hello".take(2)=="he", "string.take");
     check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
     check(String("hElLo".filter((Character c) => c.uppercase)) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
-    check("what".sort(byIncreasing(Character))=="ahtw".sequence, "string.sort");
+    check("what".sort(byIncreasing(Character))=="ahtw".sequence(), "string.sort");
     
     check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
     check(max(["abc", "xyz", "foo", "bar"])=="xyz", "strings max");
@@ -277,19 +277,19 @@ shared void strings() {
     check(!"hello".split((Character c) => c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
     check("hello world".split((Character c) => c.whitespace, true).iterator().next()=="hello", "string split first 3.1");
     check("hello world".split(" ".contains, true).iterator().next()=="hello", "string split first 3.2");
-    check("hello world".split((Character c) => c==' ').sequence.size==2, "string split discarding [1]");
-    check("hello world".split((Character c) => c==' ', false).sequence.size==3, "string split including [1]");
-    check("hello world".split().sequence.size==2, "string split default");
-    check("hello world".split((Character c) => c=='l', true).sequence.size==3, "string split discarding [2]");
-    check("hello world".split("l".contains, true).sequence.size==3, "string split discarding [3]");
-    check("hello world".split((Character c) => c=='l', false).sequence.size==5, "string split including [2]");
-    check("hello world".split((Character c) => c=='l', false, false).sequence=={"he","l","","l","o wor","l","d"}.sequence, "string split including [3]");
-    check("hello world".split((Character c) => c=='l', false, true).sequence=={"he","ll","o wor", "l", "d"}.sequence, "string split including [4]");
-    check("hello world".split("l".contains, false, false).sequence=={"he","l","","l","o wor","l","d"}.sequence, "string split including [5]");
-    check("hello world".split('l'.equals, false, true).sequence=={"he","ll","o wor", "l", "d"}.sequence, "string split including [6]");
+    check("hello world".split((Character c) => c==' ').sequence().size==2, "string split discarding [1]");
+    check("hello world".split((Character c) => c==' ', false).sequence().size==3, "string split including [1]");
+    check("hello world".split().sequence().size==2, "string split default");
+    check("hello world".split((Character c) => c=='l', true).sequence().size==3, "string split discarding [2]");
+    check("hello world".split("l".contains, true).sequence().size==3, "string split discarding [3]");
+    check("hello world".split((Character c) => c=='l', false).sequence().size==5, "string split including [2]");
+    check("hello world".split((Character c) => c=='l', false, false).sequence()=={"he","l","","l","o wor","l","d"}.sequence(), "string split including [3]");
+    check("hello world".split((Character c) => c=='l', false, true).sequence()=={"he","ll","o wor", "l", "d"}.sequence(), "string split including [4]");
+    check("hello world".split("l".contains, false, false).sequence()=={"he","l","","l","o wor","l","d"}.sequence(), "string split including [5]");
+    check("hello world".split('l'.equals, false, true).sequence()=={"he","ll","o wor", "l", "d"}.sequence(), "string split including [6]");
     //With strings
-    check("hello world".split("eo".contains).sequence == "hello world".split({'e','o'}.contains).sequence, "string split chars [1]");
-    check("hello world".split("eo".contains).sequence == "hello world".split(StringBuilder().append("o").append("e").string.contains).sequence, "string split chars");
+    check("hello world".split("eo".contains).sequence() == "hello world".split({'e','o'}.contains).sequence(), "string split chars [1]");
+    check("hello world".split("eo".contains).sequence() == "hello world".split(StringBuilder().append("o").append("e").string.contains).sequence(), "string split chars");
     variable value count=0;
     for (tok in "hello world goodbye".split()) {
         count++;
