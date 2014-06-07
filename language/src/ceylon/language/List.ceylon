@@ -1,3 +1,4 @@
+import ceylon.language.meta { type }
 """Represents a collection in which every element has a 
    unique non-negative integer index.
    
@@ -76,9 +77,10 @@ shared interface List<out Element>
                 satisfies Iterator<Element> {
             variable Integer index = 0;
             shared actual Element|Finished next() {
-                if (index <= (lastIndex else -1)) {
-                    assert (is Element elem = outer.get(index++));
-                    return elem;
+                if (exists max=lastIndex, index<=max) {
+                    assert (is Element element 
+                        = outer[index++]);
+                    return element;
                 }
                 else {
                     return finished;
@@ -510,7 +512,7 @@ shared interface List<out Element>
         assert (from>=0);
         
         shared actual Element? get(Integer index) {
-            if (index<from) {
+            if (index<0) {
                 return null;
             }
             else {
@@ -519,13 +521,8 @@ shared interface List<out Element>
         }
         
         shared actual Integer? lastIndex {
-            if (exists index = outer.lastIndex, 
-                index>=from) {
-                return index-from;
-            }
-            else {
-                return null; 
-            }
+            value size = outer.size-from;
+            return size>0 then size-1;
         }
         
         segment(Integer from, Integer length) 
