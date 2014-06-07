@@ -503,6 +503,15 @@ shared interface List<out Element>
         spanFrom(Integer from) => clone()[from...];
         spanTo(Integer to) => clone()[...to];
         
+        shared actual String string {
+            if (exists lastIndex) {
+                return "{ 0, ... , ``lastIndex`` }";
+            }
+            else {
+                return "{}";
+            }
+        }
+        
     }
     
     class Rest(Integer from)
