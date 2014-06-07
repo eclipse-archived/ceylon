@@ -15,8 +15,8 @@ public final class process_ {
 
     private java.io.BufferedReader stdinReader = null;
     
-    @SuppressWarnings("unchecked")
-    private Sequential<? extends String> args = (Sequential)empty_.get_();
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Sequential<? extends String> args = (Sequential) empty_.get_();
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     public Sequential<? extends String> getArguments() {
@@ -96,36 +96,6 @@ public final class process_ {
     public void exit(@Name("code") long code) {
         System.exit(Util.toInt(code));
     }
-    
-    /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")
-    public Map<? extends String, ? extends String> getProperties() {
-        return new PropertiesMap(System.getProperties());
-    }*/
-    
-    /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")
-    public Map<? extends String, ? extends String> getNamedArguments() {
-        Properties props = new Properties();
-        Iterator<? extends String> iterator = args.getIterator();
-        java.lang.Object next;
-        while ((next = iterator.next()) instanceof String) {
-            java.lang.String arg = ((String) next).value;
-            if (arg.startsWith("-")) {
-                java.lang.String name;
-                java.lang.String value; 
-                int i = arg.indexOf('=');
-                if (i>0) {
-                    name = arg.substring(1, i);
-                    value = arg.substring(i+1);
-                }
-                else {
-                    name = arg.substring(1);
-                    value = "";
-                }
-                props.setProperty(name, value);
-            }
-        }
-        return new PropertiesMap(props);
-    }*/
     
     @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public String namedArgumentValue(@Name("name") java.lang.String name) {
