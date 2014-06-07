@@ -12,7 +12,7 @@ class Primaries() {
 
     @type:"Primaries.A" value x1 = A();
     
-    @type:"Sequence<Primaries.A>" value p2 = [ A(), A() ].sequence;
+    @type:"Sequence<Primaries.A>" value p2 = [ A(), A() ].sequence();
     
     @error value p3 = A().x;
     
@@ -109,36 +109,36 @@ class Primaries() {
     class S() extends B() satisfies G & H {}
     class T() extends Basic() satisfies G & H {}
     
-    @type:"Sequence<Primaries.B>" value p21 = [S(), B()].sequence;
-    @type:"Sequence<Primaries.B>" value p22 = [B(), S()].sequence;
-    @type:"Sequence<Primaries.S|Primaries.T>" value p23 = [S(), T()].sequence;
-    @type:"Sequence<Primaries.T|Primaries.S>" value p24 = [T(), S()].sequence;
+    @type:"Sequence<Primaries.B>" value p21 = [S(), B()].sequence();
+    @type:"Sequence<Primaries.B>" value p22 = [B(), S()].sequence();
+    @type:"Sequence<Primaries.S|Primaries.T>" value p23 = [S(), T()].sequence();
+    @type:"Sequence<Primaries.T|Primaries.S>" value p24 = [T(), S()].sequence();
     {T(), S()}*.doIt();
     @type:"Sequence<String>" value p25 = [S(), T()]*.getIt();
     B[] bs1 = [S(), B()];
     B[] bs2 = [B(), S()];
     //H[] hs = [S(), T()];
     //G[] gs = [T(), S()];
-    @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>>" value p26 = [A(),B(),"Hello",A(),[1,2,3].sequence,S()].sequence;
+    @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>>" value p26 = [A(),B(),"Hello",A(),[1,2,3].sequence(),S()].sequence();
     //Object[] stuff = [A(),B(),"Hello",[1,2,3]];
-    value objects = [A(),B(),"Hello",[1,2,3].sequence].sequence;
+    value objects = [A(),B(),"Hello",[1,2,3].sequence()].sequence();
     //Object[] things = objects;
     @type:"Null|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
     @type:"Null|String" value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
         @type:"Primaries.A|Primaries.B|String|Sequence<Integer>" value p29 = o;
         String s = o.string;
-        @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>|Float>" value p30 = [o, "foo", 3.1, A()].sequence;
+        @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>|Float>" value p30 = [o, "foo", 3.1, A()].sequence();
     }
     @type:"Sequential<String>" String[] noStrings = {};
     @type:"Empty" value none = {};
     
-    @type:"Sequential<Boolean>" value p100 = { true }.sequence;
-    @type:"Sequential<Boolean>" value p101 = { true, false }.sequence;
-    @type:"Sequential<Null|Boolean>" value p102 = { null, true, false }.sequence;
-    @type:"Sequence<Boolean>" value p100s = [ true ].sequence;
-    @type:"Sequence<Boolean>" value p101s = [ true, false ].sequence;
-    @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence;
+    @type:"Sequential<Boolean>" value p100 = { true }.sequence();
+    @type:"Sequential<Boolean>" value p101 = { true, false }.sequence();
+    @type:"Sequential<Null|Boolean>" value p102 = { null, true, false }.sequence();
+    @type:"Sequence<Boolean>" value p100s = [ true ].sequence();
+    @type:"Sequence<Boolean>" value p101s = [ true, false ].sequence();
+    @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence();
     
     object idobj satisfies G&H {}
     object obj extends Object() satisfies G&H {
@@ -149,9 +149,9 @@ class Primaries() {
         shared actual String string = "";
     }
     
-    @type:"Sequence<Basic&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence;
-    @type:"Sequence<Primaries.G&Primaries.H>" value p104 = [ obj ].sequence;
-    @type:"Sequence<Primaries.G&Primaries.H>" value p105 = [ obj, idobj ].sequence;
+    @type:"Sequence<Basic&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence();
+    @type:"Sequence<Primaries.G&Primaries.H>" value p104 = [ obj ].sequence();
+    @type:"Sequence<Primaries.G&Primaries.H>" value p105 = [ obj, idobj ].sequence();
     
     String angstroms = "\{#00E5}ngstr\{#00F6}ms";
     

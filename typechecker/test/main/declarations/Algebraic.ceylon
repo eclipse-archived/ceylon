@@ -28,7 +28,7 @@ void enumConstraint<T>(T t)
 }
 
 class EnumConstraint<T>(T* ti) given T of Float|Integer {
-    value ts = ti.sequence;
+    value ts = ti.sequence();
     shared actual String string {
         switch (ts)
         case(is Empty) { print(ts); return "empty"; }

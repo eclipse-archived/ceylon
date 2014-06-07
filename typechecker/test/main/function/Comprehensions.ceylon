@@ -17,8 +17,8 @@ void comprehensions() {
     value yyy = { *Array { *seq } };
     value xxx = { *Array (seq) };
     
-    value nulls = coalesce { for (c in "hElLo") null }.sequence;
-    value nullsAndChars = coalesce { for (c in "hElLo") c.uppercase then c else null }.sequence;
+    value nulls = coalesce { for (c in "hElLo") null }.sequence();
+    value nullsAndChars = coalesce { for (c in "hElLo") c.uppercase then c else null }.sequence();
     value nulls2 = { for (c in "hElLo") null }.coalesced;
     value nullsAndChars2 = { for (c in "hElLo") c.uppercase then c else null }.coalesced;
         
@@ -69,8 +69,8 @@ void comprehensions() {
     @error {String+} empty2 = { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
     @error [String+] empty3 = [ for (w in atLeastOneWord) for (v in words) w+v ];
     @error {String+} empty4 = { for (w in atLeastOneWord) for (v in words) w+v };
-    @error [Character+] empty5 = [ for (w in atLeastOneWord) for (c in w.sequence) c ];
-    @error {Character+} empty6 = { for (w in atLeastOneWord) for (c in w.sequence) c };
+    @error [Character+] empty5 = [ for (w in atLeastOneWord) for (c in w.sequence()) c ];
+    @error {Character+} empty6 = { for (w in atLeastOneWord) for (c in w.sequence()) c };
     
     T|N first<T,N>(Iterable<T,N> values) given N satisfies Null => values.first;
     @type:"String" value f1 = first { for (w in atLeastOneWord) w.uppercased };
@@ -80,7 +80,7 @@ void comprehensions() {
     @type:"String" value fs2 = first { "hello", *words };
     @type:"String|Null" value f3 = first { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
     @type:"String|Null" value f4 = first { for (w in atLeastOneWord) for (v in words) w+v };
-    @type:"Character|Null" value f5 = first { for (w in atLeastOneWord) for (c in w.sequence) c };
+    @type:"Character|Null" value f5 = first { for (w in atLeastOneWord) for (c in w.sequence()) c };
     @type:"String|Null" value f6 = first { for (w in words) w };
     @type:"String|Null" value fs3 = first { *words };
     

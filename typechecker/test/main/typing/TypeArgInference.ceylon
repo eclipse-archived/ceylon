@@ -57,7 +57,7 @@ class TypeArgInference() {
         return matrix.first.first;
     }
     
-    @type:"Sequence<Sequence<Integer>>" value ints = [[-1].sequence].sequence;
+    @type:"Sequence<Sequence<Integer>>" value ints = [[-1].sequence()].sequence();
     @type:"Integer" value i = corner(ints);
     @type:"Integer" value ii = corner { matrix = ints; };
     
@@ -67,18 +67,18 @@ class TypeArgInference() {
     @error:"String" method([]);
     
     T? firstElt<T>(T* args) {
-        return args.sequence.first;
+        return args.sequence().first;
     }
     T? firstElt0<T>({T*} args) {
-        return args.sequence.first;
+        return args.sequence().first;
     }
     @type:"Null|String" firstElt("hello", "world");
-    @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence);
+    @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence());
     @type:"Null|Tuple<String,String,Tuple<String,String,Empty>>" firstElt (["hello", "world"]);
     @type:"Null|String" firstElt(*["hello", "world"]);
     @type:"Null|String" firstElt0 { "hello", "world" };
-    @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence};
-    firstElt { args = "hello".sequence; @error args="world".sequence; };
+    @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence()};
+    firstElt { args = "hello".sequence(); @error args="world".sequence(); };
     @type:"Null|String" firstElt { args = ["hello","world"]; };
     @type:"Null|String" firstElt0 { args = {"hello", "world"}; };
     

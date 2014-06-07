@@ -34,13 +34,13 @@ void lazyeager() {
     @type:"Tuple<String,String,Sequential<String>>"
     value y5 = [ "hello", *iterable ];         //type [String, String*]
     @type:"Tuple<String,String,Sequential<String>>"
-    value y9 = [ "hello", *iterable.sequence ];         //type [String, String*]
+    value y9 = [ "hello", *iterable.sequence() ];         //type [String, String*]
     @type:"Sequential<String>" 
     value y6 = [ *sequence ];                  //type [String*]
     @type:"Sequential<String>" 
     value y7 = [ *iterable ];                  //type [String*]
     @type:"Sequential<String>" 
-    value y10 = [ *iterable.sequence ];                  //type [String*]
+    value y10 = [ *iterable.sequence() ];                  //type [String*]
     
     {Character*} chariter = {*"hello"};
     [Character*] charseq = [*"hello"];

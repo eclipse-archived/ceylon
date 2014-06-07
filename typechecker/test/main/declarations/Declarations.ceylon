@@ -66,7 +66,7 @@ interface Declarations {
     
     void method() {
         String hello = "hi";
-        for (c in hello.sequence) {
+        for (c in hello.sequence()) {
             if (c=='h') {
                 try {
                     @error Integer hello = 1;

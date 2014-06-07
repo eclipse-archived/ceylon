@@ -59,13 +59,13 @@ class Optional() {
     }
     
     Sequence<String> stuff = [ "foo" ];
-    Character[][] chars = stuff*.sequence;
+    Character[][] chars = stuff*.sequence();
 
     String[] nostuff = {};
-    Character[][] nochars = nostuff*.sequence;
+    Character[][] nochars = nostuff*.sequence();
     
     String? maybestuff = null;
-    Character[]? maybechars = maybestuff?.sequence;
+    Character[]? maybechars = maybestuff?.sequence();
     
     Character[] somechars = {};
     Integer scs = somechars.size;
@@ -86,9 +86,9 @@ class Optional() {
     Sequential<String>|Integer|Float|Null foobar2b = foobar2;
     
     @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
-    value xyz1 = [ foobar1, foobar2 ].sequence;
+    value xyz1 = [ foobar1, foobar2 ].sequence();
     @type:"Sequential<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
-    value xyz2 = { foobar1, foobar2 }.sequence;
+    value xyz2 = { foobar1, foobar2 }.sequence();
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it

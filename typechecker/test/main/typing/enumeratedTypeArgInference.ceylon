@@ -17,7 +17,7 @@ SmallDog|BigDog|Cat? somePet() => dogIsBetter then someDog() else Cat();
 
 class SequenceBuilder<Value>() {
     shared void append(Value val) {}
-    shared Value[] sequence => [];
+    shared Value[] sequence() => [];
 }
 
 {Value*} collectTillBreak<Value>(Value?() get) {
@@ -30,7 +30,7 @@ class SequenceBuilder<Value>() {
             break;
         }            
     }
-    return builder.sequence;
+    return builder.sequence();
 }
 
 {<SmallDog|BigDog|Cat?>*} seq3 = collectTillBreak(somePet);    
