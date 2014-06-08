@@ -92,8 +92,8 @@ shared Integer? parseInteger(
                     radix == 10 && 
                     ch in "kMGTP") {
                 // The magnitude
-                if (exists magnitude = 
-                        parseIntegerMagnitude(radix, string[ii++])) {
+                if (exists exp = parseIntegerExponent(ch)) {
+                    Integer magnitude = 10^exp;
                     if ((limit / magnitude) < result) {
                         result *= magnitude;
                         break;
@@ -152,29 +152,26 @@ Integer? computeDigitGroupingSize(Integer radix,
     return groupingSize;
 }
 
-Integer? parseIntegerMagnitude(Integer radix, Character? char) {
-    Integer? power;
-    if (exists char) {
-        if (char == 'P') {
-            power = 15;
-        } else if (char == 'T') {
-            power = 12; 
-        } else if (char == 'G') {
-            power = 9; 
-        } else if (char == 'M') {
-            power = 6;
-        } else if (char == 'k') {
-            power = 3;
-        } else {
-            power = null;
-        }
-    } else {
-        power = null;
+Integer? parseIntegerExponent(Character char) {
+    switch (char)
+    case ('P') {
+        return 15;
+    } 
+    case ('T') {
+        return 12; 
+    } 
+    case ('G') {
+        return 9; 
+    } 
+    case ('M') {
+        return 6;
+    } 
+    case ('k') {
+        return 3;
     }
-    if (exists power) {
-        return radix^power;
+    else {
+        return null;
     }
-    return null;
 }
 
 Integer aIntLower = 'a'.integer;
