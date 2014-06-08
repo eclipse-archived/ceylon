@@ -17,13 +17,13 @@ shared Float? parseFloat(String string) {
                 wholePart.startsWith("+") ||
                 wholePart.startsWith("-") 
         then wholePart.rest else wholePart;
-        if (positiveWholePart 
-            any not(Character.digit)) {
+        value nonDigit = 
+                not(or(Character.digit, '_'.equals));
+        if (positiveWholePart any nonDigit) {
             return null;
         }
         value afterWholePart = string[dot+1...];
-        value mag = afterWholePart 
-        firstIndexWhere not(Character.digit);
+        value mag = afterWholePart firstIndexWhere nonDigit;
         String fractionalPart;
         String? rest;
         if (exists mag) {
