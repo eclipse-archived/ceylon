@@ -31,7 +31,7 @@ Map
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
-identical,compose,shuffle,plus,times,sort,sequences.js,strings.js,parseInteger,parseFloat,formatInteger,parseBoolean,and,or,not
+identical,compose,shuffle,plus,times,sort,sequences.js,strings.js,and,or,not
 
 #metamodel
 Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
@@ -39,5 +39,7 @@ meta/annotations,meta/metamodel,meta/optionalAnnotation,meta/sequencedAnnotation
 meta/model/ValueModel,meta/model/ClassOrInterface,ClassOrInterface_addons.js,meta/model/ClassModel,ClassModel_addons.js,meta/model/Class,meta/model/FunctionModel,FunctionModel_addons.js,meta/model/Function,meta/model/Method,meta/model/InterfaceModel,InterfaceModel_addons.js,meta/model/Interface,meta/model/IntersectionType,meta/model/Member,Member_addons.js,meta/model/MemberClass,meta/model/MemberInterface,meta/model/Attribute,meta/model/Model,meta/model/Type,meta/model/UnionType,meta/model/Value,meta/model/nothingType,meta/model/TypeApplicationException,meta/model/InvocationException,meta/model/MutationException,meta/model/IncompatibleTypeException,meta/model/Generic,meta/model/Applicable
 meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
 annotations
-numbers.js,misc1.js,functions.js,functions2.js,process.js,functions3.js,annotations.js,JsResource.js,modules.js,appliedtypes.js,opentypes.js,metamodel.js
+numbers.js,misc1.js,functions.js,functions2.js,functions3.js,annotations.js,JsResource.js,modules.js,appliedtypes.js,opentypes.js,metamodel.js
 module,package,meta/package,meta/model/package,meta/declaration/package
+
+process.js,parseInteger,parseFloat,formatInteger,parseBoolean
