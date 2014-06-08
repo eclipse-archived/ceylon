@@ -73,5 +73,6 @@ shared void test() {
     modulesTests();
     testModelLoader();
     locals();
+    issues();
     results();
 }
