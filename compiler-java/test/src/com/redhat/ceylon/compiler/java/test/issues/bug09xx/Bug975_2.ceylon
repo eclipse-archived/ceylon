@@ -20,7 +20,7 @@
 @noanno
 Element[] bug975_2_dontSort<Element>({Element*} elements) 
     given Element satisfies Comparable<Element>
-    => elements.sequence;
+    => elements.sequence();
 @noanno
 void bug975_2_test() {
     bug975_2_dontSort({});

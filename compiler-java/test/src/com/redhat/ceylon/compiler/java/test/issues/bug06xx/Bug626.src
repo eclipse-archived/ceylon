@@ -55,8 +55,8 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -250,7 +250,7 @@ final class bug626f_ {
         final .ceylon.language.Sequential<? extends .java.lang.Object> temp = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> arg$1$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().getSequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> arg$1$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().sequence();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
             }
             returning .ceylon.language.concatenate_.<.java.lang.Object>concatenate(arg$1$reified$0, arg$1$0);

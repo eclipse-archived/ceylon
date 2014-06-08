@@ -373,7 +373,7 @@ final class variadicMethods_ {
                             }
                         };
                     }
-                }.getSequence();
+                }.sequence();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$15$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$15$0.getSize())]);
         ));
@@ -407,7 +407,7 @@ final class variadicMethods_ {
                     }
                 };
             }
-        }.getSequence()));
+        }.sequence()));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -525,7 +525,7 @@ final class comprehensions_ {
                 
                 }
             }
-        }.getSequence()));
+        }.sequence()));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
             @.java.lang.Override
@@ -569,7 +569,7 @@ final class comprehensions_ {
                 
                 }
             }
-        }.getSequence(), 1.0));
+        }.sequence(), 1.0));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
@@ -600,7 +600,7 @@ final class comprehensions_ {
                     }
                 };
             }
-        }.getSequence()));
+        }.sequence()));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
@@ -631,7 +631,7 @@ final class comprehensions_ {
                     }
                 };
             }
-        }.getSequence(), 1.0));
+        }.sequence(), 1.0));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -667,7 +667,7 @@ final class moreOverloads_ {
                         
                         }
                     }
-                }.getSequence();
+                }.sequence();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$27$0, new .java.nio.file.CopyOption[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$27$0.getSize()) + 1], .java.nio.file.StandardCopyOption.ATOMIC_MOVE);
         ));

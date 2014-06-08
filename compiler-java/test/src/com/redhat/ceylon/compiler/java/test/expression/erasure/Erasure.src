@@ -556,7 +556,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                     spread$58$sb$.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$58$element$).getLeftAndRightAttribute());
                 }
             }
-            returning spread$58$sb$.getSequence();
+            returning spread$58$sb$.sequence();
         );
         .ceylon.language.Sequential spreadInvocation = null;
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
@@ -572,7 +572,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                     spread$59$sb$.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$59$element$).leftAndRightMethod(spread$59$arg$0));
                 }
             }
-            returning spread$59$sb$.getSequence();
+            returning spread$59$sb$.sequence();
         );
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
@@ -593,7 +593,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                     ));
                 }
             }
-            returning spread$61$sb$.getSequence();
+            returning spread$61$sb$.sequence();
         );
     }
     

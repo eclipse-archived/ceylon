@@ -50,7 +50,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         foo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -81,7 +81,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         bar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -125,7 +125,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         bar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -156,7 +156,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableFoo = foo;
         mCallableFoo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -201,7 +201,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         mCallableFoo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -232,7 +232,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableBar = bar;
         mCallableBar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -277,7 +277,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         mCallableBar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -308,6 +308,6 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
     }
 }

@@ -421,10 +421,10 @@ public abstract class CompilerTest {
         // THIS IS FOR INTERNAL USE ONLY!!!
         // Can be used to do batch updating of known correct tests
         // Uncomment only when you know what you're doing!
-//        if (expectedSrc != null && compiledSrc != null && !expectedSrc.equals(compiledSrc)) {
-//            writeFile(expectedSrcFile, compiledSrc);
-//            expectedSrc = compiledSrc;
-//        }
+        if (expectedSrc != null && compiledSrc != null && !expectedSrc.equals(compiledSrc)) {
+            writeFile(expectedSrcFile, compiledSrc);
+            expectedSrc = compiledSrc;
+        }
         
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }

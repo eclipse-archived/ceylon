@@ -54,8 +54,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends T> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override

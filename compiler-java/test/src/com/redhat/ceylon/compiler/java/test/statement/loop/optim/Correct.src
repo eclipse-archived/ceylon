@@ -326,9 +326,9 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 
                 }
             }
-        }.getSequence()).segment(.ceylon.language.Integer.instance(1L), 11L)) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(array$53, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+        }.sequence()).segment(.ceylon.language.Integer.instance(1L), 11L)) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(array$53, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
             array$55 = (.ceylon.language.ArraySequence)array$53;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> array = {for (i in -1..11) i}.sequence.segment(1, 11)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> array = {for (i in -1..11) i}.sequence().segment(1, 11)"));
         long sum = 0L;
         final .ceylon.language.ArraySequence<? extends .ceylon.language.Integer> seq$59 = array$55;
         final .java.lang.Object[] array$56 = seq$59.$getArray$();
@@ -457,9 +457,9 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 
                 }
             }
-        }.getSequence()) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(iterable$77, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+        }.sequence()) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(iterable$77, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
             iterable$79 = (.ceylon.language.ArraySequence)iterable$77;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> iterable = {for (i in 0..10) i}.sequence"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> iterable = {for (i in 0..10) i}.sequence()"));
         return iterationDynamic$priv$(iterable$79);
     }
     

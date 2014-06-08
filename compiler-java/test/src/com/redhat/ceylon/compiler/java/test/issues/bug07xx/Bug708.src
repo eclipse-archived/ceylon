@@ -261,8 +261,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -758,7 +758,7 @@ final class bug708extra4_ {
                         spread$19$sb$.append((.ceylon.language.String)spread$19$element$.test());
                     }
                 }
-                returning spread$19$sb$.getSequence();
+                returning spread$19$sb$.sequence();
             )};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {

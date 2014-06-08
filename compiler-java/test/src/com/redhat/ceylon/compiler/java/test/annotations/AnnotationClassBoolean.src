@@ -227,7 +227,7 @@ final class annotationClassVariadicIterable_ {
     
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic annotationClassVariadicIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> b) {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic(b.getSequence());
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic(b.sequence());
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)

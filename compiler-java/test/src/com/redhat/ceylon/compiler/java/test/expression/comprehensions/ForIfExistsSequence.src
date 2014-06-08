@@ -50,7 +50,7 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

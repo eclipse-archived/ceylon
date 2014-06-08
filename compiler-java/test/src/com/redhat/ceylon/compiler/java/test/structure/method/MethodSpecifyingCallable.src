@@ -259,7 +259,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
     }
     
     private final .java.lang.Object oneSequencedParam4$priv$() {
@@ -329,7 +329,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
     }
     
     private final .java.lang.Object secondSequencedParam4$priv$() {

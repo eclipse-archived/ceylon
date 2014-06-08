@@ -69,7 +69,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp$7 = .ceylon.language.String.getSequence("");
+                .java.lang.Object $ceylontmp$7 = .ceylon.language.String.sequence("");
             }
             returning $ceylontmp$7 instanceof .ceylon.language.Sequence;
         );

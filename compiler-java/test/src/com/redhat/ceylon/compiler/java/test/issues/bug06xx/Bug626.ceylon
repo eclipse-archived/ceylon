@@ -29,5 +29,5 @@ void bug626f(Iterable<Iterable<Iterable<Nothing>|Destroyable>> f, Iterable<Itera
     Iterable<Iterable<Object>> i = f;
     Iterable<Iterable<Object>> i2 = f2;
     Iterable<Iterable<Object>> i3 = f3;
-    Nothing[] temp = concatenate { iterables = Bug626().sequence; };
+    Nothing[] temp = concatenate { iterables = Bug626().sequence(); };
 }

@@ -57,7 +57,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                     spread$0$sb$.append(.ceylon.language.Integer.instance(spread$0$element$.getSize()));
                 }
             }
-            returning spread$0$sb$.getSequence();
+            returning spread$0$sb$.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> intSequence = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
@@ -72,7 +72,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                     spread$1$sb$.append(spread$1$element$.getWholePart());
                 }
             }
-            returning spread$1$sb$.getSequence();
+            returning spread$1$sb$.sequence();
         );
         .ceylon.language.Sequential<? extends .ceylon.language.Character> spreadInvoke = null;
         spreadInvoke = (
@@ -88,7 +88,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                     spread$2$sb$.append(spread$2$element$.get(spread$2$arg$0));
                 }
             }
-            returning spread$2$sb$.getSequence();
+            returning spread$2$sb$.sequence();
         );
         spreadInvoke = (
             let
@@ -109,7 +109,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                     ));
                 }
             }
-            returning spread$4$sb$.getSequence();
+            returning spread$4$sb$.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
@@ -124,7 +124,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                     spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.getUppercased()));
                 }
             }
-            returning spread$5$sb$.getSequence();
+            returning spread$5$sb$.sequence();
         );
     }
     

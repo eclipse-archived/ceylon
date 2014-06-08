@@ -20,7 +20,7 @@
 @noanno
 class Bug1521Bar({String*} strings) {
     shared void test(){
-        assert(strings.sequence == ["a", "b"]);
+        assert(strings.sequence() == ["a", "b"]);
     }
 }
 

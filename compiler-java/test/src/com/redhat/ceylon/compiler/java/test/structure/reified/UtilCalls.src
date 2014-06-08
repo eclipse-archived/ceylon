@@ -59,7 +59,7 @@ public final class utilCalls_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
             
             @.java.lang.Override
@@ -184,7 +184,7 @@ public final class utilCalls_ {
                     spread$2$sb$.append(spread$2$element$.getWholePart());
                 }
             }
-            returning spread$2$sb$.getSequence();
+            returning spread$2$sb$.sequence();
         );
         .com.redhat.ceylon.compiler.java.test.structure.reified.variadicMethod_.variadicMethod(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }

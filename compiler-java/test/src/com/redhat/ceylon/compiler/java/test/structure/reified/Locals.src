@@ -2711,7 +2711,7 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends Key, ? extends Item>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.java.lang.Object, Item>(.ceylon.language.Object.$TypeDescriptor$, $reified$Item, this);
-        this.entries = entry.getSequence();
+        this.entries = entry.sequence();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
@@ -2816,8 +2816,8 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -3254,8 +3254,8 @@ public final class MyIterable$impl<Element, Absent> {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> getSequence() {
-                return $ceylon$language$Iterable$this$.getSequence();
+            public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> sequence() {
+                return $ceylon$language$Iterable$this$.sequence();
             }
             
             @.java.lang.Override

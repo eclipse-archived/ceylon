@@ -20,7 +20,7 @@ final class bug568_ {
                     spread$1$sb$.append(.ceylon.language.String.instance(spread$1$element$.toString()));
                 }
             }
-            returning spread$1$sb$.getSequence();
+            returning spread$1$sb$.sequence();
         ).iterator();
         loop_0: while (!((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();

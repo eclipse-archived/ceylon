@@ -202,7 +202,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$27$sb$.getSequence();
+            returning spread$27$sb$.sequence();
         );
         (
             let
@@ -243,7 +243,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$35$sb$.getSequence();
+            returning spread$35$sb$.sequence();
         );
         (
             let
@@ -283,7 +283,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$43$sb$.getSequence();
+            returning spread$43$sb$.sequence();
         );
         (
             let
@@ -323,7 +323,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$50$sb$.getSequence();
+            returning spread$50$sb$.sequence();
         );
         (
             let
@@ -363,7 +363,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$57$sb$.getSequence();
+            returning spread$57$sb$.sequence();
         );
         (
             let
@@ -403,7 +403,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$64$sb$.getSequence();
+            returning spread$64$sb$.sequence();
         );
         (
             let
@@ -446,7 +446,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$72$sb$.getSequence();
+            returning spread$72$sb$.sequence();
         );
         (
             let
@@ -489,7 +489,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$80$sb$.getSequence();
+            returning spread$80$sb$.sequence();
         );
         (
             let
@@ -533,7 +533,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$88$sb$.getSequence();
+            returning spread$88$sb$.sequence();
         );
         (
             let
@@ -577,7 +577,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$96$sb$.getSequence();
+            returning spread$96$sb$.sequence();
         );
     }
     
@@ -606,8 +606,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final void spreadIterator$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {
-        m4(iter.getSequence());
-        m4(nonEmptyIter.getSequence());
+        m4(iter.sequence());
+        m4(nonEmptyIter.sequence());
     }
     
     private final void spreadIteratorWithSpreadOp$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {
@@ -617,7 +617,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$105$iterable$ = sas;
                 .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object> spread$105$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$105$arg$0 = iter.getSequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$105$arg$0 = iter.sequence();
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iterable$106 = spread$105$iterable$;
                 final boolean isArray$107 = iterable$106 instanceof .ceylon.language.Array;
                 final boolean isArraySequence$108 = iterable$106 instanceof .ceylon.language.ArraySequence;
@@ -649,14 +649,14 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$105$sb$.getSequence();
+            returning spread$105$sb$.sequence();
         );
         (
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$112$iterable$ = sas;
                 .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object> spread$112$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$112$arg$0 = nonEmptyIter.getSequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$112$arg$0 = nonEmptyIter.sequence();
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iterable$113 = spread$112$iterable$;
                 final boolean isArray$114 = iterable$113 instanceof .ceylon.language.Array;
                 final boolean isArraySequence$115 = iterable$113 instanceof .ceylon.language.ArraySequence;
@@ -688,7 +688,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                     ));
                 }
             }
-            returning spread$112$sb$.getSequence();
+            returning spread$112$sb$.sequence();
         );
     }
     

@@ -52,6 +52,6 @@ final class forIfIsBooleanConditions_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
 }

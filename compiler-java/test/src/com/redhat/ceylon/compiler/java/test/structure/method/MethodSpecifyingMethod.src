@@ -152,7 +152,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
     }
     
     public static void main(.java.lang.String[] args) {

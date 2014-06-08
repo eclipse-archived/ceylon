@@ -18,7 +18,7 @@ final class spread_ {
                     spread$0$sb$.append(.ceylon.language.Integer.instance(spread$0$element$.getSize()));
                 }
             }
-            returning spread$0$sb$.getSequence();
+            returning spread$0$sb$.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
             let
@@ -34,7 +34,7 @@ final class spread_ {
                     spread$1$sb$.append(.ceylon.language.String.instance(spread$1$element$.replace(spread$1$arg$0, spread$1$arg$1)));
                 }
             }
-            returning spread$1$sb$.getSequence();
+            returning spread$1$sb$.sequence();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq2 = seq;
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini3 = (
@@ -49,7 +49,7 @@ final class spread_ {
                     spread$2$sb$.append(.ceylon.language.Integer.instance(spread$2$element$.getSize()));
                 }
             }
-            returning spread$2$sb$.getSequence();
+            returning spread$2$sb$.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> ini4 = (
             let
@@ -65,7 +65,7 @@ final class spread_ {
                     spread$3$sb$.append(.ceylon.language.String.instance(spread$3$element$.replace(spread$3$arg$0, spread$3$arg$1)));
                 }
             }
-            returning spread$3$sb$.getSequence();
+            returning spread$3$sb$.sequence();
         );
         final .ceylon.language.List<? extends .ceylon.language.String> seq3 = seq;
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini5 = (
@@ -80,7 +80,7 @@ final class spread_ {
                     spread$4$sb$.append(.ceylon.language.Integer.instance(spread$4$element$.getSize()));
                 }
             }
-            returning spread$4$sb$.getSequence();
+            returning spread$4$sb$.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> ini6 = (
             let
@@ -96,7 +96,7 @@ final class spread_ {
                     spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.replace(spread$5$arg$0, spread$5$arg$1)));
                 }
             }
-            returning spread$5$sb$.getSequence();
+            returning spread$5$sb$.sequence();
         );
     }
 }

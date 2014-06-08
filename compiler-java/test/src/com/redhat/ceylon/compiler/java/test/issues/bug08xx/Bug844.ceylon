@@ -72,7 +72,7 @@ shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest
 
     shared actual Element[] span(Integer from, Integer end) {
         return from<=end then this[from:end-from+1] 
-                else this[end:from-end+1].reversed.sequence;
+                else this[end:from-end+1].reversed.sequence();
     }
 
     shared actual Element[] spanFrom(Integer from) { return nothing; }

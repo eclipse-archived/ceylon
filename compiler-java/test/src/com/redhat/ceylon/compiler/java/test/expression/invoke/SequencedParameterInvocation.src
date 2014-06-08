@@ -122,7 +122,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         m3$priv$("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -166,7 +166,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence());
+        }.sequence());
         m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -210,7 +210,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence(), .ceylon.language.Integer.instance(1L)));
+        }.sequence(), .ceylon.language.Integer.instance(1L)));
         m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -254,7 +254,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence(), .ceylon.language.Integer.instance(1L))));
+        }.sequence(), .ceylon.language.Integer.instance(1L))));
         m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -298,7 +298,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        }.sequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -342,7 +342,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
+        }.sequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
         m2$priv$("foo", .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{
                 this,
                 this,

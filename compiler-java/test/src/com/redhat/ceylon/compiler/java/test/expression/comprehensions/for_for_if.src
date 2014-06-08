@@ -75,7 +75,7 @@ final class forForIf_ {
                         }
                     };
                 }
-            }.getSequence()};
+            }.sequence()};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;

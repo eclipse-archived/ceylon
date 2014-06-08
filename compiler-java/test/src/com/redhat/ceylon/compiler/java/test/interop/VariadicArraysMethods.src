@@ -31,7 +31,7 @@ final class variadicArraysMethods_ {
         java.variadicObjectArray((
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$0$0 = objectArray.getSequence();
+                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$0$0 = objectArray.sequence();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$0$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())][]);
         ));

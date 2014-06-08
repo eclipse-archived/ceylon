@@ -548,7 +548,7 @@ class MapTest<Key, Item>(<Key->Item>* entry)
         satisfies MapTestBase<Key, Item>
         given Key satisfies Object
         given Item satisfies Object {
-    shared actual Entry<Key, Item>[] entries = entry.sequence;
+    shared actual Entry<Key, Item>[] entries = entry.sequence();
     shared actual Integer size { return entries.size; }
     shared actual Boolean empty { return entries.empty; }
     shared actual MapTest<Key, Item> clone() { return this; }

@@ -58,7 +58,7 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

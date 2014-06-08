@@ -133,7 +133,7 @@ final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon
     private static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> $annotationSequence$(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$[] $array$) {
         final .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> $sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$);
         for (.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ $element$ : $array$) $sb$.append(new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam($element$));
-        return $sb$.getSequence();
+        return $sb$.sequence();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(

@@ -58,7 +58,7 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

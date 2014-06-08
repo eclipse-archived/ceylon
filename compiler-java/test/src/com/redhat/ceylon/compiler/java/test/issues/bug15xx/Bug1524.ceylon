@@ -29,6 +29,6 @@ shared void bug1524() {
     variable Integer i = 0;
     value it = { i++, i++, i++ };
     assert(i == 0);
-    assert(it.sequence == [ 0, 1, 2 ]);
-    assert(it.sequence == [ 3, 4, 5 ]);
+    assert(it.sequence() == [ 0, 1, 2 ]);
+    assert(it.sequence() == [ 3, 4, 5 ]);
 }

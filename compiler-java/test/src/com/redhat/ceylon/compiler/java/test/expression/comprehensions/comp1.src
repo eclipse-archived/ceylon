@@ -38,7 +38,7 @@ final class comp1_ {
                         }
                     };
                 }
-            }.getSequence()};
+            }.sequence()};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;

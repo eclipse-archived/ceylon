@@ -121,7 +121,7 @@ final class tupleTypeTest_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

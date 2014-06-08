@@ -29,7 +29,7 @@
             ko = [element, *ko];
         }
     }
-    return [ok.sequence, ko.sequence];
+    return [ok.sequence(), ko.sequence()];
 }
 
 @noanno

@@ -87,8 +87,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> getSequence() {
-        return $ceylon$language$Sequence$this$.getSequence();
+    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> getKeys() {
+        return $ceylon$language$Sequence$this$.getKeys();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> sequence() {
+        return $ceylon$language$Sequence$this$.sequence();
     }
     
     @.java.lang.Override
@@ -408,11 +413,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this$.getKeys();
-    }
-    
-    @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.definesEvery(keys);
     }
@@ -504,7 +504,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
             {
                 .ceylon.language.Sequential<? extends Element> $ceylontmp$7 = from.compare(end) != .ceylon.language.larger_.get_() ? (.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).segment(from, end.minus(from).plus(.ceylon.language.Integer.instance(1L)).longValue()) : null;
             }
-            returning $ceylontmp$7 != null ? $ceylontmp$7 : ((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).segment(end, from.minus(end).plus(.ceylon.language.Integer.instance(1L)).longValue())).getReversed().getSequence();
+            returning $ceylontmp$7 != null ? $ceylontmp$7 : ((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).segment(end, from.minus(end).plus(.ceylon.language.Integer.instance(1L)).longValue())).getReversed().sequence();
         );
     }
     

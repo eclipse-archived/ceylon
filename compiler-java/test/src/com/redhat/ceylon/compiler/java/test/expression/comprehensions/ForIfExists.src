@@ -50,7 +50,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
@@ -98,7 +98,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

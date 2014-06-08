@@ -35,8 +35,13 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> getSequence() {
-        return $ceylon$language$Sequence$this$.getSequence();
+    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> getKeys() {
+        return $ceylon$language$Sequence$this$.getKeys();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> sequence() {
+        return $ceylon$language$Sequence$this$.sequence();
     }
     
     @.java.lang.Override
@@ -343,11 +348,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this$;
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this$.getKeys();
     }
     
     @.java.lang.Override

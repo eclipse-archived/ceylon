@@ -47,7 +47,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     

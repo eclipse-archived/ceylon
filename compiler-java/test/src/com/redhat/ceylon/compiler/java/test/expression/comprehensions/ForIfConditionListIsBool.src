@@ -52,7 +52,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> synthetic$priv$(final .ceylon.language.Sequence xs) {
@@ -102,7 +102,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -54,6 +54,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Integer> getKeys() {
+        return $ceylon$language$List$this$.getKeys();
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
         return (.ceylon.language.Sequence)$ceylon$language$List$this$.withLeading($reified$Other, element);
     }
@@ -191,8 +196,8 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends X> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends X> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -335,11 +340,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends X> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this$;
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this$.getKeys();
     }
     
     @.java.lang.Override

@@ -22,8 +22,8 @@ final class bug608_ {
             }
             returning .ceylon.language.String.split(arg$0$callable$, arg$0$0, arg$0$1, arg$0$2);
         );
-        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));
-        builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));
+        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.sequence()));
+        builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.sequence()));
     }
     
     public static void main(.java.lang.String[] args) {

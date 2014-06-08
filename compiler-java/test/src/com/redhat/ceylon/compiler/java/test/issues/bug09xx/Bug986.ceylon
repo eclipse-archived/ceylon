@@ -22,7 +22,7 @@
 shared void bug986() {
     value values = { 100, 110, 120 };
     value funcs = { for (v in values) ()=>v };
-    assert({100, 110, 120}.sequence == { for (f in funcs) f() }.sequence);
+    assert({100, 110, 120}.sequence() == { for (f in funcs) f() }.sequence());
     ifCaptures();
     nestedIfCaptures();
     nestedForCaptures();
@@ -32,19 +32,19 @@ shared void bug986() {
 shared void ifCaptures() {
     value values = { 100, 110, 120, null };
     value funcs = { for (v in values) if (exists w=v) ()=>w };
-    assert({100, 110, 120}.sequence == { for (f in funcs) f() }.sequence);
+    assert({100, 110, 120}.sequence() == { for (f in funcs) f() }.sequence());
 }
 
 @noanno
 shared void nestedIfCaptures() {
     value values = { 100, 110, 120, null, "a" };
     value funcs = { for (v in values) if (exists v2=v) if(is Integer v3 = v2) ()=>v2 };
-    assert({100, 110, 120}.sequence == { for (f in funcs) f() }.sequence);
+    assert({100, 110, 120}.sequence() == { for (f in funcs) f() }.sequence());
 }
 
 @noanno
 shared void nestedForCaptures() {
-    value values = { {100}.sequence, {110}.sequence, {120}.sequence };
+    value values = { {100}.sequence(), {110}.sequence(), {120}.sequence() };
     value funcs = { for (v in values) for (v2 in v) ()=>v };
-    assert({{100}.sequence, {110}.sequence, {120}.sequence}.sequence == { for (f in funcs) f() }.sequence);
+    assert({{100}.sequence(), {110}.sequence(), {120}.sequence()}.sequence() == { for (f in funcs) f() }.sequence());
 }

@@ -19,7 +19,7 @@ final class bug586_ {
                     spread$0$sb$.append(.ceylon.language.String.instance(spread$0$element$.toString()));
                 }
             }
-            returning spread$0$sb$.getSequence();
+            returning spread$0$sb$.sequence();
         ).getFirst();
     }
     

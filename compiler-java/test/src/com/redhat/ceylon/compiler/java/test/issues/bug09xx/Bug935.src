@@ -36,8 +36,8 @@ final class bug_935_collectMatches_ {
             }
         }
         return new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>, .ceylon.language.Tuple<.ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends Element>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$Element)), new .java.lang.Object[]{
-                ((.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>)(.ceylon.language.Sequential)ok.ref).getSequence(),
-                ko.ref.getSequence()});
+                ((.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>)(.ceylon.language.Sequential)ok.ref).sequence(),
+                ko.ref.sequence()});
     }
 }
 final class bug_935_test_ {

@@ -24,5 +24,5 @@ shared Iterable<T> filter<T>(Iterable<T> src, Boolean test(T t)){
             builder = [t, *builder];
         }
     }
-    return builder.sequence;
+    return builder.sequence();
 }

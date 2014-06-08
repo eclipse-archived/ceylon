@@ -62,18 +62,18 @@ object bug1589_myNotempty satisfies {String+} {
 
 void bug1589() {
     // sanity check
-    assert (bug1589_myNotempty.sequence == bug1589_notempty.sequence);
-    assert (bug1589_myEmpty.sequence == empty.sequence);
+    assert (bug1589_myNotempty.sequence() == bug1589_notempty.sequence());
+    assert (bug1589_myEmpty.sequence() == empty.sequence());
     // tests
-    assert (bug1589_spreadNotempty.sequence == bug1589_notempty.sequence);
-    assert (bug1589_spreadWrappedNotempty.sequence == bug1589_notempty.sequence);
-    assert (bug1589_spreadEmpty.sequence == empty.sequence);
-    assert (bug1589_spreadWrappedEmpty.sequence == empty.sequence);
-    assert (bug1589_spreadMyEmpty.sequence == bug1589_myEmpty.sequence);
-    assert (bug1589_spreadWrappedMyEmpty.sequence == bug1589_myEmpty.sequence);
-    assert (bug1589_wrap4.sequence == bug1589_myEmpty.sequence);
-    assert (bug1589_spreadNotemptyPlus.sequence == bug1589_notempty.sequence);
-    assert (bug1589_spreadWrappedNotemptyPlus.sequence == bug1589_myNotempty.sequence);
-    assert (bug1589_spreadMyNotemptyPlus.sequence == bug1589_notempty.sequence);
-    assert (bug1589_spreadWrappedMyNotemptyPlus.sequence == bug1589_myNotempty.sequence);
+    assert (bug1589_spreadNotempty.sequence() == bug1589_notempty.sequence());
+    assert (bug1589_spreadWrappedNotempty.sequence() == bug1589_notempty.sequence());
+    assert (bug1589_spreadEmpty.sequence() == empty.sequence());
+    assert (bug1589_spreadWrappedEmpty.sequence() == empty.sequence());
+    assert (bug1589_spreadMyEmpty.sequence() == bug1589_myEmpty.sequence());
+    assert (bug1589_spreadWrappedMyEmpty.sequence() == bug1589_myEmpty.sequence());
+    assert (bug1589_wrap4.sequence() == bug1589_myEmpty.sequence());
+    assert (bug1589_spreadNotemptyPlus.sequence() == bug1589_notempty.sequence());
+    assert (bug1589_spreadWrappedNotemptyPlus.sequence() == bug1589_myNotempty.sequence());
+    assert (bug1589_spreadMyNotemptyPlus.sequence() == bug1589_notempty.sequence());
+    assert (bug1589_spreadWrappedMyNotemptyPlus.sequence() == bug1589_myNotempty.sequence());
 }

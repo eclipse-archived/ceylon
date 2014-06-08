@@ -48,7 +48,7 @@ void segmentOpIterationOptimizationCorrect() {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
-        return unoptimized.sequence;
+        return unoptimized.sequence();
     }
     
     checkEq([0, 3, 6, 9], unoptimizedSegmentWithBy(0, 10, 3), "(0, 10, 3)");
@@ -101,7 +101,7 @@ void segmentOpIterationOptimizationCorrect() {
             optimized.append(i);
         } 
         
-        check(unoptimized.sequence == optimized.sequence, 
+        check(unoptimized.sequence() == optimized.sequence(), 
             "Incorrect optimization of `for (i in `` start ``:`` length ``) { ... }`");
     }
     
@@ -138,7 +138,7 @@ void segmentOpIterationOptimizationCorrect() {
             optimized.append(i);
         }
         
-        check(unoptimized.sequence == optimized.sequence, 
+        check(unoptimized.sequence() == optimized.sequence(), 
             "Incorrect optimization of `for (i in (`` start ``:`` length``).by(`` by ``)) { ... }`");
     }
         

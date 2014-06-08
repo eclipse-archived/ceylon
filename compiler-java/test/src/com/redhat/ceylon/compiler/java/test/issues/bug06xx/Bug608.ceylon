@@ -26,6 +26,6 @@ void bug608() {
     b.command(*args);
 
     value commandWithArgs = "".split { discardSeparators=true; };
-    value builder = ProcessBuilder(*commandWithArgs.sequence);
-    builder.command(*commandWithArgs.sequence);
+    value builder = ProcessBuilder(*commandWithArgs.sequence());
+    builder.command(*commandWithArgs.sequence());
 }

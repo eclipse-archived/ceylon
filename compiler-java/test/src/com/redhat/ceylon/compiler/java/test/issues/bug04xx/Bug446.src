@@ -36,6 +36,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends T> getRest() {
+        return $ceylon$language$List$this$.getRest();
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -43,6 +48,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> iterator() {
         return $ceylon$language$List$this$.iterator();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> getReversed() {
+        return $ceylon$language$List$this$.getReversed();
     }
     
     @.java.lang.Override
@@ -58,6 +68,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public T getLast() {
         return (T)$ceylon$language$List$this$.getLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Integer> getKeys() {
+        return $ceylon$language$List$this$.getKeys();
     }
     
     @.java.lang.Override
@@ -193,8 +208,8 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> getSequence() {
-        return $ceylon$language$Iterable$this$.getSequence();
+    public .ceylon.language.Sequential<? extends T> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -337,11 +352,6 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends T> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this$;
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this$.getKeys();
     }
     
     @.java.lang.Override

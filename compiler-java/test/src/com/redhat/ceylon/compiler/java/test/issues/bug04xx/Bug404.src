@@ -46,7 +46,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                             spread$1$sb$.append(.ceylon.language.String.instance(spread$1$element$.getUppercased()));
                         }
                     }
-                    returning spread$1$sb$.getSequence();
+                    returning spread$1$sb$.sequence();
                 );
             }
             returning $ceylontmp$2 instanceof .ceylon.language.Sequence;
@@ -67,7 +67,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                             spread$3$sb$.append(.ceylon.language.String.instance(spread$3$element$.getUppercased()));
                         }
                     }
-                    returning spread$3$sb$.getSequence();
+                    returning spread$3$sb$.sequence();
                 );
             }
             returning $ceylontmp$4 instanceof .ceylon.language.Sequence;
@@ -84,7 +84,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.getUppercased()));
                 }
             }
-            returning spread$5$sb$.getSequence();
+            returning spread$5$sb$.sequence();
         );
     }
     

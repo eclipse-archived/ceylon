@@ -152,7 +152,7 @@ final class emptiness_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyCompSeq = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -183,7 +183,7 @@ final class emptiness_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
         (
             let
             {
@@ -520,6 +520,6 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-        }.getSequence();
+        }.sequence();
     }
 }

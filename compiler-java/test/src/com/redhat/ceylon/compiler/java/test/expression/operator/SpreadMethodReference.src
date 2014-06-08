@@ -23,7 +23,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
                             spread$1$sb$.append(spread$1$element$.initial($ceylontmp$length));
                         }
                     }
-                    returning spread$1$sb$.getSequence();
+                    returning spread$1$sb$.sequence();
                 );
             }
         };
