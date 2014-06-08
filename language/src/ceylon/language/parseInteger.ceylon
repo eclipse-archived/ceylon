@@ -1,34 +1,41 @@
 Integer minRadix = 2;
 Integer maxRadix = 36;
 
-"The `Integer` value of the given string representation 
- of an integer, or `null` if the string does not represent 
- an integer or if the mathematical integer it represents 
- is too large in magnitude to be represented by an 
- `Integer`.
+"The [[Integer]] value of the given 
+ [[string representation|string]] of an integer value in the 
+ base given by [[radix]], or `null` if the string does not 
+ represent an integer in that base, or if the mathematical 
+ integer it represents is too large in magnitude to be 
+ represented by an instance of the class `Integer`.
  
  The syntax accepted by this function is the same as the 
  syntax for an `Integer` literal in the Ceylon language 
  except that it may optionally begin with a sign 
  character (`+` or `-`).
  
- A radix can be given in input to specify what is the base
- to take in consideration for the parsing. radix has to be
- between `minRadix` and `maxRadix` included.
- The list of available digits starts from `0` to `9` followed
- by `a` to `z`.
- When parsing in a specific base, the first `radix` digits
- from the available digits list can be used.
- This function is not case sensitive; `a` and `A` both
- correspond to the `a` digit which decimal value is `10`.
-  
- `_` character can be used to separate groups of digits
- for bases 2, 10 and 16 as for `Integer` literal in the
- Ceylon language. For any other bases, no grouping is
+ The given `radix` specifies the base of the string 
+ representation. The list of available digits starts from 
+ `0` to `9`, followed by `a` to `z`. When parsing in a 
+ specific base, the first `radix` digits from the available 
+ digits list is used. This function is not case sensitive; 
+ `a` and `A` both correspond to the digit `a` whose decimal 
+ value is `10`.
+ 
+ The `_` character may be used to separate groups of digits
+ for bases 2, 10, and 16, as for `Integer` literals in the
+ Ceylon language. For any other base, no grouping is
  supported."
 throws (`class AssertionError`, 
-        "if `radix` is not between `minRadix` and `maxRadix`")
-shared Integer? parseInteger(String string, Integer radix = 10) {
+        "if [[radix]] is not between [[minRadix]] and 
+         [[maxRadix]]")
+see (`function formatInteger`,
+     `function parseFloat`)
+shared Integer? parseInteger(
+            "The string representation to parse."
+            String string,
+            "The base, between [[minRadix]] and [[maxRadix]] 
+             inclusive."
+            Integer radix = 10) {
     assert (radix >= minRadix, radix <= maxRadix); 
     variable Integer ii = 0;
     Integer max = runtime.minIntegerValue / radix;
