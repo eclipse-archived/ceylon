@@ -56,7 +56,7 @@ shared Float? parseFloat(String string) {
             if (em==0) {
                 return numerator.float;
             }
-            else if (em<10) {
+            else if (em<maximimIntegerExponent) {
                 value scale = 10^em;
                 if (exponent<0) {
                     return numerator.float / scale;
@@ -75,6 +75,11 @@ shared Float? parseFloat(String string) {
     }
     return null;
 }
+
+//TODO: replace with a native implementation
+Integer maximimIntegerExponent 
+        = smallest(runtime.maxIntegerValue.string.size,
+                   runtime.minIntegerValue.string.size-1);
 
 Integer? parseFloatExponent(String string) {
     switch (string)
