@@ -93,7 +93,7 @@ shared Integer? parseInteger(
                     ch in "kMGTP") {
                 // The magnitude
                 if (exists magnitude = 
-                        computeMagnitude(radix, string[ii++])) {
+                        parseIntegerMagnitude(radix, string[ii++])) {
                     if ((limit / magnitude) < result) {
                         result *= magnitude;
                         break;
@@ -152,7 +152,7 @@ Integer? computeDigitGroupingSize(Integer radix,
     return groupingSize;
 }
 
-Integer? computeMagnitude(Integer radix, Character? char) {
+Integer? parseIntegerMagnitude(Integer radix, Character? char) {
     Integer? power;
     if (exists char) {
         if (char == 'P') {

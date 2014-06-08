@@ -167,6 +167,8 @@ public final class Integer
                     " cannot be represented as an Integer");
         } else if (power == 0L) {
             return 1L;
+        } else if (power == 1L) {
+            return value;
         }
         if (power >= POWER_BY_SQUARING_BREAKEVEN) {
             return powerBySquaring(value, power);

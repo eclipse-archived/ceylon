@@ -421,8 +421,6 @@
                 <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
-                <exclude name="ceylon/language/parseFloat.ceylon"/>
-                <include name="ceylon/language/parseFloat_.java"/>
                 <exclude name="ceylon/language/infinity.ceylon"/>
                 <include name="ceylon/language/infinity_.java"/>
                 <exclude name="ceylon/language/identityHash.ceylon"/>
@@ -437,10 +435,6 @@
                 <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
-                <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
-                <include name="ceylon/language/SequenceBuilder.java"/>
-                <exclude name="ceylon/language/SequenceAppender.ceylon"/>
-                <include name="ceylon/language/SequenceAppender.java"/>
                 <exclude name="ceylon/language/system.ceylon"/>
                 <include name="ceylon/language/system_.java"/>
             	<exclude name="ceylon/language/printStackTrace.ceylon"/>

@@ -194,9 +194,6 @@ JSNum$proto.neighbour=function(offset) {
 atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','magnitude']};});
 
-function $parseFloat(s) { return Float(parseFloat(s)); }
-$parseFloat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Float}]},$ps:[{$nm:'string',$t:{t:String$}}],d:['$','parseFloat']};}
-
 atr$(JSNum$proto, 'undefined', function(){ return isNaN(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
 atr$(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
@@ -215,4 +212,3 @@ ex$.$prop$getInfinity={get:getInfinity,$crtmm$:function(){return{mod:$CCMM$,$t:{
 ex$.Integer=Integer;
 ex$.Float=Float;
 ex$.getInfinity=getInfinity;
-ex$.parseFloat=$parseFloat;
