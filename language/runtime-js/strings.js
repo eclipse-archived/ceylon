@@ -390,7 +390,7 @@ atr$(String$proto, 'last', function(){ return this.size>0?this.$_get(this.size.p
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','last']}});
 atr$(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
-},undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['$','Category','$at','keys']}});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['$','Correspondence','$at','keys']}});
 String$proto.join = function(objects) {
     var it = objects.iterator();
     var obj = it.next();
