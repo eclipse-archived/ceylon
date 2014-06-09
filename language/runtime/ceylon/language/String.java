@@ -344,6 +344,7 @@ public final class String
     }
 
     @Override
+    @Transient
     public Sequential<? extends ceylon.language.Integer> getKeys() {
         return getKeys(value);
     }
