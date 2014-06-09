@@ -271,9 +271,9 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
-        for (e in this) {
-            if (selecting(e)) {
-                return e;
+        for (elem in this) {
+            if (selecting(elem)) {
+                return elem;
             }
         }
         return null;
@@ -286,9 +286,9 @@ shared interface Iterable<out Element, out Absent=Null>
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
         variable Element? last = null;
-        for (e in this) {
-            if (selecting(e)) {
-                last = e;
+        for (elem in this) {
+            if (selecting(elem)) {
+                last = elem;
             }
         }
         return last;
