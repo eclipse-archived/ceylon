@@ -71,6 +71,7 @@
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
         <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
+        <pathelement path="${json.lib}" />
     </path>
 
     <path id="test.build.classpath">
@@ -170,6 +171,7 @@
         <copy file="${commons-codec.lib}" tofile="${build.dist.repo}/${commons-codec.repo}"/>
         <copy file="${slf4j-api.lib}" tofile="${build.dist.repo}/${slf4j-api.repo}"/>
         <copy file="${slf4j-simple.lib}" tofile="${build.dist.repo}/${slf4j-simple.repo}"/>
+        <copy file="${json.lib}" tofile="${build.dist.repo}/${json.repo}"/>
     </target>
 
     <!-- Repository targets -->
