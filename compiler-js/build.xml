@@ -184,9 +184,6 @@
 
     <target name="dist" depends="build"
             description="Create Ceylon JS compiler distribution">
-        <copy overwrite="true"
-              file="${json.lib}"
-              tofile="${build.dist.repo}/${json.repo}"/>
     </target>
 
     <target name="publish"
