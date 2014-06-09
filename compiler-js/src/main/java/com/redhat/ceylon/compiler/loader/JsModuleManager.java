@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.loader;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,10 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import net.minidev.json.JSONValue;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.impl.JSUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
@@ -189,29 +186,21 @@ public class JsModuleManager extends ModuleManager {
         return;
     }
 
-    /** Find the metamodel declaration in a js file, parse it as a Map and return it. */
-    @SuppressWarnings("unchecked")
+    /** Read the metamodel declaration from a js file, check it's the right version and return the model as a Map. */
     public static Map<String,Object> loadJsonModel(File jsFile) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
-            String line = reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("var $CCMM$=")) && line.endsWith("};")) {
-                    line = line.substring(line.indexOf("{"), line.length()-1);
-                    Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
-                    if (!model.containsKey("$mod-bin")) {
-                        throw new CeylonRunJsException("The JavaScript module " + jsFile +
-                                " is not compatible with the current version of ceylon-js");
-                    } else if (!model.get("$mod-bin").toString().equals(BIN_VERSION)) {
-                        throw new CompilerErrorException(String.format("This Ceylon-JS module has binary version %s is incompatible with the compiler version %s",
-                                model.get("$mod-bin"), BIN_VERSION));
-                    }
-                    return model;
-                } else if (line.startsWith("var $METAMODEL$=") && line.endsWith("};")) {
-                    throw new CompilerErrorException(String.format("This Ceylon-JS module has an incompatible binary version with compiler version %s",
-                            BIN_VERSION));
-                }
+        try {
+            Map<String,Object> model = JSUtils.readJsonModel(jsFile);
+            if (model == null) {
+                throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
             }
-            throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
+            if (!model.containsKey("$mod-bin")) {
+                throw new CeylonRunJsException("The JavaScript module " + jsFile +
+                        " is not compatible with the current version of ceylon-js");
+            } else if (!model.get("$mod-bin").toString().equals(BIN_VERSION)) {
+                throw new CompilerErrorException(String.format("This Ceylon-JS module has binary version %s is incompatible with the compiler version %s",
+                        model.get("$mod-bin"), BIN_VERSION));
+            }
+            return model;
         } catch (IOException ex) {
             throw new CompilerErrorException("Error loading model from " + jsFile);
         }
