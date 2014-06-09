@@ -1963,7 +1963,7 @@ case (hexadecimal) {
             not be declared using the keyword <literal>function</literal>.</para>
             
             <para>A toplevel function may not be forward-declared. A method of an interface
-            may not be forward-declared. A method annotated <literal>default<literal> may 
+            may not be forward-declared. A method annotated <literal>default</literal> may 
             not be forward-declared.</para>
             
             <para>If a <literal>shared</literal> method is forward-declared, its 
@@ -2479,7 +2479,7 @@ print(greeting);</programlisting>
         
             <para>A toplevel value may not be forward-declared. An attribute of an 
             interface may not be forward-declared. An attribute annotated 
-            <literal>default<literal> may not be forward-declared.</para>
+            <literal>default</literal> may not be forward-declared.</para>
             
             <para>A forward-declared getter may not have a setter.</para>
             
