@@ -1687,6 +1687,8 @@ public class StatementTransformer extends AbstractTransformer {
     
     private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt, 
             Tree.Term baseIterable, Tree.Term step) {
+        return null;
+        /*
         if (isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationStatic)) {
             return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
                     "optimization explicitly disabled by @disableOptimization");
@@ -1700,6 +1702,7 @@ public class StatementTransformer extends AbstractTransformer {
         // it's an array sequence
         return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
                 typeFact().getIteratedType(iterableType));
+                */
     }
     
     private ForStatementTransformation tupleIteration(Tree.ForStatement stmt, 
@@ -2420,7 +2423,7 @@ public class StatementTransformer extends AbstractTransformer {
         // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
         // TODO Need to use naming.Infix for the hidden members of Array
         boolean optForArray = allowArrayOpt && typeFact().getArrayType(iteratedType).isSubtypeOf(iterableType);
-        boolean optForArraySequence = allowArraySeqOpt && typeFact().getArraySequenceType(iteratedType).isSubtypeOf(iterableType);
+        boolean optForArraySequence = false;//allowArraySeqOpt && typeFact().getArraySequenceType(iteratedType).isSubtypeOf(iterableType);
         
         SyntheticName iterableName = optForArray || optForArraySequence ? naming.alias("iterable") : null;
         SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
