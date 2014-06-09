@@ -235,7 +235,7 @@ public class TypeUtils {
         Scope parent = node.getScope();
         int outers = 0;
         while (parent != null && parent != tp.getContainer()) {
-            if (parent instanceof TypeDeclaration) {
+            if (parent instanceof TypeDeclaration && !((TypeDeclaration) parent).isAnonymous()) {
                 outers++;
             }
             parent = parent.getScope();
@@ -244,13 +244,10 @@ public class TypeUtils {
             if (parent == tp.getContainer()) {
                 if (!skipSelfDecl) {
                     ClassOrInterface ontoy = Util.getContainingClassOrInterface(node.getScope());
-                    if (((TypeDeclaration)ontoy).isAnonymous()) {
-                        gen.out(gen.getNames().self((TypeDeclaration)parent));
-                    } else {
-                        gen.out(gen.getNames().self((TypeDeclaration)ontoy));
-                        for (int i = 0; i < outers; i++) {
-                            gen.out(".outer$");
-                        }
+                    while (ontoy.isAnonymous())ontoy=Util.getContainingClassOrInterface(ontoy.getScope());
+                    gen.out(gen.getNames().self((TypeDeclaration)ontoy));
+                    for (int i = 0; i < outers; i++) {
+                        gen.out(".outer$");
                     }
                     gen.out(".");
                 }
