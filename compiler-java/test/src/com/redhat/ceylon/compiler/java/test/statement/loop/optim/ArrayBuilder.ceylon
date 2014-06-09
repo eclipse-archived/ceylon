@@ -60,7 +60,7 @@ class ArrayBuilder<Element>() {
         return sequence.string;
     }
     
-    shared Element[] sequence {
+    shared Element[] sequence() {
         if (exists s=storage) {
             return s.take(length).sequence;
         }

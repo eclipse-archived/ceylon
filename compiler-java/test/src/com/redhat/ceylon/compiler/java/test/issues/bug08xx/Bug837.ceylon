@@ -27,7 +27,7 @@ class Bug837<Element>(first, Integer length)
 
     shared actual Element last = first;
 
-    shared actual Element? get(Integer index) {
+    shared actual Element? elementAt(Integer index) {
         throw;
     }
 
