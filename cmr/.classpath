@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/jandex-1.0.3.Final.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="lib" path="lib/shrinkwrap-maven-uberjar-2.0.0-alpha-7.jar"/>
+	<classpathentry kind="lib" path="lib/json-smart-1.1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
