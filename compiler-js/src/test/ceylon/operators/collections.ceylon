@@ -18,10 +18,10 @@ void testEnumerations() {
     check(seq==t1, "{1,2,3} != [1,2,3]");
     check(className(t2)!=className(s2), "{0,*seq} != [0,*seq] ``className(t2)`` vs`` className(s2)``");
     check(seq.size==3, "seq.size!=3");
-    check(lcomp.sequence.size==4, "lcomp.size!=4");
+    check(lcomp.sequence().size==4, "lcomp.size!=4");
     check(ecomp.size==4, "ecomp.size!=4");
     check(s2.size==4, "s2.size!=4");
-    check(s3.sequence.size==5, "s3.size!=5");
+    check(s3.sequence().size==5, "s3.size!=5");
     check(t1.size==3, "t1.size!=3");
     check(t2.size==4, "t2.size!=4");
     //check(t3.size==5, "t3.size!=5");

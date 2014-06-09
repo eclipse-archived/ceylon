@@ -28,7 +28,7 @@ void literals<T>() {
     check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
     check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
     if (is Function<Iterable<Integer>,[Integer]> taking1) {
-      check(taking1(3).sequence=={1,2,3}, "Function Iterable.taking failed");
+      check(taking1(3).sequence()=={1,2,3}, "Function Iterable.taking failed");
     } else {
       fail("taking1 should be Function<Iterable<Integer>,[Integer]>");
     }

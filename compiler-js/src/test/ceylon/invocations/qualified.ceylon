@@ -62,7 +62,7 @@ class QualifiedB() extends QualifiedA() {
 
 class TestList() satisfies List<String> {
     shared actual List<String> clone() => {};
-    shared actual String? get(Integer index) { return null; }
+    shared actual String? elementAt(Integer index) { return null; }
     shared actual Integer? lastIndex = null;
     shared actual List<String> rest = [];
     shared actual List<String> reversed = {};
