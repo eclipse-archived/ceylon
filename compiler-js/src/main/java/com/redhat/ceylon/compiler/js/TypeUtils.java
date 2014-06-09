@@ -249,7 +249,7 @@ public class TypeUtils {
                     } else {
                         gen.out(gen.getNames().self((TypeDeclaration)ontoy));
                         for (int i = 0; i < outers; i++) {
-                            gen.out(".$$outer");
+                            gen.out(".outer$");
                         }
                     }
                     gen.out(".");

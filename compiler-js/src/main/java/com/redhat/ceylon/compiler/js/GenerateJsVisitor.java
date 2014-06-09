@@ -812,7 +812,7 @@ public class GenerateJsVisitor extends Visitor
         if (!d.isToplevel()) {
             final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
-                out(names.self(d), ".$$outer");
+                out(names.self(d), ".outer$");
                 if (d.isClassOrInterfaceMember()) {
                     out("=this");
                 } else {
@@ -2063,7 +2063,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         if (outer) {
-            out("$$outer");
+            out("outer$");
         } else {
             out(names.self(that.getTypeModel().getDeclaration()));
         }
@@ -2724,7 +2724,7 @@ public class GenerateJsVisitor extends Visitor
                 while (scope != null) {
                     if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
-                            path += ".$$outer";
+                            path += ".outer$";
                         } else {
                             path += names.self((TypeDeclaration) scope);
                         }
