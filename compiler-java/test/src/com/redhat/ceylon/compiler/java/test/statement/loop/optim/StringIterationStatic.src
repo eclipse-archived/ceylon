@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+class StringIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    StringIterationStatic() {
+    }
+    
+    public final long simple(final .java.lang.String s) {
+        long i = 0L;
+        .java.lang.String s$0 = s;
+        int length$1 = s$0.length();
+        loop_0: for (int index$2 = 0; index$2 < length$1; ) {
+            final int $char = s$0.codePointAt(index$2);
+            index$2 += .java.lang.Character.charCount($char);
+            i += .ceylon.language.Character.getInteger($char);
+        }
+        return i;
+    }
+    
+    public final long withBreak(final .java.lang.String s) {
+        long i = 0L;
+        .java.lang.String s$3 = s;
+        int length$4 = s$3.length();
+        loop_1: for (int index$5 = 0; index$5 < length$4; ) {
+            final int $char = s$3.codePointAt(index$5);
+            index$5 += .java.lang.Character.charCount($char);
+            i += .ceylon.language.Character.getInteger($char);
+            if ($char == 122) {
+                break loop_1;
+            }
+        }
+        return i;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.StringIterationStatic();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.StringIterationStatic.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.StringIterationStatic.class);
+}
