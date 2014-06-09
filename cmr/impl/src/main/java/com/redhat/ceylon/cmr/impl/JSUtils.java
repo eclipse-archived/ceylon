@@ -16,16 +16,21 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
+import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -78,7 +83,8 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
      * @return module info list
      */
     public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        return getDependencies(getEngine(jarFile));
+        Map<String, Object> model = loadJsonModel(jarFile);
+        return getDependencies(model);
     }
 
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
@@ -97,24 +103,9 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         return new int[]{major, minor};
     }
 
-
-    private static Object getEngine(File moduleArchive) {
-        ScriptEngine engine = null;
+    private static Set<ModuleInfo> getDependencies(Map<String,Object> model) {
         try {
-            engine = new ScriptEngineManager().getEngineByName("JavaScript");
-            engine.eval("var exports={}");
-            engine.eval("var module={}");
-            engine.eval("function require() { return { '$addmod$' : function() {} } }");
-            engine.eval(new FileReader(moduleArchive));
-            return engine;
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to parse module JS file", ex);
-        }
-    }
-
-    private static Set<ModuleInfo> getDependencies(Object engine) {
-        try {
-            return asModInfos(metaModelProperty(engine, "$mod-deps"));
+            return asModInfos(metaModelProperty(model, "$mod-deps"));
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
@@ -122,19 +113,19 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
-        ScriptEngine engine = (ScriptEngine)getEngine(moduleArchive);
+        Map<String, Object> model = loadJsonModel(moduleArchive);
 
-        String name = asString(metaModelProperty(engine, "$mod-name"));
+        String name = asString(metaModelProperty(model, "$mod-name"));
         if (!moduleName.equals(name)) {
             throw new RuntimeException("Incorrect module");
         }
-        String version = asString(metaModelProperty(engine, "$mod-version"));
-        Set<ModuleInfo> deps = getDependencies(engine);
+        String version = asString(metaModelProperty(model, "$mod-version"));
+        Set<ModuleInfo> deps = getDependencies(model);
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
         Integer mayor = null, minor = null;
-        String bin = asString(metaModelProperty(engine, "$mod-bin"));
+        String bin = asString(metaModelProperty(model, "$mod-bin"));
         if (bin != null) {
             int p = bin.indexOf('.');
             if (p >= 0) {
@@ -161,26 +152,8 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         throw new RuntimeException("Not implemented yet");
     }
     
-    private static Object metaModelProperty(Object engine, String propName) {
-        return safeEval(engine, "exports." + metaModelName(engine) + "()['" + propName + "']");
-    }
-    
-    private static String metaModelName(Object engine) {
-        String modelVarName = "$CCMM$";
-        Object model = safeEval(engine, "exports." + modelVarName);
-        if (model == null) {
-            // Try the old name
-            modelVarName = "$$METAMODEL$$";
-        }
-        return modelVarName;
-    }
-    
-    private static Object safeEval(Object engine, String code) {
-        try {
-            return ((ScriptEngine)engine).eval(code);
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to parse module JS file", ex);
-        }
+    private static Object metaModelProperty(Map<String,Object> model, String propName) {
+        return model.get(propName);
     }
     
     private static String asString(Object obj) {
@@ -244,6 +217,38 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
 
     private static boolean matches(String string, String query) {
         return string.toLowerCase().contains(query);
+    }
+
+    private static Map<String,Object> loadJsonModel(File jsFile) {
+        try {
+            Map<String, Object> model = readJsonModel(jsFile);
+            if (model == null) {
+                throw new RuntimeException("Unable to read meta model from file " + jsFile);
+            }
+            return model;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /** Find the metamodel declaration in a js file, parse it as a Map and return it. 
+     * @throws IOException */
+    @SuppressWarnings("unchecked")
+    public static Map<String,Object> readJsonModel(File jsFile) throws IOException {
+        // IMPORTANT
+        // This method NEEDS to be able to return the meta model of any previous file formats!!!
+        // It MUST stay backward compatible
+        try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
+            String line = reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                if ((line.startsWith("var $CCMM$=") || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
+                    line = line.substring(line.indexOf("{"), line.length()-1);
+                    Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
+                    return model;
+                }
+            }
+            return null;
+        }
     }
 
 }
