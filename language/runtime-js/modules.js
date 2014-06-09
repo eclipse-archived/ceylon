@@ -314,43 +314,18 @@ function Paquete(name, container, pkg, $$paquete){
       if (m) {
         var mt = m['$mt'];
         //There's a member alright, but check its type
-        if (extendsType({t:ValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='a'||mt==='g'||mt==='o') {
-            return OpenValue(this, m);
-          } else if (mt==='s') {
-            return OpenSetter(OpenValue(this, m));
-          }
-        } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='m') {
-            return OpenFunction(this, m);
-          }
-        } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='a'||mt==='g'||mt==='o') {
-            return OpenValue(this, m);
-          } else if (mt==='s') {
-            return OpenSetter(OpenValue(this, m));
-          } else if (mt==='m') {
-            return OpenFunction(this, m);
-          }
-        } else if (extendsType({t:ClassDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='c') {
-            return OpenClass(this, m);
-          }
-        } else if (extendsType({t:InterfaceDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='i') {
-            return OpenInterface(this, m);
-          }
-        } else if (extendsType({t:ClassOrInterfaceDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='i') {
-            return OpenInterface(this, m);
-          } else if (mt==='c') {
-            return OpenClass(this, m);
-          }
-        } else if (extendsType({t:AliasDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='als')
+        if ((mt==='a'||mt==='g'||mt==='o'||mt==='s')&&extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
+          return mt==='s'?OpenSetter(OpenValue(this, m)):OpenValue(this, m);
+        } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
+          return OpenFunction(this, m);
+        } else if (mt==='c'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
+          return OpenClass(this, m);
+        } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
+          return OpenInterface(this, m);
+        } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){
           return OpenAlias(_findTypeFromModel(this,m));
         } else {
-console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.Kind$getMember));
+console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $$$mptypes.Kind$getMember);
         }
       }
       return null;
