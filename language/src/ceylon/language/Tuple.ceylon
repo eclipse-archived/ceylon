@@ -60,7 +60,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     size => 1 + rest.size;
     
-    shared actual Element? get(Integer index) {
+    shared actual Element? elementAt(Integer index) {
         switch (index<=>0)
         case (smaller) { return null; }
         case (equal) { return first; }

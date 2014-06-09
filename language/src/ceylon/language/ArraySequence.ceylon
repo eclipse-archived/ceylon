@@ -20,7 +20,7 @@ shared final native class ArraySequence<out Element>({Element+} elements)
     
     shared actual ArraySequence<Element> clone() => this;
     
-    shared native actual Element? get(Integer index);
+    shared native actual Element? elementAt(Integer index);
     
     shared native actual Iterator<Element> iterator();
     

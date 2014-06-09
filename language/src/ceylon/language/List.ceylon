@@ -70,7 +70,10 @@ shared interface List<out Element>
      that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index 
      `0`."
-    shared actual formal Element? get(Integer index);
+    shared formal Element? elementAt(Integer index);
+	
+	shared actual default Element? get(Integer index) 
+			=> elementAt(index);
     
     shared actual default Iterator<Element> iterator() {
         object listIterator
@@ -79,7 +82,7 @@ shared interface List<out Element>
             shared actual Element|Finished next() {
                 if (exists max=lastIndex, index<=max) {
                     assert (is Element element 
-                        = outer[index++]);
+                        = elementAt(index++));
                     return element;
                 }
                 else {
@@ -491,7 +494,8 @@ shared interface List<out Element>
         
         lastIndex => outer.lastIndex;
         
-        get(Integer index) => defines(index) then index;
+        elementAt(Integer index) 
+                => defines(index) then index;
         
         segment(Integer from, Integer length)
                 => clone()[from:length];
@@ -520,7 +524,7 @@ shared interface List<out Element>
         
         assert (from>=0);
         
-        shared actual Element? get(Integer index) {
+        shared actual Element? elementAt(Integer index) {
             if (index<0) {
                 return null;
             }
@@ -552,7 +556,7 @@ shared interface List<out Element>
         
         lastIndex => outer.lastIndex;
         
-        shared actual Element? get(Integer index) {
+        shared actual Element? elementAt(Integer index) {
             if (exists lastIndex) {
                 return outer[lastIndex-index];
             }

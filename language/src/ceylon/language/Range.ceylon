@@ -128,7 +128,7 @@ shared final class Range<Element>(first, last)
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
      may be inefficient for large ranges."
-    shared actual Element? get(Integer index) {
+    shared actual Element? elementAt(Integer index) {
         if (index<0) {
             return null;
         }

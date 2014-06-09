@@ -306,11 +306,22 @@ public final class String
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character get(@Name("index") Integer key) {
-        return get(value, key.longValue());
+        return elementAt(value, key.longValue());
     }
 
     @Ignore
     public static Character get(java.lang.String value, long key) {
+        return elementAt(value, key);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+    public Character elementAt(@Name("index") long key) {
+        return elementAt(value, key);
+    }
+
+    @Ignore
+    public static Character elementAt(java.lang.String value, long key) {
         int index = Util.toInt(key);
         int length = value.length();
         if (index < 0 || index >= length) {

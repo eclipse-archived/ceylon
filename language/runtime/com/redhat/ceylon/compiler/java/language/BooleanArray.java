@@ -549,11 +549,6 @@ public final class BooleanArray implements ReifiedType {
         public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends ceylon.language.Boolean>, ? extends Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-
-        @Override
-        public String toString() {
-            return $ceylon$language$Iterable$this.toString();
-        }
     }
     
 }

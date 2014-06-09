@@ -14,7 +14,7 @@ shared class LazyList<out Element>(elements)
         return size > 0 then size-1;
     }
     
-    shared actual Element? get(Integer index) {
+    shared actual Element? elementAt(Integer index) {
         if (index >= 0) {
             return elements.skip(index).first;
         }

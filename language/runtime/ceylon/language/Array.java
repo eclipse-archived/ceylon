@@ -792,16 +792,21 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element get(@Name("index") Integer key) {
-        int i = toInt(key.longValue());
-        return get(i);
+        return get(toInt(key.longValue()));
     }
 
+    @TypeInfo("ceylon.language::Null|Element")
+    @Override
+    public Element elementAt(@Name("index") long key) {
+        return get(toInt(key));
+    }
+    
     @Ignore
     private Element get(int index) {
         return index < 0 || index >= getSize() ?
                 null : unsafeItem(index);
     }
-
+    
     // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")
     @Ignore

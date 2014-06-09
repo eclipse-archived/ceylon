@@ -171,10 +171,10 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public final Element get(@Name("index")
+    public final Element elementAt(@Name("index")
     @TypeInfo("ceylon.language::Integer")
-    final ceylon.language.Integer index) {
-        return super.get(index);
+    final long index) {
+        return super.elementAt(index);
     }
     
     @Annotations({

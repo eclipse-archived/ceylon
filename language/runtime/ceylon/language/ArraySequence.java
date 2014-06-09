@@ -429,6 +429,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
+    @TypeInfo("ceylon.language::Null|Element")
+    public Element elementAt(@Name("index") long index) {
+        return index < 0 || index >= length ?
+                null : (Element)array[Util.toInt(index+first)];
+    }
+
+    @Override
     @Ignore
     public Sequence<? extends ceylon.language.Integer> getKeys() {
         return $ceylon$language$Sequence$this.getKeys();
