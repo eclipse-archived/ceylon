@@ -424,7 +424,10 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start and end of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trim(Boolean trimming(Element elem)) {
+    shared default List<Element> trim(
+        "The predicate function that determines if a given
+         element is to be trimmed."
+        Boolean trimming(Element elem)) {
         if (exists endIndex=lastIndex) {
             variable Integer from=-1;
             variable Integer to=-1;
@@ -460,7 +463,10 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
+    shared default List<Element> trimLeading(
+        "The predicate function that determines if a given 
+         element is to be trimmed."
+        Boolean trimming(Element elem)) {
         variable value index = 0;
         for (elem in this) {
             if (!trimming(elem)) {
@@ -474,7 +480,10 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the end of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
+    shared default List<Element> trimTrailing(
+        "The predicate function that determines if a given
+         element is to be trimmed."
+        Boolean trimming(Element elem)) {
         if (exists endIndex=lastIndex) {
             variable value index = endIndex;
             for (elem in reversed) {
