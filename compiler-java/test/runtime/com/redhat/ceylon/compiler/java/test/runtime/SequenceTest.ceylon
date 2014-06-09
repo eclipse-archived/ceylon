@@ -23,14 +23,14 @@ shared class SequenceTest () {
     shared void test(){
         String[] stringSequence = ["foo", "bar", "longer"];
         // size is unboxed
-        assertEquals({3, 3, 6}.sequence, stringSequence*.size);
+        assertEquals({3, 3, 6}.sequence(), stringSequence*.size);
         
         // wholePart is boxed
         Integer[] intSequence = [3, 3, 6];
-        assertEquals({3, 3, 6}.sequence, intSequence*.wholePart);
+        assertEquals({3, 3, 6}.sequence(), intSequence*.wholePart);
         
         // invoke
-        assertEquals({'f', 'b', 'l'}.sequence, stringSequence*.get(0));
-        assertEquals({'f', 'b', 'l'}.sequence, stringSequence*.get{index = 0;});
+        assertEquals({'f', 'b', 'l'}.sequence(), stringSequence*.get(0));
+        assertEquals({'f', 'b', 'l'}.sequence(), stringSequence*.get{index = 0;});
     }
 }
