@@ -305,7 +305,7 @@ public final class String
 
     @Override
     @Ignore
-    public Character get(Integer key) {
+    public Character get(@Name("index") Integer key) {
         return elementAt(value, key.longValue());
     }
 

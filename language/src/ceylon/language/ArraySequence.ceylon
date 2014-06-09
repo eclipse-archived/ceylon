@@ -3,7 +3,7 @@
  modified after the Sequence has been initialized."
 class ArraySequence<Element>(Array<Element> array) satisfies [Element+] {
     
-    shared actual Element? get(Integer index) 
+    shared actual Element? elementAt(Integer index) 
             => array[index];
     
     shared actual Boolean contains(Object element) 

@@ -216,6 +216,12 @@ public final class Tuple<Element, First extends Element,
                 null : (Element)array[Util.toInt(index+first)];
     }
     
+    @Ignore
+    @Override
+    public final Element get(Integer index) {
+        return elementAt(index.value);
+    }
+    
     @Annotations({
             @Annotation("shared"),
             @Annotation("actual")})
