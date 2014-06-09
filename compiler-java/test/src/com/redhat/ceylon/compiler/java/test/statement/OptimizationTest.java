@@ -152,4 +152,9 @@ public class OptimizationTest extends CompilerTest {
         compareWithJavaSource("loop/optim/Bug1467");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug1467");
     }
+    
+    @Test
+    public void testLopOptimStringIterationStatic() {
+        compareWithJavaSource("loop/optim/StringIterationStatic");
+    }
 }

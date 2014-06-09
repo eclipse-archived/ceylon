@@ -68,6 +68,7 @@ import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -1236,7 +1237,12 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         
-        ForStatementTransformation transformation = arraySequenceIteration(stmt, baseIterable, step);
+        ForStatementTransformation transformation;
+        
+        transformation = stringIteration(stmt, baseIterable, step);
+        if (transformation == null) {
+            transformation = arraySequenceIteration(stmt, baseIterable, step);
+        }
         if (transformation == null) {
             transformation = tupleIteration(stmt, baseIterable, step);
         }
@@ -1258,6 +1264,81 @@ public class StatementTransformer extends AbstractTransformer {
         return transformation.transform();
     }
     
+    /** 
+     * Loop transformation when the iterated expression is statically known 
+     * to be a {@code String}.
+     * <pre>
+        java.lang.String s = ITERABLE.value;
+        int sz = s.codePointCount(0, s.length());
+        for (int index = 0; index < sz; ) {
+            int ITEM = s.codePointAt(index);
+            index+= java.lang.Character.charCount(ITEM);
+            
+        }
+       </pre>
+       
+     */
+    class StringIterationOptimization extends ForStatementTransformation {
+
+        private Tree.Term baseIterable;
+
+        StringIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step) {
+            super(stmt);
+            this.baseIterable = baseIterable;
+        }
+        
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+            
+            SyntheticName stringName = naming.alias("s");
+            stmts.append(makeVar(stringName, make().Type(syms().stringType), 
+                    expressionGen().transformExpression(baseIterable, BoxingStrategy.UNBOXED, baseIterable.getTypeModel())));
+            
+            SyntheticName lengthName = naming.alias("length");
+            stmts.append(makeVar(lengthName, make().Type(syms().intType),
+                
+                                make().Apply(null,
+                                        makeQualIdent(stringName.makeIdent(), "length"),
+                                        List.<JCExpression>nil())));
+            
+            SyntheticName indexName = naming.alias("index");
+            
+            List<JCStatement> transformedBlock = transformBlock(getBlock());
+            transformedBlock = transformedBlock.prepend(make().Exec(
+                    make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), 
+                        make().Apply(null, 
+                                naming.makeQualIdent(make().Type(syms().characterObjectType), "charCount"), 
+                                List.<JCExpression>of(naming.makeQuotedIdent(Naming.getVariableName(getElementOrKeyVariable())))))));
+            transformedBlock = transformedBlock.prepend(makeVar(FINAL,
+                    Naming.getVariableName(getElementOrKeyVariable()), 
+                    make().Type(syms().intType), 
+                    make().Apply(null, 
+                            naming.makeQualIdent(stringName.makeIdent(), "codePointAt"), 
+                            List.<JCExpression>of(indexName.makeIdent()))));
+            
+            JCStatement block = make().Block(0, transformedBlock);
+            
+            
+            JCForLoop loop = make().ForLoop(
+                    List.<JCStatement>of(makeVar(indexName, make().Type(syms().intType), make().Literal(0))), 
+                    make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent()), 
+                    List.<JCExpressionStatement>nil(), 
+                    block);
+            stmts.add(make().Labelled(this.label, loop));
+            
+            return stmts;
+        }
+    }
+    
+    private ForStatementTransformation stringIteration(Tree.ForStatement stmt,
+            Tree.Term baseIterable, Tree.Term step) {
+        if (step == null &&
+                baseIterable.getTypeModel().getSupertype(typeFact().getStringDeclaration()) != null) {
+            return new StringIterationOptimization(stmt, baseIterable, step);
+        }
+        return null;
+    }
+
     /**
      * Optimized transformation for a {@code for} loop where the iterable is 
      * statically known to be immutable and support efficient indexed access, 
