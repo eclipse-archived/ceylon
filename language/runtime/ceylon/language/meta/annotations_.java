@@ -54,7 +54,7 @@ public final class annotations_ {
             if (annots.getSize() > 1L) {
                 throw new AssertionError("optional annotation occurs more than once");
             }
-            return (Values)(annots.getEmpty() ? null : ((Sequence)annots).get(ceylon.language.Integer.instance(0)));   
+            return (Values)(annots.getEmpty() ? null : ((Sequence)annots).getFirst());   
         } else {
             return (Values)annots;
         }

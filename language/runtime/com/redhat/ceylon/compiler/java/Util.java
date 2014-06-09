@@ -1329,50 +1329,50 @@ public class Util {
             // if the first param is variadic, just pass the sequence along
             if(variadicParameterIndex == 0)
                 return function.$callvariadic$(arguments);
-            return function.$call$(arguments.get(Integer.instance(0)));
+            return function.$call$(arguments.elementAt(0));
         case 2:
             switch(variadicParameterIndex){
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.elementAt(0), 
                     (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // no variadic param, or after we run out of elements to pass
             default:
-                return function.$call$(arguments.get(Integer.instance(0)), 
-                                          arguments.get(Integer.instance(1)));
+                return function.$call$(arguments.elementAt(0), 
+                                          arguments.elementAt(1));
             }
         case 3:
             switch(variadicParameterIndex){
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.elementAt(0), 
                     (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
-            case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                    arguments.get(Integer.instance(1)),
+            case 2: return function.$callvariadic$(arguments.elementAt(0),
+                    arguments.elementAt(1),
                     (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
             // no variadic param, or after we run out of elements to pass
             default:
-            return function.$call$(arguments.get(Integer.instance(0)), 
-                    arguments.get(Integer.instance(1)), 
-                    arguments.get(Integer.instance(2)));
+            return function.$call$(arguments.elementAt(0), 
+                    arguments.elementAt(1), 
+                    arguments.elementAt(2));
             }
         default:
             switch(variadicParameterIndex){
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.elementAt(0), 
                     (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
-            case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                    arguments.get(Integer.instance(1)),
+            case 2: return function.$callvariadic$(arguments.elementAt(0),
+                    arguments.elementAt(1),
                     (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
-            case 3: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                    arguments.get(Integer.instance(1)),
-                    arguments.get(Integer.instance(2)),
+            case 3: return function.$callvariadic$(arguments.elementAt(0),
+                    arguments.elementAt(1),
+                    arguments.elementAt(2),
                     (Sequential<?>)arguments.spanFrom(Integer.instance(3)));
             // no variadic param
             case -1:

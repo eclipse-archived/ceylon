@@ -1500,7 +1500,7 @@ public final class String
     @Override
     @Ignore
     public Character getFirst() {
-        return get(Integer.instance(0));
+        return elementAt(0);
     }
 
     @Ignore
@@ -1514,7 +1514,13 @@ public final class String
 
     @Override @Ignore
     public Character getLast() {
-        return get(getLastIndex());
+        long length = getSize();
+        if (length==0) {
+            return null;
+        }
+        else {
+            return elementAt(length-1);
+        }
     }
 
     @Ignore

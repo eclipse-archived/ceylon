@@ -117,8 +117,8 @@ shared interface List<out Element>
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = this[i];
-                    value y = that[i];
+                    value x = elementAt(i);
+                    value y = that.elementAt(i);
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
@@ -154,10 +154,10 @@ shared interface List<out Element>
     
     shared default actual Element? findLast(
             Boolean selecting(Element elem)) {
-        if (exists l=lastIndex) {
-            variable value index = l;
+        if (exists endIndex=lastIndex) {
+            variable value index = endIndex;
             while (index >= 0) {
-                if (exists elem = this[index--]) {
+                if (exists elem = elementAt(index--)) {
                     if (selecting(elem)) {
                         return elem;
                     }
@@ -168,12 +168,12 @@ shared interface List<out Element>
     }
     
     "Returns the first element of this `List`, if any."
-    shared actual default Element? first => this[0];
+    shared actual default Element? first => elementAt(0);
     
     "Returns the last element of this `List`, if any."
     shared actual default Element? last {
-        if (exists i = lastIndex) {
-            return this[i];
+        if (exists endIndex = lastIndex) {
+            return elementAt(endIndex);
         }
         else {
             return null;
@@ -216,8 +216,8 @@ shared interface List<out Element>
             Integer index, 
             List<Anything> sublist) {
         for (i in 0:sublist.size) {
-            value x = this[index+i];
-            value y = sublist[i];
+            value x = elementAt(index+i);
+            value y = sublist.elementAt(i);
             if (exists x) {
                 if (exists y) {
                     if (x!=y) {
@@ -286,7 +286,7 @@ shared interface List<out Element>
             "The index at which the list might occur"
             Integer index, 
             Anything element) {
-        value elem = this[index];
+        value elem = elementAt(index);
         if (exists element) {
             if (exists elem) {
                 return elem==element;
@@ -356,7 +356,7 @@ shared interface List<out Element>
              satisfy"
             Boolean selecting(Element element)) 
             => { for (index in 0:size) 
-                    if (is Element element=this[index], 
+                    if (is Element element=elementAt(index), 
                             selecting(element)) 
                         index };
     
@@ -368,7 +368,7 @@ shared interface List<out Element>
             Boolean selecting(Element element)) {
         variable value index = 0;
         while (index<size) {
-            assert (is Element element=this[index]);
+            assert (is Element element=elementAt(index));
             if (selecting(element)) {
                 return index;
             }
@@ -386,7 +386,7 @@ shared interface List<out Element>
         variable value index = size;
         while (index>0) {
             index--;
-            assert (is Element element=this[index]);
+            assert (is Element element=elementAt(index));
             if (selecting(element)) {
                 return index;
             }
@@ -402,7 +402,8 @@ shared interface List<out Element>
             variable Integer from=-1;
             variable Integer to=-1;
             for (index in 0..l) {
-                if (!trimming(this[index] else nothing)) {
+                assert (is Element elem=elementAt(index));
+                if (!trimming(elem)) {
                     from = index;
                     break;
                 }
@@ -411,7 +412,8 @@ shared interface List<out Element>
                 return [];
             }
             for (index in l..0) {
-                if (!trimming(this[index] else nothing)) {
+                assert (is Element elem=elementAt(index));
+                if (!trimming(elem)) {
                     to = index;
                     break;
                 }
@@ -432,7 +434,8 @@ shared interface List<out Element>
     shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in 0..l) {
-                if (!trimming(this[index] else nothing)) {
+                assert (is Element elem=elementAt(index));
+                if (!trimming(elem)) {
                     return this[index..l];
                 }
             }
@@ -446,7 +449,8 @@ shared interface List<out Element>
     shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in l..0) {
-                if (!trimming(this[index] else nothing)) {
+                assert (is Element elem=elementAt(index));
+                if (!trimming(elem)) {
                     return this[0..index];
                 }
             }
@@ -529,7 +533,7 @@ shared interface List<out Element>
                 return null;
             }
             else {
-                return outer[index+from];
+                return outer.elementAt(index+from);
             }
         }
         
@@ -558,7 +562,7 @@ shared interface List<out Element>
         
         shared actual Element? elementAt(Integer index) {
             if (exists lastIndex) {
-                return outer[lastIndex-index];
+                return outer.elementAt(lastIndex-index);
             }
             else {
                 return null;
