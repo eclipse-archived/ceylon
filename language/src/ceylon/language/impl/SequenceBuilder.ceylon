@@ -41,9 +41,9 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
     
     
     "The resulting sequential."
-    shared Element[] sequence {
+    shared Element[] sequence() {
         if (exists array=store) {
-            return array.take(length).sequence;
+            return array.take(length).sequence();
         } else {
             return [];
         }

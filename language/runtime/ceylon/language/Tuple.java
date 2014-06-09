@@ -579,8 +579,8 @@ public final class Tuple<Element, First extends Element,
 
     @Override
     @Ignore
-    public Category<? super ceylon.language.Integer> getKeys() {
-        return $ceylon$language$Correspondence$this.getKeys();
+    public Sequence<Integer> getKeys() {
+        return (Sequence)$ceylon$language$Sequence$this.getKeys();
     }
 
     @Override
@@ -721,8 +721,8 @@ public final class Tuple<Element, First extends Element,
     
     @Override
     @Ignore
-    public Sequence<? extends Element> getSequence() {
-        return $ceylon$language$Sequence$this.getSequence();
+    public Sequence<? extends Element> sequence() {
+        return $ceylon$language$Sequence$this.sequence();
     }
 
     @Override @Ignore

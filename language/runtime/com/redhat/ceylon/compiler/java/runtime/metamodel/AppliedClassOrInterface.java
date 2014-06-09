@@ -1111,7 +1111,7 @@ public abstract class AppliedClassOrInterface<Type>
             Type value = valueModel.get();
             ret.set(count++, value);
         }
-        return ret.take(count).getSequence();
+        return ret.take(count).sequence();
     }
     
     @Ignore

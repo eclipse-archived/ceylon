@@ -1034,7 +1034,7 @@ public class Metamodel {
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = parseEnumerationReference(refs[ii]);
         }
-        return (Sequential)new ObjectArray.ObjectArrayIterable<Object>($reifiedElement, array).getSequence();
+        return (Sequential)new ObjectArray.ObjectArrayIterable<Object>($reifiedElement, array).sequence();
     }
 
     public static Sequential<? extends ceylon.language.meta.declaration.TypeParameter> getTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic declaration) {
@@ -1347,7 +1347,7 @@ public class Metamodel {
         // FIXME: don't we need to spread any variadic param?
         
         // now do a regular invocation
-        Sequential<Object> argumentSequence = (Sequential)values.getSequence();
+        Sequential<Object> argumentSequence = (Sequential)values.sequence();
         return Util.apply(function, argumentSequence);
     }
     
