@@ -100,8 +100,8 @@ function is$(obj,type){
           if(iance===null) {
             //null means no i in _mm.$tp
             //Type parameter may be in the outer type
-            while(iance===null&&tmpobj.$$outer!==undefined){
-              tmpobj=tmpobj.$$outer;
+            while(iance===null&&tmpobj.outer$!==undefined){
+              tmpobj=tmpobj.outer$;
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
               var _mmf = getrtmm$$(_tmpf);
               if(_mmf&&_mmf.$tp&&_mmf.$tp[i]){

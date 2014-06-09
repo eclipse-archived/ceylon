@@ -44,9 +44,9 @@ function type$meta(x,$$targs$$) {
   } else {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
     if (x.$$targs$$)_ta.T.a=x.$$targs$$;
-    if (x.$$outer) {
-      _ta.C={t:x.$$outer.getT$all()[x.$$outer.getT$name()]};
-      if (x.$$outer.$$targs$$)_ta.C.a=x.$$outer.$$targs$$;
+    if (x.outer$) {
+      _ta.C={t:x.outer$.getT$all()[x.outer$.getT$name()]};
+      if (x.outer$.$$targs$$)_ta.C.a=x.outer$.$$targs$$;
     }
     if (mm.$cont) {
       c=AppliedMemberClass(_t, {Type$MemberClass:_ta.T,Arguments$MemberClass:_ta.A,Container$MemberClass:_ta.C});
