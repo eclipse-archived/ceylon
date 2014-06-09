@@ -96,7 +96,7 @@ String$proto.sequence=function(){
   return ArraySequence(this,{Element$Iterable:{t:Character}});
 }
 String$proto.sequence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,
-  a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
+  a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$m','sequence'],
   $an:function(){return[actual(),shared()]}};};
 atr$(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','uppercased']}});
@@ -174,7 +174,7 @@ String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
 String$proto.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['$','String','$m','iterator']};}
-String$proto.$_get=function(index){
+String$proto.elementAt=function(index){
   if (index<0 || index>=this.length) {return null;}
   if (this._bumps===undefined)this._bumps=[];
   var cnt=0;
@@ -198,7 +198,7 @@ String$proto.$_get=function(index){
   if (this._maxidx===undefined || mb>this._maxidx)this._maxidx=mb;
   return Character(codepointFromString(this, mb));
 }
-String$proto.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','String','$m','get'],
+String$proto.elementAt.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','String','$m','get'],
   $ps:[{$nm:'index',$t:{t:Integer}}]};}
 atr$(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units

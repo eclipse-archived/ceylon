@@ -20,6 +20,11 @@ var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
 inheritProto(Array$, Object$, Ranged, $init$List());
 Array$proto.toString = origArrToString;
+Array$proto.elementAt=function elementAt(i){
+  var e=this[i];
+  if (e===undefined)return null;
+  return e;
+}
 Array$proto.reifyCeylonType=function(t,ne) {
     if (t===null)t={t:Anything};
     this.$$targs$$ = {Element$Iterable:t, Element$Array:t, Element$List:t, Element$Sequential:t,
@@ -88,7 +93,7 @@ Array$proto.chain = function(other, $$$mptypes) {
 Array$proto.sequence = function() {
     return this.seq$?this:ArraySequence(this,this.$$targs$$);
 }
-Array$proto.sequence.$crtmm$ = function(){return{mod:$CCMM$,d:['$','Iterable','$at','sequence']};};
+Array$proto.sequence.$crtmm$ = function(){return{mod:$CCMM$,d:['$','Iterable','$m','sequence']};};
 atr$(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
   undefined,function(){return{mod:$CCMM$,d:['$','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
 atr$(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },

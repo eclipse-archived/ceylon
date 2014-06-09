@@ -21,7 +21,7 @@ Comprehension$proto.iterator = function() {
 Comprehension$proto.sequence = function() {
     return sequential(this,{Element$sequential:this.$$targs$$.Element$Iterable});
 }
-Comprehension$proto.sequence.$crtmm$={$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$at','sequence']}
+Comprehension$proto.sequence.$crtmm$={$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$m','sequence']}
 ex$.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, $$targs$$, it) {
