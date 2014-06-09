@@ -46,57 +46,43 @@ class RangeIterationStatic<Element extends .ceylon.language.Comparable<? super E
     }
     
     private final void rangeOfIntegerWithStep$priv$(final .ceylon.language.Range<.ceylon.language.Integer> seq, final long step) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$12 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)seq.by(step);
-        final boolean isArraySequence$13 = iterable$12 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$10 = null;
-        final .java.lang.Object array$14;
-        int i$15 = 0;
-        final int length$16;
-        if (isArraySequence$13) {
-            array$14 = ((.ceylon.language.ArraySequence)iterable$12).$getArray$();
-            i$15 = ((.ceylon.language.ArraySequence)iterable$12).$getFirst$();
-            length$16 = i$15 + ((.ceylon.language.ArraySequence)iterable$12).$getLength$();
-        } else {
-            array$14 = null;
-            length$16 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> item$iterator$$11 = isArraySequence$13 ? null : iterable$12.iterator();
-        loop_2: while (isArraySequence$13 ? i$15 < length$16 : !((elem$10 = item$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$13) elem$10 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$14, i$15++);
+        .java.lang.Object elem$10;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> item$iterator$$11 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)seq.by(step)).iterator();
+        loop_2: while (!((elem$10 = item$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
             final long item = ((.ceylon.language.Integer)elem$10).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(item));
         }
     }
     
     private final void rangeOfElementWithStep$priv$(final .ceylon.language.Range<Element> seq, final long step) {
-        final .ceylon.language.Range<Element> range$17 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$18 = range$17.getLast();
-        final boolean deceasing$19 = range$17.getDecreasing();
-        final long step$21 = step;
-        loop_3: for (Element item$20 = range$17.getFirst(); ; ) {
-            final Element item = item$20;
+        final .ceylon.language.Range<Element> range$12 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$13 = range$12.getLast();
+        final boolean deceasing$14 = range$12.getDecreasing();
+        final long step$16 = step;
+        loop_3: for (Element item$15 = range$12.getFirst(); ; ) {
+            final Element item = item$15;
             .ceylon.language.print_.print(item);
-            for (long stepi$22 = 0L; stepi$22 < step$21; stepi$22++) {
-                item$20 = deceasing$19 ? item$20.getPredecessor() : item$20.getSuccessor();
-                if (item$20.compare(last$18) == (deceasing$19 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break loop_3;
+            for (long stepi$17 = 0L; stepi$17 < step$16; stepi$17++) {
+                item$15 = deceasing$14 ? item$15.getPredecessor() : item$15.getSuccessor();
+                if (item$15.compare(last$13) == (deceasing$14 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break loop_3;
             }
         }
-        final .ceylon.language.Range<Element> range$23 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$24 = range$23.getLast();
-        final boolean deceasing$25 = range$23.getDecreasing();
-        loop_4: for (Element item$26 = range$23.getFirst(); ; ) {
-            final Element item = item$26;
+        final .ceylon.language.Range<Element> range$18 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$19 = range$18.getLast();
+        final boolean deceasing$20 = range$18.getDecreasing();
+        loop_4: for (Element item$21 = range$18.getFirst(); ; ) {
+            final Element item = item$21;
             .ceylon.language.print_.print(item);
             break loop_4;
         }
     }
     
     private final void rangeOfElementWithStepAndDefReturn$priv$(final .ceylon.language.Range<Element> seq, final long step) {
-        final .ceylon.language.Range<Element> range$27 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$28 = range$27.getLast();
-        final boolean deceasing$29 = range$27.getDecreasing();
-        loop_5: for (Element item$30 = range$27.getFirst(); ; ) {
-            final Element item = item$30;
+        final .ceylon.language.Range<Element> range$22 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$23 = range$22.getLast();
+        final boolean deceasing$24 = range$22.getDecreasing();
+        loop_5: for (Element item$25 = range$22.getFirst(); ; ) {
+            final Element item = item$25;
             if (true) {
                 return;
             }
@@ -105,11 +91,11 @@ class RangeIterationStatic<Element extends .ceylon.language.Comparable<? super E
     }
     
     private final void rangeOfElementWithStepAndObfuscDefReturn$priv$(final .ceylon.language.Range<Element> seq, final long step) {
-        final .ceylon.language.Range<Element> range$32 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$33 = range$32.getLast();
-        final boolean deceasing$34 = range$32.getDecreasing();
-        loop_6: for (Element item$35 = range$32.getFirst(); ; ) {
-            final Element item = item$35;
+        final .ceylon.language.Range<Element> range$27 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$28 = range$27.getLast();
+        final boolean deceasing$29 = range$27.getDecreasing();
+        loop_6: for (Element item$30 = range$27.getFirst(); ; ) {
+            final Element item = item$30;
             .ceylon.language.print_.print(item);
             if (false) {
                 throw new .java.lang.Error("Ceylon flow error");
@@ -120,11 +106,11 @@ class RangeIterationStatic<Element extends .ceylon.language.Comparable<? super E
     }
     
     private final void rangeOfElementWithStepAndDefExit$priv$(final .ceylon.language.Range<Element> seq, final long step) {
-        final .ceylon.language.Range<Element> range$37 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$38 = range$37.getLast();
-        final boolean deceasing$39 = range$37.getDecreasing();
-        loop_7: for (Element item$40 = range$37.getFirst(); ; ) {
-            final Element item = item$40;
+        final .ceylon.language.Range<Element> range$32 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$33 = range$32.getLast();
+        final boolean deceasing$34 = range$32.getDecreasing();
+        loop_7: for (Element item$35 = range$32.getFirst(); ; ) {
+            final Element item = item$35;
             if (true) {
                 break loop_7;
             }
@@ -132,11 +118,11 @@ class RangeIterationStatic<Element extends .ceylon.language.Comparable<? super E
     }
     
     private final void rangeOfElementWithStepAndObfuscDefExit$priv$(final .ceylon.language.Range<Element> seq, final long step) {
-        final .ceylon.language.Range<Element> range$42 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
-        final Element last$43 = range$42.getLast();
-        final boolean deceasing$44 = range$42.getDecreasing();
-        loop_8: for (Element item$45 = range$42.getFirst(); ; ) {
-            final Element item = item$45;
+        final .ceylon.language.Range<Element> range$37 = (.ceylon.language.Range<Element>)(.ceylon.language.Range)seq;
+        final Element last$38 = range$37.getLast();
+        final boolean deceasing$39 = range$37.getDecreasing();
+        loop_8: for (Element item$40 = range$37.getFirst(); ; ) {
+            final Element item = item$40;
             .ceylon.language.print_.print(item);
             if (false) {
             } else {

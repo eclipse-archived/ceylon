@@ -102,7 +102,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{$param$1});
+                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
                 return $calltyped$($ceylontmp$s, $ceylontmp$seq$variadic$);
             }
             
@@ -115,9 +115,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        $param$1,
-                        $param$2});
+                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
                 return $calltyped$($ceylontmp$s, $ceylontmp$seq$variadic$);
             }
             
@@ -177,7 +175,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{$param$1});
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
                 return $calltyped$(s, seq$variadic$);
             }
             
@@ -190,9 +188,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        $param$1,
-                        $param$2});
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
                 return $calltyped$(s, seq$variadic$);
             }
             
@@ -230,7 +226,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{$param$0});
+                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0);
                 return $calltyped$($ceylontmp$seq$variadic$);
             }
             
@@ -241,9 +237,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        $param$0,
-                        $param$1});
+                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1);
                 return $calltyped$($ceylontmp$seq$variadic$);
             }
             
@@ -256,10 +250,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        $param$0,
-                        $param$1,
-                        $param$2});
+                final .ceylon.language.Sequence $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$0, $param$1, $param$2);
                 return $calltyped$($ceylontmp$seq$variadic$);
             }
             
@@ -324,7 +315,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{$param$1});
+                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1);
                 return $calltyped$($ceylontmp$s, $ceylontmp$seq$variadic$);
             }
             
@@ -337,9 +328,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        $param$1,
-                        $param$2});
+                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), $param$1, $param$2);
                 return $calltyped$($ceylontmp$s, $ceylontmp$seq$variadic$);
             }
             
