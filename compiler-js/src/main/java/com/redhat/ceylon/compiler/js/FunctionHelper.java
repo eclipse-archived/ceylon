@@ -229,6 +229,9 @@ public class FunctionHelper {
             }
             //Only the first paramlist can have defaults
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+            if (gen.shouldStitch(m)) {
+                gen.stitchNative(m, that);
+            }
         } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
             if (m.getContainer() instanceof TypeDeclaration) {
                 gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
