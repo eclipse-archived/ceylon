@@ -404,6 +404,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.InterfaceDefinition that) {
         Interface i = new Interface();
+        i.setDynamic(that.getDynamic());
         defaultExtendedToObject(i);
         that.setDeclarationModel(i);
         super.visit(that);

@@ -28,6 +28,15 @@ public abstract class TypeDeclaration extends Declaration
     // delayed allocation
     private List<ProducedType> brokenSupertypes = null;
     private boolean inconsistentType;
+    private boolean dynamic;
+    
+    public boolean isDynamic() {
+        return dynamic;
+    }
+    
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
+    }
     
     public boolean isInconsistentType() {
         return inconsistentType;

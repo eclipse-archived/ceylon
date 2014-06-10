@@ -505,10 +505,18 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
 interfaceDeclaration returns [AnyInterface declaration]
     @init { InterfaceDefinition def=null; 
             InterfaceDeclaration dec=null; }
-    : INTERFACE_DEFINITION
-      { def = new InterfaceDefinition($INTERFACE_DEFINITION); 
-        dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
-        $declaration = dec; }
+    : ( 
+        INTERFACE_DEFINITION
+        { def = new InterfaceDefinition($INTERFACE_DEFINITION); 
+          dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
+          $declaration = dec; }
+      | 
+        DYNAMIC
+        { def = new InterfaceDefinition($INTERFACE_DEFINITION);
+          dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
+          def.setDynamic(true);
+          $declaration = def; }
+      )
       typeNameDeclaration 
       { dec.setIdentifier($typeNameDeclaration.identifier); 
         def.setIdentifier($typeNameDeclaration.identifier); }
@@ -1007,7 +1015,13 @@ declaration returns [Declaration declaration]
     : annotations
       { $declaration.setAnnotationList($annotations.annotationList); }
     ( 
-      objectDeclaration
+      classDeclaration
+      { $declaration=$classDeclaration.declaration; }
+    | (INTERFACE_DEFINITION|DYNAMIC UIDENTIFIER) => interfaceDeclaration
+      { $declaration=$interfaceDeclaration.declaration; }
+    | aliasDeclaration
+      { $declaration=$aliasDeclaration.declaration; }
+    | objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
     | setterDeclaration
       { $declaration=$setterDeclaration.declaration; }
@@ -1017,12 +1031,6 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | classDeclaration
-      { $declaration=$classDeclaration.declaration; }
-    | interfaceDeclaration
-      { $declaration=$interfaceDeclaration.declaration; }
-    | aliasDeclaration
-      { $declaration=$aliasDeclaration.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(CLASS_DEFINITION, input)); }
       SEMICOLON
@@ -1051,7 +1059,8 @@ declarationStart
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
     | ALIAS 
-    | (variadicType|DYNAMIC) LIDENTIFIER
+    | variadicType LIDENTIFIER
+    | DYNAMIC (LIDENTIFIER|UIDENTIFIER)
     ;
 
 statement returns [Statement statement]

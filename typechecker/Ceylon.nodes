@@ -148,7 +148,8 @@
 
 "An interface declaration."
 ^(INTERFACE_DEFINITION:ANY_INTERFACE
-    INTERFACE_BODY)
+    INTERFACE_BODY
+    boolean dynamic;)
 
 "An interface alias."
 ^(INTERFACE_DECLARATION:ANY_INTERFACE

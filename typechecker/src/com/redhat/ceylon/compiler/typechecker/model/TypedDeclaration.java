@@ -20,16 +20,16 @@ public abstract class TypedDeclaration extends Declaration {
     private Boolean unboxed;
     private boolean typeErased;
     private boolean untrustedType;
-    private boolean isDynamicallyTyped;
+    private boolean dynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
     
     public boolean isDynamicallyTyped() {
-        return isDynamicallyTyped;
+        return dynamicallyTyped;
     }
     
     public void setDynamicallyTyped(boolean isDynamicallyTyped) {
-        this.isDynamicallyTyped = isDynamicallyTyped;
+        this.dynamicallyTyped = isDynamicallyTyped;
     }
         
     public TypeDeclaration getTypeDeclaration() {
