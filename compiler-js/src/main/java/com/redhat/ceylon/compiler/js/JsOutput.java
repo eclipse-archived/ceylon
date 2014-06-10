@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -45,6 +47,21 @@ public class JsOutput {
 
     public void encodeModel() throws IOException {
         new ModelEncoder(mmg.getModel()).encode(writer);
+    }
+
+    public void outputFile(File f) {
+        try(BufferedReader r = new BufferedReader(new FileReader(f))) {
+            String line = null;
+            while ((line = r.readLine()) != null) {
+                final String c = line.trim();
+                if (!c.isEmpty()) {
+                    getWriter().write(c);
+                    getWriter().write('\n');
+                }
+            }
+        } catch(IOException ex) {
+            throw new CompilerErrorException("Reading from " + f);
+        }
     }
 
 }

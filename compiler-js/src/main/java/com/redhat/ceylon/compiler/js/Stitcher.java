@@ -31,6 +31,7 @@ public class Stitcher {
 
     private static String VERSION="###";
     private static TypeCheckerBuilder langmodtc;
+    public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
 
     private static String normalizePath(String path) {
     	return path.replace('\\', '/');
@@ -39,7 +40,6 @@ public class Stitcher {
     private static void compileLanguageModule(final String line, Writer writer, String clmod)
             throws IOException {
         final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
-        final File clSrcDirJs = new File("../ceylon.language/runtime-js");
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
         tmpdir.delete();
         tmpdir = new File(tmpdir.getAbsolutePath());
@@ -69,7 +69,7 @@ public class Stitcher {
         final List<String> includes = new ArrayList<String>();
         for (String filename : line.split(",")) {
             final boolean isJsSrc = filename.trim().endsWith(".js");
-            final File src = new File(isJsSrc ? clSrcDirJs : clSrcDir,
+            final File src = new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
                     isJsSrc ? filename.trim() :
                     String.format("%s.ceylon", filename.trim()));
             if (src.exists() && src.isFile() && src.canRead()) {

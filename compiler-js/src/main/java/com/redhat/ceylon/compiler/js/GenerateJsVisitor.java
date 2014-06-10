@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -991,7 +992,29 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.methodDeclaration(null, that, this);
     }
-    
+
+    boolean shouldStitch(Declaration d) {
+        return JsCompiler.isCompilingLanguageModule() && hasAnnotationByName(d, "native");
+    }
+
+    void stitchNative(Declaration d, Tree.Declaration n) {
+        String fqn = d.getQualifiedNameString();
+        if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
+        if (fqn.startsWith("::"))fqn=fqn.substring(2);
+        fqn = fqn.replace('.', '_').replace("::", "-");
+        final File f = new File(Stitcher.LANGMOD_JS_SRC, fqn + ".js");
+        if (f.exists() && f.canRead()) {
+            jsout.outputFile(f);
+            if (d.isShared())share(d);
+            out(names.name(d), ".$crtmm$=");
+            TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
+            endLine(true);
+        } else {
+            System.out.println("REQUIRED NATIVE FILE MISSING FOR "
+                    + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d));
+        }
+    }
+
     @Override
     public void visit(MethodDefinition that) {
         //Don't even bother with nodes that have errors
