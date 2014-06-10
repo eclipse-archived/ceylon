@@ -1,8 +1,10 @@
-import java.lang{IntArray, LongArray, arrays}
+import ceylon.language.meta{type}
+import java.lang{IntArray, LongArray}
 Integer arraySequenceIterationStaticN = 1_000_000;
-ArraySequence<Integer> arraySequenceIterationStaticInts {
-    value s = {for (i in 0..100) i}.sequence;
-    assert(is ArraySequence<Integer> s);
+Sequence<Integer> arraySequenceIterationStaticInts {
+    value s = {for (i in 0..100) i}.sequence();
+    assert(is Sequence<Integer> s);
+    assert(type(s).string=="ceylon.language::ArraySequence<ceylon.language::Integer>");
     return s;
 }
 "The optimized version"
