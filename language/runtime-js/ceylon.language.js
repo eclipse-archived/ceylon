@@ -183,10 +183,38 @@ Identifiable$proto.equals = function(that) {
 atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
-//INTERFACES
-//Compiled from Ceylon sources
-//#COMPILED
-//Ends compiled from Ceylon sources
+//#COMPILE callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception
+//#Anything,Object,Null
+//#Comparison
+//#COMPILE Iterable
+//#COMPILE Sequential,Sequence,Empty,StringBuilder
+//#native Array
+//#native Boolean
+//#native Callable
+//#native SequenceBuilder
+//#native className
+//#native flatten
+//#native identityHash
+//#native internalSort
+//#native language
+//#native process
+//#COMPILE Correspondence,Finished
+//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
+//#Number
+//#COMPILE Set,Range,Singleton,AssertionError
+//#COMPILE Map
+//#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
+//#COMPILE every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
+//#COMPILE identical,compose,shuffle,plus,times,sort,sequences.js,strings.js,and,or,not
+//#metamodel
+//#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
+//#COMPILE meta/annotations,meta/metamodel,meta/optionalAnnotation,meta/sequencedAnnotations,meta/modules
+//#COMPILE meta/model/ValueModel,meta/model/ClassOrInterface,ClassOrInterface_addons.js,meta/model/ClassModel,ClassModel_addons.js,meta/model/Class,meta/model/FunctionModel,FunctionModel_addons.js,meta/model/Function,meta/model/Method,meta/model/InterfaceModel,InterfaceModel_addons.js,meta/model/Interface,meta/model/IntersectionType,meta/model/Member,Member_addons.js,meta/model/MemberClass,meta/model/MemberInterface,meta/model/Attribute,meta/model/Model,meta/model/Type,meta/model/UnionType,meta/model/Value,meta/model/nothingType,meta/model/TypeApplicationException,meta/model/InvocationException,meta/model/MutationException,meta/model/IncompatibleTypeException,meta/model/Generic,meta/model/Applicable
+//#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
+//#COMPILE annotations
+//#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,annotations.js,JsResource.js,modules.js,appliedtypes.js,opentypes.js,metamodel.js
+//#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
+//#COMPILE process.js,parseInteger,parseFloat,formatInteger,parseBoolean
 
 function NativeException(e) {
     var that = new NativeException.$$;
