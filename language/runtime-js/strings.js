@@ -23,7 +23,7 @@ String$.$crtmm$=function(){return{'super':{t:Object$},
   $an:function(){return[shared(),$_native(),$_final()];},
   mod:$CCMM$,d:['$','String']};};
 
-initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
+initExistingType(String$, String, 'ceylon.language::String', Object$, List, Comparable,
         Ranged, Summable);
 var origStrToString = String.prototype.toString;
 inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable);
@@ -110,6 +110,8 @@ atr$(String$proto, 'size', function() {
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Iterable','$at','size']}});
 atr$(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','List','$at','lastIndex']}});
+atr$(String$proto, 'rest', function(){return this.substring(1);},undefined,function(){return{
+  mod:$CCMM$,$t:{t:String$},d:['$','String','$at','rest']}});
 String$proto.span = function(from, to) {
     if (from > to) {
         return this.segment(to, from-to+1).reversed;
