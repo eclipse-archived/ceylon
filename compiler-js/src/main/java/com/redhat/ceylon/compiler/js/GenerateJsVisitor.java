@@ -994,35 +994,48 @@ public class GenerateJsVisitor extends Visitor
     }
 
     boolean shouldStitch(Declaration d) {
-        return JsCompiler.isCompilingLanguageModule() && hasAnnotationByName(d, "native");
+        return JsCompiler.isCompilingLanguageModule() && d.isNative();
     }
 
-    /** Reads a file with hand-written snippet and outputs it to the current writer. */
-    boolean stitchNative(Declaration d, Tree.Declaration n) {
+    private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '_').replace("::", "-");
-        final File f = new File(Stitcher.LANGMOD_JS_SRC, fqn + ".js");
+        return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+    }
+
+    /** Reads a file with hand-written snippet and outputs it to the current writer. */
+    boolean stitchNative(final Declaration d, final Tree.Declaration n) {
+        final File f = getStitchedFilename(d, ".js");
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             if (d.isClassOrInterfaceMember()) {
                 out(names.self((TypeDeclaration)d.getContainer()), ".");
-            } else if (d.isShared())share(d);
+            }
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
             endLine(true);
             return true;
         } else {
-            final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                    + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
-            System.out.println(err);
-            if (d instanceof TypeDeclaration == false) {
-                //Don't output this for types because they can be elsewhere
+            if (d instanceof ClassOrInterface==false) {
+                final String err = "REQUIRED NATIVE FILE MISSING FOR "
+                        + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
+                System.out.println(err);
                 out("/*", err, "*/");
             }
             return false;
         }
+    }
+
+    /** Stitch a snippet of code to initialize type (usually a call to initTypeProto). */
+    boolean stitchInitializer(TypeDeclaration d) {
+        final File f = getStitchedFilename(d, "$init.js");
+        if (f.exists() && f.canRead()) {
+            jsout.outputFile(f);
+            return true;
+        }
+        return false;
     }
 
     @Override
