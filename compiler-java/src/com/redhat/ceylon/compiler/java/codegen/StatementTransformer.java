@@ -1439,7 +1439,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (forIterator instanceof Tree.KeyValueIterator) {
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName,
-                        makeJavaType(elementType),
+                        makeJavaType(typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType()), JT_RAW),
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
@@ -1449,7 +1449,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(keyType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
-                                keyType, true, BoxingStrategy.UNBOXED, keyType));
+                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
                 String valueName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getValueVariable());
                 JCStatement valueVariable = makeVar(FINAL,
@@ -1457,7 +1457,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(valueType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
-                                valueType, true, BoxingStrategy.UNBOXED, valueType));
+                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, valueType));
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(valueVariable);
                 transformedBlock = transformedBlock.prepend(keyVariable);
@@ -1653,22 +1653,22 @@ public class StatementTransformer extends AbstractTransformer {
     
     /**
      * Optimized transformation for a {@code for} loop where the iterable is 
-     * statically known to be an {@code ArraySequence}, and therefore can be 
+     * statically known to be a {@code Tuple}, and therefore can be 
      * iterated using a C-style {@code for}.
      * <pre>
-     * Object[] seq = seq.$getArray$();
-     * int length = seq.$getFirst$() + seq.get$Length$();
-     * for (int i = seq.$getFirst$(), i < length; i++) {
-     *     ELEMENT_TYPE element = (ELEMENT_TYPE)seq[i];
+     * Object[] arr = tup.$getArray$();
+     * int length = tup.$getFirst$() + tup.get$Length$();
+     * for (int i = tup.$getFirst$(), i < length; i++) {
+     *     ELEMENT_TYPE element = (ELEMENT_TYPE)arr[i];
      *     TRANSFORMED_BLOCK
      * }
      * </pre>
      */
-    final class ArraySequenceIterationOptimization extends IndexedAccessIterationOptimization {
+    final class TupleIterationOptimization extends IndexedAccessIterationOptimization {
         
         private final Naming.SyntheticName seqName;
         
-        ArraySequenceIterationOptimization(Tree.ForStatement stmt, 
+        TupleIterationOptimization(Tree.ForStatement stmt, 
                 Tree.Term baseIterable, Tree.Term step,
                 ProducedType elementType) {
             super(stmt, baseIterable, step, elementType, "array");
@@ -1710,7 +1710,13 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIndexedAccess() {
             JCArrayAccess expr = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel());
-            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, elementType);
+            ProducedType t;
+            if (isValueIterator()) {
+                t = elementType;
+            } else {
+                t = typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType());
+            }
+            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, t);
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
@@ -1775,9 +1781,7 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
                     "static type of iterable in for statement is not Tuple");
         }
-        // it's a tuple, and the java impl of Tuple handily inherits from 
-        // ArraySequence, so we can reuse that optimization.
-        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
+        return new TupleIterationOptimization(stmt, baseIterable, step, 
                 typeFact().getIteratedType(iterableType));
     }
     
