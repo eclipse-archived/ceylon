@@ -342,31 +342,37 @@ public class JsCompiler {
             String moduleName = entry.getKey().getNameAsString();
             String moduleVersion = entry.getKey().getVersion();
             //Create the JS file
-            File jsart = entry.getValue().close();
-            ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
+            final File jsart = entry.getValue().close();
             if (entry.getKey().isDefault()) {
                 System.err.println("Created module "+moduleName);
-            } else {
+            } else if (!compilingLanguageModule) {
                 System.err.println("Created module "+moduleName+"/"+moduleVersion);
             }
-            outRepo.putArtifact(artifact, jsart);
-            //js file signature
-            artifact.setForceOperation(true);
-            ArtifactContext sha1Context = artifact.getSha1Context();
-            sha1Context.setForceOperation(true);
-            File sha1File = ShaSigner.sign(jsart, new JULLogger(), opts.isVerbose());
-            outRepo.putArtifact(sha1Context, sha1File);
-            //Create the src archive
-            if (opts.isGenerateSourceArchive()) {
-                Set<File> sourcePaths = new HashSet<File>();
-                for (String sp : opts.getSrcDirs()) {
-                    sourcePaths.add(new File(sp));
+            if (compilingLanguageModule) {
+                ArtifactContext artifact = new ArtifactContext("delete", "me", ArtifactContext.JS);
+                outRepo.putArtifact(artifact, jsart);
+                artifact.setForceOperation(true);
+            } else {
+                final ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
+                outRepo.putArtifact(artifact, jsart);
+                //js file signature
+                artifact.setForceOperation(true);
+                ArtifactContext sha1Context = artifact.getSha1Context();
+                sha1Context.setForceOperation(true);
+                File sha1File = ShaSigner.sign(jsart, new JULLogger(), opts.isVerbose());
+                outRepo.putArtifact(sha1Context, sha1File);
+                //Create the src archive
+                if (opts.isGenerateSourceArchive()) {
+                    Set<File> sourcePaths = new HashSet<File>();
+                    for (String sp : opts.getSrcDirs()) {
+                        sourcePaths.add(new File(sp));
+                    }
+                    SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
+                            moduleName, moduleVersion, opts.isVerbose(), new JULLogger());
+                    sac.copySourceFiles(jsout.getSources());
                 }
-                SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
-                        moduleName, moduleVersion, opts.isVerbose(), new JULLogger());
-                sac.copySourceFiles(jsout.getSources());
+                sha1File.deleteOnExit();
             }
-            sha1File.deleteOnExit();
             jsart.deleteOnExit();
         }
     }

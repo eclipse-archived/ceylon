@@ -29,7 +29,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
  */
 public class Stitcher {
 
-    private static String VERSION="###";
     private static TypeCheckerBuilder langmodtc;
     public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
 
@@ -85,7 +84,7 @@ public class Stitcher {
         jsc.setFiles(includes);
         jsc.generate();
         JsCompiler.compilingLanguageModule=false;
-        File compsrc = new File(tmpout, String.format("ceylon/language/%s/ceylon.language-%<s.js", VERSION));
+        File compsrc = new File(tmpout, "delete/me/delete-me.js");
         if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
             try (BufferedReader jsr = new BufferedReader(new FileReader(compsrc))) {
                 String jsline = null;
@@ -99,7 +98,7 @@ public class Stitcher {
                 compsrc.delete();
             }
         } else {
-            System.out.println("WTF??? No generated js for language module!!!!");
+            System.out.println("Can't find generated js for language module in " + compsrc.getAbsolutePath());
             System.exit(1);
         }
     }
@@ -165,7 +164,6 @@ public class Stitcher {
             if (!outfile.getParentFile().exists()) {
                 outfile.getParentFile().mkdirs();
             }
-            VERSION=outfile.getParentFile().getName();
             try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
                 stitch(infile, writer);
             } finally {
