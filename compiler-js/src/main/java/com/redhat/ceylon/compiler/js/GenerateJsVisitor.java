@@ -1005,13 +1005,17 @@ public class GenerateJsVisitor extends Visitor
         final File f = new File(Stitcher.LANGMOD_JS_SRC, fqn + ".js");
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
-            if (d.isShared())share(d);
+            if (d.isClassOrInterfaceMember()) {
+                out(names.self((TypeDeclaration)d.getContainer()), ".");
+            } else if (d.isShared())share(d);
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
             endLine(true);
         } else {
-            System.out.println("REQUIRED NATIVE FILE MISSING FOR "
-                    + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d));
+            final String err = "REQUIRED NATIVE FILE MISSING FOR "
+                    + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
+            System.out.println(err);
+            out("/*", err, "*/");
         }
     }
 

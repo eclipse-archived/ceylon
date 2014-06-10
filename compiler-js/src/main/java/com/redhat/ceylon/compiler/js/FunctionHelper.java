@@ -229,15 +229,19 @@ public class FunctionHelper {
             }
             //Only the first paramlist can have defaults
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
-            if (gen.shouldStitch(m)) {
+            if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
                 gen.stitchNative(m, that);
             }
-        } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
-            if (m.getContainer() instanceof TypeDeclaration) {
-                gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
-                        gen.getNames().name(m), "={$fml:1,$crtmm$:");
+        } else if (m == that.getScope() && m.getContainer() instanceof TypeDeclaration && m.isMember()
+                && (m.isFormal() || gen.shouldStitch(m))) {
+            gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
+                    gen.getNames().name(m), "=");
+            if (m.isFormal()) {
+                gen.out("{$fml:1,$crtmm$:");
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
+            } else if (gen.shouldStitch(m)) {
+                gen.stitchNative(m, that);
             }
         }
     }
