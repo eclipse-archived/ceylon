@@ -391,6 +391,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ac.setFetchSingleArtifact(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
+            if (artifile == null) {
+                return true;
+            }
             long oldestArtifact;
             if (type == ModuleQuery.Type.JVM) {
                 oldestArtifact = JarUtils.oldestFileTime(artifile);
