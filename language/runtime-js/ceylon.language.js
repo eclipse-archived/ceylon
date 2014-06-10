@@ -146,23 +146,22 @@ initType(Nothing, 'ceylon.language::Nothing');
 $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
-//#COMPILE Object,Identifiable,Callable,callables.js
+//#COMPILE Object,Null,Identifiable,Callable,callables.js
 
-//#COMPILE Null,comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
-//#Anything,Object
+//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
+//#Anything
 //#COMPILE Iterable
 //#COMPILE Sequential,Sequence,Empty,StringBuilder
-//#native Array
 //#native Boolean
 //#native Callable
 //#COMPILE Correspondence,Finished
-//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
+//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,ArraySequence.js,sequences.js,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
 //#Number
 //#COMPILE Set,Range,Singleton,AssertionError
 //#COMPILE Map
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 //#COMPILE every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
-//#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,sequences.js,ArraySequence.js,strings.js,and,or,not,arrayOfSize
+//#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,strings.js,and,or,not,arrayOfSize
 //#metamodel
 //#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
 //#COMPILE meta/annotations,meta/metamodel,meta/optionalAnnotation,meta/sequencedAnnotations,modules.js,meta/modules
