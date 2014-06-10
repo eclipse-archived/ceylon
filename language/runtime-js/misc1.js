@@ -1,5 +1,3 @@
-function getNull() { return null }
-ex$.$prop$getNull={get:getNull,$crtmm$:function(){return{mod:$CCMM$,d:['$','null'],$t:{t:Null}};}};
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 Boolean$.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
