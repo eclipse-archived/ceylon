@@ -81,10 +81,7 @@ atr$(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
 },undefined,function(){return{mod:$CCMM$,d:['$','List','$at','lastIndex'],$t:{t:'u',l:[{t:Null},{t:Integer}]}};});
 atr$(Array$proto, 'reversed', function() {
-    if (this.length === 0) { return this; }
-    var arr = this.slice(0);
-    arr.reverse();
-    return this.seq$ ? ArraySequence(arr,this.$$targs$$||{Element$Iterable:{t:Anything}}) : arr.reifyCeylonType(this.$$targs$$.Element$Iterable);
+  return this.Reversed$List();
 },undefined,function(){return{mod:$CCMM$,d:['$','List','$at','reversed'],$t:{t:List,a:{Element$List:'Element$Array'}}};});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
@@ -139,7 +136,7 @@ Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 atr$(Array$proto, 'rest', function() {
-    return this.length>1?ArraySequence(this.slice(1),this.$$targs$$):getEmpty();
+    return this.Rest$List(1);
 });
 Array$proto.items = function(keys) {
     if (keys === undefined) return getEmpty();
@@ -151,7 +148,7 @@ Array$proto.items = function(keys) {
     return this.seq$?ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}}):seq.reifyCeylonType(this.$$targs$$.Element$Iterable);
 }
 atr$(Array$proto, 'keys', function(){ 
-    return this.size>0?Range(0,0+this.size-1,{Element$Sequential:{t:Integer}}):getEmpty(); 
+  return this.Indexes$List();
 });
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
@@ -243,7 +240,7 @@ function $init$sarg(){if(sarg$.$$===undefined){
       //ObjectDef it at caca.ceylon (13:4-15:4)
       function iter($$targs$$){
         var $$4=new iter.$$;
-        $$4.$$outer=sarg;
+        $$4.outer$=sarg;
         $$4.$$targs$$=$$targs$$;
         Iterator({Element$Iterator:sarg.$$targs$$.Element$Iterable},$$4);
         $$4.i=0;
