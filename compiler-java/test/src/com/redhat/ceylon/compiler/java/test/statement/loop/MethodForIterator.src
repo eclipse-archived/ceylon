@@ -112,10 +112,11 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
         loop_4: while (!((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$9;
         }
-        .java.lang.Object elem$11;
-        .ceylon.language.Iterator<? extends .ceylon.language.Character> c$iterator$$12 = .ceylon.language.String.instance("wim").iterator();
-        loop_5: while (!((elem$11 = c$iterator$$12.next()) instanceof .ceylon.language.Finished)) {
-            final int c = ((.ceylon.language.Character)elem$11).intValue();
+        .java.lang.String s$11 = "wim";
+        int length$12 = s$11.length();
+        loop_5: for (int index$13 = 0; index$13 < length$12; ) {
+            final int c = s$11.codePointAt(index$13);
+            index$13 += .java.lang.Character.charCount(c);
         }
     }
     
