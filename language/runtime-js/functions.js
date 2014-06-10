@@ -269,49 +269,6 @@ function removeSupertypes(list) {
     }
 }
 
-function className(obj) {
-    function _typename(t) {
-        if (t.t==='i' || t.t==='u') {
-            var _sep = t.t==='i'?'&':'|';
-            var ct = '';
-            for (var i=0; i < t.l.length; i++) {
-                if (i>0) { ct+=_sep; }
-                ct += _typename(t.l[i]);
-            }
-            return String$(ct);
-        } else {
-            var tn = t.t.$$.T$name;
-            if (t.a) {
-                tn += '<';
-                for (var i = 0; i < t.a.length; i++) {
-                    if (i>0) { tn += ','; }
-                    tn += _typename(t.a[i]);
-                }
-                tn += '>';
-            }
-            return tn;
-        }
-    }
-    if (obj === null) return String$('ceylon.language::Null');
-    if (obj === undefined) return String$("JavaScript UNDEFINED");
-    var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
-    if (tn === 'UNKNOWN') {
-        if (typeof obj === 'function') {
-            tn = 'ceylon.language::Callable';
-        }
-    }
-    else if (obj.$$targs$$) {
-        /*tn += '<';
-        for (var i=0; i < obj.$$targs$$.length; i++) {
-            if (i>0) { tn += ','; }
-            tn += _typename(obj.$$targs$$[i]);
-        }
-        tn += '>';*/
-    }
-    return String$(tn);
-}
-className.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['$','className']};
-
 function set_type_args(obj, targs) {
     if (obj===undefined)return;
     if (obj.$$targs$$ === undefined) {
@@ -345,7 +302,6 @@ ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
 ex$.nonempty=nonempty;
 ex$.is$=is$;
-ex$.className=className;
 ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
 ex$.nn$=nn$;

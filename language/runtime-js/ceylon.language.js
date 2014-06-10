@@ -184,7 +184,6 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#native SequenceBuilder
 //#native className
 //#native flatten
-//#native internalSort
 //#native language
 //#native process
 //#COMPILE Correspondence,Finished
@@ -194,7 +193,7 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#COMPILE Map
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 //#COMPILE every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
-//#COMPILE identical,compose,shuffle,plus,times,sort,sequences.js,strings.js,and,or,not
+//#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,sequences.js,strings.js,and,or,not,arrayOfSize
 //#metamodel
 //#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
 //#COMPILE meta/annotations,meta/metamodel,meta/optionalAnnotation,meta/sequencedAnnotations,modules.js,meta/modules
@@ -203,7 +202,7 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#COMPILE annotations
 //#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,JsResource.js,appliedtypes.js,opentypes.js,metamodel.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
-//#COMPILE process.js,parseInteger,parseFloat,formatInteger,parseBoolean
+//#COMPILE process.js,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
 function NativeException(e) {
     var that = new NativeException.$$;

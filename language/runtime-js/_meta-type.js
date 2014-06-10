@@ -13,7 +13,7 @@ function type$meta(x,$$targs$$) {
       }
     }
   }
-  if (mm===undefined&&x.reifyCeylonType)mm=Array$.$crtmm$;
+  if (mm===undefined&&x.reifyCeylonType)mm=$_Array.$crtmm$;
   if (mm===undefined)throw new Error("Cannot retrieve metamodel for " + x);
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
