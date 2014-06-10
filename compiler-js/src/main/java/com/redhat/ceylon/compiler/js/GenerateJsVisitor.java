@@ -599,7 +599,6 @@ public class GenerateJsVisitor extends Visitor
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
         share(d);
-
         typeInitialization(that);
     }
 
@@ -1070,6 +1069,12 @@ public class GenerateJsVisitor extends Visitor
             if (plist != null) {
                 for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
                     generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                }
+            }
+            if (d.isMember()) {
+                ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                if (coi != null && d.inherits(coi)) {
+                    out(names.self(d), ".", names.name(d),"=", names.name(d), ";");
                 }
             }
             endBlock();
