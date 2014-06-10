@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="lib/txtmark-0.8-c0dcd373ce.jar"/>
 	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.1.0.car"/>
 	<classpathentry kind="lib" path="lib/antlr-runtime-3.4.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/lib/jboss-modules-1.3.3.Final.jar"/>
 	<classpathentry kind="lib" path="/ceylon-common/lib/markdownpapers-core-1.2.7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
