@@ -30,6 +30,7 @@
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
         <version.shrinkwrap.resolver>2.0.0-alpha-7</version.shrinkwrap.resolver>
+        <version.net.minidev.json-smart>1.1.1</version.net.minidev.json-smart>
         <version.junit>4.10</version.junit>
         <!-- Maven -->
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -205,6 +206,14 @@
                 <groupId>org.jboss.shrinkwrap.resolver</groupId>
                 <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
                 <version>${version.shrinkwrap.resolver}</version>
+            </dependency>
+
+            <!-- JSON -->
+
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${version.net.minidev.json-smart}</version>
             </dependency>
 
             <!-- Testing -->
