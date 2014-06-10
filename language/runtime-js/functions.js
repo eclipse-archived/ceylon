@@ -13,9 +13,6 @@ ex$.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['$'
 ex$.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['$','equal'],$t:{t:Comparison}};}};
 
 //These are operators for handling nulls
-function exists(value){
-  return value!==null&&value!==undefined;
-}
 function nonempty(value){
   return value!==null&&value!==undefined&&!value.empty;
 }
@@ -360,7 +357,6 @@ function nn$(e) {
 }
 ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
-ex$.exists=exists;
 ex$.nonempty=nonempty;
 ex$.is$=is$;
 ex$.className=className;
