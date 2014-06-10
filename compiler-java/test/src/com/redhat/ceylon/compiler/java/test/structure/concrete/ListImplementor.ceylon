@@ -52,7 +52,7 @@ class ListImplementor<X>() satisfies List<X> {
         throw;
     }
     
-    shared actual X get(Integer index) {
+    shared actual X elementAt(Integer index) {
         throw;
     }
     

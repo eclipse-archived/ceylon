@@ -378,6 +378,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public final Element elementAt(final long index) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
         throw new .ceylon.language.Exception(null, null);
     }
