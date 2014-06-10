@@ -95,7 +95,7 @@ public abstract class CompilerTest {
         "./../ceylon-module-resolver/build/classes",
         "./../ceylon-common/build/classes",
         "./../ceylon-runtime/build/classes",
-        "./../ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar",
+        "./../ceylon-runtime/lib/jboss-modules-1.3.3.Final.jar",
         "./../ceylon-module-resolver/lib/slf4j-api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };
