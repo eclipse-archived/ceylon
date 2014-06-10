@@ -466,7 +466,6 @@
         <mkdir dir="${ceylon.language.dist}"/>
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
             <arg value="${runtime-js.src}/ceylon.language.js" />
-            <arg value="${runtime-js.src}/language-module.txt" />
             <arg value="${build.dist.repo}/${ceylon.language.js}" />
         </java>
     </target>
