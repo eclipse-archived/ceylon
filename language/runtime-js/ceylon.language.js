@@ -146,18 +146,7 @@ initType(Nothing, 'ceylon.language::Nothing');
 $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
-//#COMPILE Object
-
-function Identifiable(obj) {}
-initType(Identifiable, "ceylon.language::Identifiable", $_Object);
-Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['$','Identifiable']};}
-function $init$Identifiable() { return Identifiable; }
-var Identifiable$proto = Identifiable.$$.prototype;
-Identifiable$proto.equals = function(that) {
-    return is$(that, {t:Identifiable}) && (that===this);
-}
-atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
-    undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
+//#COMPILE Object,Identifiable
 
 //#COMPILE Null,callable.js,collections.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
 //#Anything,Object
@@ -199,8 +188,6 @@ function NativeException(e) {
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
-ex$.Identifiable=Identifiable;
-ex$.$_Object=$_Object;
 ex$.Anything=Anything;
 ex$.Nothing=Nothing;
 ex$.$_Boolean=Boolean$;
