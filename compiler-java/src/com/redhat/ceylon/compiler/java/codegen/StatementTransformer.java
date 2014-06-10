@@ -1241,9 +1241,6 @@ public class StatementTransformer extends AbstractTransformer {
         
         transformation = stringIteration(stmt, baseIterable, step);
         if (transformation == null) {
-            transformation = arraySequenceIteration(stmt, baseIterable, step);
-        }
-        if (transformation == null) {
             transformation = tupleIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
@@ -1764,26 +1761,6 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.ArrayIterationStatic, "static type of iterable in for statement is not Array");
         }
         return null;
-    }
-    
-    private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt, 
-            Tree.Term baseIterable, Tree.Term step) {
-        return null;
-        /*
-        if (isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationStatic)) {
-            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
-                    "optimization explicitly disabled by @disableOptimization");
-        }
-        
-        ProducedType iterableType = baseIterable.getTypeModel();
-        if (iterableType.getSupertype(typeFact().getArraySequenceDeclaration()) == null) {
-            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
-                    "static type of iterable in for statement is not ArraySequence");
-        }
-        // it's an array sequence
-        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
-                typeFact().getIteratedType(iterableType));
-                */
     }
     
     private ForStatementTransformation tupleIteration(Tree.ForStatement stmt, 
