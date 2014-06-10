@@ -5,54 +5,6 @@ function $addmod$(mod, modname) {
   $loadedModules$[modname] = mod;
 }
 ex$.$addmod$=$addmod$;
-function modules$2(){
-    var $$modules=new modules$2.$$;
-    atr$($$modules,'list',function(){
-        var mods=[];
-        for (var m in $loadedModules$) {
-          var slashPos = m.lastIndexOf('/');
-          mods.push(this.find(m.substring(0,slashPos), m.substring(slashPos+1)));
-        }
-        return ArraySequence(mods,{Element$Iterable:{t:Module$meta$declaration}});
-    },undefined,{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Module$meta$declaration}}},$cont:modules$2,$an:function(){return[shared()];},d:['ceylon.language.meta','modules','$at','list']});
-    function find(name,version){
-        var modname = name + "/" + (version?version:"unversioned");
-        var lm = $loadedModules$[modname];
-        if (!lm) {
-          var mpath;
-          if (name === 'default' && version=='unversioned') {
-            mpath = name + "/" + name;
-          } else {
-            mpath = name.replace(/\./g,'/') + '/' + version + "/" + name + "-" + version;
-          }
-          try {lm = require(mpath);}catch(e){return null;}
-        }
-        if (lm && lm.$CCMM$) {
-          lm = Modulo(lm);
-          $loadedModules$[modname] = lm;
-        }
-        return lm === undefined ? null : lm;
-    }
-    $$modules.find=find;
-    find.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Module$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}},{$nm:'version',$mt:'prm',$t:{t:String$}}],$cont:modules$2,$an:function(){return[shared()];},d:['ceylon.language.meta','modules','$m','find']};
-    atr$($$modules,'$_default',function(){
-        return find('default',"unversioned");
-    },undefined,{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Module$meta$declaration}]},$cont:modules$2,$an:function(){return[shared()];},d:['ceylon.language.meta','modules','$at','default']});
-    return $$modules;
-}
-function $init$modules$meta(){
-    if (modules$2.$$===undefined){
-        initTypeProto(modules$2,'ceylon.language.meta::modules',Basic);
-    }
-    return modules$2;
-}
-ex$.$init$modules$meta=$init$modules$meta;
-$init$modules$meta();
-var modules$meta=modules$2();
-var getModules$meta=function(){
-    return modules$meta;
-}
-ex$.getModules$meta=getModules$meta;
 
 function Modulo(meta, $$modulo){
   $init$Modulo();
@@ -189,7 +141,7 @@ Modulo.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Module$meta$declarati
 ex$.Modulo=Modulo;
 function $init$Modulo(){
     if (Modulo.$$===undefined){
-        initTypeProto(Modulo,'Modulo',Basic,Module$meta$declaration);
+        initTypeProto(Modulo,'Modulo',Basic,$init$Module$meta$declaration());
     }
     return Modulo;
 }
@@ -232,7 +184,7 @@ Importa.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Import$meta$declarat
 ex$.Importa=Importa;
 function $init$Importa(){
     if (Importa.$$===undefined){
-        initTypeProto(Importa,'Importa',Basic,Import$meta$declaration);
+        initTypeProto(Importa,'Importa',Basic,$init$Import$meta$declaration());
     }
     return Importa;
 }
@@ -396,7 +348,7 @@ Paquete.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Package$meta$declara
 ex$.Paquete=Paquete;
 function $init$Paquete(){
     if (Paquete.$$===undefined){
-        initTypeProto(Paquete,'Paquete',Basic,Package$meta$declaration);
+        initTypeProto(Paquete,'Paquete',Basic,$init$Package$meta$declaration());
     }
     return Paquete;
 }
