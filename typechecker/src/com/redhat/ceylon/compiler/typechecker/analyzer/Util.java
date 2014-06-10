@@ -81,9 +81,11 @@ public class Util {
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        List<ProducedType> typeArguments = 
+                new ArrayList<ProducedType>(typeParameters.size());
         if (tal instanceof Tree.TypeArgumentList) {
-            Map<TypeParameter, ProducedType> typeArgMap = new HashMap<TypeParameter, ProducedType>();
+            Map<TypeParameter, ProducedType> typeArgMap = 
+                    new HashMap<TypeParameter, ProducedType>();
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
@@ -147,20 +149,23 @@ public class Util {
 
     static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
         if (s instanceof Tree.SpecifierStatement) {
-        	//shortcut refinement statements with => aren't really "executable"
-        	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
-        	if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
-        			!ss.getRefinement()) {
-        		return true;
-        	}
+            //shortcut refinement statements with => aren't really "executable"
+            Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
+            if (!(ss.getSpecifierExpression() 
+                    instanceof Tree.LazySpecifierExpression) || 
+                !ss.getRefinement()) {
+                return true;
+            }
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
         }
         else {
             if (s instanceof Tree.AttributeDeclaration) {
-                Tree.SpecifierOrInitializerExpression sie = ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
-        		if (sie!=null && !(sie instanceof Tree.LazySpecifierExpression)) {
+                Tree.SpecifierOrInitializerExpression sie = 
+                        ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
+        		if (sie!=null && 
+        		        !(sie instanceof Tree.LazySpecifierExpression)) {
                     return true;
                 }
             }
@@ -189,7 +194,8 @@ public class Util {
         return false;
     }
     
-    private static String message(ProducedType type, String problem, ProducedType otherType, Unit unit) {
+    private static String message(ProducedType type, String problem, 
+            ProducedType otherType, Unit unit) {
         String typeName = type.getProducedTypeName(unit);
         String otherTypeName = otherType.getProducedTypeName(unit);
         if (otherTypeName.equals(typeName)) {
@@ -212,9 +218,11 @@ public class Util {
         }
         else if (!unit.isCallableType(type)) {
             if (!hasError(node)) {
-                String extra = message(type, " is not a subtype of Callable", unit);
+                String extra = message(type, 
+                        " is not a subtype of Callable", unit);
                 if (node instanceof Tree.StaticMemberOrTypeExpression) {
-                    Declaration d = ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
+                    Declaration d = 
+                            ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
                     if (d instanceof Interface) {
                         extra = ": " + d.getName() + " is an interface";
                     }
@@ -248,7 +256,8 @@ public class Util {
         else {
             ProducedType supertype = pt.getSupertype(td);
             if (supertype==null) {
-                node.addError(message + message(pt, " is not a subtype of " + td.getName(), 
+                node.addError(message + 
+                        message(pt, " is not a subtype of " + td.getName(), 
                 		node.getUnit()));
             }
             return supertype;
@@ -261,19 +270,21 @@ public class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addError(message + message(type, " is not assignable to ", 
-        			supertype, node.getUnit()));
+        	node.addError(message + 
+        	        message(type, " is not assignable to ", 
+        	                supertype, node.getUnit()));
         }
     }
 
-    static void checkAssignableWithWarning(ProducedType type, ProducedType supertype, 
-            Node node, String message) {
+    static void checkAssignableWithWarning(ProducedType type, 
+            ProducedType supertype, Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addUnsupportedError(message + message(type, " is not assignable to ", 
-        			supertype, node.getUnit()));
+        	node.addUnsupportedError(message + 
+        	        message(type, " is not assignable to ", 
+        	                supertype, node.getUnit()));
         }
     }
 
@@ -286,8 +297,9 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
-            node.addError(message + message(type, " is not assignable to ", 
-            		supertype1, node.getUnit()));
+            node.addError(message + 
+                    message(type, " is not assignable to ", 
+                            supertype1, node.getUnit()));
         }
     }
 
@@ -297,8 +309,9 @@ public class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + message(type, " is not assignable to ", 
-            		supertype, node.getUnit()), code);
+            node.addError(message + 
+                    message(type, " is not assignable to ", 
+                            supertype, node.getUnit()), code);
         }
     }
 

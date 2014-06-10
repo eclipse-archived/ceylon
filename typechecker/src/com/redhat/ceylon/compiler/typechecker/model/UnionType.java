@@ -31,6 +31,11 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
+    protected boolean needsSatisfiedTypes() {
+        return false;
+    }
+    
+    @Override
     public String toString() {
         return "UnionType[" + getName() + "]";
     }

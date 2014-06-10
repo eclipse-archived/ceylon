@@ -1,13 +1,21 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,19 +30,25 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -297,11 +311,69 @@ public class DeclarationVisitor extends Visitor {
         ((Generic) declaration).setTypeParameters(getTypeParameters(that));
     }    
         
+    private void defaultExtendedToBasic(Class c) {
+        //default supertype for classes
+        c.setExtendedType(new LazyProducedType(unit) {
+            @Override
+            public Map<TypeParameter, ProducedType> initTypeArguments() {
+                return emptyMap();
+            }
+            @Override
+            public TypeDeclaration initDeclaration() {
+                return unit.getBasicDeclaration();
+            }
+        });
+    }
+
+    private void defaultExtendedToObject(Interface c) {
+        //default supertype for interfaces
+        c.setExtendedType(new LazyProducedType(unit) {
+            @Override
+            public Map<TypeParameter, ProducedType> initTypeArguments() {
+                return emptyMap();
+            }
+            @Override
+            public TypeDeclaration initDeclaration() {
+                return unit.getObjectDeclaration();
+            }
+        });
+    }
+
+    private void defaultExtendedToAnything(TypeParameter c) {
+        //default supertype for interfaces
+        c.setExtendedType(new LazyProducedType(unit) {
+            @Override
+            public Map<TypeParameter, ProducedType> initTypeArguments() {
+                return emptyMap();
+            }
+            @Override
+            public TypeDeclaration initDeclaration() {
+                return unit.getAnythingDeclaration();
+            }
+        });
+    }
+    
+    @Override
+    public void visit(Tree.ClassDefinition that) {
+        Class c = new Class();
+        if (!unit.getPackage().getQualifiedNameString().equals("ceylon.language") ||
+                !"Anything".equalsIgnoreCase(name(that.getIdentifier()))) {
+            defaultExtendedToBasic(c);
+        }
+        that.setDeclarationModel(c);
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.ClassDeclaration that) {
+        Class c = new ClassAlias();
+        that.setDeclarationModel(c);
+        super.visit(that);
+    }
+    
     @Override
     public void visit(Tree.AnyClass that) {
-        Class c = that instanceof Tree.ClassDefinition ?
-                new Class() : new ClassAlias();
-        that.setDeclarationModel(c);
+        Class c = that.getDeclarationModel();
         visitDeclaration(that, c);
         Scope o = enterScope(c);
         super.visit(that);
@@ -330,9 +402,23 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.InterfaceDefinition that) {
+        Interface i = new Interface();
+        defaultExtendedToObject(i);
+        that.setDeclarationModel(i);
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.InterfaceDeclaration that) {
+        InterfaceAlias i = new InterfaceAlias();
+        that.setDeclarationModel(i);
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.AnyInterface that) {
-        Interface i = that instanceof Tree.InterfaceDefinition ?
-                new Interface() : new InterfaceAlias();
+        Interface i = that.getDeclarationModel();
         that.setDeclarationModel(i);
         visitDeclaration(that, i);
         Scope o = enterScope(i);
@@ -356,9 +442,12 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
     
+    private boolean typeParameter;
+    
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
+        defaultExtendedToAnything(p);
         p.setDeclaration(declaration);
         p.setDefaulted(that.getTypeSpecifier()!=null);
         if (that.getTypeVariance()!=null) {
@@ -368,7 +457,9 @@ public class DeclarationVisitor extends Visitor {
         }
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
+        typeParameter = true;
         super.visit(that);
+        typeParameter = false;
     }
     
     @Override
@@ -452,6 +543,7 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing object body");
         }*/
         Class c = new Class();
+        defaultExtendedToBasic(c);
         c.setAnonymous(true);
         that.setAnonymousClass(c);
         visitDeclaration(that, c);
@@ -474,6 +566,7 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing named argument body");
         }*/
         Class c = new Class();
+        defaultExtendedToBasic(c);
         c.setAnonymous(true);
         that.setAnonymousClass(c);
         visitArgument(that, c);
@@ -1159,7 +1252,7 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(p);
         super.visit(that);
         exitScope(o);
-
+        
         if ( that.getAbstractedType()!=null ) {
             that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
@@ -1305,31 +1398,6 @@ public class DeclarationVisitor extends Visitor {
         }
     }
     
-    @Override
-    public void visit(Tree.ClassSpecifier that) {
-        super.visit(that);
-        if (that.getMainToken().getType()==SPECIFY) {
-            that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
-        }
-    }
-    
-    @Override
-    public void visit(Tree.TypeSpecifier that) {
-        super.visit(that);
-        if (that.getMainToken().getType()==SPECIFY && 
-                !(that instanceof Tree.DefaultTypeArgument)) {
-            that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
-        }
-    }
-    
-    @Override
-    public void visit(Tree.LazySpecifierExpression that) {
-        super.visit(that);
-        if (that.getMainToken().getType()==SPECIFY) {
-            that.addError("incorrect syntax: expression must be specified using =>", 1050);
-        }
-    }
-    
     private boolean declarationReference=false;
     
     @Override
@@ -1348,6 +1416,397 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.StaticType that) {
         that.setMetamodel(declarationReference);
         super.visit(that);
+    }
+    
+    private boolean inExtends;
+    
+    @Override
+    public void visit(final Tree.BaseType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return getTypeDeclaration(that.getScope(), 
+                            name(that.getIdentifier()), 
+                            null, false, unit);
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                    return getTypeArgumentMap(getDeclaration(), null, 
+                            Util.getTypeArguments(tal, 
+                                    getDeclaration().getTypeParameters(), null));
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    @Override
+    public void visit(final Tree.QualifiedType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                private ProducedType outerType() {
+                    return that.getOuterType().getTypeModel();
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    ProducedType ot = outerType();
+                    if (ot==null) {
+                        return null;
+                    }
+                    else {
+                        return Util.getTypeMember(ot.getDeclaration(), 
+                                name(that.getIdentifier()), 
+                                null, false, unit);
+                    }
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                    ProducedType ot = outerType();
+                    if (ot==null) {
+                        return emptyMap();
+                    }
+                    else {
+                        return getTypeArgumentMap(getDeclaration(), ot, 
+                                Util.getTypeArguments(tal, 
+                                        getDeclaration().getTypeParameters(), ot));
+                    }
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.IterableType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                ProducedType iterableType() {
+                    Tree.Type elem = that.getElementType();
+                    if (elem!=null) {
+                        if (elem instanceof Tree.SequencedType) {
+                            ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
+                            if (et!=null) {
+                                if (((Tree.SequencedType) elem).getAtLeastOne()) {
+                                    return unit.getNonemptyIterableType(et);
+                                }
+                                else {
+                                    return unit.getIterableType(et);
+                                }
+                            }
+                        }
+                    }
+                    return unit.getIterableType(new UnknownType(unit).getType());
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return iterableType().getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return iterableType().getTypeArguments();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.TupleType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                private ProducedType tupleType(final Tree.TupleType that) {
+                    return getTupleType(that.getElementTypes(), unit);
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return tupleType(that).getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return tupleType(that).getTypeArguments();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.OptionalType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                private ProducedType optionalType() {
+                    List<ProducedType> types = new ArrayList<ProducedType>(2);
+                    types.add(unit.getType(unit.getNullDeclaration()));
+                    ProducedType dt = that.getDefiniteType().getTypeModel();
+                    if (dt!=null) types.add(dt);
+                    UnionType ut = new UnionType(unit);
+                    ut.setCaseTypes(types);
+                    return ut.getType();
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return optionalType().getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return emptyMap();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.UnionType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                private ProducedType unionType() {
+                    List<ProducedType> types = 
+                            new ArrayList<ProducedType>(that.getStaticTypes().size());
+                    for (Tree.StaticType st: that.getStaticTypes()) {
+                        //addToUnion( types, st.getTypeModel() );
+                        ProducedType t = st.getTypeModel();
+                        if (t!=null) types.add(t);
+                    }
+                    UnionType ut = new UnionType(unit);
+                    ut.setCaseTypes(types);
+                    return ut.getType();
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return unionType().getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return emptyMap();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.IntersectionType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                private ProducedType intersectionType() {
+                    List<ProducedType> types = 
+                            new ArrayList<ProducedType>(that.getStaticTypes().size());
+                    for (Tree.StaticType st: that.getStaticTypes()) {
+                        //addToIntersection(types, st.getTypeModel(), unit);
+                        ProducedType t = st.getTypeModel();
+                        if (t!=null) types.add(t);
+                    }
+                    IntersectionType it = new IntersectionType(unit);
+                    it.setSatisfiedTypes(types);
+                    return it.getType();
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return intersectionType().getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return emptyMap();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.SequenceType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return unit.getSequentialDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    List<TypeParameter> stps = 
+                            unit.getSequentialDeclaration().getTypeParameters();
+                    return singletonMap(stps.get(0), 
+                            that.getElementType().getTypeModel());
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.SequencedType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return that.getAtLeastOne() ? 
+                            unit.getSequenceDeclaration() : 
+                            unit.getSequentialDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    List<TypeParameter> stps = 
+                            (that.getAtLeastOne() ? 
+                                    unit.getSequenceDeclaration() : 
+                                    unit.getSequentialDeclaration())
+                            .getTypeParameters();
+                    return singletonMap(stps.get(0), 
+                            that.getType().getTypeModel());
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.EntryType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return unit.getEntryDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    HashMap<TypeParameter, ProducedType> map = 
+                            new HashMap<TypeParameter, ProducedType>();
+                    List<TypeParameter> itps = 
+                            unit.getEntryDeclaration().getTypeParameters();
+                    map.put(itps.get(0), that.getKeyType().getTypeModel());
+                    map.put(itps.get(1), that.getValueType().getTypeModel());
+                    return map;
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.FunctionType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    return unit.getCallableDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    HashMap<TypeParameter, ProducedType> map = 
+                            new HashMap<TypeParameter, ProducedType>();
+                    List<TypeParameter> ctps = 
+                            unit.getCallableDeclaration().getTypeParameters();
+                    map.put(ctps.get(0), that.getReturnType().getTypeModel());
+                    map.put(ctps.get(1), getTupleType(that.getArgumentTypes(), unit));
+                    return map;
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+    
+    public void visit(final Tree.SuperType that) {
+        super.visit(that);
+        if (inExtends) {
+            ProducedType t = new LazyProducedType(unit) {
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                    if (ci==null) {
+                        return null;
+                    }
+                    else {
+                        if (ci.isClassOrInterfaceMember()) {
+                            ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                            return intersectionOfSupertypes(oci).getDeclaration();
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                }
+                @Override
+                public Map<TypeParameter, ProducedType> initTypeArguments() {
+                    return emptyMap();
+                }
+            };
+            that.setTypeModel(t);
+        }
+    }
+
+    @Override
+    public void visit(Tree.ExtendedType that) {
+        inExtends = true;
+        super.visit(that);
+        inExtends = false;
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        ProducedType type = that.getType().getTypeModel();
+        if (type!=null) {
+            td.setExtendedType(type);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.SatisfiedTypes that) {
+        inExtends = true;
+        super.visit(that);
+        inExtends = false;
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        for (Tree.StaticType t: that.getTypes()) {
+            ProducedType type = t.getTypeModel();
+            if (type!=null) {
+                td.getSatisfiedTypes().add(type);
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ClassSpecifier that) {
+        inExtends = true;
+        super.visit(that);
+        inExtends = false;
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        ProducedType type = that.getType().getTypeModel();
+        if (type!=null) {
+            td.setExtendedType(type);
+        }
+        if (that.getMainToken().getType()==SPECIFY) {
+            that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeSpecifier that) {
+        if (typeParameter) {
+            //TODO: handle defaulted type args!!!
+            super.visit(that);
+            return;
+        }
+        inExtends = true;
+        super.visit(that);
+        inExtends = false;
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        ProducedType type = that.getType().getTypeModel();
+        if (type!=null) {
+            td.setExtendedType(type);
+        }
+        if (that.getMainToken().getType()==SPECIFY && 
+                !(that instanceof Tree.DefaultTypeArgument)) {
+            that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        super.visit(that);
+        if (that.getMainToken().getType()==SPECIFY) {
+            that.addError("incorrect syntax: expression must be specified using =>", 1050);
+        }
     }
     
 }

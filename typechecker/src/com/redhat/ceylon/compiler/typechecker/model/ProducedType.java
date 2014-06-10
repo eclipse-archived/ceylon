@@ -544,6 +544,9 @@ public class ProducedType extends ProducedReference {
                                  addToSupertypes(list, this)) ) {
             ProducedType extendedType = getExtendedType();
             if (extendedType!=null) {
+                if (extendedType.getDeclaration()==getDeclaration()) {
+                    throw new RuntimeException();
+                }
                 extendedType.getSupertypes(list);
             }
             List<ProducedType> satisfiedTypes = getSatisfiedTypes();
@@ -617,7 +620,7 @@ public class ProducedType extends ProducedReference {
         		|| dec instanceof IntersectionType;
         boolean canCache = !complexType 
                 && !hasUnderlyingType() 
-                && ProducedTypeCache.isCachingEnabled(); 
+                && ProducedTypeCache.isCachingEnabled();
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache
                 && cache.containsKey(this, dec)) {

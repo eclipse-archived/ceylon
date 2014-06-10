@@ -36,6 +36,7 @@ public abstract class ProducedReference {
     }
     
     public Map<TypeParameter, ProducedType> getTypeArguments() {
+        Declaration declaration = this.declaration;
         if (declaration instanceof Generic) {
         	Map<TypeParameter, ProducedType> result = typeArguments;
         	List<TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
@@ -81,7 +82,7 @@ public abstract class ProducedReference {
     }
     
     public boolean isFunctional() {
-        return declaration instanceof Functional;
+        return getDeclaration() instanceof Functional;
     }
 
     /**

@@ -26,9 +26,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  *
  */
 public class SupertypeVisitor extends Visitor {
-
+    
+    private boolean displayErrors;
+    
+    public SupertypeVisitor(boolean displayErrors) {
+        this.displayErrors = displayErrors;
+    }
+    
     private boolean checkSupertypeVariance(ProducedType type, TypeDeclaration d, Node node) {
         List<TypeDeclaration> errors = type.resolveAliases().checkDecidability();
+        if (displayErrors)
         for (TypeDeclaration td: errors) {
             node.addError("type with contravariant type parameter " + td.getName() + 
                     " appears in contravariant location in supertype: " + 
@@ -46,6 +53,7 @@ public class SupertypeVisitor extends Visitor {
                 if (t!=null) {
                     List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton(d));
                     if (!l.isEmpty()) {
+                        if (displayErrors)
                         stn.addError("inheritance is circular: definition of " + 
                                 d.getName() + " is recursive, involving " + typeList(l));
                         d.getSatisfiedTypes().remove(t);
@@ -64,6 +72,7 @@ public class SupertypeVisitor extends Visitor {
             	if (t!=null) {
             		List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
             		if (!l.isEmpty()) {
+            	        if (displayErrors)
             			etn.addError("inheritance is circular: definition of " + 
             					d.getName() + " is recursive, involving " + typeList(l));
             			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
@@ -85,6 +94,7 @@ public class SupertypeVisitor extends Visitor {
 				it.canonicalize().getType();
             }
             catch (RuntimeException re) {
+                if (displayErrors)
                 that.addError("inheritance hierarchy is undecidable: " + 
                         "could not canonicalize the intersection of all supertypes of " +
                         d.getName());

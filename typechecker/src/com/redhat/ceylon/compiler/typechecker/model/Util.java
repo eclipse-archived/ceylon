@@ -359,7 +359,7 @@ public class Util {
      * @param typeArguments explicit or inferred type 
      *        arguments of the declaration
      */
-    static Map<TypeParameter,ProducedType> getTypeArgumentMap(Declaration declaration, 
+    public static Map<TypeParameter,ProducedType> getTypeArgumentMap(Declaration declaration, 
             ProducedType receivingType, List<ProducedType> typeArguments) {        
     	List<TypeParameter> typeParameters = getTypeParameters(declaration);
 		//make sure we collect all type arguments
@@ -1171,12 +1171,13 @@ public class Util {
 
     public static ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
         List<ProducedType> list = new ArrayList<ProducedType>(ci.getSatisfiedTypes().size()+1);
-        list.add(ci.getExtendedType());
+        if (ci.getExtendedType()!=null) {
+            list.add(ci.getExtendedType());
+        }
         list.addAll(ci.getSatisfiedTypes());
         IntersectionType it = new IntersectionType(ci.getUnit());
         it.setSatisfiedTypes(list);
-        ProducedType type = it.getType();
-        return type;
+        return it.getType();
     }
 
     public static int addHashForModule(int ret, Declaration decl) {

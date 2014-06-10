@@ -522,7 +522,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
-        List<ProducedType> types = new ArrayList<ProducedType>(that.getStaticTypes().size());
+        List<ProducedType> types = 
+                new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToUnion( types, st.getTypeModel() );
         	ProducedType t = st.getTypeModel();
@@ -537,7 +538,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
-        List<ProducedType> types = new ArrayList<ProducedType>(that.getStaticTypes().size());
+        List<ProducedType> types = 
+                new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToIntersection(types, st.getTypeModel(), unit);
         	ProducedType t = st.getTypeModel();
@@ -609,16 +611,16 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
 		that.setTypeModel(producedType(unit.getCallableDeclaration(),
         		that.getReturnType().getTypeModel(),
-        		getTupleType(that.getArgumentTypes())));
+        		getTupleType(that.getArgumentTypes(), unit)));
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-		that.setTypeModel(getTupleType(that.getElementTypes()));
+		that.setTypeModel(getTupleType(that.getElementTypes(), unit));
     }
 
-	private ProducedType getTupleType(List<Tree.Type> ets) {
+	static ProducedType getTupleType(List<Tree.Type> ets, Unit unit) {
 		List<ProducedType> args = new ArrayList<ProducedType>(ets.size());
         boolean sequenced = false;
         boolean atleastone = false;
@@ -646,14 +648,15 @@ public class TypeVisitor extends Visitor {
 			}
 			args.add(arg);
         }
-        return getTupleType(args, sequenced, atleastone, firstDefaulted);
+        return getTupleType(args, sequenced, atleastone, firstDefaulted, unit);
 	}
 
 	//TODO: big copy/paste from Unit.getTupleType(), to eliminate
 	//      the canonicalization (since aliases are not yet 
 	//      resolvable in this phase)
-    public ProducedType getTupleType(List<ProducedType> elemTypes, 
-    		boolean variadic, boolean atLeastOne, int firstDefaulted) {
+    public static ProducedType getTupleType(List<ProducedType> elemTypes, 
+    		boolean variadic, boolean atLeastOne, int firstDefaulted,
+    		Unit unit) {
     	ProducedType result = unit.getType(unit.getEmptyDeclaration());
     	ProducedType union = unit.getType(unit.getNothingDeclaration());
     	int last = elemTypes.size()-1;
@@ -847,52 +850,64 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
+    private void defaultSuperclass(Tree.ExtendedType et, 
+            TypeDeclaration cd) {
         if (et==null) {
-            Class iotd = unit.getBasicDeclaration();
-            if (iotd!=null) {
-			    c.setExtendedType(iotd.getType());
+            Class bd = unit.getBasicDeclaration();
+            if (bd!=null) {
+			    cd.setExtendedType(bd.getType());
             }
         }
     }
 
     @Override 
     public void visit(Tree.ObjectDefinition that) {
-        defaultSuperclass(that.getExtendedType(), 
-                that.getAnonymousClass());
+        Class o = that.getAnonymousClass();
+        o.setExtendedType(null);
+        o.getSatisfiedTypes().clear();
+        defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.ObjectArgument that) {
-        defaultSuperclass(that.getExtendedType(), 
-                that.getAnonymousClass());
+        Class o = that.getAnonymousClass();
+        o.setExtendedType(null);
+        o.getSatisfiedTypes().clear();
+        defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.ClassDefinition that) {
-        Class c = that.getDeclarationModel();
+        Class cd = that.getDeclarationModel();
+        cd.setExtendedType(null);
+        cd.getSatisfiedTypes().clear();
         Class vd = unit.getAnythingDeclaration();
-        if (vd != null && !vd.equals(c)) {
-            defaultSuperclass(that.getExtendedType(), c);
+        if (vd != null && !vd.equals(cd)) {
+            defaultSuperclass(that.getExtendedType(), cd);
         }
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
+        Interface id = that.getDeclarationModel();
+        id.setExtendedType(null);
+        id.getSatisfiedTypes().clear();
         Class od = unit.getObjectDeclaration();
         if (od!=null) {
-		    that.getDeclarationModel().setExtendedType(od.getType());
+            id.setExtendedType(od.getType());
         }
         super.visit(that);
     }
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        Class vd = unit.getAnythingDeclaration();
         TypeParameter tpd = that.getDeclarationModel();
+        tpd.setExtendedType(null);
+        tpd.getSatisfiedTypes().clear();
+        Class vd = unit.getAnythingDeclaration();
         if (vd!=null) {
             tpd.setExtendedType(vd.getType());
         }
@@ -937,8 +952,9 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.ClassDeclaration that) {
-        super.visit(that);
         Class td = that.getDeclarationModel();
+        td.setExtendedType(null);
+        super.visit(that);
         Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
             that.addError("missing class body or aliased class reference");
@@ -990,6 +1006,8 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.InterfaceDeclaration that) {
+        Interface id = that.getDeclarationModel();
+        id.setExtendedType(null);
         super.visit(that);
         if (that.getTypeSpecifier()==null) {
             that.addError("missing interface body or aliased interface reference");
@@ -1017,7 +1035,7 @@ public class TypeVisitor extends Visitor {
                 				type.getProducedTypeName());
                 	}
                 	else*/ if (type.getDeclaration() instanceof Interface) {
-                    	that.getDeclarationModel().setExtendedType(type);
+                        id.setExtendedType(type);
                     } 
                     else {
                         et.addError("not an interface: " + 
@@ -1030,6 +1048,8 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.TypeAliasDeclaration that) {
+        TypeAlias ta = that.getDeclarationModel();
+        ta.setExtendedType(null);
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
             that.getSatisfiedTypes().addError("type alias may not satisfy a type");
@@ -1050,7 +1070,7 @@ public class TypeVisitor extends Visitor {
                 				type.getProducedTypeName());
                 	}
                 	else {*/
-                		that.getDeclarationModel().setExtendedType(type);
+                		ta.setExtendedType(type);
                 	//}
                 }
             }

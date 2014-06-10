@@ -20,7 +20,7 @@ public class ProducedTypeCache {
     private static CacheEnabler cacheEnabler = new CacheEnabler() {
         @Override
         public boolean isCacheEnabled() {
-            return true;
+            return false;
         }
     };
     

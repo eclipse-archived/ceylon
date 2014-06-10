@@ -19,8 +19,9 @@ public abstract class TypeDeclaration extends Declaration
         implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
-    private List<ProducedType> satisfiedTypes = needsSatisfiedTypes() 
-            ? new ArrayList<ProducedType>(3) : Collections.<ProducedType>emptyList();
+    private List<ProducedType> satisfiedTypes = needsSatisfiedTypes() ? 
+            new ArrayList<ProducedType>(3) : 
+                Collections.<ProducedType>emptyList();
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;

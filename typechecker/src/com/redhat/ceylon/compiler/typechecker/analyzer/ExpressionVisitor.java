@@ -2209,6 +2209,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
+        if (dec==null) return;
         if (!(p instanceof Tree.ExtendedTypeExpression)) {
             if (dec instanceof Class && ((Class) dec).isAbstract()) {
                 that.addError("abstract class may not be instantiated: " + dec.getName(unit));
