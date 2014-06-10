@@ -3254,7 +3254,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
    @Override public void visit(Exists that) {
-       Operators.unaryOp(that, clAlias+"exists(", ")", this);
+       Operators.unaryOp(that, clAlias+"nn$(", ")", this);
    }
    @Override public void visit(Nonempty that) {
        Operators.unaryOp(that, clAlias+"nonempty(", ")", this);
