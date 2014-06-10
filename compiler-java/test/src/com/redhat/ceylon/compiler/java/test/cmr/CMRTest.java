@@ -1080,7 +1080,10 @@ public class CMRTest extends CompilerTest {
         assertEquals("2", attr.get(OsgiManifest.Bundle_ManifestVersion));
 
         assertEquals(moduleName, attr.get(OsgiManifest.Bundle_SymbolicName));
-        assertEquals(moduleVersion, attr.get(OsgiManifest.Bundle_Version));
+        String bundleVersion = (String) attr.get(OsgiManifest.Bundle_Version);
+        int qualifierIndex = bundleVersion.lastIndexOf('.');
+        String bundleVersionWithoutQualifier = qualifierIndex > 0 ? bundleVersion.substring(0, qualifierIndex) : bundleVersion;
+        assertEquals(moduleVersion, bundleVersionWithoutQualifier);
     }
 
     @Test
@@ -1134,43 +1137,17 @@ public class CMRTest extends CompilerTest {
         Attributes attr = manifest.getMainAttributes();
         String attribute = (String) attr.get(OsgiManifest.Export_Package);
 
-        int index = attribute.lastIndexOf(";");
-        String[] exportPackage = attribute.substring(0, index).split(";");
+        String[] exportPackage = attribute.split(",");
         assertEquals(2, exportPackage.length);
 
         assertThat(
                 Arrays.asList(exportPackage),
                 CoreMatchers.hasItems(
-                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a",
-                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c"));
+                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;version="+ moduleVersion,
+                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c;version="+ moduleVersion));
 
         assertThat( Arrays.asList(exportPackage),
-                CoreMatchers.not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b")));
-    }
-
-    @Test
-    public void testMdlOsgiManifestExportsSharedPackagesWithModuleVersion() throws IOException {
-        compile("modules/osgi/a/module.ceylon",
-                "modules/osgi/a/package.ceylon",
-                "modules/osgi/a/A.ceylon",
-                "modules/osgi/a/b/package.ceylon",
-                "modules/osgi/a/b/B.ceylon",
-                "modules/osgi/a/c/package.ceylon",
-                "modules/osgi/a/c/C.ceylon"
-                );
-
-        final String moduleName = "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a";
-        final String moduleVersion = "1.1.0";
-
-        final Manifest manifest = getManifest(moduleName, moduleVersion);
-        assertNotNull(manifest);
-
-        Attributes attr = manifest.getMainAttributes();
-        String attribute = (String) attr.get(OsgiManifest.Export_Package);
-
-        int index = attribute.lastIndexOf(";");
-        String version = attribute.substring(index + 1);
-        assertEquals("version=" + moduleVersion, version);
+                CoreMatchers.not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b;version=" + moduleVersion)));
     }
 
     @Test
