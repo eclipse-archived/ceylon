@@ -14,3 +14,7 @@ And this might work on Windows:
 
     mvn install:install-file -Dfile=%USERPROFILE%\.ceylon\repo\com\redhat\ceylon\common\1.1.0\com.redhat.ceylon.common-1.1.0.jar -DgroupId=com.redhat.ceylon -DartifactId=ceylon-common -Dversion=1.1.0 -Dpackaging=jar
 
+After that you can do:
+
+    mvn clean install -Dmaven.test.skip
+
