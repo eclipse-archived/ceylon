@@ -3,6 +3,7 @@
 
 //the Ceylon language module
 //#METAMODEL
+var BasicID=1;//used by identityHash
 
 function getT$name() {return this.constructor.T$name;}
 function getT$all() {return this.constructor.T$all;}
@@ -162,13 +163,6 @@ function $init$$_Object() { return Object$; }
 
 var $_Object=Object$;
 
-var BasicID=1;
-function identityHash(x) {
-    var hash = x.BasicID;
-    return (hash !== undefined)
-            ? hash : (x.BasicID = BasicID++);
-}
-identityHash.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['$','identityHash']};}
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable", Object$);
 Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['$','Identifiable']};}
@@ -180,7 +174,7 @@ Identifiable$proto.equals = function(that) {
 atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
-//#COMPILE Null,callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception,Comparison
+//#COMPILE Null,callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception,Comparison,identityHash
 //#Anything,Object
 //#COMPILE Iterable
 //#COMPILE Sequential,Sequence,Empty,StringBuilder
@@ -190,7 +184,6 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#native SequenceBuilder
 //#native className
 //#native flatten
-//#native identityHash
 //#native internalSort
 //#native language
 //#native process
@@ -208,7 +201,7 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#COMPILE meta/model/ValueModel,meta/model/ClassOrInterface,ClassOrInterface_addons.js,meta/model/ClassModel,ClassModel_addons.js,meta/model/Class,meta/model/FunctionModel,FunctionModel_addons.js,meta/model/Function,meta/model/Method,meta/model/InterfaceModel,InterfaceModel_addons.js,meta/model/Interface,meta/model/IntersectionType,meta/model/Member,Member_addons.js,meta/model/MemberClass,meta/model/MemberInterface,meta/model/Attribute,meta/model/Model,meta/model/Type,meta/model/UnionType,meta/model/Value,meta/model/nothingType,meta/model/TypeApplicationException,meta/model/InvocationException,meta/model/MutationException,meta/model/IncompatibleTypeException,meta/model/Generic,meta/model/Applicable
 //#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
 //#COMPILE annotations
-//#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,annotations.js,JsResource.js,modules.js,appliedtypes.js,opentypes.js,metamodel.js
+//#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,JsResource.js,modules.js,appliedtypes.js,opentypes.js,metamodel.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,parseInteger,parseFloat,formatInteger,parseBoolean
 
@@ -228,14 +221,10 @@ function NativeException(e) {
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
 ex$.Identifiable=Identifiable;
-ex$.identityHash=identityHash;
 ex$.$_Object=Object$;
 ex$.Anything=Anything;
-ex$.Null=Null;
 ex$.Nothing=Nothing;
 ex$.$_Boolean=Boolean$;
-ex$.Comparison=Comparison;
-ex$.getNull=getNull;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
 ex$.NativeException=NativeException;
