@@ -61,7 +61,7 @@ function Mapita(o,$$targs$$,$$mapita){
     $$mapita.$prop$getHash.get=function(){return hash};
     return $$mapita;
 }
-Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{K$Mapita:{'var':'out','satisfies':[{t:Object$}]},V$Mapita:{'var':'out','satisfies':[{t:Object$}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:'K$Mapita'}}],$an:function(){return[shared()];},d:['','Mapita']};};
+Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{K$Mapita:{'var':'out','satisfies':[{t:$_Object}]},V$Mapita:{'var':'out','satisfies':[{t:$_Object}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:'K$Mapita'}}],$an:function(){return[shared()];},d:['','Mapita']};};
 ex$.Mapita=Mapita;
 function $init$Mapita(){
     if(Mapita.$$===undefined){
@@ -73,7 +73,7 @@ function $init$Mapita(){
                 var $$mapita=this;
                 return $$mapita.getT$all()['ceylon.language::Map'].$$.prototype.equals.call(this,other$2);
             };
-            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'other',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
+            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'other',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
             
             //AttributeDecl hash at caca.ceylon (6:2-6:56)
             atr$($$mapita,'hash',function(){
@@ -137,7 +137,7 @@ function $init$Mapita(){
             $$mapita.$_get=function $_get(k$3){
               var v=this.o[k$3];
               return v||null;
-            };$$mapita.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',$ps:[{$nm:'k',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
+            };$$mapita.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',$ps:[{$nm:'k',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
         })(Mapita.$$.prototype);
     }
     return Mapita;

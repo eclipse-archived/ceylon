@@ -16,17 +16,17 @@ function String$(/*{Character*}*/value,size) {
     if (size !== undefined) that.codePoints=size;
     return that;
 }
-String$.$crtmm$=function(){return{'super':{t:Object$},
+String$.$crtmm$=function(){return{'super':{t:$_Object},
   $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element$Iterable:{t:Character},Absent$Iterable:{t:Null}}},$mt:'prm'}],
   'satisfies':[{t:List,a:{Element$List:{t:Character}}}, {t:Comparable,a:{Other$Comparable:{t:String$}}},
     {t:Summable,a:{Other$Summable:{t:String$}}}, {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:String$}}}],
   $an:function(){return[shared(),$_native(),$_final()];},
   mod:$CCMM$,d:['$','String']};};
 
-initExistingType(String$, String, 'ceylon.language::String', Object$, List, Comparable,
+initExistingType(String$, String, 'ceylon.language::String', $_Object, List, Comparable,
         Ranged, Summable);
 var origStrToString = String.prototype.toString;
-inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable);
+inheritProto(String$, $_Object, Sequential, Comparable, Ranged, Summable);
 var String$proto = String$.$$.prototype;
 String$proto.$$targs$$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null},
   Element$List:{t:Character}, Other$Summable:{t:String$}, Other$Comparable:{t:String$},
@@ -689,11 +689,11 @@ function Character(value,cache) {
     that.value = value;
     return that;
 }
-Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
+Character.$crtmm$=function(){return{'super':{t:$_Object}, 'satisfies':[
     {t:Comparable,a:{Other:{t:Character}}}, {t:Enumerable,a:{Other:{t:Character}}}],
   $an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Character']};}
 
-initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
+initTypeProto(Character, 'ceylon.language::Character', $_Object, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
 atr$(Character$proto, 'string', function(){
   if (this._str===undefined) {

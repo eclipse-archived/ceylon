@@ -30,7 +30,7 @@ JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[
   mod:$CCMM$,d:['$','Number']};}
 
 var origNumToString = Number.prototype.toString;
-inheritProto(JSNumber, Object$, Number$, $init$Integral(), Exponentiable);
+inheritProto(JSNumber, $_Object, Number$, $init$Integral(), Exponentiable);
 
 function Integer(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Integer') {
@@ -40,7 +40,7 @@ function Integer(value) {
     Number$({Other$Number:{t:Integer}},that);
     return that;
 }
-initTypeProto(Integer, 'ceylon.language::Integer', Object$,Number$,
+initTypeProto(Integer, 'ceylon.language::Integer', $_Object,Number$,
         $init$Integral(), Exponentiable, Binary);
 Integer.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
@@ -53,7 +53,7 @@ function Float(value) {
     that.float$ = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language::Float', Object$,Number$,Exponentiable);
+initTypeProto(Float, 'ceylon.language::Float', $_Object,Number$,Exponentiable);
 Float.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
@@ -65,7 +65,7 @@ JSNum$proto.getT$name = function() {
 }
 JSNum$proto.toString = origNumToString;
 atr$(JSNum$proto, 'string', function(){ return String$(this.toString()); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']};});
+  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
 }
@@ -150,7 +150,7 @@ atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; }
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','sign']};});
 atr$(JSNum$proto, 'hash', function() {
     return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','hash']};});
+},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','hash']};});
 JSNum$proto.distanceFrom = function(other) {
     return (this.float$ ? this.wholePart : this) - other;
 }

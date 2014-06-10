@@ -25,7 +25,7 @@ function tpl$(elems,types,spread){
   var that=new Tuple.$$;
   that.$$targs$$=types;
   that.$opt=1;
-  Object$(that);
+  $_Object(that);
   var _t={t:'u',l:types.l};
   Sequence({Element$Sequence:_t},that);
   elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},

@@ -11,14 +11,14 @@ function $_Array(elems,$$targs$$) {
     return e;
 }
 $_Array.$crtmm$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),$_final(),$_native()];},mod:$CCMM$,d:['$','Array'],
-  'super':{t:Object$}, $tp:{Element$Array:{}}, satisfies:[{t:List,a:{Element$List:'Element$Array'}},
+  'super':{t:$_Object}, $tp:{Element$Array:{}}, satisfies:[{t:List,a:{Element$List:'Element$Array'}},
     {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:$_Array,a:{Element$Array:'Element$Array'}}}}]};
 
-initExistingType($_Array, Array, 'ceylon.language::Array', Object$,
+initExistingType($_Array, Array, 'ceylon.language::Array', $_Object,
         Ranged, $init$List());
 var $_Arrayproto = Array.prototype;
 var origArrToString = $_Arrayproto.toString;
-inheritProto($_Array, Object$, Ranged, $init$List());
+inheritProto($_Array, $_Object, Ranged, $init$List());
 $_Arrayproto.toString = origArrToString;
 $_Arrayproto.elementAt=function elementAt(i){
   var e=this[i];
@@ -195,18 +195,6 @@ $_Arrayproto.longerThan = function(len) {
   return this.size > len;
 }
 $_Arrayproto.longerThan.$crtmm$={mod:$CCMM$,d:['$','Iterable','$m','longerThan']};
-
-function TypeCategory(seq, type) {
-    var that = new TypeCategory.$$;
-    that.type = type;
-    that.seq = seq;
-    return that;
-}
-initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', $init$Basic(), Category);
-var TypeCategory$proto = TypeCategory.$$.prototype;
-TypeCategory$proto.contains = function(k) {
-    return is$(k, this.type) && this.seq.defines(k);
-}
 
 ex$.ArraySequence=ArraySequence;
 

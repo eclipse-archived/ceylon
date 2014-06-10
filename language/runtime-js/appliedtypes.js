@@ -227,7 +227,7 @@ function $init$AppliedMemberClass(){
         var mm=getrtmm$$(this.tipo);
         if (!extendsType({t:ot},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
         return this(cont);
-      };$$amc.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Class$meta$model,a:{Arguments$Class:'Arguments',Type$Class:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
+      };$$amc.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Class$meta$model,a:{Arguments$Class:'Arguments',Type$Class:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
     })(AppliedMemberClass.$$.prototype);
   }
   return AppliedMemberClass;
@@ -375,7 +375,7 @@ function $init$AppliedMemberInterface(){
       $$appliedMemberInterface.$_bind=function $_bind(container$2){
         var $$appliedMemberInterface=this;
         throw Exception(String$("IMPL MemberInterface.bind"));
-      };$$appliedMemberInterface.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
+      };$$appliedMemberInterface.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
     })(AppliedMemberInterface.$$.prototype);
   }
   return AppliedMemberInterface;
