@@ -81,7 +81,8 @@ atr$(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
 },undefined,function(){return{mod:$CCMM$,d:['$','List','$at','lastIndex'],$t:{t:'u',l:[{t:Null},{t:Integer}]}};});
 atr$(Array$proto, 'reversed', function() {
-  return this.Reversed$List();
+  var r=this.Reversed$List();
+  return this.seq$?r.sequence():r;
 },undefined,function(){return{mod:$CCMM$,d:['$','List','$at','reversed'],$t:{t:List,a:{Element$List:'Element$Array'}}};});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }

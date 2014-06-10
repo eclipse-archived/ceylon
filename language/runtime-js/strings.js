@@ -110,8 +110,9 @@ atr$(String$proto, 'size', function() {
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Iterable','$at','size']}});
 atr$(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','List','$at','lastIndex']}});
-atr$(String$proto, 'rest', function(){return this.substring(1);},undefined,function(){return{
-  mod:$CCMM$,$t:{t:String$},d:['$','String','$at','rest']}});
+atr$(String$proto, 'rest', function(){
+  return String$(this.Rest$List(1));
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$at','rest']}});
 String$proto.span = function(from, to) {
     if (from > to) {
         return this.segment(to, from-to+1).reversed;
