@@ -77,25 +77,30 @@ public class TypeGenerator {
         gen.beginBlock();
         gen.out("if(", gen.getNames().name(d), ".$$===undefined)");
         gen.beginBlock();
-        final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-        gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", gen.getNames().name(d), ",'", qns, "'");
-
-        if (extendedType != null) {
-            String fname = gen.typeFunctionName(extendedType.getType(),
-                    !extendedType.getType().getDeclarationModel().isMember());
-            gen.out(",", fname);
-        } else if (!isInterface) {
-            gen.out(",", GenerateJsVisitor.getClAlias(), "Basic");
+        boolean genIniter = true;
+        if (d.isNative()) {
+            //Allow native types to have their own initialization code
+            genIniter = !gen.stitchInitializer(d);
         }
+        if (genIniter) {
+            final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
+            gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", gen.getNames().name(d), ",'", qns, "'");
 
-        if (satisfiedTypes != null) {
-            for (Tree.StaticType satType : satisfiedTypes.getTypes()) {
-                String fname = gen.typeFunctionName(satType, true);
+            if (extendedType != null) {
+                String fname = gen.typeFunctionName(extendedType.getType(),
+                        !extendedType.getType().getDeclarationModel().isMember());
                 gen.out(",", fname);
+            } else if (!isInterface) {
+                gen.out(",", GenerateJsVisitor.getClAlias(), "Basic");
             }
+            if (satisfiedTypes != null) {
+                for (Tree.StaticType satType : satisfiedTypes.getTypes()) {
+                    String fname = gen.typeFunctionName(satType, true);
+                    gen.out(",", fname);
+                }
+            }
+            gen.out(");");
         }
-
-        gen.out(");");
         //Add ref to outer type
         if (d.isMember()) {
             StringBuilder containers = new StringBuilder();
@@ -174,6 +179,15 @@ public class TypeGenerator {
         if (errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
         gen.comment(that);
+        if (gen.shouldStitch(d)) {
+            if (gen.stitchNative(d, that)) {
+                if (d.isShared()) {
+                    gen.share(d);
+                }
+                initializeType(that, gen);
+                return;
+            }
+        }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(");
         for (Tree.Parameter p: that.getParameterList().getParameters()) {
             p.visit(gen);
@@ -218,7 +232,7 @@ public class TypeGenerator {
             gen.endLine(true);
         }
         gen.initParameters(that.getParameterList(), d, null);
-        
+
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
@@ -265,7 +279,6 @@ public class TypeGenerator {
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.share(d);
-
         initializeType(that, gen);
     }
 

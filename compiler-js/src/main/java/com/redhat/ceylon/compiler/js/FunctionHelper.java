@@ -230,7 +230,11 @@ public class FunctionHelper {
             //Only the first paramlist can have defaults
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
             if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
-                gen.stitchNative(m, that);
+                if (gen.stitchNative(m, that)) {
+                    if (m.isShared()) {
+                        gen.share(m);
+                    }
+                }
             }
         } else if (m == that.getScope() && m.getContainer() instanceof TypeDeclaration && m.isMember()
                 && (m.isFormal() || gen.shouldStitch(m))) {
@@ -241,7 +245,9 @@ public class FunctionHelper {
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
             } else if (gen.shouldStitch(m)) {
-                gen.stitchNative(m, that);
+                if (gen.stitchNative(m, that) && m.isShared()) {
+                    gen.share(m);
+                }
             }
         }
     }
