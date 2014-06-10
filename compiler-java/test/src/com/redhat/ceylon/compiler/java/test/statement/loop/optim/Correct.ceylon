@@ -105,16 +105,6 @@ class Correct() {
     }
     assert(expected == javaArrayIterationStatic());
     
-    function arraySequenceIterationStatic() {
-        assert(is ArraySequence<Integer> array = {for (i in -1..11) i}.sequence().segment(1, 11));
-        variable value sum = 0;
-        for (i in array) {
-            sum+=i;
-        }
-        return sum;
-    }
-    assert(expected == arraySequenceIterationStatic());
-    
     function tupleIterationStatic() {
         [Integer, Integer, Integer*] array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         variable value sum = 0;
@@ -145,10 +135,5 @@ class Correct() {
     }
     assert(expected == arrayIterationDynamic());
     
-    function arraySequenceIterationDynamic() {
-     assert(is ArraySequence<Integer> iterable = {for (i in 0..10) i}.sequence());
-        return iterationDynamic(iterable);
-    }
-    assert(expected == arraySequenceIterationDynamic());
     
 }
