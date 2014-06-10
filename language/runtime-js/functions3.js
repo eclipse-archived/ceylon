@@ -1,19 +1,3 @@
-function addSuppressedException(/*Exception*/sup,/*Exception*/e) {
-    if (e.$sups$===undefined) {
-        e.$sups$=[].reifyCeylonType({t:Throwable});
-    }
-    if (sup.getT$name === undefined) sup = NativeException(sup);
-    e.$sups$.push(sup);
-}
-ex$.addSuppressedException=addSuppressedException;
-function suppressedExceptions(/*Exception*/e) {
-    return e.$sups$===undefined?getEmpty():e.$sups$;
-}
-suppressedExceptions.$crtmm$=function(){
-  return {mod:$CCMM$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
-}
-ex$.suppressedExceptions=suppressedExceptions;
-
 function retpl$(t) { //receives {t:'T',l:[...]}
   if (t.t!=='T')return t;
   var e;
