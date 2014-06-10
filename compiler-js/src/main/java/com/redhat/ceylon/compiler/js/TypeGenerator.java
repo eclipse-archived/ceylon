@@ -249,9 +249,9 @@ public class TypeGenerator {
             gen.out(")");
             gen.endLine(true);
             System.out.printf("%s is annotated native.", d.getQualifiedNameString());
-            System.out.printf("You can implement two functions named $init$native$%s$before and $init$native$%<s$after",
+            System.out.printf(" You can implement 2 functions: $init$native$%s$before and $init$native$%<s$after",
                     gen.getNames().name(d));
-            System.out.print("that will be called (if they exist) before and after the class body. ");
+            System.out.print(" that will be called (if they exist) before and after the class body. ");
             System.out.print("These functions will receive the instance being initialized");
             if (withTargs) {
                 System.out.print(" and the type arguments with which it is being initialized");

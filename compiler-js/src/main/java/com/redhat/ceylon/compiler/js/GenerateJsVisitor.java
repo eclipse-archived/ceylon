@@ -786,7 +786,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (s instanceof AttributeGetterDefinition) {
             addGetterToPrototype(d, (AttributeGetterDefinition)s);
         } else if (s instanceof AttributeDeclaration) {
-            addGetterAndSetterToPrototype(d, (AttributeDeclaration) s);
+            AttributeGenerator.addGetterAndSetterToPrototype(d, (AttributeDeclaration) s, this);
         } else if (s instanceof ClassDefinition) {
             addClassToPrototype(d, (ClassDefinition) s);
         } else if (s instanceof InterfaceDefinition) {
@@ -997,7 +997,8 @@ public class GenerateJsVisitor extends Visitor
         return JsCompiler.isCompilingLanguageModule() && hasAnnotationByName(d, "native");
     }
 
-    void stitchNative(Declaration d, Tree.Declaration n) {
+    /** Reads a file with hand-written snippet and outputs it to the current writer. */
+    boolean stitchNative(Declaration d, Tree.Declaration n) {
         String fqn = d.getQualifiedNameString();
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
@@ -1011,11 +1012,16 @@ public class GenerateJsVisitor extends Visitor
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
             endLine(true);
+            return true;
         } else {
             final String err = "REQUIRED NATIVE FILE MISSING FOR "
                     + d.getQualifiedNameString() + " => " + f + ", containing " + names.name(d);
             System.out.println(err);
-            out("/*", err, "*/");
+            if (d instanceof TypeDeclaration == false) {
+                //Don't output this for types because they can be elsewhere
+                out("/*", err, "*/");
+            }
+            return false;
         }
     }
 
@@ -1213,7 +1219,7 @@ public class GenerateJsVisitor extends Visitor
         out(");");
     }
     
-    private AttributeSetterDefinition associatedSetterDefinition(
+    AttributeSetterDefinition associatedSetterDefinition(
             Value valueDecl) {
         final Setter setter = valueDecl.getSetter();
         if ((setter != null) && (currentStatements != null)) {
@@ -1231,7 +1237,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Exports a getter function; useful in non-prototype style. */
-    private boolean shareGetter(MethodOrValue d) {
+    boolean shareGetter(MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1258,7 +1264,7 @@ public class GenerateJsVisitor extends Visitor
         generateAttributeMetamodel(that, false, true);
     }
 
-    private boolean isCaptured(Declaration d) {
+    boolean isCaptured(Declaration d) {
         if (d.isToplevel()||d.isClassOrInterfaceMember()) { //TODO: what about things nested inside control structures
             if (d.isShared() || d.isCaptured() ) {
                 return true;
@@ -1274,7 +1280,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private boolean shareSetter(MethodOrValue d) {
+    boolean shareSetter(MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1359,18 +1365,11 @@ public class GenerateJsVisitor extends Visitor
             }
             else {
                 if (addGetter) {
-                    generateAttributeGetter(that, d, specInitExpr, names.name(param));
+                    AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
+                            names.name(param), this, directAccess);
                 }
                 if (addSetter) {
-                    final String varName = names.name(d);
-                    String paramVarName = names.createTempVariable();
-                    out(function, names.setter(d), "(", paramVarName, "){");
-                    if (d.isLate()) {
-                        generateImmutableAttributeReassignmentCheck(varName, names.name(d));
-                    }
-                    out("return ", varName, "=", paramVarName, ";}");
-                    endLine(true);
-                    shareSetter(d);
+                    AttributeGenerator.generateAttributeSetter(that, d, this);
                 }
             }
             generateAttributeMetamodel(that, addGetter, addSetter);
@@ -1378,7 +1377,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Generate runtime metamodel info for an attribute declaration or definition. */
-    private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
+    void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
         //No need to define all this for local values
         Scope _scope = that.getScope();
         while (_scope != null) {
@@ -1434,106 +1433,6 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
-                SpecifierOrInitializerExpression expr, String param) {
-        final String varName = names.name(decl);
-        final boolean initVal = expr != null && decl.isToplevel();
-        out("var ", varName);
-        if (expr != null) {
-            if (initVal) {
-                out(";function $valinit$", varName, "(){if(", varName, "===undefined)", varName, "=");
-            } else {
-                out("=");
-            }
-            int boxType = boxStart(expr.getExpression().getTerm());
-            if (dynblock > 0 && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
-                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this, false);
-            } else {
-                expr.visit(this);
-            }
-            if (boxType == 4) {
-                //Pass Callable argument types
-                out(",");
-                if (decl instanceof Method) {
-                    //Add parameters
-                    TypeUtils.encodeParameterListForRuntime(attributeNode, ((Method)decl).getParameterLists().get(0),
-                            GenerateJsVisitor.this);
-                } else {
-                    //Type of value must be Callable
-                    //And the Args Type Parameters is a Tuple
-                    TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(expr.getExpression().getTypeModel(), this);
-                }
-                out(",");
-                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this, false);
-            }
-            boxUnboxEnd(boxType);
-            if (initVal) {
-                out(";return ", varName, ";};$valinit$", varName, "()");
-            }
-        } else if (param != null) {
-            out("=", param);
-        }
-        endLine(true);
-        if (decl instanceof Method) {
-            if (decl.isClassOrInterfaceMember() && isCaptured(decl)) {
-                beginNewLine();
-                outerSelf(decl);
-                out(".", varName, "=", varName);
-                endLine(true);
-            }
-        } else {
-            if (isCaptured(decl) || decl.isToplevel()) {
-                final boolean isLate = decl.isLate();
-                if (defineAsProperty(decl)) {
-                    out(clAlias, "atr$(");
-                    outerSelf(decl);
-                    out(",'", varName, "',function(){");
-                    if (isLate) {
-                        generateUnitializedAttributeReadCheck(varName, varName);
-                    }
-                    if (initVal) {
-                        out("return $valinit$", varName, "();}");
-                    } else {
-                        out("return ", varName, ";}");
-                    }
-                    if (decl.isVariable() || isLate) {
-                        final String par = names.createTempVariable();
-                        out(",function(", par, "){");
-                        if (isLate && !decl.isVariable()) {
-                            generateImmutableAttributeReassignmentCheck(varName, varName);
-                        }
-                        out("return ", varName, "=", par, ";}");
-                    } else {
-                        out(",undefined");
-                    }
-                    out(",");
-                    if (attributeNode == null) {
-                        TypeUtils.encodeForRuntime(attributeNode, decl, this);
-                    } else {
-                        TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), this);
-                    }
-                    out(")");
-                    endLine(true);
-                }
-                else {
-                    out(function, names.getter(decl),"(){return ");
-                    if (initVal) {
-                        out("$valinit$", varName, "();}");
-                    } else {
-                        out(varName, ";}");
-                    }
-                    endLine();
-                    shareGetter(decl);
-                }
-            } else {
-                if (decl.isMember() && qualify(expr, decl)) {
-                    out(varName, "=", varName, ";");
-                }
-                directAccess.add(decl);
-            }
-        }
-    }
-
     void generateUnitializedAttributeReadCheck(String privname, String pubname) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
@@ -1543,86 +1442,6 @@ public class GenerateJsVisitor extends Visitor
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
         out("if(", privname, "!==undefined)throw ", clAlias,
                 "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
-    }
-
-    private void addGetterAndSetterToPrototype(TypeDeclaration outer,
-            AttributeDeclaration that) {
-        Value d = that.getDeclarationModel();
-        if (!opts.isOptimize()||d.isToplevel()) return;
-        comment(that);
-        if (d.isFormal()) {
-            generateAttributeMetamodel(that, false, false);
-        } else {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter param = null;
-            if (d.isParameter()) {
-                param = ((Functional)d.getContainer()).getParameter(d.getName());
-            }
-            final boolean isLate = d.isLate();
-            if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
-                        || param != null || isLate) {
-                if (that.getSpecifierOrInitializerExpression()
-                                instanceof LazySpecifierExpression) {
-                    // attribute is defined by a lazy expression ("=>" syntax)
-                    defineAttribute(names.self(outer), names.name(d));
-                    beginBlock();
-                    initSelf(that);
-                    out("return ");
-                    Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
-                    if (!isNaturalLiteral(expr.getTerm())) {
-                        final int boxType = boxStart(expr.getTerm());
-                        expr.visit(this);
-                        endLine(true);
-                        if (boxType == 4) out("/*TODO: callable targs 3*/");
-                        boxUnboxEnd(boxType);
-                    }
-                    endBlock();
-                    Tree.AttributeSetterDefinition setterDef = null;
-                    if (d.isVariable()) {
-                        setterDef = associatedSetterDefinition(d);
-                        if (setterDef != null) {
-                            out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                            AttributeGenerator.setter(setterDef, this);
-                        }
-                    }
-                    if (setterDef == null) {
-                        out(",undefined");
-                    }
-                    out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    if (setterDef != null) {
-                        out(",");
-                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), this);
-                    }
-                    out(")");
-                    endLine(true);
-                }
-                else {
-                    final String atname = names.name(d);
-                    final String privname = param == null ? names.privateName(d) : names.name(param)+"_";
-                    defineAttribute(names.self(outer), atname);
-                    out("{");
-                    if (isLate) {
-                        generateUnitializedAttributeReadCheck("this."+privname, atname);
-                    }
-                    out("return this.", privname, ";}");
-                    if (d.isVariable() || isLate) {
-                        final String pname = names.createTempVariable();
-                        out(",function(", pname, "){");
-                        if (isLate && !d.isVariable()) {
-                            generateImmutableAttributeReassignmentCheck("this."+privname, atname);
-                        }
-                        out("return this.", privname,
-                                "=", pname, ";}");
-                    } else {
-                        out(",undefined");
-                    }
-                    out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    out(")");
-                    endLine(true);
-                }
-            }
-        }
     }
 
     @Override
@@ -2251,8 +2070,8 @@ public class GenerateJsVisitor extends Visitor
                         // Specifier for a member attribute. This actually defines the
                         // member (e.g. in shortcut refinement syntax the attribute
                         // declaration itself can be omitted), so generate the attribute.
-                        generateAttributeGetter(null, moval,
-                                specStmt.getSpecifierExpression(), null);
+                        AttributeGenerator.generateAttributeGetter(null, moval,
+                                specStmt.getSpecifierExpression(), null, this, directAccess);
                     }
                 } else {
                     // Specifier for some other attribute, or for a method.
