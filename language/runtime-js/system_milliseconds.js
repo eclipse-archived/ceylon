@@ -1,0 +1,1 @@
+return Date.now();

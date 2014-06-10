@@ -174,18 +174,14 @@ Identifiable$proto.equals = function(that) {
 atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
-//#COMPILE Null,callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception,Comparison,identityHash
+//#COMPILE Null,callable.js,collections.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
 //#Anything,Object
 //#COMPILE Iterable
 //#COMPILE Sequential,Sequence,Empty,StringBuilder
 //#native Array
 //#native Boolean
 //#native Callable
-//#native SequenceBuilder
-//#native className
-//#native flatten
 //#native language
-//#native process
 //#COMPILE Correspondence,Finished
 //#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
 //#Number
@@ -202,7 +198,7 @@ atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
 //#COMPILE annotations
 //#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,JsResource.js,appliedtypes.js,opentypes.js,metamodel.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
-//#COMPILE process.js,parseInteger,parseFloat,formatInteger,parseBoolean,className
+//#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
 function NativeException(e) {
     var that = new NativeException.$$;
