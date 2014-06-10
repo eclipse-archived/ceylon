@@ -1,0 +1,16 @@
+
+To be able to build with Maven you will first need to build the ceylon-common project.
+And then you need to install the resulting JAR using the following command:
+
+    mvn install:install-file -Dfile=path/to/com.redhat.ceylon.common-1.1.0.jar -DgroupId=com.redhat.ceylon -DartifactId=ceylon-common -Dversion=1.1.0 -Dpackaging=jar
+
+With the path to the JAR changed to point to the actual location on your local system.
+
+The following might work on Linux and Mac if you did a full distribution build:
+
+    mvn install:install-file -Dfile=$HOME/.ceylon/repo/com/redhat/ceylon/common/1.1.0/com.redhat.ceylon.common-1.1.0.jar -DgroupId=com.redhat.ceylon -DartifactId=ceylon-common -Dversion=1.1.0 -Dpackaging=jar
+
+And this might work on Windows:
+
+    mvn install:install-file -Dfile=%USERPROFILE%\.ceylon\repo\com\redhat\ceylon\common\1.1.0\com.redhat.ceylon.common-1.1.0.jar -DgroupId=com.redhat.ceylon -DartifactId=ceylon-common -Dversion=1.1.0 -Dpackaging=jar
+
