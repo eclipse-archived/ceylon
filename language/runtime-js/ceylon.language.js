@@ -146,7 +146,7 @@ initType(Nothing, 'ceylon.language::Nothing');
 $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
-//#COMPILE Object,Identifiable
+//#COMPILE Object,Identifiable,Callable
 
 //#COMPILE Null,callable.js,collections.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
 //#Anything,Object

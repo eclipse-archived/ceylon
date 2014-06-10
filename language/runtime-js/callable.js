@@ -1,17 +1,3 @@
-function Callable(wat) {
-    return wat;
-}
-Callable.$crtmm$={mod:$CCMM$,$an:function(){return[shared()];},$tp:{Arguments$Callable:{'var':'out'},Return$Callable:{'var':'out'}},d:['$','Callable']};
-ex$.Callable=Callable;
-function $init$Callable() {
-    if (Callable.$$===undefined) {
-        initType(Callable, 'ceylon.language::Callable');
-    }
-    return Callable;
-}
-ex$.$init$Callable=$init$Callable;
-$init$Callable();
-
 function $JsCallable(callable,parms,targs) {
     if (callable.getT$all === undefined) {
         callable.getT$all=Callable.getT$all;
