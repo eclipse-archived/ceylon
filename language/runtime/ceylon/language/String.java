@@ -306,26 +306,34 @@ public final class String
     @Override
     @Ignore
     public Character get(@Name("index") Integer key) {
-        return elementAt(value, key.longValue());
+        java.lang.Object o = elementAt(value, key.longValue());
+        if (o instanceof Finished) {
+            return null;
+        }
+        return (Character)o;
     }
 
     @Ignore
     public static Character get(java.lang.String value, long key) {
-        return elementAt(value, key);
+        java.lang.Object o = elementAt(value, key);
+        if (o instanceof Finished) {
+            return null;
+        }
+        return (Character)o;
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
-    public Character elementAt(@Name("index") long key) {
+    @TypeInfo("ceylon.language::Character|ceylon.language::Finished")
+    public java.lang.Object elementAt(@Name("index") long key) {
         return elementAt(value, key);
     }
 
     @Ignore
-    public static Character elementAt(java.lang.String value, long key) {
+    public static java.lang.Object elementAt(java.lang.String value, long key) {
         int index = Util.toInt(key);
         int length = value.length();
         if (index < 0 || index >= length) {
-            return null;
+            return finished_.get_();
         }
         int offset = value.offsetByCodePoints(0, index);
         int codePoint = value.codePointAt(offset);
@@ -1501,7 +1509,11 @@ public final class String
     @Override
     @Ignore
     public Character getFirst() {
-        return elementAt(0);
+        java.lang.Object o = elementAt(0);
+        if (o instanceof Finished) {
+            return null;
+        }
+        return (Character)o;
     }
 
     @Ignore
@@ -1520,7 +1532,11 @@ public final class String
             return null;
         }
         else {
-            return elementAt(length-1);
+            java.lang.Object o = elementAt(length-1);
+            if (o instanceof Finished) {
+                return null;
+            }
+            return (Character)o;
         }
     }
 

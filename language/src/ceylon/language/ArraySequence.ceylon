@@ -3,8 +3,8 @@
  modified after the Sequence has been initialized."
 class ArraySequence<Element>(Array<Element> array) satisfies [Element+] {
     
-    shared actual Element? elementAt(Integer index) 
-            => array[index];
+    shared actual Element|Finished elementAt(Integer index)
+            => array.elementAt(index);
     
     shared actual Boolean contains(Object element) 
             => array.contains(element);

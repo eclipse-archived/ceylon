@@ -39,7 +39,7 @@ shared final native class Array<Element>({Element*} elements)
         "The number of elements to copy."
         Integer length = size-sourcePosition);
     
-    shared actual native Element? elementAt(Integer index);
+    shared actual native Element|Finished elementAt(Integer index);
     
     shared actual native Integer? lastIndex;
     

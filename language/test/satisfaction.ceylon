@@ -84,8 +84,8 @@ class MySequence() satisfies Sequence<Integer> {
     shared actual Boolean contains(Object element) => element==1;
     shared actual MySequence clone() => MySequence();
     shared actual Sequence<Integer> reversed => this;
-    shared actual Integer? elementAt(Integer index) {
-        return index==0 then 1 else null;
+    shared actual Integer|Finished elementAt(Integer index) {
+        return index==0 then 1 else finished;
     }
     shared actual Integer[] segment(Integer from, Integer length) {
         return this;

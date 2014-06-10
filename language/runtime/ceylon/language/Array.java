@@ -797,10 +797,14 @@ public final class Array<Element>
         return get(toInt(key.longValue()));
     }
 
-    @TypeInfo("ceylon.language::Null|Element")
+    @TypeInfo("Element|ceylon.language::Finished")
     @Override
-    public Element elementAt(@Name("index") long key) {
-        return get(toInt(key));
+    public java.lang.Object elementAt(@Name("index") long key) {
+        int index = toInt(key);
+        if (index < 0 || index >= getSize()) {
+            return finished_.get_();
+        }
+        return unsafeItem(index);
     }
     
     @Ignore

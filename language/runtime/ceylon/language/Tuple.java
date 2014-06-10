@@ -208,18 +208,22 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Null|Element")
-    public final Element elementAt(@Name("index")
+    @TypeInfo("Element|ceylon.language::Finished")
+    public final java.lang.Object elementAt(@Name("index")
     @TypeInfo("ceylon.language::Integer")
     final long index) {
         return index < 0 || index >= length ?
-                null : (Element)array[Util.toInt(index+first)];
+                finished_.get_() : (Element)array[Util.toInt(index+first)];
     }
     
     @Ignore
     @Override
     public final Element get(Integer index) {
-        return elementAt(index.value);
+        java.lang.Object element = elementAt(index.value);
+        if (element instanceof Finished) {
+            return null;
+        }
+        return (Element)element;
     }
     
     @Annotations({
