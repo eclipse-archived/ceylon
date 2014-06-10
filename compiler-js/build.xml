@@ -120,7 +120,6 @@
     <target name="build-js-language-module" depends="compile" unless="skip.language.module">
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true">
             <arg value="../ceylon.language/runtime-js/ceylon.language.js" />
-            <arg value="../ceylon.language/runtime-js/language-module.txt" />
             <arg value="${runtime}/${jslangmodule}" />
         </java>
         <antcall target="sha1sum">
