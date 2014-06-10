@@ -88,9 +88,8 @@ public class TryCatchGenerator {
                 for (Res r : resourceVars) {
                     gen.out("try{if(", r.var, "!==null)", r.var,
                             r.destroy?".destroy(":".release(",
-                            catchVarName, ");}catch(", r.var,"$e){",
-                            GenerateJsVisitor.getClAlias(),
-                            "addSuppressedException(", r.var, "$e,", catchVarName, ");}");
+                            catchVarName, ");}catch(", r.var,"e$){",
+                            catchVarName, ".addSuppressed(", r.var, "e$);}");
                     gen.endLine();
                 }
             }
