@@ -108,7 +108,7 @@ atr$(JSNum$proto, 'positive', function(){
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
-    return value==other ? equal : (value<other ? smaller:larger);
+    return value==other ? getEqual() : (value<other ? getSmaller():getLarger());
 }
 JSNum$proto.smallerThan=function(o) {
   return Comparable.$$.prototype.smallerThan.call(this,o);

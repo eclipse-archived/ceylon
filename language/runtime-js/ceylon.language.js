@@ -183,9 +183,8 @@ Identifiable$proto.equals = function(that) {
 atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
-//#COMPILE callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception
+//#COMPILE callable.js,collections.js,Basic,Throwable,exception_addons.js,Error,Exception,Comparison
 //#Anything,Object,Null
-//#Comparison
 //#COMPILE Iterable
 //#COMPILE Sequential,Sequence,Empty,StringBuilder
 //#native Array

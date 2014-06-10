@@ -51,25 +51,6 @@ ex$.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['$','fa
 var $true = true;
 var $false = false;
 
-function Comparison(name) {
-    var that = new Comparison.$$;
-    that.name = String$(name);
-    return that;
-}
-initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
-Comparison.$crtmm$={$ps:[{t:String$}],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Comparison']};
-var Comparison$proto = Comparison.$$.prototype;
-atr$(Comparison$proto, 'string', function(){ return this.name; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
-
-
-
-
-
-
-
-
-
 function Mapita(o,$$targs$$,$$mapita){
     $init$Mapita();
     if($$mapita===undefined)$$mapita=new Mapita.$$;

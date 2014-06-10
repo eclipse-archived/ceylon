@@ -7,7 +7,7 @@ function internalSort(comp, elems, $$$mptypes) {
     if (arr.length === 0) {return getEmpty();}
     arr.sort(function(a, b) {
         var cmp = comp(a,b);
-        return (cmp===larger) ? 1 : ((cmp===smaller) ? -1 : 0);
+        return (cmp===getLarger()) ? 1 : ((cmp===getSmaller()) ? -1 : 0);
     });
     return ArraySequence(arr, {Element$Iterable:$$$mptypes.Element$internalSort});
 }

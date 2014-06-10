@@ -1,17 +1,3 @@
-var larger=Comparison("larger");
-function getLarger(){return larger}
-var smaller=Comparison("smaller");
-function getSmaller(){return smaller}
-var equal=Comparison("equal");
-function getEqual(){return equal}
-
-ex$.getLarger=getLarger;
-ex$.getSmaller=getSmaller;
-ex$.getEqual=getEqual;
-ex$.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['$','larger'],$t:{t:Comparison}};}};
-ex$.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['$','smaller'],$t:{t:Comparison}};}};
-ex$.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['$','equal'],$t:{t:Comparison}};}};
-
 //These are operators for handling nulls
 function nonempty(value){
   return value!==null&&value!==undefined&&!value.empty;

@@ -68,7 +68,7 @@ String$proto.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$',
   $ps:[{$nm:'other',$t:{t:String$},$mt:'prm'}]};}
 String$proto.compare = function(other) {
     var cmp = this.localeCompare(other);
-    return cmp===0 ? equal : (cmp<0 ? smaller:larger);
+    return cmp===0 ? getEqual() : (cmp<0 ? getSmaller():getLarger());
 }
 String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['$','String','$m','compare'],
   $ps:[{$nm:'other',$t:{t:String$}}]};}
@@ -711,8 +711,8 @@ Character$proto.neighbour=function(offset) {
 atr$(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','Character','$at','hash']}});
 Character$proto.compare = function(other) {
-    return this.value===other.value ? equal
-                                    : (this.value<other.value ? smaller:larger);
+    return this.value===other.value ? getEqual()
+                                    : (this.value<other.value ? getSmaller():getLarger());
 }
 atr$(Character$proto, 'uppercased', function() {
     var ucstr = codepointToString(this.value).toUpperCase();
