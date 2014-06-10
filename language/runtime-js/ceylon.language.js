@@ -146,9 +146,9 @@ initType(Nothing, 'ceylon.language::Nothing');
 $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
-//#COMPILE Object,Identifiable,Callable
+//#COMPILE Object,Identifiable,Callable,callables.js
 
-//#COMPILE Null,callable.js,collections.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
+//#COMPILE Null,comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
 //#Anything,Object
 //#COMPILE Iterable
 //#COMPILE Sequential,Sequence,Empty,StringBuilder
@@ -169,7 +169,7 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 //#COMPILE meta/model/ValueModel,meta/model/ClassOrInterface,ClassOrInterface_addons.js,meta/model/ClassModel,ClassModel_addons.js,meta/model/Class,meta/model/FunctionModel,FunctionModel_addons.js,meta/model/Function,meta/model/Method,meta/model/InterfaceModel,InterfaceModel_addons.js,meta/model/Interface,meta/model/IntersectionType,meta/model/Member,Member_addons.js,meta/model/MemberClass,meta/model/MemberInterface,meta/model/Attribute,meta/model/Model,meta/model/Type,meta/model/UnionType,meta/model/Value,meta/model/nothingType,meta/model/TypeApplicationException,meta/model/InvocationException,meta/model/MutationException,meta/model/IncompatibleTypeException,meta/model/Generic,meta/model/Applicable
 //#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
 //#COMPILE annotations
-//#COMPILE numbers.js,misc1.js,functions.js,functions2.js,functions3.js,JsResource.js,appliedtypes.js,opentypes.js,metamodel.js
+//#COMPILE numbers.js,misc1.js,functions.js,tuples.js,functions3.js,JsResource.js,appliedtypes.js,opentypes.js,metamodel.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
