@@ -291,8 +291,8 @@ public class PhasedUnit {
 
     public void scanTypeDeclarations() {
         if (!typeDeclarationsScanned) {
-            compilationUnit.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
             //System.out.println("Scan type declarations for " + fileName);
+            compilationUnit.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
             compilationUnit.visit(new TypeVisitor());
             typeDeclarationsScanned = true;
         }

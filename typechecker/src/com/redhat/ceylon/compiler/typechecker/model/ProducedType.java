@@ -544,9 +544,6 @@ public class ProducedType extends ProducedReference {
                                  addToSupertypes(list, this)) ) {
             ProducedType extendedType = getExtendedType();
             if (extendedType!=null) {
-                if (extendedType.getDeclaration()==getDeclaration()) {
-                    throw new RuntimeException();
-                }
                 extendedType.getSupertypes(list);
             }
             List<ProducedType> satisfiedTypes = getSatisfiedTypes();
