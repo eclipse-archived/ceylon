@@ -548,7 +548,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
-        interfaceDefinition(interfaceDef);
+        TypeGenerator.interfaceDefinition(interfaceDef, this);
         Interface d = interfaceDef.getDeclarationModel();
         out(names.self(type), ".", names.name(d), "=", names.name(d));
         endLine(true);
@@ -557,53 +557,12 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InterfaceDefinition that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
-            interfaceDefinition(that);
+            TypeGenerator.interfaceDefinition(that, this);
         }
-    }
-
-    private void interfaceDefinition(InterfaceDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        final Interface d = that.getDeclarationModel();
-        comment(that);
-
-        out(function, names.name(d), "(");
-        final List<TypeParameterDeclaration> tparms = that.getTypeParameterList() == null ? null :
-            that.getTypeParameterList().getTypeParameterDeclarations();
-        final boolean withTargs = tparms != null && !tparms.isEmpty();
-        if (withTargs) {
-            out("$$targs$$,");
-        }
-        out(names.self(d), ")");
-        beginBlock();
-        //declareSelf(d);
-        referenceOuter(d);
-        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
-        if (!opts.isOptimize()) {
-            new SuperVisitor(superDecs).visit(that.getInterfaceBody());
-        }
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
-        if (withTargs) {
-            out(clAlias, "set_type_args(", names.self(d), ",$$targs$$)");
-            endLine(true);
-        }
-        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            out(clAlias, "set_type_args(", names.self(d), ",$$$mptypes)");
-            endLine(true);
-        }
-        that.getInterfaceBody().visit(this);
-        //returnSelf(d);
-        endBlockNewLine();
-        //Add reference to metamodel
-        out(names.name(d), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-        endLine(true);
-        share(d);
-        typeInitialization(that);
     }
 
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
-        classDefinition(classDef);
+        TypeGenerator.classDefinition(classDef, this);
         final String tname = names.name(classDef.getDeclarationModel());
         out(names.self(type), ".", tname, "=", tname);
         endLine(true);
@@ -612,7 +571,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ClassDefinition that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
-            classDefinition(that);
+            TypeGenerator.classDefinition(that, this);
         }
     }
 
@@ -689,107 +648,6 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
-    private void classDefinition(ClassDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        final Class d = that.getDeclarationModel();
-        comment(that);
-        out(function, names.name(d), "(");
-        for (Parameter p: that.getParameterList().getParameters()) {
-            p.visit(this);
-            out(",");
-        }
-        final boolean withTargs = that.getTypeParameterList() != null &&
-                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
-        if (withTargs) {
-            out("$$targs$$,");
-        }
-        out(names.self(d), ")");
-        beginBlock();
-        //This takes care of top-level attributes defined before the class definition
-        out("$init$", names.name(d), "()");
-        endLine(true);
-        declareSelf(d);
-        referenceOuter(d);
-        if (withTargs) {
-            out(clAlias, "set_type_args(", names.self(d), ",$$targs$$)");
-            endLine(true);
-        } else {
-            //Check if any of the satisfied types have type arguments
-            if (that.getSatisfiedTypes() != null) {
-                for(Tree.StaticType sat : that.getSatisfiedTypes().getTypes()) {
-                    boolean first = true;
-                    Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
-                    if (targs != null && !targs.isEmpty()) {
-                        if (first) {
-                            out(names.self(d), ".$$targs$$=");
-                            TypeUtils.printTypeArguments(that, targs, this, false);
-                            endLine(true);
-                            first = false;
-                        } else {
-                            out("/*TODO: more type arguments*/");
-                            endLine();
-                        }
-                    }
-                }
-            }
-        }
-        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            out(clAlias, "set_type_args(", names.self(d), ",$$$mptypes)");
-            endLine(true);
-        }
-        initParameters(that.getParameterList(), d, null);
-        
-        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
-        if (!opts.isOptimize()) {
-            new SuperVisitor(superDecs).visit(that.getClassBody());
-        }
-        callSuperclass(that.getExtendedType(), d, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
-
-        if (!opts.isOptimize()) {
-            //Fix #231 for lexical scope
-            for (Parameter p : that.getParameterList().getParameters()) {
-                if (!p.getParameterModel().isHidden()){
-                    generateAttributeForParameter(that, d, p.getParameterModel());
-                }
-            }
-        }
-        if (d.isNative()) {
-            out("if(typeof($init$native$", names.name(d), "$before)==='function')$init$native$",
-                    names.name(d), "$before(", names.self(d));
-            if (withTargs)out(",$$targs$$");
-            out(")");
-            endLine(true);
-        }
-        that.getClassBody().visit(this);
-        if (d.isNative()) {
-            out("if(typeof($init$native$", names.name(d), "$after)==='function')$init$native$",
-                    names.name(d), "$after(", names.self(d));
-            if (withTargs)out(",$$targs$$");
-            out(")");
-            endLine(true);
-            System.out.printf("%s is annotated native.", d.getQualifiedNameString());
-            System.out.printf("You can implement two functions named $init$native$%s$before and $init$native$%<s$after",
-                    names.name(d));
-            System.out.print("that will be called (if they exist) before and after the class body. ");
-            System.out.print("These functions will receive the instance being initialized");
-            if (withTargs) {
-                System.out.print(" and the type arguments with which it is being initialized");
-            }
-            System.out.println(".");
-        }
-        out("return ", names.self(d), ";");
-        endBlockNewLine();
-        //Add reference to metamodel
-        out(names.name(d), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-        endLine(true);
-        share(d);
-
-        typeInitialization(that);
-    }
-
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
         //Don't even bother with nodes that have errors
@@ -822,207 +680,8 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void copySuperMembers(TypeDeclaration typeDecl, final List<Declaration> decs, ClassOrInterface d) {
-        if (!opts.isOptimize()) {
-            for (Declaration dec: decs) {
-                if (!typeDecl.isMember(dec)) { continue; }
-                String suffix = names.scopeSuffix(dec.getContainer());
-                if (dec instanceof Value && ((Value)dec).isTransient()) {
-                    superGetterRef(dec,d,suffix);
-                    if (((Value) dec).isVariable()) {
-                        superSetterRef(dec,d,suffix);
-                    }
-                }
-                else {
-                    superRef(dec,d,suffix);
-                }
-            }
-        }
-    }
-
-    void callSuperclass(ExtendedType extendedType, Class d, Node that,
-                final List<Declaration> superDecs) {
-        if (extendedType!=null) {
-            PositionalArgumentList argList = extendedType.getInvocationExpression()
-                    .getPositionalArgumentList();
-            TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            out(memberAccessBase(extendedType.getType(), typeDecl, false, qualifiedPath(that, typeDecl)),
-                    (opts.isOptimize() && (getSuperMemberScope(extendedType.getType()) != null))
-                        ? ".call(this," : "(");
-
-            invoker.generatePositionalArguments(extendedType.getInvocationExpression().getPrimary(),
-                    argList, argList.getPositionalArguments(), false, false);
-            if (argList.getPositionalArguments().size() > 0) {
-                out(",");
-            }
-            //There may be defaulted args we must pass as undefined
-            final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams =
-                    d.getExtendedTypeDeclaration().getParameterList().getParameters();
-            if (superParams.size() > argList.getPositionalArguments().size()) {
-                for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
-                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
-                    if (p.isSequenced()) {
-                        out(clAlias, "getEmpty(),");
-                    } else {
-                        out("undefined,");
-                    }
-                }
-            }
-            //If the supertype has type arguments, add them to the call
-            if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                extendedType.getType().getTypeArgumentList().getTypeModels();
-                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getType().getTypeArgumentList().getTypeModels()), this, false);
-                out(",");
-            }
-            out(names.self(d), ")");
-            endLine(true);
-           
-            copySuperMembers(typeDecl, superDecs, d);
-        }
-    }
-
-    void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
-            final List<Declaration> superDecs) {
-        if (satisfiedTypes!=null) {
-            HashSet<String> myTypeArgs = new HashSet<>();
-            for (TypeParameter tp : d.getTypeParameters()) {
-                myTypeArgs.add(tp.getName());
-            }
-            for (StaticType st: satisfiedTypes.getTypes()) {
-                TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
-                qualify(that, typeDecl);
-                out(names.name((ClassOrInterface)typeDecl), "(");
-                if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this, d.isToplevel());
-                    out(",");
-                }
-                out(names.self(d), ")");
-                endLine(true);
-                //Set the reified types from interfaces
-                Map<TypeParameter, ProducedType> reifs = st.getTypeModel().getTypeArguments();
-                if (reifs != null && !reifs.isEmpty()) {
-                    for (Map.Entry<TypeParameter, ProducedType> e : reifs.entrySet()) {
-                        if (e.getValue().getDeclaration() instanceof ClassOrInterface) {
-                            out(clAlias, "add_type_arg(", names.self(d), ",'", e.getKey().getName(),
-                                    "$", e.getKey().getDeclaration().getName(), "',");
-                            TypeUtils.typeNameOrList(that, e.getValue(), this, false);
-                            out(")");
-                            endLine(true);
-                        }
-                    }
-                }
-                copySuperMembers(typeDecl, superDecs, d);
-            }
-        }
-    }
-
-    /** Generates a function to initialize the specified type. */
-    private void typeInitialization(final Tree.Declaration type) {
-
-        ExtendedType extendedType = null;
-        SatisfiedTypes satisfiedTypes = null;
-        final ClassOrInterface decl;
-        final List<Statement> stmts;
-        if (type instanceof ClassDefinition) {
-            ClassDefinition classDef = (ClassDefinition) type;
-            extendedType = classDef.getExtendedType();
-            satisfiedTypes = classDef.getSatisfiedTypes();
-            decl = classDef.getDeclarationModel();
-            stmts = classDef.getClassBody().getStatements();
-        } else if (type instanceof InterfaceDefinition) {
-            satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
-            decl = ((InterfaceDefinition) type).getDeclarationModel();
-            stmts = ((InterfaceDefinition) type).getInterfaceBody().getStatements();
-        } else if (type instanceof ObjectDefinition) {
-            ObjectDefinition objectDef = (ObjectDefinition) type;
-            extendedType = objectDef.getExtendedType();
-            satisfiedTypes = objectDef.getSatisfiedTypes();
-            decl = (ClassOrInterface)objectDef.getDeclarationModel().getTypeDeclaration();
-            stmts = objectDef.getClassBody().getStatements();
-        } else {
-            stmts = null;
-            decl = null;
-        }
-        final PrototypeInitCallback callback = new PrototypeInitCallback() {
-            @Override
-            public void addToPrototypeCallback() {
-                if (decl != null) {
-                    addToPrototype(type, decl, stmts);
-                }
-            }
-        };
-        typeInitialization(extendedType, satisfiedTypes, decl, callback);
-    }
-
-    /** This is now the main method to generate the type initialization code.
-     * @param extendedType The type that is being extended.
-     * @param satisfiedTypes The types satisfied by the type being initialized.
-     * @param d The declaration for the type being initialized
-     * @param callback A callback to add something more to the type initializer in prototype style.
-     */
-    void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes,
-            final ClassOrInterface d, PrototypeInitCallback callback) {
-
-        final boolean isInterface = d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-        String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
-
-        out("function $init$", names.name(d), "()");
-        beginBlock();
-        out("if(", names.name(d), ".$$===undefined)");
-        beginBlock();
-        final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-        out(clAlias, initFuncName, "(", names.name(d), ",'", qns, "'");
-
-        if (extendedType != null) {
-            String fname = typeFunctionName(extendedType.getType(), !extendedType.getType().getDeclarationModel().isMember());
-            out(",", fname);
-        } else if (!isInterface) {
-            out(",", clAlias, "Basic");
-        }
-
-        if (satisfiedTypes != null) {
-            for (StaticType satType : satisfiedTypes.getTypes()) {
-                String fname = typeFunctionName(satType, true);
-                out(",", fname);
-            }
-        }
-
-        out(");");
-        //Add ref to outer type
-        if (d.isMember()) {
-            StringBuilder containers = new StringBuilder();
-            Scope _d2 = d;
-            while (_d2 instanceof ClassOrInterface) {
-                if (containers.length() > 0) {
-                    containers.insert(0, '.');
-                }
-                containers.insert(0, names.name((Declaration)_d2));
-                _d2 = _d2.getContainer();
-            }
-            endLine();
-            out(containers.toString(), "=", names.name(d), ";");
-        }
-
-        //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
-        if (opts.isOptimize()) {
-            endLine();
-            callback.addToPrototypeCallback();
-        }
-        endBlockNewLine();
-        out("return ", names.name(d), ";");
-        endBlockNewLine();
-        //If it's nested, share the init function
-        if (outerSelf(d)) {
-            out(".$init$", names.name(d), "=$init$", names.name(d));
-            endLine(true);
-        }
-        out("$init$", names.name(d), "()");
-        endLine(true);
-    }
-
     /** Returns the name of the type or its $init$ function if it's local. */
-    private String typeFunctionName(StaticType type, boolean removeAlias) {
+    String typeFunctionName(StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
         if (removeAlias && d.isAlias()) {
             d = d.getExtendedTypeDeclaration();
@@ -1085,7 +744,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
+    void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
             com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
         final String privname = names.name(p) + "_";
         defineAttribute(names.self(d), names.name(p.getModel()));
@@ -1157,7 +816,7 @@ public class GenerateJsVisitor extends Visitor
         prototypeOwner = oldPrototypeOwner;
     }
 
-    private void declareSelf(ClassOrInterface d) {
+    void declareSelf(ClassOrInterface d) {
         out("if(", names.self(d), "===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
             out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(");
@@ -1238,8 +897,8 @@ public class GenerateJsVisitor extends Visitor
         if (!targs.isEmpty()) {
             out(names.self(c), ".$$targs$$=$$targs$$"); endLine(true);
         }
-        callSuperclass(that.getExtendedType(), c, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
+        TypeGenerator.callSuperclass(that.getExtendedType(), c, that, superDecs, this);
+        TypeGenerator.callInterfaces(that.getSatisfiedTypes(), c, that, superDecs, this);
         
         that.getClassBody().visit(this);
         out("return ", names.self(c), ";");
@@ -1249,7 +908,7 @@ public class GenerateJsVisitor extends Visitor
         TypeUtils.encodeForRuntime(that, c, this);
         endLine(true);
 
-        typeInitialization(that);
+        TypeGenerator.initializeType(that, this);
 
         if (!addToPrototype) {
             out("var ", names.name(d));
@@ -1322,33 +981,6 @@ public class GenerateJsVisitor extends Visitor
             out(";},undefined,");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out(")");
-            endLine(true);
-        }
-    }
-
-    private void superRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
-        //if (d.isActual()) {
-            out(names.self(sub), ".", names.name(d), parentSuffix, "=", names.self(sub), ".", names.name(d));
-            endLine(true);
-        //}
-    }
-
-    private void superGetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
-        if (defineAsProperty(d)) {
-            out(clAlias, "copySuperAttr(", names.self(sub), ",'", names.name(d), "','",
-                    parentSuffix, "')");
-        }
-        else {
-            out(names.self(sub), ".", names.getter(d), parentSuffix, "=",
-                    names.self(sub), ".", names.getter(d));
-        }
-        endLine(true);
-    }
-
-    private void superSetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
-        if (!defineAsProperty(d)) {
-            out(names.self(sub), ".", names.setter(d), parentSuffix, "=",
-                    names.self(sub), ".", names.setter(d));
             endLine(true);
         }
     }
@@ -2702,7 +2334,7 @@ public class GenerateJsVisitor extends Visitor
         return path.length() > 0;
     }
 
-    private String qualifiedPath(Node that, Declaration d) {
+    String qualifiedPath(Node that, Declaration d) {
         return qualifiedPath(that, d, false);
     }
 
@@ -2810,7 +2442,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AnnotationList that) {}
 
-    private boolean outerSelf(Declaration d) {
+    boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
             out("ex$");
             return true;

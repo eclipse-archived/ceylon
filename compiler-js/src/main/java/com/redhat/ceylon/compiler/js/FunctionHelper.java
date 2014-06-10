@@ -129,8 +129,8 @@ public class FunctionHelper {
         if (!gen.opts.isOptimize()) {
             new GenerateJsVisitor.SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        gen.callSuperclass(xt, c, that, superDecs);
-        gen.callInterfaces(sts, c, that, superDecs);
+        TypeGenerator.callSuperclass(xt, c, that, superDecs, gen);
+        TypeGenerator.callInterfaces(sts, c, that, superDecs, gen);
         
         body.visit(gen);
         gen.out("return ", gen.getNames().self(c), ";");
@@ -140,12 +140,12 @@ public class FunctionHelper {
         TypeUtils.encodeForRuntime(c, null, gen);
         gen.endLine(true);
 
-        gen.typeInitialization(xt, sts, c, new GenerateJsVisitor.PrototypeInitCallback() {
+        TypeGenerator.typeInitialization(xt, sts, c, new GenerateJsVisitor.PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
                 gen.addToPrototype(that, c, body.getStatements());
             }
-        });
+        }, gen);
         gen.out("return ", gen.getNames().name(c), "(new ", gen.getNames().name(c), ".$$);");
         gen.endBlock();
         gen.out("())");
