@@ -34,7 +34,7 @@ class ListImpl<out Element>() extends Object() satisfies List<Element> {
     shared actual Integer? lastIndex {
         return nothing;
     }
-    shared actual Element? elementAt(Integer index) {
+    shared actual Element|Finished elementAt(Integer index) {
         return nothing;
     }
     shared actual ListImpl<Element> reversed {

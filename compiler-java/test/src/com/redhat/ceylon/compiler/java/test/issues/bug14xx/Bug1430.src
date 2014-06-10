@@ -416,13 +416,13 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Integer elementAt(final long index) {
+    public final .java.lang.Object elementAt(final long index) {
         return (
             let
             {
-                .ceylon.language.Integer $ceylontmp$2 = index == 0L ? .ceylon.language.Integer.instance(1L) : null;
+                .java.lang.Object $ceylontmp$2 = index == 0L ? .ceylon.language.Integer.instance(1L) : null;
             }
-            returning $ceylontmp$2 != null ? $ceylontmp$2 : null;
+            returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.finished_.get_();
         );
     }
     
