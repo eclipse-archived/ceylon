@@ -56,14 +56,14 @@ class Example1(){}
 class Example2() extends Example1(){}
 
 void typeTests() {
-  print("type(null):``type(null)``");
-  print("type(Example1()):``type(Example1())``");
-  print("type(Example2):``type(Example2)``");
-  print("type('hello'):``type("hello")``");
-  print("type({1,2,4,5}):``type({1,2,4,5})``");
-  print("type(1..2):``type(1..2)``");
-  print("type(test):``type(test)``");
-  print("type('hello'.initial):``type("hello".initial)``");
+  check(type(null).string=="Nothing","type(null):``type(null)``");
+  check(type(Example1()).string=="model2::Example1","type(Example1()):``type(Example1())``");
+  check(type(Example2).string=="ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Anything>","type(Example2):``type(Example2)``");
+  check(type("hello").string=="ceylon.language::String","type('hello'):``type("hello")``");
+  check(type({1,2,4,5}).string=="ceylon.language::Array<ceylon.language::Integer>","type({1,2,4,5}):``type({1,2,4,5})``");
+  check(type(1..2).string=="ceylon.language::Range<ceylon.language::Integer>","type(1..2):``type(1..2)``");
+  check(type(test).string=="model2::test","type(test):``type(test)``");
+  check(type("hello".initial).string=="ceylon.language::String.initial","type('hello'.initial):``type("hello".initial)``");
 }
 
 shared void test() {
