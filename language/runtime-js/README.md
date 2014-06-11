@@ -1,6 +1,6 @@
 This directory contains native JS code for the language module.
 
-*Generating the language module*
+#Generating the JS language module
 
 The ceylon-js repo reads the files in this dir to create the language module file. The process is as follows:
 
@@ -8,7 +8,7 @@ The ceylon-js repo reads the files in this dir to create the language module fil
 * When the line `//#METAMODEL` is found, the metamodel for the language module is generated from Ceylon sources, and written to the output file.
 * When a line starting with `//#COMPILE` is found, the specified sources are compiled and written to the output file.
 
-*The `//#COMPILE` directive*
+##The `//#COMPILE` directive
 
 This directive expects a list of files, which can be Ceylon sources or native js files. For Ceylon sources,
 only the filename without the extension is needed, and the path needs to be relative to `src/ceylon/language`
@@ -23,7 +23,7 @@ for some code).
 To add native JS code, just specify the file with the `.js` extension. For example, `functions.js` will
 look for that file inside this directory (`runtime-js` in case you forgot).
 
-*Compiling declarations with the `native` annotation*
+##Compiling declarations with the `native` annotation
 
 Some types and methods in the language module are annotated `native`. Depending on the declaration in question,
 the compiler will expect to find certain files with the native implementations, which will be merged into the
@@ -45,7 +45,7 @@ is compiled from the Ceylon source.
 After that, any members of the type annotated `native` are treated the same way already explained for object
 members.
 
-*Contents of the native JS snippets*
+##Contents of the native JS snippets
 
 For methods, the native file must contain a function definition.
 
