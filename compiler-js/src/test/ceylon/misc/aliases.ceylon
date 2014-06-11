@@ -47,7 +47,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     segment = grid.segment;
     shared actual Matrix<Integer> reversed = grid.reversed;
     shared actual Integer lastIndex = grid.lastIndex;
-    shared actual [Integer+]? elementAt(Integer i) => grid[i];
+    shared actual [Integer+]|Finished elementAt(Integer i) => grid.elementAt(i);
     shared actual [Integer+][] rest = grid.rest;
     shared actual [Integer+] first = grid.first;
     shared actual Integer size => grid.size;
