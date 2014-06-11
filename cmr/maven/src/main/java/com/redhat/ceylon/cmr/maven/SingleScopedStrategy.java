@@ -45,8 +45,10 @@ class SingleScopedStrategy implements MavenResolutionStrategy {
         for (int i = 0; i < filters.length; i++) {
             final int index = i;
             filters[i] = new MavenResolutionFilter() {
-                public boolean accepts(MavenDependency dependency, List<MavenDependency> dependenciesForResolution) {
-                    return scopesFilters[index].accepts(dependency, dependenciesForResolution) && NonTransitiveFilter.INSTANCE.accepts(dependency, dependenciesForResolution);
+                @Override
+                public boolean accepts(MavenDependency dependency,
+                        List<MavenDependency> dependenciesForResolution, List<MavenDependency> dependencyAncestors) {
+                    return scopesFilters[index].accepts(dependency, dependenciesForResolution, dependencyAncestors) && NonTransitiveFilter.INSTANCE.accepts(dependency, dependenciesForResolution, dependencyAncestors);
                 }
             };
         }
