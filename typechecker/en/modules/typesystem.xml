@@ -1471,13 +1471,31 @@ interface NumberLiteral
             </itemizedlist>
             
             <para>A type parameter may, optionally, have a <emphasis>default type argument</emphasis>. 
-            A type parameter with a default type argument must occur after all type parameters 
-            without default type arguments in the type parameter list. The default type argument 
-            must satisfy the constraints on the type parameter.</para>
+            A type parameter with a default type argument must occur after every type parameter 
+            with no default type argument in the type parameter list.</para>
             
-            <para>A default type argument may not involve the parameter for which it is the 
-            default argument, nor any type parameter of the declaration that occurs later in 
-            the list of type parameters.</para>
+            <para>The default type argument for a type parameter must satisfy the constraints on 
+            the type parameter.</para>
+            
+            <comment><para>TODO: this restriction could be relaxed, and the assignability of the
+            default type argument to the type constraints checked at use-sites where the default 
+            type argument is used in type expressions.</para></comment>
+            
+            <para>A default type argument expression for a type parameter of a generic declaration
+            may not involve:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the type parameter itself,</para>
+                </listitem>
+                <listitem>
+                    <para>any type parameter of the declaration that occurs later in the list 
+                    of type parameters, nor</para>
+                </listitem>
+                <listitem>
+                    <para>the generic declaration.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>Within the body of the schema it parameterizes, a type parameter is itself a 
             type. The type parameter is a subtype of every upper bound of the type parameter. 
