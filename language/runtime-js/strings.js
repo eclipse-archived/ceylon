@@ -178,7 +178,7 @@ String$proto.iterator= function() {
 }
 String$proto.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['$','String','$m','iterator']};}
 String$proto.elementAt=function(index){
-  if (index<0 || index>=this.length) {return null;}
+  if (index<0 || index>=this.length) {return getFinished();}
   if (this._bumps===undefined)this._bumps=[];
   var cnt=0;
   var mb=0;
@@ -196,7 +196,7 @@ String$proto.elementAt=function(index){
       this._bumps.push(mb);
       ++mb;
     }
-    if (++mb >= this.length) {return null;}
+    if (++mb >= this.length) {return getFinished();}
   }
   if (this._maxidx===undefined || mb>this._maxidx)this._maxidx=mb;
   return Character(codepointFromString(this, mb));
