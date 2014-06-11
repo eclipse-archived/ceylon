@@ -22,19 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
-import com.redhat.ceylon.cmr.impl.NodeUtils;
-import com.redhat.ceylon.cmr.spi.Node;
-
-import org.jboss.shrinkwrap.resolver.api.ConfiguredResolverSystemFactory;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.Resolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
@@ -47,6 +34,17 @@ import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
+import com.redhat.ceylon.cmr.spi.Node;
 
 /**
  * Aether utils.
@@ -272,7 +270,7 @@ public class AetherUtils {
         if(classLoader == null)
             classLoader = ClassLoader.getSystemClassLoader();
         
-        ConfiguredResolverSystemFactory<MavenResolverSystem, ConfigurableMavenResolverSystem> factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader);
+        ConfigurableMavenResolverSystem factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
 
         MavenResolverSystem resolver;
         if (settingsXml.startsWith("classpath:")){
@@ -280,7 +278,6 @@ public class AetherUtils {
         }else{
             resolver = factory.fromFile(settingsXml);
         }
-        resolver.offline(offline);
         return resolver;
     }
 
