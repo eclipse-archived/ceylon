@@ -57,4 +57,4 @@ atr$(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',function(){
     s+=">";
   }
   return s;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});

@@ -149,7 +149,7 @@ atr$(JSNum$proto, 'wholePart', function() {
 atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
 atr$(JSNum$proto, 'hash', function() {
-    return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
+    return this.float$ ? $_String(this.toPrecision()).hash : this.valueOf();
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','hash']};});
 JSNum$proto.distanceFrom = function(other) {
     return (this.float$ ? this.wholePart : this) - other;

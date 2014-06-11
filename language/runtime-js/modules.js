@@ -17,10 +17,10 @@ function Modulo(meta, $$modulo){
     mm=mm();meta.$CCMM$=mm;
   }
   var name=mm['$mod-name'];
-  atr$($$modulo,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','name']});
-  atr$($$modulo,'qualifiedName',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','qualifiedName']});
-  var version=String$(mm['$mod-version']);
-  atr$($$modulo,'version',function(){return version;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','version']});
+  atr$($$modulo,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','name']});
+  atr$($$modulo,'qualifiedName',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','qualifiedName']});
+  var version=$_String(mm['$mod-version']);
+  atr$($$modulo,'version',function(){return version;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','version']});
   atr$($$modulo,'members',function(){
     if (mm['$pks$'] === undefined) {
       mm['$pks$'] = {};
@@ -59,7 +59,7 @@ function Modulo(meta, $$modulo){
     return pk===undefined ? null : pk;
   }
   $$modulo.findPackage=findPackage;
-  findPackage.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findPackage']};
+  findPackage.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findPackage']};
   function findImportedPackage(pknm){
     var pk = this.findPackage(pknm);
     if (pk) return pk;
@@ -78,7 +78,7 @@ function Modulo(meta, $$modulo){
     return null;
   }
   $$modulo.findImportedPackage=findImportedPackage;
-  findImportedPackage.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findImportedPackage']};};
+  findImportedPackage.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findImportedPackage']};};
   function annotations($$$mptypes){
     var anns = this.meta.$mod$ans$;
     if (typeof(anns) === 'function') {
@@ -134,7 +134,7 @@ function Modulo(meta, $$modulo){
     return null;
   }
   $$modulo.resourceByPath=resourceByPath;
-  resourceByPath.$crtmm$=function(){return {mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Resource}]},$ps:[{$nm:'path',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','resourceByPath']};};
+  resourceByPath.$crtmm$=function(){return {mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Resource}]},$ps:[{$nm:'path',$mt:'prm',$t:{t:$_String}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','resourceByPath']};};
   return $$modulo;
 }
 Modulo.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Module$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Module']};
@@ -155,8 +155,8 @@ function Importa(name,version,mod,anns,$$importa){
   $$importa.version=version;
   $$importa._cont=mod;
   $$importa.$anns=anns;
-  atr$($$importa,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','name']});
-  atr$($$importa,'version',function(){return version;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','version']});
+  atr$($$importa,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','name']});
+  atr$($$importa,'version',function(){return version;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','version']});
   atr$($$importa,'shared',function(){
     if (typeof(this.$anns)==='function')this.$anns=this.anns();
     if (this.$anns)for (var i=0;i<this.$anns.length;i++) {
@@ -177,7 +177,7 @@ return version;},undefined,{mod:$CCMM$,$t:{t:$_Boolean},$cont:Importa,$an:functi
     },undefined,{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','container']});
   atr$($$importa,'string',function(){
     return "import " + name + "/" + version;
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:Importa,d:['ceylon.language','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:Importa,d:['ceylon.language','Object','$at','string']};});
     return $$importa;
 }
 Importa.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Import$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Import']};
@@ -203,8 +203,8 @@ function Paquete(name, container, pkg, $$paquete){
       suffix = _s.replace(/\./g, '$');
     }
     $$paquete.suffix=suffix;
-    atr$($$paquete,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','name']});
-    atr$($$paquete,'qualifiedName',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','qualifiedName']});
+    atr$($$paquete,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','name']});
+    atr$($$paquete,'qualifiedName',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','qualifiedName']});
     var container=container;
     atr$($$paquete,'container',function(){return container;},undefined,{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','container']});
     function members($$$mptypes){
@@ -283,7 +283,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
       return null;
     }
     $$paquete.getMember=getMember;
-    getMember.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getMember']};
+    getMember.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getMember']};
     function getValue(name$4) {
       var m = this.pkg[name$4];
       if (m && (m['$mt']==='a' || m['$mt']==='g' || m['$mt'] === 'o' ||m['$mt']==='s')) {
@@ -292,7 +292,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
       return null;
     }
     $$paquete.getValue=getValue;
-    getValue.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ValueDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getValue']};
+    getValue.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ValueDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getValue']};
     function getClassOrInterface(name$5){
       var ci = this.pkg[name$5];
       if (ci && ci['$mt']==='c') {
@@ -303,7 +303,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
       return null;
     }
     $$paquete.getClassOrInterface=getClassOrInterface;
-    getClassOrInterface.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterfaceDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getClassOrInterface']};
+    getClassOrInterface.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterfaceDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getClassOrInterface']};
   function getAlias(an) {
     var al=this.pkg[an];
     if (al && al.$mt==='als') {
@@ -322,7 +322,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
       return null;
     }
     $$paquete.getFunction=getFunction;
-    getFunction.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:FunctionDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getFunction']};
+    getFunction.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:FunctionDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:$_String}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getFunction']};
     function annotations($$$mptypes){
       var _k = '$pkg$ans$' + this.name.replace(/\./g,'$');
       var anns = this.container.meta[_k];

@@ -143,7 +143,7 @@ function $init$AppliedClass(){
 
 
 
-      };$$clase.namedApply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Entry,a:{Item$Entry:{t:$Object},Key$Entry:{t:String$}}},Absent$Iterable:{t:Null}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.namedApply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','namedApply']};};
+      };$$clase.namedApply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Entry,a:{Item$Entry:{t:$Object},Key$Entry:{t:$_String}}},Absent$Iterable:{t:Null}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.namedApply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','namedApply']};};
     })(AppliedClass.$$.prototype);
   }
   return AppliedClass;
@@ -206,7 +206,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
   atr$(that,'string',function(){
     return $qname(mm);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
   that.tipo=tipo;
@@ -279,7 +279,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   };
   atr$(that,'string',function(){
     return $qname(mm);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
@@ -359,7 +359,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   };
   atr$(that,'string',function(){
     return $qname(mm);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
@@ -407,7 +407,7 @@ atr$($$appliedUnionType,'string',function(){
     qn+=this._types[i].string;
   }
   return qn;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
 atr$($$appliedUnionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
@@ -508,7 +508,7 @@ atr$($$appliedIntersectionType,'string',function(){
     qn+=this._types[i].string;
   }
   return qn;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
 atr$($$appliedIntersectionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
@@ -631,7 +631,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   }
   atr$(f,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:AppliedFunction};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedFunction};});
   atr$(f,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
@@ -706,7 +706,7 @@ atr$($$appliedValue,'string',function(){
     qn=$qname(mm);
   }
   return qn;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
     }
   }
   set_type_args($$appliedValue,$$targs$$);
@@ -726,7 +726,7 @@ function $init$AppliedValue(){
     (function($$appliedValue){
 atr$($$appliedValue,'string',function(){
   return $qname(this.tipo);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
       atr$($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$crtmm$;
@@ -846,7 +846,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   }
   atr$($$appliedMethod,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:AppliedMethod};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedMethod};});
   return $$appliedMethod;
 }
 AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
@@ -914,7 +914,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     }
     qn+="."+pname;
     return qn;
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
     return is$(o,{t:AppliedAttribute}) && o.tipo===atr;
   }

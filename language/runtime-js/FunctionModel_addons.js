@@ -71,4 +71,4 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
     qn+=">";
   }
   return qn;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:FunctionModel$meta$model};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:FunctionModel$meta$model};});

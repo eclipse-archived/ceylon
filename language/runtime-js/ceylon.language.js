@@ -136,7 +136,7 @@ $init$Anything();
 if(anything$===undefined)throwexc(InvocationException$meta$model("Cannot instantiate abstract class"),'?','?')
 return anything$;
 }
-Anything.$crtmm$=function(){return{mod:$CCMM$,$ps:[],of:[{t:$_Object},{t:Null}],$an:function(){return[doc($CCMM$['ceylon.language'].Anything.$an.doc[0]),by(["Gavin"].reifyCeylonType({t:String$})),shared(),abstract()];},d:['$','Anything']};};
+Anything.$crtmm$=function(){return{mod:$CCMM$,$ps:[],of:[{t:$_Object},{t:Null}],$an:function(){return[doc($CCMM$['ceylon.language'].Anything.$an.doc[0]),by(["Gavin"].reifyCeylonType({t:$_String})),shared(),abstract()];},d:['$','Anything']};};
 ex$.Anything=Anything;
 function $init$Anything(){
 if(Anything.$$===undefined){initTypeProto(Anything,'ceylon.language::Anything');}

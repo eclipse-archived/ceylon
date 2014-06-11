@@ -2,26 +2,26 @@
 var properties = {};
 if (typeof navigator !== "undefined") {
     if (navigator.language !== undefined) {
-        properties["user.language"] = String$(navigator.language);
+        properties["user.language"] = $_String(navigator.language);
     }
     if (navigator.platform !== undefined) {
-        properties["os.name"] = String$(navigator.platform);
+        properties["os.name"] = $_String(navigator.platform);
     }
     if (navigator.userLanguage||navigator.browserLanguage||navigator.language) {
-        properties["user.locale"]=String$(navigator.userLanguage||navigator.browserLanguage||navigator.language);
+        properties["user.locale"]=$_String(navigator.userLanguage||navigator.browserLanguage||navigator.language);
     }
 }
 if (typeof process !== "undefined") {
     if (process.platform !== undefined) {
-        properties["os.name"] = String$(process.platform);
+        properties["os.name"] = $_String(process.platform);
     }
     if (process.arch !== undefined) {
-        properties["os.arch"] = String$(process.arch);
+        properties["os.arch"] = $_String(process.arch);
     }
 }
 if (typeof document !== "undefined") {
     if (document.defaultCharset !== undefined) {
-        properties["file.encoding"] = String$(document.defaultCharset);
+        properties["file.encoding"] = $_String(document.defaultCharset);
     }
 }
 

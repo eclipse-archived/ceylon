@@ -3,18 +3,18 @@ function JsResource(uri,$$jsResource){
   if($$jsResource===undefined)$$jsResource=new JsResource.$$;
   $$jsResource.uri_=uri;
   Resource($$jsResource);
-  $$jsResource.$prop$getUri={$crtmm$:function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};}};
+  $$jsResource.$prop$getUri={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_String},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};}};
   $$jsResource.$prop$getUri.get=function(){return uri};
   $$jsResource.$prop$getSize={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Integer},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','size']};}};
   $$jsResource.$prop$getSize.get=function(){return size};
   return $$jsResource;
 }
-JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[{$nm:'uri',$mt:'prm',$t:{t:String$},$an:function(){return[shared(),actual()];}}],satisfies:[{t:Resource}],d:['$','Resource']};};
+JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[{$nm:'uri',$mt:'prm',$t:{t:$_String},$an:function(){return[shared(),actual()];}}],satisfies:[{t:Resource}],d:['$','Resource']};};
 function $init$JsResource(){
   if(JsResource.$$===undefined){
     initTypeProto(JsResource,'JsResource',Basic,Resource);
     (function($$jsResource){
-      atr$($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};});
+      atr$($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};});
             
       atr$($$jsResource,'size',function(){
         var $elf=this;
@@ -42,13 +42,13 @@ function $init$JsResource(){
           var _fp=$elf.uri;
           if (_fp.substring(0,5)==='file:')_fp=_fp.substring(_fp.indexOf(':')+1);
           var t = fs.readFileSync(_fp, encoding$2);
-          return String$(t);
+          return $_String(t);
         } else if (getRuntime().name === 'Browser') {
           alert("Resource.textContent() not implemented yet");
         } else {
           throw Error("Resource handling unsupported in this JS platform");
         }
-      };$$jsResource.textContent.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},$ps:[{$nm:'encoding',$mt:'prm',$def:1,$t:{t:String$},$an:function(){return[];}}],$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$m','textContent']};};
+      };$$jsResource.textContent.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_String},$ps:[{$nm:'encoding',$mt:'prm',$def:1,$t:{t:$_String},$an:function(){return[];}}],$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$m','textContent']};};
         })(JsResource.$$.prototype);
     }
     return JsResource;
