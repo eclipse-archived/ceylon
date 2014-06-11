@@ -199,12 +199,16 @@ void issue() {
     @type:"Integer" t(true then 1);
 }
 
+class ArraySequence<X>({X*} xs) satisfies Iterable<X> {
+    iterator() => xs.iterator();
+}
+
 void folding() {
     
     {String+} s2 = { "Hello", "World" };
     s2.fold(1, (Integer a, String b) => a+b.size);
     
-    ArraySequence<String->Integer> m = ArraySequence({"a"->1, "b"->2, "c"->3});
+    ArraySequence<String->Integer> m = ArraySequence { "a"->1, "b"->2, "c"->3 };
     m.fold(0, (Integer x, String->Integer e) => x+e.item);
     
     Map<String,Integer> m0 = nothing;
