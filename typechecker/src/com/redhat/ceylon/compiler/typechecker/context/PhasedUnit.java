@@ -316,13 +316,13 @@ public class PhasedUnit {
             compilationUnit.visit(new ExpressionVisitor());
             compilationUnit.visit(new AnnotationVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
-            compilationUnit.visit(new TypeHierarchyVisitor());
             fullyTyped = true;
         }
     }
     
     public synchronized void analyseFlow() {
         if (! flowAnalyzed) {
+            compilationUnit.visit(new TypeHierarchyVisitor());
             //System.out.println("Validate control flow for " + fileName);
             compilationUnit.visit(new ControlFlowVisitor());
             //System.out.println("Validate self references for " + fileName);
