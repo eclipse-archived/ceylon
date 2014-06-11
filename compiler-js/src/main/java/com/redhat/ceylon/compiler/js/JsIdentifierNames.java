@@ -201,7 +201,7 @@ public class JsIdentifierNames {
      * an alias for the given package.
      */
     public String moduleAlias(Module pkg) {
-        if (JsCompiler.compilingLanguageModule && pkg.getLanguageModule()==pkg) {
+        if (JsCompiler.isCompilingLanguageModule() && pkg.getLanguageModule()==pkg) {
             //If we're compiling the language module, omit the package name
             return "";
         }

@@ -269,7 +269,7 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        if (!JsCompiler.compilingLanguageModule) {
+        if (!JsCompiler.isCompilingLanguageModule()) {
             setCLAlias(names.moduleAlias(clm));
             require(clm);
         }
