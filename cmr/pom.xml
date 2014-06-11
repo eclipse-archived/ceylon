@@ -29,7 +29,7 @@
         <version.ceylon.common>1.1.0</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
-        <version.shrinkwrap.resolver>2.0.2</version.shrinkwrap.resolver>
+        <version.shrinkwrap.resolver>2.1.1</version.shrinkwrap.resolver>
         <version.net.minidev.json-smart>1.1.1</version.net.minidev.json-smart>
         <version.junit>4.10</version.junit>
         <!-- Maven -->
