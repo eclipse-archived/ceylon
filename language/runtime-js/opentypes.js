@@ -19,7 +19,7 @@ function _findTypeFromModel(pkg,mdl,cont) {
   if (cont) {
     var imm=getrtmm$$(cont);
     if (mt==='c'||mt==='i')nm=nm+'$'+imm.d[imm.d.length-1];
-  }else {
+  }else if (pkg.suffix) {
     nm+=pkg.suffix;
   }
   var out=cont?cont.$$.prototype:mod.meta;
@@ -188,7 +188,7 @@ atr$($$openFunction,'annotation',function(){
             },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','variadic']};});
     $$openFunction.getParameterDeclaration=function (name$6){
       var pd=this.parameterDeclarations;
-      for (var i=0; i < pd.length; i++) {
+      for (var i=0; i < pd.size; i++) {
         if (name$6.equals(pd[i].name))return pd[i];
       }
       return null;
@@ -445,7 +445,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
             
             $$openClass.getParameterDeclaration=function (name$15){
       var pd=this.parameterDeclarations;
-      for (var i=0; i < pd.length; i++) {
+      for (var i=0; i < pd.size; i++) {
         if (name$6.equals(pd[i].name))return pd[i];
       }
       return null;
@@ -474,7 +474,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
                   if (ifc.a)fi.declaration._targs=ifc.a;
                   rv.push(fi);
                 }
-                return ArraySequence(rv,{Element$Iterable:{t:OpenInterfaceType$meta$declaration}});
+                return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:OpenInterfaceType$meta$declaration}});
               }
               return getEmpty();
             },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','satisfiedTypes']};});
@@ -565,7 +565,7 @@ atr$($$openInterface,'string',function(){
                   var mm = getrtmm$$(ifc);
                   rv.push(FreeInterface(OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), ifc)));
                 }
-                return ArraySequence(rv,{Element$Iterable:{t:OpenInterfaceType$meta$declaration}});
+                return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:OpenInterfaceType$meta$declaration}});
               }
               return getEmpty();
             },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','satisfiedTypes']};});
@@ -637,7 +637,7 @@ function $init$OpenAlias(){
           for (var tp in tps) {
             rv.push(OpenTypeParam(this._alias, tp));
           }
-          return ArraySequence(rv,{Element$Iterable:{t:TypeParameter$meta$declaration}});
+          return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:TypeParameter$meta$declaration}});
         }
         return getEmpty();
       },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:TypeParameter$meta$declaration}}},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','typeParameterDeclarations']};});
@@ -728,7 +728,7 @@ function $init$OpenTypeParam(){
           for (var i=0;i<tp.satisfies.length;i++) {
             a.push(_openTypeFromTarg(tp.satisfies[i],this._cont));
           }
-          return ArraySequence(a,{Element$Iterable:{t:OpenType$meta$declaration}});
+          return a.length===0?getEmpty():ArraySequence(a,{Element$ArraySequence:{t:OpenType$meta$declaration}});
         }
         return getEmpty();
       },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','satisfiedTypes']};});
@@ -741,7 +741,7 @@ function $init$OpenTypeParam(){
             var _ct=tp.of[i];if (typeof(_ct)==='function')_ct=getrtmm$$(_ct).$t;
             a.push(_openTypeFromTarg(_ct,this._cont));
           }
-          return ArraySequence(a,{Element$Iterable:{t:OpenType$meta$declaration}});
+          return a.length===0?getEmpty():ArraySequence(a,{Element$ArraySequence:{t:OpenType$meta$declaration}});
         }
         return getEmpty();
       },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','caseTypes']};});
@@ -981,7 +981,7 @@ function $init$FunParamDecl(){
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','name']};});
       $$funParamDecl.getParameterDeclaration=function getParameterDeclaration(name$10){
       var pd=this.parameterDeclarations;
-      for (var i=0; i < pd.length; i++) {
+      for (var i=0; i < pd.size; i++) {
         if (name$6.equals(pd[i].name))return pd[i];
       }
       return null;

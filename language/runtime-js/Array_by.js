@@ -6,5 +6,5 @@ function(c){
     r.push(this[idx]);
     idx+=c;
   }
-  return this.seq$?ArraySequence(r,this.$$targs$$):r.reifyCeylonType(this.$$targs$$.Element$Iterable);
+  return r.reifyCeylonType(this._elemTarg());
 }

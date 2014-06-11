@@ -21,9 +21,9 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
     for (var i=0; i < anns.length; i++) {
       if (is$(anns[i], {t:anntype.tipo}))r.push(anns[i]);
     }
-    return r.length==0?getEmpty():r.reifyCeylonType({t:ConstrainedAnnotation,
+    return r.length==0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:ConstrainedAnnotation,
       a:{Value$ConstrainedAnnotation:$$$mptypes.Value$annotations,Values$ConstrainedAnnotation:$$$mptypes.Values$annotations,
-      ProgramElement$ConstrainedAnnotation:$$$mptypes.ProgramElement$annotations}});
+      ProgramElement$ConstrainedAnnotation:$$$mptypes.ProgramElement$annotations}}});
   }
   return null;
 }

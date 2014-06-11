@@ -36,18 +36,18 @@ function Modulo(meta, $$modulo){
         m.push(mm['$pks$'][mem]);
       }
     }
-    return ArraySequence(m,{Element$Iterable:{t:Package$meta$declaration}});
+    return m.length===0?getEmpty():ArraySequence(m,{Element$ArraySequence:{t:Package$meta$declaration}});
   },undefined,{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Package$meta$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','members']});
   atr$($$modulo,'dependencies',function(){
     if (typeof(meta.$mod$imps)==='function')meta.$mod$imps=meta.$mod$imps();
-    var deps=mm['$mod-deps']||[];
-    if (typeof(deps[0]) === 'string') {
+    var deps=mm['$mod-deps']||getEmpty();
+    if (deps !== getEmpty()) {
       var _d=[];
       for (var d in meta.$mod$imps) {
         var spos = d.lastIndexOf('/');
         _d.push(Importa(String$(d.substring(0,spos)), String$(d.substring(spos+1)),this,meta.$mod$imps[d]));
       }
-      deps = ArraySequence(_d,{Element$Iterable:{t:Import$meta$declaration}});
+      deps = _d.length===0?getEmpty():ArraySequence(_d,{Element$ArraySequence:{t:Import$meta$declaration}});
       mm['$mod-deps'] = deps;
     }
     return deps;
@@ -92,10 +92,10 @@ function Modulo(meta, $$modulo){
       var an = anns[i];
       if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
     }
-    return r.reifyCeylonType($$$mptypes.Annotation$annotations);
+    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
   }
   $$modulo.annotations=annotations;
-  atr$($$modulo,'string',function(){return String$("module " + this.name+"/" + this.version);},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
+  atr$($$modulo,'string',function(){return "module " + this.name+"/" + this.version;},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
   annotations.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','annotations']};
 
@@ -176,7 +176,7 @@ return version;},undefined,{mod:$CCMM$,$t:{t:Boolean$},$cont:Importa,$an:functio
       return this._cont;
     },undefined,{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','container']});
   atr$($$importa,'string',function(){
-    return String$("import " + name + "/" + version);
+    return "import " + name + "/" + version;
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:Importa,d:['ceylon.language','Object','$at','string']};});
     return $$importa;
 }
@@ -234,7 +234,7 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return r.reifyCeylonType($$$mptypes.Kind$members);
+      return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$members});
     }
     $$paquete.members=members;
     members.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','members']};
@@ -255,7 +255,7 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return rv.reifyCeylonType($$$mptypes.Kind$annotatedMembers);
+      return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:$$$mptypes.Kind$annotatedMembers});
     }
     return getEmpty();
   }
@@ -337,7 +337,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
         var an = anns[i];
         if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
       }
-      return r.reifyCeylonType($$$mptypes.Annotation$annotations);
+      return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
     }
     $$paquete.annotations=annotations;
     annotations.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};

@@ -12,7 +12,7 @@ atr$(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
-  return ArraySequence(r,{Element$Iterable:{t:Type$meta$model,a:{t:Anything}}});
+  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 },undefined,function(){return{mod:$CCMM$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{ElementSequential:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 
 atr$(ClassModel$meta$model.$$.prototype,'declaration',function(){

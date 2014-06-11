@@ -1,1 +1,1 @@
-function(){return List.$$.prototype.defines.apply(this,arguments);}
+function(i){return List.$$.prototype.defines.call(this,i);}

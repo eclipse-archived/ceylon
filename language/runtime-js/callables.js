@@ -39,7 +39,7 @@ function JsCallableList(value) {
             var c = value[i];
             rval[i] = c.f.apply(c.o, arguments);
         }
-        return ArraySequence(rval,{Element$Iterable:{t:Callable}});
+        return value.length===0?getEmpty():ArraySequence(rval,{Element$ArraySequence:{t:Callable}});
     };
 }
 JsCallableList.$crtmm$={$tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};

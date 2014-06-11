@@ -102,7 +102,7 @@ atr$(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations'
       rv.push(ValParamDecl(this,p));
     }
   }
-  return ArraySequence(rv,{Element$Iterable:{t:FunctionOrValueDeclaration$meta$declaration},Absent$Iterable:{t:Null}});
+  return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:FunctionOrValueDeclaration$meta$declaration},Absent$Iterable:{t:Null}});
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:FunctionOrValueDeclaration$meta$declaration}}},$cont:FunctionalDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','parameterDeclarations']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=function memberDeclarations($$$mptypes,inherited){
   var defs=[];
@@ -131,7 +131,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       }
       if (_d){_d.parent$=this;defs.push(_d);};
     }
-    return defs.length>0?ArraySequence(defs,{Element$Iterable:$$$mptypes.Kind$memberDeclarations}):getEmpty();
+    return defs.length>0?ArraySequence(defs,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations}):getEmpty();
   }
   //Fallback to the model declarations
   if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
@@ -174,7 +174,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       r.push(_d);
     }
   }
-  return ArraySequence(r,{Element$Iterable:$$$mptypes.Kind$memberDeclarations});
+  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations});
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
 atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
@@ -200,7 +200,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
       for (var i=0;i<ta.length;i++)ta[i]={t:ta[i]};
       ta={t:'u',l:ta};
     }
-    return ArraySequence(ct,{Element$Iterable:ta});
+    return ct.length===0?getEmpty():ArraySequence(ct,{Element$ArraySequence:ta});
   }
   return getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
@@ -242,20 +242,20 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',funct
 },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration.NestableDeclaration','$at','container']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclarations=function($$$mptypes,inherited){
   var list=this.memberDeclarations({Kind$memberDeclarations:$$$mptypes.Kind$annotatedMemberDeclarations},inherited);
-  if (list.length) {
+  if (list.size>0) {
     var rv=[];
-    for (var i=0; i < list.length; i++) {
-      var mm = getrtmm$$(list[i].tipo);
+    for (var i=0; i < list.size; i++) {
+      var mm = getrtmm$$(list.elementAt(i).tipo);
       var anns = mm&&mm.$an;
       if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
       if (anns) for (var j=0; j<anns.length; j++) {
         if (is$(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
-          rv.push(list[i]);
+          rv.push(list.elementAt(i));
           break;
         }
       }
     }
-    if (rv.length)return ArraySequence(rv,{Element$Iterable:$$$mptypes.Kind$annotatedMemberDeclarations});
+    if (rv.length)return ArraySequence(rv,{Element$ArraySequence:$$$mptypes.Kind$annotatedMemberDeclarations});
   }
   return getEmpty();
 };
