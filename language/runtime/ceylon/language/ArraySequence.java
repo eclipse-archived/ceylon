@@ -421,7 +421,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|Element")
+    @Ignore
     public Element get(@Name("index") Integer key) {
         long index = key.longValue();
         return index < 0 || index >= length ?

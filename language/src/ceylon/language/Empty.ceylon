@@ -17,8 +17,8 @@ shared interface Empty of e
     "Returns an iterator that is already exhausted."
     shared actual Iterator<Nothing> iterator() => emptyIterator;
     
-    "Returns `null` for any given index."
-    shared actual Null get(Integer index) => null;
+    //"Returns `null` for any given index."
+    //shared actual Null get(Integer index) => null;
     
     "Returns `null` for any given index."
     shared actual Null elementAt(Integer index) => null;

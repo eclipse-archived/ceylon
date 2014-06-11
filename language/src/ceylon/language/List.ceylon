@@ -72,8 +72,7 @@ shared interface List<out Element>
      `0`."
     shared formal Element? elementAt(Integer index);
 	
-	shared actual default Element? get(Integer index) 
-			=> elementAt(index);
+	get(Integer index) => elementAt(index);
     
     shared actual default Iterator<Element> iterator() {
         object listIterator

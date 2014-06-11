@@ -789,9 +789,9 @@ public final class Array<Element>
         };
     }
 
-    @TypeInfo("ceylon.language::Null|Element")
+    @Ignore
     @Override
-    public Element get(@Name("index") Integer key) {
+    public Element get(Integer key) {
         return get(toInt(key.longValue()));
     }
 

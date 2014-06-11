@@ -304,8 +304,8 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
-    public Character get(@Name("index") Integer key) {
+    @Ignore
+    public Character get(Integer key) {
         return elementAt(value, key.longValue());
     }
 
