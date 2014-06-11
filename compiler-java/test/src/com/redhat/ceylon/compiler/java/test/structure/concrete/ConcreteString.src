@@ -57,12 +57,14 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return "foo";
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)(
             let
@@ -184,12 +186,14 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.toString();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)(
             let
