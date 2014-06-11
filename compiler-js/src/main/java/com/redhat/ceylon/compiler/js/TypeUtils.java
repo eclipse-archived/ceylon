@@ -316,8 +316,8 @@ public class TypeUtils {
     }
 
     static boolean isReservedTypename(String typeName) {
-        return JsCompiler.compilingLanguageModule && (typeName.equals("Object") || typeName.equals("Number")
-                || typeName.equals("Array")) || typeName.equals("String") || typeName.equals("Boolean");
+        return JsCompiler.isCompilingLanguageModule() && (typeName.equals("Number")
+                || typeName.equals("String") || typeName.equals("Boolean"));
     }
 
     /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
