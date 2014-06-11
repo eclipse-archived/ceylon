@@ -54,6 +54,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.util.JarUtils;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
@@ -224,19 +225,13 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private boolean isResource(JavaFileObject fo) {
+        // make sure we get a proper normalized abslute path
+        String fileName = FileUtil.absoluteFile(new File(fo.toUri().getPath())).getPath();
+        // now see if it's in any of the resource paths
         JavacFileManager dfm = (JavacFileManager) fileManager;
         for (File dir : dfm.getLocation(CeylonLocation.RESOURCE_PATH)) {
-            String prefix = dir.getPath();
-            if (fo.getName().startsWith(prefix)) {
-                return true;
-            }
-            String absPrefix;
-            try {
-                absPrefix = dir.getCanonicalPath();
-            } catch (IOException e) {
-                absPrefix = dir.getAbsolutePath();
-            }
-            if (fo.getName().startsWith(absPrefix)) {
+            String prefix = FileUtil.absoluteFile(dir).getPath();
+            if (fileName.startsWith(prefix)) {
                 return true;
             }
         }
