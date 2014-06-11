@@ -8,4 +8,4 @@ return this._decl;
 InterfaceModel$meta$model.$$.prototype.equals=function(o){
 return is$(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
 };
-InterfaceModel$meta$model.$$.prototype.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$','Object','$m','equals'],$ps:[{$nm:'other',$t:{t:$_Object}}],$cont:InterfaceModel$meta$model};}
+InterfaceModel$meta$model.$$.prototype.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},d:['$','Object','$m','equals'],$ps:[{$nm:'other',$t:{t:$_Object}}],$cont:InterfaceModel$meta$model};}

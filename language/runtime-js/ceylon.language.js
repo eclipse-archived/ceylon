@@ -194,7 +194,6 @@ initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Excepti
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
 ex$.Anything=Anything;
 ex$.Nothing=Nothing;
-ex$.$_Boolean=Boolean$;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
 ex$.NativeException=NativeException;

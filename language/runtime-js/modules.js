@@ -162,13 +162,13 @@ function Importa(name,version,mod,anns,$$importa){
     if (this.$anns)for (var i=0;i<this.$anns.length;i++) {
       if (this.$anns[i]===shared)return true;
     }
-return false;},undefined,{mod:$CCMM$,$t:{t:Boolean$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','shared']});
+return false;},undefined,{mod:$CCMM$,$t:{t:$_Boolean},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','shared']});
     atr$($$importa,'optional',function(){
     if (typeof(this.$anns)==='function')this.$anns=this.$anns();
     if (this.$anns)for (var i=0;i<this.$anns.length;i++) {
       if (this.$anns[i]===optional)return true;
     }
-return version;},undefined,{mod:$CCMM$,$t:{t:Boolean$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','optional']});
+return version;},undefined,{mod:$CCMM$,$t:{t:$_Boolean},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','optional']});
     atr$($$importa,'container',function(){
       if (this._cont===undefined) {
           this._cont = getModules$meta().find(this.name,this.version);

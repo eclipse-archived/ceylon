@@ -145,7 +145,7 @@ $$openFunction.equals=function(o) {
   }
   return false;
 }
-$$openFunction.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$','Object','$m','equals']};}
+$$openFunction.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},d:['$','Object','$m','equals']};}
 atr$($$openFunction,'container',function(){
   if (this.$parent)return this.$parent;
   if (this.toplevel)return this.containingPackage;
@@ -153,7 +153,7 @@ atr$($$openFunction,'container',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
 atr$($$openFunction,'annotation',function(){
   return find$ann(this.tipo,AnnotationAnnotation)!==null;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
 
       $$openFunction.$_apply=function $_apply(types,$mptypes){
         var mm=this.tipo.$crtmm$;
@@ -179,13 +179,13 @@ atr$($$openFunction,'annotation',function(){
             //AttributeDeclaration defaulted at X (25:4-25:44)
             atr$($$openFunction,'defaulted',function(){
                 return false;
-            },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','defaulted']};});
+            },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','defaulted']};});
             
             //AttributeDeclaration variadic at X (26:4-26:43)
             atr$($$openFunction,'variadic',function(){
                 var $$openFunction=this;
                 return false;
-            },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','variadic']};});
+            },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','variadic']};});
     $$openFunction.getParameterDeclaration=function (name$6){
       var pd=this.parameterDeclarations;
       for (var i=0; i < pd.size; i++) {
@@ -204,7 +204,7 @@ atr$($$openFunction,'annotation',function(){
             atr$($$openFunction,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','name']};});
             atr$($$openFunction,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','containingPackage']};});
             atr$($$openFunction,'containingModule',function(){return this._pkg.container;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','containingPackage']};});
-            atr$($$openFunction,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};});
+            atr$($$openFunction,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};});
 
     atr$($$openFunction,'string',function(){return "function " + this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','string']};});
     atr$($$openFunction,'qualifiedName',function(){
@@ -273,15 +273,15 @@ atr$($$openValue,'container',function(){
       };$$openValue.memberApply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
       atr$($$openValue,'defaulted',function(){
         return false;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
       atr$($$openValue,'variadic',function(){
         return false;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       atr$($$openValue,'variable',function(){
         var _m = get_model(getrtmm$$(this.tipo));
         if (_m && _m['var']) return true;
         return find$ann(this.tipo,VariableAnnotation)!==null;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
             
   atr$($$openValue,'openType',function(){
     if (this.tipo) {
@@ -297,7 +297,7 @@ atr$($$openValue,'container',function(){
 atr$($$openValue,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','name']};});
 atr$($$openValue,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','containingPackage']};});
 atr$($$openValue,'containingModule',function(){return this._pkg.container;},undefined,function(){return{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','containingModule']};});
-atr$($$openValue,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
+atr$($$openValue,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
 
   $$openValue.equals=function(other) {
     if (is$(other, {t:OpenValue}) && other.name.equals(this.name) && other.toplevel===this.toplevel && other.containingPackage.equals(this.containingPackage)) {
@@ -321,7 +321,7 @@ atr$($$openValue,'toplevel',function(){return this.toplevel_;},undefined,functio
 
     atr$($$openValue,'objectValue',function(){
       return this.meta&&this.meta.$mt==='o';
-    },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectValue']};});
+    },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectValue']};});
     atr$($$openValue,'objectClass',function(){
       if (this.objectValue) {
         var _m=getrtmm$$(this.tipo);
@@ -427,16 +427,16 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['$','Object']};}); 
       atr$($$openClass,'anonymous',function(){
         return this.meta.$mt==='o';
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
       atr$($$openClass,'abstract',function(){
         return find$ann(this.tipo,AbstractAnnotation)!==null;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
       atr$($$openClass,'$_final',function(){
         return find$ann(this.tipo,FinalAnnotation)!==null;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
       atr$($$openClass,'annotation',function(){
         return find$ann(this.tipo,AnnotationAnnotation)!==null;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
            
             //AttributeGetterDefinition openType at X (61:2-61:43)
             atr$($$openClass,'openType',function(){
@@ -481,7 +481,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
             atr$($$openClass,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','name']};});
             atr$($$openClass,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','containingPackage']};});
             atr$($$openClass,'containingModule',function(){return this._pkg.container;},undefined,function(){return{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','containingModule']};});
-            atr$($$openClass,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','toplevel']};});
+            atr$($$openClass,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','toplevel']};});
 
     atr$($$openClass,'qualifiedName',function(){
       return $qname(this.tipo);
@@ -572,7 +572,7 @@ atr$($$openInterface,'string',function(){
             atr$($$openInterface,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','name']};});
             atr$($$openInterface,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','containingPackage']};});
             atr$($$openInterface,'containingModule',function(){return this._pkg.container;},undefined,function(){return{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','containingModule']};});
-            atr$($$openInterface,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','toplevel']};});
+            atr$($$openInterface,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','toplevel']};});
 
     atr$($$openInterface,'qualifiedName',function(){
       return $qname(this.tipo);
@@ -916,19 +916,19 @@ function FunParamDecl(cont,param,$$funParamDecl){
   $$funParamDecl.param=param;
   $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,$ps:param.$ps,$mt:'prm',d:cont.tipo.$crtmm$.d,$an:param.$an}};
 
-  $$funParamDecl.$prop$getParameter={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
+  $$funParamDecl.$prop$getParameter={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
   $$funParamDecl.$prop$getParameter.get=function(){return true;};
-  $$funParamDecl.$prop$getAnnotation={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};}};
+  $$funParamDecl.$prop$getAnnotation={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};}};
   $$funParamDecl.$prop$getAnnotation.get=function(){return false;};
-  $$funParamDecl.$prop$getShared={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};}};
+  $$funParamDecl.$prop$getShared={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};}};
   $$funParamDecl.$prop$getShared.get=function(){return false;};
-  $$funParamDecl.$prop$getToplevel={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};}};
+  $$funParamDecl.$prop$getToplevel={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};}};
   $$funParamDecl.$prop$getToplevel.get=function(){return false;};
-  $$funParamDecl.$prop$getFormal={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};}};
+  $$funParamDecl.$prop$getFormal={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};}};
   $$funParamDecl.$prop$getFormal.get=function(){return false;};
-  $$funParamDecl.$prop$getDefault={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};}};
+  $$funParamDecl.$prop$getDefault={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};}};
   $$funParamDecl.$prop$getDefault.get=function(){return false};
-  $$funParamDecl.$prop$getActual={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};}};
+  $$funParamDecl.$prop$getActual={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};}};
   $$funParamDecl.$prop$getActual.get=function(){return false;};
   return $$funParamDecl;
 }
@@ -938,16 +938,16 @@ function $init$FunParamDecl(){
     initTypeProto(FunParamDecl,'ceylon.language.meta.declaration::FunParamDecl',Basic,FunctionDeclaration$meta$declaration);
     (function($$funParamDecl){
 
-      atr$($$funParamDecl,'parameter',function(){return true;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};});
+      atr$($$funParamDecl,'parameter',function(){return true;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};});
       
       //AttributeGetterDef defaulted at caca.ceylon (8:2-8:71)
       atr$($$funParamDecl,'defaulted',function(){
         return this.param.$def!==undefined;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','defaulted']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','defaulted']};});
       //AttributeGetterDef variadic at caca.ceylon (9:2-9:69)
       atr$($$funParamDecl,'variadic',function(){
         return this.param.seq!==undefined;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','variadic']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','variadic']};});
       //AttributeGetterDef container at caca.ceylon (11:2-11:91)
       atr$($$funParamDecl,'container',function(){
         return this.cont;
@@ -967,12 +967,12 @@ function $init$FunParamDecl(){
         return _openTypeFromTarg(t);
       },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','openType']};});
       //AttributeDecl annotation at caca.ceylon (15:2-15:40)
-      atr$($$funParamDecl,'annotation',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};});
-      atr$($$funParamDecl,'shared',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};});
-      atr$($$funParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};});
-      atr$($$funParamDecl,'formal',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};});
-      atr$($$funParamDecl,'$_default',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};});
-      atr$($$funParamDecl,'actual',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};});
+      atr$($$funParamDecl,'annotation',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','annotation']};});
+      atr$($$funParamDecl,'shared',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','shared']};});
+      atr$($$funParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','toplevel']};});
+      atr$($$funParamDecl,'formal',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','formal']};});
+      atr$($$funParamDecl,'$_default',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','default']};});
+      atr$($$funParamDecl,'actual',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','actual']};});
       atr$($$funParamDecl,'qualifiedName',function(){
         return $qname(cont.tipo.$crtmm$)+"."+this.param.$nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','qualifiedName']};});
@@ -1027,16 +1027,16 @@ function $init$ValParamDecl(){
     initTypeProto(ValParamDecl,'ceylon.language.meta.declaration::ValParamDecl',Basic,ValueDeclaration$meta$declaration);
     (function($$valParamDecl){
 
-      atr$($$valParamDecl,'parameter',function(){return true;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','parameter']};});
+      atr$($$valParamDecl,'parameter',function(){return true;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','parameter']};});
       atr$($$valParamDecl,'defaulted',function(){
         return this.param.$def!==undefined;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
       atr$($$valParamDecl,'variadic',function(){
         return this.param.seq!==undefined;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       atr$($$valParamDecl,'variable',function(){
         return find$ann(this.param,VariableAnnotation)!==null;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variable']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variable']};});
       atr$($$valParamDecl,'container',function(){
         return this.cont;
       },undefined,function(){return{mod:$CCMM$,$t:{t:'u', l:[{t:Package$meta$declaration},{t:NestableDeclaration$meta$declaration}]},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','container']};});
@@ -1051,11 +1051,11 @@ function $init$ValParamDecl(){
         if (typeof(t)==='string')return OpenTvar(OpenTypeParam(this.cont,t));
         return _openTypeFromTarg(t);
       },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
-      atr$($$valParamDecl,'shared',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','shared']};});
-      atr$($$valParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
-      atr$($$valParamDecl,'formal',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','formal']};});
-      atr$($$valParamDecl,'$_default',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','default']};});
-      atr$($$valParamDecl,'actual',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','actual']};});
+      atr$($$valParamDecl,'shared',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','shared']};});
+      atr$($$valParamDecl,'toplevel',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
+      atr$($$valParamDecl,'formal',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','formal']};});
+      atr$($$valParamDecl,'$_default',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','default']};});
+      atr$($$valParamDecl,'actual',function(){return false;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','actual']};});
       atr$($$valParamDecl,'qualifiedName',function(){
         return $qname(this.cont.tipo.$crtmm$)+"."+this.param.$nm;
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','qualifiedName']};});

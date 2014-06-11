@@ -198,15 +198,15 @@ ClassOrInterface$meta$model.$$.prototype.typeOf=function typeOf(instance$8){
   if (this.$targs)_t.a=this.$targs;
   return is$(instance$8,_t);
 };
-ClassOrInterface$meta$model.$$.prototype.typeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','typeOf']};};
+ClassOrInterface$meta$model.$$.prototype.typeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','typeOf']};};
 ClassOrInterface$meta$model.$$.prototype.supertypeOf=function supertypeOf(type$9){
   return extendsType({t:type$9.tipo}, {t:this.tipo});
 };
-ClassOrInterface$meta$model.$$.prototype.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','supertypeOf']};};
+ClassOrInterface$meta$model.$$.prototype.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','supertypeOf']};};
 ClassOrInterface$meta$model.$$.prototype.exactly=function exactly(type$10){
   return type$10.tipo && this.tipo === type$10.tipo;
 };
-ClassOrInterface$meta$model.$$.prototype.exactly.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','exactly']};};
+ClassOrInterface$meta$model.$$.prototype.exactly.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','exactly']};};
 atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   var mm = getrtmm$$(this.tipo);
   if (mm) {

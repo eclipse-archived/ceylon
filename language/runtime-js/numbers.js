@@ -101,10 +101,10 @@ atr$(JSNum$proto, 'negated', function() {
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['$','Invertable','$at','negated']};});
 atr$(JSNum$proto, 'negative', function(){
   return this.float$ ? this < 0.0 : this.valueOf() < 0;
-},undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','negative']};});
+},undefined,function(){return{$t:{t:$_Boolean},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','negative']};});
 atr$(JSNum$proto, 'positive', function(){
   return this.float$ ? this > 0.0 : this.valueOf() > 0;
-},undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','positive']};});
+},undefined,function(){return{$t:{t:$_Boolean},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','positive']};});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();

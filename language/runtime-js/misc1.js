@@ -1,11 +1,11 @@
-function Boolean$(value) {return Boolean(value)}
-initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
-Boolean$.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
-var $_Boolean=Boolean$;
+function $_Boolean(value) {return Boolean(value)}
+initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
+$_Boolean.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
+ex$.$_Boolean=$_Boolean;
 function trueClass() {}
-initType(trueClass, "ceylon.language::true", Boolean$);
+initType(trueClass, "ceylon.language::true", $_Boolean);
 function falseClass() {}
-initType(falseClass, "ceylon.language::false", Boolean$);
+initType(falseClass, "ceylon.language::false", $_Boolean);
 Boolean.prototype.getT$name = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$name;
 }
@@ -15,9 +15,7 @@ Boolean.prototype.getT$all = function() {
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','hash']});
-var trueString = String$("true", 4);
-var falseString = String$("false", 5);
-atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
+atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?"true":"false"; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
 atr$(Boolean.prototype, 'not', function(){ return !this.valueOf(); },
@@ -44,8 +42,8 @@ Boolean.prototype.clear = function(index) {
 
 function getTrue() {return true;}
 function getFalse() {return false;}
-ex$.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['$','true'],$t:{t:Boolean$}};}};
-ex$.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['$','false'],$t:{t:Boolean$}};}};
+ex$.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['$','true'],$t:{t:$_Boolean}};}};
+ex$.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['$','false'],$t:{t:$_Boolean}};}};
 
 function Mapita(o,$$targs$$,$$mapita){
     $init$Mapita();
@@ -71,7 +69,7 @@ function $init$Mapita(){
                 var $$mapita=this;
                 return $$mapita.getT$all()['ceylon.language::Map'].$$.prototype.equals.call(this,other$2);
             };
-            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'other',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
+            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
             
             //AttributeDecl hash at caca.ceylon (6:2-6:56)
             atr$($$mapita,'hash',function(){
