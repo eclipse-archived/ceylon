@@ -1,6 +1,6 @@
 //These are operators for handling nulls
 function nonempty(value){
-  return value!==null&&value!==undefined&&!value.empty;
+  return value!==null&&value!==undefined&&is$(value,{t:Sequence});
 }
 
 function is$(obj,type){
