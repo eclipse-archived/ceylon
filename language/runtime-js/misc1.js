@@ -32,7 +32,7 @@ Boolean.prototype.$_get = function(idx) {
     return idx === 0 ? this.valueOf() : false;
 }
 Boolean.prototype.set = function(idx,bit) {
-    if (bit === undefined) { bit = $true; }
+    if (bit === undefined) { bit = true; }
     return idx === 0 ? bit.valueOf() : this.valueOf();
 }
 Boolean.prototype.flip = function(idx) {
@@ -46,8 +46,6 @@ function getTrue() {return true;}
 function getFalse() {return false;}
 ex$.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['$','true'],$t:{t:Boolean$}};}};
 ex$.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['$','false'],$t:{t:Boolean$}};}};
-var $true = true;
-var $false = false;
 
 function Mapita(o,$$targs$$,$$mapita){
     $init$Mapita();

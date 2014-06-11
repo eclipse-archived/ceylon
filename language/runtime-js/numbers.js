@@ -168,15 +168,15 @@ JSNum$proto.$_get = function(idx) {
         return false;
     } 
     var mask = 1 << idx;
-    return (this & mask) != 0 ? $true : $false;
+    return (this & mask) != 0 ? true : false;
 }
 JSNum$proto.set = function(idx,bit) {
     if (idx < 0 || idx >31) {
         return this;
     } 
-    if (bit === undefined) { bit = $true; }
+    if (bit === undefined) { bit = true; }
         var mask = idx > 1 ? 1 << idx : 1;
-    return (bit === $true) ? this | mask : this & ~mask;
+    return (bit === true) ? this | mask : this & ~mask;
 }
 JSNum$proto.flip = function(idx) {
     if (idx < 0 || idx >31) {
