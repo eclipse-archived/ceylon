@@ -500,10 +500,10 @@ shared interface List<out Element>
         elementAt(Integer index) 
                 => defines(index) then index;
         
+        clone() => 0:size;
+        
         segment(Integer from, Integer length)
                 => clone()[from:length];
-        
-        clone() => 0:size;
         
         span(Integer from, Integer to)
                 => clone()[from..to];
