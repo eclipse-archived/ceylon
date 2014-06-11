@@ -512,8 +512,8 @@ interfaceDeclaration returns [AnyInterface declaration]
           $declaration = dec; }
       | 
         DYNAMIC
-        { def = new InterfaceDefinition($INTERFACE_DEFINITION);
-          dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
+        { def = new InterfaceDefinition($DYNAMIC);
+          dec = new InterfaceDeclaration($DYNAMIC);
           def.setDynamic(true);
           $declaration = def; }
       )
