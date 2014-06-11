@@ -431,4 +431,5 @@ shared void strings() {
     check(",".join({for (c in "") {c.string}})=="", "string join empty object comprehension");
     check(",".join({for (c in "A") {c.string}})=="{ A }", "string join object comprehension 1");
     check(",".join({for (c in "ABC") {c.string}})=="{ A },{ B },{ C }", "string join object comprehension 2");
+    check("".elementAt(1) is Finished, "String.elementAt");
 }

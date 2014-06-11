@@ -131,4 +131,5 @@ shared void testArrays() {
     check(throwables == throwables2, "throwables == throwables2");
     check(assertionErrors == throwables, "assertionErrors == throwables");
     check(assertionErrors2 == throwables2, "assertionErrors2 == throwables2");
+    check(throwables.elementAt(100) is Finished, "Array.elementAt");
 }
