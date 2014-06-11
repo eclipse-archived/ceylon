@@ -511,8 +511,8 @@ shared interface List<out Element>
         spanTo(Integer to) => clone()[...to];
         
         shared actual String string {
-            if (exists lastIndex) {
-                return "{ 0, ... , ``lastIndex`` }";
+            if (exists endIndex=lastIndex) {
+                return "{ 0, ... , ``endIndex`` }";
             }
             else {
                 return "{}";
@@ -587,8 +587,8 @@ shared interface List<out Element>
         lastIndex => outer.lastIndex;
         
         shared actual Element? elementAt(Integer index) {
-            if (exists lastIndex) {
-                return outer.elementAt(lastIndex-index);
+            if (exists endIndex=lastIndex) {
+                return outer.elementAt(endIndex-index);
             }
             else {
                 return null;
@@ -596,8 +596,8 @@ shared interface List<out Element>
         }
         
         shared actual List<Element> segment(Integer from, Integer length) {
-            if (exists lastIndex, length>1) {
-                value start = lastIndex-from;
+            if (exists endIndex=lastIndex, length>1) {
+                value start = endIndex-from;
                 return outer[start..start-length+1];
             }
             else {
@@ -608,8 +608,8 @@ shared interface List<out Element>
         span(Integer from, Integer to) => outer[to..from];
         
         shared actual List<Element> spanFrom(Integer from) {
-            if (exists lastIndex, from<=lastIndex) { 
-                return outer[lastIndex-from..0];
+            if (exists endIndex=lastIndex, from<=endIndex) { 
+                return outer[endIndex-from..0];
             }
             else {
                 return [];
@@ -617,8 +617,8 @@ shared interface List<out Element>
         }
         
         shared actual List<Element> spanTo(Integer to) {
-            if (exists lastIndex, to>=0) { 
-                return outer[lastIndex..lastIndex-to];
+            if (exists endIndex=lastIndex, to>=0) { 
+                return outer[endIndex..endIndex-to];
             }
             else {
                 return [];
