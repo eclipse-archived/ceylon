@@ -16,9 +16,9 @@
   ~ limitations under the License.
   -->
 
-<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support" slot="1.0">
+<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support" slot="2.0">
     <resources>
-        <resource-root path="com.redhat.ceylon.maven-support-1.0.jar"/>
+        <resource-root path="com.redhat.ceylon.maven-support-2.0.jar"/>
     </resources>
 
     <dependencies>
@@ -28,6 +28,7 @@
                 <path name="javax/xml/namespace"/>
                 <path name="javax/xml/parsers"/>
                 <path name="javax/xml/stream"/>
+                <path name="javax/xml/xpath"/>
                 <path name="org/w3c/dom"/>
             </paths>
         </system>
