@@ -45,5 +45,11 @@ shared void characters() {
     
     check(c.integer.character==c, "integer/character conversion");
     check(69.character.integer==69, "integer/character conversion");
-     
+
+    check('a'.largerThan('A'), "Character.largerThan");
+    check('A'.smallerThan('a'), "Character.smallerThan");
+    check('A'.notLargerThan('B'), "Character.notLargerThan");
+    check('B'.notSmallerThan('A'), "Character.notSmallerThan");
+    check('A'.neighbour(2)=='C', "Character.neighbour 1");
+    check('Z'.neighbour(-2)=='X', "Character.neighbour 2");
 }
