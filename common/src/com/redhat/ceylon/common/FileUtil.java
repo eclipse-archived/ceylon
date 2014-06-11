@@ -290,13 +290,11 @@ public class FileUtil {
      * @return The relative file path or the original file path if no match was found
      */
     public static String relativeFile(Iterable<? extends File> paths, String file){
+        // make sure file is absolute and normalized
+        file = absoluteFile(new File(file)).getPath();
         // find the matching path prefix
         int srcDirLength = 0;
         for (File prefixFile : paths) {
-            String prefix = prefixFile.getPath();
-            if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
-                srcDirLength = prefix.length();
-            }
             String absPrefix = absoluteFile(prefixFile).getPath();
             if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
                 srcDirLength = absPrefix.length();
