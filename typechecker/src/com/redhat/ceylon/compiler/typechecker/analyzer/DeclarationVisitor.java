@@ -1428,13 +1428,14 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(final Tree.BaseType that) {
         super.visit(that);
+        final Scope scope = that.getScope();
+        final String name = name(that.getIdentifier());
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    return getTypeDeclaration(that.getScope(), 
-                            name(that.getIdentifier()), 
-                            null, false, unit);
+                    return getTypeDeclaration(scope, 
+                            name, null, false, unit);
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
@@ -1451,34 +1452,31 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(final Tree.QualifiedType that) {
         super.visit(that);
+        final String name = name(that.getIdentifier());
+        final ProducedType outerType = that.getOuterType().getTypeModel();
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
-                private ProducedType outerType() {
-                    return that.getOuterType().getTypeModel();
-                }
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    ProducedType ot = outerType();
-                    if (ot==null) {
+                    if (outerType==null) {
                         return null;
                     }
                     else {
-                        return Util.getTypeMember(ot.getDeclaration(), 
-                                name(that.getIdentifier()), 
-                                null, false, unit);
+                        return Util.getTypeMember(outerType.getDeclaration(), 
+                                name, null, false, unit);
                     }
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
                     Tree.TypeArgumentList tal = that.getTypeArgumentList();
-                    ProducedType ot = outerType();
-                    if (ot==null) {
+                    if (outerType==null) {
                         return emptyMap();
                     }
                     else {
-                        return getTypeArgumentMap(getDeclaration(), ot, 
+                        return getTypeArgumentMap(getDeclaration(), outerType, 
                                 Util.getTypeArguments(tal, 
-                                        getDeclaration().getTypeParameters(), ot));
+                                        getDeclaration().getTypeParameters(), 
+                                        outerType));
                     }
                 }
             };
@@ -1489,23 +1487,28 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.IterableType that) {
         super.visit(that);
         if (inExtends) {
+            ProducedType et = null;
+            boolean alo = false;
+            Tree.Type elem = that.getElementType();
+            if (elem!=null) {
+                if (elem instanceof Tree.SequencedType) {
+                    Tree.SequencedType set = (Tree.SequencedType) elem;
+                    et = set.getType().getTypeModel();
+                    alo = set.getAtLeastOne();
+                }
+            }
+            final ProducedType elementType = et;
+            final boolean atLeastOne = alo;
             ProducedType t = new LazyProducedType(unit) {
                 ProducedType iterableType() {
-                    Tree.Type elem = that.getElementType();
-                    if (elem!=null) {
-                        if (elem instanceof Tree.SequencedType) {
-                            ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
-                            if (et!=null) {
-                                if (((Tree.SequencedType) elem).getAtLeastOne()) {
-                                    return unit.getNonemptyIterableType(et);
-                                }
-                                else {
-                                    return unit.getIterableType(et);
-                                }
-                            }
-                        }
+                    if (elementType!=null) {
+                        return atLeastOne ? 
+                                unit.getNonemptyIterableType(elementType) : 
+                                unit.getIterableType(elementType);
                     }
-                    return unit.getIterableType(new UnknownType(unit).getType());
+                    else {
+                        return unit.getIterableType(new UnknownType(unit).getType());
+                    }
                 }
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1525,6 +1528,7 @@ public class DeclarationVisitor extends Visitor {
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
                 private ProducedType tupleType(final Tree.TupleType that) {
+                    //TODO: this holds a hard reference to the Tree.Type
                     return getTupleType(that.getElementTypes(), unit);
                 }
                 @Override
@@ -1542,20 +1546,18 @@ public class DeclarationVisitor extends Visitor {
     
     public void visit(final Tree.OptionalType that) {
         super.visit(that);
+        final ProducedType definiteType = that.getDefiniteType().getTypeModel();
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
-                private ProducedType optionalType() {
-                    List<ProducedType> types = new ArrayList<ProducedType>(2);
-                    types.add(unit.getType(unit.getNullDeclaration()));
-                    ProducedType dt = that.getDefiniteType().getTypeModel();
-                    if (dt!=null) types.add(dt);
-                    UnionType ut = new UnionType(unit);
-                    ut.setCaseTypes(types);
-                    return ut.getType();
-                }
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    return optionalType().getDeclaration();
+                    List<ProducedType> types = 
+                            new ArrayList<ProducedType>(2);
+                    types.add(unit.getType(unit.getNullDeclaration()));
+                    if (definiteType!=null) types.add(definiteType);
+                    UnionType ut = new UnionType(unit);
+                    ut.setCaseTypes(types);
+                    return ut;
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
@@ -1568,23 +1570,21 @@ public class DeclarationVisitor extends Visitor {
     
     public void visit(final Tree.UnionType that) {
         super.visit(that);
+        final List<ProducedType> types = 
+                new ArrayList<ProducedType>(that.getStaticTypes().size());
+        for (Tree.StaticType st: that.getStaticTypes()) {
+            ProducedType t = st.getTypeModel();
+            if (t!=null) {
+                types.add(t);
+            }
+        }
         if (inExtends) {
             ProducedType t = new LazyProducedType(unit) {
-                private ProducedType unionType() {
-                    List<ProducedType> types = 
-                            new ArrayList<ProducedType>(that.getStaticTypes().size());
-                    for (Tree.StaticType st: that.getStaticTypes()) {
-                        //addToUnion( types, st.getTypeModel() );
-                        ProducedType t = st.getTypeModel();
-                        if (t!=null) types.add(t);
-                    }
-                    UnionType ut = new UnionType(unit);
-                    ut.setCaseTypes(types);
-                    return ut.getType();
-                }
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    return unionType().getDeclaration();
+                    UnionType ut = new UnionType(unit);
+                    ut.setCaseTypes(types);
+                    return ut;
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
@@ -1598,22 +1598,18 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.IntersectionType that) {
         super.visit(that);
         if (inExtends) {
+            final List<ProducedType> types = 
+                    new ArrayList<ProducedType>(that.getStaticTypes().size());
+            for (Tree.StaticType st: that.getStaticTypes()) {
+                ProducedType t = st.getTypeModel();
+                if (t!=null) types.add(t);
+            }
             ProducedType t = new LazyProducedType(unit) {
-                private ProducedType intersectionType() {
-                    List<ProducedType> types = 
-                            new ArrayList<ProducedType>(that.getStaticTypes().size());
-                    for (Tree.StaticType st: that.getStaticTypes()) {
-                        //addToIntersection(types, st.getTypeModel(), unit);
-                        ProducedType t = st.getTypeModel();
-                        if (t!=null) types.add(t);
-                    }
-                    IntersectionType it = new IntersectionType(unit);
-                    it.setSatisfiedTypes(types);
-                    return it.getType();
-                }
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    return intersectionType().getDeclaration();
+                    IntersectionType it = new IntersectionType(unit);
+                    it.setSatisfiedTypes(types);
+                    return it;
                 }
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
@@ -1627,6 +1623,8 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.SequenceType that) {
         super.visit(that);
         if (inExtends) {
+            final ProducedType elementType = 
+                    that.getElementType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1636,8 +1634,7 @@ public class DeclarationVisitor extends Visitor {
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
                     List<TypeParameter> stps = 
                             unit.getSequentialDeclaration().getTypeParameters();
-                    return singletonMap(stps.get(0), 
-                            that.getElementType().getTypeModel());
+                    return singletonMap(stps.get(0), elementType);
                 }
             };
             that.setTypeModel(t);
@@ -1647,6 +1644,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.SequencedType that) {
         super.visit(that);
         if (inExtends) {
+            final ProducedType type = that.getType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1661,8 +1659,7 @@ public class DeclarationVisitor extends Visitor {
                                     unit.getSequenceDeclaration() : 
                                     unit.getSequentialDeclaration())
                             .getTypeParameters();
-                    return singletonMap(stps.get(0), 
-                            that.getType().getTypeModel());
+                    return singletonMap(stps.get(0), type);
                 }
             };
             that.setTypeModel(t);
@@ -1672,6 +1669,8 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.EntryType that) {
         super.visit(that);
         if (inExtends) {
+            final ProducedType keyType = that.getKeyType().getTypeModel();
+            final ProducedType valueType = that.getValueType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1683,8 +1682,8 @@ public class DeclarationVisitor extends Visitor {
                             new HashMap<TypeParameter, ProducedType>();
                     List<TypeParameter> itps = 
                             unit.getEntryDeclaration().getTypeParameters();
-                    map.put(itps.get(0), that.getKeyType().getTypeModel());
-                    map.put(itps.get(1), that.getValueType().getTypeModel());
+                    map.put(itps.get(0), keyType);
+                    map.put(itps.get(1), valueType);
                     return map;
                 }
             };
@@ -1695,6 +1694,8 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.FunctionType that) {
         super.visit(that);
         if (inExtends) {
+            final ProducedType returnType = 
+                    that.getReturnType().getTypeModel();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -1706,8 +1707,10 @@ public class DeclarationVisitor extends Visitor {
                             new HashMap<TypeParameter, ProducedType>();
                     List<TypeParameter> ctps = 
                             unit.getCallableDeclaration().getTypeParameters();
-                    map.put(ctps.get(0), that.getReturnType().getTypeModel());
-                    map.put(ctps.get(1), getTupleType(that.getArgumentTypes(), unit));
+                    map.put(ctps.get(0), returnType);
+                    map.put(ctps.get(1),
+                            //TODO: holds on to reference to Tree.Type
+                            getTupleType(that.getArgumentTypes(), unit));
                     return map;
                 }
             };
@@ -1718,16 +1721,19 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.SuperType that) {
         super.visit(that);
         if (inExtends) {
+            final Scope scope = that.getScope();
             ProducedType t = new LazyProducedType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                    ClassOrInterface ci = 
+                            getContainingClassOrInterface(scope);
                     if (ci==null) {
                         return null;
                     }
                     else {
                         if (ci.isClassOrInterfaceMember()) {
-                            ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                            ClassOrInterface oci = 
+                                    (ClassOrInterface) ci.getContainer();
                             return intersectionOfSupertypes(oci).getDeclaration();
                         }
                         else {
