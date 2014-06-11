@@ -1579,7 +1579,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.BaseMemberExpression expr = (BaseMemberExpression) baseMemberTerm;
             Declaration decl = expr.getDeclaration();
             
-            if (Decl.isValue(decl)) {
+            if (Decl.isValue(decl) || Decl.isGetter(decl)) {
                 // Now build a "fake" declaration for the attribute
                 Tree.AttributeDeclaration attrDecl = new Tree.AttributeDeclaration(null);
                 attrDecl.setDeclarationModel((Value)decl);
