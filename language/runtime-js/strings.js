@@ -127,7 +127,7 @@ String$proto.spanFrom = function(from) {
 String$proto.spanFrom.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','spanFrom'],
   $ps:[{$nm:'from',$t:{t:Integer}}]};}
 String$proto.spanTo = function(to) {
-    return to < 0 ? String$('', 0) : this.span(0, to);
+    return to < 0 ? '' : this.span(0, to);
 }
 String$proto.spanTo.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','spanTo'],
   $ps:[{$nm:'to',$t:{t:Integer}}]};}
@@ -213,7 +213,7 @@ atr$(String$proto, 'trimmed', function() {
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
-    var result = String$(this.substring(from, to));
+    var result = this.substring(from, to);
     if (this.codePoints !== undefined) {
         result.codePoints = this.codePoints - from - this.length + to;
     }
@@ -228,7 +228,7 @@ String$proto.trim = function(/*Category*/chars) {
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
-    var result = String$(this.substring(from, to));
+    var result = this.substring(from, to);
     if (this.codePoints !== undefined) {
         result.codePoints = this.codePoints - from - this.length + to;
     }
@@ -239,7 +239,7 @@ String$proto.trimLeading = function(/*Category*/chars) {
     var from = 0;
     while (from<this.length && chars(this.$_get(from))) {++from}
     if (from===0) {return this;}
-    var result = String$(this.substring(from, this.length));
+    var result = this.substring(from, this.length);
     if (this.codePoints !== undefined) {
         result.codePoints = this.codePoints - from;
     }
@@ -253,8 +253,8 @@ String$proto.trimTrailing = function(/*Category*/chars) {
         ++to;
     }
     if (to===this.length) {return this;}
-    else if (to===0) { return String$("",0); }
-    var result = String$(this.substring(0, to));
+    else if (to===0) { return ""; }
+    var result = this.substring(0, to);
     if (this.codePoints !== undefined) {
         result.codePoints = this.codePoints - this.length + to;
     }
@@ -340,7 +340,7 @@ atr$(String$proto, 'normalized', function() {
     var i1 = 0;
     while (i1 < this.length) {
         while (this.charCodeAt(i1) in Character.WS$) {
-            if (++i1 >= this.length) {return String$(result)}
+            if (++i1 >= this.length) {return result;}
         }
         var i2 = i1;
         var cc = this.charCodeAt(i2);
@@ -397,7 +397,7 @@ atr$(String$proto, 'keys', function() {
 String$proto.join = function(objects) {
     var it = objects.iterator();
     var obj = it.next();
-    if (obj === getFinished()) {return String$("", 0);}
+    if (obj === getFinished()) {return "";}
     if (this.codePoints === undefined) {this.codePoints = countCodepoints(this)}
     var str = obj.string;
     var result = str;
@@ -524,7 +524,7 @@ String$proto.$_split = function(sep, discard, group) {
         }
         if (separator) {
             // if last character was a separator then there's another empty token
-            tokens.push(String$("", 0));
+            tokens.push("");
         }
     }
 
@@ -542,7 +542,7 @@ atr$(String$proto, 'reversed', function() {
             result += this.substr(--i, 2);
         }
     }
-    return String$(result);
+    return result;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$at','reversed']}});
 String$proto.$_replace = function(sub, repl) {
     if (this.indexOf(sub) < 0) {
@@ -552,12 +552,12 @@ String$proto.$_replace = function(sub, repl) {
     while (ns.indexOf(sub) >= 0) {
       ns = ns.replace(sub, repl);
     }
-    return String$(ns);
+    return ns;
 }
 String$proto.$_replace.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','replace'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};}
 String$proto.replaceFirst = function(sub, repl) {
-    return String$(this.replace(sub, repl));
+    return this.replace(sub, repl);
 }
 String$proto.replaceFirst.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','replaceFirst'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};}

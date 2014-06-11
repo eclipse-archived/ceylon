@@ -7,7 +7,7 @@ function className(obj) {
                 if (i>0) { ct+=_sep; }
                 ct += _typename(t.l[i]);
             }
-            return String$(ct);
+            return ct;
         } else {
             var tn = t.t.$$.T$name;
             if (t.a) {
@@ -21,8 +21,8 @@ function className(obj) {
             return tn;
         }
     }
-    if (obj === null) return String$('ceylon.language::Null');
-    if (obj === undefined) return String$("JavaScript UNDEFINED");
+    if (obj === null) return 'ceylon.language::Null';
+    if (obj === undefined) return "JavaScript UNDEFINED";
     var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
     if (tn === 'UNKNOWN') {
         if (typeof obj === 'function') {

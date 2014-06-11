@@ -25,14 +25,14 @@ if (typeof document !== "undefined") {
     }
 }
 
-var linesep = String$('\n', 1);
-var filesep = String$('/', 1);
-var pathsep = String$(':', 1);
+var linesep = '\n';
+var filesep = '/';
+var pathsep = ':';
 var osname = properties["os.name"];
 if ((osname !== undefined) && (osname.search(/windows/i) >= 0)) {
-    linesep = String$("\r\n", 2);
-    filesep = String$('\\', 1);
-    pathsep = String$(';', 1);
+    linesep = "\r\n";
+    filesep = '\\';
+    pathsep = ';';
 }
 properties["line.separator"] = linesep;
 properties["file.separator"] = filesep;

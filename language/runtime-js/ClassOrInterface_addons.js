@@ -232,7 +232,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
     }
     return getEmpty();
   }
-  throw Exception(String$("ClassOrInterface.typeArguments-we don't have a metamodel!"));
+  throw Exception("ClassOrInterface.typeArguments-we don't have a metamodel!");
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 atr$(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     var mm = getrtmm$$(this.tipo);
@@ -261,11 +261,11 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'string',function(){
       }
       qn+=">";
     }
-    return String$(qn);
+    return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 atr$(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   var mm = getrtmm$$(this.tipo);
-  var h=String$($qname(mm)).hash;
+  var h=$qname(mm).hash;
   if (mm.$tp) {
     for (var tp in mm.$tp) {
       var targ;

@@ -38,13 +38,13 @@ function validate$params(ps,t,msg,nothrow) {
 function validate$typeparams(t,tparms,types) {
   if (tparms) {
     if (types===undefined||types.size<1)
-      throw TypeApplicationException$meta$model(String$("Missing type arguments"));
+      throw TypeApplicationException$meta$model("Missing type arguments");
     var i=0;
     t.a={};
     for (var tp in tparms) {
       var _type=types.$_get(i);
       if (_type===undefined)
-        throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+        throw TypeApplicationException$meta$model("Missing type argument for " + tp);
       var _tp = tparms[tp];
       var _ta = _type.tipo;
       t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
@@ -53,7 +53,7 @@ function validate$typeparams(t,tparms,types) {
         for (var j=0; j<restraints.length;j++) {
           var _r=restraints[j];if(typeof(_r)==='function')_r=getrtmm$$(_r).$t;
           if (!extendsType(t.a[tp],_r))
-            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+            throw TypeApplicationException$meta$model("Type argument for " + tp + " violates type parameter constraints");
         }
       }
       i++;
@@ -111,7 +111,7 @@ function convert$params(mm,a) {
   var ps=mm.$ps;
   if (ps===undefined || ps.length===0){
     if (a && a.size>0)
-      throw InvocationException$meta$model(String$("Passing parameters to no-args callable"));
+      throw InvocationException$meta$model("Passing parameters to no-args callable");
     return [];
   }
   if (a===undefined)a=[];
@@ -124,7 +124,7 @@ function convert$params(mm,a) {
     if (a[i]===undefined) {
       if (p.$def||p.seq)fa.push(undefined);
       else {
-        throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
+        throw InvocationException$meta$model("Wrong number of arguments (should be " + ps.length + ")");
       }
     } else if (sarg) {
       sarg.push(a[i]);

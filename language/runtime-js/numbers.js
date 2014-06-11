@@ -64,7 +64,7 @@ JSNum$proto.getT$name = function() {
     return (this.float$ ? Float : Integer).$$.T$name;
 }
 JSNum$proto.toString = origNumToString;
-atr$(JSNum$proto, 'string', function(){ return String$(this.toString()); },
+atr$(JSNum$proto, 'string', function(){ return this.toString(); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
@@ -84,7 +84,7 @@ JSNum$proto.timesInteger = function(other) {
 JSNum$proto.divided = function(other) {
     if (this.float$||other.float$) { return Float(this/other); }
     if (other == 0) {
-        throw Exception(String$("Division by Zero"));
+        throw Exception("Division by Zero");
     }
     return toInt(this/other);
 }
@@ -92,7 +92,7 @@ JSNum$proto.remainder = function(other) { return this%other; }
 JSNum$proto.power = function(exp) {
     if (this.float$||exp.float$) { return Float(Math.pow(this, exp)); }
     if (exp<0 && this!=1 && this!=-1) {
-        throw AssertionError(String$("Negative exponent"));
+        throw AssertionError("Negative exponent");
     }
     return toInt(Math.pow(this, exp));
 }

@@ -205,7 +205,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
   atr$(that,'string',function(){
-    return String$($qname(mm));
+    return $qname(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
@@ -278,7 +278,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
     return eq;
   };
   atr$(that,'string',function(){
-    return String$($qname(mm));
+    return $qname(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -358,7 +358,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
     return eq;
   };
   atr$(that,'string',function(){
-    return String$($qname(mm));
+    return $qname(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -374,7 +374,7 @@ function $init$AppliedMemberInterface(){
     (function($$appliedMemberInterface){
       $$appliedMemberInterface.$_bind=function $_bind(container$2){
         var $$appliedMemberInterface=this;
-        throw Exception(String$("IMPL MemberInterface.bind"));
+        throw Exception("IMPL MemberInterface.bind");
       };$$appliedMemberInterface.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
     })(AppliedMemberInterface.$$.prototype);
   }
@@ -406,7 +406,7 @@ atr$($$appliedUnionType,'string',function(){
     if (first)first=false;else qn+="|";
     qn+=this._types[i].string;
   }
-  return String$(qn);
+  return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 atr$($$appliedUnionType,'hash',function(){
   var h=this._types.length;
@@ -451,7 +451,7 @@ atr$($$appliedUnionType,'hash',function(){
 
             $$appliedUnionType.supertypeOf=function supertypeOf(type$21){
                 var $$appliedUnionType=this;
-                throw Exception(String$("IMPL AppliedUnionType.supertypeOf"));
+                throw Exception("IMPL AppliedUnionType.supertypeOf");
             };$$appliedUnionType.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type$Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','supertypeOf']};};
 
       $$appliedUnionType.exactly=function exactly(type$22){
@@ -507,7 +507,7 @@ atr$($$appliedIntersectionType,'string',function(){
     if (first)first=false;else qn+="&";
     qn+=this._types[i].string;
   }
-  return String$(qn);
+  return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 atr$($$appliedIntersectionType,'hash',function(){
   var h=this._types.length;
@@ -551,7 +551,7 @@ atr$($$appliedIntersectionType,'hash',function(){
 
             $$appliedIntersectionType.supertypeOf=function supertypeOf(type$24){
                 var $$appliedIntersectionType=this;
-                throw Exception(String$("IMPL AppliedIntersectionType.supertypeOf"));
+                throw Exception("IMPL AppliedIntersectionType.supertypeOf");
             };$$appliedIntersectionType.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type$Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','supertypeOf']};};
 
       $$appliedIntersectionType.exactly=function exactly(type$25){
@@ -705,7 +705,7 @@ atr$($$appliedValue,'string',function(){
   } else {
     qn=$qname(mm);
   }
-  return String$(qn);
+  return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
     }
   }
@@ -725,7 +725,7 @@ function $init$AppliedValue(){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model);
     (function($$appliedValue){
 atr$($$appliedValue,'string',function(){
-  return String$($qname(this.tipo));
+  return $qname(this.tipo);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
       atr$($$appliedValue,'declaration',function(){
         var $$av=this;
@@ -786,11 +786,11 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   var mm = getrtmm$$(tipo);
   if (mm.$tp) {
     if (typeArgs===undefined || typeArgs.size<1)
-      throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
+      throw TypeApplicationException$meta$model("Missing type arguments in call to FunctionDeclaration.apply");
     var _ta={}; var i=0;
     for (var tp in mm.$tp) {
       if (typeArgs.$_get(i)===undefined)
-        throw TypeApplicationException$meta$model(String$("Missing type argument for "+tp));
+        throw TypeApplicationException$meta$model("Missing type argument for "+tp);
       var _tp = mm.$tp[tp];
       var _t = typeArgs.$_get(i).tipo;
       _ta[tp]={t:_t};
@@ -799,7 +799,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
         for (var j=0; j<restraints.length;j++) {
           var _r=restraints[j];if (typeof(_r)==='function')_r=getrtmm$$(_r).$t;
           if (!extendsType(_ta[tp],_r))
-            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+            throw TypeApplicationException$meta$model("Type argument for " + tp + " violates type parameter constraints");
         }
       }
       i++;
@@ -897,7 +897,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   atr$($$appliedAttribute,'string',function(){
     var c=getrtmm$$(atr).$cont;
     if (typeof(c.$crtmm$)==='function')c.$crtmm$=c.$crtmm$();
-    if (!c)return String$($qname(atr));
+    if (!c)return $qname(atr);
     c=c.$crtmm$;
     var qn=$qname(c);
     if (c.$tp) {
@@ -913,7 +913,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
       qn+=">";
     }
     qn+="."+pname;
-    return String$(qn);
+    return qn;
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
     return is$(o,{t:AppliedAttribute}) && o.tipo===atr;

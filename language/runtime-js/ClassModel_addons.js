@@ -6,9 +6,9 @@ atr$(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
   for (var i=0; i < ps.length; i++) {
     var pt=ps[i].$t;
     if (typeof(pt)==='string'){
-      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This class model needs type parameters"));
+      if (!this.$targs)throw TypeApplicationException$meta$model("This class model needs type parameters");
       pt=this.$targs[pt];
-      if (!pt)throw TypeApplicationException$meta$model(String$("Class model is missing type argument for <" + ps[i].$t + ">"));
+      if (!pt)throw TypeApplicationException$meta$model("Class model is missing type argument for <" + ps[i].$t + ">");
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }

@@ -5,9 +5,9 @@ atr$(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
   for (var i=0; i < ps.length; i++) {
     var pt=ps[i].$t;
     if (typeof(pt)==='string'){
-      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This function model needs type parameters"));
+      if (!this.$targs)throw TypeApplicationException$meta$model("This function model needs type parameters");
       pt=this.$targs[pt];
-      if (!pt)throw TypeApplicationException$meta$model(String$("Function model is missing type argument for <" + ps[i].$t + ">"));
+      if (!pt)throw TypeApplicationException$meta$model("Function model is missing type argument for <" + ps[i].$t + ">");
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
@@ -33,7 +33,7 @@ atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
     }
     return getEmpty();
   }
-  throw Exception(String$("FunctionModel.typeArguments-we don't have a metamodel!"));
+  throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
   var mm=this.tipo.$crtmm$;
@@ -70,5 +70,5 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
     }
     qn+=">";
   }
-  return String$(qn);
+  return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:FunctionModel$meta$model};});

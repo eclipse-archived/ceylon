@@ -181,11 +181,11 @@ function NativeException(e) {
     var that = new NativeException.$$;
     var msg;
     if (typeof e === 'string') {
-        msg = String$(e);
+        msg = e;
     } else if (e) {
-        msg = String$(e.toString());
+        msg = e.toString();
     } else {
-        msg = String$("Native JavaScript Exception",27);
+        msg = "Native JavaScript Exception";
     }
     Exception(msg,null,that);
     return that;

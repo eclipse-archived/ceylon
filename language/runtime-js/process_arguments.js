@@ -13,11 +13,11 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
                 arg = arg.substr(pos);
                 pos = arg.indexOf('=');
                 if (pos >= 0) {
-                    this.namedArgs[arg.substr(0, pos)] = String$(arg.substr(pos+1));
+                    this.namedArgs[arg.substr(0, pos)] = arg.substr(pos+1);
                 } else {
                     var value = args[i+1];
                     if ((value !== undefined) && (value.charAt(0) != '-')) {
-                        this.namedArgs[arg] = String$(value);
+                        this.namedArgs[arg] = value;
                         ++i;
                     } else {
                         this.namedArgs[arg] = null;
@@ -35,7 +35,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         var argStrings = new Array(parts.length);
         //can't do "for (i in parts)" anymore because of the added stuff to arrays
         var i;
-        for (i=0; i<parts.length; i++) { argStrings[i] = String$(parts[i]); }
+        for (i=0; i<parts.length; i++) { argStrings[i] = parts[i]; }
         this.argv = parts.length===0?getEmpty():ArraySequence(argStrings, {Element$ArraySequence:{t:String$}});
         
         for (i=0; i < parts.length; i++) {
@@ -43,7 +43,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
             var pos = part.indexOf('=');
             if (pos >= 0) {
                 var value = decodeURIComponent(part.substr(pos+1));
-                this.namedArgs[part.substr(0, pos)] = String$(value);
+                this.namedArgs[part.substr(0, pos)] = value;
             } else {
                 this.namedArgs[part] = null;
             }

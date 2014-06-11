@@ -16,7 +16,7 @@ function Modulo(meta, $$modulo){
   if (typeof(mm)==='function') {
     mm=mm();meta.$CCMM$=mm;
   }
-  var name=String$(mm['$mod-name']);
+  var name=mm['$mod-name'];
   atr$($$modulo,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','name']});
   atr$($$modulo,'qualifiedName',function(){return name;},undefined,{mod:$CCMM$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','qualifiedName']});
   var version=String$(mm['$mod-version']);
@@ -45,7 +45,7 @@ function Modulo(meta, $$modulo){
       var _d=[];
       for (var d in meta.$mod$imps) {
         var spos = d.lastIndexOf('/');
-        _d.push(Importa(String$(d.substring(0,spos)), String$(d.substring(spos+1)),this,meta.$mod$imps[d]));
+        _d.push(Importa(d.substring(0,spos), d.substring(spos+1),this,meta.$mod$imps[d]));
       }
       deps = _d.length===0?getEmpty():ArraySequence(_d,{Element$ArraySequence:{t:Import$meta$declaration}});
       mm['$mod-deps'] = deps;
@@ -341,7 +341,7 @@ console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $
     }
     $$paquete.annotations=annotations;
     annotations.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};
-  atr$($$paquete,'string',function(){return String$("package " + this.name);},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
+  atr$($$paquete,'string',function(){return "package " + this.name;},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
     return $$paquete;
 }
 Paquete.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Package$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Package']};
