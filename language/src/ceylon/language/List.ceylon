@@ -64,15 +64,15 @@ shared interface List<out Element>
      this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
             => 0 <= index <= (lastIndex else -1);
-	
+    
     "Returns the element of this sequence with the given
      index if the index refers to an element of the list,
      that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index 
      `0`."
     shared formal Element? elementAt(Integer index);
-	
-	get(Integer index) => elementAt(index);
+    
+    get(Integer index) => elementAt(index);
     
     shared actual default Iterator<Element> iterator() {
         object listIterator
