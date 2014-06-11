@@ -9,5 +9,5 @@ function internalSort(comp, elems, $$$mptypes) {
         var cmp = comp(a,b);
         return (cmp===getLarger()) ? 1 : ((cmp===getSmaller()) ? -1 : 0);
     });
-    return ArraySequence(arr, {Element$Iterable:$$$mptypes.Element$internalSort});
+    return arr.length===0?getEmpty():ArraySequence(arr, {Element$ArraySequence:$$$mptypes.Element$internalSort});
 }
