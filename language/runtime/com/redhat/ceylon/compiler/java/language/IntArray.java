@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
@@ -365,7 +364,14 @@ public final class IntArray implements ReifiedType {
         public Sequential<? extends ceylon.language.Integer> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            return this.getEmpty() ? empty_.get_() : new ArraySequence(ceylon.language.Integer.$TypeDescriptor$, this);
+            Object result = ceylon.language.sequence_.sequence(ceylon.language.Integer.$TypeDescriptor$,
+                        ceylon.language.Null.$TypeDescriptor$,
+                        IntArrayIterable.this);
+            if (result == null) {
+                return (Sequential)empty_.get_();
+            } else {
+                return (Sequential)result;
+            }
         }
         
         @Override

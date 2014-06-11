@@ -33,28 +33,48 @@ function tpl$(elems,types,spread){
   set_type_args(that,elems.$$targs$$);
   that.$elems=elems;
   that.first_=elems[0];
-  that.$_get=function(i){
+  that.elementAt=function(i){
     var e=elems[i]
-    return e===undefined?null:e;
+    return e===undefined?getFinished():e;
   };
-  that.$_get.$crtmm$=Tuple.$$.prototype.$_get.$crtmm$;
+  that.elementAt.$crtmm$=Tuple.$$.prototype.elementAt.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
   that.contains=function(i) { return elems.contains(i); }
   that.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
-  that.withLeading=function(a,b) { return elems.withLeading(a,b); }
+  that.withLeading=function(a,b){
+    var e2 = elems.slice(0); e2.unshift(a);
+    var t2 = _t.l.slice(0); t2.unshift(b.Other$withLeading);
+    return tpl$(e2,{t:'T',l:t2});
+  }
   that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
-  that.span=function(a,b){ return elems.span(a,b); }
+  that.span=function(a,b){
+    var r=elems.span(a,b);
+    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+  }
   that.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
-  that.spanTo=function(x){ return elems.spanTo(x); }
+  that.spanTo=function(x){
+    var r=elems.spanTo(x);
+    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+  }
   that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
-  that.spanFrom=function(x){ return elems.spanFrom(x); }
+  that.spanFrom=function(x){
+    var r=elems.spanFrom(x);
+    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+  }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
-  that.segment=function(a,b){ return elems.segment(a,b); }
+  that.segment=function(a,b){
+    var r=elems.segment(a,b);
+    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+  }
   that.segment.$crtmm$=Tuple.$$.prototype.segment.$crtmm$;
   that.equals=function(o){return elems.equals(o);}
   that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
-  that.withTrailing=function(a,b){return elems.withTrailing(a,b);}
+  that.withTrailing=function(a,b){
+    var e2=elems.slice(0);e2.push(a);
+    var t2=_t.l.slice(0);t2.push(b.Other$withTrailing);
+    return tpl$(e2,{t:'T',l:t2});
+  }
   that.withTrailing.$crtmm$=List.$$.prototype.withTrailing.$crtmm$;
   that.chain=function(a,b){return elems.chain(a,b);}
   that.chain.$crtmm$=Iterable.$$.prototype.chain.$crtmm$;
@@ -66,7 +86,7 @@ function tpl$(elems,types,spread){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.length==1?getEmpty():ArraySequence(elems.slice(1),{Element$Iterable:{t:'u',l:_t.l.slice(1)}});
+    return elems.length===1?getEmpty():tpl$(elems.slice(1),{t:'T',l:_t.l.slice(1)});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.length;
@@ -78,7 +98,7 @@ function tpl$(elems,types,spread){
     return elems[elems.length-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
   atr$(that,'reversed',function(){
-    return elems.reversed;
+    return ArraySequence(elems.reversed,{Element$ArraySequence:_t});
   },undefined,Tuple.$$.prototype.$prop$getReversed.$crtmm$);
   return that;
 }

@@ -26,7 +26,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
             }
             args[i] = String$(args[i]);
         }
-        this.argv = ArraySequence(args, {Element$Iterable:{t:String$}});
+        this.argv = args.length===0?getEmpty():ArraySequence(args, {Element$ArraySequence:{t:String$}});
     }
 } else if (typeof window !== "undefined") {
     // parse URL parameters
@@ -36,7 +36,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         //can't do "for (i in parts)" anymore because of the added stuff to arrays
         var i;
         for (i=0; i<parts.length; i++) { argStrings[i] = String$(parts[i]); }
-        this.argv = ArraySequence(argStrings, {Element$Iterable:{t:String$}});
+        this.argv = parts.length===0?getEmpty():ArraySequence(argStrings, {Element$ArraySequence:{t:String$}});
         
         for (i=0; i < parts.length; i++) {
             var part = parts[i];

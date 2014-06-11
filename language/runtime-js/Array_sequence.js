@@ -1,3 +1,4 @@
 function() {
-    return this.seq$?this:ArraySequence(this,this.$$targs$$);
+  if(this.length===0)return getEmpty();
+  return ArraySequence(this,{Element$ArraySequence:this._elemTarg()});
 }

@@ -1,3 +1,10 @@
-native Element[] internalSort<Element>(
+Element[] internalSort<Element>(
         Comparison comparing(Element x, Element y), 
-        {Element*} elements);
+        {Element*} elements) {
+    value array = Array(elements);
+    if (array.empty) {
+        return [];
+    }
+    array.sortInPlace(comparing);
+    return ArraySequence(array);
+}

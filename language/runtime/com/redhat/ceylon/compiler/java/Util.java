@@ -2,23 +2,21 @@ package com.redhat.ceylon.compiler.java;
 
 import java.util.Arrays;
 
-import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Finished;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
+import ceylon.language.Null;
 import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.AbstractIterable;
-import com.redhat.ceylon.compiler.java.language.ArrayIterable;
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
+import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -99,7 +97,7 @@ public class Util {
      */
     private static <T> int fastIterableSize(Iterable<? extends T, ?> iterable) {
         if (iterable instanceof Sequential
-                || iterable instanceof ArrayIterable) {
+                || iterable instanceof AbstractArrayIterable) {
             return toInt(iterable.getSize());
         }
         String[] o = null;
@@ -953,24 +951,7 @@ public class Util {
             return (Sequential)empty_.get_();
         }
         // Annoyingly this implies an extra copy
-        return ArraySequence.<T>instance($reifiedT, elements);
-    }
-
-    /**
-     * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
-     * wrapping the given elements, depending on whether the given array is 
-     * empty, but only considering the given number of elements
-     * @param elements The elements
-     * @return A Sequential
-     */
-    @SuppressWarnings({"unchecked","rawtypes"})
-    public static <T> Sequential<T> 
-    sequentialInstance(TypeDescriptor $reifiedT, T[] elements, int length) {
-        if (length == 0) {
-            return (Sequential)empty_.get_();
-        }
-        // Annoyingly this implies an extra copy
-        return ArraySequence.<T>instance($reifiedT, elements, length);
+        return new ObjectArray.ObjectArrayIterable($reifiedT, elements).sequence();
     }
 
     /** 
@@ -991,8 +972,7 @@ public class Util {
             newArray[i++] = ceylon.language.String.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor$, 
-        		newArray);
+        return new ObjectArray.ObjectArrayIterable(ceylon.language.String.$TypeDescriptor$, newArray).sequence();
     }
 
     /** 
@@ -1013,8 +993,7 @@ public class Util {
             newArray[i++] = ceylon.language.Integer.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor$, 
-        		newArray);
+        return new ObjectArray.ObjectArrayIterable(ceylon.language.Integer.$TypeDescriptor$, newArray).sequence();
     }
 
     /** 
@@ -1035,8 +1014,7 @@ public class Util {
             newArray[i++] = ceylon.language.Character.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor$, 
-        		newArray);
+        return new ObjectArray.ObjectArrayIterable(ceylon.language.Character.$TypeDescriptor$, newArray).sequence();
     }
 
     /** 
@@ -1057,8 +1035,7 @@ public class Util {
             newArray[i++] = ceylon.language.Boolean.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor$, 
-        		newArray);
+        return new ObjectArray.ObjectArrayIterable(ceylon.language.Boolean.$TypeDescriptor$, newArray).sequence();
     }
 
     /** 
@@ -1079,8 +1056,7 @@ public class Util {
             newArray[i++] = ceylon.language.Float.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor$, 
-        		newArray);
+        return new ObjectArray.ObjectArrayIterable(ceylon.language.Float.$TypeDescriptor$, newArray).sequence();
     }
 
 
@@ -1120,8 +1096,7 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty()) {
-            return new ArraySequence<T>($reifiedT, elements, 
-            		start, length, copy);
+            return new ObjectArray.ObjectArrayIterable<T>($reifiedT, elements).skip(start).take(length).sequence();
         }
         // we have both, let's find the total size
         int total = toInt(rest.getSize() + length);
@@ -1132,7 +1107,7 @@ public class Util {
         for(Object elem; (elem = iterator.next()) != finished_.get_(); i++){
             newArray[i] = elem;
         }
-        return ArraySequence.<T>instance($reifiedT, newArray);
+        return new ObjectArray.ObjectArrayIterable($reifiedT, newArray).sequence();
     }
     
     /**
@@ -1174,7 +1149,13 @@ public class Util {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Sequential sequentialInstance(final Iterable iterable) {
-        return ceylon.language.impl.sequential_.sequential(Metamodel.getIteratedTypeDescriptor(iterable), iterable);
+        Object result = ceylon.language.sequence_.sequence(Metamodel.getIteratedTypeDescriptor(iterable),
+                Null.$TypeDescriptor$,
+                iterable);
+        if (result == null) {
+            return (Sequential)empty_.get_();
+        }
+        return (Sequential)result;
     }
     
     
@@ -1536,7 +1517,7 @@ public class Util {
             final java.lang.Throwable exception) {
         java.lang.Throwable[] sup = exception.getSuppressed();
         if (sup.length > 0) {
-            return new ArraySequence(TypeDescriptor.klass(java.lang.Throwable.class), sup, 0, sup.length, false);
+            return new ObjectArray.ObjectArrayIterable(TypeDescriptor.klass(java.lang.Throwable.class), sup).sequence();
         } else {
             return (ceylon.language.Sequential)empty_.get_();
         }

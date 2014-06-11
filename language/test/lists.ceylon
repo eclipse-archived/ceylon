@@ -1,6 +1,6 @@
 class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual Boolean equals(Object other) => (super of List<Element>).equals(other);
-    shared actual Element? elementAt(Integer x) => elems[x];
+    shared actual Element|Finished elementAt(Integer x) => elems.elementAt(x);
     shared actual TestList<Element> reversed => TestList(*elems.reversed);
     shared actual TestList<Element> rest => TestList(*elems.rest);
     shared actual Integer hash => (super of List<Element>).hash;
@@ -75,7 +75,7 @@ shared void lists() {
     if (exists e=b.last) {
         check(e==8, "LazyList.last");
     } else { fail("LazyList.last"); }
-    check(b.reversed==ArraySequence(8..1), "LazyList.reversed");
+    check(b.reversed==sequence(8..1), "LazyList.reversed");
     
     //#167
     value empty167 = TestList<Nothing>();

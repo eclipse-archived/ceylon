@@ -199,7 +199,7 @@ public abstract class TypeDescriptor {
         @Override
         public java.lang.Class<?> getArrayElementClass() {
             if (klass==Null.class ||
-                klass==Object.class ||
+                klass==ceylon.language.Object.class ||
                 klass==Anything.class ||
                 klass==Basic.class ||
                 klass==Identifiable.class) {

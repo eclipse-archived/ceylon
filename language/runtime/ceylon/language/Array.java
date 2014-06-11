@@ -5,6 +5,8 @@ import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -504,7 +506,7 @@ public final class Array<Element>
 
     @Override
     public Array<Element> spanFrom(@Name("from") Integer from) {
-        return span(from, Integer.instance(getSize()));
+        return span(from, getLastIndex());
     }
     
     @Override
@@ -660,12 +662,12 @@ public final class Array<Element>
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length;
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength<=0) {
+        long sz = getSize();
+        if (fromIndex>=sz||resultLength<=0) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
-            long resultFromIndex = fromIndex + resultLength;
+            long resultFromIndex = Math.min(fromIndex + resultLength, sz);
             java.lang.Object a;
             if (array instanceof char[]) {
                 a = copyOfRange((char[])array, 
@@ -795,10 +797,14 @@ public final class Array<Element>
         return get(toInt(key.longValue()));
     }
 
-    @TypeInfo("ceylon.language::Null|Element")
+    @TypeInfo("Element|ceylon.language::Finished")
     @Override
-    public Element elementAt(@Name("index") long key) {
-        return get(toInt(key));
+    public java.lang.Object elementAt(@Name("index") long key) {
+        int index = toInt(key);
+        if (index < 0 || index >= getSize()) {
+            return finished_.get_();
+        }
+        return unsafeItem(index);
     }
     
     @Ignore
@@ -1356,8 +1362,7 @@ public final class Array<Element>
         else {
             arraycopy(array, 0, result, 0, size);
         }
-        return new ArraySequence<Element>($reifiedElement, 
-        		result, 0, size, false);
+        return new ArraySequence<Element>($reifiedElement, new Array<Element>($reifiedElement, result));
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
@@ -1737,5 +1742,40 @@ public final class Array<Element>
     @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(Array.class, $reifiedElement);
+    }
+    
+    public void sortInPlace(
+            @Name("comparing")@FunctionalParameter("(x,y)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
+            final Callable<? extends Comparison> comparing) {
+        java.util.List<Element> list = new java.util.AbstractList<Element>() {
+            @Override
+            public Element get(int index) {
+                return Array.this.unsafeItem(index);
+            }
+            @Override
+            public Element set(int index, Element element) {
+                // Strictly this method should return the element that was at 
+                // the given index, but that might require even more boxing 
+                // and in practice the return value
+                // doesn't seem to be used by the sorting algorithm
+                Array.this.set(index, element);
+                return null;
+            }
+            @Override
+            public int size() {
+                return (int)Array.this.getSize();
+            }
+            
+        };
+        Comparator<Element> comparator = new Comparator<Element>() {
+            public int compare(Element x, Element y) {
+                Comparison result = comparing.$call$(x, y);
+                if (result==larger_.get_()) return 1;
+                if (result==smaller_.get_()) return -1;
+                return 0;
+            }
+        };
+        Collections.<Element>sort(list, comparator);
     }
 }

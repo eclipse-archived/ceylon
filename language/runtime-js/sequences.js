@@ -3,7 +3,7 @@ var origArrToString = arrprot$.toString;
 arrprot$.toString = origArrToString;
 arrprot$.elementAt=$_Array.$$.prototype.elementAt;
 arrprot$.reifyCeylonType=function(t,ne) {
-    if (t===null)t={t:Anything};
+    if (t===null || t===undefined)t={t:Anything};
     if (this.$$targs$$===undefined)this.$$targs$$=={};
     add_type_arg(this,'Element$Iterable',t);
     add_type_arg(this,'Element$Array',t);
@@ -12,12 +12,20 @@ arrprot$.reifyCeylonType=function(t,ne) {
     add_type_arg(this,'Absent$Iterable',ne?{t:Nothing}:{t:Null});
     return this;
 }
-
+arrprot$._elemTarg=function(){
+  var t = this.$$targs$$ && this.$$targs$$.Element$Array;
+  if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$Iterable;
+  if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$List;
+  if (t===undefined)t = {t:Anything};
+  if (this.$$targs$$===undefined)this.$$targs$$={};
+  if (this.$$targs$$.Element$Array===undefined)this.$$targs$$.Element$Array=t;
+  return t;
+}
 arrprot$.getT$name = function() {
-    return (this.seq$ ? ArraySequence : $_Array).$$.T$name;
+    return $_Array.$$.T$name;
 }
 arrprot$.getT$all = function() {
-    return (this.seq$ ? ArraySequence : $_Array).$$.T$all;
+    return $_Array.$$.T$all;
 }
 
 arrprot$.set=$_Array.$$.prototype.set;
@@ -37,19 +45,19 @@ arrprot$.iterator=$_Array.$$.prototype.iterator;
 arrprot$.copyTo=$_Array.$$.prototype.copyTo;
 
 atr$(arrprot$,'size',$_Array.$$.prototype.$prop$getSize.get,undefined,$_Array.$$.prototype.$prop$getSize.$crtmm$);
-atr$(arrprot$,'string',function(){
-    return (this.seq$?Sequential:Iterable).$$.prototype.$prop$getString.get.call(this);
-},undefined,function(){return{mod:$CCMM$,d:['$','Iterable','$at','string'],$t:{t:String$},$cont:arrprot$};});
+atr$(arrprot$,'string',Iterable.$$.prototype.$prop$getString.get,undefined,Iterable.$$.prototype.$prop$getString.$crtmm$);
 atr$(arrprot$,'lastIndex',$_Array.$$.prototype.$prop$getLastIndex.get,undefined,$_Array.$$.prototype.$prop$getLastIndex.$crtmm$);
 atr$(arrprot$,'first',$_Array.$$.prototype.$prop$getFirst.get,undefined,$_Array.$$.prototype.$prop$getFirst.$crtmm$);
 atr$(arrprot$,'last',$_Array.$$.prototype.$prop$getLast.get,undefined,$_Array.$$.prototype.$prop$getLast.$crtmm$);
-atr$(arrprot$, 'keys',List.$$.prototype.$prop$getKeys.get,undefined,List.$$.prototype.$prop$getKeys.$crtmm$);
-atr$(arrprot$, 'reversed', function() {
-  var r=this.Reversed$List();
-  return this.seq$?r.sequence():r;
+atr$(arrprot$,'keys',List.$$.prototype.$prop$getKeys.get,undefined,List.$$.prototype.$prop$getKeys.$crtmm$);
+atr$(arrprot$,'empty',$_Array.$$.prototype.$prop$getEmpty.get,undefined,$_Array.$$.prototype.$prop$getEmpty.$crtmm$);
+atr$(arrprot$,'reversed', function() {
+  this._elemTarg();
+  return this.Reversed$List();
 },undefined,List.$$.prototype.$prop$getReversed.$crtmm$);
-atr$(arrprot$, 'rest', function() {
-    return this.Rest$List(1);
+atr$(arrprot$,'rest', function() {
+  this._elemTarg();
+  return this.Rest$List(1);
 },undefined,List.$$.prototype.$prop$getRest.$crtmm$);
 
 

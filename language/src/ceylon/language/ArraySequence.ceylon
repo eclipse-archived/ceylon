@@ -1,45 +1,84 @@
-"An immutable [[Sequence]] implemented using an [[Array]]. 
- Where possible, copying of the underlying array is avoided."
-//TODO: Reimplement this class in Ceylon!
-shared final native class ArraySequence<out Element>({Element+} elements) 
-        satisfies [Element+] {
+"A `Sequence` backed by an `Array`. Because `Array `is mutable this class is 
+ private to the language module, where we can be sure the Array is not 
+ modified after the Sequence has been initialized."
+class ArraySequence<Element>(Array<Element> array) satisfies [Element+] {
     
-    shared native actual Element last;
+    shared actual Element|Finished elementAt(Integer index)
+            => array.elementAt(index);
     
-    shared native actual Element first;
+    shared actual Boolean contains(Object element) 
+            => array.contains(element);
     
-    shared native actual Integer size;
+    shared actual Integer size => array.size;
     
-    shared native actual Integer lastIndex;
+    shared actual Iterator<Element> iterator() 
+            => array.iterator();
     
-    shared native actual Element[] rest; 
+    shared actual Element first {
+        assert (is Element first = array.first);
+        return first;
+    }
     
-    shared native actual Integer count(Boolean selecting(Element element)); 
+    shared actual Element last {
+        assert (is Element last = array.last);
+        return last;
+    }
     
-    shared native actual Boolean contains(Object element);
+    shared actual Integer lastIndex {
+        assert (exists lastIndex = array.lastIndex);
+        return lastIndex;
+    }
     
-    shared actual ArraySequence<Element> clone() => this;
+    shared actual Element[] rest 
+            => package.sequence(array.rest) else [];
     
-    shared native actual Element? elementAt(Integer index);
+    shared actual [Element+] reversed {
+        assert (exists reversed = package.sequence(array.reversed));
+        return reversed;
+    }
     
-    shared native actual Iterator<Element> iterator();
+    shared actual Element[] segment(Integer from, Integer length) {
+        if (from < 0) {
+            return package.sequence(array[0:length+from]) else [];
+        } else {
+            return package.sequence(array[from:length]) else [];
+        }
+    }
     
-    shared native actual Boolean defines(Integer key);
+    shared actual Element[] span(Integer from, Integer to) {
+        if (from <= to) {
+            if (to < 0 || from > lastIndex) {
+                return [];
+            }
+            return package.sequence(array[largest(from, 0)..smallest(to, lastIndex)]) else [];
+        } else {
+            if (from < 0 || to > lastIndex) {
+                return [];
+            }
+            return package.sequence(array[smallest(from, lastIndex)..largest(to, 0)]) else [];
+        }
+    }
+    
+    shared actual Element[] spanFrom(Integer from) {
+        if (from > lastIndex) {
+            return [];
+        } else {
+            return package.sequence(array[largest(from, 0)...]) else [];
+        }
+    }
+    
+    shared actual Element[] spanTo(Integer to) {
+        if (to < 0) {
+            return [];
+        } else { 
+            return package.sequence(array[...smallest(to, lastIndex)]) else [];
+        }
+    }
     
     shared actual Boolean equals(Object that) 
-            => (super of List<Element>).equals(that);
+            => (super of Sequence<Element>).equals(that);
     
     shared actual Integer hash 
-            => (super of List<Element>).hash;
-    
-    shared native actual ArraySequence<Element> reversed;
-
-    shared native actual Element[] span(Integer from, Integer to);
-    
-    shared native actual Element[] spanFrom(Integer from);
-    
-    shared native actual Element[] spanTo(Integer to);
-    
-    shared native actual Element[] segment(Integer from, Integer length);
+            => (super of Sequence<Element>).hash;
     
 }

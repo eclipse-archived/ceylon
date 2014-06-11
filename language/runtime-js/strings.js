@@ -93,7 +93,7 @@ String$proto.notLargerThan=function(o){
 String$proto.notLargerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
   $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','notLargerThan']};};
 String$proto.sequence=function(){
-  return ArraySequence(this,{Element$Iterable:{t:Character}});
+  return this.length===0?getEmpty():ArraySequence(this,{Element$ArraySequence:{t:Character}});
 }
 String$proto.sequence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,
   a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$m','sequence'],
@@ -178,7 +178,7 @@ String$proto.iterator= function() {
 }
 String$proto.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['$','String','$m','iterator']};}
 String$proto.elementAt=function(index){
-  if (index<0 || index>=this.length) {return null;}
+  if (index<0 || index>=this.length) {return getFinished();}
   if (this._bumps===undefined)this._bumps=[];
   var cnt=0;
   var mb=0;
@@ -196,7 +196,7 @@ String$proto.elementAt=function(index){
       this._bumps.push(mb);
       ++mb;
     }
-    if (++mb >= this.length) {return null;}
+    if (++mb >= this.length) {return getFinished();}
   }
   if (this._maxidx===undefined || mb>this._maxidx)this._maxidx=mb;
   return Character(codepointFromString(this, mb));

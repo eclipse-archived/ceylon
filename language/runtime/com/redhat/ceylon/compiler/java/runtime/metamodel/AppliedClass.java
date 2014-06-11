@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import ceylon.language.Array;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.InvocationException;
@@ -424,7 +425,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @Override
-    public Object getDefaultParameterValue(Parameter parameter, Object[] values, int collectedValueCount) {
+    public Object getDefaultParameterValue(Parameter parameter, Array<Object> values, int collectedValueCount) {
         com.redhat.ceylon.compiler.typechecker.model.Class decl = 
                 (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.declaration;
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(decl);
@@ -459,7 +460,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, false, false);
         // sucks that we have to copy the array, but that's the MH API
         java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
-        System.arraycopy(values, 0, arguments, 0, collectedValueCount);
+        System.arraycopy(values.toArray(), 0, arguments, 0, collectedValueCount);
         try {
             return methodHandle.invokeWithArguments(arguments);
         } catch (Throwable e) {

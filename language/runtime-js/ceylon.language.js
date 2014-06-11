@@ -148,14 +148,14 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 
 //#COMPILE Object,Null,Identifiable,Callable,callables.js
 
-//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash
+//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash,impl/rethrow
 //#Anything
 //#COMPILE Iterable
-//#COMPILE Sequential,Sequence,Empty,StringBuilder
+//#COMPILE Sequential,Sequence,Empty,StringBuilder,impl/SequenceBuilder
 //#native Boolean
 //#native Callable
 //#COMPILE Correspondence,Finished
-//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,ArraySequence.js,sequences.js,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
+//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
 //#Number
 //#COMPILE Set,Range,Singleton,AssertionError
 //#COMPILE Map

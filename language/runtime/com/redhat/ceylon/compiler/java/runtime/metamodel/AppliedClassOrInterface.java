@@ -3,12 +3,13 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.ArraySequence;
+import ceylon.language.Array;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
@@ -18,7 +19,6 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -959,7 +959,7 @@ public abstract class AppliedClassOrInterface<Type>
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
-        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberInterface.class, $reifiedContainer, $reifiedType);
         SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
                 new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
 
@@ -1096,7 +1096,7 @@ public abstract class AppliedClassOrInterface<Type>
         Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
         Object it;
         @SuppressWarnings("unchecked")
-        Type[] ret = (Type[]) java.lang.reflect.Array.newInstance($reifiedType.getArrayElementClass(), (int) caseTypeDeclarations.getSize());
+        Array<Type> ret = new Array<Type>($reifiedType, (int) caseTypeDeclarations.getSize(), null);
         int count = 0;
         while((it = iterator.next()) != finished_.get_()){
             if(it instanceof ceylon.language.meta.declaration.OpenClassType == false)
@@ -1109,9 +1109,9 @@ public abstract class AppliedClassOrInterface<Type>
             ceylon.language.meta.model.Value<? extends Type,? super Object> valueModel = 
                     valueDeclaration.<Type,Object>apply($reifiedType, TypeDescriptor.NothingType);
             Type value = valueModel.get();
-            ret[count++] = value;
+            ret.set(count++, value);
         }
-        return new ArraySequence<>($reifiedType, ret, 0, count, false);
+        return ret.take(count).sequence();
     }
     
     @Ignore

@@ -3,5 +3,5 @@ function() {
     var $arr$=this;
     return new ComprehensionIterator(function() {
         return ($idx$===$arr$.length) ? getFinished() : $arr$[$idx$++];
-    }, this.$$targs$$);
+    },{Element$Iterable:this._elemTarg(),Absent$Iterable:{t:Null}});
 }

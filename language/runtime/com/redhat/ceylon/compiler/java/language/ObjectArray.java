@@ -201,6 +201,10 @@ public final class ObjectArray<T> implements ReifiedType {
         public ObjectArrayIterable(T[] array, int length) {
             super(TypeDescriptor.klass(array.getClass().getComponentType()), array, length);
         }
+        
+        public ObjectArrayIterable(TypeDescriptor reifiedElement, T[] array) {
+            super(reifiedElement, array, array.length);
+        }
 
         @Override
         protected ObjectArrayIterable<T> newInstance(T[] array, int start,
