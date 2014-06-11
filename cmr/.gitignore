@@ -13,3 +13,4 @@ maven/target/
 ceylon/target/
 testsuite/target/
 build/
+/modules
