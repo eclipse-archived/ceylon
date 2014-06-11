@@ -280,6 +280,11 @@ public class ModuleValidator {
         }
         for (PhasedUnits units : phasedUnitsOfDependencies) {
             for (PhasedUnit pu : units.getPhasedUnits()) {
+                pu.analyseTypes();
+            }
+        }
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            for (PhasedUnit pu : units.getPhasedUnits()) {
                 pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
             }
         }
