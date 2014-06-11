@@ -10,6 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -148,6 +149,16 @@ public class SupertypeVisitor extends Visitor {
         super.visit(that);
         checkForUndecidability(null, that.getSatisfiedTypes(), 
                 that.getDeclarationModel(), that);
+    }
+    
+    @Override
+    public void visit(Tree.TypeParameterDeclaration that) {
+        TypeParameter tpd = that.getDeclarationModel();
+        ProducedType dta = tpd.getDefaultTypeArgument();
+        if (dta!=null && dta.containsDeclaration(tpd.getDeclaration())) {
+            tpd.setDefaultTypeArgument(null);
+        }
+        super.visit(that);
     }
 
 }

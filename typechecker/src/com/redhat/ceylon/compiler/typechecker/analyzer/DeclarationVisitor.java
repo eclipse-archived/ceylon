@@ -443,24 +443,28 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
     
-    private boolean typeParameter;
-    
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
+        Tree.TypeSpecifier ts = that.getTypeSpecifier();
+        Tree.TypeVariance tv = that.getTypeVariance();
         TypeParameter p = new TypeParameter();
         defaultExtendedToAnything(p);
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getTypeSpecifier()!=null);
-        if (that.getTypeVariance()!=null) {
-            String v = that.getTypeVariance().getText();
+        p.setDefaulted(ts!=null);
+        if (tv!=null) {
+            String v = tv.getText();
             p.setCovariant("out".equals(v));
             p.setContravariant("in".equals(v));
         }
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
-        typeParameter = true;
         super.visit(that);
-        typeParameter = false;
+        if (ts!=null) {
+            Tree.StaticType type = ts.getType();
+            if (type!=null) {
+                p.setDefaultTypeArgument(type.getTypeModel());
+            }
+        }
     }
     
     @Override
@@ -1783,22 +1787,18 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeSpecifier that) {
-        if (typeParameter) {
-            //TODO: handle defaulted type args!!!
-            super.visit(that);
-            return;
-        }
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        TypeDeclaration td = (TypeDeclaration) that.getScope();
-        ProducedType type = that.getType().getTypeModel();
-        if (type!=null) {
-            td.setExtendedType(type);
-        }
-        if (that.getMainToken().getType()==SPECIFY && 
-                !(that instanceof Tree.DefaultTypeArgument)) {
-            that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
+        if (!(that instanceof Tree.DefaultTypeArgument)) {
+            TypeDeclaration td = (TypeDeclaration) that.getScope();
+            ProducedType type = that.getType().getTypeModel();
+            if (type!=null) {
+                td.setExtendedType(type);
+            }
+            if (that.getMainToken().getType()==SPECIFY) {
+                that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
+            }
         }
     }
     

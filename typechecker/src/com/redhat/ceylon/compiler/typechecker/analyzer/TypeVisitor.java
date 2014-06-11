@@ -916,8 +916,8 @@ public class TypeVisitor extends Visitor {
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                ProducedType t = type.getTypeModel();
-                if (t!=null && t.containsDeclaration(tpd)) {
+                ProducedType dta = type.getTypeModel();
+                if (dta!=null && dta.containsDeclaration(tpd.getDeclaration())) {
                     type.addError("default type argument involves parameterized type");
                 }
                 /*else if (t.containsTypeParameters()) {
@@ -925,7 +925,7 @@ public class TypeVisitor extends Visitor {
                     t.getProducedTypeName());
                 }*/
                 else {
-                    tpd.setDefaultTypeArgument(t);
+                    tpd.setDefaultTypeArgument(dta);
                 }
             }
         }

@@ -1267,7 +1267,7 @@ public class ProducedType extends ProducedReference {
         return false;
     }
 
-    public boolean containsDeclaration(TypeDeclaration td) {
+    public boolean containsDeclaration(Declaration td) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnknownType) {
             return false;
