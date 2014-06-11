@@ -7,11 +7,12 @@ final class bug568_ {
     
     static void bug568() {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = (
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = (
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = childPaths;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$1$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator();
                 while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -20,23 +21,8 @@ final class bug568_ {
                 }
             }
             returning spread$1$sb$.sequence();
-        );
-        final boolean isArraySequence$4 = iterable$3 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$5;
-        int i$6 = 0;
-        final int length$7;
-        if (isArraySequence$4) {
-            array$5 = ((.ceylon.language.ArraySequence)iterable$3).$getArray$();
-            i$6 = ((.ceylon.language.ArraySequence)iterable$3).$getFirst$();
-            length$7 = i$6 + ((.ceylon.language.ArraySequence)iterable$3).$getLength$();
-        } else {
-            array$5 = null;
-            length$7 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isArraySequence$4 ? null : iterable$3.iterator();
-        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
+        ).iterator();
+        loop_0: while (!((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
     }

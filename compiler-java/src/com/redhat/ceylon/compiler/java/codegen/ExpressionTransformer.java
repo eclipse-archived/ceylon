@@ -2726,7 +2726,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
         }else{
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
-            JCExpression sequentialExpr = utilInvocation().sequentialInstance(x.prepend(makeReifiedTypeArgument(iteratedType)), List.of(typeExpr));
+            JCExpression sequentialExpr = utilInvocation().sequentialInstance(typeExpr, makeReifiedTypeArgument(iteratedType), x.head, x.tail);
             if (invocation.isParameterVariadicPlus(argIndex)) {
                 expr = utilInvocation().castSequentialToSequence(sequentialExpr, iteratedType);
             } else {

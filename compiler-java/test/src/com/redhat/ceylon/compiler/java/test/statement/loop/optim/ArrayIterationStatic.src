@@ -89,9 +89,9 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> array$22 = array;
         final int length$23 = (int)array$22.getSize();
         loop_7: for (int i$24 = 0; i$24 < length$23; i$24++) {
-            final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float> entry$25 = (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$22.unsafeItem(i$24);
-            final long i = entry$25.getKey().longValue();
-            final double f = entry$25.getItem().doubleValue();
+            final .ceylon.language.Entry entry$25 = (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$22.unsafeItem(i$24);
+            final long i = ((.ceylon.language.Integer)entry$25.getKey()).longValue();
+            final double f = ((.ceylon.language.Float)entry$25.getItem()).doubleValue();
             .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
         }
     }

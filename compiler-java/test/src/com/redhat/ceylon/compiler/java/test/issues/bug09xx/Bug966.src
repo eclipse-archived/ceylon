@@ -126,7 +126,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
-    public Element get(final .ceylon.language.Integer index) {
+    public final Element get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
     

@@ -43,23 +43,9 @@ final class bug1652_ {
                 }
             }
         };
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$10 = v3;
-        final boolean isArraySequence$11 = iterable$10 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$8 = null;
-        final .java.lang.Object array$12;
-        int i$13 = 0;
-        final int length$14;
-        if (isArraySequence$11) {
-            array$12 = ((.ceylon.language.ArraySequence)iterable$10).$getArray$();
-            i$13 = ((.ceylon.language.ArraySequence)iterable$10).$getFirst$();
-            length$14 = i$13 + ((.ceylon.language.ArraySequence)iterable$10).$getLength$();
-        } else {
-            array$12 = null;
-            length$14 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$9 = isArraySequence$11 ? null : iterable$10.iterator();
-        loop_2: while (isArraySequence$11 ? i$13 < length$14 : !((elem$8 = item$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$11) elem$8 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$12, i$13++);
+        .java.lang.Object elem$8;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$9 = v3.iterator();
+        loop_2: while (!((elem$8 = item$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.String item = (.ceylon.language.String)elem$8;
             .ceylon.language.print_.print(item);
         }
@@ -80,24 +66,10 @@ final class bug1652_ {
                 }
             }
         };
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$17 = v4;
-        final boolean isArraySequence$18 = iterable$17 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$15 = null;
-        final .java.lang.Object array$19;
-        int i$20 = 0;
-        final int length$21;
-        if (isArraySequence$18) {
-            array$19 = ((.ceylon.language.ArraySequence)iterable$17).$getArray$();
-            i$20 = ((.ceylon.language.ArraySequence)iterable$17).$getFirst$();
-            length$21 = i$20 + ((.ceylon.language.ArraySequence)iterable$17).$getLength$();
-        } else {
-            array$19 = null;
-            length$21 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$16 = isArraySequence$18 ? null : iterable$17.iterator();
-        loop_3: while (isArraySequence$18 ? i$20 < length$21 : !((elem$15 = item$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$18) elem$15 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$19, i$20++);
-            final .java.lang.String item = ((.ceylon.language.String)elem$15).toString();
+        .java.lang.Object elem$10;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$11 = v4.iterator();
+        loop_3: while (!((elem$10 = item$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.String item = ((.ceylon.language.String)elem$10).toString();
             .ceylon.language.print_.print(.ceylon.language.String.instance(item));
         }
     }

@@ -122,6 +122,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public final Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
+    }
+    
+    @.java.lang.Override
     public boolean equals(final .java.lang.Object that) {
         return $ceylon$language$List$this$.equals(that);
     }
@@ -379,11 +384,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final Element elementAt(final long index) {
-        throw new .ceylon.language.Exception(null, null);
-    }
-    
-    @.java.lang.Override
-    public final Element get(final .ceylon.language.Integer index) {
         throw new .ceylon.language.Exception(null, null);
     }
     

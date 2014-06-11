@@ -520,7 +520,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$48$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object> spread$48$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
+                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$48$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
                 .java.lang.Object spread$48$iteration$;
                 .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$48$iterator$ = spread$48$iterable$.iterator();
                 while (!((spread$48$iteration$ = spread$48$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -535,7 +535,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$49$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object> spread$49$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
+                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$49$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
                 .java.lang.Object spread$49$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
                 .java.lang.Object spread$49$iteration$;
                 .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$49$iterator$ = spread$49$iterable$.iterator();
@@ -550,7 +550,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$51$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object> spread$51$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
+                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$51$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
                 .java.lang.Object spread$51$iteration$;
                 .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$51$iterator$ = spread$51$iterable$.iterator();
                 while (!((spread$51$iteration$ = spread$51$iterator$.next()) instanceof .ceylon.language.Finished)) {

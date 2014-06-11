@@ -25,9 +25,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
     
     Bar(final .java.lang.String name1, final .java.lang.String name2) {
-        super(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                .ceylon.language.String.instance(name1),
-                .ceylon.language.String.instance(name2)}));
+        super((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
     }
     
     @.java.lang.Override
@@ -50,9 +48,7 @@ class FooNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
 class BarNonempty extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.FooNonempty {
     
     BarNonempty(final .java.lang.String name1, final .java.lang.String name2) {
-        super(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                .ceylon.language.String.instance(name1),
-                .ceylon.language.String.instance(name2)}));
+        super((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
     }
     
     @.java.lang.Override

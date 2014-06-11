@@ -116,6 +116,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Integer get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
         return (.ceylon.language.Sequence)$ceylon$language$List$this$.withLeading($reified$Other, element);
     }
@@ -422,29 +427,29 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Integer get(final .ceylon.language.Integer index) {
-        return (
-            let
-            {
-                .ceylon.language.Integer $ceylontmp$3 = index.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.Integer.instance(1L) : null;
-            }
-            returning $ceylontmp$3 != null ? $ceylontmp$3 : null;
-        );
-    }
-    
-    @.java.lang.Override
     public final .ceylon.language.Sequential segment(final .ceylon.language.Integer from, final long length) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
-                .java.lang.Object $ceylontmp$4 = from.equals(.ceylon.language.Integer.instance(0L)) && length > 0L ? this : null;
+                .java.lang.Object $ceylontmp$3 = from.equals(.ceylon.language.Integer.instance(0L)) && length > 0L ? this : null;
+            }
+            returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.empty_.get_();
+        );
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
+            let
+            {
+                .java.lang.Object $ceylontmp$4 = from.equals(.ceylon.language.Integer.instance(0L)) ? this : null;
             }
             returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.empty_.get_();
         );
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
@@ -455,24 +460,13 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
-            let
-            {
-                .java.lang.Object $ceylontmp$6 = from.equals(.ceylon.language.Integer.instance(0L)) ? this : null;
-            }
-            returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.empty_.get_();
-        );
-    }
-    
-    @.java.lang.Override
     public final .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
-                .java.lang.Object $ceylontmp$7 = to.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.empty_.get_() : null;
+                .java.lang.Object $ceylontmp$6 = to.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.empty_.get_() : null;
             }
-            returning $ceylontmp$7 != null ? $ceylontmp$7 : this;
+            returning $ceylontmp$6 != null ? $ceylontmp$6 : this;
         );
     }
     

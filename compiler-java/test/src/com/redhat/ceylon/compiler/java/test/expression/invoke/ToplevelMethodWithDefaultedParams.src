@@ -197,10 +197,7 @@ final class test_ {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f4_.f4(6L, 9L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f5_.f5();
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f5_.f5(6L);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5_.f5(6L, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L),
-                .ceylon.language.Integer.instance(3L)}));
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5_.f5(6L, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }
     
     public static void main(.java.lang.String[] args) {

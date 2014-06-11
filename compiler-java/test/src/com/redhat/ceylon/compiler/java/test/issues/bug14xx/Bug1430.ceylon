@@ -33,9 +33,6 @@ class Bug1430() satisfies Sequence<Integer> {
     shared actual Integer? elementAt(Integer index) {
         return index==0 then 1 else null;
     }
-    shared actual Integer? get(Integer index) {
-        return index==0 then 1 else null;
-    }
     shared actual Integer[] segment(Integer from, Integer length) {
         return from==0 && length>0 then this else [];
     }

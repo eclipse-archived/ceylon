@@ -3132,33 +3132,13 @@ public abstract class AbstractTransformer implements Transformation {
      * @see #makeSequenceRaw(java.util.List)
      */
     JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
-        return make().Apply(List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT)), 
-                naming.makeQualIdent(makeJavaType(typeFact().getArraySequenceType(seqElemType), JT_RAW), "instance"), 
-                List.<JCExpression>of(makeReifiedTypeArgument(seqElemType),
-                make().NewArray(make().Type(syms.objectType), List.<JCExpression>nil(), elems)));
+        return make().TypeCast(makeJavaType(typeFact().getSequenceType(seqElemType), JT_RAW), 
+                utilInvocation().sequentialInstance(null,
+                    makeReifiedTypeArgument(seqElemType),
+                    makeEmptyAsSequential(false),
+                    elems));
     }
     
-    /**
-     * Returns a JCExpression along the lines of 
-     * {@code new ArraySequence<seqElemType>(list...)}
-     * @param list The elements in the sequence
-     * @param seqElemType The sequence type parameter
-     * @return a JCExpression
-     * @see #makeSequenceRaw(java.util.List)
-     */
-    JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
-        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        if (list.size() != 1 || !isNull(list.get(0).getTypeModel())) {
-            for (Expression expr : list) {
-                elems.append(expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType));
-            }
-        } else {
-            // Resolve the ambiguous situation of being passed a single "null" argument
-            elems.append(make().TypeCast(syms().objectType, expressionGen().transformExpression(list.get(0))));
-        }
-        return makeSequence(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
-    }
-
     /**
      * Makes a lazy iterable literal, for a sequenced argument to a named invocation 
      * (<code>f{foo=""; expr1, expr2, *expr3}</code>) or
@@ -3286,26 +3266,6 @@ public abstract class AbstractTransformer implements Transformation {
         elems = elems.prepend(makeReifiedTypeArgument(seqElemType));
         // we delegate to ArrayIterable.instance() so that we can filter out empty Iterables
         return make().Apply(List.<JCExpression>of(elemTypeExpr), makeSelect(makeIdent(syms().ceylonArrayIterableType), "instance"), elems);
-    }
-
-    /**
-     * Returns a JCExpression along the lines of 
-     * {@code new ArraySequence(list...)}
-     * @param list The elements in the sequence
-     * @return a JCExpression
-     * @see #makeSequence(java.util.List, ProducedType)
-     */
-    JCExpression makeSequenceRaw(java.util.List<Expression> list) {
-        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        for (Expression expr : list) {
-            // no need for erasure casts here
-            elems.append(expressionGen().transformExpression(expr));
-        }
-        return makeSequenceRaw(elems.toList());
-    }
-    
-    JCExpression makeSequenceRaw(List<JCExpression> elems) {
-        return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
     JCExpression makeEmptyAsSequential(boolean needsCast){

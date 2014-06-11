@@ -8,23 +8,9 @@ final class bug934_collectMatches_ {
     static <Element>.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends Element>>>> bug934_collectMatches(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> data, final .ceylon.language.Callable<? extends .ceylon.language.Integer> search) {
         final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>> ok = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>>((.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
         final VariableBox<.ceylon.language.Sequential<? extends Element>> ko = new VariableBox<.ceylon.language.Sequential<? extends Element>>((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> iterable$3 = data;
-        final boolean isArraySequence$4 = iterable$3 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$5;
-        int i$6 = 0;
-        final int length$7;
-        if (isArraySequence$4) {
-            array$5 = ((.ceylon.language.ArraySequence)iterable$3).$getArray$();
-            i$6 = ((.ceylon.language.ArraySequence)iterable$3).$getFirst$();
-            length$7 = i$6 + ((.ceylon.language.ArraySequence)iterable$3).$getLength$();
-        } else {
-            array$5 = null;
-            length$7 = 0;
-        }
-        .ceylon.language.Iterator<? extends Element> element$iterator$$1 = isArraySequence$4 ? null : iterable$3.iterator();
-        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator();
+        loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final Element element = (Element)elem$0;
             final long result = search.$call$(element).longValue();
             if (result > 0L) {

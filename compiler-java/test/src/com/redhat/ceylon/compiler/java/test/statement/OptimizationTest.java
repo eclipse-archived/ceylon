@@ -108,19 +108,14 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
-    public void testLopOptimArraySequenceIterationStatic(){
-        compareWithJavaSource("loop/optim/ArraySequenceIterationStatic");
-    }
-    
-    @Test
     @Ignore
-    public void testLopOptimArraySequenceIterationStaticBench(){
-        compile("loop/optim/ArraySequenceIterationStaticBench.ceylon");
-        long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arraySequenceIterationStaticBench");
-        opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arraySequenceIterationStaticBench");
+    public void testLopOptimTupleIterationStaticBench(){
+        compile("loop/optim/TupleIterationStaticBench.ceylon");
+        long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.tupleIterationStaticBench");
+        opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.tupleIterationStaticBench");
         System.gc();
-        long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arraySequenceIterationStaticBenchDis");
-        unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arraySequenceIterationStaticBenchDis");
+        long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.tupleIterationStaticBenchDis");
+        unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.tupleIterationStaticBenchDis");
         System.out.println("Optimized took " + opt/1_000_000 + "ms");
         System.out.println("Unoptimized took " + unopt/1_000_000 + "ms");
     }
@@ -151,5 +146,10 @@ public class OptimizationTest extends CompilerTest {
     public void testLopOptimBug1467(){
         compareWithJavaSource("loop/optim/Bug1467");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug1467");
+    }
+    
+    @Test
+    public void testLopOptimStringIterationStatic() {
+        compareWithJavaSource("loop/optim/StringIterationStatic");
     }
 }

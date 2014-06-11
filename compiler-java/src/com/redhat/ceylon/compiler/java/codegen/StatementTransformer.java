@@ -68,6 +68,7 @@ import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -1236,7 +1237,9 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         
-        ForStatementTransformation transformation = arraySequenceIteration(stmt, baseIterable, step);
+        ForStatementTransformation transformation;
+        
+        transformation = stringIteration(stmt, baseIterable, step);
         if (transformation == null) {
             transformation = tupleIteration(stmt, baseIterable, step);
         }
@@ -1258,6 +1261,81 @@ public class StatementTransformer extends AbstractTransformer {
         return transformation.transform();
     }
     
+    /** 
+     * Loop transformation when the iterated expression is statically known 
+     * to be a {@code String}.
+     * <pre>
+        java.lang.String s = ITERABLE.value;
+        int sz = s.codePointCount(0, s.length());
+        for (int index = 0; index < sz; ) {
+            int ITEM = s.codePointAt(index);
+            index+= java.lang.Character.charCount(ITEM);
+            
+        }
+       </pre>
+       
+     */
+    class StringIterationOptimization extends ForStatementTransformation {
+
+        private Tree.Term baseIterable;
+
+        StringIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step) {
+            super(stmt);
+            this.baseIterable = baseIterable;
+        }
+        
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+            
+            SyntheticName stringName = naming.alias("s");
+            stmts.append(makeVar(stringName, make().Type(syms().stringType), 
+                    expressionGen().transformExpression(baseIterable, BoxingStrategy.UNBOXED, baseIterable.getTypeModel())));
+            
+            SyntheticName lengthName = naming.alias("length");
+            stmts.append(makeVar(lengthName, make().Type(syms().intType),
+                
+                                make().Apply(null,
+                                        makeQualIdent(stringName.makeIdent(), "length"),
+                                        List.<JCExpression>nil())));
+            
+            SyntheticName indexName = naming.alias("index");
+            
+            List<JCStatement> transformedBlock = transformBlock(getBlock());
+            transformedBlock = transformedBlock.prepend(make().Exec(
+                    make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), 
+                        make().Apply(null, 
+                                naming.makeQualIdent(make().Type(syms().characterObjectType), "charCount"), 
+                                List.<JCExpression>of(naming.makeQuotedIdent(Naming.getVariableName(getElementOrKeyVariable())))))));
+            transformedBlock = transformedBlock.prepend(makeVar(FINAL,
+                    Naming.getVariableName(getElementOrKeyVariable()), 
+                    make().Type(syms().intType), 
+                    make().Apply(null, 
+                            naming.makeQualIdent(stringName.makeIdent(), "codePointAt"), 
+                            List.<JCExpression>of(indexName.makeIdent()))));
+            
+            JCStatement block = make().Block(0, transformedBlock);
+            
+            
+            JCForLoop loop = make().ForLoop(
+                    List.<JCStatement>of(makeVar(indexName, make().Type(syms().intType), make().Literal(0))), 
+                    make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent()), 
+                    List.<JCExpressionStatement>nil(), 
+                    block);
+            stmts.add(make().Labelled(this.label, loop));
+            
+            return stmts;
+        }
+    }
+    
+    private ForStatementTransformation stringIteration(Tree.ForStatement stmt,
+            Tree.Term baseIterable, Tree.Term step) {
+        if (step == null &&
+                baseIterable.getTypeModel().getSupertype(typeFact().getStringDeclaration()) != null) {
+            return new StringIterationOptimization(stmt, baseIterable, step);
+        }
+        return null;
+    }
+
     /**
      * Optimized transformation for a {@code for} loop where the iterable is 
      * statically known to be immutable and support efficient indexed access, 
@@ -1361,7 +1439,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (forIterator instanceof Tree.KeyValueIterator) {
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName,
-                        makeJavaType(elementType),
+                        makeJavaType(typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType()), JT_RAW),
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
@@ -1371,7 +1449,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(keyType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
-                                keyType, true, BoxingStrategy.UNBOXED, keyType));
+                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
                 String valueName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getValueVariable());
                 JCStatement valueVariable = makeVar(FINAL,
@@ -1379,7 +1457,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(valueType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
-                                valueType, true, BoxingStrategy.UNBOXED, valueType));
+                                typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, valueType));
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(valueVariable);
                 transformedBlock = transformedBlock.prepend(keyVariable);
@@ -1575,22 +1653,22 @@ public class StatementTransformer extends AbstractTransformer {
     
     /**
      * Optimized transformation for a {@code for} loop where the iterable is 
-     * statically known to be an {@code ArraySequence}, and therefore can be 
+     * statically known to be a {@code Tuple}, and therefore can be 
      * iterated using a C-style {@code for}.
      * <pre>
-     * Object[] seq = seq.$getArray$();
-     * int length = seq.$getFirst$() + seq.get$Length$();
-     * for (int i = seq.$getFirst$(), i < length; i++) {
-     *     ELEMENT_TYPE element = (ELEMENT_TYPE)seq[i];
+     * Object[] arr = tup.$getArray$();
+     * int length = tup.$getFirst$() + tup.get$Length$();
+     * for (int i = tup.$getFirst$(), i < length; i++) {
+     *     ELEMENT_TYPE element = (ELEMENT_TYPE)arr[i];
      *     TRANSFORMED_BLOCK
      * }
      * </pre>
      */
-    final class ArraySequenceIterationOptimization extends IndexedAccessIterationOptimization {
+    final class TupleIterationOptimization extends IndexedAccessIterationOptimization {
         
         private final Naming.SyntheticName seqName;
         
-        ArraySequenceIterationOptimization(Tree.ForStatement stmt, 
+        TupleIterationOptimization(Tree.ForStatement stmt, 
                 Tree.Term baseIterable, Tree.Term step,
                 ProducedType elementType) {
             super(stmt, baseIterable, step, elementType, "array");
@@ -1632,7 +1710,13 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIndexedAccess() {
             JCArrayAccess expr = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel());
-            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, elementType);
+            ProducedType t;
+            if (isValueIterator()) {
+                t = elementType;
+            } else {
+                t = typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType());
+            }
+            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, t);
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
@@ -1685,23 +1769,6 @@ public class StatementTransformer extends AbstractTransformer {
         return null;
     }
     
-    private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt, 
-            Tree.Term baseIterable, Tree.Term step) {
-        if (isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationStatic)) {
-            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
-                    "optimization explicitly disabled by @disableOptimization");
-        }
-        
-        ProducedType iterableType = baseIterable.getTypeModel();
-        if (iterableType.getSupertype(typeFact().getArraySequenceDeclaration()) == null) {
-            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
-                    "static type of iterable in for statement is not ArraySequence");
-        }
-        // it's an array sequence
-        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
-                typeFact().getIteratedType(iterableType));
-    }
-    
     private ForStatementTransformation tupleIteration(Tree.ForStatement stmt, 
             Tree.Term baseIterable, Tree.Term step) {
         if (isOptimizationDisabled(stmt, Optimization.TupleIterationStatic)) {
@@ -1714,9 +1781,7 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
                     "static type of iterable in for statement is not Tuple");
         }
-        // it's a tuple, and the java impl of Tuple handily inherits from 
-        // ArraySequence, so we can reuse that optimization.
-        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
+        return new TupleIterationOptimization(stmt, baseIterable, step, 
                 typeFact().getIteratedType(iterableType));
     }
     
@@ -2420,7 +2485,7 @@ public class StatementTransformer extends AbstractTransformer {
         // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
         // TODO Need to use naming.Infix for the hidden members of Array
         boolean optForArray = allowArrayOpt && typeFact().getArrayType(iteratedType).isSubtypeOf(iterableType);
-        boolean optForArraySequence = allowArraySeqOpt && typeFact().getArraySequenceType(iteratedType).isSubtypeOf(iterableType);
+        boolean optForArraySequence = false;//allowArraySeqOpt && typeFact().getArraySequenceType(iteratedType).isSubtypeOf(iterableType);
         
         SyntheticName iterableName = optForArray || optForArraySequence ? naming.alias("iterable") : null;
         SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;

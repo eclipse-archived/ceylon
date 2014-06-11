@@ -6,7 +6,8 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public final void m() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> iterable$3 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> i$iterator$$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -25,23 +26,8 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
                 
                 }
             }
-        };
-        final boolean isArraySequence$4 = iterable$3 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$5;
-        int i$6 = 0;
-        final int length$7;
-        if (isArraySequence$4) {
-            array$5 = ((.ceylon.language.ArraySequence)iterable$3).$getArray$();
-            i$6 = ((.ceylon.language.ArraySequence)iterable$3).$getFirst$();
-            length$7 = i$6 + ((.ceylon.language.ArraySequence)iterable$3).$getLength$();
-        } else {
-            array$5 = null;
-            length$7 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> i$iterator$$1 = isArraySequence$4 ? null : iterable$3.iterator();
-        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
+        }.iterator();
+        loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getKey().longValue();
             final .java.lang.String s = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getItem().toString();
             if (i > 5L) {

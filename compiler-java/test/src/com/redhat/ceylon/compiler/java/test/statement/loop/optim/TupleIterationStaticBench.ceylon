@@ -1,15 +1,16 @@
-import java.lang{IntArray, LongArray, arrays}
-Integer arraySequenceIterationStaticN = 1_000_000;
-ArraySequence<Integer> arraySequenceIterationStaticInts {
-    value s = {for (i in 0..100) i}.sequence;
-    assert(is ArraySequence<Integer> s);
+import ceylon.language.meta{type}
+import java.lang{IntArray, LongArray}
+Integer tupleIterationStaticN = 1_000_000;
+[Integer, Integer+] tupleIterationStaticInts {
+    value s = [0, 1, 2, *[for (i in 3..100) i]];
+    assert(is [Integer, Integer, Integer, Integer, Integer+] s);
     return s;
 }
 "The optimized version"
-Integer arraySequenceIterationStaticBench() {
+Integer tupleIterationStaticBench() {
     // avoid getter overhead by declaring a local var
-    value seq = arraySequenceIterationStaticInts;
-    variable value i = arraySequenceIterationStaticN;
+    value seq = tupleIterationStaticInts;
+    variable value i = tupleIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;
     while (i > 0) {
@@ -24,10 +25,10 @@ Integer arraySequenceIterationStaticBench() {
     return t1-t0;
 }
 "The unoptimized version"
-Integer arraySequenceIterationStaticBenchDis() {
+Integer tupleIterationStaticBenchDis() {
     // avoid getter overhead by declaring a local var
-    value seq = arraySequenceIterationStaticInts;
-    variable value i = arraySequenceIterationStaticN;
+    value seq = tupleIterationStaticInts;
+    variable value i = tupleIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;
     while (i > 0) {

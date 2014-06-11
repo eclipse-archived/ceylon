@@ -11,7 +11,7 @@ final class bug586_ {
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$0$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$0$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$0$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
                 while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {

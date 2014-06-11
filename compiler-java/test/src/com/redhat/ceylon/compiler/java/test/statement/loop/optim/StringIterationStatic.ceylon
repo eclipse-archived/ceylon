@@ -18,30 +18,22 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class ArraySequenceIterationStatic() {
-    void arrayOfIntegers(ArraySequence<Integer> seq) {
-        for (element in seq) {
-            print(element + 5);
+class StringIterationStatic() {
+    shared Integer simple(String s) {
+        variable value i = 0;
+        for (char in s) {
+            i += char.integer;
         }
+        return i;
     }
-    
-    void arrayOfIntegersWithBreak(ArraySequence<Integer> array) {
-        for (element in array) {
-            function x() {
-                return element + 10;
-            }
-            if (element == 10) {
+    shared Integer withBreak(String s) {
+        variable value i = 0;
+        for (char in s) {
+            i += char.integer;
+            if (char == 'z') {
                 break;
             }
-        } else {
-            print("foo");
         }
+        return i;
     }
-    
-    void keyValue(ArraySequence<Integer->Float> array) {
-        for (i->f in array) {
-            print(i+f);
-        }
-    }
-    
 }

@@ -12,7 +12,7 @@ final class bug568_ {
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = childPaths;
-                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$1$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator();
                 while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {

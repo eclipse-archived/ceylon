@@ -39,7 +39,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public X get(final .ceylon.language.Integer index) {
+    public final X get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
     

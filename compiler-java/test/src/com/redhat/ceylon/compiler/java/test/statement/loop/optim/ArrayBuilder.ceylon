@@ -57,12 +57,12 @@ class ArrayBuilder<Element>() {
         return this;
     }
     shared actual String string {
-        return sequence.string;
+        return sequence().string;
     }
     
-    shared Element[] sequence {
+    shared Element[] sequence() {
         if (exists s=storage) {
-            return s.take(length).sequence;
+            return s.take(length).sequence();
         }
         return empty;
     }

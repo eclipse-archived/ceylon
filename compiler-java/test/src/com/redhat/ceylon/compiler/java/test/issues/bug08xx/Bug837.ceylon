@@ -30,10 +30,6 @@ class Bug837<Element>(first, Integer length)
     shared actual Element? elementAt(Integer index) {
         throw;
     }
-    
-    shared actual Element? get(Integer index) {
-        throw;
-    }
 
     shared actual Integer lastIndex {
         return length-1;

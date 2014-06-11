@@ -40,7 +40,11 @@ class TupleIterationStatic() {
     
     void keyValue([Integer->Float, Integer->Float, Integer->Float] array) {
         for (i->f in array) {
-            print(i+f);
+            print("``i``->``f``");
+        }
+        value myTuple = ["1"->"one", 2->"two",3.0-> "three"];
+        for (foo -> name in myTuple) {
+            print("``name``<-``foo``");
         }
     }
     

@@ -275,9 +275,7 @@ final class annotationClassMetamodelReferenceVariadic3_ {
     
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(final .ceylon.language.meta.declaration.Declaration mmr) {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic(.ceylon.language.ArraySequence.<.ceylon.language.meta.declaration.Declaration>instance(.ceylon.language.meta.declaration.Declaration.$TypeDescriptor$, new .java.lang.Object[]{
-                mmr,
-                mmr}));
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.meta.declaration.Declaration.$TypeDescriptor$, .ceylon.language.empty_.get_(), mmr, mmr));
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

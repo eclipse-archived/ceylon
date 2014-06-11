@@ -35,7 +35,7 @@ shared class InvocationTest() {
         
         foo = Foo(10, 11, 12);
         assertEquals(10, foo.first);
-        assertEquals({11, 12}.sequence, foo.rest.sequence);
+        assertEquals({11, 12}.sequence(), foo.rest.sequence());
     } 
     
 }

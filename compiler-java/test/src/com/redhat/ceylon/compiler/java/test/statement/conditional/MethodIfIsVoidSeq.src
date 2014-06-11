@@ -10,23 +10,9 @@ final class methodIfIsAnythingSeq_ {
         .java.lang.Object args$1;
         if ((args$1 = args) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential)args$1;
-            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = args$2;
-            final boolean isArraySequence$6 = iterable$5 instanceof .ceylon.language.ArraySequence;
-            .java.lang.Object elem$3 = null;
-            final .java.lang.Object array$7;
-            int i$8 = 0;
-            final int length$9;
-            if (isArraySequence$6) {
-                array$7 = ((.ceylon.language.ArraySequence)iterable$5).$getArray$();
-                i$8 = ((.ceylon.language.ArraySequence)iterable$5).$getFirst$();
-                length$9 = i$8 + ((.ceylon.language.ArraySequence)iterable$5).$getLength$();
-            } else {
-                array$7 = null;
-                length$9 = 0;
-            }
-            .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isArraySequence$6 ? null : iterable$5.iterator();
-            loop_0: while (isArraySequence$6 ? i$8 < length$9 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-                if (isArraySequence$6) elem$3 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
+            .java.lang.Object elem$3;
+            .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = args$2.iterator();
+            loop_0: while (!((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
                 final .java.lang.Object arg = (.java.lang.Object)elem$3;
             }
         }
