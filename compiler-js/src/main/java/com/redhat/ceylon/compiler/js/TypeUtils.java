@@ -118,12 +118,9 @@ public class TypeUtils {
         } else if (pt.isUnknown()) {
             gen.out(GenerateJsVisitor.getClAlias(), "Anything");
         } else {
-            //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.model types
-            boolean qual = imported;
             final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
             if (modAlias != null && !modAlias.isEmpty()) {
                 gen.out(modAlias, ".");
-                qual = true;
             }
             if (t.getContainer() instanceof ClassOrInterface) {
                 List<ClassOrInterface> parents = new ArrayList<>();
@@ -133,19 +130,13 @@ public class TypeUtils {
                     parent = (ClassOrInterface)parent.getContainer();
                     parents.add(0, parent);
                 }
-                qual = true;
                 for (ClassOrInterface p : parents) {
                     gen.out(gen.getNames().name(p), ".");
                 }
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                String tname = gen.getNames().name(t);
-                if (!qual && isReservedTypename(tname)) {
-                    gen.out(tname, "$");
-                } else {
-                    gen.out(tname);
-                }
+                gen.out(gen.getNames().name(t));
             }
         }
     }
@@ -313,11 +304,6 @@ public class TypeUtils {
             }
         }
         return null;
-    }
-
-    static boolean isReservedTypename(String typeName) {
-        return JsCompiler.isCompilingLanguageModule() && (typeName.equals("Number")
-                || typeName.equals("String") || typeName.equals("Boolean"));
     }
 
     /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */

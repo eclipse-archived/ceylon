@@ -1771,12 +1771,7 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize() && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
         }
-        //When compiling the language module we need to modify certain base type names
-        String rval = sb.toString();
-        if (TypeUtils.isReservedTypename(rval)) {
-            rval = sb.append("$").toString();
-        }
-        return rval;
+        return sb.toString();
     }
 
     /**
@@ -1818,11 +1813,8 @@ public class GenerateJsVisitor extends Visitor
             generateThrow("Undefined type " + id, that);
             out(":", id, ")");
         } else {
-            final boolean q=qualify(that, d);
+            qualify(that, d);
             out(names.name(d));
-            if (!q && TypeUtils.isReservedTypename(d.getName())) {
-                out("$");
-            }
         }
     }
 
