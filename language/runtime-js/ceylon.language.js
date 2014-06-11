@@ -131,13 +131,18 @@ ex$.copySuperAttr=copySuperAttr;
 ex$.attrGetter=attrGetter;
 ex$.attrSetter=attrSetter;
 
-function Anything(wat) {
-    return wat;
+function Anything(anything$){
+$init$Anything();
+if(anything$===undefined)throwexc(InvocationException$meta$model("Cannot instantiate abstract class"),'?','?')
+return anything$;
 }
-initType(Anything, 'ceylon.language::Anything');
-Anything.$crtmm$=function(){return{$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Anything']};}
-function $init$Anything(){return Anything;}
-ex$.$init$Anything=$init$Anything;
+Anything.$crtmm$=function(){return{mod:$CCMM$,$ps:[],of:[{t:$_Object},{t:Null}],$an:function(){return[doc($CCMM$['ceylon.language'].Anything.$an.doc[0]),by(["Gavin"].reifyCeylonType({t:String$})),shared(),abstract()];},d:['$','Anything']};};
+ex$.Anything=Anything;
+function $init$Anything(){
+if(Anything.$$===undefined){initTypeProto(Anything,'ceylon.language::Anything');}
+return Anything;
+}
+ex$.$init$Anything=$init$Anything;$init$Anything();
 function Nothing(wat) {
     throw "Nothing";
 }
@@ -161,7 +166,7 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 //#COMPILE Map
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 //#COMPILE every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
-//#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,strings.js,and,or,not,arrayOfSize
+//#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,strings.js,Character,and,or,not,arrayOfSize
 //#metamodel
 //#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
 //#COMPILE meta/annotations,meta/metamodel,meta/optionalAnnotation,meta/sequencedAnnotations,modules.js,meta/modules
