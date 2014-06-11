@@ -699,4 +699,16 @@ public class Util {
         return bev.foundError;
     }
 
+    static String message(Declaration refined) {
+        String container;
+        if (refined.getContainer() instanceof Declaration) {
+            container = " in " + 
+                ((Declaration) refined.getContainer()).getName();
+        }
+        else {
+            container = "";
+        }
+        return refined.getName() + container;
+    }
+
 }

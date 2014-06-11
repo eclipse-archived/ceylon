@@ -1,7 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,7 +130,7 @@ public class TypeHierarchyVisitor extends Visitor {
             if (im instanceof MethodOrValue && 
                     ((MethodOrValue) im).isShortcutRefinement()) {
                 that.addError("refines a non-formal, non-default member: " + 
-                        RefinementVisitor.message(im));
+                        message(im));
             }
         }
     }

@@ -387,7 +387,8 @@
     TERM baseMemberExpression
     SPECIFIER_EXPRESSION
     TypedDeclaration declaration;
-    boolean refinement;)
+    boolean refinement;
+    TypedDeclaration refined;)
 
 "An expression statement."
 ^(EXPRESSION_STATEMENT:EXECUTABLE_STATEMENT 

@@ -219,8 +219,8 @@ public class SpecificationVisitor extends Visitor {
         }
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         //TODO: check superclass members are not in declaration section!
-        if ( member==declaration && 
-                member.isDefinedInScope(that.getScope()) ) {
+        if (member==declaration && 
+                member.isDefinedInScope(that.getScope())) {
             if (!declared) {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
@@ -491,11 +491,15 @@ public class SpecificationVisitor extends Visitor {
 	        		that.addError("member is formal and may not be specified: " +
 	        				member.getName());
 	        	}
+	        	if (that.getRefinement()) {
+	        	    declare();
+	        	}
                 boolean lazy = that.getSpecifierExpression() 
                 		instanceof Tree.LazySpecifierExpression;
             	if (declaration instanceof Value) {
             		Value value = (Value) declaration;
-            	    if (!value.isVariable() && lazy!=value.isTransient()) {
+            	    if (!value.isVariable() &&
+            	            lazy!=value.isTransient()) {
 	            		// check that all assignments to a non-variable, in
             	    	// different paths of execution, all use the same
             	    	// kind of specifier, all =>, or all =
@@ -528,7 +532,8 @@ public class SpecificationVisitor extends Visitor {
 	            				member.getName(), 803);
 	            	}
 	            }
-                else if (withinDeclaration && constant) {
+                else if (withinDeclaration && constant && 
+                        !that.getRefinement()) {
                     that.addError("cannot specify value being declared: " + 
                             member.getName(), 803);
                 }

@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class PhasedUnit {
+    
     private Tree.CompilationUnit compilationUnit;
     private Package pkg;
     private Unit unit;
