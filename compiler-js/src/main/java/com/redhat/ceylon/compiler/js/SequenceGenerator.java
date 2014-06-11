@@ -133,9 +133,10 @@ public class SequenceGenerator {
         if (isMethod) {
             gen.out("JsCallableList(", tmplist, ");");
         } else {
-            gen.out("ArraySequence(", tmplist, ",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, true);
-            gen.out(");");
+            gen.out("sequence(", tmplist, ",{Element$sequence:");
+            TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
+            gen.out(",Absent$sequence:{t:", GenerateJsVisitor.getClAlias(), "Null}})||",
+                    GenerateJsVisitor.getClAlias(), "getEmpty();");
         }
         gen.endBlock();
         gen.out("())");
