@@ -130,7 +130,7 @@
 
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
-    PARAMETER_LIST
+    PARAMETER_LIST?
     EXTENDED_TYPE?
     Class declarationModel;)
 
