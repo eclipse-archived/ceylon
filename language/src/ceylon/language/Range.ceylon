@@ -424,18 +424,18 @@ shared final class Range<Element>(first, last)
         return span(from, size);
     }
     
-    shared actual Range<Element>|[] skip(Integer skipit) {
-        if (skipit <= 0) {
+    shared actual Range<Element>|[] skip(Integer skipping) {
+        if (skipping <= 0) {
             return this;
         }
         Element elem;
         if (is Enumerable<Element> first) {
-            elem = first.neighbour(decreasing then -skipit else skipit);
+            elem = first.neighbour(decreasing then -skipping else skipping);
         }
         else {
             variable value x=0;
             variable value e = first;
-            while (x++<skipit) {
+            while (x++<skipping) {
                 e = next(e);
             }
             elem = e;

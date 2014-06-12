@@ -167,7 +167,7 @@ shared object emptySet
             (Boolean selecting(Nothing element)) 
             => false;
     
-    skip(Integer skipit) => emptySet;
+    skip(Integer skipping) => emptySet;
     take(Integer taking) => emptySet;
     by(Integer step) => emptySet;
     

@@ -360,7 +360,7 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the elements of this 
-     stream, after skipping the first [[skipit]] elements
+     stream, after skipping the first [[skipping]] elements
      produced by its iterator.
      
      If this stream does not contain more elements than the 
@@ -368,8 +368,8 @@ shared interface Iterable<out Element, out Absent=Null>
      stream has no elements. If the specified number of 
      elements to skip is zero or fewer, the resulting stream 
      contains the same elements as this stream."
-    shared default {Element*} skip(Integer skipit) {
-        if (skipit <= 0) {
+    shared default {Element*} skip(Integer skipping) {
+        if (skipping <= 0) {
             return this;
         }
         else {
@@ -378,7 +378,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
                     variable value i=0;
-                    while (i++<skipit &&
+                    while (i++<skipping &&
                             !iter.next() is Finished) {}
                     return iter;
                 }
@@ -387,7 +387,7 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces a stream containing the first [[num]]
+    "Produces a stream containing the first [[elements]]
      elements of this stream.
      
      If the specified number of elements to take is larger 
@@ -395,8 +395,8 @@ shared interface Iterable<out Element, out Absent=Null>
      resulting stream contains the same elements as this 
      stream. If the specified number of elements to take is
      fewer than one, the resulting stream has no elements."
-    shared default {Element*} take(Integer num) {
-        if (num <= 0) {
+    shared default {Element*} take(Integer taking) {
+        if (taking <= 0) {
             return {}; 
         }
         else {
@@ -408,7 +408,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             satisfies Iterator<Element> {
                         variable value i=0;
                         actual shared Element|Finished next() {
-                            return ++i>num then finished
+                            return ++i>taking then finished
                                     else iter.next();
                         }
                     }
@@ -422,14 +422,14 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream containing the elements of this 
      stream, after skipping the leading elements until the 
-     [[given predicate function|skipit]] returns `false`."
-    shared default {Element*} skipWhile(Boolean skipit(Element elem)) {
+     [[given predicate function|skipping]] returns `false`."
+    shared default {Element*} skipWhile(Boolean skipping(Element elem)) {
         object iterable 
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
                 while (!is Finished elem=iter.next()) {
-                    if (!skipit(elem)) {
+                    if (!skipping(elem)) {
                         object iterator 
                                 satisfies Iterator<Element> {
                             variable Boolean first=true;

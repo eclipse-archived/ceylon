@@ -160,11 +160,11 @@ shared class Singleton<out Element>(Element element)
             (Boolean selecting(Element e)) 
             => selecting(element);
     
-    shared actual Singleton<Element>|Empty skip(Integer skipit)
-            => skipit<1 then this else {};
+    shared actual Singleton<Element>|Empty skip(Integer skipping)
+            => skipping<1 then this else [];
     
     shared actual Singleton<Element>|Empty take(Integer taking)
-            => taking>0 then this else {};
+            => taking>0 then this else [];
     
     shared actual Singleton<Element&Object>|Empty coalesced {
         if (exists element) {

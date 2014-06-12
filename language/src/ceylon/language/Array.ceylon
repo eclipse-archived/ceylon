@@ -63,8 +63,8 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Array<Element> spanTo(Integer to);
     shared actual native Array<Element> segment(Integer from, Integer length);
         
-    shared actual native {Element*} skip(Integer skipit);
-    shared actual native {Element*} take(Integer num);
+    shared actual native {Element*} skip(Integer skipping);
+    shared actual native {Element*} take(Integer taking);
     shared actual native {Element*} by(Integer step);
     
     "Sorts the elements in this array according 
