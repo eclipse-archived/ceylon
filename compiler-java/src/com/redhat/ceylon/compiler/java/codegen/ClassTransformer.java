@@ -321,7 +321,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // Convert from array to Sequential
                 ProducedType iteratedType = typeFact().getIteratedType(parameterType);
                 if (isCeylonBasicType(iteratedType)) {
-                    argExpr = utilInvocation().sequentialInstanceBoxed(annoAttr);
+                    argExpr = utilInvocation().sequentialWrapperBoxed(annoAttr);
                 } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
                     // Can't use Util.sequentialAnnotation becase we need to 'box'
                     // the Java annotations in their Ceylon annotation class

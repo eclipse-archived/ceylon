@@ -142,8 +142,15 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "tuple_spanFrom", arguments);
     }
 
-    public JCExpression sequentialInstanceBoxed(JCExpression argument) {
-        return makeUtilInvocation(null, "sequentialInstanceBoxed", List.of(argument));
+    /**
+     * <p>Invoke {@link com.redhat.ceylon.compiler.java.Util#sequentialWrapperBoxed(int[])} ,
+     * {@link com.redhat.ceylon.compiler.java.Util#sequentialWrapperBoxed(java.lang.String[])} etc
+     * with the given array.</p>
+     *  
+     * <p>Note that subsequent changes to the array will be visible in the resulting Sequential<p>
+     */
+    public JCExpression sequentialWrapperBoxed(JCExpression arrayOfUnboxed) {
+        return makeUtilInvocation(null, "sequentialWrapperBoxed", List.of(arrayOfUnboxed));
     }
 
     public JCExpression makeArray(List<JCExpression> dimensions) {
