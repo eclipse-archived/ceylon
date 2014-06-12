@@ -40,6 +40,7 @@ public class JsIdentifierNames {
         // keywords in Ceylon because no such identifiers can occur in Ceylon
         // source code anyway.
         //reservedWords.add("abstract");
+        reservedWords.add("arguments");
         reservedWords.add("boolean");
         //reservedWords.add("break");
         reservedWords.add("byte");
