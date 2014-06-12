@@ -155,15 +155,12 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash,impl/rethrow
 //#Anything
-//#COMPILE Iterable
-//#COMPILE Sequential,Sequence,Empty,StringBuilder,impl/SequenceBuilder
+//#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder,impl/SequenceBuilder
 //#native Boolean
 //#native Callable
-//#COMPILE Correspondence,Finished
 //#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
 //#Number
-//#COMPILE Set,Range,Singleton,AssertionError
-//#COMPILE Map
+//#COMPILE Set,Range,Singleton,AssertionError,Map
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 //#COMPILE every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
 //#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,internalSort,sort,strings.js,Character,and,or,not,arrayOfSize
