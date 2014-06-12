@@ -63,7 +63,7 @@ public enum OptionName {
     CEYLONRESOURCEROOT("-resroot"),
     CEYLONDISABLEOPT("-disableOptimization"),
     // Keep the following list in sync with Optimization
-    CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{RangeOpIteration,SegmentOpIteration,RangeIterationStatic,ArrayIterationStatic,JavaArrayIterationStatic,ArraySequenceIterationStatic,TupleIterationStatic,IterationDynamic}"),
+    CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{RangeOpIteration,SegmentOpIteration,RangeIterationStatic,ArrayIterationStatic,JavaArrayIterationStatic,TupleIterationStatic,TupleIterationDynamic,ArrayIterationDynamic}"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),

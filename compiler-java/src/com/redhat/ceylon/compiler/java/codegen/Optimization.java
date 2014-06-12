@@ -14,10 +14,9 @@ public enum Optimization {
     RangeIterationStatic,
     ArrayIterationStatic,
     JavaArrayIterationStatic,
-    ArraySequenceIterationStatic,
     TupleIterationStatic,
     ArrayIterationDynamic,
-    ArraySequenceIterationDynamic,
+    TupleIterationDynamic,
     
     PowerUnroll
 }
