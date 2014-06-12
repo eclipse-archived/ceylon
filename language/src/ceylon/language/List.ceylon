@@ -509,12 +509,12 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> span(Integer from, Integer from)
+    shared actual default List<Element> span(Integer from, Integer to)
             => [*sublist(from, to)];
     shared actual default List<Element> spanFrom(Integer from) 
-            => from>=size then [] else [*sublist(from)];
+            => from>=size then [] else [*sublistFrom(from)];
     shared actual default List<Element> spanTo(Integer to) 
-            => to<0 then [] else [*sublist(to)];
+            => to<0 then [] else [*sublistTo(to)];
     shared actual default List<Element> segment(Integer from, Integer length) 
             => length<1 then [] else [*sublist(from, from+length-1)];
     
