@@ -86,8 +86,8 @@ class RuntimeUtil {
                 initialElements.prependList(List.of(seq, arrayExpr)));
     }
     
-    public JCExpression sequentialInstance(JCExpression iterable){
-        return makeUtilInvocation(null, "sequentialInstance", List.of(iterable));
+    public JCExpression sequentialOf(JCExpression iterable){
+        return makeUtilInvocation(null, "sequentialOf", List.of(iterable));
     }
 
     /**
@@ -123,7 +123,7 @@ class RuntimeUtil {
             JCExpression reifiedTypeArgument, 
             JCExpression /*Sequential*/ rest, 
             List<JCExpression> /*T...*/elements) {
-        return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialInstance", elements.prepend(rest).prepend(reifiedTypeArgument));
+        return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialCopy", elements.prepend(rest).prepend(reifiedTypeArgument));
     }
 
     public JCExpression throwableMessage(JCExpression qualExpr) {
