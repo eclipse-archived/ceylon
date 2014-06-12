@@ -115,18 +115,18 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skip(final long skipit) {
-        return $ceylon$language$Iterable$this$.skip(skipit);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skip(final long skipping) {
+        return $ceylon$language$Iterable$this$.skip(skipping);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> take(final long num) {
-        return $ceylon$language$Iterable$this$.take(num);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> take(final long taking) {
+        return $ceylon$language$Iterable$this$.take(taking);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skipWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skipit) {
-        return $ceylon$language$Iterable$this$.skipWhile(skipit);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skipWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skipping) {
+        return $ceylon$language$Iterable$this$.skipWhile(skipping);
     }
     
     @.java.lang.Override
