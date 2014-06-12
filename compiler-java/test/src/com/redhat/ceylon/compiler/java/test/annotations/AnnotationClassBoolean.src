@@ -157,7 +157,7 @@ final class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compile
     }
     
     AnnotationClassBooleanVariadic(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.b()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));
     }
     
     AnnotationClassBooleanVariadic(final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
@@ -247,7 +247,7 @@ final class annotationClassVariadicIterable_ {
 final class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassBooleanSequence(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.b()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));
     }
     
     AnnotationClassBooleanSequence(final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
@@ -324,7 +324,7 @@ final class annotationClassSequenceSequence_ {
 final class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassBooleanIterable(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.b()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));
     }
     
     AnnotationClassBooleanIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> b) {

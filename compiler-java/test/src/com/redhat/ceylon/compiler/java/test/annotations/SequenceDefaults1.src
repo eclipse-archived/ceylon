@@ -27,7 +27,7 @@ final class SequenceDefaults_String implements .com.redhat.ceylon.compiler.java.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     SequenceDefaults_String(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
     }
     
     SequenceDefaults_String(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
@@ -269,7 +269,7 @@ final class SequenceDefaults_Boolean implements .com.redhat.ceylon.compiler.java
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     SequenceDefaults_Boolean(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
     }
     
     SequenceDefaults_Boolean(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
@@ -473,7 +473,7 @@ final class SequenceDefaults_Character implements .com.redhat.ceylon.compiler.ja
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     SequenceDefaults_Character(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
     }
     
     SequenceDefaults_Character(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
@@ -681,7 +681,7 @@ final class SequenceDefaults_Float implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     SequenceDefaults_Float(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
     }
     
     SequenceDefaults_Float(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
@@ -889,7 +889,7 @@ final class SequenceDefaults_Integer implements .com.redhat.ceylon.compiler.java
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     SequenceDefaults_Integer(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.seq()));
     }
     
     SequenceDefaults_Integer(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")

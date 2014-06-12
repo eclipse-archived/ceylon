@@ -113,7 +113,7 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
 final class AnnotationClassStringSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassStringSequence(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.s()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.s()));
     }
     
     AnnotationClassStringSequence(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
@@ -159,7 +159,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
     }
     
     AnnotationClassStringSequenceDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.s()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.s()));
     }
     
     AnnotationClassStringSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
@@ -203,7 +203,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
 final class AnnotationClassStringIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassStringIterable(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.s()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.s()));
     }
     
     AnnotationClassStringIterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {
@@ -249,7 +249,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
     }
     
     AnnotationClassStringIterableDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.s()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.s()));
     }
     
     AnnotationClassStringIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {
@@ -306,7 +306,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
 final class AnnotationClassStringVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassStringVariadic(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringVariadic$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.s()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.s()));
     }
     
     AnnotationClassStringVariadic(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {

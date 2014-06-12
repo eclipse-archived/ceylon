@@ -28,7 +28,7 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     VariadicTricks(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation$ anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.args()));
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.args()));
     }
     
     VariadicTricks(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
