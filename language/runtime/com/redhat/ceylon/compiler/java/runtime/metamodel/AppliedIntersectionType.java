@@ -61,7 +61,7 @@ public class AppliedIntersectionType<Intersection>
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.satisfiedTypes = Util.sequentialCopy(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
+        this.satisfiedTypes = Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
     }
 
     @Override

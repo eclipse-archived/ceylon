@@ -954,6 +954,22 @@ public class Util {
         // Annoyingly this implies an extra copy
         return new ObjectArray.ObjectArrayIterable($reifiedT, elements).sequence();
     }
+    
+    /**
+     * Return a {@link Sequential} wrapping the given elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).
+     * @param $reifiedT The reified type parameter
+     * @param elements The elements
+     * @return A Sequential
+     */
+    public static <T> Sequential<T> 
+    sequentialWrapper(TypeDescriptor $reifiedT, T[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+        }
+        return new Tuple<>($reifiedT, elements);
+    }
 
     /** 
      * <p>Return a {@link Sequential Sequential&lt;String&gt;} wrapping the 

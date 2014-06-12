@@ -84,7 +84,7 @@ public abstract class FreeClassOrInterfaceType
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialCopy(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
+        this.interfaces = Util.sequentialWrapper(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
     }
 
     @Override

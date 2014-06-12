@@ -74,7 +74,7 @@ public abstract class FreeClassOrInterface
         for(ProducedType pt : satisfiedTypes){
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
         }
-        this.interfaces = Util.sequentialCopy(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
+        this.interfaces = Util.sequentialWrapper(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
 
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());

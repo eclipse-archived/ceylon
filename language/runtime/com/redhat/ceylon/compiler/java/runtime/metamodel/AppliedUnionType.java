@@ -62,7 +62,7 @@ public class AppliedUnionType<Union>
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.caseTypes = Util.<ceylon.language.meta.model.Type<? extends Union>>sequentialCopy(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
+        this.caseTypes = Util.<ceylon.language.meta.model.Type<? extends Union>>sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
     }
     
     @Override
