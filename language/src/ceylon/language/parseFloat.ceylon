@@ -24,7 +24,7 @@ shared Float? parseFloat(String string) {
         }
         value afterWholePart = string[dot+1...];
         value mag = afterWholePart firstIndexWhere nonDigit;
-        String fractionalPart;
+        variable String fractionalPart;
         String? rest;
         if (exists mag) {
             fractionalPart = afterWholePart[...mag-1];
@@ -35,6 +35,26 @@ shared Float? parseFloat(String string) {
             rest = null;
         }
         value whole = parseInteger(wholePart);
+        if (exists digitOrUnderscore = fractionalPart[3],
+            digitOrUnderscore == '_') {
+            // validate+remove underscores (there must be a better way) 
+            StringBuilder sb = StringBuilder();
+            variable value i = 0;
+            for (digit in fractionalPart) {
+                if (i != 0 && i % 3 == 0) {
+                    if (digit != '_') {
+                        return null;
+                    }
+                } else {
+                    if (!digit.digit) {
+                        return null;
+                    }
+                    sb.appendCharacter(digit);
+                }
+                i++;
+            }
+            fractionalPart = sb.string;
+        }
         value fractional = parseInteger(fractionalPart);
         if (exists whole, exists fractional) {
             value shift = fractionalPart.size;
