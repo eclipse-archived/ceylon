@@ -432,4 +432,10 @@ shared void strings() {
     check(",".join({for (c in "A") {c.string}})=="{ A }", "string join object comprehension 1");
     check(",".join({for (c in "ABC") {c.string}})=="{ A },{ B },{ C }", "string join object comprehension 2");
     check("".elementAt(1) is Finished, "String.elementAt");
+    
+    check(("helloworld".getFromLast(0) else ' ')=='d', "string getFromLast(0)");
+    check(("helloworld".getFromLast(1) else ' ')=='l', "string getFromLast(1)");
+    check(("helloworld".getFromLast(9) else ' ')=='h', "string getFromLast(8)");
+    check(!"helloworld".getFromLast(-1) exists, "string getFromLast(-1)");
+    check(!"helloworld".getFromLast(10) exists, "string getFromLast(9)");
 }

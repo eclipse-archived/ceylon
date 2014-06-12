@@ -147,4 +147,10 @@ shared void lists() {
     if (exists fi="hello".lastIndexWhere(Character.whitespace)) {
         fail("String.lastIndexWhere should not exist");
     }
+
+    check((TestList(*"helloworld").getFromLast(0) else ' ')=='d', "list getFromLast(0)");
+    check((TestList(*"helloworld").getFromLast(1) else ' ')=='l', "list getFromLast(1)");
+    check((TestList(*"helloworld").getFromLast(9) else ' ')=='h', "list getFromLast(8)");
+    check(!TestList(*"helloworld").getFromLast(-1) exists, "list getFromLast(-1)");
+    check(!TestList(*"helloworld").getFromLast(10) exists, "list getFromLast(9)");
 }
