@@ -64,10 +64,10 @@ shared class Singleton<out Element>(Element element)
     "Returns a `Singleton` if the given starting index 
      is `0`. Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> span
-            (Integer from, Integer to) =>
-                    (((from <= 0) && (to >= 0)) || 
-                    ((from >= 0) && (to <= 0))) 
-                        then this else [];
+            (Integer from, Integer to) 
+            => from <= 0 && to >= 0 || 
+               from >= 0 && to <= 0
+                   then this else [];
     
     shared actual Empty|Singleton<Element> spanTo
             (Integer to) => to<0 then [] else this;
