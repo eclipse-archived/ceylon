@@ -126,6 +126,16 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends Element> sublistTo(final long to) {
+        return $ceylon$language$List$this$.sublistTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends Element> sublist(final long from, final long to) {
+        return $ceylon$language$List$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }

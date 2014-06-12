@@ -46,6 +46,16 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends T> sublistTo(final long to) {
+        return $ceylon$language$List$this$.sublistTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> sublist(final long from, final long to) {
+        return $ceylon$language$List$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -198,6 +208,26 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.List<? extends T> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+        return $ceylon$language$List$this$.span(from, to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> spanFrom(final .ceylon.language.Integer from) {
+        return $ceylon$language$List$this$.spanFrom(from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> spanTo(final .ceylon.language.Integer to) {
+        return $ceylon$language$List$this$.spanTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
+        return $ceylon$language$List$this$.segment(from, length);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this$;
     
@@ -458,6 +488,16 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends T> sublistTo(final long to) {
+        return $ceylon$language$List$this$.sublistTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> sublist(final long from, final long to) {
+        return $ceylon$language$List$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -610,6 +650,26 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.List<? extends T> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+        return $ceylon$language$List$this$.span(from, to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> spanFrom(final .ceylon.language.Integer from) {
+        return $ceylon$language$List$this$.spanFrom(from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> spanTo(final .ceylon.language.Integer to) {
+        return $ceylon$language$List$this$.spanTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
+        return $ceylon$language$List$this$.segment(from, length);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this$;
     

@@ -2757,6 +2757,12 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     public <Result>.ceylon.language.Map<? extends Key, ? extends Result> mapItems(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> mapping) {
         return $ceylon$language$Map$this$.mapItems($reified$Result, mapping);
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Map<? extends Key, ? extends Item> filterKeys(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> filtering) {
+        return $ceylon$language$Map$this$.filterKeys(filtering);
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends Key, ? extends Item>> $ceylon$language$Collection$this$;
     

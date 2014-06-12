@@ -116,6 +116,16 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Integer> sublistTo(final long to) {
+        return $ceylon$language$List$this$.sublistTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Integer> sublist(final long from, final long to) {
+        return $ceylon$language$List$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -432,7 +442,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment(final .ceylon.language.Integer from, final long length) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
@@ -443,7 +453,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
@@ -454,7 +464,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spanFrom(final .ceylon.language.Integer from) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
@@ -465,7 +475,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spanTo(final .ceylon.language.Integer to) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {

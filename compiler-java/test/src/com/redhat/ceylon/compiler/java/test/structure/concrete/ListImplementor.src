@@ -39,6 +39,16 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends X> sublistTo(final long to) {
+        return $ceylon$language$List$this$.sublistTo(to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends X> sublist(final long from, final long to) {
+        return $ceylon$language$List$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -373,7 +383,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor segment(final .ceylon.language.Integer from, final long length) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> segment(final .ceylon.language.Integer from, final long length) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -383,17 +393,17 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor spanFrom(final .ceylon.language.Integer from) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanFrom(final .ceylon.language.Integer from) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor spanTo(final .ceylon.language.Integer to) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanTo(final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
