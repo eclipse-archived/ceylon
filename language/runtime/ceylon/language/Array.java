@@ -793,6 +793,17 @@ public final class Array<Element>
 
     @Ignore
     @Override
+    public Element getFromLast(long key) {
+        int index = toInt(key);
+        int size = toInt(getSize());
+        if (index < 0 || index >= size) {
+            return null;
+        }
+        return unsafeItem(size-index-1);
+    }
+
+    @Ignore
+    @Override
     public Element get(Integer key) {
         return get(toInt(key.longValue()));
     }

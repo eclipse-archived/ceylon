@@ -84,18 +84,41 @@ shared interface List<out Element>
     shared actual default Boolean defines(Integer index) 
             => 0 <= index <= (lastIndex else -1);
     
-    "Returns the element of this sequence with the given
-     index if the index refers to an element of the list,
-     that is, if `0<=index<=list.lastIndex`, or `null` 
-     otherwise. The first element of the list has index 
-     `0`."
+    "Returns the element of this list with the given 
+     [[index]] if the index refers to an element of this
+     list, that is, if `0<=index<=list.lastIndex`, or 
+     `finished` otherwise. The first element of the list has 
+     index `0`, and the last element has index [[lastIndex]]."
     shared formal Element|Finished elementAt(Integer index);
     
+    "Returns the element of this list with the given 
+     [[index]] if the index refers to an element of this
+     list, that is, if `0<=index<=list.lastIndex`, or `null` 
+     otherwise. The first element of the list has index `0`,
+     and the last element has index [[lastIndex]]."
+    see (`function getFromLast`)
     shared actual Element? get(Integer index) {
         if (!is Finished item = elementAt(index)) {
             return item;
         }
-        return null;
+        else {
+            return null;
+        }
+    }
+    
+    "Returns the element of this list with the given 
+     [[index]], where the list is indexed from the _end_ of 
+     the list instead of from the start, if the index refers
+     to an element of this list, or `null` otherwise. The
+     last element of the list has index `0`, and the first
+     element has index [[lastIndex]]."
+    shared Element? getFromLast(Integer index) {
+        if (exists endIndex=lastIndex) {
+            return get(endIndex-index);
+        }
+        else {
+            return null;
+        }
     }
     
     shared actual default Iterator<Element> iterator() {

@@ -305,8 +305,27 @@ public final class String
 
     @Override
     @Ignore
-    public Character get(@Name("index") Integer key) {
+    public Character get(Integer key) {
         java.lang.Object o = elementAt(value, key.longValue());
+        if (o instanceof Finished) {
+            return null;
+        }
+        return (Character)o;
+    }
+
+    @Ignore
+    public static Character getFromLast(java.lang.String value, long key) {
+        java.lang.Object o = elementAt(value, value.length()-1-key);
+        if (o instanceof Finished) {
+            return null;
+        }
+        return (Character)o;
+    }
+
+    @Override
+    @Ignore
+    public Character getFromLast(long key) {
+        java.lang.Object o = elementAt(value, value.length()-1-key);
         if (o instanceof Finished) {
             return null;
         }

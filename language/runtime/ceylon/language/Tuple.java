@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
 
 import java.lang.ref.SoftReference;
@@ -213,10 +214,23 @@ public final class Tuple<Element, First extends Element,
     public final java.lang.Object elementAt(@Name("index")
     @TypeInfo("ceylon.language::Integer")
     final long index) {
-        return index < 0 || index >= length ?
-                finished_.get_() : (Element)array[Util.toInt(index+first)];
+        if (index < 0 || index >= length) {
+            return finished_.get_();
+        }
+        else {
+            return (Element)array[toInt(index)+first];
+        }
     }
     
+    @Ignore
+    @Override
+    public Element getFromLast(long index) {
+        if (index < 0 || index >= length) {
+            return null;
+        }
+        return (Element)array[length-1-toInt(index)+first];
+    }
+
     @Ignore
     @Override
     public final Element get(Integer index) {

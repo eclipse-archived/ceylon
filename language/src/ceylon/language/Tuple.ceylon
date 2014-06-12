@@ -60,7 +60,6 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     
     size => 1 + rest.size;
     
-
     shared actual native Element|Finished elementAt(Integer index) {
         switch (index<=>0)
         case (smaller) { return finished; }
