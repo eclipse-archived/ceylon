@@ -89,10 +89,6 @@ class RuntimeUtil {
     public JCExpression sequentialInstance(JCExpression iterable){
         return makeUtilInvocation(null, "sequentialInstance", List.of(iterable));
     }
-    
-    public JCExpression sequentialInstance(JCExpression typeArgument, JCExpression reifiedTypeArgument, JCExpression annoAttr){
-        return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialInstance", List.<JCExpression>of(reifiedTypeArgument, annoAttr));
-    }
 
     /**
      * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.

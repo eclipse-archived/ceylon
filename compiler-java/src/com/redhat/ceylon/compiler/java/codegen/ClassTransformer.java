@@ -356,10 +356,8 @@ public class ClassTransformer extends AbstractTransformer {
                             List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                             List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
                 } else {
-                    argExpr = utilInvocation().sequentialInstance(
-                            makeJavaType(iteratedType, JT_TYPE_ARGUMENT),
-                            makeReifiedTypeArgument(iteratedType), annoAttr);
-                }                
+                    argExpr = makeErroneous(parameter, "compiler bug");
+                }
             } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
                 argExpr = instantiateAnnotationClass(parameterType, annoAttr);
             } else if (isCeylonMetamodelDeclaration(parameterType)) {
