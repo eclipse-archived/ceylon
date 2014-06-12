@@ -1,7 +1,12 @@
-"A `Sequence` backed by an `Array`. Because `Array `is mutable this class is 
- private to the language module, where we can be sure the Array is not 
- modified after the Sequence has been initialized."
-class ArraySequence<Element>(Array<Element> array) satisfies [Element+] {
+"A [[Sequence]] backed by an [[Array]]. 
+ 
+ Since `Array` is mutable, this class is private to the
+ language module, where we can be sure the `Array` is not
+ modified after the `ArraySequence` has been initialized."
+class ArraySequence<Element>(Array<Element> array) 
+        satisfies [Element+] {
+    
+    assert (!array.empty);
     
     shared actual Element|Finished elementAt(Integer index)
             => array.elementAt(index);
