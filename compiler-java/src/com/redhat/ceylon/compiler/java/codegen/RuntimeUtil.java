@@ -86,8 +86,8 @@ class RuntimeUtil {
                 initialElements.prependList(List.of(seq, arrayExpr)));
     }
     
-    public JCExpression sequentialOf(JCExpression iterable){
-        return makeUtilInvocation(null, "sequentialOf", List.of(iterable));
+    public JCExpression sequentialOf(JCExpression reifiedType, JCExpression iterable){
+        return makeUtilInvocation(null, "sequentialOf", List.of(reifiedType, iterable));
     }
 
     /**

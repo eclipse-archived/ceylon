@@ -1478,7 +1478,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // must at least be an Iterable then
                     ProducedType iterableSpreadType = spreadType.getSupertype(typeFact().getIterableDeclaration());
                     tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
-                    tail = utilInvocation().sequentialOf(tail);
+                    tail = utilInvocation().sequentialOf(makeReifiedTypeArgument(typeFact().getIteratedType(iterableSpreadType)), tail);
                     ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     ProducedType sequentialType = typeFact().getSequentialType(elementType);
                     ProducedType expectedType = spreadExpr.getTypeModel();
