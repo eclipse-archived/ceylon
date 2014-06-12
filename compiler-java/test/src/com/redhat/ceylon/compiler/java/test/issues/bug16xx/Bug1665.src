@@ -13,7 +13,7 @@ final class bug1665_ {
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.empty_.get_();
         ));
-        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, .com.redhat.ceylon.compiler.java.Util.sequentialInstance((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
+        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, .com.redhat.ceylon.compiler.java.Util.sequentialOf((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
             let
             {
                 .java.lang.Object $ceylontmp$1 = arguments2;
@@ -27,7 +27,7 @@ final class bug1665_ {
             }
             returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.empty_.get_();
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> v4 = .com.redhat.ceylon.compiler.java.Util.sequentialInstance((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> v4 = .com.redhat.ceylon.compiler.java.Util.sequentialOf((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
             let
             {
                 .java.lang.Object $ceylontmp$3 = arguments2;

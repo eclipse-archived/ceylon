@@ -42,8 +42,8 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     
     private final void sequenced$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
         m.$callvariadic$(.ceylon.language.Integer.instance(1L));
-        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(2L)));
-        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(2L)));
+        m.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {

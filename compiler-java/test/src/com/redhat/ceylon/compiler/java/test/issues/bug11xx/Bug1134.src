@@ -33,7 +33,7 @@ final class bug1134Toplevel2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L))).toString()};
+            value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L))).toString()};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;

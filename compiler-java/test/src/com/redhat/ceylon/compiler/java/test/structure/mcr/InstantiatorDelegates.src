@@ -352,7 +352,7 @@ final class instantiatorDelegates_ {
             }
             returning arg$12$callable$.Sequenced$new$(arg$12$0, arg$12$1);
         );
-        a.Sequenced$new$(true, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L)));
+        a.Sequenced$new$(true, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L)));
         (
             let
             {
@@ -362,7 +362,7 @@ final class instantiatorDelegates_ {
             }
             returning arg$13$callable$.Sequenced$new$(arg$13$0, arg$13$1);
         );
-        a.Sequenced$new$(true, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        a.Sequenced$new$(true, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         (
             let
             {
