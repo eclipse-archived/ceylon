@@ -1,4 +1,3 @@
-import ceylon.language.meta { type }
 """Represents a collection in which every element has a 
    unique non-negative integer index.
    
