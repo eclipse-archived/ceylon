@@ -57,7 +57,8 @@ shared interface List<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => size>length;
     
-    "The rest of the list, without the first element."
+    "The rest of the list, without the first element.  This 
+     is a lazy operation."
     shared actual default List<Element> rest => Rest(1);
     
     "Determines if the given index refers to an element of 
@@ -97,7 +98,7 @@ shared interface List<out Element>
     }
     
     "A list containing the elements of this list in reverse 
-     order."
+     order. This is a lazy operation."
     shared default List<Element> reversed => Reversed();
     
     "Two `List`s are considered equal iff they have the 
@@ -189,7 +190,8 @@ shared interface List<out Element>
         }
     }
     
-    "A list containing all indexes of this list."
+    "A list containing all indexes of this list.  This is a 
+     lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
     "Returns a new `List` that starts with the specified

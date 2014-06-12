@@ -111,18 +111,20 @@ shared interface Map<out Key,out Item>
         return values;
     }
     
-    "Returns a `Map` with the same keys as this map. For
+    "Produces a `Map` with the same keys as this map. For
      every key, the item is the result of applying the given 
-     transformation function. This is a lazy operation."
+     transformation function to its associated item in this 
+     map. This is a lazy operation."
     shared default Map<Key,Result> mapItems<Result>(
-            "The function that transforms a key/item pair, 
-             producing the item of the resulting map."
-            Result mapping(Key key, Item item)) 
+        "The function that transforms a key/item pair of
+         this map, producing the item of the resulting map."
+        Result mapping(Key key, Item item)) 
             given Result satisfies Object {
         object map
                 satisfies Map<Key,Result> {
             shared actual Result? get(Object key) {
-                if (is Key key, exists item=outer[key]) {
+                if (is Key key, 
+                    exists item=outer[key]) {
                     return mapping(key, item);
                 }
                 else {
@@ -134,9 +136,10 @@ shared interface Map<out Key,out Item>
                     => entry.key->mapping(entry.key, entry.item))
                             .iterator();
             size => outer.size;
-            equals(Object that) => (super of Map<Key,Result>).equals(that);
+            equals(Object that) 
+                    => (super of Map<Key,Result>).equals(that);
             hash => (super of Map<Key,Result>).hash;
-            shared actual Map<Key,Result> clone() => this;
+            clone() => outer.clone().mapItems(mapping);
         }
         return map;
     }
