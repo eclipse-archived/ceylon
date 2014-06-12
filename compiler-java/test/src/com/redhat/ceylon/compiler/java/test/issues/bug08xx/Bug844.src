@@ -169,6 +169,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends Element> sublistFrom(final long from) {
+        return $ceylon$language$List$this$.sublistFrom(from);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
