@@ -246,8 +246,8 @@ public final class Character
     }
 
     @Ignore
-    public static Character neighbour(int codePoint, long offset) {
-        return instance(Util.toInt(codePoint+offset));
+    public static int neighbour(int codePoint, long offset) {
+        return Util.toInt(codePoint+offset);
     }
 
     @Override
