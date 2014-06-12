@@ -444,7 +444,7 @@ public class Metamodel {
             td = TypeDescriptor.union(((ReifiedType)mm).$getType$());
             ret[i++] = mm;
         }
-        return Util.sequentialInstance(td, ret);
+        return Util.sequentialCopy(td, ret);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -456,7 +456,7 @@ public class Metamodel {
         for(ProducedType pt : types){
             ret[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        return Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), 
+        return Util.sequentialCopy(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), 
                                        ret);
     }
 
@@ -1012,7 +1012,7 @@ public class Metamodel {
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = (T)parser.ref(refs[ii]);
         }
-        return Util.<T>sequentialInstance($reifiedElement, (T[])array);
+        return Util.<T>sequentialCopy($reifiedElement, (T[])array);
     }
     
     @SuppressWarnings("unchecked")
@@ -1044,7 +1044,7 @@ public class Metamodel {
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        return Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
+        return Util.sequentialCopy(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
     }
 
     @SuppressWarnings("hiding")

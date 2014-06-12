@@ -63,7 +63,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             for(int i=0;i<packages.length;i++){
                 packages[i] = Metamodel.getOrCreateMetamodel(modelPackages.get(i));
             }
-            this.packages = Util.sequentialInstance(Package.$TypeDescriptor$, packages);
+            this.packages = Util.sequentialCopy(Package.$TypeDescriptor$, packages);
         }
         return this.packages;
     }

@@ -36,7 +36,7 @@ public class FreeUnionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.caseTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
+        this.caseTypes = Util.sequentialCopy(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
     }
 
     @Override

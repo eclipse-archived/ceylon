@@ -939,15 +939,15 @@ public class Util {
     }
     
     /**
-     * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
-     * wrapping the given elements, depending on whether the given array is 
-     * empty
+     * Return a {@link Sequential} containing the given elements 
+     * (a copy is made using {@code sequence()}).
+     * @param $reifiedT The reified type parameter
      * @param elements The elements
      * @return A Sequential
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static <T> Sequential<T> 
-    sequentialInstance(TypeDescriptor $reifiedT, T[] elements) {
+    sequentialCopy(TypeDescriptor $reifiedT, T[] elements) {
         if (elements.length == 0) {
             return (Sequential)empty_.get_();
         }
@@ -1091,10 +1091,10 @@ public class Util {
      */
     @SuppressWarnings({"unchecked"})
     public static <T> Sequential<? extends T> 
-    sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
-    		T... elements) {
-        return sequentialInstance($reifiedT, 0, 
-        		elements.length, elements, true, rest);
+    sequentialCopy(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
+            T... elements) {
+        return sequentialCopy($reifiedT, 0, 
+                elements.length, elements, rest);
     }
         
     /**
@@ -1105,9 +1105,9 @@ public class Util {
      * <strong>This method does not copy {@code elements} unless it has to</strong>
      */
     @SuppressWarnings("unchecked")
-    public static <T> Sequential<? extends T> sequentialInstance(
+    public static <T> Sequential<? extends T> sequentialCopy(
             TypeDescriptor $reifiedT,  
-            int start, int length, T[] elements, boolean copy,
+            int start, int length, T[] elements, 
             Sequential<? extends T> rest) {
         if (length == 0){
             if(rest.getEmpty()) {
@@ -1163,13 +1163,16 @@ public class Util {
     }
 
     /** 
-     * Converts an Iterable to a Sequential without calling 
-     * Iterable.sequence(). This is used for spread arguments in 
-     * tuple literals: {@code [*foo]}
+     * <p>Equivalent to the Ceylon {@code sequential(iterable) else []}, this
+     * converts an {@code Iterable} to a {@code Sequential} without calling 
+     * {@code Iterable.sequence()}.</p>
+     * 
+     * <p>This is used for spread arguments in 
+     * tuple literals: {@code [*foo]}</p>
      * a 
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Sequential sequentialInstance(final Iterable iterable) {
+    public static Sequential sequentialOf(final Iterable iterable) {
         Object result = ceylon.language.sequence_.sequence(Metamodel.getIteratedTypeDescriptor(iterable),
                 Null.$TypeDescriptor$,
                 iterable);

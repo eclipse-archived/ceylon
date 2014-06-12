@@ -150,8 +150,8 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      */
     protected static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, int length, Object[] initial, Sequential<?> rest) {
-        return Util.sequentialInstance($reifiedElement, 
-                start, length, initial, false, rest);
+        return Util.sequentialCopy($reifiedElement, 
+                start, length, initial, rest);
     }
     
     @Override

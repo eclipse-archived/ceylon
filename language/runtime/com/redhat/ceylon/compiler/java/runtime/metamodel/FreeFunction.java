@@ -55,7 +55,7 @@ public class FreeFunction
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        this.typeParameters = Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
+        this.typeParameters = Util.sequentialCopy(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
         
         this.type = Metamodel.getMetamodel(declaration.getType());
         
@@ -68,7 +68,7 @@ public class FreeFunction
             parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter.getModel());
             i++;
         }
-        this.parameterList = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
+        this.parameterList = Util.sequentialCopy(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
     }
 
     @Override

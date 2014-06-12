@@ -36,7 +36,7 @@ public class FreeIntersectionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
+        this.satisfiedTypes = Util.sequentialCopy(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
     }
 
     @Override

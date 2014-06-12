@@ -63,7 +63,7 @@ public class FreeClass
                 parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) Metamodel.getOrCreateMetamodel(modelParameter.getModel());
                 i++;
             }
-            this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
+            this.parameters = Util.sequentialCopy(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
         }else{
             this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
         }
