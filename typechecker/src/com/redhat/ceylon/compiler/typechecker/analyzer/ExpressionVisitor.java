@@ -332,7 +332,7 @@ public class ExpressionVisitor extends Visitor {
 	    ProducedType it;
 	    if (that.getNot()) {
 	        //a !is condition, narrow to complement
-	        it = knownType.minus(type);
+	        it = unit.denotableType(knownType.minus(type));
 	    }
 	    else {
 	        //narrow to the intersection of the outer type 
