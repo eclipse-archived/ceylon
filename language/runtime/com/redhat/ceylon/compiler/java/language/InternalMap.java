@@ -486,6 +486,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     }
 
     @Override
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language::Map<Key,Item>")
+    public Map<? extends Key, ? extends Item> filterKeys(
+            Callable<? extends Boolean> filtering) {
+        return $ceylon$language$Map$this.filterKeys(filtering);
+    }
+
+    @Override
     @Ignore
     public Iterable<? extends Entry<? extends Key, ? extends Item>,?> getCycled() {
         return $ceylon$language$Iterable$this.getCycled();

@@ -114,7 +114,8 @@ shared interface Map<out Key,out Item>
     "Produces a `Map` with the same keys as this map. For
      every key, the item is the result of applying the given 
      transformation function to its associated item in this 
-     map. This is a lazy operation."
+     map. This is a lazy operation, returning a view of this
+     map."
     shared default Map<Key,Result> mapItems<Result>(
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
@@ -140,6 +141,40 @@ shared interface Map<out Key,out Item>
                     => (super of Map<Key,Result>).equals(that);
             hash => (super of Map<Key,Result>).hash;
             clone() => outer.clone().mapItems(mapping);
+        }
+        return map;
+    }
+    
+    "Produces a `Map` by applying a filtering function to 
+     the keys of this map. This is a lazy operation, 
+     returning a view of this map."
+    shared default Map<Key,Item> filterKeys(
+        Boolean filtering(Key key)) {
+        object map
+                satisfies Map<Key,Item> {
+            shared actual Item? get(Object key) {
+                if (is Key key, filtering(key)) {
+                    return outer[key];
+                }
+                else {
+                    return null;
+                }
+            }
+            shared actual Boolean defines(Object key) {
+                if (is Key key, filtering(key)) {
+                    return outer.defines(key);
+                }
+                else {
+                    return false;
+                }
+            }
+            iterator() => outer.filter((Key->Item entry) 
+                    => filtering(entry.key))
+                        .iterator();
+            equals(Object that)
+                    => (super of Map<Key,Item>).equals(that);
+            hash => (super of Map<Key,Item>).hash;
+            clone() => outer.clone().filterKeys(filtering); //TODO: not efficient
         }
         return map;
     }
