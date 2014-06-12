@@ -73,9 +73,10 @@ public class AetherUtils {
 
     MavenArtifactInfo[] getDependencies(File pomXml) {
         MavenResolverSystem system = getResolver();
-        PomEquippedResolveStage stage = system.loadPomFromFile(pomXml);
-        MavenFormatStage dependencies = stage.importDependencies(SCOPES).resolve().using(SCOPED_STRATEGY);
-        return dependencies.asResolvedArtifact();
+        PomEquippedResolveStage resolverStage = system.loadPomFromFile(pomXml).importDependencies(SCOPES);
+        MavenStrategyStage strategyStage = resolverStage.resolve();
+        MavenFormatStage formatStage = strategyStage.using(SCOPED_STRATEGY);
+        return formatStage.asResolvedArtifact();
     }
 
     MavenArtifactInfo[] getDependencies(InputStream pomXml) {
