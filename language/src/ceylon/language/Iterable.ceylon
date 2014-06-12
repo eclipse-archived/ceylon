@@ -387,7 +387,7 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces a stream containing the first [[elements]]
+    "Produces a stream containing the first [[taking]]
      elements of this stream.
      
      If the specified number of elements to take is larger 
