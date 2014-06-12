@@ -260,6 +260,12 @@ public final class Tuple<Element, First extends Element,
         return backedBy$hidden(reversed, 0, length);
     }
     
+    @Override
+    @Ignore
+    public List<? extends Element> sublistFrom(long index) {
+        return $ceylon$language$List$this.sublistFrom(index);
+    }
+    
     @Annotations({
             @Annotation("shared"),
             @Annotation("actual")})

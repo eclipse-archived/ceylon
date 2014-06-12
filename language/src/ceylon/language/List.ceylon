@@ -56,9 +56,14 @@ shared interface List<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => size>length;
     
-    "The rest of the list, without the first element.  This 
+    "The rest of the list, without the first element. This 
      is a lazy operation."
     shared actual default List<Element> rest => Rest(1);
+    
+    "A sublist of this list, starting from the element with
+     the given [[index|from]]. This is a lazy operation."
+    shared default List<Element> sublistFrom(Integer from) 
+            => Rest(from); 
     
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."

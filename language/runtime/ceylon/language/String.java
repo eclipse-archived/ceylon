@@ -1500,6 +1500,12 @@ public final class String
         	instance(value.substring(value.offsetByCodePoints(0, 1)));
     }
 
+    @Override
+    @Ignore
+    public List<? extends Character> sublistFrom(long index) {
+        return $ceylon$language$List$this.sublistFrom(index);
+    }
+    
     @Ignore
     public static java.lang.String getRest(java.lang.String value) {
         return value.isEmpty() ? "" :
