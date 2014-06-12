@@ -1172,8 +1172,8 @@ public class Util {
      * a 
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Sequential sequentialOf(final Iterable iterable) {
-        Object result = ceylon.language.sequence_.sequence(Metamodel.getIteratedTypeDescriptor(iterable),
+    public static Sequential sequentialOf(TypeDescriptor reified$Element, final Iterable iterable) {
+        Object result = ceylon.language.sequence_.sequence(reified$Element,
                 Null.$TypeDescriptor$,
                 iterable);
         if (result == null) {
