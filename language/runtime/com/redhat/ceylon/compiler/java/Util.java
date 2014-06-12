@@ -939,23 +939,6 @@ public class Util {
     }
     
     /**
-     * Return a {@link Sequential} containing the given elements 
-     * (a copy is made using {@code sequence()}).
-     * @param $reifiedT The reified type parameter
-     * @param elements The elements
-     * @return A Sequential
-     */
-    @SuppressWarnings({"unchecked","rawtypes"})
-    public static <T> Sequential<T> 
-    sequentialCopy(TypeDescriptor $reifiedT, T[] elements) {
-        if (elements.length == 0) {
-            return (Sequential)empty_.get_();
-        }
-        // Annoyingly this implies an extra copy
-        return new ObjectArray.ObjectArrayIterable($reifiedT, elements).sequence();
-    }
-    
-    /**
      * Return a {@link Sequential} wrapping the given elements
      * (subsequent changes to the array will be visible in 
      * the returned {@link Sequential}).
