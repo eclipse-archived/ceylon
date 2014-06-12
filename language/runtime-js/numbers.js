@@ -1,20 +1,3 @@
-function $_Number($$targs$$,wat) {
-    add_type_arg(wat, 'Other$Number', $$targs$$.Other$Number);
-    return wat;
-}
-initType($_Number, 'ceylon.language::Number');
-$_Number.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,
-  $tp:{Other$Number:{satisfies:{t:$_Number,a:{Other$Number:'Other$Number'}}}},
-  satisfies:[{t:Numeric,a:{Other$Numeric:'Other$Number'}},{t:Comparable,a:{Other$Comparable:'Other$Comparable'}}],
-  d:['$','Number']};}
-ex$.$_Number=$_Number;
-function $init$$_Number() {
-    if ($_Number.$$===undefined) {
-        initType($_Number, 'ceylon.language::Number');
-    }
-    return $_Number;
-}
-
 var toInt = function(float) {
     return (float >= 0) ? Math.floor(float) : Math.ceil(float);
 }
