@@ -11,6 +11,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Ranged;
 import ceylon.language.Sequential;
+import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 
@@ -955,12 +956,17 @@ public class Util {
     }
 
     /** 
-     * Used to obtain a {@code Sequential<String>} from a {@code java.lang.String[]} 
-     * obtained from an annotation.
+     * <p>Return a {@link Sequential Sequential&lt;String&gt;} wrapping the 
+     * given {@code java.lang.String[]} elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<String>} from a {@code java.lang.String[]} 
+     * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.String> 
-    sequentialInstanceBoxed(java.lang.String[] elements) {
+    sequentialWrapperBoxed(java.lang.String[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -971,17 +977,21 @@ public class Util {
         for(java.lang.String element : elements){
             newArray[i++] = ceylon.language.String.instance(element);
         }
-        // TODO Annoyingly this results in an extra copy
-        return new ObjectArray.ObjectArrayIterable(ceylon.language.String.$TypeDescriptor$, newArray).sequence();
+        return new Tuple(ceylon.language.String.$TypeDescriptor$, newArray);
     }
 
     /** 
-     * Used to obtain a {@code Sequential<Integer>} from a {@code long[]} 
-     * obtained from an annotation.
+     * <p>Return a {@link Sequential Sequential&lt;Integer&gt;} wrapping the 
+     * given {@code long[]} elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Integer>} from a {@code long[]} 
+     * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Integer> 
-    sequentialInstanceBoxed(long[] elements) {
+    sequentialWrapperBoxed(long[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -992,17 +1002,21 @@ public class Util {
         for(long element : elements){
             newArray[i++] = ceylon.language.Integer.instance(element);
         }
-        // TODO Annoyingly this results in an extra copy
-        return new ObjectArray.ObjectArrayIterable(ceylon.language.Integer.$TypeDescriptor$, newArray).sequence();
+        return new Tuple(ceylon.language.Integer.$TypeDescriptor$, newArray);
     }
 
     /** 
-     * Used to obtain a {@code Sequential<Character>} from a {@code int[]} 
-     * obtained from an annotation.
+     * <p>Return a {@link Sequential Sequential&lt;Character&gt;} wrapping the 
+     * given {@code int[]} elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Character>} from a {@code int[]} 
+     * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Character> 
-    sequentialInstanceBoxed(int[] elements) {
+    sequentialWrapperBoxed(int[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -1013,17 +1027,21 @@ public class Util {
         for(int element : elements){
             newArray[i++] = ceylon.language.Character.instance(element);
         }
-        // TODO Annoyingly this results in an extra copy
-        return new ObjectArray.ObjectArrayIterable(ceylon.language.Character.$TypeDescriptor$, newArray).sequence();
+        return new Tuple(ceylon.language.Character.$TypeDescriptor$, newArray);
     }
 
     /** 
-     * Used to obtain a {@code Sequential<Boolean>} from a {@code boolean[]} 
-     * obtained from an annotation.
+     * <p>Return a {@link Sequential Sequential&lt;Boolean&gt;} wrapping the 
+     * given {@code boolean[]} elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Boolean>} from a {@code boolean[]} 
+     * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Boolean> 
-    sequentialInstanceBoxed(boolean[] elements) {
+    sequentialWrapperBoxed(boolean[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -1034,17 +1052,21 @@ public class Util {
         for(boolean element : elements){
             newArray[i++] = ceylon.language.Boolean.instance(element);
         }
-        // TODO Annoyingly this results in an extra copy
-        return new ObjectArray.ObjectArrayIterable(ceylon.language.Boolean.$TypeDescriptor$, newArray).sequence();
+        return new Tuple(ceylon.language.Boolean.$TypeDescriptor$, newArray);
     }
 
     /** 
-     * Used to obtain a {@code Sequential<Float>} from a {@code float[]} 
-     * obtained from an annotation.
+     * <p>Return a {@link Sequential Sequential&lt;Float&gt;} wrapping the 
+     * given {@code double[]} elements
+     * (subsequent changes to the array will be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<String>} from a {@code double[]} 
+     * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Float> 
-    sequentialInstanceBoxed(double[] elements) {
+    sequentialWrapperBoxed(double[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -1055,8 +1077,7 @@ public class Util {
         for(double element : elements){
             newArray[i++] = ceylon.language.Float.instance(element);
         }
-        // TODO Annoyingly this results in an extra copy
-        return new ObjectArray.ObjectArrayIterable(ceylon.language.Float.$TypeDescriptor$, newArray).sequence();
+        return new Tuple(ceylon.language.Float.$TypeDescriptor$, newArray);
     }
 
 
