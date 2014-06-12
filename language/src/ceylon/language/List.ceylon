@@ -509,6 +509,15 @@ shared interface List<out Element>
         }
     }
     
+    shared actual default List<Element> span(Integer from, Integer from)
+            => [*sublist(from, to)];
+    shared actual default List<Element> spanFrom(Integer from) 
+            => from>=size then [] else [*sublist(from)];
+    shared actual default List<Element> spanTo(Integer to) 
+            => to<0 then [] else [*sublist(to)];
+    shared actual default List<Element> segment(Integer from, Integer length) 
+            => length<1 then [] else [*sublist(from, from+length-1)];
+    
     //TODO: enable when backend bug is fixed
     //"Return two lists, the first containing the elements
     // that occur before the given [[index]], the second with
