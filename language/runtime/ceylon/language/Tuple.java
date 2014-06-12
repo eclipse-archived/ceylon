@@ -266,6 +266,18 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$List$this.sublistFrom(index);
     }
     
+    @Override
+    @Ignore
+    public List<? extends Element> sublistTo(long index) {
+        return $ceylon$language$List$this.sublistTo(index);
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Element> sublist(long from, long to) {
+        return $ceylon$language$List$this.sublist(from, to);
+    }
+    
     @Annotations({
             @Annotation("shared"),
             @Annotation("actual")})

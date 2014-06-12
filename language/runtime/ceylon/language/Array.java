@@ -1109,6 +1109,18 @@ public final class Array<Element>
     
     @Override
     @Ignore
+    public List<? extends Element> sublistTo(long index) {
+        return $ceylon$language$List$this.sublistTo(index);
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Element> sublist(long from, long to) {
+        return $ceylon$language$List$this.sublist(from, to);
+    }
+    
+    @Override
+    @Ignore
     public List<? extends Element> getReversed() {
         return $ceylon$language$List$this.getReversed();
     }

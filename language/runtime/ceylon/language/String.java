@@ -1506,6 +1506,18 @@ public final class String
         return $ceylon$language$List$this.sublistFrom(index);
     }
     
+    @Override
+    @Ignore
+    public List<? extends Character> sublistTo(long index) {
+        return $ceylon$language$List$this.sublistTo(index);
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Character> sublist(long from, long to) {
+        return $ceylon$language$List$this.sublist(from, to);
+    }
+    
     @Ignore
     public static java.lang.String getRest(java.lang.String value) {
         return value.isEmpty() ? "" :

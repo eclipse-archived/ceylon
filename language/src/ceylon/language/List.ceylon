@@ -60,10 +60,24 @@ shared interface List<out Element>
      is a lazy operation."
     shared actual default List<Element> rest => Rest(1);
     
-    "A sublist of this list, starting from the element with
-     the given [[index|from]]. This is a lazy operation."
+    "A sublist of this list, starting at the element with
+     the given [[index|from]]. This is a lazy operation, 
+     returning a view of this list."
     shared default List<Element> sublistFrom(Integer from) 
-            => Rest(from); 
+            => from<0 then this else Rest(from); 
+    
+    "A sublist of this list, ending at the element with the 
+     given [[index|to]]. This is a lazy operation, returning 
+     a view of this list."
+    shared default List<Element> sublistTo(Integer to) 
+            => to<0 then this else Sublist(to);
+    
+    "A sublist of this list, starting at the element with
+     index [[from]], ending at the element with the index 
+     [[to]]. This is a lazy operation, returning a view of 
+     this list."
+    shared default List<Element> sublist(Integer from, Integer to) 
+            => sublistTo(to).sublistFrom(from);
     
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
@@ -590,6 +604,65 @@ shared interface List<out Element>
             }
             object iterator satisfies Iterator<Element> {
                 next() => iter.next();
+            }
+            return iterator;
+        }
+        
+    }
+    
+    class Sublist(Integer to)
+            extends Object()
+            satisfies List<Element> {
+        
+        assert (to>=0);
+        
+        shared actual Element|Finished elementAt(Integer index) {
+            if (index<0||index>to) {
+                return finished;
+            }
+            else {
+                return outer.elementAt(index);
+            }
+        }
+        
+        shared actual Integer? lastIndex {
+            if (exists endIndex=outer.lastIndex) {
+                return endIndex<to then endIndex else to;
+            }
+            else {
+                return null;
+            }
+        }
+        
+        segment(Integer from, Integer length) 
+                => from+length-1>to 
+                    then outer[from:to] 
+                    else outer[from:length];
+        
+        span(Integer from, Integer to) 
+                => to>this.to
+                    then outer[from..this.to] 
+                    else outer[from..to];
+        spanFrom(Integer from) => outer[from..to];
+        spanTo(Integer to)
+                => to>this.to
+                    then outer[...this.to] 
+                    else outer[...to];
+        
+        clone() => outer.clone().Sublist(to);
+        
+        shared actual Iterator<Element> iterator() {
+            value iter = outer.iterator();
+            variable value i=0;
+            object iterator satisfies Iterator<Element> {
+                shared actual Element|Finished next() {
+                    if (i++>to) {
+                        return finished;
+                    }
+                    else {
+                        return iter.next();
+                    }
+                }
             }
             return iterator;
         }
