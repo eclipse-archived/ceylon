@@ -27,13 +27,7 @@ public final class process_ {
     
     @Ignore
     public void setupArguments(java.lang.String[] args) {
-        if (args.length>0) {
-            Array<String> newArgs = new Array<String>(String.$TypeDescriptor$, args.length, String.instance(""));
-            for (int i = 0; i < args.length; i++) {
-                newArgs.set(i, String.instance(args[i]));
-            }
-            this.args = new ArraySequence<String>(String.$TypeDescriptor$, newArgs);
-        }
+        this.args = Util.sequentialWrapperBoxed(args);
     }
     
     public void writeLine(@Name("line") @Defaulted java.lang.String line) {
