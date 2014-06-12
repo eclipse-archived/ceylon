@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 
 @Ceylon(major = 7)
 @Object
@@ -52,6 +53,7 @@ public final class operatingSystem_ {
     }
 
     @Override
+    @Transient
     public java.lang.String toString() {
         return "operating system [" + getName() + " / " + getVersion() + "]";
     }

@@ -1195,11 +1195,11 @@ public final class Array<Element>
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
-    skip(@Name("skipit") long skip) {
-        int intSkip = toInt(skip);
+    skip(@Name("skipping") long skipping) {
+        int intSkip = toInt(skipping);
         // ok to cast here, since we know the size must fit in an int
         int length = (int)getSize();
-        if (skip <= 0) {
+        if (skipping <= 0) {
             return this;
         }
         return new ArrayIterable(this.array, intSkip, 
@@ -1210,14 +1210,14 @@ public final class Array<Element>
 	@Annotations({ @Annotation("actual") })
 	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
-	take(@Name("num") long take) {
+	take(@Name("taking") long taking) {
 	    // ok to cast here, since we know the size must fit in an int
 	    int length = (int)getSize();
-	    if (take >= length) {
+	    if (taking >= length) {
 	        return this;
 	    }
 		return new ArrayIterable(this.array, 0, 
-		        Math.max(toInt(take), 0), 1);
+		        Math.max(toInt(taking), 0), 1);
 	}
 
 	@Override

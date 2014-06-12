@@ -200,6 +200,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Integer")
+    @Transient
     public final long getSize() {
         return length;
     }
@@ -251,6 +252,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Sequence<Element>")
+    @Transient
     public final ceylon.language.Sequence<? extends Element> 
     getReversed() {
         Element[] reversed = reversedCopy$priv$((Element[])array, 

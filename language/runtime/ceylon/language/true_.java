@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 7) 
@@ -25,6 +26,7 @@ public final class true_ extends Boolean {
     }
     
     @Override
+    @Transient
     public java.lang.String toString() {
         return "true";
     }
