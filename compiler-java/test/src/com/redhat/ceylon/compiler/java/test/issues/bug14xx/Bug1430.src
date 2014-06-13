@@ -136,6 +136,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Integer getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
         return (.ceylon.language.Sequence)$ceylon$language$List$this$.withLeading($reified$Other, element);
     }

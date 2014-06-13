@@ -59,6 +59,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final X getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
     public X findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.findLast(selecting);
     }

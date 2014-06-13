@@ -143,6 +143,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public final T getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> iterator() {
         return $ceylon$language$List$this$.iterator();
     }
