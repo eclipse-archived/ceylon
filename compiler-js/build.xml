@@ -187,7 +187,6 @@
         <copy overwrite="true"
               file="${json.lib}"
               tofile="${build.dist.repo}/${json.repo}"/>
-    	<antcall target="copy-repo-for-osgi"/>
     </target>
 
     <target name="publish"
@@ -202,25 +201,6 @@
         </copy>
     </target>
 
-	<target name="copy-repo-for-osgi">
-        <copy 
-            overwrite="true"
-            todir="../ceylon-dist-osgi/defaultRepository">
-            <fileset dir="${build.dist.repo}"/>
-        </copy>
-	</target>
-	
-    <target name="ide" depends="dist,ide-quick">
-    </target>
-
-    <target name="ide-internal" depends="dist,ide-quick-internal">
-    </target>
-	
-	<target name="ide-quick" 
-        description="Copies the JS compiler jar and language module into the ceylon-ide-eclipse project" 
-		depends="copy-repo-for-osgi, ide-quick-internal">
-	</target>
-	
 	<target name="ide-quick-internal">
     </target>
 
