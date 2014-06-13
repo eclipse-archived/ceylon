@@ -654,8 +654,11 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public Integer firstOccurrence(java.lang.Object element) {
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    public Integer firstOccurrence(
+            @Name("element") 
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object element) {
         if (element instanceof Character) {
             int index = value.indexOf(((Character) element).codePoint);
             return index >= 0 ? 
@@ -682,8 +685,11 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public Integer lastOccurrence(java.lang.Object element) {
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    public Integer lastOccurrence(
+            @Name("element") 
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object element) {
         if (element instanceof Character) {
             int index = value.lastIndexOf(((Character) element).codePoint);
             return index >= 0 ? 
@@ -1776,35 +1782,35 @@ public final class String
         }
     }
 
-    @Override @Ignore
-    public Iterable<? extends Character, ?> 
-    skip(long skip) {
-        return this.segment(Integer.instance(skip), this.getSize());
+    @Override
+    public String 
+    skip(@Name("skipping") long skip) {
+        return instance(this.segment(Integer.instance(skip), this.getSize()));
     }
     
     @Ignore
-    public static Iterable<? extends Character, ?> 
+    public static java.lang.String 
     skip(java.lang.String value, long skip) {
         if (value.isEmpty()) {
-            return instance(value);
+            return value;
         } else {
-            return instance(segment(value, skip, getSize(value)));
+            return segment(value, skip, getSize(value));
         }
     }
 
-    @Override @Ignore
-    public Iterable<? extends Character, ?> 
-    take(long take) {
-        return this.segment(Integer.instance(0), take);
+    @Override 
+    public String 
+    take(@Name("taking") long take) {
+        return instance(this.segment(Integer.instance(0), take));
     }
     
     @Ignore
-    public static Iterable<? extends Character, ?> 
+    public static java.lang.String 
     take(java.lang.String value, long take) {
         if (value.isEmpty()) {
-            return instance(value);
+            return value;
         } else {
-            return instance(segment(value, 0, take));
+            return segment(value, 0, take);
         }
     }
     
@@ -1832,9 +1838,9 @@ public final class String
         return instance(value).skipWhile(skip);
     }
     
-    @Override @Ignore
+    @Override 
     public Iterable<? extends Character, ?> 
-    by(long step) {
+    by(@Name("step") long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
