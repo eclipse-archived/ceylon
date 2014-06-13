@@ -6,10 +6,10 @@ function tpl$(elems,types,spread){
       elems.push(e);
     }
   }
-  if (elems.length===0)return getEmpty();
+  if (elems.size===0)return getEmpty();
   if (types===undefined || types.t!=='T') {
     types=[];
-    for (var i=0; i < elems.length; i++){
+    for (var i=0; i < elems.size; i++){
       if (elems[i]===null) {
         types.push({t:Null});
       } else if (elems[i].getT$all && elems[i].getT$name) {
@@ -50,22 +50,22 @@ function tpl$(elems,types,spread){
   that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
   that.span=function(a,b){
     var r=elems.span(a,b);
-    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
   that.spanTo=function(x){
     var r=elems.spanTo(x);
-    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
   that.spanFrom=function(x){
     var r=elems.spanFrom(x);
-    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
   that.segment=function(a,b){
     var r=elems.segment(a,b);
-    return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
+    return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.segment.$crtmm$=Tuple.$$.prototype.segment.$crtmm$;
   that.equals=function(o){return elems.equals(o);}
@@ -86,16 +86,16 @@ function tpl$(elems,types,spread){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.length===1?getEmpty():tpl$(elems.slice(1),{t:'T',l:_t.l.slice(1)});
+    return elems.size===1?getEmpty():tpl$(elems.slice(1),{t:'T',l:_t.l.slice(1)});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
-    return elems.length;
+    return elems.size;
   },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
   atr$(that,'lastIndex',function(){
-    return elems.length-1;
+    return elems.size-1;
   },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
   atr$(that,'last',function(){
-    return elems[elems.length-1];
+    return elems[elems.size-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
   atr$(that,'reversed',function(){
     return ArraySequence(elems.reversed,{Element$ArraySequence:_t});
