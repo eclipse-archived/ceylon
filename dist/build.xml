@@ -12,9 +12,11 @@
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
 
-    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime,ceylon-dist-osgi" />
+    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
+
+    <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
@@ -93,28 +95,23 @@ Some more basic ant tasks:
         </ant>
     </target>
 
-    <target name="ide" depends="siblings">
-        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
+    <target name="ide" depends="siblings, install-all">
         <property name="buildtarget" value="ide-internal" />
-        <foreach list="${modules}"
-                 target="ide-item"
-                 param="project.item.name"
-                 inheritall="true" />
+    	<antcall target="ide-quick"/>
     </target>
     <target name="ide-quick" depends="siblings">
-        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
-        <property name="buildtarget" value="ide-quick-internal" />
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
                  inheritall="true" />
+    	<antcall target="osgi-p2-quick"/>
     </target>
     <target name="ide-item">
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <echo>Publishing ${project.item.name} to IDE</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="${buildtarget}"
+             target="ide-quick-internal"
              dir="${projects.base.dir}/${project.item.name}"
              inheritall="false">
         </ant>
@@ -158,7 +155,6 @@ Used with another target such as 'package'.">
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
-        <property name="ceylon-dist-osgi.dir" value="${projects.base.dir}/ceylon-dist-osgi"/>
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -174,7 +170,6 @@ Used with another target such as 'package'">
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
-        <property name="ceylon-dist-osgi.dir" value="${projects.base.dir}/ceylon-dist-osgi"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -205,18 +200,40 @@ Used with another target such as 'package'">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-                     copy-licenses, install-runtime-libs, install-language, install-runtime, install-dist-osgi"
+                     copy-licenses, install-runtime-libs, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
-	<target name="install-dist-osgi" 
-            depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime"
+	<target name="osgi"             
             description="Generates the OSGI bundle of the overall dist, with OSGI-specific metamodel initialization logic">
-        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="publish" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+		<antcall target="osgi-internal"/>
+    </target>
+	<target name="osgi-internal"
+		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+		<antcall target="osgi-quick"/>
+	</target>
+	<target name="osgi-quick">
+		<ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
+	</target>
+
+	<target name="osgi-p2"> 
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+		<antcall target="osgi-p2-internal"/>
     </target>
+	<target name="osgi-p2-internal"
+		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+		<antcall target="osgi-p2-quick"/>
+	</target>
+	<target name="osgi-p2-quick">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi-p2" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+	</target>
 
 	<target name="zip">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />

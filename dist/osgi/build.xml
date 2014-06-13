@@ -1,0 +1,169 @@
+<project name="Ceylon distribution OSGI Bundle" default="osgi" basedir=".">
+
+    <property file="../../ceylon-common/common-build.properties" />
+
+    <property name="name" value="Ceylon distribution OSGI bundle" />
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
+    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}" />
+    <property name="ceylon.language.car" value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car" />
+    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}" />
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
+    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
+
+    <!-- The Java source files for the OSGI-specific meta-model bootstrapper -->
+    <property name="src" location="src" />
+
+
+	<!-- Directories everything gets built into -->
+    <property name="build" location="build" />
+    <property name="build.classes" location="${build}/classes" />
+    <property name="build.dist" location="${build}/dist" />
+	  <tstamp>
+	      <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+	  </tstamp>    	
+    <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
+    <property name="p2" location="${basedir}/p2" />
+    <property name="build.dist.plugins" location="${build.dist}/plugins" />
+
+    <path id="classpath">
+        <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.typechecker.lib}" />
+        <pathelement path="${ceylon.language.lib}" />
+        <pathelement path="${ceylon.compiler.lib}" />
+        <pathelement path="${basedir}/lib/org.osgi.core-4.3.1.jar" />
+    </path>
+
+	<taskdef resource="taskdef.properties">
+		<classpath>
+	        <pathelement path="${basedir}/lib/org.osgi.impl.bundle.repoindex.ant-2.1.2.jar" />
+		</classpath>
+	</taskdef>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="${basedir}/../lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+	
+	
+    <!-- ################################################################## -->
+
+    <!-- Rule to clean everything up -->
+    <target name="clean">
+        <delete failonerror="false" dir="${build}"/>
+    </target>
+
+    <!-- Rule to build compiler classes from their Java sources -->
+    <target name="classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classpath" includeantruntime="true">
+        </javac>
+    </target>
+
+	<!-- Rule to build osgi bundle jar -->
+    <target name="updateManifest" >
+        <copy todir="${build.classes}" >
+		    <fileset dir="${basedir}">
+		        <include name="META-INF/**" />
+		    </fileset>
+        </copy>
+    	<replaceregexp file="${build.classes}/META-INF/MANIFEST.MF"
+    		match="(Bundle-Version: .*\.)qualifier"
+    		replace="\1${qualifier}"
+    		byline="true"/>
+    </target>
+
+	<!-- Rule to build osgi bundle jar -->
+    <target name="build" depends="classes, updateManifest">
+        <mkdir dir="${build}" />
+        <zip destfile="${build}/${ceylon.dist.osgi.jar}" >
+            <fileset dir="${build.classes}" includes="**"/>
+		    <zipfileset dir="${ceylon.repo.dir}" prefix="defaultRepository">
+		        <include name="defaultRepository/**" />
+		    </zipfileset>
+		    <fileset dir="${ceylon.dist.dir}">
+		        <include name="lib/ceylon-bootstrap.jar" />
+		    </fileset>
+        </zip>
+    </target>
+
+    <target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
+        <mkdir dir="${build.dist.plugins}" />
+    	<loadproperties>
+			<zipentry zipfile="${ceylon.language.lib}" name="META-INF/MANIFEST.MF"/>
+    	     <filterchain>
+    	        <linecontainsregexp>
+    	        	<regexp pattern="^Bundle-Version: \s*\d+\.\d+\.\d+\..+\s*$"/>
+    	        </linecontainsregexp>
+    	     	<replaceregex pattern="\s+$" replace=""/>
+    	     	<replaceregex pattern="^\s+" replace=""/>
+    	      </filterchain>
+    	</loadproperties>
+    	
+    	<copy todir="${build.dist.plugins}" overwrite="true" >
+			<fileset file="${ceylon.language.lib}"/>
+			<mapper type="regexp" from="([^-]+)-(.+)\.car" to="\1_${Bundle-Version}.jar"/>
+		</copy>
+		<copy file="${build}/${ceylon.dist.osgi.jar}" overwrite="true" 
+			todir="${build.dist.plugins}">
+		</copy>
+    	<makeurl property="rootUrl" file="${build.dist}"/>
+    	<repoindex name="Ceylon Distribution Bundles"    		
+    		out="${build.dist}/repository.xml" 
+    		compressed="false"
+    		rooturl="${rootUrl}">
+    		<fileset dir="${build.dist.plugins}" includes="*.jar"/>    		
+    	</repoindex>
+    </target>
+
+	<!-- Rule to setup a plugins directory with required bundles -->
+    <target name="osgi-p2" depends="osgi">
+    	<makeurl property="destinationRepository" file="${build.dist}"/>
+    	<makeurl property="categoryDefinition" file="${p2}/category.xml"/>
+    	<exec dir="${basedir}" executable="eclipse" failonerror="true">
+    		<arg value="-noSplash"/>
+    		<arg value="-console"/>
+    		<arg value="-consolelog"/>
+    		<arg value="--launcher.suppressErrors"/>
+    		<arg value="-application"/>
+    		<arg value="org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher"/>
+    		<arg value="-metadataRepositoryName"/>
+    		<arg value="Ceylon Distribution Bundles"/>
+    		<arg value="-metadataRepository"/>
+    		<arg value="${destinationRepository}"/>
+    		<arg value="-artifactRepositoryName"/>
+    		<arg value="Ceylon Distribution Bundles"/>
+    		<arg value="-artifactRepository"/>
+    		<arg value="${destinationRepository}"/>
+    		<arg value="-source"/>
+    		<arg file="${build.dist}"/>
+			<arg value="-publishArtifacts"/>
+			<arg value="-append"/>
+    	</exec>
+    	<exec dir="${basedir}" executable="eclipse">
+    		<arg value="-noSplash"/>
+    		<arg value="-console"/>
+    		<arg value="-consolelog"/>
+    		<arg value="--launcher.suppressErrors"/>
+    		<arg value="-application"/>
+    		<arg value="org.eclipse.equinox.p2.publisher.CategoryPublisher"/>
+    		<arg value="-metadataRepository"/>
+    		<arg value="${destinationRepository}"/>
+    		<arg value="-categoryDefinition"/>
+    		<arg value="${categoryDefinition}"/>
+    		<arg value="-categoryQualifier"/>
+    		<arg value="com.redhat.ceylon.dist"/>
+    	</exec>
+    </target>
+</project>

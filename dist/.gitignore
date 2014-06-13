@@ -1,6 +1,6 @@
 # build
 
-dist
+/dist
 projects
 ceylon-*.zip
 .ant-targets-build.xml
