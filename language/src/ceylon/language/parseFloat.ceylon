@@ -35,7 +35,7 @@ shared Float? parseFloat(String string) {
             rest = null;
         }
         value whole = parseInteger(wholePart);
-        if (exists digitOrUnderscore = fractionalPart[3],
+        if (whole exists, exists digitOrUnderscore = fractionalPart[3],
             digitOrUnderscore == '_') {
             // validate+remove underscores (there must be a better way) 
             StringBuilder sb = StringBuilder();
@@ -55,8 +55,7 @@ shared Float? parseFloat(String string) {
             }
             fractionalPart = sb.string;
         }
-        value fractional = parseInteger(fractionalPart);
-        if (exists whole, exists fractional) {
+        if (exists whole, exists fractional = parseInteger(fractionalPart)) {
             value shift = fractionalPart.size;
             Integer exponent;
             if (exists rest) {
