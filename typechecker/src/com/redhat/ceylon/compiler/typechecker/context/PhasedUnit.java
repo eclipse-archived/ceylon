@@ -260,26 +260,32 @@ public class PhasedUnit {
     }
 
     public void scanDeclarations() {
-        if (!declarationsScanned) {
-            processLiterals();
-            scanningDeclarations = true;
-            //System.out.println("Scan declarations for " + fileName);
-            UnitFactory unitFactory = new UnitFactory() {
-                @Override
-                public Unit createUnit() {
-                    return PhasedUnit.this.createUnit();
-                }
-            };
-            DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
-            		unitFile.getPath(), pathRelativeToSrcDir, unitFactory);
-            compilationUnit.visit(dv);
-            unit = dv.getCompilationUnit();
-            
-            LocalDeclarationVisitor ldv = new LocalDeclarationVisitor();
-            compilationUnit.visit(ldv);
-            
-            declarationsScanned = true;
-            scanningDeclarations = false;
+        Boolean enabled = ProducedTypeCache.setEnabled(false);
+        try {
+            if (!declarationsScanned) {
+                processLiterals();
+                scanningDeclarations = true;
+                //System.out.println("Scan declarations for " + fileName);
+                UnitFactory unitFactory = new UnitFactory() {
+                    @Override
+                    public Unit createUnit() {
+                        return PhasedUnit.this.createUnit();
+                    }
+                };
+                DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
+                        unitFile.getPath(), pathRelativeToSrcDir, unitFactory);
+                compilationUnit.visit(dv);
+                unit = dv.getCompilationUnit();
+
+                LocalDeclarationVisitor ldv = new LocalDeclarationVisitor();
+                compilationUnit.visit(ldv);
+
+                declarationsScanned = true;
+                scanningDeclarations = false;
+            }
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
 
@@ -291,38 +297,56 @@ public class PhasedUnit {
 	}
 
     public void scanTypeDeclarations() {
-        if (!typeDeclarationsScanned) {
-            //System.out.println("Scan type declarations for " + fileName);
-            compilationUnit.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
-            compilationUnit.visit(new TypeVisitor());
-            typeDeclarationsScanned = true;
+        Boolean enabled = ProducedTypeCache.setEnabled(false);
+        try {
+            if (!typeDeclarationsScanned) {
+                //System.out.println("Scan type declarations for " + fileName);
+                compilationUnit.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
+                compilationUnit.visit(new TypeVisitor());
+                typeDeclarationsScanned = true;
+            }
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
 
     public synchronized void validateRefinement() {
-        if (! refinementValidated) {
-            ProducedType.depth.set(0);
-            //System.out.println("Validate member refinement for " + fileName);
-        	compilationUnit.visit(new AliasVisitor());
-            compilationUnit.visit(new SupertypeVisitor(true)); //TODO: move to a new phase!
-            compilationUnit.visit(new RefinementVisitor());
-            refinementValidated = true;
+        Boolean enabled = ProducedTypeCache.setEnabled(false);
+        try {
+            if (!refinementValidated) {
+                ProducedType.depth.set(0);
+                //System.out.println("Validate member refinement for " + fileName);
+                compilationUnit.visit(new AliasVisitor());
+                compilationUnit.visit(new SupertypeVisitor(true)); //TODO: move to a new phase!
+                compilationUnit.visit(new RefinementVisitor());
+                refinementValidated = true;
+            }
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
 
     public synchronized void analyseTypes() {
-        if (! fullyTyped) {
-            ProducedType.depth.set(-100);
-            //System.out.println("Run analysis phase for " + fileName);
-            compilationUnit.visit(new ExpressionVisitor());
-            compilationUnit.visit(new AnnotationVisitor());
-            compilationUnit.visit(new TypeArgumentVisitor());
-            fullyTyped = true;
+        Boolean enabled = ProducedTypeCache.setEnabled(true);
+        try {
+            if (!fullyTyped) {
+                ProducedType.depth.set(-100);
+                //System.out.println("Run analysis phase for " + fileName);
+                compilationUnit.visit(new ExpressionVisitor());
+                compilationUnit.visit(new AnnotationVisitor());
+                compilationUnit.visit(new TypeArgumentVisitor());
+                fullyTyped = true;
+            }
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
     
     public synchronized void analyseFlow() {
-        if (! flowAnalyzed) {
+        if (!flowAnalyzed) {
             compilationUnit.visit(new TypeHierarchyVisitor());
             //System.out.println("Validate control flow for " + fileName);
             compilationUnit.visit(new ControlFlowVisitor());

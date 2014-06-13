@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache.isCachingEnabled;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
@@ -646,7 +645,7 @@ public class ProducedType extends ProducedReference {
                 dec instanceof IntersectionType;
         boolean canCache = !complexType && 
                 !hasUnderlyingType() && 
-                isCachingEnabled();
+                ProducedTypeCache.isEnabled();
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache && 
                 cache.containsKey(this, dec)) {
