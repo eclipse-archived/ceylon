@@ -199,7 +199,7 @@ function Paquete(name, container, pkg, $$paquete){
     //determine suffix for declarations
     var suffix = '';
     if (name!==container.name) {
-      var _s = name.substring(container.name.length);
+      var _s = name.substring(container.name.size);
       suffix = _s.replace(/\./g, '$');
     }
     $$paquete.suffix=suffix;
@@ -240,16 +240,17 @@ function Paquete(name, container, pkg, $$paquete){
     members.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','members']};
   function annotatedMembers($$$mptypes){
     var ms=this.members({Kind$members:$$$mptypes.Kind$annotatedMembers});
-    if (ms.length>0) {
+    if (ms.size>0) {
       var rv=[];
-      for (var i=0; i < ms.length; i++) {
-        if (ms[i].tipo && ms[i].tipo.$crtmm$) {
-          var mm=getrtmm$$(ms[i].tipo);
+      for (var i=0; i < ms.size; i++) {
+        var _mem=ms.$_get(i);
+        if (_mem.tipo && _mem.tipo.$crtmm$) {
+          var mm=getrtmm$$(_mem.tipo);
           var ans=mm.$an;
           if (typeof(ans)==='function'){ans=ans();mm.$an=ans;}
           if (ans) for (var j=0; j<ans.length;j++) {
             if (is$(ans[j],$$$mptypes.Annotation$annotatedMembers)) {
-              rv.push(ms[i]);
+              rv.push(_mem);
               break;
             }
           }

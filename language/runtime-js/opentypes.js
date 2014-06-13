@@ -648,7 +648,7 @@ function $init$OpenAlias(){
         if (tp.$tp) {
           var tpn=undefined;
           for (var ftn in tp.$tp) {
-            if (ftn.substring(0,name$2.length+1)==name$2+'$') {
+            if (ftn.substring(0,name$2.size+1)==name$2+'$') {
               tpn=ftn;
             }
           }
@@ -871,8 +871,8 @@ $$freeIntersection.equals=function(u) {
     var mine=this.satisfiedTypes;
     var his=u.satisfiedTypes;
     if (mine.size==his.size) {
-      for (var i=0;i<mine.length;i++) {
-        if (!his.contains(mine[i])){
+      for (var i=0;i<mine.size;i++) {
+        if (!his.contains(mine.$_get(i))){
 return false;
 }
       }
