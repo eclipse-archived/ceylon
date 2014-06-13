@@ -2276,7 +2276,7 @@ public class ProducedType extends ProducedReference {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || 
-                obj instanceof ProducedType == false) {
+                !(obj instanceof ProducedType)) {
             return false;
         }
         ProducedType other = (ProducedType) obj;
@@ -2308,7 +2308,10 @@ public class ProducedType extends ProducedReference {
                         typeArgumentsA.get(typeParameter);
                 ProducedType typeArgumentB = 
                         typeArgumentsB.get(typeParameter);
-                if (!Objects.equals(typeArgumentA, typeArgumentB)) {
+                if (typeArgumentA!=typeArgumentB &&
+                        (typeArgumentA==null || 
+                         typeArgumentB==null || 
+                            !typeArgumentA.equals(typeArgumentB))) {
                     return false;
                 }
             }
