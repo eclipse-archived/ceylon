@@ -72,6 +72,7 @@ function is$(obj,type){
         for(var i=0;i<obj.$crtmm$.$ps.length;i++){
           obj.$$targs$$.Arguments$Callable.l.push(obj.$crtmm$.$ps[i].$t);
         }
+        if (obj.$$targs$$.Arguments$Callable.l.length===0)obj.$$targs$$.Arguments$Callable={t:Empty};
       }
       if(type.a && obj.$$targs$$) {
         for(var i in type.a) {
