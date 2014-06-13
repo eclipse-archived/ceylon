@@ -12,6 +12,13 @@ class MethodRefTest(name) {
     }
 }
 
+void testGenericMethodReferences() {
+    value strings={"a","b"};
+    value f = strings.collect<String>;
+    value g = f((String s)=>s.uppercased);
+    check(g == {"A","B"}, "Method references with type arguments");
+}
+
 void testStaticMethodReferences() {
     print("Testing static method references...");
     value mr  = MethodRefTest("TEST");
