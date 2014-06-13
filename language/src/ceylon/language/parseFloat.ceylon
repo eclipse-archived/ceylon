@@ -37,14 +37,16 @@ shared Float? parseFloat(String string) {
         value whole = parseInteger(wholePart);
         if (whole exists, exists digitOrUnderscore = fractionalPart[3],
             digitOrUnderscore == '_') {
-            // validate+remove underscores (there must be a better way) 
+            // validate+remove underscores
             StringBuilder sb = StringBuilder();
             variable value i = 0;
+            variable value nu = 3;
             for (digit in fractionalPart) {
-                if (i != 0 && i % 3 == 0) {
+                if (i == nu) {
                     if (digit != '_') {
                         return null;
                     }
+                    nu = i+4;
                 } else {
                     if (!digit.digit) {
                         return null;
