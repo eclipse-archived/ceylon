@@ -123,7 +123,8 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 throw new CeylonRuntimeException("Input module version doesn't match module's version: " + mv + " != " + version);
             }
         } else if (Constants.DEFAULT.toString().equals(name) == false) {
-            throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
+            // Don't throw, we might be executing a plain Java module!
+            //throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
         }
 
         execute(conf, name, clh);
