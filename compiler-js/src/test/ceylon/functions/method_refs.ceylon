@@ -1,4 +1,4 @@
-import check { check }
+import check { check,fail }
 
 //Static method references
 class MethodRefTest(name) {
@@ -17,6 +17,17 @@ void testGenericMethodReferences() {
     value f = strings.collect<String>;
     value g = f((String s)=>s.uppercased);
     check(g == {"A","B"}, "Method references with type arguments");
+    {String*}? opts = strings;
+    value h = opts?.collect<String>;
+    if (exists k=h((String s)=>s.uppercased)) {
+      check(k == {"A","B"}, "Method ref safe op w/type arguments");
+    } else {
+      fail("???? method ref safe op w/targs");
+    }
+    value w = strings.equals;
+    value z = opts?.equals;
+    check(!w(1), "method ref w/no targs");
+    check(!(z(0) else false), "safeop method ref w/no targs");
 }
 
 void testStaticMethodReferences() {
