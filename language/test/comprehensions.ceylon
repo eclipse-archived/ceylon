@@ -46,6 +46,9 @@ shared void comprehensions() {
   check(test==1, "comprehensions starting with if 8: variable capture");
   check([if (f()) 1] == [1], "comprehensions starting with if 8: collection");
   check(test==2, "comprehensions starting with if 8: evaluation expected 2, got ``test``");
+  test=0;
+  check([if (!f()) 1] nonempty, "comprehensions starting with if 8: emptiness");
+  test=2;
   check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
   check(test==3, "comprehensions starting with if 8: evaluation 2 expected 3, got ``test``");
   value c = {if (f()) if (!f()) 1};
