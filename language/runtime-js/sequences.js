@@ -17,8 +17,12 @@ arrprot$._elemTarg=function(){
   if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$Iterable;
   if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$List;
   if (t===undefined)t = {t:Anything};
-  if (this.$$targs$$===undefined)this.$$targs$$={};
-  if (this.$$targs$$.Element$Array===undefined)this.$$targs$$.Element$Array=t;
+  if (this.$$targs$$===undefined)this.$$targs$$={
+    Element$Array:t, Element$List:t, Element$Iterable:t,
+    Element$Collection:t, Item$Correspondence:t,Element$Ranged:t,
+    Absent$Iterable:Null, Key$Correspondence:{t:Integer},
+    Index$Ranged:{t:Integer}, Span$Ranged:{t:$_Array,a:{Element$Array:'Element$Array'}}
+  };
   return t;
 }
 arrprot$.getT$name = function() {
