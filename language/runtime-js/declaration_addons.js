@@ -106,9 +106,9 @@ atr$(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations'
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:FunctionOrValueDeclaration$meta$declaration}}},$cont:FunctionalDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','parameterDeclarations']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=function memberDeclarations($$$mptypes,inherited){
   var defs=[];
-  if (this.tipo && this.tipo.$$ && this.tipo.$$.prototype) {
+  var _prot=this.tipo && this.tipo.$$ && this.tipo.$$.prototype;
+  if (_prot) {
     //Try iterating over the prototype's members first
-    var _prot=this.tipo.$$.prototype;
     var props = Object.getOwnPropertyNames(_prot);
     function isProp(mem) {
       return _prot['$prop$get' + mem[0].toUpperCase() + mem.substring(1)]!==undefined;
@@ -118,9 +118,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       var _d = undefined;
       var mm=getrtmm$$(_prot[mem]);
       if (mm && inherited && mm.$cont!==this.tipo)continue;
-      if (mem.substring(0,9)==='$prop$get' && extendsType({t:ValueDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+      if (mem.substring(0,9)==='$prop$get' && extendsType($$$mptypes.Kind$memberDeclarations,{t:ValueDeclaration$meta$declaration})) {
         _d=this.getMemberDeclaration(mm.d[mm.d.length-1],{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
-      } else if (_prot[mem].$$ && extendsType({t:ClassOrInterfaceDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+      } else if (_prot[mem].$$ && extendsType($$$mptypes.Kind$memberDeclarations,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
+        var mt=mm.d[mm.d.length-2];
+        if ((mt==='$c' && !extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations))
+            ||(mt==='$i' && !extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)))continue;
         _d=this.getMemberDeclaration(mm.d[mm.d.length-1],
           {Kind$getMemberDeclaration:{t:ClassOrInterfaceDeclaration$meta$declaration}});
       } else if(mm && mm.d) {
@@ -131,7 +134,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       }
       if (_d){_d.parent$=this;defs.push(_d);};
     }
-    return defs.length>0?ArraySequence(defs,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations}):getEmpty();
+    return defs.length?ArraySequence(defs,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations}):getEmpty();
   }
   //Fallback to the model declarations
   if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
