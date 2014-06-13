@@ -28,29 +28,6 @@ arrprot$.getT$all = function() {
     return $_Array.$$.T$all;
 }
 
-arrprot$.set=$_Array.$$.prototype.set;
-arrprot$.chain=Iterable.$$.prototype.chain;
-arrprot$.sequence=$_Array.$$.prototype.sequence;
-arrprot$.segment=$_Array.$$.prototype.segment;
-arrprot$.span=$_Array.$$.prototype.span;
-arrprot$.take=$_Array.$$.prototype.take;
-arrprot$.skip=$_Array.$$.prototype.skip;
-arrprot$.by=$_Array.$$.prototype.by;
-arrprot$.spanTo=$_Array.$$.prototype.spanTo;
-arrprot$.spanFrom=$_Array.$$.prototype.spanFrom;
-arrprot$.items=List.$$.prototype.items;
-arrprot$.contains=$_Array.$$.prototype.contains;
-arrprot$.equals=List.$$.prototype.equals;
-arrprot$.iterator=$_Array.$$.prototype.iterator;
-arrprot$.copyTo=$_Array.$$.prototype.copyTo;
-
-atr$(arrprot$,'size',$_Array.$$.prototype.$prop$getSize.get,undefined,$_Array.$$.prototype.$prop$getSize.$crtmm$);
-atr$(arrprot$,'string',Iterable.$$.prototype.$prop$getString.get,undefined,Iterable.$$.prototype.$prop$getString.$crtmm$);
-atr$(arrprot$,'lastIndex',$_Array.$$.prototype.$prop$getLastIndex.get,undefined,$_Array.$$.prototype.$prop$getLastIndex.$crtmm$);
-atr$(arrprot$,'first',$_Array.$$.prototype.$prop$getFirst.get,undefined,$_Array.$$.prototype.$prop$getFirst.$crtmm$);
-atr$(arrprot$,'last',$_Array.$$.prototype.$prop$getLast.get,undefined,$_Array.$$.prototype.$prop$getLast.$crtmm$);
-atr$(arrprot$,'keys',List.$$.prototype.$prop$getKeys.get,undefined,List.$$.prototype.$prop$getKeys.$crtmm$);
-atr$(arrprot$,'empty',$_Array.$$.prototype.$prop$getEmpty.get,undefined,$_Array.$$.prototype.$prop$getEmpty.$crtmm$);
 atr$(arrprot$,'reversed', function() {
   this._elemTarg();
   return this.Reversed$List();
@@ -59,7 +36,6 @@ atr$(arrprot$,'rest', function() {
   this._elemTarg();
   return this.Rest$List(1);
 },undefined,List.$$.prototype.$prop$getRest.$crtmm$);
-
 
 //for sequenced enumerations
 function sarg$(elems,spread,$$targs$$){
