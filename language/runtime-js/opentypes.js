@@ -46,10 +46,12 @@ function _openTypeFromTarg(targ,o) {
     }
     return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
-    targ=retpl$(targ);
+    var mm=getrtmm$$(Tuple);
+    var lit = typeLiteral$meta({Type$typeLiteral:targ});
+  } else {
+    var mm=getrtmm$$(targ.t);
+    var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   }
-  var mm=getrtmm$$(targ.t);
-  var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);
   if (mdl.$mt==='i') {
