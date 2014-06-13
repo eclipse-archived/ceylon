@@ -1628,7 +1628,14 @@ public class GenerateJsVisitor extends Visitor
         if (isMethod) {
             out(clAlias, "JsCallable(", lhsVar, ",");
         }
-        out(clAlias,"nn$(", lhsVar, ")?", memberAccess(that, lhsVar), ":null)");
+        out(clAlias,"nn$(", lhsVar, ")?");
+        if (isMethod && !((Method)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Method ref with type parameters
+            BmeGenerator.printGenericMethodReference(this, that, lhsVar, memberAccess(that, lhsVar));
+        } else {
+            out(memberAccess(that, lhsVar));
+        }
+        out(":null)");
         if (isMethod) {
             out(")");
         }
@@ -1691,8 +1698,16 @@ public class GenerateJsVisitor extends Visitor
         String primaryVar = createRetainedTempVar();
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
-        out(",", clAlias, "JsCallable(", primaryVar, ",", primaryVar, "!==null?",
-                (name == null) ? memberAccess(that, primaryVar) : (primaryVar+"."+name), ":null))");
+        out(",");
+        final String member = (name == null) ? memberAccess(that, primaryVar) : (primaryVar+"."+name);
+        if (that.getDeclaration() instanceof Method
+                && !((Method)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Method ref with type parameters
+            BmeGenerator.printGenericMethodReference(this, that, primaryVar, member);
+        } else {
+            out(clAlias, "JsCallable(", primaryVar, ",", primaryVar, "!==null?", member, ":null)");
+        }
+        out(")");
     }
     
     /**
