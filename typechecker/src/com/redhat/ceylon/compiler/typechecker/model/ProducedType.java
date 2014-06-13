@@ -37,6 +37,7 @@ public class ProducedType extends ProducedReference {
 
     // cache
     private int hashCode;
+    private List<ProducedType> typeArgumentList;
     
     ProducedType() {}
 
@@ -1134,21 +1135,28 @@ public class ProducedType extends ProducedReference {
      * Get the type arguments as a tuple. 
      */
     public List<ProducedType> getTypeArgumentList() {
-    	List<TypeParameter> tps = 
-    	        getDeclaration().getTypeParameters();
-    	if (tps.isEmpty()) {
-    		return Collections.emptyList();
-    	}
-    	else {
-    		List<ProducedType> argList = 
-    		        new ArrayList<ProducedType>(tps.size());
-    		Map<TypeParameter, ProducedType> args = 
-    		        getTypeArguments();
-    		for (TypeParameter tp: tps) {
-    			argList.add(args.get(tp));
-    		}
-    		return argList;
-    	}
+        if (typeArgumentList==null || 
+                !ProducedTypeCache.isEnabled()) {
+            List<TypeParameter> tps = 
+                    getDeclaration().getTypeParameters();
+            if (tps.isEmpty()) {
+                return Collections.emptyList();
+            }
+            else {
+                List<ProducedType> argList = 
+                        new ArrayList<ProducedType>(tps.size());
+                Map<TypeParameter, ProducedType> args = 
+                        getTypeArguments();
+                for (TypeParameter tp: tps) {
+                    argList.add(args.get(tp));
+                }
+                typeArgumentList = argList;
+                return argList;
+            }
+        }
+        else {
+            return typeArgumentList;
+        }
     }
 
     /**

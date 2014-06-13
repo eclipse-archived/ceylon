@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.Collections;
+import static java.util.Collections.emptyMap;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
 
 /**
  * A produced type or produced reference to a
@@ -12,13 +15,16 @@ import java.util.Map;
  * @author Gavin King
  */
 public abstract class ProducedReference {
-
+    
     ProducedReference() {}
 
-    private Map<TypeParameter, ProducedType> typeArguments = Collections.emptyMap();
+    private Map<TypeParameter, ProducedType> typeArguments = emptyMap();
     private Declaration declaration;
     private ProducedType qualifyingType;
-
+    
+    //cache
+    private Map<TypeParameter, ProducedType> typeArgumentsWithDefaults;
+    
     public ProducedType getQualifyingType() {
         return qualifyingType;
     }
@@ -38,24 +44,32 @@ public abstract class ProducedReference {
     public Map<TypeParameter, ProducedType> getTypeArguments() {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic) {
-        	Map<TypeParameter, ProducedType> result = typeArguments;
-        	List<TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
-        	for (int i=0,l=typeParameters.size();i<l;i++) {
-        		TypeParameter pt = typeParameters.get(i);
-        		ProducedType dta = pt.getDefaultTypeArgument();
-        		if (dta!=null) {
-        			if (!typeArguments.containsKey(pt)) {
-        				// only make a copy of typeArguments if required
-        				if (typeArguments == result) {
-        					// make a copy big enough to fit every type parameter
-        					result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
-        					result.putAll(typeArguments);
-        				}
-        				result.put(pt, dta.substitute(result));
-        			}
-        		}
-        	}
-            return result;
+            if (typeArgumentsWithDefaults == null || 
+                    !ProducedTypeCache.isEnabled()) {
+                Map<TypeParameter, ProducedType> result = typeArguments;
+                List<TypeParameter> typeParameters = 
+                        ((Generic) declaration).getTypeParameters();
+                for (int i=0, l=typeParameters.size(); i<l; i++) {
+                    TypeParameter pt = typeParameters.get(i);
+                    ProducedType dta = pt.getDefaultTypeArgument();
+                    if (dta!=null) {
+                        if (!typeArguments.containsKey(pt)) {
+                            // only make a copy of typeArguments if required
+                            if (typeArguments == result) {
+                                // make a copy big enough to fit every type parameter
+                                result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
+                                result.putAll(typeArguments);
+                            }
+                            result.put(pt, dta.substitute(result));
+                        }
+                    }
+                }
+                typeArgumentsWithDefaults = result;
+                return result;
+            }
+            else {
+                return typeArgumentsWithDefaults;
+            }
         }
         else {
             return typeArguments;
