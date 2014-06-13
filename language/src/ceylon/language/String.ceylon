@@ -169,7 +169,7 @@ shared native final class String(characters)
             => span(from, size);
 
     shared actual String spanTo(Integer to)
-            => to>0 then span(0, to) else "";
+            => to>=0 then span(0, to) else "";
     
     "Select the characters of this string beginning at the 
      given [[start index|from]], returning a string no 
@@ -316,5 +316,10 @@ shared native final class String(characters)
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
     shared actual native Boolean notLargerThan(String other);
-     
+
+    shared actual native String by(Integer step);
+    shared actual native String take(Integer taking);
+    shared actual native String skip(Integer skipping);
+    shared actual native Integer? firstOccurrence(Anything element);
+    shared actual native Integer? lastOccurrence(Anything element);
 }
