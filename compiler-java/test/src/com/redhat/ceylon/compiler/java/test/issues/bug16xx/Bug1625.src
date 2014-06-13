@@ -25,7 +25,7 @@ final class Bug1625$impl<T> {
         }
         
         private final .ceylon.language.Sequential<? extends T> t$priv$(final T t) {
-            return new .ceylon.language.Tuple<T, T, .ceylon.language.Sequential<? extends T>>($reified$T, new .java.lang.Object[]{t});
+            return (.ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
         }
         
         @.java.lang.Override
@@ -58,7 +58,7 @@ final class Bug1625_2$impl<T> {
     }
     
     public final .ceylon.language.Sequential<? extends T> f$ts(final T t) {
-        return new .ceylon.language.Tuple<T, T, .ceylon.language.Sequential<? extends T>>($reified$T, new .java.lang.Object[]{t});
+        return (.ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

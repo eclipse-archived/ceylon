@@ -194,15 +194,29 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     KeywordInForLoop3(final long age) {
         this.age = age;
-        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>>>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{
                 new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(1L),
                 new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(18L)});
         final boolean minors;
         boolean minors$29 = false;
         boolean doforelse$30 = true;
-        .java.lang.Object elem$31;
-        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$32 = people.iterator();
-        loop_11: while (!((elem$31 = $byte$iterator$$32.next()) instanceof .ceylon.language.Finished)) {
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .java.lang.Object> iterable$35 = people;
+        final boolean isTuple$36 = iterable$35 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$35).$getArray$() != null;
+        .java.lang.Object elem$31 = null;
+        final .java.lang.Object array$37;
+        int i$38 = 0;
+        final int length$39;
+        if (isTuple$36) {
+            array$37 = ((.ceylon.language.Tuple)iterable$35).$getArray$();
+            i$38 = ((.ceylon.language.Tuple)iterable$35).$getFirst$();
+            length$39 = i$38 + ((.ceylon.language.Tuple)iterable$35).$getLength$();
+        } else {
+            array$37 = null;
+            length$39 = 0;
+        }
+        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$32 = isTuple$36 ? null : iterable$35.iterator();
+        loop_11: while (isTuple$36 ? i$38 < length$39 : !((elem$31 = $byte$iterator$$32.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$36) elem$31 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$37, i$38++);
             final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3 $byte = (.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3)elem$31;
             if ($byte.getAge() < 18L) {
                 minors$29 = true;
@@ -213,7 +227,7 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
         if (doforelse$30) {
             minors$29 = false;
-            final boolean minors$35 = minors$29;
+            final boolean minors$40 = minors$29;
         }
         minors = minors$29;
     }

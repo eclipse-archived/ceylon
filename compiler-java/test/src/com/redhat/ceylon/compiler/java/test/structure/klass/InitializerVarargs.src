@@ -14,9 +14,23 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
-        .java.lang.Object elem$1;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = fs.iterator();
-        loop_0: while (!((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = fs;
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        final .java.lang.Object array$5;
+        int i$6 = 0;
+        final int length$7;
+        if (isTuple$4) {
+            array$5 = ((.ceylon.language.Tuple)iterable$3).$getArray$();
+            i$6 = ((.ceylon.language.Tuple)iterable$3).$getFirst$();
+            length$7 = i$6 + ((.ceylon.language.Tuple)iterable$3).$getLength$();
+        } else {
+            array$5 = null;
+            length$7 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$1 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.String ff = ((.ceylon.language.String)elem$1).toString();
         }
     }

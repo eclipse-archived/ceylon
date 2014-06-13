@@ -103,7 +103,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                            return (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                                     .ceylon.language.Integer.instance(4L),
                                     .ceylon.language.Integer.instance(5L)});
                         
@@ -171,7 +171,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             return .ceylon.language.Integer.instance(3L);
                         
                         case 2: 
-                            return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                            return (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                                     .ceylon.language.Integer.instance(4L),
                                     .ceylon.language.Integer.instance(5L)});
                         

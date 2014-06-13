@@ -82,7 +82,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$3$0 = 1L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$3$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$3$1 = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L),
                         .ceylon.language.Integer.instance(4L)});
@@ -95,7 +95,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .java.lang.Exception arg$4$0 = e;
-                .ceylon.language.Sequential<? extends .java.lang.Exception> arg$4$1 = new .ceylon.language.Tuple<.java.lang.Exception, .java.lang.Exception, .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>>>(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .java.lang.Exception> arg$4$1 = (.ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>>>).ceylon.language.Tuple.instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
                         e,
                         e,
                         e});
@@ -107,7 +107,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence arg$5$0 = this;
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> arg$5$1 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence>>>>(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> arg$5$1 = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor$, new .java.lang.Object[]{
                         this,
                         this,
                         this});

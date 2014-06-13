@@ -6,14 +6,14 @@ final class bug1665_ {
     }
     
     static void bug1665(final .ceylon.language.Sequence<? extends .ceylon.language.String> arguments, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> arguments2) {
-        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(
+        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v = (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(
             let
             {
                 .java.lang.Object $ceylontmp$0 = arguments;
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.empty_.get_();
         ));
-        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, .com.redhat.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
+        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> v2 = (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("elem")}, .com.redhat.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(
             let
             {
                 .java.lang.Object $ceylontmp$1 = arguments2;

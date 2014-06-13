@@ -276,7 +276,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long tupleIterationStatic$priv$() {
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> array = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>>>>>>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> array = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>>>>>>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(0L),
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
@@ -289,11 +289,10 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 .ceylon.language.Integer.instance(9L),
                 .ceylon.language.Integer.instance(10L)});
         long sum = 0L;
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> seq$55 = array;
-        final .java.lang.Object[] array$52 = seq$55.$getArray$();
-        final int length$53 = seq$55.$getLength$() + seq$55.$getFirst$();
-        loop_10: for (int i$54 = seq$55.$getFirst$(); i$54 < length$53; i$54++) {
-            final long i = ((.ceylon.language.Integer)array$52[i$54]).longValue();
+        .java.lang.Object elem$52;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$53 = array.iterator();
+        loop_10: while (!((elem$52 = i$iterator$$53.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$52).longValue();
             sum += i;
         }
         return sum;
@@ -304,23 +303,28 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$59 = iterable;
-        final boolean isArray$60 = iterable$59 instanceof .ceylon.language.Array;
-        .java.lang.Object elem$57 = null;
-        final .java.lang.Object array$61;
-        int i$62 = 0;
-        final int length$63;
-        if (isArray$60) {
-            array$61 = ((.ceylon.language.Array)iterable$59).toArray();
-            length$63 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$61);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$57 = iterable;
+        final boolean isArray$58 = iterable$57 instanceof .ceylon.language.Array;
+        final boolean isTuple$59 = iterable$57 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$57).$getArray$() != null;
+        .java.lang.Object elem$55 = null;
+        final .java.lang.Object array$60;
+        int i$61 = 0;
+        final int length$62;
+        if (isTuple$59) {
+            array$60 = ((.ceylon.language.Tuple)iterable$57).$getArray$();
+            i$61 = ((.ceylon.language.Tuple)iterable$57).$getFirst$();
+            length$62 = i$61 + ((.ceylon.language.Tuple)iterable$57).$getLength$();
+        } else if (isArray$58) {
+            array$60 = ((.ceylon.language.Array)iterable$57).toArray();
+            length$62 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$60);
         } else {
-            array$61 = null;
-            length$63 = 0;
+            array$60 = null;
+            length$62 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$58 = isArray$60 ? null : iterable$59.iterator();
-        loop_11: while (isArray$60 ? i$62 < length$63 : !((elem$57 = i$iterator$$58.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$60) elem$57 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$61, i$62++);
-            final long i = ((.ceylon.language.Integer)elem$57).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$56 = isTuple$59 || isArray$58 ? null : iterable$57.iterator();
+        loop_11: while (isTuple$59 || isArray$58 ? i$61 < length$62 : !((elem$55 = i$iterator$$56.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$59 || isArray$58) elem$55 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$60, i$61++);
+            final long i = ((.ceylon.language.Integer)elem$55).longValue();
             sum += i;
         }
         return sum;

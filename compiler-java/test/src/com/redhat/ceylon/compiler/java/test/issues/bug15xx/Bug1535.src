@@ -8,69 +8,74 @@ public final class bug1535_ {
     public static <Value extends .ceylon.language.Summable<Value>>Value bug1535(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> values) {
         .java.lang.Object floats$1;
         if (.com.redhat.ceylon.compiler.java.Util.isReified(floats$1 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
-            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> floats$19 = (.ceylon.language.Iterable)floats$1;
+            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> floats$20 = (.ceylon.language.Iterable)floats$1;
             double product = 0.0;
-            .java.lang.Object elem$20;
-            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$21 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)floats$19).iterator();
-            loop_0: while (!((elem$20 = val$iterator$$21.next()) instanceof .ceylon.language.Finished)) {
-                final .java.lang.Object val = (.java.lang.Object)elem$20;
+            .java.lang.Object elem$21;
+            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$22 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)floats$20).iterator();
+            loop_0: while (!((elem$21 = val$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
+                final .java.lang.Object val = (.java.lang.Object)elem$21;
                 (
                     let
                     {
-                        .ceylon.language.Float $ceylontmp$op$22 = .ceylon.language.Float.instance(product).plus((.ceylon.language.Float)val);
-                        product = $ceylontmp$op$22.doubleValue();
+                        .ceylon.language.Float $ceylontmp$op$23 = .ceylon.language.Float.instance(product).plus((.ceylon.language.Float)val);
+                        product = $ceylontmp$op$23.doubleValue();
                     }
-                    returning $ceylontmp$op$22;
+                    returning $ceylontmp$op$23;
                 );
             }
-            final .java.lang.Object result$25;
-            .java.lang.Object result$24 = null;
-            if ((result$24 = .ceylon.language.Float.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$24, $reified$Value)) {
-                result$25 = result$24;
+            final .java.lang.Object result$26;
+            .java.lang.Object result$25 = null;
+            if ((result$25 = .ceylon.language.Float.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$25, $reified$Value)) {
+                result$26 = result$25;
             } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
-            return (Value)result$25;
+            return (Value)result$26;
         } else {
             .java.lang.Object ints$3;
             if (.com.redhat.ceylon.compiler.java.Util.isReified(ints$3 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
-                final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> ints$12 = (.ceylon.language.Iterable)ints$3;
+                final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> ints$13 = (.ceylon.language.Iterable)ints$3;
                 long product = 0L;
-                .java.lang.Object elem$13;
-                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$14 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)ints$12).iterator();
-                loop_1: while (!((elem$13 = val$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
-                    final .java.lang.Object val = (.java.lang.Object)elem$13;
+                .java.lang.Object elem$14;
+                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$15 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)ints$13).iterator();
+                loop_1: while (!((elem$14 = val$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
+                    final .java.lang.Object val = (.java.lang.Object)elem$14;
                     (
                         let
                         {
-                            .ceylon.language.Integer $ceylontmp$op$15 = .ceylon.language.Integer.instance(product).plus((.ceylon.language.Integer)val);
-                            product = $ceylontmp$op$15.longValue();
+                            .ceylon.language.Integer $ceylontmp$op$16 = .ceylon.language.Integer.instance(product).plus((.ceylon.language.Integer)val);
+                            product = $ceylontmp$op$16.longValue();
                         }
-                        returning $ceylontmp$op$15;
+                        returning $ceylontmp$op$16;
                     );
                 }
-                final .java.lang.Object result$18;
-                .java.lang.Object result$17 = null;
-                if ((result$17 = .ceylon.language.Integer.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$17, $reified$Value)) {
-                    result$18 = result$17;
+                final .java.lang.Object result$19;
+                .java.lang.Object result$18 = null;
+                if ((result$18 = .ceylon.language.Integer.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$18, $reified$Value)) {
+                    result$19 = result$18;
                 } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
-                return (Value)result$18;
+                return (Value)result$19;
             } else {
                 Value sum = (Value)((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getFirst();
                 final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> iterable$7 = ((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getRest();
                 final boolean isArray$8 = iterable$7 instanceof .ceylon.language.Array;
+                final boolean isTuple$9 = iterable$7 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$7).$getArray$() != null;
                 .java.lang.Object elem$4 = null;
-                final .java.lang.Object array$9;
-                int i$10 = 0;
-                final int length$11;
-                if (isArray$8) {
-                    array$9 = ((.ceylon.language.Array)iterable$7).toArray();
-                    length$11 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$9);
+                final .java.lang.Object array$10;
+                int i$11 = 0;
+                final int length$12;
+                if (isTuple$9) {
+                    array$10 = ((.ceylon.language.Tuple)iterable$7).$getArray$();
+                    i$11 = ((.ceylon.language.Tuple)iterable$7).$getFirst$();
+                    length$12 = i$11 + ((.ceylon.language.Tuple)iterable$7).$getLength$();
+                } else if (isArray$8) {
+                    array$10 = ((.ceylon.language.Array)iterable$7).toArray();
+                    length$12 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$10);
                 } else {
-                    array$9 = null;
-                    length$11 = 0;
+                    array$10 = null;
+                    length$12 = 0;
                 }
-                .ceylon.language.Iterator<? extends Value> val$iterator$$5 = isArray$8 ? null : iterable$7.iterator();
-                loop_2: while (isArray$8 ? i$10 < length$11 : !((elem$4 = val$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
-                    if (isArray$8) elem$4 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$9, i$10++);
+                .ceylon.language.Iterator<? extends Value> val$iterator$$5 = isTuple$9 || isArray$8 ? null : iterable$7.iterator();
+                loop_2: while (isTuple$9 || isArray$8 ? i$11 < length$12 : !((elem$4 = val$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                    if (isTuple$9 || isArray$8) elem$4 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$10, i$11++);
                     final Value val = (Value)elem$4;
                     (
                         let

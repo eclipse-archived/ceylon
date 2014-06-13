@@ -7,8 +7,7 @@ final class bug568_ {
     
     static void bug568() {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = (
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = (
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = childPaths;
@@ -31,8 +30,23 @@ final class bug568_ {
                     };
                 }
             }.sequence();
-        ).iterator();
-        loop_0: while (!((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        );
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$5;
+        int i$6 = 0;
+        final int length$7;
+        if (isTuple$4) {
+            array$5 = ((.ceylon.language.Tuple)iterable$3).$getArray$();
+            i$6 = ((.ceylon.language.Tuple)iterable$3).$getFirst$();
+            length$7 = i$6 + ((.ceylon.language.Tuple)iterable$3).$getLength$();
+        } else {
+            array$5 = null;
+            length$7 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
     }

@@ -326,7 +326,7 @@ final class sequenceDefaults_Boolean_ {
             false})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
+        return (.ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>).ceylon.language.Tuple.instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(false)});
     }
@@ -409,7 +409,7 @@ final class sequenceArguments_Boolean_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>).ceylon.language.Tuple.instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(false),
                 .ceylon.language.Boolean.instance(true)}));
     }
@@ -531,7 +531,7 @@ final class sequenceDefaults_Character_ {
             99})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
+        return (.ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>>).ceylon.language.Tuple.instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Character.instance(97),
                 .ceylon.language.Character.instance(98),
                 .ceylon.language.Character.instance(99)});
@@ -616,7 +616,7 @@ final class sequenceArguments_Character_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceArguments_Character() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character((.ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>>).ceylon.language.Tuple.instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Character.instance(65),
                 .ceylon.language.Character.instance(66),
                 .ceylon.language.Character.instance(67)}));
@@ -739,7 +739,7 @@ final class sequenceDefaults_Float_ {
             3.0})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>>(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
+        return (.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>>).ceylon.language.Tuple.instance(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.Float.instance(2.0),
                 .ceylon.language.Float.instance(3.0)});
@@ -824,7 +824,7 @@ final class sequenceArguments_Float_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceArguments_Float() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>>(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float((.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>>).ceylon.language.Tuple.instance(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Float.instance(4.0),
                 .ceylon.language.Float.instance(5.0),
                 .ceylon.language.Float.instance(6.0)}));
@@ -947,7 +947,7 @@ final class sequenceDefaults_Integer_ {
             3L})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        return (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)});
@@ -1032,7 +1032,7 @@ final class sequenceArguments_Integer_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceArguments_Integer() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer((.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(4L),
                 .ceylon.language.Integer.instance(5L),
                 .ceylon.language.Integer.instance(6L)}));
@@ -1155,7 +1155,7 @@ final class sequenceDefaults_Object_ {
             .ceylon.language.empty_.class})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Empty>>>(.ceylon.language.Empty.$TypeDescriptor$, new .java.lang.Object[]{
+        return (.ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Empty>>>).ceylon.language.Tuple.instance(.ceylon.language.Empty.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.empty_.get_(),
                 .ceylon.language.empty_.get_()});
     }
@@ -1239,7 +1239,7 @@ final class sequenceArguments_Object_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceArguments_Object() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Empty>>>>(.ceylon.language.Empty.$TypeDescriptor$, new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object((.ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Empty>>>>).ceylon.language.Tuple.instance(.ceylon.language.Empty.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.empty_.get_(),
                 .ceylon.language.empty_.get_(),
                 .ceylon.language.empty_.get_()}));
@@ -1360,7 +1360,7 @@ final class sequenceDefaults_Declaration_ {
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({"::1.1.0:ceylon.language::Vempty"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.1.0"), "ceylon.language", "1.1.0").findPackage("ceylon.language").getValue("empty")});
+        return (.ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, ? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>>).ceylon.language.Tuple.instance(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.1.0"), "ceylon.language", "1.1.0").findPackage("ceylon.language").getValue("empty")});
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
@@ -1439,7 +1439,7 @@ final class sequenceArguments_Declaration_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.1.0"), "ceylon.language", "1.1.0").findPackage("ceylon.language").getValue("empty")}));
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration((.ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, ? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>>).ceylon.language.Tuple.instance(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.1.0"), "ceylon.language", "1.1.0").findPackage("ceylon.language").getValue("empty")}));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

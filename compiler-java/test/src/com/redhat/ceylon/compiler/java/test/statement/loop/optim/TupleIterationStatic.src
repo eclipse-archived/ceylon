@@ -6,22 +6,20 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final void tupleOfIntegers$priv$(final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> seq) {
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> seq$3 = seq;
-        final .java.lang.Object[] array$0 = seq$3.$getArray$();
-        final int length$1 = seq$3.$getLength$() + seq$3.$getFirst$();
-        loop_0: for (int i$2 = seq$3.$getFirst$(); i$2 < length$1; i$2++) {
-            final long element = ((.ceylon.language.Integer)array$0[i$2]).longValue();
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$1 = seq.iterator();
+        loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            final long element = ((.ceylon.language.Integer)elem$0).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
         }
     }
     
     private final void tupleOfIntegersWithBreak$priv$(final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> array) {
-        boolean doforelse$8 = true;
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> seq$7 = array;
-        final .java.lang.Object[] array$4 = seq$7.$getArray$();
-        final int length$5 = seq$7.$getLength$() + seq$7.$getFirst$();
-        loop_1: for (int i$6 = seq$7.$getFirst$(); i$6 < length$5; i$6++) {
-            final long element = ((.ceylon.language.Integer)array$4[i$6]).longValue();
+        boolean doforelse$2 = true;
+        .java.lang.Object elem$3;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$4 = array.iterator();
+        loop_1: while (!((elem$3 = element$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            final long element = ((.ceylon.language.Integer)elem$3).longValue();
             
             final class x_ {
                 
@@ -34,36 +32,32 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             final x_ x = new x_();
             if (element == 10L) {
-                doforelse$8 = false;
+                doforelse$2 = false;
                 break loop_1;
             }
         }
-        if (doforelse$8) {
+        if (doforelse$2) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
         }
     }
     
     private final void keyValue$priv$(final .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>>>>> array) {
-        final .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>>>>> seq$13 = array;
-        final .java.lang.Object[] array$10 = seq$13.$getArray$();
-        final int length$11 = seq$13.$getLength$() + seq$13.$getFirst$();
-        loop_2: for (int i$12 = seq$13.$getFirst$(); i$12 < length$11; i$12++) {
-            final .ceylon.language.Entry entry$14 = (.ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Entry)array$10[i$12];
-            final long i = ((.ceylon.language.Integer)entry$14.getKey()).longValue();
-            final double f = ((.ceylon.language.Float)entry$14.getItem()).doubleValue();
+        .java.lang.Object elem$6;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> i$iterator$$7 = array.iterator();
+        loop_2: while (!((elem$6 = i$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$6).getKey().longValue();
+            final double f = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$6).getItem().doubleValue();
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(i).append("->").append(f).toString()));
         }
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>> myTuple = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), new .java.lang.Object[]{
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>> myTuple = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), new .java.lang.Object[]{
                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("1"), .ceylon.language.String.instance("one")),
                 new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("two")),
                 new .ceylon.language.Entry<.ceylon.language.Float, .ceylon.language.String>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Float.instance(3.0), .ceylon.language.String.instance("three"))});
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>> seq$18 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Float, ? extends .ceylon.language.String>>>>>)(.ceylon.language.Tuple)myTuple;
-        final .java.lang.Object[] array$15 = seq$18.$getArray$();
-        final int length$16 = seq$18.$getLength$() + seq$18.$getFirst$();
-        loop_3: for (int i$17 = seq$18.$getFirst$(); i$17 < length$16; i$17++) {
-            final .ceylon.language.Entry entry$19 = (.ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Entry)array$15[i$17];
-            final .java.lang.Object foo = entry$19.getKey();
-            final .java.lang.String name = ((.ceylon.language.String)entry$19.getItem()).toString();
+        .java.lang.Object elem$8;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.String>> foo$iterator$$9 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.String>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)myTuple).iterator();
+        loop_3: while (!((elem$8 = foo$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object foo = ((.ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.String>)elem$8).getKey();
+            final .java.lang.String name = ((.ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.String>)elem$8).getItem().toString();
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(name).append("<-").append(foo.toString()).toString()));
         }
     }
