@@ -254,6 +254,9 @@
 ^(abstract STATIC_TYPE:TYPE
     boolean metamodel;)
 
+^(GROUPED_TYPE:STATIC_TYPE
+    STATIC_TYPE type)
+
 "A produced type."
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
     IDENTIFIER 

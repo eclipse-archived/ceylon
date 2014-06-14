@@ -519,7 +519,15 @@ public class TypeVisitor extends Visitor {
                  "Error".equals(name));
     }
     
-    @Override 
+    public void visit(Tree.GroupedType that) {
+        super.visit(that);
+        Tree.StaticType type = that.getType();
+        if (type!=null) {
+        	that.setTypeModel(type.getTypeModel());
+        }
+    }
+    
+    @Override
     public void visit(Tree.UnionType that) {
         super.visit(that);
         List<ProducedType> types = 

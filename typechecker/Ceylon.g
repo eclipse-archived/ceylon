@@ -2433,10 +2433,12 @@ tupleType returns [TupleType type]
     ;
 
 groupedType returns [StaticType type]
-    : SMALLER_OP //don't throw this token away!
+    : SMALLER_OP
+      { $type = new GroupedType($SMALLER_OP); }
       t=type
-      { $type=$t.type; }
-      LARGER_OP //don't throw this token away!
+      { $type.setType($t.type); }
+      LARGER_OP
+      { $type.setEndToken($LARGER_OP); }
     ;
 
 iterableType returns [IterableType type]

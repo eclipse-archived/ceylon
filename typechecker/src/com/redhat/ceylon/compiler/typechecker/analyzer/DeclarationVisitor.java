@@ -1750,6 +1750,14 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
+    public void visit(Tree.GroupedType that) {
+        super.visit(that);
+        Tree.StaticType type = that.getType();
+        if (type!=null) {
+        	that.setTypeModel(type.getTypeModel());
+        }
+    }
+    
     @Override
     public void visit(Tree.ExtendedType that) {
         inExtends = true;
