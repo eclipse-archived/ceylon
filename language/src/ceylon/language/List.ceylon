@@ -1,5 +1,15 @@
 """Represents a collection in which every element has a 
-   unique non-negative integer index.
+   unique non-negative integer index. The elements of a
+   nonempty list are indexed starting with `0` at the 
+   [[first]] element of the list, and ending with the index
+   [[lastIndex]] at the [[last]] element of the list.
+   
+   - For any nonempty list, `lastIndex==size-1`. 
+   - For an empty list, `size==0` and the `lastIndex` is 
+     `null`.
+   
+   Thus, the range of indexes of the list is formed by the 
+   expression `0:list.size`.
    
    A `List` is a [[Collection]] of its elements, and a 
    [[Correspondence]] from indices to elements.
@@ -97,7 +107,7 @@ shared interface List<out Element>
      otherwise. The first element of the list has index `0`,
      and the last element has index [[lastIndex]]."
     see (`function getFromLast`)
-    shared actual Element? get(Integer index) {
+    shared actual default Element? get(Integer index) {
         if (!is Finished item = elementAt(index)) {
             return item;
         }
@@ -112,7 +122,7 @@ shared interface List<out Element>
      to an element of this list, or `null` otherwise. The
      last element of the list has index `0`, and the first
      element has index [[lastIndex]]."
-    shared Element? getFromLast(Integer index) {
+    shared default Element? getFromLast(Integer index) {
         if (exists endIndex=lastIndex) {
             return get(endIndex-index);
         }
