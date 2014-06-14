@@ -1,10 +1,12 @@
 shared class SequenceBuilder<Element>(Integer initialSize=5) {
-    "The storage"
+    
+    "The storage for appended elements."
     variable Array<Element>? store = null;
-    "The number of items in [[array]] which have actually been appended."
+    "The number of items in [[array]] which have actually 
+     been appended."
     variable Integer length = 0;
     
-    "Resize policy"
+    "Resize policy."
     Integer newSize(Integer existingSize, Integer extra) {
         value requiredSize = length+extra;
         variable value result = existingSize*2+2;
@@ -18,8 +20,9 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
         return result;
     }
     
-    "Returns the storage array ready for storing [[extra]] more elements.
-     Reallocates and copies existing entries if needed."
+    "Returns the storage array ready for storing [[extra]] 
+     more elements. Reallocates and copies existing entries 
+     if needed."
     Array<Element> getStorage(Integer extra, Element example) {
         // extra should be > 0
         if (exists array=store) {
@@ -34,8 +37,10 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
                 return newArray;
             }
         } else {
+            value arraySize = initialSize>extra 
+                then initialSize else newSize(0, extra);
             value newArray 
-                    = arrayOfSize(initialSize, example);
+                    = arrayOfSize(arraySize, example);
             this.store = newArray;
             return newArray;
         }
@@ -59,8 +64,35 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
     
     "Append all of the given [[elements]]."
     shared SequenceBuilder<Element> appendAll({Element*} elements) {
-        for (element in elements) {
-            getStorage(1, element).set(length++, element);
+        if (is [Element+] elements) {
+            value size = elements.size;
+            if (size>0) {
+                value array = getStorage(size, elements.first);
+                for (element in elements) {
+                    array.set(length++, element);
+                }
+            }
+        }
+        else if (is Array<Element> elements) {
+            value size = elements.size;
+            if (size>0) {
+                Array<Element> array;
+                if (exists example = elements.first) {
+                    array = getStorage(size, example);
+                }
+                else {
+                    assert (is Element null);
+                    array = getStorage(size, null);
+                }
+                elements.copyTo(array, 0, length, size);
+                length+=size;
+            }
+        }
+        //TODO: what about a generic Collection?
+        else {
+            for (element in elements) {
+                getStorage(1, element).set(length++, element);
+            }
         }
         return this;
     }
