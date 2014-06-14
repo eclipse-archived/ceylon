@@ -126,26 +126,31 @@ shared interface List<out Element>
     }
     
     shared actual default Iterator<Element> iterator() {
-        object listIterator
-                satisfies Iterator<Element> {
-            variable Integer index = 0;
-            shared actual Element|Finished next() {
-                if (exists max=lastIndex, index<=max) {
-                    if (exists element 
-                            = getFromFirst(index++)) {
-                        return element;
+        if (exists max=lastIndex) {
+            object listIterator
+                    satisfies Iterator<Element> {
+                variable Integer index = 0;
+                shared actual Element|Finished next() {
+                    if (index<=max) {
+                        if (exists element 
+                                = getFromFirst(index++)) {
+                            return element;
+                        }
+                        else {
+                            assert (is Element null);
+                            return null;
+                        }
                     }
                     else {
-                        assert (is Element null);
-                        return null;
+                        return finished;
                     }
                 }
-                else {
-                    return finished;
-                }
+                return listIterator;
             }
         }
-        return listIterator;
+        else {
+            return emptyIterator;
+        }
     }
     
     "A list containing the elements of this list in reverse 
