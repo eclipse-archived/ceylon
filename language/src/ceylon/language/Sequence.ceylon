@@ -90,7 +90,7 @@ shared interface Sequence<out Element>
     
     shared default actual Element? find
                 (Boolean selecting(Element&Object elem))
-            => (super of List<Element>).findLast(selecting);
+            => (super of List<Element>).find(selecting);
     
     shared default actual Element? findLast
                 (Boolean selecting(Element&Object elem))
