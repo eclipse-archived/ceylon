@@ -2505,9 +2505,9 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             of any generic type.</para>
             -->
             
-            <para>The following identities result from principal instantiation inheritance, 
-            for any generic type <literal>X&lt;T&gt;</literal>, and for any types 
-            <literal>A</literal> and <literal>B</literal>:</para>
+            <para>Finally, the following identities result from principal instantiation 
+            inheritance. For any generic type <literal>X&lt;T&gt;</literal>, and for any given 
+            types <literal>A</literal> and <literal>B</literal>:</para>
             
             <itemizedlist>
                 <listitem>
