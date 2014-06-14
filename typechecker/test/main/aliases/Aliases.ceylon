@@ -243,3 +243,31 @@ void foo2(String|Float|Integer|{String|Float|Integer*} bar) {
         print("primitive iterable");
     }
 }
+
+alias Value => Float|Integer;
+
+class Array() satisfies List<Value> {
+	
+	shared actual List<Value> clone() => nothing;
+	
+	shared actual Value|Finished elementAt(Integer index) => nothing;
+	
+	shared actual Integer? lastIndex => nothing;
+	
+	shared actual Boolean equals(Object that) {
+		if (is Array that) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	shared actual Integer hash {
+		variable value hash = 1;
+		return hash;
+	}
+	
+	shared actual String string => super.string;
+	
+}

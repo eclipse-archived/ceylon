@@ -926,10 +926,10 @@ public class ProducedType extends ProducedReference {
             ProducedType possibleResult = dst.getSupertype(c);
             if (possibleResult!=null) {
                 if (result==null || 
-                        possibleResult.isSubtypeOfInternal(result)) {
+                        possibleResult.isSubtypeOf(result)) {
                     result = possibleResult;
                 }
-                else if ( !result.isSubtypeOfInternal(possibleResult) ) {
+                else if ( !result.isSubtypeOf(possibleResult) ) {
                     //TODO: this is still needed even though we keep intersections 
                     //      in canonical form because you can have stuff like
                     //      empty of Iterable<String>&Sized

@@ -593,8 +593,9 @@ public abstract class TypeDeclaration extends Declaration
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
-                if (type == TypeDeclaration.this)
+                if (type == TypeDeclaration.this) {
                     return false;
+                }
                 Declaration d = type.getDirectMember(name, signature, variadic);
                 if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions if we don't have a signature
@@ -613,8 +614,9 @@ public abstract class TypeDeclaration extends Declaration
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
-                if (type == TypeDeclaration.this)
+                if (type == TypeDeclaration.this) {
                     return false;
+                }
                 Declaration d = type.getDirectMember(name, null, false);
                 if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions
