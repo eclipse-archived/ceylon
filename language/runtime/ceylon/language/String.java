@@ -304,8 +304,8 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public Character get(Integer key) {
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+    public Character get(@Name("Index") Integer key) {
         java.lang.Object o = elementAt(value, key.longValue());
         if (o instanceof Finished) {
             return null;
@@ -323,8 +323,8 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public Character getFromLast(long key) {
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+    public Character getFromLast(@Name("Index") long key) {
         java.lang.Object o = elementAt(value, value.length()-1-key);
         if (o instanceof Finished) {
             return null;

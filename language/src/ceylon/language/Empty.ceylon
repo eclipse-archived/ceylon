@@ -15,19 +15,25 @@ shared interface Empty of e
                      Ranged<Integer,Nothing,[]> {
     
     "Returns an iterator that is already exhausted."
-    shared actual Iterator<Nothing> iterator() => emptyIterator;
-    
-    //"Returns `null` for any given index."
-    //shared actual Null get(Integer index) => null;
+    shared actual Iterator<Nothing> iterator() 
+            => emptyIterator;
     
     "Returns `null` for any given index."
-    shared actual Finished elementAt(Integer index) => finished;
+    shared actual Null get(Integer index) => null;
+    
+    "Returns `null` for any given index."
+    shared actual Null getFromLast(Integer index) => null;
+    
+    "Returns `null` for any given index."
+    shared actual Finished elementAt(Integer index) 
+            => finished;
     
     "Returns an `Empty`."
     shared actual [] keys => this;
     
     "Returns an `Empty` for any given segment."
-    shared actual [] segment(Integer from, Integer length) => this;
+    shared actual [] segment(Integer from, Integer length) 
+            => this;
     
     "Returns an `Empty` for any given span."
     shared actual [] span(Integer from, Integer to) => this;
@@ -141,10 +147,13 @@ shared interface Empty of e
 
 "A sequence with no elements, abbreviated `[]`. The unique 
  instance of the type `[]`."
-//by ("Tako Schotanus")
-shared object empty extends Object() satisfies [] {}
+by ("Tako Schotanus")
+shared object empty 
+		extends Object() 
+		satisfies [] {}
 
 "An iterator that returns no elements."
-shared object emptyIterator satisfies Iterator<Nothing> {
+shared object emptyIterator 
+		satisfies Iterator<Nothing> {
     next() => finished;
 }

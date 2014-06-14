@@ -12,7 +12,16 @@ shared final native class Array<Element>({Element*} elements)
         extends Object()
         satisfies List<Element> &
                   Ranged<Integer, Element, Array<Element>> {
-
+	
+	"Get the element at the specified index, or `null` if
+	 the index falls outside the bounds of this array."
+	shared actual native Element? get(Integer index);
+	
+	"Get the element at the specified index, where the array
+	 is indexed from the _end_ of the array, or `null` if
+	 the index falls outside the bounds of this array."
+	shared actual native Element? getFromLast(Integer index);
+	
     "Replace the existing element at the specified index 
      with the given element."
     throws (`class AssertionError`, 

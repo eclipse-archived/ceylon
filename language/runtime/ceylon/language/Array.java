@@ -790,22 +790,22 @@ public final class Array<Element>
             }
         };
     }
-
-    @Ignore
+    
     @Override
-    public Element getFromLast(long key) {
+    @TypeInfo("ceylon.language::Null|Element")
+    public Element getFromLast(@Name("Index") long key) {
         int index = toInt(key);
         int size = toInt(getSize());
-        if (index < 0 || index >= size) {
-            return null;
-        }
-        return unsafeItem(size-index-1);
+        return index < 0 || index >= size ?
+            null : unsafeItem(size-index-1);
     }
-
-    @Ignore
+    
     @Override
-    public Element get(Integer key) {
-        return get(toInt(key.longValue()));
+    @TypeInfo("ceylon.language::Null|Element")
+    public Element get(@Name("Index") Integer key) {
+        int index = toInt(key.longValue());
+		return index < 0 || index >= getSize() ?
+				null : unsafeItem(index);
     }
 
     @TypeInfo("Element|ceylon.language::Finished")
@@ -816,12 +816,6 @@ public final class Array<Element>
             return finished_.get_();
         }
         return unsafeItem(index);
-    }
-    
-    @Ignore
-    private Element get(int index) {
-        return index < 0 || index >= getSize() ?
-                null : unsafeItem(index);
     }
     
     // Used by the jvm backend code to avoid boxing the index
