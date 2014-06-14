@@ -145,8 +145,8 @@ shared interface List<out Element>
                         return finished;
                     }
                 }
-                return listIterator;
             }
+            return listIterator;
         }
         else {
             return emptyIterator;
