@@ -11,8 +11,8 @@ class List<T>()
     shared actual List<T> clone() {
         return this;
     }
-    shared actual T|Finished elementAt(Integer n) {
-        return finished;
+    shared actual T? getFromFirst(Integer n) {
+        return null;
     }
     shared actual Boolean contains(Object o) {
         return false;

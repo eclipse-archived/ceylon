@@ -250,7 +250,7 @@ class Array() satisfies List<Value> {
 	
 	shared actual List<Value> clone() => nothing;
 	
-	shared actual Value|Finished elementAt(Integer index) => nothing;
+	shared actual Value|Finished getFromFirst(Integer index) => nothing;
 	
 	shared actual Integer? lastIndex => nothing;
 	
