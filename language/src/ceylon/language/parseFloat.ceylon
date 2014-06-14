@@ -35,62 +35,66 @@ shared Float? parseFloat(String string) {
             rest = null;
         }
         value whole = parseInteger(wholePart);
-        if (whole exists, exists digitOrUnderscore = fractionalPart[3],
-            digitOrUnderscore == '_') {
-            // validate+remove underscores
-            StringBuilder sb = StringBuilder();
-            variable value i = 0;
-            variable value nu = 3;
-            for (digit in fractionalPart) {
-                if (i == nu) {
-                    if (digit != '_') {
+        if (exists whole) {
+            if (exists digitOrUnderscore 
+                    = fractionalPart[3],
+                digitOrUnderscore == '_') {
+                // validate+remove underscores
+                // TODO: find a better way
+                StringBuilder sb = StringBuilder();
+                variable value i = 0;
+                variable value nu = 3;
+                for (digit in fractionalPart) {
+                    if (i == nu) {
+                        if (digit != '_') {
+                            return null;
+                        }
+                        nu = i+4;
+                    }
+                    else {
+                        if (!digit.digit) {
+                            return null;
+                        }
+                        sb.appendCharacter(digit);
+                    }
+                    i++;
+                }
+                fractionalPart = sb.string;
+            }
+            if (exists fractional 
+                    = parseInteger(fractionalPart)) {
+                value shift = fractionalPart.size;
+                Integer exponent;
+                if (exists rest) {
+                    if (exists magnitude
+                            = parseFloatExponent(rest)) {
+                        exponent = magnitude-shift;
+                    }
+                    else {
                         return null;
                     }
-                    nu = i+4;
-                } else {
-                    if (!digit.digit) {
-                        return null;
-                    }
-                    sb.appendCharacter(digit);
-                }
-                i++;
-            }
-            fractionalPart = sb.string;
-        }
-        if (exists whole, exists fractional = parseInteger(fractionalPart)) {
-            value shift = fractionalPart.size;
-            Integer exponent;
-            if (exists rest) {
-                if (exists magnitude
-                        = parseFloatExponent(rest)) {
-                    exponent = magnitude-shift;
                 }
                 else {
-                    return null;
+                    exponent = -shift; 
                 }
-            }
-            else {
-                exponent = -shift; 
-            }
-            Integer numerator = whole*10^shift + fractional;
-            value em = exponent.magnitude;
-            if (em==0) {
-                return numerator.float;
-            }
-            else if (em<maximumIntegerExponent) {
-                value scale = 10^em;
-                if (exponent<0) {
-                    return numerator.float / scale;
+                Integer numerator 
+                        = whole*10^shift + fractional;
+                value em = exponent.magnitude;
+                if (em==0) {
+                    return numerator.float;
+                }
+                else if (em<maximumIntegerExponent) {
+                    value scale = 10^em;
+                    return exponent<0
+                            then numerator.float / scale
+                            else numerator.float * scale;
                 }
                 else {
-                    return numerator.float * scale;
+                    //scale can't be represented as 
+                    //an integer, resulting in some
+                    //rounding error
+                    return numerator * 10.0^exponent;
                 }
-            }
-            else {
-                //scale can't be represented as 
-                //an integer, resulting in some
-                //rounding error
-                return numerator * 10.0^exponent;
             }
         }
     }
@@ -138,6 +142,8 @@ Integer? parseFloatExponent(String string) {
         if (string.lowercased.startsWith("e")) {
             return parseInteger(string.rest);
         }
+        else {
+            return null;
+        }
     }
-    return null;
 }
