@@ -60,12 +60,12 @@ shared void testIterables() {
         check(c == 'a', "String.findLast");
     } else { fail("String.findLast"); }
 
-    check((1..10).map((Integer i) => i.float).sequence() == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}.sequence(), "map 1");
-    check((1..10).filter((Integer i) => i>5).sequence() == {6, 7, 8, 9, 10}.sequence(), "filter 1");
-    check(((1..10).find((Integer i) => i>5) else -1)==6, "find 1");
-    check(((1..10).findLast((Integer i) => i>5) else -1)==10, "findLast 1");
-    check((1..10).fold(0, (Integer i, Integer j) => i+j)==55, "fold 3");
-    check((1..10).reduce((Integer i, Integer j) => i+j)==55, "reduce 3");
+    check((1..10).map((Integer i) => i.float).sequence() == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}.sequence(), "Range.map 1");
+    check((1..10).filter((Integer i) => i>5).sequence() == {6, 7, 8, 9, 10}.sequence(), "Range.filter 1");
+    check(((1..10).find((Integer i) => i>5) else -1)==6, "Range.find 1");
+    check(((1..10).findLast((Integer i) => i>5) else -1)==10, "Range.findLast 1");
+    check((1..10).fold(0, (Integer i, Integer j) => i+j)==55, "Range.fold 3");
+    check((1..10).reduce((Integer i, Integer j) => i+j)==55, "Range.reduce 3");
 
     check({ 1, 3, 7, 10 }.map((Integer i) => i.float).sequence()=={1.0, 3.0, 7.0, 10.0}.sequence(), "map 2");
     check({ 1, 3, 7, 10 }.filter((Integer i) => i>5).sequence()=={7.0, 10.0}.sequence(), "filter 2");

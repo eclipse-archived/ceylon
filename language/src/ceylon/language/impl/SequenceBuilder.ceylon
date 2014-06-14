@@ -5,8 +5,7 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
     variable Integer length = 0;
     
     "Resize policy"
-    Integer newSize(
-        Integer existingSize, Integer extra) {
+    Integer newSize(Integer existingSize, Integer extra) {
         value requiredSize = length+extra;
         variable value result = existingSize*2+2;
         "Overflow"
@@ -27,20 +26,23 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
             if (array.size >= length + extra) {
                 return array;
             } else {
-                value newArray = arrayOfSize<Element>(newSize(array.size, extra), example);
+                value arraySize = newSize(array.size, extra);
+                value newArray 
+                        = arrayOfSize(arraySize, example);
                 array.copyTo(newArray);
                 this.store = newArray;
                 return newArray;
             }
         } else {
-            value newArray = arrayOfSize<Element>(initialSize, example);
+            value newArray 
+                    = arrayOfSize(initialSize, example);
             this.store = newArray;
             return newArray;
         }
     }
     
     
-    "The resulting sequential."
+    "The resulting [[sequence|Sequential]]."
     shared Element[] sequence() {
         if (exists array=store) {
             return array.take(length).sequence();
@@ -51,23 +53,29 @@ shared class SequenceBuilder<Element>(Integer initialSize=5) {
     
     "Append the given [[element]]."
     shared SequenceBuilder<Element> append(Element element) {
-        value store = getStorage(1, element);
-        store.set(length, element);
-        length++;
+        getStorage(1, element).set(length++, element);
         return this;
     }
     
-    "Append all of the given elements."
+    "Append all of the given [[elements]]."
     shared SequenceBuilder<Element> appendAll({Element*} elements) {
         for (element in elements) {
-            append(element);
+            getStorage(1, element).set(length++, element);
         }
         return this;
     }
     
-    "Returns the length of the current content"
-    shared Integer size {
-        return length;
+    "Returns the `size` of the [[sequence]]."
+    shared Integer size => length;
+    
+    "Get the element at the given [[index]] in the 
+     [[sequence]]."
+    shared Element? get(Integer index) {
+        if (exists array=store, 0<=index<length) {
+            return array.getFromFirst(index);
+        } else {
+            return null;
+        }
     }
     
 }

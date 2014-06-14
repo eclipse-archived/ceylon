@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ceylon.language.impl.SequenceBuilder;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterator;
@@ -66,10 +68,18 @@ public final class Array<Element>
 
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
-            final ceylon.language.Iterable<? extends Element, 
-            		?> elements) {
-        int size = Util.toInt(elements.getSize());
-        Iterator<?> iterator = elements.iterator();
+            final ceylon.language.Iterable<? extends Element,?> elements) {
+    	final SequenceBuilder<Element> builder;
+    	final int size;
+    	if (elements instanceof Array) {
+    		size = Util.toInt(elements.getSize());
+    		builder = null;
+    	}
+    	else {
+    	    builder = new SequenceBuilder<Element>($reifiedElement);
+    	    builder.appendAll(elements);
+    	    size = Util.toInt(builder.getSize());
+    	}
         java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
         if (!$reifiedElement.containsNull()) {
         	if (clazz==String.class) {
@@ -80,8 +90,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				String s = (String) iterator.next();
+        			for (int i=0; i<size; i++) {
+        				String s = (String) builder.get(i);
     					array[i] = s==null ? null : s.value;
         			}
         		}
@@ -93,8 +103,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((Integer) iterator.next()).value;
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((Integer) builder.get(i)).value;
         			}
         		}
         		return array;
@@ -105,8 +115,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((Float) iterator.next()).value;
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((Float) builder.get(i)).value;
         			}
         		}
         		return array;
@@ -117,8 +127,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((Character) iterator.next()).codePoint;
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((Character) builder.get(i)).codePoint;
         			}
         		}
         		return array;
@@ -129,8 +139,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((Boolean) iterator.next()).booleanValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((Boolean) builder.get(i)).booleanValue();
         			}
         		}
         		return array;
@@ -141,8 +151,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Boolean) iterator.next()).booleanValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Boolean) builder.get(i)).booleanValue();
         			}
         		}
         		return array;
@@ -153,8 +163,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Character) iterator.next()).charValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Character) builder.get(i)).charValue();
         			}
         		}
         		return array;
@@ -165,8 +175,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Float) iterator.next()).floatValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Float) builder.get(i)).floatValue();
         			}
         		}
         		return array;
@@ -177,8 +187,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Double) iterator.next()).doubleValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Double) builder.get(i)).doubleValue();
         			}
         		}
         		return array;
@@ -189,8 +199,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Byte) iterator.next()).byteValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Byte) builder.get(i)).byteValue();
         			}
         		}
         		return array;
@@ -201,8 +211,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Short) iterator.next()).shortValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Short) builder.get(i)).shortValue();
         			}
         		}
         		return array;
@@ -213,8 +223,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Integer) iterator.next()).intValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Integer) builder.get(i)).intValue();
         			}
         		}
         		return array;
@@ -225,8 +235,8 @@ public final class Array<Element>
         			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
-        			for (int i=0; i<array.length; i++) {
-        				array[i] = ((java.lang.Long) iterator.next()).longValue();
+        			for (int i=0; i<size; i++) {
+        				array[i] = ((java.lang.Long) builder.get(i)).longValue();
         			}
         		}
         		return array;
@@ -235,8 +245,8 @@ public final class Array<Element>
         
         java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
         		.newInstance($reifiedElement.getArrayElementClass(), size);
-        for (int i=0; i<array.length; i++) {
-        	array[i] = iterator.next();
+        for (int i=0; i<size; i++) {
+        	array[i] = builder.get(i);
         }
         return array;
     }
@@ -251,7 +261,7 @@ public final class Array<Element>
         		//      because it would break javaObjectArray()
         		java.lang.String[] array = new java.lang.String[size];
         		String s = (String) element;
-        		Arrays.fill(array, s==null ? null : s.value); 
+        		if (s!=null) Arrays.fill(array, s.value); 
         		return array;
         	}
         	else if (clazz==Integer.class) {
