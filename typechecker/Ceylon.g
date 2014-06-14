@@ -2432,7 +2432,7 @@ tupleType returns [TupleType type]
       { $type.setEndToken($RBRACKET); }
     ;
 
-groupedType returns [StaticType type]
+groupedType returns [GroupedType type]
     : SMALLER_OP
       { $type = new GroupedType($SMALLER_OP); }
       t=type
