@@ -30,7 +30,7 @@ class Bug1430() satisfies Sequence<Integer> {
     shared actual Boolean contains(Object element) => element==1;
     shared actual Bug1430 clone() => Bug1430();
     shared actual Sequence<Integer> reversed => this;
-    shared actual Integer|Finished elementAt(Integer index) {
+    shared actual Integer|Finished getFromFirst(Integer index) {
         return index==0 then 1 else finished;
     }
     shared actual Integer[] segment(Integer from, Integer length) {
