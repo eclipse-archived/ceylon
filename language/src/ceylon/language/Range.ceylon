@@ -128,22 +128,22 @@ shared final class Range<Element>(first, last)
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
      may be inefficient for large ranges."
-    shared actual Element|Finished elementAt(Integer index) {
+    shared actual Element? getFromFirst(Integer index) {
         if (index<0) {
-            return finished;
+            return null;
         }
         else if (is Enumerable<Element> first) {
             value result = first.neighbour(decreasing then -index else index);
             return decreasing && result>=last || 
                   !decreasing && result<=last 
-                          then result else finished;
+                          then result;
         }
         else {
             variable Integer current=0;
             variable Element x=first;
             while (current<index) {
                 if (x==last) {
-                    return finished;
+                    return null;
                 }
                 else {
                     ++current;

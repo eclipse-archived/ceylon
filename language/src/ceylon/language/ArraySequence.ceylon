@@ -8,8 +8,8 @@ class ArraySequence<Element>(Array<Element> array)
     
     assert (!array.empty);
     
-    shared actual Element|Finished elementAt(Integer index)
-            => array.elementAt(index);
+    shared actual Element? getFromFirst(Integer index)
+            => array.getFromFirst(index);
     
     shared actual Boolean contains(Object element) 
             => array.contains(element);

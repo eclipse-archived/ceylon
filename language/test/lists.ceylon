@@ -1,6 +1,6 @@
 class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual Boolean equals(Object other) => (super of List<Element>).equals(other);
-    shared actual Element|Finished elementAt(Integer x) => elems.elementAt(x);
+    shared actual Element? getFromFirst(Integer x) => elems.getFromFirst(x);
     shared actual TestList<Element> reversed => TestList(*elems.reversed);
     shared actual TestList<Element> rest => TestList(*elems.rest);
     shared actual Integer hash => (super of List<Element>).hash;

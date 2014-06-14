@@ -14,12 +14,12 @@ shared class LazyList<out Element>(elements)
         return size > 0 then size-1;
     }
     
-    shared actual Element|Finished elementAt(Integer index) {
+    shared actual Element? getFromFirst(Integer index) {
         if (index >= 0) {
-            return elements.skip(index).first else finished;
+            return elements.skip(index).first;
         }
         else {
-            return finished;
+            return null;
         }
     }
     

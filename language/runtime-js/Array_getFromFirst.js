@@ -1,6 +1,6 @@
-function elementAt(i){
+function getFromFirst(i){
   var e=this[i];
   if (e===undefined)
-    return getFinished();
+    return null;
   return e;
 }

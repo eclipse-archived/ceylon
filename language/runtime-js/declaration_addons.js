@@ -248,12 +248,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
   if (list.size>0) {
     var rv=[];
     for (var i=0; i < list.size; i++) {
-      var mm = getrtmm$$(list.elementAt(i).tipo);
+      var mm = getrtmm$$(list.getFromFirst(i).tipo);
       var anns = mm&&mm.$an;
       if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
       if (anns) for (var j=0; j<anns.length; j++) {
         if (is$(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
-          rv.push(list.elementAt(i));
+          rv.push(list.getFromFirst(i));
           break;
         }
       }

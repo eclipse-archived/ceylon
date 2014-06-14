@@ -97,24 +97,18 @@ shared interface List<out Element>
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
      list, that is, if `0<=index<=list.lastIndex`, or 
-     `finished` otherwise. The first element of the list has 
+     `null` otherwise. The first element of the list has 
      index `0`, and the last element has index [[lastIndex]]."
-    shared formal Element|Finished elementAt(Integer index);
+    see (`function getFromLast`)
+    shared formal Element? getFromFirst(Integer index);
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
      list, that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index `0`,
      and the last element has index [[lastIndex]]."
-    see (`function getFromLast`)
-    shared actual default Element? get(Integer index) {
-        if (!is Finished item = elementAt(index)) {
-            return item;
-        }
-        else {
-            return null;
-        }
-    }
+    shared actual default Element? get(Integer index) 
+            => getFromFirst(index);
     
     "Returns the element of this list with the given 
      [[index]], where the list is indexed from the _end_ of 
@@ -124,7 +118,7 @@ shared interface List<out Element>
      element has index [[lastIndex]]."
     shared default Element? getFromLast(Integer index) {
         if (exists endIndex=lastIndex) {
-            return get(endIndex-index);
+            return getFromFirst(endIndex-index);
         }
         else {
             return null;
@@ -137,8 +131,14 @@ shared interface List<out Element>
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (exists max=lastIndex, index<=max) {
-                    assert (!is Finished element = elementAt(index++));
-                    return element;
+                    if (exists element 
+                            = getFromFirst(index++)) {
+                        return element;
+                    }
+                    else {
+                        assert (is Element null);
+                        return null;
+                    }
                 }
                 else {
                     return finished;
@@ -172,8 +172,8 @@ shared interface List<out Element>
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = elementAt(i);
-                    value y = that.elementAt(i);
+                    value x = getFromFirst(i);
+                    value y = that.getFromFirst(i);
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
@@ -212,10 +212,17 @@ shared interface List<out Element>
         if (exists endIndex=lastIndex) {
             variable value index = endIndex;
             while (index >= 0) {
-                if (!is Finished elem = elementAt(index--)) {
-                    if (selecting(elem)) {
-                        return elem;
-                    }
+                value elem = getFromFirst(index--);
+                Element element;
+                if (exists elem) {
+                    element = elem;
+                }
+                else {
+                    assert (is Element null);
+                    element = null;
+                }
+                if (selecting(element)) {
+                    return element;
                 }
             }
         }
@@ -223,18 +230,12 @@ shared interface List<out Element>
     }
     
     "Returns the first element of this `List`, if any."
-    shared actual default Element? first {
-        if (!is Finished firstElement=elementAt(0)) {
-            return firstElement;
-        }
-        return null;
-    }
+    shared actual default Element? first => getFromFirst(0);
     
     "Returns the last element of this `List`, if any."
     shared actual default Element? last {
         if (exists endIndex = lastIndex) {
-            assert(!is Finished lastElement = elementAt(endIndex));
-            return lastElement;
+            return getFromLast(endIndex);
         }
         else {
             return null;
@@ -278,8 +279,8 @@ shared interface List<out Element>
             Integer index, 
             List<Anything> sublist) {
         for (i in 0:sublist.size) {
-            value x = elementAt(index+i);
-            value y = sublist.elementAt(i);
+            value x = getFromFirst(index+i);
+            value y = sublist.getFromFirst(i);
             if (exists x) {
                 if (exists y) {
                     if (x!=y) {
@@ -348,7 +349,7 @@ shared interface List<out Element>
             "The index at which the value might occur."
             Integer index, 
             Anything element) {
-        value elem = elementAt(index);
+        value elem = getFromFirst(index);
         if (exists element) {
             if (exists elem) {
                 return elem==element;
@@ -418,7 +419,7 @@ shared interface List<out Element>
              satisfy"
             Boolean selecting(Element element)) 
             => { for (index in 0:size) 
-                    if (is Element element=elementAt(index), 
+                    if (is Element element=getFromFirst(index), 
                             selecting(element)) 
                         index };
     
@@ -430,7 +431,7 @@ shared interface List<out Element>
             Boolean selecting(Element element)) {
         variable value index = 0;
         while (index<size) {
-            assert (is Element element=elementAt(index));
+            assert (is Element element=getFromFirst(index));
             if (selecting(element)) {
                 return index;
             }
@@ -448,7 +449,7 @@ shared interface List<out Element>
         variable value index = size;
         while (index>0) {
             index--;
-            assert (is Element element=elementAt(index));
+            assert (is Element element=getFromFirst(index));
             if (selecting(element)) {
                 return index;
             }
@@ -464,7 +465,7 @@ shared interface List<out Element>
             variable Integer from=-1;
             variable Integer to=-1;
             for (index in 0..end) {
-                assert (is Element elem=elementAt(index));
+                assert (is Element elem=getFromFirst(index));
                 if (!trimming(elem)) {
                     from = index;
                     break;
@@ -474,7 +475,7 @@ shared interface List<out Element>
                 return [];
             }
             for (index in end..0) {
-                assert (is Element elem=elementAt(index));
+                assert (is Element elem=getFromFirst(index));
                 if (!trimming(elem)) {
                     to = index;
                     break;
@@ -496,7 +497,7 @@ shared interface List<out Element>
     shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
         if (exists end=lastIndex) {
             for (index in 0..end) {
-                assert (is Element elem=elementAt(index));
+                assert (is Element elem=getFromFirst(index));
                 if (!trimming(elem)) {
                     return this[index..end];
                 }
@@ -511,7 +512,7 @@ shared interface List<out Element>
     shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
         if (exists end=lastIndex) {
             for (index in end..0) {
-                assert (is Element elem=elementAt(index));
+                assert (is Element elem=getFromFirst(index));
                 if (!trimming(elem)) {
                     return this[0..index];
                 }
@@ -569,8 +570,8 @@ shared interface List<out Element>
         
         lastIndex => outer.lastIndex;
         
-        elementAt(Integer index) 
-                => defines(index) then index else finished;
+        getFromFirst(Integer index)
+                => defines(index) then index;
         
         clone() => 0:size;
         
@@ -614,12 +615,12 @@ shared interface List<out Element>
         
         assert (from>=0);
         
-        shared actual Element|Finished elementAt(Integer index) {
+        shared actual Element? getFromFirst(Integer index) {
             if (index<0) {
-                return finished;
+                return null;
             }
             else {
-                return outer.elementAt(index+from);
+                return outer.getFromFirst(index+from);
             }
         }
         
@@ -658,12 +659,12 @@ shared interface List<out Element>
         
         assert (to>=0);
         
-        shared actual Element|Finished elementAt(Integer index) {
+        shared actual Element? getFromFirst(Integer index) {
             if (index<0||index>to) {
-                return finished;
+                return null;
             }
             else {
-                return outer.elementAt(index);
+                return outer.getFromFirst(index);
             }
         }
         
@@ -717,12 +718,12 @@ shared interface List<out Element>
         
         lastIndex => outer.lastIndex;
         
-        shared actual Element|Finished elementAt(Integer index) {
+        shared actual Element? getFromFirst(Integer index) {
             if (exists endIndex=lastIndex) {
-                return outer.elementAt(endIndex-index);
+                return outer.getFromFirst(endIndex-index);
             }
             else {
-                return finished;
+                return null;
             }
         }
         
@@ -765,7 +766,7 @@ shared interface List<out Element>
                 shared actual Element|Finished next() {
                     if (i>=0) {
                         assert (is Element elem = 
-                            outerList.elementAt(i--));
+                            outerList.getFromFirst(i--));
                         return elem;
                     }
                     else {

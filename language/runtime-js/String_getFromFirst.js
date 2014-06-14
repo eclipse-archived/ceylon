@@ -1,6 +1,6 @@
 function(index){
   if (index<0 || index>=this.length)
-    return getFinished();
+    return null;
   if (this._bumps===undefined)
     this._bumps=[];
   var cnt=0;

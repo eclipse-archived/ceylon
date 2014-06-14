@@ -22,6 +22,10 @@ shared final native class Array<Element>({Element*} elements)
 	 the index falls outside the bounds of this array."
 	shared actual native Element? getFromLast(Integer index);
 	
+	"Get the element at the specified index, or `null` if
+	 the index falls outside the bounds of this array."
+	shared actual native Element? getFromFirst(Integer index);
+	
     "Replace the existing element at the specified index 
      with the given element."
     throws (`class AssertionError`, 
@@ -47,8 +51,6 @@ shared final native class Array<Element>({Element*} elements)
         Integer destinationPosition = 0, 
         "The number of elements to copy."
         Integer length = size-sourcePosition);
-    
-    shared actual native Element|Finished elementAt(Integer index);
     
     shared actual native Integer? lastIndex;
     

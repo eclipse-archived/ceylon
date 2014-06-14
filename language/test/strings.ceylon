@@ -431,7 +431,7 @@ shared void strings() {
     check(",".join({for (c in "") {c.string}})=="", "string join empty object comprehension");
     check(",".join({for (c in "A") {c.string}})=="{ A }", "string join object comprehension 1");
     check(",".join({for (c in "ABC") {c.string}})=="{ A },{ B },{ C }", "string join object comprehension 2");
-    check("".elementAt(1) is Finished, "String.elementAt");
+    check("".getFromFirst(1) is Null, "String.getFromFirst");
     
     check(("helloworld".getFromLast(0) else ' ')=='d', "string getFromLast(0)");
     check(("helloworld".getFromLast(1) else ' ')=='l', "string getFromLast(1)");

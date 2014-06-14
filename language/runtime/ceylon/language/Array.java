@@ -793,6 +793,12 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
+    public Element get(@Name("Index") Integer key) {
+        return getFromFirst(key.longValue());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getFromLast(@Name("Index") long key) {
         int index = toInt(key);
         int size = toInt(getSize());
@@ -802,20 +808,10 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element get(@Name("Index") Integer key) {
-        int index = toInt(key.longValue());
-		return index < 0 || index >= getSize() ?
-				null : unsafeItem(index);
-    }
-
-    @TypeInfo("Element|ceylon.language::Finished")
-    @Override
-    public java.lang.Object elementAt(@Name("index") long key) {
+    public Element getFromFirst(@Name("index") long key) {
         int index = toInt(key);
-        if (index < 0 || index >= getSize()) {
-            return finished_.get_();
-        }
-        return unsafeItem(index);
+        return index < 0 || index >= getSize() ? 
+        		null : unsafeItem(index);
     }
     
     // Used by the jvm backend code to avoid boxing the index

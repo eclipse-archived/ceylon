@@ -247,7 +247,7 @@ shared native final class String(characters)
      character in the string occurs at index zero. The last 
      character in the string occurs at index 
      `string.size-1`."
-    shared actual native Character|Finished elementAt(Integer index);
+    shared actual native Character? getFromFirst(Integer index);
     
     "Determines if the given object is a `String` and, if 
      so, if it occurs as a substring of this string, or if 

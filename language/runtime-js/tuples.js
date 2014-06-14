@@ -33,11 +33,11 @@ function tpl$(elems,types,spread){
   set_type_args(that,elems.$$targs$$);
   that.$elems=elems;
   that.first_=elems[0];
-  that.elementAt=function(i){
+  that.getFromFirst=function(i){
     var e=elems[i]
     return e===undefined?getFinished():e;
   };
-  that.elementAt.$crtmm$=Tuple.$$.prototype.elementAt.$crtmm$;
+  that.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
   that.contains=function(i) { return elems.contains(i); }

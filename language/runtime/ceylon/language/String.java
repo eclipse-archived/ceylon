@@ -306,53 +306,37 @@ public final class String
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character get(@Name("Index") Integer key) {
-        java.lang.Object o = elementAt(value, key.longValue());
-        if (o instanceof Finished) {
-            return null;
-        }
-        return (Character)o;
+        return getFromFirst(value, key.longValue());
     }
 
     @Ignore
     public static Character getFromLast(java.lang.String value, long key) {
-        java.lang.Object o = elementAt(value, value.length()-1-key);
-        if (o instanceof Finished) {
-            return null;
-        }
-        return (Character)o;
+        return getFromFirst(value, value.length()-1-key);
     }
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFromLast(@Name("Index") long key) {
-        java.lang.Object o = elementAt(value, value.length()-1-key);
-        if (o instanceof Finished) {
-            return null;
-        }
-        return (Character)o;
+        return getFromFirst(value, value.length()-1-key);
     }
 
     @Ignore
     public static Character get(java.lang.String value, long key) {
-        java.lang.Object o = elementAt(value, key);
-        if (o instanceof Finished) {
-            return null;
-        }
-        return (Character)o;
+        return getFromFirst(value, key);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Character|ceylon.language::Finished")
-    public java.lang.Object elementAt(@Name("index") long key) {
-        return elementAt(value, key);
+    @TypeInfo("ceylon.language::Character|ceylon.language::Null")
+    public Character getFromFirst(@Name("index") long key) {
+        return getFromFirst(value, key);
     }
 
     @Ignore
-    public static java.lang.Object elementAt(java.lang.String value, long key) {
+    public static Character getFromFirst(java.lang.String value, long key) {
         int index = Util.toInt(key);
         int length = value.length();
         if (index < 0 || index >= length) {
-            return finished_.get_();
+            return null;
         }
         int offset = value.offsetByCodePoints(0, index);
         int codePoint = value.codePointAt(offset);
@@ -1552,11 +1536,7 @@ public final class String
     @Override
     @Ignore
     public Character getFirst() {
-        java.lang.Object o = elementAt(0);
-        if (o instanceof Finished) {
-            return null;
-        }
-        return (Character)o;
+        return getFromFirst(0);
     }
 
     @Ignore
@@ -1575,11 +1555,7 @@ public final class String
             return null;
         }
         else {
-            java.lang.Object o = elementAt(length-1);
-            if (o instanceof Finished) {
-                return null;
-            }
-            return (Character)o;
+            return getFromFirst(length-1);
         }
     }
 

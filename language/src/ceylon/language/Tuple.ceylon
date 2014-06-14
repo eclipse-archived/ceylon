@@ -60,11 +60,11 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     
     size => 1 + rest.size;
     
-    shared actual native Element|Finished elementAt(Integer index) {
+    shared actual native Element? getFromFirst(Integer index) {
         switch (index<=>0)
-        case (smaller) { return finished; }
+        case (smaller) { return null; }
         case (equal) { return first; }
-        case (larger) { return rest.elementAt(index-1); }
+        case (larger) { return rest.getFromFirst(index-1); }
     }
     
     shared actual native Integer lastIndex {

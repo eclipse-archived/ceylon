@@ -1,7 +1,7 @@
 var arrprot$=Array.prototype;
 var origArrToString = arrprot$.toString;
 arrprot$.toString = origArrToString;
-arrprot$.elementAt=$_Array.$$.prototype.elementAt;
+arrprot$.getFromFirst=$_Array.$$.prototype.getFromFirst;
 arrprot$.reifyCeylonType=function(t,ne) {
     if (t===null || t===undefined)t={t:Anything};
     if (this.$$targs$$===undefined)this.$$targs$$=={};

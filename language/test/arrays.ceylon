@@ -131,7 +131,7 @@ shared void testArrays() {
     check(throwables == throwables2, "throwables == throwables2");
     check(assertionErrors == throwables, "assertionErrors == throwables");
     check(assertionErrors2 == throwables2, "assertionErrors2 == throwables2");
-    check(throwables.elementAt(100) is Finished, "Array.elementAt");
+    check(throwables.getFromFirst(100) is Null, "Array.getFromFirst");
     
     check((Array("helloworld").getFromLast(0) else ' ')=='d', "array getFromLast(0)");
     check((Array("helloworld").getFromLast(1) else ' ')=='l', "array getFromLast(1)");

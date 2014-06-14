@@ -25,8 +25,7 @@ shared interface Empty of e
     shared actual Null getFromLast(Integer index) => null;
     
     "Returns `null` for any given index."
-    shared actual Finished elementAt(Integer index) 
-            => finished;
+    shared actual Null getFromFirst(Integer index) => null;
     
     "Returns an `Empty`."
     shared actual [] keys => this;
