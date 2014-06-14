@@ -657,7 +657,7 @@ TypeConstraints?
         is satisfies, a self type or an enumerated list of cases, and/or a list 
         of type constraints.</para>
         
-        <synopsis>InterfaceHeader: "interface" TypeName TypeParameters? InterfaceInheritance TypeConstraints?</synopsis>
+        <synopsis>InterfaceHeader: ("interface"|"dynamic") TypeName TypeParameters? InterfaceInheritance TypeConstraints?</synopsis>
         
         <synopsis>InterfaceInheritance: CaseTypes? SatisfiedTypes?</synopsis>
         
@@ -886,6 +886,21 @@ TypeConstraints?
             <literal>Map&lt;String,Person&gt;</literal>, as specified in 
             <xref linkend="reification"/>.</para>
         
+        </section>
+        
+        <section>
+            <title>Dynamic interfaces</title>
+            
+            <para>A <emphasis>dynamic interface</emphasis> is an interface declared with the 
+            keyword <literal>dynamic</literal>. Dynamic interfaces may be used to model the 
+            type of objects defined in dynamically typed native code.</para> 
+            
+            <para>Within a dynamic block, defined in <xref linkend="dynamicblocks"/>, 
+            assignment of a value with no Ceylon type to a dynamic interface type does not 
+            result in an <literal>AssertionError</literal>, as defined in 
+            <xref linkend="dynamictypechecking"/>. Instead, the value is coerced to the
+            dynamic interface type.</para>
+            
         </section>
             
     </section>

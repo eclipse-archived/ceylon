@@ -637,10 +637,10 @@ String result = middleObject.string;</programlisting>
             
             <para>When an assertion, as specified in <xref linkend="assertions"/>, is 
             executed, its condition list is evaluated. If the condition list is not satisfied, 
-            an exception of type <literal>AssertionFailure</literal> in 
+            an exception of type <literal>AssertionError</literal> in 
             <literal>ceylon.language</literal> is thrown.</para>
             
-            <para>The information carried by the <literal>AssertionFailure</literal> includes:</para>
+            <para>The information carried by the <literal>AssertionError</literal> includes:</para>
             
             <itemizedlist>
                 <listitem>
@@ -821,7 +821,7 @@ String result = middleObject.string;</programlisting>
             </itemizedlist>
             
             <para>Whenever such a condition is encountered at runtime, an 
-            <literal>AssertionException</literal> is immediately thrown.</para>
+            <literal>AssertionError</literal> is immediately thrown.</para>
             
             <comment><para>Note: in Ceylon 1.0, dynamic type checking is only supported
             on JavaScript virtual machines.</para></comment>
