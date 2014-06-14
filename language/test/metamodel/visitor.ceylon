@@ -74,7 +74,9 @@ void emptyQueue(){
 }
 
 void queueDeclaration(ClassOrInterfaceDeclaration decl){
-    queue = queue.withTrailing(decl);
+    if (!decl in queue) {
+        queue = queue.withTrailing(decl);
+    }
 }
 
 void output(Anything obj){
