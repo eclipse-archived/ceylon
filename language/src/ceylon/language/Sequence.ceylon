@@ -88,8 +88,12 @@ shared interface Sequence<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => (super of List<Element>).longerThan(length);
     
+    shared default actual Element? find
+                (Boolean selecting(Element&Object elem))
+            => (super of List<Element>).findLast(selecting);
+    
     shared default actual Element? findLast
-                (Boolean selecting(Element elem))
+                (Boolean selecting(Element&Object elem))
             => (super of List<Element>).findLast(selecting);
     
     shared actual default Element[] repeat(Integer times)
@@ -100,13 +104,15 @@ shared interface Sequence<out Element>
 
 }
 
-"A [[Sequence]] of the given elements, or `Absent` if the iterable is empty.
- A [[Sequential]] can be obtained using the `else` operator:
+"A [[Sequence]] of the given elements, or `null` if the 
+ iterable is empty. A [[Sequential]] can be obtained using 
+ the `else` operator:
  
      sequence(elements) else []
  "
 by("Gavin")
-shared [Element+]|Absent sequence<Element,Absent>(Iterable<Element, Absent> elements) 
+shared [Element+]|Absent sequence<Element,Absent>
+        (Iterable<Element, Absent> elements) 
         given Absent satisfies Null {
     if (is [Element+] elements) {
         return elements;

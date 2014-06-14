@@ -270,9 +270,9 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` otherwise."
     shared default Element? find(
             "The predicate the element must satisfy."
-            Boolean selecting(Element elem)) {
+            Boolean selecting(Element&Object elem)) {
         for (elem in this) {
-            if (selecting(elem)) {
+            if (exists elem, selecting(elem)) {
                 return elem;
             }
         }
@@ -284,10 +284,10 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` otherwise."
     shared default Element? findLast(
             "The predicate the element must satisfy."
-            Boolean selecting(Element elem)) {
+            Boolean selecting(Element&Object elem)) {
         variable Element? last = null;
         for (elem in this) {
-            if (selecting(elem)) {
+            if (exists elem, selecting(elem)) {
                 last = elem;
             }
         }

@@ -137,15 +137,15 @@ shared class Singleton<out Element>(Element element)
             => selecting(element) then this else [];
     
     shared actual Element? find
-            (Boolean selecting(Element e)) {
-        if (selecting(element)) {
+            (Boolean selecting(Element&Object e)) {
+        if (exists element, selecting(element)) {
             return element;
         }
         return null;
     }
     
     shared actual default Element? findLast
-            (Boolean selecting(Element elem)) 
+            (Boolean selecting(Element&Object elem)) 
             => find(selecting);
     
     shared actual Singleton<Element> sort

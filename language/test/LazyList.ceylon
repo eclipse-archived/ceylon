@@ -39,7 +39,7 @@ shared class LazyList<out Element>(elements)
     
     clone() => this;
     
-    findLast(Boolean selecting(Element elem)) 
+    findLast(Boolean selecting(Element&Object elem)) 
             => elements.findLast(selecting);
     
     shared actual List<Element> span

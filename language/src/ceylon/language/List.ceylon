@@ -207,22 +207,30 @@ shared interface List<out Element>
         return hash;
     }
     
+    shared default actual Element? find(
+        Boolean selecting(Element&Object elem)) {
+        if (exists endIndex=lastIndex) {
+            variable value index = 0;
+            while (index <= endIndex) {
+                if (exists elem = getFromFirst(index++)) {
+                    if (selecting(elem)) {
+                        return elem;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
     shared default actual Element? findLast(
-            Boolean selecting(Element elem)) {
+            Boolean selecting(Element&Object elem)) {
         if (exists endIndex=lastIndex) {
             variable value index = endIndex;
             while (index >= 0) {
-                value elem = getFromFirst(index--);
-                Element element;
-                if (exists elem) {
-                    element = elem;
-                }
-                else {
-                    assert (is Element null);
-                    element = null;
-                }
-                if (selecting(element)) {
-                    return element;
+                if (exists elem = getFromFirst(index--)) {
+                    if (selecting(elem)) {
+                        return elem;
+                    }
                 }
             }
         }
@@ -412,27 +420,29 @@ shared interface List<out Element>
         }
     }
         
-    "The indexes in this list for which the element 
-     satisfies the given [[predicate function|selecting]]."
+    "The indexes in this list for which the element is not
+     null and satisfies the given 
+     [[predicate function|selecting]]."
     shared default {Integer*} indexesWhere(
-            "The predicate the indexed elements must 
-             satisfy"
-            Boolean selecting(Element element)) 
+            "The predicate function the indexed elements 
+             must satisfy"
+            Boolean selecting(Element&Object element)) 
             => { for (index in 0:size) 
-                    if (is Element element=getFromFirst(index), 
+                    if (exists element=getFromFirst(index), 
                             selecting(element)) 
                         index };
     
-    "The first index in this list for which the element 
-     satisfies the given [[predicate function|selecting]]."
+    "The first index in this list for which the element is
+     not null and satisfies the given 
+     [[predicate function|selecting]]."
     shared default Integer? firstIndexWhere(
-            "The predicate the indexed elements must 
-             satisfy"
-            Boolean selecting(Element element)) {
+            "The predicate function the indexed elements 
+             must satisfy"
+            Boolean selecting(Element&Object element)) {
         variable value index = 0;
         while (index<size) {
-            assert (is Element element=getFromFirst(index));
-            if (selecting(element)) {
+            if (exists element=getFromFirst(index), 
+                selecting(element)) {
                 return index;
             }
             index++;
@@ -440,17 +450,18 @@ shared interface List<out Element>
         return null;
     }
     
-    "The last index in this list for which the element 
-     satisfies the given [[predicate function|selecting]]."
+    "The last index in this list for which the element is
+     not null and satisfies the given 
+     [[predicate function|selecting]]."
     shared default Integer? lastIndexWhere(
-            "The predicate the indexed elements must 
-             satisfy"
-            Boolean selecting(Element element)) {
+            "The predicate function the indexed elements 
+             must satisfy."
+            Boolean selecting(Element&Object element)) {
         variable value index = size;
         while (index>0) {
             index--;
-            assert (is Element element=getFromFirst(index));
-            if (selecting(element)) {
+            if (exists element=getFromFirst(index), 
+                selecting(element)) {
                 return index;
             }
         }
@@ -460,13 +471,16 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start and end of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trim(Boolean trimming(Element elem)) {
+    shared default List<Element> trim(
+            "The predicate function that the trimmed 
+             elements satisfy."
+            Boolean trimming(Element&Object elem)) {
         if (exists end=lastIndex) {
             variable Integer from=-1;
             variable Integer to=-1;
             for (index in 0..end) {
-                assert (is Element elem=getFromFirst(index));
-                if (!trimming(elem)) {
+                if (exists elem=getFromFirst(index),
+                    !trimming(elem)) {
                     from = index;
                     break;
                 }
@@ -475,8 +489,8 @@ shared interface List<out Element>
                 return [];
             }
             for (index in end..0) {
-                assert (is Element elem=getFromFirst(index));
-                if (!trimming(elem)) {
+                if (exists elem=getFromFirst(index),
+                    !trimming(elem)) {
                     to = index;
                     break;
                 }
@@ -494,11 +508,14 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
+    shared default List<Element> trimLeading(
+            "The predicate function that the trimmed 
+             elements satisfy."
+            Boolean trimming(Element&Object elem)) {
         if (exists end=lastIndex) {
             for (index in 0..end) {
-                assert (is Element elem=getFromFirst(index));
-                if (!trimming(elem)) {
+                if (exists elem=getFromFirst(index),
+                    !trimming(elem)) {
                     return this[index..end];
                 }
             }
@@ -509,11 +526,14 @@ shared interface List<out Element>
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the end of this list, 
      returning a list no longer than this list."
-    shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
+    shared default List<Element> trimTrailing(
+            "The predicate function that the trimmed 
+             elements satisfy."
+            Boolean trimming(Element&Object elem)) {
         if (exists end=lastIndex) {
             for (index in end..0) {
-                assert (is Element elem=getFromFirst(index));
-                if (!trimming(elem)) {
+                if (exists elem=getFromFirst(index),
+                    !trimming(elem)) {
                     return this[0..index];
                 }
             }
@@ -765,9 +785,14 @@ shared interface List<out Element>
                 variable value i=outerList.size-1;
                 shared actual Element|Finished next() {
                     if (i>=0) {
-                        assert (is Element elem = 
-                            outerList.getFromFirst(i--));
-                        return elem;
+                        if (exists elem 
+                                = outerList.getFromFirst(i--)) {
+                            return elem;
+                        }
+                        else {
+                            assert (is Element null);
+                            return null;
+                        }
                     }
                     else {
                         return finished;

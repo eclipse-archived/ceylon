@@ -58,19 +58,22 @@ shared interface Sequential<out Element>
     "Trim the elements satisfying the given predicate
      function from the start and end of this sequence, 
      returning a sequence no longer than this sequence."
-    shared actual default Element[] trim(Boolean trimming(Element elem))
+    shared actual default Element[] trim(
+        Boolean trimming(Element&Object elem))
             => [*super.trim(trimming)]; //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the start of this sequence, returning 
      a sequence no longer than this sequence."
-    shared actual default Element[] trimLeading(Boolean trimming(Element elem))
+    shared actual default Element[] trimLeading(
+        Boolean trimming(Element&Object elem))
             => [*super.trimLeading(trimming)]; //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the end of this sequence, returning a 
      sequence no longer than this sequence."
-    shared actual default Element[] trimTrailing(Boolean trimming(Element elem))
+    shared actual default Element[] trimTrailing(
+        Boolean trimming(Element&Object elem))
             => [*super.trimTrailing(trimming)]; //TODO: inefficient?
     
     "Produces a sequence with a given [[initial element|head]], 
