@@ -27,7 +27,7 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Integer lastIndex { return seq.lastIndex; }
     shared actual Element first { return seq.first; }
     shared actual Element[] rest { return seq.rest; }
-    shared actual Element|Finished elementAt(Integer index) { return seq.elementAt(index); }
+    shared actual Element? getFromFirst(Integer index) { return seq.getFromFirst(index); }
     shared actual Element[] span(Integer from, Integer to) { return seq.span(from, to); }
     shared actual Element[] spanFrom(Integer from) { return seq.spanFrom(from); }
     shared actual Element[] spanTo(Integer to) { return seq.spanTo(to); }
