@@ -37,7 +37,7 @@ public class MissingCast {
     protected Vector<String> v = null;
 
     public void f() {
-        ((String) (v.getFromFirst(0))).charAt(0);
+        ((String) (v.elementAt(0))).charAt(0);
     }
 
     public static void main(String[] args) {}
