@@ -1260,17 +1260,53 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>A forward-declared declaration is considered <emphasis>definitely initialized</emphasis> 
-            at a certain statement or declaration if its declaration has a specifier, 
-            if it is referenced by a parameter, or if it is definitely initialized by the sequence 
-            of statements from its declaration to the given statement or declaration.</para>
+            <comment><para>TODO: an assignment expression occurring within a containing expression
+            may or may not definitely initialize a value. Specify this!</para></comment>
             
-            <para>A forward-declared declaration must be definitely initialized wherever any value 
-            reference or callable reference to it occurs as an expression within the body in which 
-            it is declared.</para>
+            <para>If a function or value declaration is referenceable at a certain statement or 
+            declaration, it may additionally considered <emphasis>definitely initialized</emphasis> 
+            at that statement or declaration.</para>
             
-            <para>A <literal>shared</literal> forward-declared declaration belonging to a class and 
-            not annotated <literal>late</literal> must be definitely initialized:</para>
+            <para>If a function declaration is definitely initialized at a certain statement or 
+            declaration if it is referenceable at that statement or declaration and:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it is a parameter,</para>
+                </listitem>
+                <listitem>
+                    <para>it is not forward-declared, or</para>
+                </listitem>
+                <listitem>
+                    <para>it is forward-declared and is definitely initialized by the sequence of 
+                    statements from its declaration to the given statement or declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a value declaration is definitely initialized at a certain statement or 
+            declaration if it is referenceable at that statement or declaration and:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it is a parameter,</para>
+                </listitem>
+                <listitem>
+                    <para>it is not forward-declared and the given statement or declaration is not 
+                    the value declaration itself, and does not occur within the body of the value 
+                    declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>it is forward-declared and is definitely initialized by the sequence of 
+                    statements from its declaration to the given statement or declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A function or value declaration must be definitely initialized wherever any 
+            value reference or callable reference to it occurs as an expression within the body 
+            in which it is declared.</para>
+            
+            <para>A <literal>shared</literal> forward-declared declaration belonging to a class 
+            and not annotated <literal>late</literal> must be definitely initialized:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1377,7 +1413,7 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>A method or non-<literal>variable</literal> local or simple attribute must be definitely 
+            <para>A function or non-<literal>variable</literal> value declaration must be definitely 
             uninitialized wherever any value reference or callable reference to it occurs as a specification 
             statement within the body in which it is declared.</para>
             
