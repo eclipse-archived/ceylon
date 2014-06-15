@@ -186,3 +186,9 @@ void testRanges() {
     @type:"Sequential<Integer>" value t16 = possiblyEmpty[0...];
     @type:"Sequential<Integer>" value t17 = possiblyEmpty[1...];
 }
+
+void badTupleTypeExpressions(
+    @error [String, String=, String+] xx, 
+    @error [String=,String] yy, 
+    @error Anything(String=,String) zz, 
+    @error Anything(String,String=,String+) uu) {}

@@ -653,6 +653,14 @@ public class TypeVisitor extends Visitor {
 					atleastone = ((Tree.SequencedType) st).getAtLeastOne();
 					arg = ((Tree.SequencedType) st).getType().getTypeModel();
 				}
+				if (firstDefaulted!=-1 && atleastone) {
+					st.addError("nonempty variadic element must occur after defaulted elements in a tuple type");
+				}
+			}
+			else {
+				if (firstDefaulted!=-1) {
+					st.addError("required element must occur after defaulted elements in a tuple type");
+				}
 			}
 			args.add(arg);
         }

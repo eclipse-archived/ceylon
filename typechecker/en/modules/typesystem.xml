@@ -804,7 +804,8 @@
             </itemizedlist>
             
             <para>In a tuple type or callable type expression, an optional element indicated
-            with <literal>=</literal> must occur after all required elements.</para>
+            with <literal>=</literal> must occur after all required elements with no
+            <literal>=</literal>, <literal>*</literal>.</para>
             
             <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
             an arrow.</para>
