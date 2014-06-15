@@ -88,3 +88,8 @@ An? fan = annotations(`An`, `function emptyStringFun1`);
 An? van = annotations(`An`, `value emptyStringAtt2`);
 Fun? ffun = annotations(`Fun`, `function emptyStringFun1`);
 Att? vatt = annotations(`Att`, `value emptyStringAtt2`);
+
+final annotation class Broken1(@error String foo()) {}
+@error final annotation class Broken2(foo) {
+    String foo();
+}
