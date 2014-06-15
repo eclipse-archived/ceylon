@@ -39,6 +39,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInBreakReturnThrow = false;
     private boolean inExtends = false;
     private boolean inAnonFunctionOrComprehension = false;
+	private boolean withinAttributeInitializer = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -225,7 +226,13 @@ public class SpecificationVisitor extends Visitor {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
                 //section or interface
-                if (!metamodel && !isForwardReferenceable() && !hasParameter) {
+                if (withinAttributeInitializer && 
+                		member instanceof Value && 
+                		!(((Value)member).isTransient())) {
+                	that.addError("reference to value within its initializer: " + 
+                			member.getName());
+                }
+                else if (!metamodel && !isForwardReferenceable() && !hasParameter) {
                     if (declaration.getContainer() instanceof Class) {
                         that.addError("forward reference to class member in initializer: " + 
                                 member.getName() + " is not yet declared (forward references must occur in declaration section)");
@@ -474,6 +481,32 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.CompilationUnit that) {
+    	for (Tree.Declaration st: that.getDeclarations()) {
+    		withinAttributeInitializer = 
+    				(st instanceof Tree.AttributeDeclaration) &&
+    				st.getDeclarationModel()==declaration &&
+    				!(((Tree.AttributeDeclaration) st).getSpecifierOrInitializerExpression()
+    						instanceof Tree.LazySpecifierExpression);
+    		st.visit(this);
+    		withinAttributeInitializer = false;
+    	}
+    }
+
+    @Override
+    public void visit(Tree.Body that) {
+    	for (Tree.Statement st: that.getStatements()) {
+    		withinAttributeInitializer = 
+    				(st instanceof Tree.AttributeDeclaration) &&
+    				((Tree.AttributeDeclaration) st).getDeclarationModel()==declaration &&
+    				!(((Tree.AttributeDeclaration) st).getSpecifierOrInitializerExpression()
+    						instanceof Tree.LazySpecifierExpression);
+    		st.visit(this);
+    		withinAttributeInitializer = false;
+    	}
+    }
+
+    @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
         while (m instanceof Tree.ParameterizedExpression) {
@@ -494,8 +527,8 @@ public class SpecificationVisitor extends Visitor {
 	        	if (that.getRefinement()) {
 	        	    declare();
 	        	}
-                boolean lazy = that.getSpecifierExpression() 
-                		instanceof Tree.LazySpecifierExpression;
+                Tree.SpecifierExpression se = that.getSpecifierExpression();
+				boolean lazy = se instanceof Tree.LazySpecifierExpression;
             	if (declaration instanceof Value) {
             		Value value = (Value) declaration;
             	    if (!value.isVariable() &&
@@ -514,7 +547,7 @@ public class SpecificationVisitor extends Visitor {
             	    }
             	}
 	            if (!lazy) {
-	            	that.getSpecifierExpression().visit(this);
+	            	se.visit(this);
 	            }
 	            boolean constant = !isVariable() && !isLate();
 				if (!declared && constant) {
@@ -552,7 +585,7 @@ public class SpecificationVisitor extends Visitor {
 	                m.visit(this);
 	            }
 	            if (lazy) {
-	                that.getSpecifierExpression().visit(this);
+	                se.visit(this);
 	            }
 	        }
 	        else {

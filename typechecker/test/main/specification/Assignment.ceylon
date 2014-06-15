@@ -100,3 +100,13 @@ void testForwardLazySpecifier() {
     @error name3 => "";
     @error name4 => "";
 }
+
+void withLocalCircular() {
+    @error Integer circular = circular;
+    @error Integer recursize => recursize;
+    Integer split;
+    @error split = split;
+}
+@error Integer circular = circular;
+@error Integer recursize => recursize;
+
