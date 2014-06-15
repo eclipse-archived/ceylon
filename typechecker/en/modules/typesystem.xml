@@ -755,7 +755,11 @@
             
             <synopsis>TupleType: "[" TypeList "]"</synopsis>
             
-            <synopsis>TypeList: (EntryType "="? ",")* (EntryType "="? | UnionType "*"|"+")</synopsis>
+            <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
+            
+            <synopsis>DefaultedType: EntryType "="?</synopsis>
+            
+            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -803,12 +807,24 @@
                 </listitem>
             </itemizedlist>
             
-            <para>In a tuple type or callable type expression, an optional element indicated
-            with <literal>=</literal> must occur after all required elements with no
-            <literal>=</literal>, <literal>*</literal>.</para>
+            <para>In a tuple type or callable type expression:</para>
             
-            <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
-            an arrow.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>an <emphasis>defaulted element</emphasis> is indicated with a
+                    postfix <literal>=</literal> or <literal>*</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>required element</emphasis> is indicated with a 
+                    postfix <literal>+</literal> or no special marker.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>In a tuple type or callable type expression, every defaulted element must 
+            occur after every required element.</para>
+            
+            <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using an 
+            arrow.</para>
                     
             <synopsis>EntryType: UnionType "->" UnionType</synopsis>
             
