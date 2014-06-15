@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
@@ -83,26 +84,34 @@ public class AnnotationVisitor extends Visitor {
     
     private void checkAnnotationParameter(Functional a, Tree.Parameter pn) {
         Parameter p = pn.getParameterModel();
-        ProducedType pt = p.getType();
-        if (pt!=null && isIllegalAnnotationParameterType(pt)) {
-            pn.addError("illegal annotation parameter type: " + pt.getProducedTypeName());
-        }
-        Tree.SpecifierOrInitializerExpression se = null;
-        if (pn instanceof Tree.InitializerParameter) {
-            se = ((Tree.InitializerParameter) pn).getSpecifierExpression();
-        }
-        else if (pn instanceof Tree.ParameterDeclaration) {
-            Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) pn).getTypedDeclaration();
-            if (td instanceof Tree.MethodDeclaration) {
-                se = ((Tree.MethodDeclaration) td).getSpecifierExpression();
-            }
-            else if (td instanceof Tree.AttributeDeclaration) {
-                se = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
-            }
-        }
-        if (se!=null) {
-            checkAnnotationArgument(a, se.getExpression(), pt);
-        }
+    	if (!(p.getModel() instanceof Value)) {
+    		pn.addError("annotations may not have callable parameters");
+    	}
+    	else {
+    		ProducedType pt = p.getType();
+    		if (pt!=null && isIllegalAnnotationParameterType(pt)) {
+    			Node errorNode = pn instanceof Tree.ValueParameterDeclaration ?
+    					((Tree.ValueParameterDeclaration) pn).getTypedDeclaration().getType() : pn;
+    			errorNode.addError("illegal annotation parameter type: " + 
+    					pt.getProducedTypeName());
+    		}
+    		Tree.SpecifierOrInitializerExpression se = null;
+    		if (pn instanceof Tree.InitializerParameter) {
+    			se = ((Tree.InitializerParameter) pn).getSpecifierExpression();
+    		}
+    		else if (pn instanceof Tree.ParameterDeclaration) {
+    			Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) pn).getTypedDeclaration();
+    			if (td instanceof Tree.MethodDeclaration) {
+    				se = ((Tree.MethodDeclaration) td).getSpecifierExpression();
+    			}
+    			else if (td instanceof Tree.AttributeDeclaration) {
+    				se = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+    			}
+    		}
+    		if (se!=null) {
+    			checkAnnotationArgument(a, se.getExpression(), pt);
+    		}
+    	}
     }
     
     private void checkAnnotationArgument(Functional a, Tree.Expression e, ProducedType pt) {
