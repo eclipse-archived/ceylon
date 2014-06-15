@@ -755,7 +755,7 @@
             
             <synopsis>TupleType: "[" TypeList "]"</synopsis>
             
-            <synopsis>TypeList: (EntryType ",")* UnionType ("*"|"+")?</synopsis>
+            <synopsis>TypeList: (EntryType "="? ",")* (EntryType "="? | UnionType "*"|"+")</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -767,12 +767,17 @@
                 </listitem>
                 <listitem>
                     <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    for any type <literal>X</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>[X,Y]</literal> means 
-                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal> where 
-                    <literal>X,Y</literal> is a list of types of any length.</para>
+                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal> for 
+                    any types <literal>X,Y</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X,Y=]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;|Tuple&lt;X,X,[]&gt;</literal> 
+                    for any types <literal>X,Y</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -788,8 +793,19 @@
                     the principal instantiation <literal>Y[]</literal>, as defined in
                     <xref linkend="principalinstantiations"/>.</para>
                 </listitem>
+                <listitem>
+                    <para>A tuple type abbreviation of form <literal>[ ..., Y= ]</literal>
+                    means the type <literal>U|V</literal> where <literal>U</literal> is the 
+                    type meant by the whole tuple type abbreviation, and <literal>V</literal> 
+                    is the type meant by the type abbreviation formed by removing the last 
+                    type <literal>Y</literal> from the list of types in the whole tuple type 
+                    abbreviation.</para>
+                </listitem>
             </itemizedlist>
-                        
+            
+            <para>In a tuple type or callable type expression, an optional element indicated
+            with <literal>=</literal> must occur after all required elements.</para>
+            
             <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
             an arrow.</para>
                     
