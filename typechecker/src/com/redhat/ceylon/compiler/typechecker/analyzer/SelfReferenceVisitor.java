@@ -9,9 +9,9 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 /**
  * Validates that the initializer of a class does
  * not leak self-references to the instance being
@@ -36,8 +36,9 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = that.getDeclaration();
         if (member!=null && !typeDeclaration.isAlias()) {
             if ( !declarationSection && isInherited(that, member) ) {
-                that.addError("inherited member class may not be extended in initializer: " + 
-                        member.getName());
+                that.addError("inherited member class may not be extended in initializer of " +
+                    		typeDeclaration.getName() + ": " + member.getName() + 
+                    		" is inherited from " + ((Declaration) member.getContainer()).getName());
             }
         }
     }
@@ -47,8 +48,9 @@ public class SelfReferenceVisitor extends Visitor {
             Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
             if (member!=null) {
                 if (!declarationSection && isInherited(that, member)) {
-                    that.addError("inherited member may not be used in initializer: " + 
-                                member.getName());
+                    that.addError("inherited member may not be used in initializer of " +
+                    		typeDeclaration.getName() + ": " + member.getName() + 
+                    		" is inherited from " + ((Declaration) member.getContainer()).getName());
                 }
             }
         }
