@@ -1391,7 +1391,8 @@ public final class Array<Element>
         else {
             arraycopy(array, 0, result, 0, size);
         }
-        return new ArraySequence<Element>($reifiedElement, new Array<Element>($reifiedElement, result));
+        return new ArraySequence<Element>($reifiedElement, 
+        		new Array<Element>($reifiedElement, result));
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
@@ -1458,6 +1459,8 @@ public final class Array<Element>
                 arraycopy(array, sourcePosition, destination.array, 
                         destinationPosition, length);
         }
+        //TODO: can these cases even happen? If the Element 
+        //      type is the same, the array type is the same!
         else {
             for (int i=0; i<length; i++) {
                 int desti = i+destinationPosition;
@@ -1777,7 +1780,8 @@ public final class Array<Element>
             @Name("comparing")@FunctionalParameter("(x,y)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
             final Callable<? extends Comparison> comparing) {
-        java.util.List<Element> list = new java.util.AbstractList<Element>() {
+        java.util.List<Element> list = 
+        		new java.util.AbstractList<Element>() {
             @Override
             public Element get(int index) {
                 return Array.this.unsafeItem(index);
@@ -1797,7 +1801,8 @@ public final class Array<Element>
             }
             
         };
-        Comparator<Element> comparator = new Comparator<Element>() {
+        Comparator<Element> comparator = 
+        		new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = comparing.$call$(x, y);
                 if (result==larger_.get_()) return 1;
@@ -1807,4 +1812,20 @@ public final class Array<Element>
         };
         Collections.<Element>sort(list, comparator);
     }
+    
+//    @TypeInfo("ceylon.language::Array<Element&Object>")
+//    public Array<Element> coalescedArray() {
+//    	int resultSize = 0;
+//    	long size = getSize();
+//		for (int i=0; i<size; i++) {
+//    		if (unsafeItem(i)!=null) {
+//    			resultSize++;
+//    		}
+//    	}
+//        java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
+//        if (arrayElementClass==int.class) {
+//        	
+//        }
+//    }
+    
 }
