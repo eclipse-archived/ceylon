@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +18,12 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 
 public class TypeGenerator {
 
@@ -85,6 +90,8 @@ public class TypeGenerator {
         if (genIniter) {
             final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
             gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", gen.getNames().name(d), ",'", qns, "'");
+            final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
+                    : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size());
 
             if (extendedType != null) {
                 String fname = gen.typeFunctionName(extendedType.getType(),
@@ -94,7 +101,9 @@ public class TypeGenerator {
                 gen.out(",", GenerateJsVisitor.getClAlias(), "Basic");
             }
             if (satisfiedTypes != null) {
-                for (Tree.StaticType satType : satisfiedTypes.getTypes()) {
+                supers.addAll(satisfiedTypes.getTypes());
+                Collections.sort(supers, new StaticTypeComparator());
+                for (Tree.StaticType satType : supers) {
                     String fname = gen.typeFunctionName(satType, true);
                     gen.out(",", fname);
                 }
@@ -399,6 +408,51 @@ public class TypeGenerator {
             gen.out(gen.getNames().self(sub), ".", gen.getNames().setter(d), parentSuffix, "=",
                     gen.getNames().self(sub), ".", gen.getNames().setter(d));
             gen.endLine(true);
+        }
+    }
+
+    public static class StaticTypeComparator implements Comparator<Tree.StaticType> {
+
+        @Override
+        public int compare(StaticType o1, StaticType o2) {
+            final ProducedType t1 = o1.getTypeModel();
+            final ProducedType t2 = o2.getTypeModel();
+            if (t1.isUnknown()) {
+                return t2.isUnknown() ? 0 : -1;
+            }
+            if (t2.isUnknown()) {
+                return t1.isUnknown() ? 0 : -1;
+            }
+            if (t1.isSubtypeOf(t2)) {
+                return 1;
+            }
+            if (t2.isSubtypeOf(t1)) {
+                return -1;
+            }
+            //Check the members
+            for (Declaration d : t1.getDeclaration().getMembers()) {
+                if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
+                    Declaration d2 = t2.getDeclaration().getMember(d.getName(), null, false);
+                    if (d2 != null) {
+                        final Declaration dd2 = Util.getContainingDeclaration(d2);
+                        if (dd2 instanceof TypeDeclaration && t1.getDeclaration().inherits((TypeDeclaration)dd2)) {
+                            return 1;
+                        }
+                    }
+                }
+            }
+            for (Declaration d : t2.getDeclaration().getMembers()) {
+                if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
+                    Declaration d2 = t1.getDeclaration().getMember(d.getName(), null, false);
+                    if (d2 != null) {
+                        final Declaration dd2 = Util.getContainingDeclaration(d2);
+                        if (dd2 instanceof TypeDeclaration && t2.getDeclaration().inherits((TypeDeclaration)dd2)) {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            return 0;
         }
     }
 
