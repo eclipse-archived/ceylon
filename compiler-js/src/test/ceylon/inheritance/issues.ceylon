@@ -28,6 +28,7 @@ void testIssues() {
     check(e2 is Integer->Integer?&Object, "#351.1");
     check(i2 is {Integer?*}, "#351.2");
     check(!i1 is {Integer*}, "#351.3");
+    check(MyList360().string=="{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 }", "Issue 360 #1");
 }
 
 class Issue231_1(shared actual String string) {}
@@ -42,3 +43,13 @@ interface Issue266two{}
 interface Issue266three satisfies Issue266i<String>&Issue266two{}
 class Issue266_3() satisfies Issue266i<Issue266three> {}
 class Issue266_4() satisfies Issue266i<Issue266i<String>&Issue266two> {}
+
+class MyList360() extends Object() satisfies List<String> {
+    getFromFirst(Integer index) => index.string;
+    lastIndex => 100;
+    segment(Integer from, Integer length) => nothing;
+    span(Integer from, Integer to) => nothing;
+    spanFrom(Integer from) => nothing;
+    spanTo(Integer to) => nothing;
+    clone() => this;
+}
