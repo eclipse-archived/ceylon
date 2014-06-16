@@ -438,4 +438,11 @@ shared void strings() {
     check(("helloworld".getFromLast(9) else ' ')=='h', "string getFromLast(8)");
     check(!"helloworld".getFromLast(-1) exists, "string getFromLast(-1)");
     check(!"helloworld".getFromLast(10) exists, "string getFromLast(9)");
+    
+    check("hello".pad(10)=="  hello   ", "string pad");
+    check("hello".padLeft(10)=="     hello", "string padLeft");
+    check("hello".padRight(10)=="hello     ", "string padRight");
+    check("hello".pad(10,'-')=="--hello---", "string pad");
+    check("hello".padLeft(10,'-')=="-----hello", "string padLeft");
+    check("hello".padRight(10,'-')=="hello-----", "string padRight");
 }

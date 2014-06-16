@@ -1909,13 +1909,12 @@ public final class String
     }
     
     @Override @Ignore
-    @SuppressWarnings("rawtypes")
     public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
     withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
 
-    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore
     public static <Other>Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
     withLeading(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
@@ -1927,7 +1926,7 @@ public final class String
     public <Other> Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
-    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
         return instance(value).withTrailing($reifiedOther, e);
@@ -1938,7 +1937,7 @@ public final class String
     public <Other> Sequential append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
         return $ceylon$language$List$this.append($reifiedOther, e);
     }
-    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Iterable<? extends Other, ?> e) {
         return instance(value).append($reifiedOther, e);
@@ -2046,16 +2045,33 @@ public final class String
     	return instance(value).spread($reifiedResult, $reifiedArgs, method);
     }
     
-    public String pad(@Name("size") long size, @Name("character") int character) {
+    public java.lang.String pad(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
     	return pad(value, size, character);
     }
     
     @Ignore
-    public String pad(java.lang.String value, long size, int character) {
+    public java.lang.String pad(long size) {
+    	return pad(value, size, pad$character());
+    }
+    
+    @Ignore
+    public static java.lang.String pad(java.lang.String value, long size) {
+    	return pad(value, size, pad$character());
+    }
+    
+    @Ignore
+    public static int pad$character() {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String pad(java.lang.String value, long size, int character) {
     	int length = value.length();
-    	if (size<=length) return this;
-    	long rightPad = (size-length)/2;
-    	long leftPad = rightPad + (size-length)%2;
+    	if (size<=length) return value;
+    	long leftPad = (size-length)/2;
+    	long rightPad = leftPad + (size-length)%2;
     	java.lang.StringBuilder builder = new java.lang.StringBuilder();
     	for (int i=0;i<leftPad;i++) {
     		builder.appendCodePoint(character);
@@ -2064,40 +2080,74 @@ public final class String
     	for (int i=0;i<rightPad;i++) {
     		builder.appendCodePoint(character);
     	}
-    	return new String(builder.toString());
+    	return builder.toString();
     }
     
-    public String padLeft(@Name("size") long size, @Name("character") int character) {
+    public java.lang.String padLeft(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
     	return padLeft(value, size, character);
     }
     
     @Ignore
-    public String padLeft(java.lang.String value, long size, int character) {
+    public java.lang.String padLeft(long size) {
+    	return padLeft(value, size, padLeft$character());
+    }
+    
+    @Ignore
+    public static java.lang.String padLeft(java.lang.String value, long size) {
+    	return padLeft(value, size, padLeft$character());
+    }
+    
+    @Ignore
+    public static int padLeft$character() {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String padLeft(java.lang.String value, long size, int character) {
     	int length = value.length();
-    	if (size<=length) return this;
+    	if (size<=length) return value;
     	long leftPad = size-length;
     	java.lang.StringBuilder builder = new java.lang.StringBuilder();
     	for (int i=0;i<leftPad;i++) {
     		builder.appendCodePoint(character);
     	}
     	builder.append(value);
-    	return new String(builder.toString());
+    	return builder.toString();
     }
     
-    public String padRight(@Name("size") long size, @Name("character") int character) {
+    public java.lang.String padRight(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
     	return padRight(value, size, character);
     }
     
     @Ignore
-    public String padRight(java.lang.String value, long size, int character) {
+    public java.lang.String padRight(long size) {
+    	return padRight(value, size, padRight$character());
+    }
+    
+    @Ignore
+    public static java.lang.String padRight(java.lang.String value, long size) {
+    	return padRight(value, size, padRight$character());
+    }
+    
+    @Ignore
+    public static int padRight$character() {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String padRight(java.lang.String value, long size, int character) {
     	int length = value.length();
-    	if (size<=length) return this;
+    	if (size<=length) return value;
     	long rightPad = size-length;
     	java.lang.StringBuilder builder = new java.lang.StringBuilder(value);
     	for (int i=0;i<rightPad;i++) {
     		builder.appendCodePoint(character);
     	}
-    	return new String(builder.toString());
+    	return builder.toString();
     }
     
 }
