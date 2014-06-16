@@ -1001,7 +1001,7 @@ public class GenerateJsVisitor extends Visitor
         String fqn = d.getQualifiedNameString();
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
-        fqn = fqn.replace('.', '_').replace("::", "-");
+        fqn = fqn.replace('.', '/').replace("::", "/");
         return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
     }
 
