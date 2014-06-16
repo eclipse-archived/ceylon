@@ -603,7 +603,7 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "Produces a stream with a [[given initial element|head]], 
+    "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream."
     shared default {Element|Other+} following<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
@@ -632,14 +632,13 @@ shared interface Iterable<out Element, out Absent=Null>
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
      in the given stream."
-    see (`function expand`)
+    see (`function expand`, `function List.append`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
         object chained 
                 satisfies Iterable<Element|Other,Absent&OtherAbsent> {
-            shared actual Iterator<Element|Other> iterator() =>
-                    ChainedIterator(outer, other);
+            iterator() => ChainedIterator(outer, other);
         }
         return chained;
     }

@@ -255,28 +255,32 @@ shared interface List<out Element>
         }
     }
     
-    "A list containing all indexes of this list.  This is a 
+    "A list containing all indexes of this list. This is a 
      lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
     "Returns a new `List` that starts with the specified
-     element, followed by the elements of this list."
+     [[element]], followed by the elements of this list,
+     in the order they occur in this list."
     see (`function following`)
     shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)
             => [element, *this];
     
-    "Returns a new `List` that contains the specified
-     element appended to the end of the elements of this 
-     list."
+    "Returns a new `List` that starts with the elements of 
+     this list, in the order they occur in this list, and 
+     ends with the specified [[element]]."
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element)
             => [*(this chain Singleton(element))];
     
-    "Return a sequence containing the elements of this list, 
-     followed by the given [[elements]]."
+    "Return a sequence containing the elements of this 
+     list, in the order in which they occur in this list, 
+     followed by the given [[elements]] in the order in 
+     which they occur in the given stream."
+    see (`function concatenate`, `function chain`)
     shared default [Element|Other*] append<Other>({Other*} elements) 
             => [*(this chain elements)];
     
