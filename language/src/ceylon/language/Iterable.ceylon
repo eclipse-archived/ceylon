@@ -295,6 +295,21 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
+    "Given a [[method]] of the element type [[Element]], 
+     return a function that, when supplied with a list of 
+     method arguments, produces a new iterable object
+     that applies the `method` to each element of this 
+     iterable object in turn.
+     
+         {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
+         print(fun(0)); //prints { false, true, false }"
+    shared default Callable<Iterable<Result,Absent>,Args> spread<Result,Args>(
+        Callable<Result,Args> method(Element element))
+            given Args satisfies Anything[] 
+            //=> flatten((Args args) => map(shuffle(method)(*args)));
+            => flatten((Args args) 
+                => { for (elem in this) method(elem)(*args) });
+    
     "A sequence containing the elements of this stream, 
      sorted according to a [[comparator function|comparing]] 
      imposing a partial order upon the elements.

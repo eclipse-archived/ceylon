@@ -412,6 +412,12 @@ public class StringTokens
         return $ceylon$language$Category$this.containsAny(elements);
     }
     
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
+    
     @Override
     public java.lang.String toString() {
         return $ceylon$language$Iterable$this.toString();
@@ -422,4 +428,5 @@ public class StringTokens
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(StringTokens.class);
     }
+    
 }

@@ -2029,4 +2029,15 @@ public final class String
     	return value.compareTo(other.value)<=0;
     }
 
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>> 
+    spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
+    
+    @Ignore
+    public static <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>> 
+    spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, java.lang.String value, Callable<? extends Callable<? extends Result>> method) {
+    	return instance(value).spread($reifiedResult, $reifiedArgs, method);
+    }
 }

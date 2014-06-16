@@ -9,7 +9,6 @@ import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
-import ceylon.language.Iterator;
 import ceylon.language.List;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
@@ -138,7 +137,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Override
     @Ignore
-    public final <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+    public final <Result> java.lang.Object reduce(TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
     }
     
@@ -150,6 +149,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override @Ignore
     public final Element findLast(Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.findLast(selecting);
+    }
+    
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends Absent>> 
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
     }
 
     @Override @Ignore
@@ -216,7 +221,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public final <Other,Absent>Iterable chain(TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+    public final <Other,Absent>Iterable chain(TypeDescriptor $reifiedOther, TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
         return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
