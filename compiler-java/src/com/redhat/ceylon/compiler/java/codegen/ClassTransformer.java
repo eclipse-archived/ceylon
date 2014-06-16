@@ -354,6 +354,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     List.of(makeReifiedTypeArgument(iteratedType),
                                             sb.makeIdent(), make().Literal(0),
                                             naming.makeQualIdent(sb.makeIdent(), "length"),
+                                            makeEmpty(),
                                             make().Literal(false)), 
                                     null)));
                     classBuilder.method(

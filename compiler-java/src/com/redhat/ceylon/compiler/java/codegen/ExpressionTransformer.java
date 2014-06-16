@@ -1443,8 +1443,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (tail != null) {
                 args = args.append(tail);
             }
-            JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
-            return makeNewClass(typeExpr, args);
+            JCExpression typeExpr = makeJavaType(tupleType);
+            /* Tuple.instance(reifiedElement, new Object[]{elem, elem, elem}, tail) */
+            return make().TypeCast(typeExpr, make().Apply(
+                    List.<JCExpression>nil(), 
+                    naming.makeQualIdent(make().QualIdent(syms().ceylonTupleType.tsym), "instance"), 
+                    args));
         } else {
             return tail;
         }
