@@ -20,6 +20,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
+import static com.redhat.ceylon.ceylondoc.Util.getAnnotation;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.normalizeSpaces;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateCallable;
@@ -40,6 +41,8 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.typechecker.model.Annotated;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -320,8 +323,13 @@ public class LinkRenderer {
                 return processPackage(docLink.getPkg());
             }
         }
-
-        ceylonDocTool.warningBrokenLink(docLinkText, scope);
+        
+        if (scope instanceof Annotated) {
+            Annotation docAnnotation = getAnnotation(((Annotated) scope).getAnnotations(), "doc");
+            if (docAnnotation != null) {
+                ceylonDocTool.warningBrokenLink(docLinkText, scope);
+            }
+        }
 
         return getUnresolvableLink(docLinkText);
     }
