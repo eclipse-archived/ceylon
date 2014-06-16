@@ -184,6 +184,9 @@
 
     <target name="dist" depends="build"
             description="Create Ceylon JS compiler distribution">
+        <copy overwrite="true"
+              file="${json.lib}"
+              tofile="${build.dist.repo}/${json.repo}"/>
     </target>
 
     <target name="publish"
@@ -198,15 +201,7 @@
         </copy>
     </target>
 
-    <target name="ide" depends="dist,ide-quick">
-    </target>
-
-    <target name="ide-quick"
-            description="Copies the JS compiler jar and language module into the ceylon-ide-eclipse project">
-        <copy overwrite="true"
-              todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-              <fileset dir="${build.dist.repo}"/>
-        </copy>
+	<target name="ide-quick-internal">
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
