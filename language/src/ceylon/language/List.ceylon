@@ -316,6 +316,9 @@ shared interface List<out Element>
     "Determine if the given list occurs at some index in 
      this list."
     shared default Boolean includes(List<Anything> sublist) {
+        if (sublist.empty) {
+            return true;
+        }
         for (index in 0:size) {
             if (includesAt(index,sublist)) {
                 return true;
