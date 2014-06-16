@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -59,9 +60,40 @@ public final class Tuple<Element, First extends Element,
                 Rest extends Sequential<? extends Element>>
         implements ReifiedType, Sequence<Element> {
 
+    /** 
+     * A backing array. May be shared between many Tuple instances
+     * (Flyweight pattern).
+     */
+    @Ignore
+    final java.lang.Object[] array;
+    /** The index into {@link #array} that holds the first element of this tuple */
+    @Ignore
+    final int first;
+    /** The number of elements in {@link #array} that are in this tuple */
+    @Ignore
+    final int length;
+    
+    @Ignore
+    private TypeDescriptor $reifiedElement;
+    
+    /** 
+     * The rest of the elements, after those in the array.
+     * This should never be another Tuple instance though.
+     */
+    private Sequential rest;
+
+    /**
+     * The ultimate constructor
+     * @param $reifiedElement
+     * @param array A backing array
+     * @param first index into the {@code array} of the first element of this tuple
+     * @param length number of elements in the {@code array} that are part of this tuple
+     * @param rest index into the {@code array} of the first element of the {@code rest} of this tuple
+     * @param copy whether to copy the array of not.
+     */
     @Ignore
     public Tuple(@Ignore TypeDescriptor $reifiedElement, 
-            java.lang.Object[] array, long first, long length, boolean copy) {
+            java.lang.Object[] array, long first, long length, Sequential rest, boolean copy) {
         this.$ceylon$language$Category$this = 
                 new Category$impl<java.lang.Object>(Object.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this = 
@@ -101,8 +133,31 @@ public final class Tuple<Element, First extends Element,
             this.first = Util.toInt(first);
         }
         this.length = Util.toInt(length);
+        this.rest = rest;
+        
+        if (this.length == 0) {
+            throw new AssertionError("");
+        }
+        if (this.array == null) {
+            throw new AssertionError("");
+        }
+        if (this.array.length == 0) {
+            throw new AssertionError("");
+        }
+        if (this.rest == null) {
+            throw new AssertionError("");
+        }
+        if (this.first < 0) {
+            throw new AssertionError("");
+        }
+        if (this.first + this.length > this.array.length) {
+            throw new AssertionError("");
+        }
     }
     
+    /**
+     * The Ceylon initializer constructor
+     */
     public Tuple(@Ignore
             final TypeDescriptor $reifiedElement, 
             @Ignore
@@ -114,60 +169,72 @@ public final class Tuple<Element, First extends Element,
             final First first, @Name("rest")
             @TypeInfo("Rest")
             final Rest rest) {
-        this($reifiedElement, makeArray(first, rest));
+        this($reifiedElement, makeArray(first, rest), makeRest(rest));
     }
-    
+    // where
     @Ignore
-    public Tuple(TypeDescriptor $reifiedElement, 
-    		java.lang.Object[] elements) {
-        this($reifiedElement, elements, 0, elements.length, false);
+    private Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] array,
+            Sequential<?> rest) {
+        this($reifiedElement, array, 0, array.length, rest, false);
     }
-    
-    @Ignore
-    public Tuple(TypeDescriptor $reifiedElement, 
-    		java.lang.Object[] elements, 
-    		Sequential<?> tail) {
-        this($reifiedElement, makeArray(elements, tail));
-    }
-    
-    private static java.lang.Object[] makeArray(java.lang.Object first, 
-    		Sequential<?> rest) {
-        java.lang.Object[] elements = 
-        		new java.lang.Object[Util.toInt(rest.getSize() + 1)];
-        elements[0] = first;
-        copyToArray(rest, elements, 1);
-        return elements;
-    }
-    
-    private static java.lang.Object[] makeArray(java.lang.Object[] array, 
-    		Sequential<?> tail) {
-        java.lang.Object[] elements = Arrays.copyOf(array, 
-        		array.length + Util.toInt(tail.getSize()));
-        copyToArray(tail, elements, array.length);
-        return elements;
-    }
-    
-    private static void copyToArray(Sequential<?> seq, 
-    		java.lang.Object[] array, int offset) {
-        Iterator<?> iter = seq.iterator();
-        int i = offset;
-        for (java.lang.Object elem = iter.next(); 
-        		elem != ceylon.language.finished_.get_(); 
-        		elem = iter.next()) {
-            array[i++] = elem;
+    private static java.lang.Object[] makeArray(java.lang.Object first,
+            Sequential<?> rest) {
+        final java.lang.Object[] array;
+        if (rest instanceof Tuple) {
+            Tuple other = (Tuple)rest;
+            array = new java.lang.Object[1 + other.length];
+            array[0] = first;
+            System.arraycopy(other.array, other.first, array, 1, other.length);
+            rest = other.rest;
+        } else {
+            array = new java.lang.Object[]{first};
         }
+        return array;
+    }
+    private static Sequential<?> makeRest(Sequential<?> rest) {
+        if (rest instanceof Tuple) {
+            return ((Tuple)rest).rest;
+        }
+        return rest;
     }
     
     @Ignore
-    protected Tuple<Element, ? extends First, ? extends Rest> 
-    backedBy$hidden(Element[] array, long first, long length) {
-        return new Tuple<Element, First, Rest>($getReifiedElement$(), 
-        		array, first, length, false);
+    public Tuple(TypeDescriptor $reifiedElement, 
+            java.lang.Object[] elements) {
+        this($reifiedElement, elements, 0, elements.length, empty_.get_(), false);
+    }
+    
+
+    /**
+     * The constructor used by the transformation of {@code [foo, bar *baz]}
+     */
+    @Ignore
+    public static Tuple instance(TypeDescriptor $reifiedElement, 
+            java.lang.Object[] elements, 
+            Sequential<?> tail) {
+        Sequential<?> rest;
+        java.lang.Object[] array;
+        if (tail instanceof Tuple) {
+            Tuple<?,?,?> other = (Tuple<?,?,?>)tail;
+            array = new java.lang.Object[elements.length + other.length];
+            System.arraycopy(elements, 0, array, 0, elements.length);
+            System.arraycopy(other.array, other.first, array, elements.length, other.length);
+            rest = other.rest;
+        } else {
+            array = elements;
+            rest = tail;
+        }
+        return new Tuple($reifiedElement, array, 0, array.length, rest, false);
+    }
+    
+    public static Tuple instance(TypeDescriptor $reifiedElement, 
+            java.lang.Object[] elements) {
+        return instance($reifiedElement, elements, empty_.get_());
     }
     
     @Ignore
     protected TypeDescriptor $getReifiedElement$() {
-        return $getUnionOfAllType(0);
+        return ((TypeDescriptor.Class)$getType$()).getTypeArguments()[0];
     }
     
     @Annotations({
@@ -187,12 +254,12 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("Rest")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Rest getRest() {
-        if (length==1) {
+        if (getSize()==1) {
             return (Rest)empty_.get_();
         }
         else {
-        	return (Rest) new Tuple($getUnionOfAllType(1),
-            		array, first+1, length-1, false);
+            return (Rest) new Tuple(((TypeDescriptor.Class)((TypeDescriptor.Class)$getType$()).getTypeArguments()[2]).getTypeArguments()[0],
+                    array, first+1, length-1, rest, false);
         }
     }
 
@@ -203,7 +270,7 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Integer")
     @Transient
     public final long getSize() {
-        return length;
+        return length + rest.getSize();
     }
     
     @Annotations({
@@ -214,8 +281,10 @@ public final class Tuple<Element, First extends Element,
     public final Element getFromFirst(@Name("index")
     @TypeInfo("ceylon.language::Integer")
     final long index) {
-        if (index < 0 || index >= length) {
+        if (index < 0) {
             return null;
+        } else if (index >= length) {
+            return (Element)rest.getFromFirst(index-length);
         }
         else {
             return (Element)array[toInt(index)+first];
@@ -225,8 +294,10 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     @Override
     public Element getFromLast(long index) {
-        if (index < 0 || index >= length) {
+        if (index < 0) {
             return null;
+        } else if (index >= length) {
+            return (Element)rest.getFromLast(index - this.length);
         }
         return (Element)array[length-1-toInt(index)+first];
     }
@@ -244,7 +315,7 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Integer")
     @Transient
     public final ceylon.language.Integer getLastIndex() {
-        return Integer.instance(length - 1);
+        return Integer.instance(length + rest.getSize() - 1);
     }
     
     @Annotations({
@@ -254,6 +325,9 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("Element")
     @Transient
     public final Element getLast() {
+        if (!rest.getEmpty()) {
+            return (Element)rest.getLast();
+        }
         return (Element)array[first + length - 1];
     }
     
@@ -265,9 +339,15 @@ public final class Tuple<Element, First extends Element,
     @Transient
     public final ceylon.language.Sequence<? extends Element> 
     getReversed() {
-        Element[] reversed = reversedCopy$priv$((Element[])array, 
-                first, length);
-        return backedBy$hidden(reversed, 0, length);
+        java.lang.Object[] reversed = new java.lang.Object[Util.toInt(getSize())];
+        int jj = 0;
+        for (int ii = Util.toInt(this.rest.getSize())-1; ii >= 0; ii--) {
+            reversed[jj++] = rest.getFromFirst(ii);
+        }
+        for (int ii = this.first+this.length-1; ii >= this.first; ii--) {
+            reversed[jj++] = this.array[ii];
+        }
+        return new Tuple($reifiedElement, reversed, 0, reversed.length, empty_.get_(), false);
     }
     
     @Override
@@ -315,8 +395,7 @@ public final class Tuple<Element, First extends Element,
         } else {
             l = length;
         }
-        return backedBy$hidden((Element[])array, 
-                fromIndex+first, l);
+        return new Tuple($reifiedElement, array, fromIndex+first, l, empty_.get_(), false);
     }
     
     @Annotations({
@@ -345,14 +424,17 @@ public final class Tuple<Element, First extends Element,
         fromIndex= Math.max(fromIndex, 0);
         toIndex = Math.min(toIndex, lastIndex);
         if (reverse) {
-            Element[] sub = reversedCopy$priv$((Element[])array, 
-                    Util.toInt(first+fromIndex), Util.toInt(toIndex-fromIndex+1));
-            return backedBy$hidden(sub, 0, sub.length);
+            int fromInt = Util.toInt(fromIndex);
+            int toInt = Util.toInt(toIndex);
+            java.lang.Object[] reversed = new java.lang.Object[toInt-fromInt+1];
+            for (int ii = toInt, jj = 0; ii >= fromIndex; ii--, jj++) {
+                reversed[jj] = getFromFirst(ii);
+            }
+            return new Tuple($reifiedElement, reversed, 0, reversed.length, empty_.get_(), false);
         }
         else {
-            return backedBy$hidden((Element[])array, 
-                    first+fromIndex, 
-                    toIndex-fromIndex+1);
+            return new Tuple<Element, First, Rest>($getReifiedElement$(), 
+                    this.array, first+fromIndex, toIndex-fromIndex+1, empty_.get_(), false);
         }
     }
     
@@ -397,7 +479,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @TypeInfo("ceylon.language::Iterator<Element>")
     public ceylon.language.Iterator<Element> iterator() {
-        return new ArrayListIterator();
+        return new TupleIterator();
     }
     
     @Annotations({
@@ -412,7 +494,7 @@ public final class Tuple<Element, First extends Element,
             java.lang.Object x = array[first+ii];
             if (x!=null && element.equals(x)) return true;
         }
-        return false;
+        return rest.contains(element);
     }
     
     @Ignore
@@ -424,12 +506,28 @@ public final class Tuple<Element, First extends Element,
         TypeDescriptor type = $cachedType != null ? 
         		$cachedType.get() : null;
         if (type == null) {
-            type = $getType(0);
+            type = foo();
             $cachedType = new SoftReference<TypeDescriptor>(type);
         }
         return type;
     }
     
+    private TypeDescriptor foo() {
+        TypeDescriptor restType = getTypeDescriptor(rest);
+        TypeDescriptor elementType = Metamodel.getIteratedTypeDescriptor(restType);
+        for (int ii = length-1 ;ii >= 0; ii--) {
+            
+            TypeDescriptor e = $getElementType(ii);
+            elementType = TypeDescriptor.union(elementType, e);
+            restType = TypeDescriptor.klass(Tuple.class, 
+                    elementType, 
+                    e, 
+                    restType);
+        }
+        return restType;
+    }
+    
+    /*
     @Ignore
     private TypeDescriptor $getType(int offset) {
         if (offset < getSize()) {
@@ -451,7 +549,7 @@ public final class Tuple<Element, First extends Element,
         }
         return TypeDescriptor.union(types);
     }
-    
+    */
     @Ignore
     private TypeDescriptor $getElementType(int index) {
         return getTypeDescriptor(array[first + index]);
@@ -485,22 +583,6 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     private final Sequence$impl<Element> 
     $ceylon$language$Sequence$this;
-
-    /** 
-     * A backing array. Maybe shared between many ArraySequence instances
-     * (Flyweight pattern).
-     */
-    @Ignore
-    final java.lang.Object[] array;
-    /** The index into {@link #array} that holds the first element of this sequence */
-    @Ignore
-    final int first;
-    /** The number of elements in {@link #array} that are in this sequence */
-    @Ignore
-    final int length;
-    
-    @Ignore
-    private TypeDescriptor $reifiedElement;
     
     @Ignore
     @Override
@@ -555,50 +637,38 @@ public final class Tuple<Element, First extends Element,
     public boolean getEmpty() {
         return false;
     }
-
-    /** 
-     * A copy of the given elements of the given array, but in reversed order. 
-     */
-    private static <Element> Element[] 
-            reversedCopy$priv$(Element[] array, int first, 
-                    int length) {
-        java.lang.Object[] reversed = new java.lang.Object[length];
-        for (int i = 0; i < length; i++) {
-            reversed[length-1-i] = array[first+i];
-        }
-        return (Element[])reversed;
-    }
     
     @Ignore
     @Override
     public boolean defines(@Name("key") Integer key) {
         long ind = key.longValue();
-        return ind>=0 && ind<length;
+        return ind>=0 && ind<length || rest.defines(Integer.instance(ind-this.length));
     }
 
     @Ignore
-    private class ArrayListIterator 
+    private class TupleIterator 
             extends AbstractIterator<Element> {
 
-        private ArrayListIterator() {
+        private TupleIterator() {
             super($getReifiedElement$());
         }
 
         private long idx = first;
+        
+        private Iterator<Element> restIter = rest.iterator(); 
 
         @Override
         public java.lang.Object next() {
-            if (idx <= getLastIndex().longValue()+first) {
+            if (idx < first+length) {
                 return array[Util.toInt(idx++)];
-            }
-            else {
-                return finished_.get_();
+            } else {
+                return restIter.next();
             }
         }
 
         @Override
         public java.lang.String toString() {
-            return "ArrayArrayListIterator";
+            return "TupleIterator";
         }
 
     }
@@ -659,7 +729,7 @@ public final class Tuple<Element, First extends Element,
             java.lang.Object x = array[first+ii];
             if (x!=null && f.$call$(x).booleanValue()) count++;
         }
-        return count;
+        return count + rest.count(f);
     }
 
     @Override
@@ -749,7 +819,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @Ignore
     public Sequence<? extends Element> sequence() {
-        return $ceylon$language$Sequence$this.sequence();
+        return this;//$ceylon$language$Sequence$this.sequence();
     }
 
     @Override @Ignore
@@ -838,11 +908,11 @@ public final class Tuple<Element, First extends Element,
     }
     @Override @Ignore
     public boolean longerThan(long length) {
-        return this.length>length;
+        return this.length+rest.getSize() > length;
     }
     @Override @Ignore
     public boolean shorterThan(long length) {
-        return this.length<length;
+        return this.length+rest.getSize() < length;
     }
     @Override @Ignore
     public Iterable<? extends Element, ?> 
@@ -904,7 +974,7 @@ public final class Tuple<Element, First extends Element,
     	java.lang.Object[] array = new java.lang.Object[length+1];
     	array[0] = e;
     	arraycopy(this.array, first, array, 1, length);
-        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+        return new Tuple(TypeDescriptor.union($reifiedElement,$reifiedOther), array);
     }
     
     @SuppressWarnings({ "rawtypes" })
@@ -918,7 +988,7 @@ public final class Tuple<Element, First extends Element,
     	java.lang.Object[] array = new java.lang.Object[length+1];
     	arraycopy(this.array, first, array, 0, length);
     	array[length] = e;
-        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+        return new Tuple(TypeDescriptor.union($reifiedElement,$reifiedOther), array);
     }
     
     @SuppressWarnings({ "rawtypes" })
@@ -932,8 +1002,13 @@ public final class Tuple<Element, First extends Element,
     	Sequential<?> sequence = es.sequence();
     	java.lang.Object[] array = new java.lang.Object[length+Util.toInt(sequence.getSize())];
     	arraycopy(this.array, first, array, 0, length);
-    	copyToArray(sequence, array, length);
-        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+    	int ii = length;
+    	Iterator iter = sequence.iterator();
+    	java.lang.Object o;
+    	while (!((o = iter.next()) instanceof Finished)) {
+    	    array[ii++] = o;
+    	}
+        return new Tuple(TypeDescriptor.union($reifiedElement,$reifiedOther), array);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
@@ -1027,7 +1102,10 @@ public final class Tuple<Element, First extends Element,
     /** Gets the underlying array. Used for iteration using a C-style for */
     @Ignore
     public java.lang.Object[] $getArray$() {
-        return array;
+        if (rest instanceof Empty) {
+            return array;
+        } 
+        return null;
     }
     
     /** Gets the underlying first index. Used for iteration using a C-style for */
@@ -1039,7 +1117,7 @@ public final class Tuple<Element, First extends Element,
     /** Gets the underlying length. Used for iteration using a C-style for */
     @Ignore
     public int $getLength$() {
-        return length;
+        return Util.toInt(length + rest.getSize());
     }
 
     @Override @Ignore

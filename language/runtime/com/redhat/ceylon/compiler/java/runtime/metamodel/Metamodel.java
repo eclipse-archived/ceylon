@@ -179,8 +179,7 @@ public class Metamodel {
             return getJavaTypeDescriptor(instance.getClass());
     }
     
-    public static TypeDescriptor getIteratedTypeDescriptor(Iterable iter) {
-        TypeDescriptor td = getTypeDescriptor(iter);
+    public static TypeDescriptor getIteratedTypeDescriptor(TypeDescriptor td) {
         return getTypeDescriptorForProducedType(
                 moduleManager.getModelLoader().getUnit().getIteratedType(
                         getProducedType(td)));
