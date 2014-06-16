@@ -12,7 +12,8 @@ shared Element[] concatenate<Element>(
  return a new stream with all the elements of the nested
  iterables. If there are no arguments, or if none of the 
  arguments contains any elements, return an empty iterable."
-see (`function concatenate`)
+see (`function concatenate`, 
+     `function Iterable.chain`)
 shared Iterable<Element,OuterAbsent|InnerAbsent>
         expand<Element,OuterAbsent,InnerAbsent>
         (Iterable<Iterable<Element,InnerAbsent>,OuterAbsent> iterables)
