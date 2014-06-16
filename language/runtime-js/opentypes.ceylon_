@@ -206,15 +206,6 @@ shared class OpenTypeParam() satisfies TypeParameter {
     shared actual String qualifiedName { throw Exception("TypeParameter.qname"); }
 }
 
-shared class OpenTvar(TypeParameter p) satisfies OpenTypeVariable {
-    shared actual TypeParameter declaration => p;
-}
-shared class FreeUnion(List<OpenType> ts) satisfies OpenUnion {
-    shared actual List<OpenType> caseTypes => ts;
-}
-shared class FreeIntersection(List<OpenType> ts) satisfies OpenIntersection {
-    shared actual List<OpenType> satisfiedTypes => ts;
-}
 class FunParamDecl() satisfies FunctionDeclaration {
   shared actual Boolean parameter=true;
   shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }

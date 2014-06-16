@@ -8,16 +8,16 @@ atr$(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments',func
       var otp=OpenTypeParam(this.declaration.tipo,tpn);
       var targ;
       if (rtp===undefined) {
-        targ = OpenTvar(otp);
+        targ = OpenTvar$jsint(otp);
       } else if (typeof(rtp)==='string') {
-        targ = OpenTvar(OpenTypeParam(this.declaration.tipo,rtp));
+        targ = OpenTvar$jsint(OpenTypeParam(this.declaration.tipo,rtp));
       } else {
         if (rtp.t==='i'||rtp.t==='u') {
           //resolve case types
           var nrtp={t:rtp.t,l:[]};
           for (var i=0;i<rtp.l.length;i++) {
             var _ct=rtp.l[i];
-            nrtp.l.push(typeof(_ct)==='string'?OpenTvar(OpenTypeParam(this.declaration.tipo,_ct)):_ct);
+            nrtp.l.push(typeof(_ct)==='string'?OpenTvar$jsint(OpenTypeParam(this.declaration.tipo,_ct)):_ct);
           }
           rtp=nrtp;
         }
