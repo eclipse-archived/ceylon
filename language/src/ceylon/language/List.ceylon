@@ -262,10 +262,10 @@ shared interface List<out Element>
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this list."
     see (`function following`)
-    shared default [Other|Element+] withLeading<Other>(
+    shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)
-            => [*(Singleton(element) chain this)];
+            => [element, *this];
     
     "Returns a new `List` that contains the specified
      element appended to the end of the elements of this 
@@ -274,6 +274,11 @@ shared interface List<out Element>
             "The last element of the resulting sequence."
             Other element)
             => [*(this chain Singleton(element))];
+    
+    "Return a sequence containing the elements of this list, 
+     followed by the given [[elements]]."
+    shared default [Element|Other*] append<Other>({Other*} elements) 
+            => [*(this chain elements)];
     
     "Determine if the given list occurs at the start of this 
      list."

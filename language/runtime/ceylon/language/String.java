@@ -1910,18 +1910,16 @@ public final class String
     
     @Override @Ignore
     @SuppressWarnings("rawtypes")
-    public <Other> Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
+    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
 
     @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <Other>Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, 
+    public static <Other>Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
+    withLeading(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
-        if (value.isEmpty()) {
-            return new Singleton($reifiedOther, e);
-        } else {
-            return instance(value).withLeading($reifiedOther, e);
-        }
+        return instance(value).withLeading($reifiedOther, e);
     }
 
     @Override @Ignore
@@ -1932,11 +1930,18 @@ public final class String
     @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
-        if (value.isEmpty()) {
-            return new Singleton($reifiedOther, e);
-        } else {
-            return instance(value).withTrailing($reifiedOther, e);
-        }
+        return instance(value).withTrailing($reifiedOther, e);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> Sequential append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
+        return $ceylon$language$List$this.append($reifiedOther, e);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, Iterable<? extends Other, ?> e) {
+        return instance(value).append($reifiedOther, e);
     }
 
     @Override

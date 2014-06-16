@@ -1394,14 +1394,21 @@ public final class Array<Element>
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Sequence 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
+    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Element>> 
+    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
+    
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequence 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> Sequential 
+    append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
+        return $ceylon$language$List$this.append($reifiedOther, e);
     }
 
     @Ignore

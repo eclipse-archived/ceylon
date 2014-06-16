@@ -76,6 +76,11 @@ shared interface Sequence<out Element>
         return s;
     }
     
+    "Return a nonempty sequence containing the elements of 
+     this sequence, followed by the given [[elements]]."
+    shared actual default [Element|Other+] append<Other>({Other*} elements) 
+            => [*(this chain elements)];
+        
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
     
@@ -99,7 +104,4 @@ shared interface Sequence<out Element>
     shared actual default Element[] repeat(Integer times)
             => (super of Element[]).repeat(times);
     
-    shared actual default [Other,Element+] following<Other>(Other head)
-            => [head,*this];
-
 }

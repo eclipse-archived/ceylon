@@ -80,7 +80,7 @@ shared interface Empty of e
     "Returns an `Empty`."
     shared actual [] indexed => this;
     
-    "Returns `other`."
+    "Returns the given [[other]] iterable object."
     shared actual Iterable<Other,OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null 
@@ -133,14 +133,17 @@ shared interface Empty of e
     
     shared actual [] by(Integer step) => this;
     
-    shared actual [Element] withLeading<Element>
-            (Element element) => [element];
+    shared actual [Other] withLeading<Other>(Other element) 
+            => [element];
     
-    shared actual [Element] withTrailing<Element>
-            (Element element) => [element];
+    shared actual [Other] withTrailing<Other>(Other element) 
+            => [element];
     
-    shared actual [Other] following<Other>(Other head) 
-            => [head];
+    shared actual [Other*] append<Other>({Other*} elements) 
+            => [*elements];
+    
+    shared actual {Other+} following<Other>(Other head) 
+            => { head };
     
 }
 

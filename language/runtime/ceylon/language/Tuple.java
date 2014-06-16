@@ -891,10 +891,9 @@ public final class Tuple<Element, First extends Element,
                 $reifiedOtherAbsent, other);
     }
     @Override @Ignore 
-    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequence<? extends Element>> 
+    public <Other> Iterable
     following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Sequence$this.following($reifiedOther, 
-                other);
+        return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> 
@@ -911,6 +910,12 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
     
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> Sequence
+    append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
+        return $ceylon$language$Sequence$this.append($reifiedOther, e);
+    }
+
     @Override @Ignore
     public Sequential<? extends Element> 
     trim(Callable<? extends Boolean> characters) {
