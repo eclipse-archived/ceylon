@@ -3,26 +3,25 @@ import check { ... }
 
 shared void test() {
     value name = "hello";
-    print(name);
     Foo foo = Foo("goodbye");
-    printBoth(name, foo.name);
-    printBoth{y="y"; x="x";};
+    check(printBoth(name, foo.name)=="hello, goodbye");
+    check(printBoth{y="y"; x="x";}=="x, y");
     foo.inc(); foo.inc();
     check(foo.count == 3, "Foo.count");
     check(foo.string == "Foo(goodbye)", "Foo.string");
-    foo.printName();
-    Bar().printName();
-    Bar().Inner();
+    check(foo.printName() == "foo.name=goodbye");
+    check(Bar().printName() == "bar.name=Hello,foo.name=Hello,foo.name=Hello");
+    check("``Bar().Inner()``"=="creating inner class of: Hello");
     doIt(foo.inc);
     check(foo.count == 5, "Foo.count [2]");
     doIt(Bar);
     print(foob.name);
     object x {
-        shared void y() {
-            print("xy");
+        shared String y() {
+            return "xy";
         }
     }
-    x.y();
+    check(x.y()=="xy");
     Bar b = Bar();
     b.Inner().incOuter();
     b.Inner().incOuter();
