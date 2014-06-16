@@ -2221,7 +2221,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs*.member</literal></entry>
             <entry>spread attribute</entry>
             <entry><literal>[ for (X x in lhs) x.member ]</literal></entry>
-            <entry><literal>X[]</literal></entry>
+            <entry><literal>{X*}</literal></entry>
             <entry>attribite of <literal>X</literal> of
             type <literal>T</literal></entry>
             <entry><literal>T[]</literal></entry>
@@ -2231,7 +2231,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs*.member</literal></entry>
             <entry>spread method</entry>
             <entry></entry>
-            <entry><literal>X[]</literal></entry>
+            <entry><literal>{X*}</literal></entry>
             <entry>method of <literal>X</literal> of
             callable type <literal>Callable &lt;T,P&gt;</literal></entry>
             <entry><literal>Callable &lt;T[],P&gt;</literal></entry>
