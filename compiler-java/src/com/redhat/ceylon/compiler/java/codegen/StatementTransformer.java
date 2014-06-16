@@ -1241,9 +1241,6 @@ public class StatementTransformer extends AbstractTransformer {
         
         transformation = stringIteration(stmt, baseIterable, step);
         if (transformation == null) {
-            transformation = tupleIteration(stmt, baseIterable, step);
-        }
-        if (transformation == null) {
             transformation = arrayIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
@@ -1651,84 +1648,6 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
     
-    /**
-     * Optimized transformation for a {@code for} loop where the iterable is 
-     * statically known to be a {@code Tuple}, and therefore can be 
-     * iterated using a C-style {@code for}.
-     * <pre>
-     * Object[] arr = tup.$getArray$();
-     * int length = tup.$getFirst$() + tup.get$Length$();
-     * for (int i = tup.$getFirst$(), i < length; i++) {
-     *     ELEMENT_TYPE element = (ELEMENT_TYPE)arr[i];
-     *     TRANSFORMED_BLOCK
-     * }
-     * </pre>
-     */
-    final class TupleIterationOptimization extends IndexedAccessIterationOptimization {
-        
-        private final Naming.SyntheticName seqName;
-        
-        TupleIterationOptimization(Tree.ForStatement stmt, 
-                Tree.Term baseIterable, Tree.Term step,
-                ProducedType elementType) {
-            super(stmt, baseIterable, step, elementType, "array");
-            seqName = naming.alias("seq");
-        }
-        
-        protected JCExpression makeIndexableType() {
-            return make().TypeArray(make().Type(syms().objectType));
-        }
-        
-        @Override
-        protected JCExpression makeIndexable() {
-            Tree.Term iterable = getIterable();
-            return make().Apply(null,
-                    naming.makeQualIdent(
-                            seqName.makeIdent(), "$getArray$"),
-                    List.<JCExpression>nil());
-        }
-        
-        @Override
-        protected JCExpression makeLengthExpr() {
-            return make().Binary(JCTree.PLUS, 
-                    make().Apply(null,
-                        naming.makeQualIdent(seqName.makeIdent(), "$getLength$"),
-                        List.<JCExpression>nil()),
-                    make().Apply(null,
-                        naming.makeQualIdent(seqName.makeIdent(), "$getFirst$"),
-                        List.<JCExpression>nil()));
-        }
-        
-        @Override
-        protected JCExpression makeIndexInit() {
-            return make().Apply(null,
-                    naming.makeQualIdent(seqName.makeIdent(), "$getFirst$"),
-                    List.<JCExpression>nil());
-        }
-        
-        @Override
-        protected JCExpression makeIndexedAccess() {
-            JCArrayAccess expr = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
-            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel());
-            ProducedType t;
-            if (isValueIterator()) {
-                t = elementType;
-            } else {
-                t = typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType());
-            }
-            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, t);
-        }
-        
-        protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> stmts = super.transformForClause();
-            
-            stmts.prepend(makeVar(FINAL, seqName,
-                    makeJavaType(getIterable().getTypeModel()),
-                    expressionGen().transformExpression(getIterable())));
-            return stmts;
-        }
-    }
-    
     private ForStatementTransformation arrayIteration(Tree.ForStatement stmt, 
             Tree.Term baseIterable, 
             Tree.Term step) {
@@ -1767,22 +1686,6 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.ArrayIterationStatic, "static type of iterable in for statement is not Array");
         }
         return null;
-    }
-    
-    private ForStatementTransformation tupleIteration(Tree.ForStatement stmt, 
-            Tree.Term baseIterable, Tree.Term step) {
-        if (isOptimizationDisabled(stmt, Optimization.TupleIterationStatic)) {
-            return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
-                    "optimization explicitly disabled by @disableOptimization");
-        }
-        
-        ProducedType iterableType = baseIterable.getTypeModel();
-        if (iterableType.getSupertype(typeFact().getTupleDeclaration()) == null) {
-            return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
-                    "static type of iterable in for statement is not Tuple");
-        }
-        return new TupleIterationOptimization(stmt, baseIterable, step, 
-                typeFact().getIteratedType(iterableType));
     }
     
     /**
