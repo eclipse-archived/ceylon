@@ -1011,6 +1011,7 @@ public class GenerateJsVisitor extends Visitor
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             if (d.isClassOrInterfaceMember()) {
+                if (d instanceof Value)return true;//Native values are defined as attributes
                 out(names.self((TypeDeclaration)d.getContainer()), ".");
             }
             out(names.name(d), ".$crtmm$=");
