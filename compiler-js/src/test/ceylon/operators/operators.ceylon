@@ -171,11 +171,11 @@ void testOtherOperators() {
 void testCollectionOperators() {
     value seq1 = [ "one", "two" ];
     String s1 = seq1[0]; //not optional anymore!
-    check(s1=="one", "lookup");
+    check(s1=="one", "lookup 1");
     String|Null s2 = seq1[2]; //not optional anymore!
-    check(!s2 exists, "lookup");
+    check(!s2 exists, "lookup 2");
     String|Null s3 = seq1[-1]; //not optional anymore!
-    check(!s3 exists, "lookup");
+    check(!s3 exists, "lookup 3");
     //variable Sequence<String>? unsafe = seq1;
     //check(unsafe?[0] exists, "safe index");
     //unsafe = null;
@@ -195,16 +195,16 @@ Integer? nullsafeTest(Integer? f()) {
 
 void testNullsafeOperators() {
     String[] seq = [ "hi" ];
-    String s1 = seq[0] else "null";
+    String s1 = seq[0] else "nuLl";
     check(s1=="hi", "default 1");
-    String s2 = seq[1] else "null";
-    check(s2=="null", "default 2");
+    String s2 = seq[1] else "nuLl";
+    check(s2=="nuLl", "default 2");
     
     String? s3 = null;
     String? s4 = "test";
-    String s5 = s3?.uppercased else "null";
+    String s5 = s3?.uppercased else "nuLl";
     String s6 = s4?.uppercased else "null";
-    check(s5=="null", "nullsafe member 1");
+    check(s5=="nuLl", "nullsafe member 1");
     check(s6=="TEST", "nullsafe member 2");
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
