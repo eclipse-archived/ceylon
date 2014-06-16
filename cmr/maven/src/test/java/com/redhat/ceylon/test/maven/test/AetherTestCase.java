@@ -223,6 +223,8 @@ public class AetherTestCase extends AbstractAetherTest {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
             Assert.assertNotNull(result.filter());
+            Assert.assertTrue(result.filter().accept("org/osgi/test"));
+            Assert.assertFalse(result.filter().accept("com/redhat/test"));
         } finally {
             if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one

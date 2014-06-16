@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 
@@ -38,7 +39,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private volatile File artifact;
     private volatile boolean checked;
 
-    private String filter;
+    private PathFilter filter;
 
     protected AbstractArtifactResult(String name, String version) {
         this.name = name;
@@ -77,11 +78,11 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
     protected abstract File artifactInternal();
 
-    public String filter() {
+    public PathFilter filter() {
         return filter;
     }
 
-    protected void setFilterInternal(String filter) {
+    protected void setFilterInternal(PathFilter filter) {
         this.filter = filter;
     }
 

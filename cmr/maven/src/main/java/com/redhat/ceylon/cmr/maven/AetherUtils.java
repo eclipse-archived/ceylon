@@ -29,12 +29,14 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.util.PathFilterParser;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.Resolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
@@ -190,12 +192,12 @@ public class AetherUtils {
                 for (MavenArtifactInfo dep : infos) {
                     final MavenCoordinate dCo = dep.getCoordinate();
 
-                    if (ao != null){
-                        if(ao.isRemoved(dCo)) {
+                    if (ao != null) {
+                        if (ao.isRemoved(dCo)) {
                             log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
-                        if(ao.isAdded(dCo)) {
+                        if (ao.isAdded(dCo)) {
                             log.debug(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
                             continue; // skip dependency
                         }
@@ -215,12 +217,12 @@ public class AetherUtils {
                 result = new AetherArtifactResult(name, version, info.asFile(), dependencies, repositoryDisplayString);
             }
 
-            if (ao != null) {
-                result.setFilter(ao.getFilter());
+            if (ao != null && ao.getFilter() != null) {
+                result.setFilter(PathFilterParser.parse(ao.getFilter()));
             }
 
             return result;
-        } catch (ResolutionException e) {
+        } catch (Exception e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
         }
@@ -347,7 +349,7 @@ public class AetherUtils {
             return file;
         }
 
-        void setFilter(String filter) {
+        void setFilter(PathFilter filter) {
             setFilterInternal(filter);
         }
 

@@ -32,10 +32,15 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.modules</groupId>
+            <artifactId>jboss-modules</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
         </dependency>
-            
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

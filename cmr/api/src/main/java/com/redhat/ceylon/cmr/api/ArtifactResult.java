@@ -69,11 +69,11 @@ public interface ArtifactResult {
     File artifact() throws RepositoryException;
 
     /**
-     * The resources filter, in XML form.
+     * The resources filter.
      *
      * @return the path filter or null if there is none
      */
-    String filter();
+    PathFilter filter();
 
     /**
      * Dependencies.
@@ -87,8 +87,8 @@ public interface ArtifactResult {
     List<ArtifactResult> dependencies() throws RepositoryException;
 
     /**
-     * Get the display string of the repository this 
-	 *   result comes from
+     * Get the display string of the repository this
+     * result comes from
      *
      * @return the repository display string.
      */
