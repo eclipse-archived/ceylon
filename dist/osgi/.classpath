@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/ceylon/language/1.1.0/ceylon.language-1.1.0.car" sourcepath="/home/david/git/ceylon.language/runtime"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/ceylon/runtime/1.1.0/ceylon.runtime-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/github/rjeschke/txtmark/0.8-c0dcd373ce/com.github.rjeschke.txtmark-0.8-c0dcd373ce.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/googlecode/sardine/314/com.googlecode.sardine-314.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/common/1.1.0/com.redhat.ceylon.common-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/compiler/java/1.1.0/com.redhat.ceylon.compiler.java-1.1.0.jar" sourcepath="/home/david/git/ceylon-compiler/src"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/compiler/js/1.1.0/com.redhat.ceylon.compiler.js-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/module-resolver/1.1.0/com.redhat.ceylon.module-resolver-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/typechecker/1.1.0/com.redhat.ceylon.typechecker-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/net/minidev/json-smart/1.1.1/net.minidev.json-smart-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/antlr/antlr/2.7.7/org.antlr.antlr-2.7.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/antlr/runtime/3.4/org.antlr.runtime-3.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/antlr/stringtemplate/3.2.1/org.antlr.stringtemplate-3.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/apache/commons/codec/1.4/org.apache.commons.codec-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/apache/commons/logging/1.1.1/org.apache.commons.logging-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/apache/httpcomponents/httpclient/4.1.1/org.apache.httpcomponents.httpclient-4.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/apache/httpcomponents/httpcore/4.1.1/org.apache.httpcomponents.httpcore-4.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/jboss/jandex/1.0.3.Final/org.jboss.jandex-1.0.3.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/jboss/logmanager/1.4.0.Final/org.jboss.logmanager-1.4.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/slf4j/simple/1.6.1/org.slf4j.simple-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/tautua/markdownpapers/core/1.2.7/org.tautua.markdownpapers.core-1.2.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.osgi.core-4.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/maven-support/2.0/com.redhat.ceylon.maven-support-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/org/jboss/modules/1.3.3.Final/org.jboss.modules-1.3.3.Final.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

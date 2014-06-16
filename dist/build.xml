@@ -16,6 +16,8 @@
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
 
+    <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
+
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
             <pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar"/>
@@ -93,28 +95,23 @@ Some more basic ant tasks:
         </ant>
     </target>
 
-    <target name="ide" depends="siblings">
-        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
-        <property name="buildtarget" value="ide" />
-        <foreach list="${modules}"
-                 target="ide-item"
-                 param="project.item.name"
-                 inheritall="true" />
+    <target name="ide" depends="siblings, install-all">
+        <property name="buildtarget" value="ide-internal" />
+    	<antcall target="ide-quick"/>
     </target>
     <target name="ide-quick" depends="siblings">
-        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
-        <property name="buildtarget" value="ide-quick" />
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
                  inheritall="true" />
+    	<antcall target="osgi-p2-quick"/>
     </target>
     <target name="ide-item">
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <echo>Publishing ${project.item.name} to IDE</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="${buildtarget}"
+             target="ide-quick-internal"
              dir="${projects.base.dir}/${project.item.name}"
              inheritall="false">
         </ant>
@@ -207,7 +204,38 @@ Used with another target such as 'package'">
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
-    <target name="zip">
+	<target name="osgi"             
+            description="Generates the OSGI bundle of the overall dist, with OSGI-specific metamodel initialization logic">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+		<antcall target="osgi-internal"/>
+    </target>
+	<target name="osgi-internal"
+		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+		<antcall target="osgi-quick"/>
+	</target>
+	<target name="osgi-quick">
+		<ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+	</target>
+
+	<target name="osgi-p2"> 
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+		<antcall target="osgi-p2-internal"/>
+    </target>
+	<target name="osgi-p2-internal"
+		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+		<antcall target="osgi-p2-quick"/>
+	</target>
+	<target name="osgi-p2-quick">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi-p2" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+	</target>
+
+	<target name="zip">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
