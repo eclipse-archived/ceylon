@@ -67,6 +67,7 @@
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${jandex.lib}"/>
+        <pathelement path="${modules.lib}"/>
         <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
