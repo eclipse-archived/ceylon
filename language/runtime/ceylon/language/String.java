@@ -2045,4 +2045,59 @@ public final class String
     spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, java.lang.String value, Callable<? extends Callable<? extends Result>> method) {
     	return instance(value).spread($reifiedResult, $reifiedArgs, method);
     }
+    
+    public String pad(@Name("size") long size, @Name("character") int character) {
+    	return pad(value, size, character);
+    }
+    
+    @Ignore
+    public String pad(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return this;
+    	long rightPad = (size-length)/2;
+    	long leftPad = rightPad + (size-length)%2;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+    	for (int i=0;i<leftPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	builder.append(value);
+    	for (int i=0;i<rightPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	return new String(builder.toString());
+    }
+    
+    public String padLeft(@Name("size") long size, @Name("character") int character) {
+    	return padLeft(value, size, character);
+    }
+    
+    @Ignore
+    public String padLeft(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return this;
+    	long leftPad = size-length;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+    	for (int i=0;i<leftPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	builder.append(value);
+    	return new String(builder.toString());
+    }
+    
+    public String padRight(@Name("size") long size, @Name("character") int character) {
+    	return padRight(value, size, character);
+    }
+    
+    @Ignore
+    public String padRight(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return this;
+    	long rightPad = size-length;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder(value);
+    	for (int i=0;i<rightPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	return new String(builder.toString());
+    }
+    
 }

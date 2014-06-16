@@ -322,6 +322,25 @@ shared native final class String(characters)
     "This string."
     shared actual String clone() => this;
     
+    "Pad this string with the given [[character]], producing 
+     a string of the given minimum [[size]], centering the
+     string."
+    shared native String pad(Integer size, 
+        "The padding character"
+        Character character=' ');
+    
+    "Left pad this string with the given [[character]], 
+     producing a string of the given minimum [[size]]."
+    shared native String padLeft(Integer size, 
+        "The padding character"
+        Character character=' ');
+    
+    "Right pad this string with the given [[character]], 
+     producing a string of the given minimum [[size]]."
+    shared native String padRight(Integer size, 
+        "The padding character"
+        Character character=' ');
+    
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
