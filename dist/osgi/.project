@@ -25,16 +25,4 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>defaultRepository</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/dist/repo</locationURI>
-		</link>
-		<link>
-			<name>lib/ceylon-bootstrap.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/dist/lib/ceylon-bootstrap.jar</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

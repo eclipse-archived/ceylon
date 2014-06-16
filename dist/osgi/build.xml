@@ -62,6 +62,8 @@
     <!-- Rule to clean everything up -->
     <target name="clean">
         <delete failonerror="false" dir="${build}"/>
+        <delete failonerror="false" dir="${basedir}/defaultRepository"/>
+	    <delete failonerror="false" dir="${basedir}/lib/ceylon-bootstrap.jar"/>
     </target>
 
     <!-- Rule to build compiler classes from their Java sources -->
@@ -87,6 +89,17 @@
 	<!-- Rule to build osgi bundle jar -->
     <target name="build" depends="classes, updateManifest">
         <mkdir dir="${build}" />
+        <mkdir dir="${basedir}/defaultRepository" />
+    	<copy todir="${basedir}/defaultRepository">
+		    <fileset dir="${ceylon.repo.dir}">
+		        <include name="**" />
+		    </fileset>
+    	</copy>
+    	<copy todir="${basedir}">
+    	    <fileset dir="${ceylon.dist.dir}">
+    	        <include name="lib/ceylon-bootstrap.jar" />
+    	    </fileset>
+    	</copy>
         <zip destfile="${build}/${ceylon.dist.osgi.jar}" >
             <fileset dir="${build.classes}" includes="**"/>
 		    <zipfileset dir="${ceylon.repo.dir}" prefix="defaultRepository">
