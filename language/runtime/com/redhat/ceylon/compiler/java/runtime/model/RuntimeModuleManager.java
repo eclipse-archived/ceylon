@@ -75,8 +75,9 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
             module.setAvailable(true);
             Unit u = new Unit();
             u.setFilename(artifact.name());
-            if(artifact.artifact() != null)
+            if(artifact.artifact() != null) {
                 u.setFullPath(artifact.artifact().getAbsolutePath());
+            }
             module.setUnit(u);
 
             if(!module.isDefault()){

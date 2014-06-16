@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         // set up the type factory and that's it: do not try to load the language module package before it's set up
         // by Metamodel.loadModule
         Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
-        addModuleToClassPath(languageModule, null);
+        addModuleToClassPath(languageModule, (ArtifactResult)null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
         
@@ -90,10 +89,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         moduleCache.put(cacheKey, module);
         if(artifact == null)
             return;
-        File file = artifact.artifact();
-        if(file == null)
-            return;
-        jars.addJar(file);
+        jars.addJar(artifact);
         if(module instanceof LazyModule){
             ((LazyModule) module).loadPackageList(artifact);
         }
