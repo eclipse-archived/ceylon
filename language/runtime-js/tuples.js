@@ -35,7 +35,7 @@ function tpl$(elems,types,spread){
   that.first_=elems[0];
   that.getFromFirst=function(i){
     var e=elems[i]
-    return e===undefined?getFinished():e;
+    return e===undefined?null:e;
   };
   that.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }

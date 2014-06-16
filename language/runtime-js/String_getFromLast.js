@@ -1,3 +1,3 @@
 function getFromLast(i){
-  return this.getFromFirst(this.length-1-i);
+  return this.getFromFirst(this.size-1-i);
 }

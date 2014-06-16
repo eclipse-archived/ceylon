@@ -21,7 +21,7 @@ function(index){
       ++mb;
     }
     if (++mb >= this.length)
-      return getFinished();
+      return null;
   }
   if (this._maxidx===undefined || mb>this._maxidx)
     this._maxidx=mb;
