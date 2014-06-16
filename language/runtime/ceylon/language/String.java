@@ -2053,16 +2053,16 @@ public final class String
     
     @Ignore
     public java.lang.String pad(long size) {
-    	return pad(value, size, pad$character());
+    	return pad(value, size, pad$character(size));
     }
     
     @Ignore
     public static java.lang.String pad(java.lang.String value, long size) {
-    	return pad(value, size, pad$character());
+    	return pad(value, size, pad$character(size));
     }
     
     @Ignore
-    public static int pad$character() {
+    public static int pad$character(long size) {
     	return ' ';
     }
     
@@ -2091,16 +2091,16 @@ public final class String
     
     @Ignore
     public java.lang.String padLeft(long size) {
-    	return padLeft(value, size, padLeft$character());
+    	return padLeft(value, size, padLeft$character(size));
     }
     
     @Ignore
     public static java.lang.String padLeft(java.lang.String value, long size) {
-    	return padLeft(value, size, padLeft$character());
+    	return padLeft(value, size, padLeft$character(size));
     }
     
     @Ignore
-    public static int padLeft$character() {
+    public static int padLeft$character(long size) {
     	return ' ';
     }
     
@@ -2125,16 +2125,16 @@ public final class String
     
     @Ignore
     public java.lang.String padRight(long size) {
-    	return padRight(value, size, padRight$character());
+    	return padRight(value, size, padRight$character(size));
     }
     
     @Ignore
     public static java.lang.String padRight(java.lang.String value, long size) {
-    	return padRight(value, size, padRight$character());
+    	return padRight(value, size, padRight$character(size));
     }
     
     @Ignore
-    public static int padRight$character() {
+    public static int padRight$character(long size) {
     	return ' ';
     }
     
