@@ -90,7 +90,7 @@
         <zip destfile="${build}/${ceylon.dist.osgi.jar}" >
             <fileset dir="${build.classes}" includes="**"/>
 		    <zipfileset dir="${ceylon.repo.dir}" prefix="defaultRepository">
-		        <include name="defaultRepository/**" />
+		        <include name="**" />
 		    </zipfileset>
 		    <fileset dir="${ceylon.dist.dir}">
 		        <include name="lib/ceylon-bootstrap.jar" />
