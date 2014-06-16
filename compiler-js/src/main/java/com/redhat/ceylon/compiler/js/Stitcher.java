@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -30,7 +31,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
 public class Stitcher {
 
     private static TypeCheckerBuilder langmodtc;
+    public static final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
     public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
+    public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
 
     private static String normalizePath(String path) {
     	return path.replace('\\', '/');
@@ -38,7 +41,6 @@ public class Stitcher {
 
     private static void compileLanguageModule(final String line, Writer writer, String clmod)
             throws IOException {
-        final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
         tmpdir.delete();
         tmpdir = new File(tmpdir.getAbsolutePath());
@@ -53,10 +55,24 @@ public class Stitcher {
         //Typecheck the whole language module
         if (langmodtc == null) {
             langmodtc = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile())
-                    .addSrcDirectory(new File(clSrcDir.getParentFile().getParentFile().getParentFile(), "runtime-js"))
+                    .addSrcDirectory(LANGMOD_JS_SRC)
                     .encoding("UTF-8");
             langmodtc.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                     .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+        }
+        final File mod2 = new File(LANGMOD_JS_SRC2, "module.ceylon");
+        if (!mod2.exists()) {
+            try (FileWriter w2 = new FileWriter(mod2);
+                    FileReader r2 = new FileReader(new File(clSrcDir, "module.ceylon"))) {
+                char[] c = new char[512];
+                int r = r2.read(c);
+                while (r != -1) {
+                    w2.write(c, 0, r);
+                    r = r2.read(c);
+                }
+                mod2.deleteOnExit();
+            } finally {
+            }
         }
         final TypeChecker tc = langmodtc.getTypeChecker();
         tc.process();
@@ -74,7 +90,12 @@ public class Stitcher {
             if (src.exists() && src.isFile() && src.canRead()) {
                 includes.add(normalizePath(src.getPath()));
             } else {
-                throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
+                final File src2 = new File(LANGMOD_JS_SRC2, String.format("%s.ceylon", filename.trim()));
+                if (src2.exists() && src2.isFile() && src2.canRead()) {
+                    includes.add(normalizePath(src2.getPath()));
+                } else {
+                    throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
+                }
             }
         }
         //Compile only the files specified in the line
@@ -114,7 +135,7 @@ public class Stitcher {
                     if (line.equals("//#METAMODEL")) {
                         System.out.println("Generating language module metamodel in JSON...");
                         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-                        tcb.addSrcDirectory(new File("../ceylon.language/src"));
+                        tcb.addSrcDirectory(clSrcDir.getParentFile().getParentFile());
                         TypeChecker tc = tcb.getTypeChecker();
                         tc.process();
                         MetamodelVisitor mmg = null;
