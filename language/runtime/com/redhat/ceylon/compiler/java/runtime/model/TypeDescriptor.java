@@ -700,6 +700,7 @@ public abstract class TypeDescriptor {
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionError("members can't be null or empty");
+        members = flattenUnionOrIntersection(members, true);
         TypeDescriptor single = getSingleTypeDescriptorIfUnique(members);
         if(single != null)
             return single;
@@ -710,11 +711,43 @@ public abstract class TypeDescriptor {
     public static TypeDescriptor intersection(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionError("members can't be null or empty");
+        members = flattenUnionOrIntersection(members, false);
         TypeDescriptor single = getSingleTypeDescriptorIfUnique(members);
         if(single != null)
             return single;
         members = removeDuplicates(members);
         return new Intersection(members);
+    }
+
+    /**
+     * Remove {@link Union}s or {@link Intersection}s from the given {@code members}, flattening 
+     * the members of those Unions/Intersections found 
+     * (plus the Union/Intersection members of <em>those</em>, etc) into the 
+     * returned array:
+     * <pre>
+     * A&(B&(C&D))  =>  A&B&C&D
+     * A|(B|(C|D))  =>  A|B|C|D
+     * </pre>
+     * @param members The members of the union or intersection.
+     * @param union true to flatten Union within the members, false to flatten intersections.
+     */
+    private static TypeDescriptor[] flattenUnionOrIntersection(TypeDescriptor[] members, boolean union) {
+        TypeDescriptor[] iterating = members;
+        for (int ii = 0; ii < iterating.length; ii++) {
+            TypeDescriptor td = iterating[ii];
+            if (td instanceof Union && union
+                    || td instanceof Intersection && !union) {
+                TypeDescriptor[] extra = ((Composite)td).members;
+                TypeDescriptor[] n = new TypeDescriptor[iterating.length -1 + extra.length];
+                System.arraycopy(iterating, 0, n, 0, ii);
+                if (ii + 1 < iterating.length) {
+                    System.arraycopy(iterating, ii+1, n, ii, iterating.length-ii-1);
+                }
+                System.arraycopy(extra, 0, n, iterating.length-1, extra.length);
+                iterating = n;
+            }
+        }
+        return iterating;
     }
 
     private static TypeDescriptor[] removeDuplicates(TypeDescriptor[] members) {
