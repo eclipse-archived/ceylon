@@ -5,7 +5,7 @@
      sequence(elements) else []
  "
 by("Gavin")
-shared [Element+]|Absent sequence<Element,Absent>
+shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {
     if (is [Element+] elements) {
