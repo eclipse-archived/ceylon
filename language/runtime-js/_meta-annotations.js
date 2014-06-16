@@ -3,6 +3,7 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
   if (progelem.tipo)progelem=progelem.tipo;
   var mm = getrtmm$$(progelem);
   if (progelem.$anns)mm={$an:typeof(progelem.$anns)==='function'?progelem.$anns():progelem.$anns};
+  else if (progelem._anns)mm={$an:typeof(progelem._anns)==='function'?progelem._anns():progelem._anns};
   if (mm && mm.$an) {
     var anns=mm.$an;
     if (typeof(anns) === 'function') {

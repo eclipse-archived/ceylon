@@ -45,7 +45,7 @@ function Modulo(meta, $$modulo){
       var _d=[];
       for (var d in meta.$mod$imps) {
         var spos = d.lastIndexOf('/');
-        _d.push(Importa(d.substring(0,spos), d.substring(spos+1),this,meta.$mod$imps[d]));
+        _d.push(Importa$jsint(d.substring(0,spos), d.substring(spos+1),this,meta.$mod$imps[d]));
       }
       deps = _d.length===0?getEmpty():ArraySequence(_d,{Element$ArraySequence:{t:Import$meta$declaration}});
       mm['$mod-deps'] = deps;
@@ -67,7 +67,7 @@ function Modulo(meta, $$modulo){
       var clmod=getModules$meta().find('ceylon.language', $CCMM$['$mod-version']);
       var deps=clmod.dependencies;
       if (deps===getEmpty())deps=[];
-      deps.push(Importa('ceylon.language', $CCMM$['$mod-version']),clmod);
+      deps.push(Importa$jsint('ceylon.language', $CCMM$['$mod-version']),clmod);
       return clmod.findPackage(pknm);
     }
     var deps=this.dependencies;
@@ -147,49 +147,7 @@ function $init$Modulo(){
 }
 ex$.$init$Modulo=$init$Modulo;
 $init$Modulo();
-function Importa(name,version,mod,anns,$$importa){
-  $init$Importa();
-  if ($$importa===undefined)$$importa=new Importa.$$;
-  Import$meta$declaration($$importa);
-  $$importa.name=name;
-  $$importa.version=version;
-  $$importa._cont=mod;
-  $$importa.$anns=anns;
-  atr$($$importa,'name',function(){return name;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','name']});
-  atr$($$importa,'version',function(){return version;},undefined,{mod:$CCMM$,$t:{t:$_String},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','version']});
-  atr$($$importa,'shared',function(){
-    if (typeof(this.$anns)==='function')this.$anns=this.anns();
-    if (this.$anns)for (var i=0;i<this.$anns.length;i++) {
-      if (this.$anns[i]===shared)return true;
-    }
-return false;},undefined,{mod:$CCMM$,$t:{t:$_Boolean},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','shared']});
-    atr$($$importa,'optional',function(){
-    if (typeof(this.$anns)==='function')this.$anns=this.$anns();
-    if (this.$anns)for (var i=0;i<this.$anns.length;i++) {
-      if (this.$anns[i]===optional)return true;
-    }
-return version;},undefined,{mod:$CCMM$,$t:{t:$_Boolean},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','optional']});
-    atr$($$importa,'container',function(){
-      if (this._cont===undefined) {
-          this._cont = getModules$meta().find(this.name,this.version);
-      }
-      return this._cont;
-    },undefined,{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','container']});
-  atr$($$importa,'string',function(){
-    return "import " + name + "/" + version;
-  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:Importa,d:['ceylon.language','Object','$at','string']};});
-    return $$importa;
-}
-Importa.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Import$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Import']};
-ex$.Importa=Importa;
-function $init$Importa(){
-    if (Importa.$$===undefined){
-        initTypeProto(Importa,'Importa',Basic,$init$Import$meta$declaration());
-    }
-    return Importa;
-}
-ex$.$init$Importa=$init$Importa;
-$init$Importa();
+
 function Paquete(name, container, pkg, $$paquete){
     $init$Paquete();
     if ($$paquete===undefined)$$paquete=new Paquete.$$;
