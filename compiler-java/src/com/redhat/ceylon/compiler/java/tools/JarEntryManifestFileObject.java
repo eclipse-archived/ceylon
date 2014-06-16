@@ -22,7 +22,9 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.*;
 import java.net.URI;
-import java.util.LinkedHashSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -171,6 +173,12 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         public static final Attributes.Name Require_Bundle = new Attributes.Name("Require-Bundle");
         public static final Attributes.Name Bundle_RequiredExecutionEnvironment = new Attributes.Name("Bundle-RequiredExecutionEnvironment");
         public static final Attributes.Name Require_Capability = new Attributes.Name("Require-Capability");
+        public static final Attributes.Name Bundle_ActivationPolicy = new Attributes.Name("Bundle-ActivationPolicy");
+        public static final Attributes.Name Bundle_Activator = new Attributes.Name("Bundle-Activator");
+        private static SimpleDateFormat formatter = new SimpleDateFormat("'v'yyyyMMdd-HHmm");
+        static {
+            formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        }
 
         public static boolean isManifestFileName(String fileName) {
             return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
@@ -188,6 +196,35 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             this.originalManifest = originalManifest;
         }
 
+        private String toOSGIBundleVersion(String ceylonVersion) {
+            String[] versionParts = ceylonVersion.split("\\.");
+            String major = "";
+            String minor = "";
+            String micro = "";
+            String qualifier = "";
+            
+            for (String part : versionParts) {
+                if (major.isEmpty()) {
+                    major = part;
+                } else if (minor.isEmpty()) {
+                    minor = part;
+                }
+                else if (micro.isEmpty()) {
+                    micro = part;
+                } else {
+                    qualifier = part + "_";
+                }
+            }
+            
+            qualifier += formatter.format(new Date());
+            return new StringBuilder(major)
+                        .append('.').append(minor)
+                        .append('.').append(micro)
+                        .append('.').append(qualifier)
+                        .toString();
+            
+        }
+
         public Manifest build() {
             Manifest manifest = new Manifest();
             Attributes main = manifest.getMainAttributes();
@@ -196,7 +233,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             main.put(Bundle_ManifestVersion, "2");
 
             main.put(Bundle_SymbolicName, module.getNameAsString());
-            main.put(Bundle_Version, module.getVersion());
+            main.put(Bundle_Version, toOSGIBundleVersion(module.getVersion()));
 
             String exportPackageValue = getExportPackage();
             if (exportPackageValue.length() > 0) {
@@ -210,6 +247,10 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                 main.put(Require_Bundle, requireBundleValue);
             }
 
+            applyActivationPolicyNonLazy(main);
+
+            main.put(Bundle_Activator, "com.redhat.ceylon.dist.osgi.Activator");
+            
             // Get all the attributes and entries from original manifest
             appendOriginalManifest(manifest, main);
 
@@ -231,7 +272,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
         private void applyRequireJavaCapability(Attributes main) {
             if (isLanguageModule()) {
-                main.put(Require_Capability, getRequireCapabilityJavaSE("1.7"));
+                main.put(Require_Capability, getRequireCapabilityJavaSE("7"));
                 return;
             }
 
@@ -243,8 +284,6 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                     break;
                 }
             }
-
-
         }
 
         private String getRequireCapabilityJavaSE(String version) {
@@ -256,6 +295,10 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                     .append(")")
                    .append('"')
                    .toString();
+        }
+
+        private void applyActivationPolicyNonLazy(Attributes main) {
+            main.put(Bundle_ActivationPolicy, "lazy;exclude:=\"*\"");
         }
 
         private void appendOriginalManifest(Manifest manifest, Attributes main) {
@@ -299,6 +342,9 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                         }
                     }
                 }
+            } else {
+                requires.append("com.redhat.ceylon.dist")
+                .append(";bundle-version=").append(module.getVersion());
             }
             return requires.toString();
         }
@@ -307,21 +353,26 @@ public class JarEntryManifestFileObject implements JavaFileObject {
          * Composes OSGi Export-Package header content.
          */
         private String getExportPackage() {
-            boolean hasSharedPackages = false;
+            boolean alreadyOne = false;
             StringBuilder exportPackage = new StringBuilder();
             for (Package pkg : module.getPackages()) {
-                if (pkg.isShared()) {
-                    if (hasSharedPackages) {
-                        exportPackage.append(";");
+                if (pkg.isShared() || isLanguageModule()) {
+                    if (alreadyOne) {
+                        exportPackage.append(",");
                     }
                     exportPackage.append(pkg.getNameAsString());
+                    // Ceylon has no separate versioning of packages, so all
+                    // packages implicitly inherit their respective module version
+                    exportPackage.append(";version=").append(module.getVersion());
                     //TODO : should we analyze package uses as well?
-                    hasSharedPackages = true;
+                    alreadyOne = true;
                 }
             }
-            if (hasSharedPackages) {
-                // Ceylon has no separate versioning of packages, so all
-                // packages implicitly inherit their respective module version
+            if (isLanguageModule()) {
+                if (alreadyOne) {
+                    exportPackage.append(",");
+                }
+                exportPackage.append("com.redhat.ceylon.dist.osgi");
                 exportPackage.append(";version=").append(module.getVersion());
             }
             return exportPackage.toString();

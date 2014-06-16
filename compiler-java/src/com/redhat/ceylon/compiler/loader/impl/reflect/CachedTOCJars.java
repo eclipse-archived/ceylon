@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 
 public class CachedTOCJars {
 
@@ -38,8 +40,7 @@ public class CachedTOCJars {
      * Jar file where we cache the TOC
      */
     static class CachedTOCJar {
-        
-        File jar;
+        ArtifactResult artifact;
         // stores class file names with slashes
         Set<String> contents = new HashSet<String>();
         // stores package paths with slashes but not last one
@@ -47,29 +48,36 @@ public class CachedTOCJars {
         // not not attempt to load contents from this jar, just its TOC
         boolean skipContents;
         
-        CachedTOCJar(File jar, boolean skipContents){
-            this.jar = jar;
+        CachedTOCJar(ArtifactResult artifact, boolean skipContents){
+            this.artifact = artifact;
             this.skipContents = skipContents;
-            try {
-                ZipFile zf = new ZipFile(jar);
-                try{
-                    Enumeration<? extends ZipEntry> entries = zf.entries();
-                    while(entries.hasMoreElements()){
-                        ZipEntry entry = entries.nextElement();
-                        // only cache class files
-                        if(!entry.isDirectory()){
-                            packages.add(getPackageName(entry.getName()));
-                            contents.add(entry.getName());
+            if (artifact instanceof ContentAwareArtifactResult) {
+                packages.addAll(((ContentAwareArtifactResult) artifact).getPackages());
+                contents.addAll(((ContentAwareArtifactResult) artifact).getEntries());
+            } else {
+                if (artifact.artifact() != null) {
+                    try {
+                        ZipFile zf = new ZipFile(artifact.artifact());
+                        try{
+                            Enumeration<? extends ZipEntry> entries = zf.entries();
+                            while(entries.hasMoreElements()){
+                                ZipEntry entry = entries.nextElement();
+                                // only cache class files
+                                if(!entry.isDirectory()){
+                                    packages.add(getPackageName(entry.getName()));
+                                    contents.add(entry.getName());
+                                }
+                            }
+                        }finally{
+                            zf.close();
                         }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                }finally{
-                    zf.close();
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
-        
+
         private String getPackageName(String name) {
             int lastSlash = name.lastIndexOf('/');
             if(lastSlash == -1)
@@ -86,19 +94,26 @@ public class CachedTOCJars {
         }
 
         byte[] getContents(String path){
-            try {
-                ZipFile zf = new ZipFile(jar);
-                try{
-                    ZipEntry entry = zf.getEntry(path);
-                    if(entry != null)
-                        return loadFile(zf.getInputStream(entry), (int)entry.getSize());
-                }finally{
-                    zf.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (artifact instanceof ContentAwareArtifactResult) {
+                return ((ContentAwareArtifactResult) artifact).getContents(path);
             }
-            throw new RuntimeException("Missing entry: "+path+" in jar file: "+jar.getPath());
+            File jar = artifact.artifact();
+            if (jar != null) {
+                try {
+                    ZipFile zf = new ZipFile(jar);
+                    try{
+                        ZipEntry entry = zf.getEntry(path);
+                        if(entry != null)
+                            return loadFile(zf.getInputStream(entry), (int)entry.getSize());
+                    }finally{
+                        zf.close();
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                throw new RuntimeException("Missing entry: "+path+" in jar file: "+ jar.getPath());
+            }
+            throw new RuntimeException("No file associated with artifact : " + artifact.toString());
         }
 
         private byte[] loadFile(InputStream inputStream, int size) throws IOException {
@@ -116,52 +131,60 @@ public class CachedTOCJars {
         }
         
         private List<String> getFileNames(String path){
-            try {
-                // add a trailing / to only list members
-                path += "/";
-                ZipFile zf = new ZipFile(jar);
-                try{
-                    Enumeration<? extends ZipEntry> entries = zf.entries();
-                    List<String> ret = new ArrayList<String>();
-                    while(entries.hasMoreElements()){
-                        ZipEntry entry = entries.nextElement();
-                        String name = entry.getName();
-                        // only cache class files
-                        if(!entry.isDirectory() && name.startsWith(path)){
-                            String part = name.substring(path.length());
-                            if(part.indexOf('/') == -1)
-                                ret.add(name);
-                        }
-                    }
-                    return ret;
-                }finally{
-                    zf.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (artifact instanceof ContentAwareArtifactResult) {
+                return ((ContentAwareArtifactResult) artifact).getFileNames(path);
             }
-
+            
+            File jar = artifact.artifact();
+            if (jar != null) {
+                try {
+                    // add a trailing / to only list members
+                    path += "/";
+                    ZipFile zf = new ZipFile(jar);
+                    try{
+                        Enumeration<? extends ZipEntry> entries = zf.entries();
+                        List<String> ret = new ArrayList<String>();
+                        while(entries.hasMoreElements()){
+                            ZipEntry entry = entries.nextElement();
+                            String name = entry.getName();
+                            // only cache class files
+                            if(!entry.isDirectory() && name.startsWith(path)){
+                                String part = name.substring(path.length());
+                                if(part.indexOf('/') == -1)
+                                    ret.add(name);
+                            }
+                        }
+                        return ret;
+                    }finally{
+                        zf.close();
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new RuntimeException("No file associated with artifact : " + artifact.toString());
+            }
         }
 
         @Override
         public String toString(){
-            return "CachedTOCJar[jar="+jar+"; contents="+contents+"; packages="+packages+"]";
+            return "CachedTOCJar[jar="+artifact+"; contents="+contents+"; packages="+packages+"]";
         }
     }
     
     private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
     
-    public void addJar(File file) {
-        addJar(file, false);
+    public void addJar(ArtifactResult artifact) {
+        addJar(artifact, false);
     }
     
-    public void addJar(File file, boolean skipContents) {
+    public void addJar(ArtifactResult artifact, boolean skipContents) {
         // skip duplicates
         for(CachedTOCJar jar : jars){
-            if(jar.jar.equals(file))
+            if(jar.artifact.equals(artifact))
                 return;
         }
-        jars.add(new CachedTOCJar(file, skipContents));
+        jars.add(new CachedTOCJar(artifact, skipContents));
     }
 
     public boolean packageExists(String name) {
