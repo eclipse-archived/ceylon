@@ -38,6 +38,8 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private volatile File artifact;
     private volatile boolean checked;
 
+    private String filter;
+
     protected AbstractArtifactResult(String name, String version) {
         this.name = name;
         this.version = version;
@@ -74,10 +76,18 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     }
 
     protected abstract File artifactInternal();
-    
+
+    public String filter() {
+        return filter;
+    }
+
+    protected void setFilterInternal(String filter) {
+        this.filter = filter;
+    }
+
     @Override
     public String toString() {
-        return "[Artifact result: "+name+"/"+version+"]";
+        return "[Artifact result: " + name + "/" + version + "]";
     }
 
 }

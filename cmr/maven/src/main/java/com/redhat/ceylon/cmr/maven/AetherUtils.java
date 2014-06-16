@@ -180,8 +180,9 @@ public class AetherUtils {
                 return null;
             }
 
+            final SingleArtifactResult result;
             if (fetchSingleArtifact) {
-                return new SingleArtifactResult(name, version, info.asFile(), repositoryDisplayString);
+                result = new SingleArtifactResult(name, version, info.asFile(), repositoryDisplayString);
             } else {
                 final List<ArtifactResult> dependencies = new ArrayList<>();
 
@@ -211,8 +212,14 @@ public class AetherUtils {
                     }
                 }
 
-                return new AetherArtifactResult(name, version, info.asFile(), dependencies, repositoryDisplayString);
+                result = new AetherArtifactResult(name, version, info.asFile(), dependencies, repositoryDisplayString);
             }
+
+            if (ao != null) {
+                result.setFilter(ao.getFilter());
+            }
+
+            return result;
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
@@ -338,6 +345,10 @@ public class AetherUtils {
 
         protected File artifactInternal() throws RepositoryException {
             return file;
+        }
+
+        void setFilter(String filter) {
+            setFilterInternal(filter);
         }
 
         public List<ArtifactResult> dependencies() throws RepositoryException {

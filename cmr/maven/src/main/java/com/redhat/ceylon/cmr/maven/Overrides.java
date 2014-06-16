@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.maven;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +27,19 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -61,6 +69,12 @@ public class Overrides {
                 addOverrides(ao, artifact, DependencyOverride.Type.ADD);
                 addOverrides(ao, artifact, DependencyOverride.Type.REMOVE);
                 addOverrides(ao, artifact, DependencyOverride.Type.REPLACE);
+                // filter
+                NodeList filterNode = artifact.getElementsByTagName("filter");
+                if (filterNode != null && filterNode.getLength() > 0) {
+                    Node node = filterNode.item(0);
+                    ao.setFilter(convertNodeToString(node));
+                }
             }
             return result;
         } finally {
@@ -124,5 +138,13 @@ public class Overrides {
             elements.add((Element) nodes.item(i));
         }
         return elements;
+    }
+
+    protected static String convertNodeToString(Node node) throws TransformerException {
+        Transformer t = TransformerFactory.newInstance().newTransformer();
+        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        StringWriter sw = new StringWriter();
+        t.transform(new DOMSource(node), new StreamResult(sw));
+        return sw.toString();
     }
 }

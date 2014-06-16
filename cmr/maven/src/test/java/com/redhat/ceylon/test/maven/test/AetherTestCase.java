@@ -209,4 +209,24 @@ public class AetherTestCase extends AbstractAetherTest {
             }
         }
     }
+
+    @Test
+    public void testFilterOverrides() throws Throwable {
+        Repository repository = createAetherRepository(true);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.osgi:org.osgi.core", "4.0.0");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            Assert.assertNotNull(result.filter());
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
 }

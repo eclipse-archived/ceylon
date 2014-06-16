@@ -68,8 +68,7 @@ public final class ModuleInfo implements Comparable<ModuleInfo> {
     }
 
     @Override
-    public int compareTo(ModuleInfo obj) {
-        ModuleInfo that = (ModuleInfo)obj;
+    public int compareTo(ModuleInfo that) {
         int res = name.compareTo(that.name);
         if (res == 0) {
             res = version.compareTo(that.version);

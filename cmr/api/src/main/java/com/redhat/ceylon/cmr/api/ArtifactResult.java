@@ -69,6 +69,13 @@ public interface ArtifactResult {
     File artifact() throws RepositoryException;
 
     /**
+     * The resources filter, in XML form.
+     *
+     * @return the path filter or null if there is none
+     */
+    String filter();
+
+    /**
      * Dependencies.
      * <p/>
      * They could be lazily recursively fetched

@@ -32,6 +32,7 @@ public class ArtifactOverrides {
     private Set<DependencyOverride> add = new HashSet<>();
     private Set<DependencyOverride> remove = new HashSet<>();
     private DependencyOverride replace;
+    private String filter;
 
     public ArtifactOverrides(MavenCoordinate owner) {
         this.owner = owner;
@@ -82,5 +83,13 @@ public class ArtifactOverrides {
 
     public DependencyOverride getReplace() {
         return replace;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    void setFilter(String filter) {
+        this.filter = filter;
     }
 }
