@@ -48,6 +48,7 @@ import org.jboss.modules.ModuleSpec.Builder;
 import org.jboss.modules.NativeLibraryResourceLoader;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
+import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
 
 /**
@@ -149,8 +150,8 @@ public class CeylonModuleLoader extends ModuleLoader {
         // The runtime model needs knowledge of these modules existing at runtime, since the language module
         // implementation contains types from these modules
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
-        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR, 
-                ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
+        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR,
+            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module));
@@ -259,7 +260,10 @@ public class CeylonModuleLoader extends ModuleLoader {
             ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
             // add module's jar
             ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
-            ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader, PathFilters.acceptAll());
+            // filter
+            PathFilter filter = (artifact.filter() != null ? new CMRPathFilter(artifact.filter()) : PathFilters.acceptAll());
+            // module resource root
+            ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader, filter);
             builder.addResourceRoot(rls);
             // add potential native lib lookup
             ResourceLoader nativeLoader = new NativeLibraryResourceLoader(new File(moduleFile.getParent(), "lib"));
@@ -339,7 +343,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             // make sure we set our own class loader factory so we can find the transformer back from the class loader
             // this is used in the language module to force module metamodel registration
             builder.setModuleClassLoaderFactory(new CeylonModuleClassLoader.CeylonModuleClassLoaderFactory(transformer));
-            
+
             return builder.create();
         } catch (Exception e) {
             throw new ModuleLoadException(e);

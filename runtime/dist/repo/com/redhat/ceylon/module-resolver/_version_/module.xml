@@ -30,6 +30,7 @@
     <dependencies>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
         <module name="org.jboss.jandex" slot="1.0.3.Final"/>
+        <module name="org.jboss.modules" slot="1.3.3.Final"/>
         <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>
         <module name="com.googlecode.sardine" slot="314"/>
         <module name="net.minidev.json-smart" slot="1.1.1"/>
@@ -39,6 +40,9 @@
                 <path name="javax/xml/namespace"/>
                 <path name="javax/xml/parsers"/>
                 <path name="javax/xml/stream"/>
+                <path name="javax/xml/transform"/>
+                <path name="javax/xml/transform/dom"/>
+                <path name="javax/xml/transform/stream"/>
                 <path name="org/w3c/dom"/>
                 <path name="org/xml/sax"/>
             </paths>
