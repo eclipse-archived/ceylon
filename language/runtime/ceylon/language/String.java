@@ -1943,6 +1943,17 @@ public final class String
         return instance(value).append($reifiedOther, e);
     }
 
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> List extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
+        return $ceylon$language$List$this.extend($reifiedOther, e);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List extend(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> e) {
+        return instance(value).extend($reifiedOther, e);
+    }
+
     @Override
     @Ignore
     public Iterable<? extends Character,?> getCycled() {

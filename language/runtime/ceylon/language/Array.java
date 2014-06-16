@@ -1411,6 +1411,12 @@ public final class Array<Element>
         return $ceylon$language$List$this.append($reifiedOther, e);
     }
 
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
+        return $ceylon$language$List$this.extend($reifiedOther, e);
+    }
+
     @Ignore
     public int copyTo$sourcePosition(Element[] destination){
         return 0;

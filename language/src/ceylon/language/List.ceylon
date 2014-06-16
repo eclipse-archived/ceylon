@@ -280,9 +280,19 @@ shared interface List<out Element>
      list, in the order in which they occur in this list, 
      followed by the given [[elements]] in the order in 
      which they occur in the given stream."
-    see (`function concatenate`, `function chain`)
+    see (`function extend`, 
+         `function chain`,
+         `function concatenate`)
     shared default [Element|Other*] append<Other>({Other*} elements) 
             => [*(this chain elements)];
+    
+    "Return a list formed by extending this list with the 
+     elements of the given [[list]]. This is a lazy operation
+     returning a view over this list and the given list."
+    see (`function append`,
+         `function chain`)
+    shared default List<Element|Other> extend<Other>(List<Other> list) 
+            => Extend(list);
     
     "Determine if the given list occurs at the start of this 
      list."
@@ -746,6 +756,33 @@ shared interface List<out Element>
             }
             return iterator;
         }
+        
+    }
+    
+    class Extend<Other>(List<Other> list)
+            extends Object()
+            satisfies List<Element|Other> {
+        
+        size => outer.size+list.size;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index<size) {
+                return outer.getFromFirst(index);
+            }
+            else {
+                return list.getFromFirst(index-size);
+            }
+        }
+        
+        clone() => outer.clone().Extend(list.clone());
+        
+        iterator() => ChainedIterator(outer,list);
         
     }
     

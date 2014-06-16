@@ -916,6 +916,12 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Sequence$this.append($reifiedOther, e);
     }
 
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
+        return $ceylon$language$List$this.extend($reifiedOther, e);
+    }
+
     @Override @Ignore
     public Sequential<? extends Element> 
     trim(Callable<? extends Boolean> characters) {
