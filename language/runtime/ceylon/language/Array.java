@@ -338,9 +338,12 @@ public final class Array<Element>
         	}
         }
         
-		java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-				.newInstance(clazz, size);
-		if (element!=null) Arrays.fill(array, element);
+		java.lang.Object[] array = 
+				(java.lang.Object[]) java.lang.reflect.Array
+				        .newInstance(clazz, size);
+		if (element!=null) {
+			Arrays.fill(array, element);
+		}
 		return array;
     }
 
@@ -516,7 +519,7 @@ public final class Array<Element>
 
     @Override
     public Array<Element> spanFrom(@Name("from") Integer from) {
-        return span(from, getLastIndex());
+        return span(from, Integer.instance(getSize()));
     }
     
     @Override
@@ -529,202 +532,197 @@ public final class Array<Element>
     @Override
     public Array<Element> span(@Name("from") Integer from,
             @Name("to") Integer to) {
-        long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long toIndex = to.longValue();
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex) {
+        long fromIndex = from.longValue(); //inclusive
+        long toIndex = to.longValue(); //inclusive
+        boolean revert = toIndex < fromIndex;
+        if (revert) {
+            long swap = toIndex;
+            toIndex = fromIndex;
+            fromIndex = swap;
+        }
+        if (fromIndex<0) {
+        	fromIndex = 0;
+        }
+        long size = getSize();
+        if (toIndex>=size) {
+        	toIndex = size-1;
+        }
+        if (fromIndex>=size || toIndex<0 || toIndex<fromIndex) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
-            boolean revert = toIndex<fromIndex;
-            if (revert) {
-                long _tmp = toIndex;
-                toIndex = fromIndex;
-                fromIndex = _tmp;
-            }
-            java.lang.Object arr;
+        	int resultFromIndex = toInt(fromIndex); //inclusive
+        	int resultToIndex = toInt(toIndex+1); //exclusive
+            java.lang.Object newArray;
             if (array instanceof char[]) {
-                char[] a = copyOfRange((char[])array, 
-                        toInt(fromIndex), 
-                        toInt(toIndex+1));
+                char[] copy = copyOfRange((char[])array, 
+                        resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        char temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        char temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof byte[]) {
-                byte[] a = copyOfRange((byte[])array, 
-                        toInt(fromIndex), 
-                        toInt(toIndex+1));
+                byte[] copy = copyOfRange((byte[])array, 
+                        resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        byte temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        byte temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof short[]) {
-                short[] a = copyOfRange((short[])array, 
-                        toInt(fromIndex), 
-                        toInt(toIndex+1));
+                short[] copy = copyOfRange((short[])array, 
+                        resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        short temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        short temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof int[]) {
-                int[] a = copyOfRange((int[])array, 
-                        toInt(fromIndex), 
-                        toInt(toIndex+1));
+                int[] copy = copyOfRange((int[])array, 
+                        resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        int temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        int temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof long[]) {
-                long[] a = copyOfRange((long[])array, 
-                    toInt(fromIndex), 
-                    toInt(toIndex+1));
+                long[] copy = copyOfRange((long[])array, 
+                    resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        long temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        long temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof float[]) {
-                float[] a = copyOfRange((float[])array, 
-                    toInt(fromIndex), 
-                    toInt(toIndex+1));
+                float[] copy = copyOfRange((float[])array, 
+                    resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        float temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        float temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof double[]) {
-                double[] a = copyOfRange((double[])array, 
-                    toInt(fromIndex), 
-                    toInt(toIndex+1));
+                double[] copy = copyOfRange((double[])array, 
+                    resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        double temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        double temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else if (array instanceof boolean[]) {
-                boolean[] a = copyOfRange((boolean[])array, 
-                    toInt(fromIndex), 
-                    toInt(toIndex+1));
+                boolean[] copy = copyOfRange((boolean[])array, 
+                    resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        boolean temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        boolean temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
             else {
-                java.lang.Object[] a = 
+                java.lang.Object[] copy = 
                         copyOfRange((java.lang.Object[])array, 
-                    toInt(fromIndex), 
-                    toInt(toIndex+1));
+                    resultFromIndex, resultToIndex);
                 if (revert) {
-                    for (int i = 0; i<a.length/2; i++) {
-                        java.lang.Object temp = a[i];
-                        a[i] = a[a.length-1-i];
-                        a[a.length-1-i] = temp;
+                    for (int i = 0; i<copy.length/2; i++) {
+                        java.lang.Object temp = copy[i];
+                        copy[i] = copy[copy.length-1-i];
+                        copy[copy.length-1-i] = temp;
                     }
                 }
-                arr = a;
+                newArray = copy;
             }
-            return new Array<Element>($reifiedElement, arr);
+            return new Array<Element>($reifiedElement, newArray);
         }
     }
 
     @Override
     public Array<Element> segment(@Name("from") Integer from,
             @Name("length") long length) {
-        long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long resultLength = length;
-        long sz = getSize();
-        if (fromIndex>=sz||resultLength<=0) {
+        long fromIndex = from.longValue(); //inclusive
+        long toIndex = fromIndex + length; //exclusive
+        if (fromIndex<0) {
+        	fromIndex=0;
+        }
+        long size = getSize();
+    	if (toIndex > size) {
+    		toIndex = size;
+    	}
+        if (fromIndex>=size || toIndex<=0) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
-            long resultFromIndex = Math.min(fromIndex + resultLength, sz);
-            java.lang.Object a;
+            int resultToIndex = toInt(toIndex);
+            int resultFromIndex = toInt(fromIndex);
+            java.lang.Object newArray;
             if (array instanceof char[]) {
-                a = copyOfRange((char[])array, 
-                    toInt(fromIndex), 
-                    toInt(resultFromIndex));
+                newArray = copyOfRange((char[])array, 
+                    resultFromIndex, resultToIndex);
             }
             else if (array instanceof byte[]) {
-                a = copyOfRange((byte[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((byte[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof short[]) {
-                a = copyOfRange((short[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((short[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof int[]) {
-                a = copyOfRange((int[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((int[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof long[]) {
-                a = copyOfRange((long[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((long[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof float[]) {
-                a = copyOfRange((float[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((float[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof double[]) {
-                a = copyOfRange((double[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((double[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else if (array instanceof boolean[]) {
-                a = copyOfRange((boolean[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((boolean[])array, 
+                        resultFromIndex, resultToIndex);
             }
             else {
-                a = copyOfRange((java.lang.Object[])array, 
-                        toInt(fromIndex), 
-                        toInt(resultFromIndex));
+                newArray = copyOfRange((java.lang.Object[])array, 
+                        resultFromIndex, resultToIndex);
             }
-            return new Array<Element>($reifiedElement, a);
+            return new Array<Element>($reifiedElement, newArray);
         }
     }
 

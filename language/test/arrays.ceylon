@@ -138,5 +138,25 @@ shared void testArrays() {
     check((Array("helloworld").getFromLast(9) else ' ')=='h', "array getFromLast(8)");
     check(!Array("helloworld").getFromLast(-1) exists, "array getFromLast(-1)");
     check(!Array("helloworld").getFromLast(10) exists, "array getFromLast(9)");
-
+    
+    check(Array("hello")==[*"hello"], "sanity");
+    check(Array("hello").size==5, "sanity");
+    
+    check(Array("hello")[0:4]==[*"hell"], "array segment 1");
+    check(Array("hello")[-1:2]==['h'], "array segment 2");
+    check(Array("hello")[1:0]==[], "array segment 3");
+    check(Array("hello")[-1:1]==[], "array segment 4");
+    check(Array("hello")[5:1]==[], "array segment 5");
+    
+    check(Array("hello")[0..3]==[*"hell"], "array span 1");
+    check(Array("hello")[-1..0]==['h'], "array span 2");
+    check(Array("hello")[1..-1]==['e','h'], "array span 3");
+    check(Array("hello")[1..1]==['e'], "array span 4");
+    check(Array("hello")[0..0]==['h'], "array span 5");
+    check(Array("hello")[-1..-1]==[], "array span 6");
+    check(Array("hello")[5..6]==[], "array span 7");
+    check(Array("hello")[5..4]==['o'], "array span 8");
+    
+    check(Array{}[-1:2]==[], "empty array segment");
+    check(Array{}[-1..2]==[], "empty array span");
 }
