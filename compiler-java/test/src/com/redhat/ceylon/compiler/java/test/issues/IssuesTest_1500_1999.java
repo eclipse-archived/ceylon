@@ -19,13 +19,22 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CommonTokenStream;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
+import com.sun.tools.javac.util.Position;
+import com.sun.tools.javac.util.Position.LineMap;
 
 
 public class IssuesTest_1500_1999 extends CompilerTest {
@@ -334,6 +343,48 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1629() {
         compareWithJavaSource("bug16xx/Bug1629");
+    }
+
+    @Ignore("Used for benchmarking")
+    @Test
+    public void testBug1631() throws Exception {
+//        System.err.println("Press enter to continue");
+//        System.in.read();
+//        System.err.println("Let's go");
+        long totals = 0;
+        int runs = 1;
+        for(int i=0;i<runs;i++){
+            long start = System.nanoTime();
+            ErrorCollector c = new ErrorCollector();
+            assertCompilesOk(c, getCompilerTask(Arrays.asList(/*"-verbose:benchmark", */"-out", destDir), c, "bug16xx/bug1631/run.ceylon").call2());
+//            benchmarkParse("bug16xx/bug1631/run.ceylon");
+            long end = System.nanoTime();
+            long total = end - start;
+            System.err.println("Took "+(total/1_000_000)+"ms");
+            totals += total;
+        }
+        System.err.println("Average "+((totals/1_000_000)/runs)+"ms");
+        
+//        System.err.println("Press enter to quit");
+//        System.in.read();
+//        System.err.println("Done");
+    }
+
+    private void benchmarkParse(String file) throws Exception{
+        String readSource = readFile(new File(getPackagePath(), file));
+        String source = readSource.toString();
+        char[] chars = source.toCharArray();
+        LineMap map = Position.makeLineMap(chars, chars.length, false);
+        System.err.println(map.hashCode());
+        
+        ANTLRStringStream input = new ANTLRStringStream(source);
+        CeylonLexer lexer = new CeylonLexer(input);
+
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        CeylonParser parser = new CeylonParser(tokens);
+//        CompilationUnit cu = parser.compilationUnit();
+//        System.err.println(cu.hashCode());
     }
     
     @Test
