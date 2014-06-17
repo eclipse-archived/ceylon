@@ -1039,6 +1039,29 @@ public class GenerateJsVisitor extends Visitor
         return false;
     }
 
+    boolean stitchConstructorHelper(final Tree.ClassOrInterface coi, final String partName) {
+        final File f;
+        if (JsCompiler.isCompilingLanguageModule()) {
+            f = getStitchedFilename(coi.getDeclarationModel(), partName + ".js");
+        } else {
+            f = new File(new File(coi.getUnit().getFullPath()).getParentFile(),
+                    String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
+        }
+        if (f.exists() && f.isFile() && f.canRead()) {
+            if (opts.isVerbose() || JsCompiler.isCompilingLanguageModule()) {
+                System.out.println("Stitching in " + f + ". It must contain an anonymous function "
+                        + "which will be invoked with the same arguments as the "
+                        + names.name(coi.getDeclarationModel()) + " constructor.");
+            }
+            out("(");
+            jsout.outputFile(f);
+            out(")");
+            TypeGenerator.generateParameters(coi, this);
+            endLine(true);
+        }
+        return false;
+    }
+
     @Override
     public void visit(MethodDefinition that) {
         //Don't even bother with nodes that have errors

@@ -148,14 +148,8 @@ public class TypeGenerator {
         final Interface d = that.getDeclarationModel();
         gen.comment(that);
 
-        gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(");
-        final List<Tree.TypeParameterDeclaration> tparms = that.getTypeParameterList() == null ? null :
-            that.getTypeParameterList().getTypeParameterDeclarations();
-        final boolean withTargs = tparms != null && !tparms.isEmpty();
-        if (withTargs) {
-            gen.out("$$targs$$,");
-        }
-        gen.out(gen.getNames().self(d), ")");
+        gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+        final boolean withTargs = generateParameters(that, gen);
         gen.beginBlock();
         //declareSelf(d);
         gen.referenceOuter(d);
@@ -183,6 +177,25 @@ public class TypeGenerator {
         initializeType(that, gen);
     }
 
+    /** Outputs the parameter list of the type's constructor, including surrounding parens.
+     * Returns true if the type has type parameters. */
+    static boolean generateParameters(final Tree.ClassOrInterface that, final GenerateJsVisitor gen) {
+        gen.out("(");
+        final boolean withTargs = that.getTypeParameterList() != null &&
+                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
+        if (that instanceof Tree.ClassDefinition) {
+            for (Tree.Parameter p: ((Tree.ClassDefinition)that).getParameterList().getParameters()) {
+                p.visit(gen);
+                gen.out(",");
+            }
+        }
+        if (withTargs) {
+            gen.out("$$targs$$,");
+        }
+        gen.out(gen.getNames().self(that.getDeclarationModel()), ")");
+        return withTargs;
+    }
+
     static void classDefinition(final Tree.ClassDefinition that, final GenerateJsVisitor gen) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
@@ -197,17 +210,8 @@ public class TypeGenerator {
                 return;
             }
         }
-        gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(");
-        for (Tree.Parameter p: that.getParameterList().getParameters()) {
-            p.visit(gen);
-            gen.out(",");
-        }
-        final boolean withTargs = that.getTypeParameterList() != null &&
-                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
-        if (withTargs) {
-            gen.out("$$targs$$,");
-        }
-        gen.out(gen.getNames().self(d), ")");
+        gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+        final boolean withTargs = generateParameters(that, gen);
         gen.beginBlock();
         //This takes care of top-level attributes defined before the class definition
         gen.out("$init$", gen.getNames().name(d), "()");
@@ -258,28 +262,11 @@ public class TypeGenerator {
             }
         }
         if (d.isNative()) {
-            gen.out("if(typeof($init$native$", gen.getNames().name(d), "$before)==='function')$init$native$",
-                    gen.getNames().name(d), "$before(", gen.getNames().self(d));
-            if (withTargs)gen.out(",$$targs$$");
-            gen.out(")");
-            gen.endLine(true);
+            gen.stitchConstructorHelper(that, "_cons_before");
         }
         that.getClassBody().visit(gen);
         if (d.isNative()) {
-            gen.out("if(typeof($init$native$", gen.getNames().name(d), "$after)==='function')$init$native$",
-                    gen.getNames().name(d), "$after(", gen.getNames().self(d));
-            if (withTargs)gen.out(",$$targs$$");
-            gen.out(")");
-            gen.endLine(true);
-            System.out.printf("%s is annotated native.", d.getQualifiedNameString());
-            System.out.printf(" You can implement 2 functions: $init$native$%s$before and $init$native$%<s$after",
-                    gen.getNames().name(d));
-            System.out.print(" that will be called (if they exist) before and after the class body. ");
-            System.out.print("These functions will receive the instance being initialized");
-            if (withTargs) {
-                System.out.print(" and the type arguments with which it is being initialized");
-            }
-            System.out.println(".");
+            gen.stitchConstructorHelper(that, "_cons_after");
         }
         gen.out("return ", gen.getNames().self(d), ";");
         gen.endBlockNewLine();
