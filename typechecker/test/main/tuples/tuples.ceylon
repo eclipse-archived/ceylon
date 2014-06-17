@@ -44,10 +44,10 @@ void test() {
     @type:"Null|Integer" value v3 = vartup[2];
     @type:"Null|Integer" value v4 = vartup[3];
     @type:"Null|Integer" value v5 = vartup[4];
-    [] emp1 = {};
+    {} emp1 = {};
     [] emp2 = [];
     Tuple<Integer|Float,Integer,Tuple<Float,Float,[]>> unsugared1 = Tuple(0,Tuple(1.0,[]));
-    Tuple<String,String,Tuple<String,String,[]>> unsugared2 = Tuple("hello",Tuple("goodbye",{}));
+    Tuple<String,String,Tuple<String,String,[]>> unsugared2 = Tuple("hello",Tuple("goodbye",[]));
     [Integer,Float] sugared1 = unsugared1;
     [String,String] sugared2 = unsugared2;
     

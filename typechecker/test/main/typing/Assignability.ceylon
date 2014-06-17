@@ -212,13 +212,13 @@ class Assignability() {
     @error if (nonempty nat) {}
     
     void m<T>() {
-        T[] ts = {};
+        T[] ts = [];
         if (nonempty ts) {
             T t=ts.first;
         }
     }
     
-    String[] strngs = {};
+    String[] strngs = [];
     if (nonempty strngs) {
         String s=strngs.first;
     }
@@ -237,7 +237,7 @@ class Assignability() {
     
     for (@error X x in 46 ) {}
     
-    for (@error Integer i in {}) {
+    for (@error Integer i in []) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {
@@ -252,7 +252,7 @@ class Assignability() {
         Integer i = ints.first;
     }
     
-    Integer[] noints = {};
+    Integer[] noints = [];
     if (nonempty noints) {}
     
     //for (@error x in 46) {}

@@ -4,8 +4,10 @@ void lazyeager() {
     {String*} iterable = {};
     Person[] people = [ Person("Gavin") ];
     
+    @type:"Iterable<Nothing,Null>" 
+    value x0 = {};                               //type {}
     @type:"Empty" 
-    value x1 = {};                               //type []
+    value x1 = [];                               //type []
     @type:"Iterable<String,Null>" 
     value x2 = { for (p in people) p.name };     //type {String*}
     @type:"Iterable<String,Nothing>" 

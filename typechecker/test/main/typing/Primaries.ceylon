@@ -130,8 +130,8 @@ class Primaries() {
         String s = o.string;
         @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>|Float>" value p30 = [o, "foo", 3.1, A()].sequence();
     }
-    @type:"Sequential<String>" String[] noStrings = {};
-    @type:"Empty" value none = {};
+    @type:"Sequential<String>" String[] noStrings = [];
+    @type:"Empty" value none = [];
     
     @type:"Sequential<Boolean>" value p100 = { true }.sequence();
     @type:"Sequential<Boolean>" value p101 = { true, false }.sequence();

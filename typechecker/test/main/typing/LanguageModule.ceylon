@@ -10,7 +10,7 @@ class LanguageModule() {
     if ("hello".sequence() nonempty) {}
     List<Character> chars = "hello";
     
-    [Integer*] ints2 = {};
+    [Integer*] ints2 = [];
     {Integer*} ints1 = {};
     
     Integer m1 = min { 1, 2 };

@@ -1,7 +1,7 @@
 class ControlStructures() {
     Object something = "hello";
     String? name = null;
-    String[] names = {};
+    String[] names = [];
     Entry<String,String>[] entries = [ "hello" -> "world" ];
     
     void print(String name) {}
@@ -37,7 +37,7 @@ class ControlStructures() {
         }
     }
     
-    variable String[] varseq = {};
+    variable String[] varseq = [];
     @error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}
     

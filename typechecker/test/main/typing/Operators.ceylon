@@ -104,7 +104,7 @@ class Operators() {
     //@error @type:"Boolean" value x70n = nonempty {};
     @error @type:"Boolean" value x71 = {"hello"} nonempty;
     //@error @type:"Boolean" value x71n = nonempty {"hello"};
-    String[] strs = {};
+    String[] strs = [];
     @type:"Boolean" value x72 = strs nonempty;
     //@type:"Boolean" value x72n = nonempty strs;
     
@@ -137,7 +137,7 @@ class Operators() {
     
     X[] sequence = [X(), X()];
     String[]? noSequence = null;
-    String[] emp = {};
+    String[] emp = [];
     
     @type:"Null|Operators.X" value x38 = sequence[0];
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
@@ -221,7 +221,7 @@ class Operators() {
     @error X()*.doIt();
     @error X()?.doIt();
     
-    @type:"Empty" value es = {};
+    @type:"Empty" value es = [];
     
     @type:"Null" value nnnn = es[0];
     Null nnnn2 = nnnn;

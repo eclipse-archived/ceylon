@@ -155,7 +155,7 @@ class TypeArgInference() {
     @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) => result+" "+s; };
     @type:"Null|String" { null, "hello", "world" }.find { function selecting(String? s) => s exists; };
     
-    @type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, {});
+    @type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, []);
     @type:"Tuple<Integer|String|Float,Integer|String,Tuple<Float,Float,Empty>>" Tuple(true then "" else 1, [1.0]);
     
     class Something<X,Y,Z>(Y y, Z z) 

@@ -1,5 +1,5 @@
 class Union() {
-    String[] strings = {};
+    String[] strings = [];
     Iterator<String>? it1 = strings.iterator();
     Iterable<String> it2 = strings; 
 
@@ -72,7 +72,7 @@ class Union() {
         print(s);
     }
     
-    T[]? method2<T>() { return {}; }
+    T[]? method2<T>() { return []; }
     
     String[]? mr2 = method2<String>();
     
