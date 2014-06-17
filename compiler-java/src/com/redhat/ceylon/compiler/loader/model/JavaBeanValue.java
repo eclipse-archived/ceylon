@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -35,6 +36,11 @@ public class JavaBeanValue extends Value implements LocalDeclarationContainer {
     private String setterName;
     
     private Map<String,Declaration> localDeclarations;
+    public final MethodMirror mirror;
+
+    public JavaBeanValue(MethodMirror mirror) {
+        this.mirror = mirror;
+    }
 
     @Override
     protected Class<?> getModelClass() {

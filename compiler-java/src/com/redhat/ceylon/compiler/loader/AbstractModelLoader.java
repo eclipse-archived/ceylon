@@ -93,6 +93,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationCompleter;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -123,7 +124,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
+public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader, DeclarationCompleter {
 
     public static final String JAVA_BASE_MODULE_NAME = "java.base";
     public static final String CEYLON_LANGUAGE = "ceylon.language";
@@ -1164,7 +1165,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
                 List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(classMirror);
                 int tpCount = tpAnnotations != null ? tpAnnotations.size() : classMirror.getTypeParameters().size();
-                if(!checkReifiedTypeDescriptors(tpCount, classMirror, methodMirror, true))
+                if(!checkReifiedTypeDescriptors(tpCount, classMirror.getQualifiedName(), methodMirror, true))
                     continue;
             }
             
@@ -1173,7 +1174,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return constructors;
     }
 
-    private boolean checkReifiedTypeDescriptors(int tpCount, ClassMirror container, MethodMirror methodMirror, boolean isConstructor) {
+    private boolean checkReifiedTypeDescriptors(int tpCount, String containerName, MethodMirror methodMirror, boolean isConstructor) {
         List<VariableMirror> params = methodMirror.getParameters();
         int actualTypeDescriptorParameters = 0;
         for(VariableMirror param : params){
@@ -1184,10 +1185,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         if(tpCount != actualTypeDescriptorParameters){
             if(isConstructor)
-                logError("Constructor for '"+container.getQualifiedName()+"' should take "+tpCount
+                logError("Constructor for '"+containerName+"' should take "+tpCount
                         +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping constructor.");
             else
-                logError("Method '"+container.getQualifiedName()+"."+methodMirror.getName()+"' should take "+tpCount
+                logError("Method '"+containerName+"."+methodMirror.getName()+"' should take "+tpCount
                     +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': method is invalid.");
             return false;
         }
@@ -1228,7 +1229,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setAbstract(classMirror.isAbstract());
         klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
         klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
-        klass.setActual(classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null);
+        boolean actual = classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
+        klass.setActual(actual);
+        klass.setActualCompleter(this);
         klass.setFinal(classMirror.isFinal() 
                 // ArraySequnce isn't final in the Java runtime, but is in the Ceylon runtime
                 || "ceylon.language.ArraySequence".equals(classMirror.getQualifiedName()));
@@ -2002,9 +2005,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
-        fillRefinedDeclarations(klass);
-        if(isCeylon)
-            checkReifiedGenericsForMethods(klass, classMirror);
         setAnnotations(klass, classMirror);
         
         // local declarations come last, because they need all members to be completed first
@@ -2072,16 +2072,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private boolean isInstantiator(MethodMirror methodMirror) {
         return methodMirror.getName().endsWith("$aliased$");
-    }
-    private void checkReifiedGenericsForMethods(ClassOrInterface klass, ClassMirror classMirror) {
-        for(Declaration member : klass.getMembers()){
-            if(member instanceof JavaMethod == false)
-                continue;
-            MethodMirror mirror = ((JavaMethod)member).mirror;
-            if(AbstractTransformer.supportsReified(member)){
-                checkReifiedTypeDescriptors(mirror.getTypeParameters().size(), classMirror, mirror, false);
-            }
-        }
     }
     
     private boolean isFromJDK(ClassMirror classMirror) {
@@ -2235,17 +2225,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         addLocalDeclarations(method, classMirror, methodMirror);
 
         return method;
-    }
-    private void fillRefinedDeclarations(ClassOrInterface klass) {
-        for(Declaration member : klass.getMembers()){
-            // do not trigger a type load (by calling isActual()) for Java inner classes since they
-            // can never be actual
-            if(member instanceof ClassOrInterface && !Decl.isCeylon((ClassOrInterface)member))
-                continue;
-            if(member.isActual()){
-                member.setRefinedDeclaration(findRefinedDeclaration(klass, member.getName(), getSignature(member), false));
-            }
-        }
     }
 
     private List<ProducedType> getSignature(Declaration decl) {
@@ -2510,7 +2489,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName, boolean isCeylon) {
-        JavaBeanValue value = new JavaBeanValue();
+        JavaBeanValue value = new JavaBeanValue(methodMirror);
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
         value.setUnit(klass.getUnit());
@@ -2546,7 +2525,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unchecked != null && unchecked.booleanValue();
     }
 
-    private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl, boolean isCeylon) {
+    private void setMethodOrValueFlags(final ClassOrInterface klass, final MethodMirror methodMirror, final MethodOrValue decl, boolean isCeylon) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
@@ -2578,12 +2557,62 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         decl.setStaticallyImportable(methodMirror.isStatic());
-        if(isOverridingMethod(methodMirror)
+
+        decl.setActualCompleter(this);
+    }
+    
+    @Override
+    public void completeActual(Declaration decl){
+        Scope container = decl.getContainer();
+
+        if(container instanceof ClassOrInterface){
+            ClassOrInterface klass = (ClassOrInterface) container;
+            
+            // we never consider Interface and other stuff, since we never register the actualCompleter for them
+            if(decl instanceof Class){
+                // Java member classes are never actual 
+                if(!Decl.isCeylon((Class)decl))
+                    return;
+                // we already set the actual bit for member classes, we just need the refined decl
+                if(decl.isActual()){
+                    decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                }
+            }else{ // Method or Value
+                MethodMirror methodMirror;
+                if(decl instanceof JavaBeanValue)
+                    methodMirror = ((JavaBeanValue) decl).mirror;
+                else if(decl instanceof JavaMethod)
+                    methodMirror = ((JavaMethod) decl).mirror;
+                else
+                    throw new ModelResolutionException("Unknown type of declaration: "+decl+": "+decl.getClass().getName());
+
                 // For Ceylon interfaces we rely on annotation
-                || (klass instanceof LazyInterface 
-                        && ((LazyInterface)klass).isCeylon()
-                        && methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null)){
-            decl.setActual(true);
+                if(klass instanceof LazyInterface
+                        && ((LazyInterface)klass).isCeylon()){
+                    boolean actual = methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
+                    decl.setActual(actual);
+                    if(actual){
+                        decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                    }
+                }else{
+                    if(isOverridingMethod(methodMirror)){
+                        decl.setActual(true);
+                        decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                    }
+                }
+                
+                // now that we know the refined declaration, we can check for reified type param support
+                // for Ceylon methods
+                if(decl instanceof JavaMethod && Decl.isCeylon(klass)){
+                    if(!methodMirror.getTypeParameters().isEmpty()
+                            // because this requires the refined decl, we defer this check until we've set it, to not trigger
+                            // lazy loading just to check.
+                            && AbstractTransformer.supportsReified(decl)){
+                        checkReifiedTypeDescriptors(methodMirror.getTypeParameters().size(), 
+                                container.getQualifiedNameString(), methodMirror, false);
+                    }
+                }
+            }
         }
     }
     
