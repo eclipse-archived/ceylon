@@ -224,7 +224,7 @@ shared void testSatisfaction() {
     obtnbl.release(null);
     check(!obtnbl.opened, "Obtainable [3]");
     check(MyContainer().empty, "Container");
-    variable Sequential<Integer> myfixed = {};//MyNone();
+    variable Sequential<Integer> myfixed = [];//MyNone();
     check(!myfixed nonempty, "None");
     myfixed = [1];//MySome();
     check(myfixed nonempty, "Some");
