@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -69,6 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -76,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -1598,6 +1601,7 @@ public class ClassTransformer extends AbstractTransformer {
                 attrDecl.setIdentifier(expr.getIdentifier());
                 attrDecl.setScope(op.getScope());
                 attrDecl.setSpecifierOrInitializerExpression(op.getSpecifierExpression());
+                attrDecl.setAnnotationList(makeShortcutRefinementAnnotationTrees());
                 
                 // Make sure the boxing information is set correctly
                 BoxingDeclarationVisitor v = new CompilerBoxingDeclarationVisitor(this);
@@ -1612,6 +1616,7 @@ public class ClassTransformer extends AbstractTransformer {
                 methDecl.setDeclarationModel(m);
                 methDecl.setIdentifier(expr.getIdentifier());
                 methDecl.setScope(op.getScope());
+                methDecl.setAnnotationList(makeShortcutRefinementAnnotationTrees());
                 
                 Tree.SpecifierExpression specifierExpression = op.getSpecifierExpression();
                 methDecl.setSpecifierExpression(specifierExpression);
@@ -1674,6 +1679,24 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         return result;
+    }
+
+    private AnnotationList makeShortcutRefinementAnnotationTrees() {
+        AnnotationList annotationList = new AnnotationList(null);
+        
+        Tree.Annotation shared = new Tree.Annotation(null);
+        Tree.BaseMemberExpression sharedPrimary = new Tree.BaseMemberExpression(null);
+        sharedPrimary.setDeclaration(typeFact().getLanguageModuleDeclaration("shared"));
+        shared.setPrimary(sharedPrimary);
+        annotationList.addAnnotation(shared);
+        
+        Tree.Annotation actual = new Tree.Annotation(null);
+        Tree.BaseMemberExpression actualPrimary = new Tree.BaseMemberExpression(null);
+        actualPrimary.setDeclaration(typeFact().getLanguageModuleDeclaration("actual"));
+        actual.setPrimary(actualPrimary);
+        annotationList.addAnnotation(actual);
+        
+        return annotationList;
     }
 
     /**
