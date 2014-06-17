@@ -193,19 +193,6 @@ class FreeInterfaceType(declaration)
     shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
 }
 
-shared class OpenTypeParam() satisfies TypeParameter {
-
-    shared actual NestableDeclaration container { throw Exception("TypeParameter.container"); }
-    shared actual Boolean defaulted { throw Exception("TypeParameter.defaulted"); }
-    shared actual OpenType? defaultTypeArgument { throw Exception("TypeParameter.defaultTypeArgument"); }
-    shared actual Variance variance { throw Exception("TypeParameter.variance"); }
-    shared actual OpenType[] satisfiedTypes { throw Exception("TypeParameter.satisfiedTypes"); }
-    shared actual OpenType[] caseTypes { throw Exception("TypeParameter.caseTypes"); }
-
-    shared actual String name { throw Exception("TypeParameter.name"); }
-    shared actual String qualifiedName { throw Exception("TypeParameter.qname"); }
-}
-
 class FunParamDecl() satisfies FunctionDeclaration {
   shared actual Boolean parameter=true;
   shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }

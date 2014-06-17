@@ -213,7 +213,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
     if (mm.$tp) {
       var targs={};
       for (var tp in mm.$tp) {
-        var param = OpenTypeParam(this.tipo,tp);
+        var param = OpenTypeParam$jsint(this.tipo,tp);
         var targ;
         if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a
             && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
@@ -226,9 +226,9 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs[param]=targ;
+        targs[param.qualifiedName]=[param,targ];
       }
-      return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return Mapita(targs,{V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }

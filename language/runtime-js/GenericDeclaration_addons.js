@@ -6,7 +6,7 @@ atr$(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations
     if (tps) {
       var rv=[];
       for (var tp in tps) {
-        rv.push(OpenTypeParam(this.tipo,tp));
+        rv.push(OpenTypeParam$jsint(this.tipo,tp));
       }
       return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:TypeParameter$meta$declaration}});
     }
@@ -24,7 +24,7 @@ GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=fun
         var tpnm = tp;
         if (tp.indexOf('$')>0)tpnm=tp.substring(0,tp.indexOf('$'));
         if (name$14==tpnm) {
-          return OpenTypeParam(this.tipo,tp);
+          return OpenTypeParam$jsint(this.tipo,tp);
         }
       }
     }
