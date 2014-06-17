@@ -305,7 +305,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
-    public Character get(@Name("Index") Integer key) {
+    public Character get(@Name("index") Integer key) {
         return getFromFirst(value, key.longValue());
     }
 
@@ -316,7 +316,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
-    public Character getFromLast(@Name("Index") long key) {
+    public Character getFromLast(@Name("index") long key) {
         return getFromFirst(value, value.length()-1-key);
     }
 
@@ -326,7 +326,7 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Character|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFromFirst(@Name("index") long key) {
         return getFromFirst(value, key);
     }
