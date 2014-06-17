@@ -106,8 +106,11 @@ public class ProducedTypeNamePrinter {
                 }
                 if (abbreviateIterable(pt)) {
                     ProducedType it = u.getIteratedType(pt);
-                    String etn = getProducedTypeName(it, unit);
                     ProducedType nt = pt.getTypeArgumentList().get(1);
+                    if (it.isNothing() && !nt.isNothing()) {
+                    	return "{}";
+                    }
+                    String etn = getProducedTypeName(it, unit);
                     String many = nt.isNothing() ? "+":"*";
                     if (isPrimitiveAbbreviatedType(it)) {
                         return "{" + etn + many + "}";

@@ -275,7 +275,7 @@
     STATIC_TYPE elementType)
 
 ^(ITERABLE_TYPE: STATIC_TYPE
-    TYPE elementType)
+    TYPE? elementType)
 
 ^(OPTIONAL_TYPE: STATIC_TYPE
     STATIC_TYPE definiteType)

@@ -2444,8 +2444,10 @@ groupedType returns [GroupedType type]
 iterableType returns [IterableType type]
    : LBRACE
      { $type = new IterableType($LBRACE); }
-     t=variadicType
-     { $type.setElementType($t.type); }
+     (
+       t=variadicType
+       { $type.setElementType($t.type); }
+     )?
      RBRACE
      { $type.setEndToken($RBRACE); }
    ;

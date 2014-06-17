@@ -1487,18 +1487,22 @@ public class DeclarationVisitor extends Visitor {
     public void visit(final Tree.IterableType that) {
         super.visit(that);
         if (inExtends) {
-            ProducedType et = null;
-            boolean alo = false;
+            final ProducedType elementType;
+            final boolean atLeastOne;
             Tree.Type elem = that.getElementType();
-            if (elem!=null) {
-                if (elem instanceof Tree.SequencedType) {
-                    Tree.SequencedType set = (Tree.SequencedType) elem;
-                    et = set.getType().getTypeModel();
-                    alo = set.getAtLeastOne();
-                }
+            if (elem==null) {
+            	elementType = unit.getNothingDeclaration().getType();
+            	atLeastOne = false;
             }
-            final ProducedType elementType = et;
-            final boolean atLeastOne = alo;
+            else if (elem instanceof Tree.SequencedType) {
+            	Tree.SequencedType set = (Tree.SequencedType) elem;
+            	elementType = set.getType().getTypeModel();
+            	atLeastOne = set.getAtLeastOne();
+            }
+            else {
+            	elementType = null;
+            	atLeastOne = false;
+            }
             ProducedType t = new LazyProducedType(unit) {
                 ProducedType iterableType() {
                     if (elementType!=null) {

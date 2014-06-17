@@ -4690,7 +4690,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            st = unit.getType(unit.getEmptyDeclaration());
+            st = unit.getIterableType(unit.getNothingDeclaration().getType());
         }
         if (st!=null) {
             that.setTypeModel(st);

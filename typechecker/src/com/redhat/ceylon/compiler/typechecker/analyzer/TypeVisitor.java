@@ -574,7 +574,10 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.IterableType that) {
         super.visit(that);
         Tree.Type elem = that.getElementType();
-		if (elem!=null) {
+		if (elem==null) {
+			that.setTypeModel(unit.getIterableType(unit.getNothingDeclaration().getType()));
+		}
+		else {
         	if (elem instanceof Tree.SequencedType) {
         		ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
         		if (et!=null) {
