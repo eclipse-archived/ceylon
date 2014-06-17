@@ -265,7 +265,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     @Override
-    public void visit(CompilationUnit that) {
+    public void visit(final Tree.CompilationUnit that) {
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
@@ -324,7 +324,7 @@ public class GenerateJsVisitor extends Visitor
         visitStatements(that.getDeclarations());
     }
 
-    public void visit(Import that) {
+    public void visit(final Tree.Import that) {
         ImportableScope scope =
                 that.getImportMemberOrTypeList().getImportList().getImportedScope();
         if (scope instanceof Package && !((Package)scope).getModule().equals(that.getUnit().getPackage().getModule())) {
@@ -358,12 +358,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Parameter that) {
+    public void visit(final Tree.Parameter that) {
         out(names.name(that.getParameterModel()));
     }
 
     @Override
-    public void visit(ParameterList that) {
+    public void visit(final Tree.ParameterList that) {
         out("(");
         boolean first=true;
         boolean ptypes = false;
@@ -401,12 +401,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Body that) {
+    public void visit(final Tree.Body that) {
         visitStatements(that.getStatements());
     }
 
     @Override
-    public void visit(Block that) {
+    public void visit(final Tree.Block that) {
         List<Statement> stmnts = that.getStatements();
         if (stmnts.isEmpty()) {
             out("{}");
@@ -504,12 +504,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(ClassDeclaration that) {
+    public void visit(final Tree.ClassDeclaration that) {
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
         classDeclaration(that);
     }
 
-    private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
+    private void addClassDeclarationToPrototype(TypeDeclaration outer, final Tree.ClassDeclaration that) {
         classDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
         out(names.self(outer), ".", tname, "=", tname);
@@ -535,20 +535,20 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(InterfaceDeclaration that) {
+    public void visit(final Tree.InterfaceDeclaration that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             interfaceDeclaration(that);
         }
     }
 
-    private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, InterfaceDeclaration that) {
+    private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, final Tree.InterfaceDeclaration that) {
         interfaceDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
         out(names.self(outer), ".", tname, "=", tname);
         endLine(true);
     }
 
-    private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
+    private void addInterfaceToPrototype(ClassOrInterface type, final Tree.InterfaceDefinition interfaceDef) {
         TypeGenerator.interfaceDefinition(interfaceDef, this);
         Interface d = interfaceDef.getDeclarationModel();
         out(names.self(type), ".", names.name(d), "=", names.name(d));
@@ -556,13 +556,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(InterfaceDefinition that) {
+    public void visit(final Tree.InterfaceDefinition that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             TypeGenerator.interfaceDefinition(that, this);
         }
     }
 
-    private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
+    private void addClassToPrototype(ClassOrInterface type, final Tree.ClassDefinition classDef) {
         TypeGenerator.classDefinition(classDef, this);
         final String tname = names.name(classDef.getDeclarationModel());
         out(names.self(type), ".", tname, "=", tname);
@@ -570,13 +570,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(ClassDefinition that) {
+    public void visit(final Tree.ClassDefinition that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             TypeGenerator.classDefinition(that, this);
         }
     }
 
-    private void interfaceDeclaration(InterfaceDeclaration that) {
+    private void interfaceDeclaration(final Tree.InterfaceDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         comment(that);
@@ -604,7 +604,7 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
-    private void classDeclaration(ClassDeclaration that) {
+    private void classDeclaration(final Tree.ClassDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         comment(that);
@@ -682,7 +682,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns the name of the type or its $init$ function if it's local. */
-    String typeFunctionName(StaticType type, boolean removeAlias) {
+    String typeFunctionName(final Tree.StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
         if (removeAlias && d.isAlias()) {
             d = d.getExtendedTypeDeclaration();
@@ -701,7 +701,7 @@ public class GenerateJsVisitor extends Visitor
         return tfn;
     }
 
-    void addToPrototype(Node node, ClassOrInterface d, List<Statement> statements) {
+    void addToPrototype(Node node, ClassOrInterface d, List<Tree.Statement> statements) {
         boolean enter = opts.isOptimize();
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
         if (enter) {
@@ -773,7 +773,7 @@ public class GenerateJsVisitor extends Visitor
 
     private ClassOrInterface prototypeOwner;
 
-    private void addToPrototype(ClassOrInterface d, Statement s,
+    private void addToPrototype(ClassOrInterface d, final Tree.Statement s,
             List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params) {
         ClassOrInterface oldPrototypeOwner = prototypeOwner;
         prototypeOwner = d;
@@ -840,7 +840,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.name(d), ".$$;");
     }
 
-    private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
+    private void addObjectToPrototype(ClassOrInterface type, final Tree.ObjectDefinition objDef) {
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
@@ -851,7 +851,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(ObjectDefinition that) {
+    public void visit(final Tree.ObjectDefinition that) {
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
@@ -868,7 +868,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void objectDefinition(ObjectDefinition that) {
+    private void objectDefinition(final Tree.ObjectDefinition that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         comment(that);
@@ -987,7 +987,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(MethodDeclaration that) {
+    public void visit(final Tree.MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.methodDeclaration(null, that, this);
@@ -1063,7 +1063,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(MethodDefinition that) {
+    public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Method d = that.getDeclarationModel();
@@ -1079,7 +1079,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Get the specifier expression for a Parameter, if one is available. */
-    private SpecifierOrInitializerExpression getDefaultExpression(Parameter param) {
+    private SpecifierOrInitializerExpression getDefaultExpression(final Tree.Parameter param) {
         final SpecifierOrInitializerExpression expr;
         if (param instanceof ParameterDeclaration || param instanceof InitializerParameter) {
             MethodDeclaration md = null;
@@ -1105,7 +1105,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Create special functions with the expressions for defaulted parameters in a parameter list. */
-    void initDefaultedParameters(ParameterList params, Method container) {
+    void initDefaultedParameters(final Tree.ParameterList params, Method container) {
         if (!container.isMember())return;
         for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
@@ -1136,7 +1136,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
-    void initParameters(ParameterList params, TypeDeclaration typeDecl, Method m) {
+    void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Method m) {
         for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
             final String paramName = names.name(pd);
@@ -1184,7 +1184,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addMethodToPrototype(TypeDeclaration outer,
-            MethodDefinition that) {
+            final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         Method d = that.getDeclarationModel();
@@ -1200,7 +1200,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AttributeGetterDefinition that) {
+    public void visit(final Tree.AttributeGetterDefinition that) {
         Value d = that.getDeclarationModel();
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -1234,7 +1234,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addGetterToPrototype(TypeDeclaration outer,
-            AttributeGetterDefinition that) {
+            final Tree.AttributeGetterDefinition that) {
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -1256,8 +1256,8 @@ public class GenerateJsVisitor extends Visitor
         out(");");
     }
     
-    AttributeSetterDefinition associatedSetterDefinition(
-            Value valueDecl) {
+    Tree.AttributeSetterDefinition associatedSetterDefinition(
+            final Value valueDecl) {
         final Setter setter = valueDecl.getSetter();
         if ((setter != null) && (currentStatements != null)) {
             for (Statement stmt : currentStatements) {
@@ -1274,7 +1274,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Exports a getter function; useful in non-prototype style. */
-    boolean shareGetter(MethodOrValue d) {
+    boolean shareGetter(final MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1287,7 +1287,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AttributeSetterDefinition that) {
+    public void visit(final Tree.AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
         if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
@@ -1317,7 +1317,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    boolean shareSetter(MethodOrValue d) {
+    boolean shareSetter(final MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1330,7 +1330,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AttributeDeclaration that) {
+    public void visit(final Tree.AttributeDeclaration that) {
         final Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
@@ -1414,7 +1414,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Generate runtime metamodel info for an attribute declaration or definition. */
-    void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
+    void generateAttributeMetamodel(final Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
         //No need to define all this for local values
         Scope _scope = that.getScope();
         while (_scope != null) {
@@ -1482,7 +1482,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(CharLiteral that) {
+    public void visit(final Tree.CharLiteral that) {
         out(clAlias, "Character(");
         out(String.valueOf(that.getText().codePointAt(1)));
         out(",true)");
@@ -1510,12 +1510,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(StringLiteral that) {
+    public void visit(final Tree.StringLiteral that) {
         out("\"", escapeStringLiteral(that.getText()), "\"");
     }
 
     @Override
-    public void visit(StringTemplate that) {
+    public void visit(final Tree.StringTemplate that) {
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
         for (int i = 0; i < literals.size(); i++) {
@@ -1535,7 +1535,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(FloatLiteral that) {
+    public void visit(final Tree.FloatLiteral that) {
         out(clAlias, "Float(", that.getText(), ")");
     }
 
@@ -1551,7 +1551,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(NaturalLiteral that) {
+    public void visit(final Tree.NaturalLiteral that) {
         try {
             out("(", Long.toString(parseNaturalLiteral(that)), ")");
         } catch (NumberFormatException ex) {
@@ -1560,17 +1560,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(This that) {
+    public void visit(final Tree.This that) {
         out(names.self(Util.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
-    public void visit(Super that) {
+    public void visit(final Tree.Super that) {
         out(names.self(Util.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
-    public void visit(Outer that) {
+    public void visit(final Tree.Outer that) {
         boolean outer = false;
         if (opts.isOptimize()) {
             Scope scope = that.getScope();
@@ -1609,7 +1609,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
-    static boolean isNative(Term t) {
+    static boolean isNative(final Tree.Term t) {
         if (t instanceof MemberOrTypeExpression) {
             return isNative(((MemberOrTypeExpression)t).getDeclaration());
         }
@@ -1643,7 +1643,7 @@ public class GenerateJsVisitor extends Visitor
         return false;
     }
 
-    private void generateSafeOp(QualifiedMemberOrTypeExpression that) {
+    private void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that) {
         boolean isMethod = that.getDeclaration() instanceof Method;
         String lhsVar = createRetainedTempVar();
         out("(", lhsVar, "=");
@@ -1670,7 +1670,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(final QualifiedMemberExpression that) {
+    public void visit(final Tree.QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
         //          refined by the current class!
         if (that.getMemberOperator() instanceof SafeMemberOp) {
@@ -1704,7 +1704,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void generateCallable(final QualifiedMemberOrTypeExpression that, String name) {
+    private void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name) {
         if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //it's a static method ref
             if (name == null) {
@@ -1818,7 +1818,7 @@ public class GenerateJsVisitor extends Visitor
      * the given expression. If lhs==null and the expression is a BaseMemberExpression
      * then the qualified path is prepended.
      */
-    String memberAccess(StaticMemberOrTypeExpression expr, String lhs) {
+    String memberAccess(final Tree.StaticMemberOrTypeExpression expr, String lhs) {
         Declaration decl = expr.getDeclaration();
         String plainName = null;
         if (decl == null && dynblock > 0) {
@@ -1843,7 +1843,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     @Override
-    public void visit(BaseTypeExpression that) {
+    public void visit(final Tree.BaseTypeExpression that) {
         Declaration d = that.getDeclaration();
         if (d == null && isInDynamicBlock()) {
             //It's a native js type but will be wrapped in dyntype() call
@@ -1858,7 +1858,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(QualifiedTypeExpression that) {
+    public void visit(final Tree.QualifiedTypeExpression that) {
         if (that.getMemberOperator() instanceof SafeMemberOp) {
             generateCallable(that, names.name(that.getDeclaration()));
         } else {
@@ -1867,23 +1867,23 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    public void visit(Dynamic that) {
+    public void visit(final Tree.Dynamic that) {
         //this is value{xxx}
         invoker.nativeObject(that.getNamedArgumentList());
     }
 
     @Override
-    public void visit(InvocationExpression that) {
+    public void visit(final Tree.InvocationExpression that) {
         invoker.generateInvocation(that);
     }
 
     @Override
-    public void visit(PositionalArgumentList that) {
+    public void visit(final Tree.PositionalArgumentList that) {
         invoker.generatePositionalArguments(null, that, that.getPositionalArguments(), false, false);
     }
 
     /** Box a term, visit it, unbox it. */
-    void box(Term term) {
+    void box(final Tree.Term term) {
         final int t = boxStart(term);
         term.visit(this);
         if (t == 4) out("/*TODO: callable targs 4*/");
@@ -1891,21 +1891,21 @@ public class GenerateJsVisitor extends Visitor
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
-    int boxStart(Term fromTerm) {
+    int boxStart(final Tree.Term fromTerm) {
         return boxUnboxStart(fromTerm, false);
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
-    int boxUnboxStart(Term fromTerm, Term toTerm) {
+    int boxUnboxStart(final Tree.Term fromTerm, final Tree.Term toTerm) {
         return boxUnboxStart(fromTerm, isNative(toTerm));
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
-    int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
+    int boxUnboxStart(final Tree.Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
         return boxUnboxStart(fromTerm, isNative(toDecl));
     }
 
-    int boxUnboxStart(Term fromTerm, boolean toNative) {
+    int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
         // Box the value
         final boolean fromNative = isNative(fromTerm);
         final ProducedType fromType = fromTerm.getTypeModel();
@@ -1957,38 +1957,38 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(final ObjectArgument that) {
+    public void visit(final Tree.ObjectArgument that) {
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.objectArgument(that, this);
     }
 
     @Override
-    public void visit(AttributeArgument that) {
+    public void visit(final Tree.AttributeArgument that) {
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.attributeArgument(that, this);
     }
 
     @Override
-    public void visit(SequencedArgument that) {
+    public void visit(final Tree.SequencedArgument that) {
         if (errVisitor.hasErrors(that))return;
         SequenceGenerator.sequencedArgument(that, this);
     }
 
     @Override
-    public void visit(SequenceEnumeration that) {
+    public void visit(final Tree.SequenceEnumeration that) {
         if (errVisitor.hasErrors(that))return;
         SequenceGenerator.sequenceEnumeration(that, this);
     }
 
 
     @Override
-    public void visit(Comprehension that) {
+    public void visit(final Tree.Comprehension that) {
         new ComprehensionGenerator(this, names, directAccess).generateComprehension(that);
     }
 
 
     @Override
-    public void visit(final SpecifierStatement that) {
+    public void visit(final Tree.SpecifierStatement that) {
         // A lazy specifier expression in a class/interface should go into the
         // prototype in prototype style, so don't generate them here.
         if (!(opts.isOptimize() && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
@@ -1998,7 +1998,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private void specifierStatement(final TypeDeclaration outer,
-            final SpecifierStatement specStmt) {
+            final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
         if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
             specStmt.getBaseMemberExpression().visit(this);
@@ -2155,7 +2155,7 @@ public class GenerateJsVisitor extends Visitor
     }
     
     private void addSpecifierToPrototype(final TypeDeclaration outer,
-                final SpecifierStatement specStmt) {
+                final Tree.SpecifierStatement specStmt) {
         specifierStatement(outer, specStmt);
     }
 
@@ -2216,7 +2216,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Outputs the module name for the specified declaration. Returns true if something was output. */
-    boolean qualify(Node that, Declaration d) {
+    boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
             out(path, ".");
@@ -2224,11 +2224,11 @@ public class GenerateJsVisitor extends Visitor
         return path.length() > 0;
     }
 
-    String qualifiedPath(Node that, Declaration d) {
+    String qualifiedPath(final Node that, final Declaration d) {
         return qualifiedPath(that, d, false);
     }
 
-    private String qualifiedPath(Node that, Declaration d, boolean inProto) {
+    private String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
         boolean isMember = d.isClassOrInterfaceMember();
         if (!isMember && isImported(that == null ? null : that.getUnit().getPackage(), d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
@@ -2295,7 +2295,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(ExecutableStatement that) {
+    public void visit(final Tree.ExecutableStatement that) {
         super.visit(that);
         endLine(true);
     }
@@ -2312,7 +2312,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Return that) {
+    public void visit(final Tree.Return that) {
         out("return");
         if (that.getExpression() == null) {
             endLine(true);
@@ -2330,7 +2330,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AnnotationList that) {}
+    public void visit(final Tree.AnnotationList that) {}
 
     boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
@@ -2345,56 +2345,56 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(SumOp that) {
+    public void visit(final Tree.SumOp that) {
         Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
     }
 
     @Override
-    public void visit(ScaleOp that) {
+    public void visit(final Tree.ScaleOp that) {
         final String lhs = names.createTempVariable();
         Operators.simpleBinaryOp(that, "function(){var "+lhs+"=", ";return ", ".scale("+lhs+");}()", this);
     }
 
     @Override
-    public void visit(DifferenceOp that) {
+    public void visit(final Tree.DifferenceOp that) {
         Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
     }
 
     @Override
-    public void visit(ProductOp that) {
+    public void visit(final Tree.ProductOp that) {
         Operators.simpleBinaryOp(that, null, ".times(", ")", this);
     }
 
     @Override
-    public void visit(QuotientOp that) {
+    public void visit(final Tree.QuotientOp that) {
         Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
     }
 
-    @Override public void visit(RemainderOp that) {
+    @Override public void visit(final Tree.RemainderOp that) {
         Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
     }
 
-    @Override public void visit(PowerOp that) {
+    @Override public void visit(final Tree.PowerOp that) {
         Operators.simpleBinaryOp(that, null, ".power(", ")", this);
     }
 
-    @Override public void visit(AddAssignOp that) {
+    @Override public void visit(final Tree.AddAssignOp that) {
         assignOp(that, "plus", null);
     }
 
-    @Override public void visit(SubtractAssignOp that) {
+    @Override public void visit(final Tree.SubtractAssignOp that) {
         assignOp(that, "minus", null);
     }
 
-    @Override public void visit(MultiplyAssignOp that) {
+    @Override public void visit(final Tree.MultiplyAssignOp that) {
         assignOp(that, "times", null);
     }
 
-    @Override public void visit(DivideAssignOp that) {
+    @Override public void visit(final Tree.DivideAssignOp that) {
         assignOp(that, "divided", null);
     }
 
-    @Override public void visit(RemainderAssignOp that) {
+    @Override public void visit(final Tree.RemainderAssignOp that) {
         assignOp(that, "remainder", null);
     }
 
@@ -2502,7 +2502,7 @@ public class GenerateJsVisitor extends Visitor
         Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
     }
 
-    @Override public void visit(EqualOp that) {
+    @Override public void visit(final Tree.EqualOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
@@ -2518,7 +2518,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(NotEqualOp that) {
+    @Override public void visit(final Tree.NotEqualOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
@@ -2534,7 +2534,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(NotOp that) {
+    @Override public void visit(final Tree.NotOp that) {
         final Term t = that.getTerm();
         final boolean omitParens = t instanceof BaseMemberExpression
                 || t instanceof QualifiedMemberExpression
@@ -2548,16 +2548,16 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(IdenticalOp that) {
+    @Override public void visit(final Tree.IdenticalOp that) {
         Operators.simpleBinaryOp(that, "(", "===", ")", this);
     }
 
-    @Override public void visit(CompareOp that) {
+    @Override public void visit(final Tree.CompareOp that) {
         Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
     }
 
     /** Returns true if both Terms' types is either Integer or Boolean. */
-    private boolean canUseNativeComparator(Term left, Term right) {
+    private boolean canUseNativeComparator(final Tree.Term left, final Tree.Term right) {
         if (left == null || right == null || left.getTypeModel() == null || right.getTypeModel() == null) {
             return false;
         }
@@ -2567,7 +2567,7 @@ public class GenerateJsVisitor extends Visitor
                 || (types._boolean.equals(lt.getDeclaration()) && types._boolean.equals(rt.getDeclaration()));
     }
 
-    @Override public void visit(SmallerOp that) {
+    @Override public void visit(final Tree.SmallerOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
@@ -2589,7 +2589,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(LargerOp that) {
+    @Override public void visit(final Tree.LargerOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
@@ -2611,7 +2611,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(SmallAsOp that) {
+    @Override public void visit(final Tree.SmallAsOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
@@ -2635,7 +2635,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(LargeAsOp that) {
+    @Override public void visit(final Tree.LargeAsOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
@@ -2702,29 +2702,29 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-   @Override public void visit(AndOp that) {
+   @Override public void visit(final Tree.AndOp that) {
        Operators.simpleBinaryOp(that, "(", "&&", ")", this);
    }
 
-   @Override public void visit(OrOp that) {
+   @Override public void visit(final Tree.OrOp that) {
        Operators.simpleBinaryOp(that, "(", "||", ")", this);
    }
 
-   @Override public void visit(final EntryOp that) {
+   @Override public void visit(final Tree.EntryOp that) {
        out(clAlias, "Entry(");
        Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
    }
 
-   @Override public void visit(final RangeOp that) {
+   @Override public void visit(final Tree.RangeOp that) {
        out(clAlias, "Range(");
        Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
    }
 
-   @Override public void visit(ThenOp that) {
+   @Override public void visit(final Tree.ThenOp that) {
        Operators.simpleBinaryOp(that, "(", "?", ":null)", this);
    }
 
-   @Override public void visit(Element that) {
+   @Override public void visit(final Tree.Element that) {
        out(".$_get(");
        if (!isNaturalLiteral(that.getExpression().getTerm())) {
            that.getExpression().visit(this);
@@ -2732,7 +2732,7 @@ public class GenerateJsVisitor extends Visitor
        out(")");
    }
 
-   @Override public void visit(DefaultOp that) {
+   @Override public void visit(final Tree.DefaultOp that) {
        String lhsVar = createRetainedTempVar();
        out("(", lhsVar, "=");
        box(that.getLeftTerm());
@@ -2741,11 +2741,11 @@ public class GenerateJsVisitor extends Visitor
        out(")");
    }
 
-   @Override public void visit(IncrementOp that) {
+   @Override public void visit(final Tree.IncrementOp that) {
        Operators.prefixIncrementOrDecrement(that.getTerm(), "successor", this);
    }
 
-   @Override public void visit(DecrementOp that) {
+   @Override public void visit(final Tree.DecrementOp that) {
        Operators.prefixIncrementOrDecrement(that.getTerm(), "predecessor", this);
    }
 
@@ -2754,58 +2754,58 @@ public class GenerateJsVisitor extends Visitor
                !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
    }
 
-   @Override public void visit(PostfixIncrementOp that) {
+   @Override public void visit(final Tree.PostfixIncrementOp that) {
        Operators.postfixIncrementOrDecrement(that.getTerm(), "successor", this);
    }
 
-   @Override public void visit(PostfixDecrementOp that) {
+   @Override public void visit(final Tree.PostfixDecrementOp that) {
        Operators.postfixIncrementOrDecrement(that.getTerm(), "predecessor", this);
    }
 
     @Override
-    public void visit(final UnionOp that) {
+    public void visit(final Tree.UnionOp that) {
         Operators.genericBinaryOp(that, ".union(",
                 TypeUtils.mapTypeArgument(that, "union", "Element", "Other"), this);
     }
 
     @Override
-    public void visit(final IntersectionOp that) {
+    public void visit(final Tree.IntersectionOp that) {
         Operators.genericBinaryOp(that, ".intersection(",
                 TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"), this);
     }
 
     @Override
-    public void visit(final ComplementOp that) {
+    public void visit(final Tree.ComplementOp that) {
         Operators.genericBinaryOp(that, ".complement(",
                 TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"), this);
     }
 
-   @Override public void visit(Exists that) {
+   @Override public void visit(final Tree.Exists that) {
        Operators.unaryOp(that, clAlias+"nn$(", ")", this);
    }
-   @Override public void visit(Nonempty that) {
+   @Override public void visit(final Tree.Nonempty that) {
        Operators.unaryOp(that, clAlias+"nonempty(", ")", this);
    }
 
    //Don't know if we'll ever see this...
-   @Override public void visit(ConditionList that) {
+   @Override public void visit(final Tree.ConditionList that) {
        System.out.println("ZOMG condition list in the wild! " + that.getLocation()
                + " of " + that.getUnit().getFilename());
        super.visit(that);
    }
 
-   @Override public void visit(BooleanCondition that) {
+   @Override public void visit(final Tree.BooleanCondition that) {
        int boxType = boxStart(that.getExpression().getTerm());
        super.visit(that);
        if (boxType == 4) out("/*TODO: callable targs 10*/");
        boxUnboxEnd(boxType);
    }
 
-   @Override public void visit(IfStatement that) {
+   @Override public void visit(final Tree.IfStatement that) {
        conds.generateIf(that);
    }
 
-   @Override public void visit(WhileStatement that) {
+   @Override public void visit(final Tree.WhileStatement that) {
        conds.generateWhile(that);
    }
 
@@ -2836,11 +2836,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(IsOp that) {
+    public void visit(final Tree.IsOp that) {
         generateIsOfType(that.getTerm(), null, that.getType(), null, false);
     }
 
-    @Override public void visit(Break that) {
+    @Override public void visit(final Tree.Break that) {
         if (continues.isEmpty()) {
             out("break;");
         } else {
@@ -2853,7 +2853,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-    @Override public void visit(Continue that) {
+    @Override public void visit(final Tree.Continue that) {
         if (continues.isEmpty()) {
             out("continue;");
         } else {
@@ -2867,12 +2867,12 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(ForStatement that) {
+    @Override public void visit(final Tree.ForStatement that) {
         if (errVisitor.hasErrors(that))return;
         new ForGenerator(this, directAccess).generate(that);
     }
 
-    public void visit(InOp that) {
+    public void visit(final Tree.InOp that) {
         box(that.getRightTerm());
         out(".contains(");
         if (!isNaturalLiteral(that.getLeftTerm())) {
@@ -2881,12 +2881,12 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    @Override public void visit(TryCatchStatement that) {
+    @Override public void visit(final Tree.TryCatchStatement that) {
         if (errVisitor.hasErrors(that))return;
         new TryCatchGenerator(this, directAccess).generate(that);
     }
 
-    @Override public void visit(Throw that) {
+    @Override public void visit(final Tree.Throw that) {
         out("throw ", clAlias, "wrapexc(");
         if (that.getExpression() == null) {
             out(clAlias, "Exception()");
@@ -2897,7 +2897,7 @@ public class GenerateJsVisitor extends Visitor
         out(",'", that.getLocation(), "','", that.getUnit().getRelativePath(), "');");
     }
 
-    private void visitIndex(IndexExpression that) {
+    private void visitIndex(final Tree.IndexExpression that) {
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
@@ -2947,13 +2947,13 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    public void visit(IndexExpression that) {
+    public void visit(final Tree.IndexExpression that) {
         visitIndex(that);
     }
 
     /** Generates code for a case clause, as part of a switch statement. Each case
      * is rendered as an if. */
-    private void caseClause(CaseClause cc, String expvar, Term switchTerm) {
+    private void caseClause(final Tree.CaseClause cc, String expvar, final Tree.Term switchTerm) {
         out("if(");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
@@ -2998,7 +2998,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(SwitchStatement that) {
+    public void visit(final Tree.SwitchStatement that) {
         if (opts.isComment() && !opts.isMinify()) {
             out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             endLine();
@@ -3039,7 +3039,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Generates the code for a function in a named argument list. */
     @Override
-    public void visit(final MethodArgument that) {
+    public void visit(final Tree.MethodArgument that) {
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.methodArgument(that, this);
     }
@@ -3105,7 +3105,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Encloses the block in a function, IF NEEDED. */
-    void encloseBlockInFunction(Block block) {
+    void encloseBlockInFunction(final Tree.Block block) {
         final boolean wrap=encloser.encloseBlock(block);
         if (wrap) {
             beginBlock();
@@ -3157,12 +3157,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tuple that) {
+    public void visit(final Tree.Tuple that) {
         SequenceGenerator.tuple(that, this);
     }
 
     @Override
-    public void visit(Assertion that) {
+    public void visit(final Tree.Assertion that) {
         out("//assert");
         location(that);
         String custom = "Assertion failed";
@@ -3198,14 +3198,14 @@ public class GenerateJsVisitor extends Visitor
     public void visit(Tree.DynamicStatement that) {
         dynblock++;
         if (dynblock == 1 && !opts.isMinify()) {
-            out("/*Begin dynamic block*/");
+            out("/*BEG dynblock*/");
             endLine();
         }
         for (Tree.Statement stmt : that.getDynamicClause().getBlock().getStatements()) {
             stmt.visit(this);
         }
         if (dynblock == 1 && !opts.isMinify()) {
-            out("/*End dynamic block*/");
+            out("/*END dynblock*/");
             endLine();
         }
         dynblock--;
@@ -3216,7 +3216,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(TypeLiteral that) {
+    public void visit(final Tree.TypeLiteral that) {
         //Can be an alias, class, interface or type parameter
         if (that.getWantsDeclaration()) {
             MetamodelHelper.generateOpenType(that, this);
