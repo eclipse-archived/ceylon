@@ -46,7 +46,7 @@ final class do_ {
                 }
             }
         };
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>following(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>follow(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -78,7 +78,7 @@ final class bug1579_ {
                 
                 }
             }
-        }.<.ceylon.language.String>following(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
+        }.<.ceylon.language.String>follow(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

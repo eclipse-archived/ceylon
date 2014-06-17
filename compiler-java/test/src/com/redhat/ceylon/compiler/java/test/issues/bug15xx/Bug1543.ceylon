@@ -21,32 +21,32 @@
 void bug1543(){
     variable [Integer+] chain = [1];
     for (i in 0:100000) {
-        chain = chain.following(i);
+        chain = chain.withLeading(i);
     }
 }
 
 shared interface My1543Sequential<out Element>
         satisfies List<Element> {
-    // defined as shared default {Element|Other+} following<Other>(Other head)
+    // defined as shared default {Element|Other+} withLeading<Other>(Other head)
     // works with [Other|Element+] -> Sequence
     // fails with [Other,Element*] -> Tuple<Object,Other,Sequential<Element>>
-    shared actual formal [Other,Element*] following<Other>(Other head);
-    //shared actual formal [Other|Element+] following<Other>(Other head);
-    shared formal [Other,Element*] following2<Other>(Other head);
+    shared actual formal [Other,Element*] withLeading<Other>(Other head);
+    //shared actual formal [Other|Element+] follow<Other>(Other head);
+    shared formal [Other,Element*] withLeading2<Other>(Other head);
     shared formal [Integer,Element*] a;
     shared formal [Integer,Element*] m();
 }
 
 shared interface My1543Sequence<out Element> satisfies My1543Sequential<Element> {
-    shared actual formal [Other,Element+] following<Other>(Other head);
+    shared actual formal [Other,Element+] withLeading<Other>(Other head);
 }
 
 shared interface My1543Empty 
         satisfies My1543Sequential<Nothing> {
     // always Tuple<Other, Other, Sequential<Other>> 
     // non-widening now Tuple<Other, Other, Sequential<Other>>
-    shared actual [Other] following<Other>(Other head) => nothing;
-    shared actual [Other] following2<Other>(Other head) => nothing;
+    shared actual [Other] withLeading<Other>(Other head) => nothing;
+    shared actual [Other] withLeading2<Other>(Other head) => nothing;
     shared actual [Integer] a => nothing;
     shared actual [Integer] m() => nothing;
 }
