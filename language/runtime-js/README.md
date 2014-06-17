@@ -69,3 +69,30 @@ according to the rules previously stated). If the compiler finds this file, it w
 in the type initializer, instead of generating the usual code. This feature is independent of the file
 containing the constructor for the type; this means you could have both, just one, or none of
 `YourType.js` and `YourType$init.js`.
+
+###Customizing type constructors
+
+Having to write a complete constructor in JS is rarely necessary; in most cases only a little customization
+is needed, to add some private native values to the instance that will be returned.
+
+Type constructors in the JS backend are very similar to their Ceylon counterparts: they're a function that
+returns a new instance. The difference is that interfaces also have a function but in this case they
+*must* receive an already existing instance, and the functions only add stuff to it.
+
+For native types, this process can be customized at two points: a function can be called _before_ any
+stuff is added to the type, and another can be called _after_ the constructor's code is executed, right
+before the instance is returned.
+
+This is even doable when compiling regular Ceylon code to JS. The difference when compiling the language
+module is _where_ the files with these functions are expected. The files need to be in the same directory
+where the constructor would be, with the suffixes `_cons_before` and `_cons_after`. For example, you can
+have one (or both) of `YourType_cons_before.js` and `YourType_cons_after.js`.
+
+If these files exist, they must contain an anonymous function, with the same parameters as the
+constructor. For classes, all the parameters are passed first, then the type arguments (if it's a
+parameterized type) and finally the instance which is being constructed. For interfaces, only the
+type arguments (for parameterized interfaces) and the existing instance are passed. The function is
+then immediately invoked and the execution continues.
+
+When compiling the language module, a message is printed when the compiler finds one of these
+functions and stitches it into the constructor.
