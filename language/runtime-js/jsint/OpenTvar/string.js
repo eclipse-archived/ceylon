@@ -1,0 +1,1 @@
+return this.declaration.qualifiedName;

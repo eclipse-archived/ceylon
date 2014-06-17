@@ -193,28 +193,6 @@ class FreeInterfaceType(declaration)
     shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
 }
 
-shared class OpenTypeParam() satisfies TypeParameter {
-
-    shared actual NestableDeclaration container { throw Exception("TypeParameter.container"); }
-    shared actual Boolean defaulted { throw Exception("TypeParameter.defaulted"); }
-    shared actual OpenType? defaultTypeArgument { throw Exception("TypeParameter.defaultTypeArgument"); }
-    shared actual Variance variance { throw Exception("TypeParameter.variance"); }
-    shared actual OpenType[] satisfiedTypes { throw Exception("TypeParameter.satisfiedTypes"); }
-    shared actual OpenType[] caseTypes { throw Exception("TypeParameter.caseTypes"); }
-
-    shared actual String name { throw Exception("TypeParameter.name"); }
-    shared actual String qualifiedName { throw Exception("TypeParameter.qname"); }
-}
-
-shared class OpenTvar(TypeParameter p) satisfies OpenTypeVariable {
-    shared actual TypeParameter declaration => p;
-}
-shared class FreeUnion(List<OpenType> ts) satisfies OpenUnion {
-    shared actual List<OpenType> caseTypes => ts;
-}
-shared class FreeIntersection(List<OpenType> ts) satisfies OpenIntersection {
-    shared actual List<OpenType> satisfiedTypes => ts;
-}
 class FunParamDecl() satisfies FunctionDeclaration {
   shared actual Boolean parameter=true;
   shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }
@@ -270,18 +248,18 @@ class ValParamDecl() satisfies ValueDeclaration {
   shared actual Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType) { throw Exception("IMPL memberApply"); }
 }
 
-shared class Mapita<out K, out V>() satisfies Map<K,V>
+native class Mapita<out V>() satisfies Map<TypeParameter,V>
     given K satisfies Object
     given V satisfies Object {
 
-  shared actual Boolean equals(Object other) => (super of Map<K,V>).equals(other);
-  shared actual Integer hash => (super of Map<K,V>).hash;
-  shared actual Mapita<K,V> clone() => this;
-  shared actual Iterator<K->V> iterator() {
-    object miter satisfies Iterator<K->V> {
+  shared actual Boolean equals(Object other) => (super of Map<TypeParameter,V>).equals(other);
+  shared actual Integer hash => (super of Map<TypeParameter,V>).hash;
+  shared actual Mapita<V> clone() => this;
+  shared actual Iterator<TypeParameter->V> iterator() {
+    object miter satisfies Iterator<TypeParameter->V> {
       value keys={1,2,3}.sequence;
       variable value idx=-1;
-      shared actual <K->V>|Finished next() {
+      shared actual <TypeParameter->V>|Finished next() {
         idx++;
         if (exists k=keys[idx]) {
           return nothing;
@@ -291,7 +269,5 @@ shared class Mapita<out K, out V>() satisfies Map<K,V>
     }
     return miter;
   }
-  shared actual V get(Object k) {
-    throw Exception("IMPL");
-  }
+  shared native actual V get(Object k);
 }

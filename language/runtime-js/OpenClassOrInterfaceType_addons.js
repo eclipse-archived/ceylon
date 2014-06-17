@@ -5,27 +5,27 @@ atr$(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments',func
     var targs={};
     for (var tpn in tps) {
       var rtp=rtps&&rtps[tpn];
-      var otp=OpenTypeParam(this.declaration.tipo,tpn);
+      var otp=OpenTypeParam$jsint(this.declaration.tipo,tpn);
       var targ;
       if (rtp===undefined) {
-        targ = OpenTvar(otp);
+        targ = OpenTvar$jsint(otp);
       } else if (typeof(rtp)==='string') {
-        targ = OpenTvar(OpenTypeParam(this.declaration.tipo,rtp));
+        targ = OpenTvar$jsint(OpenTypeParam$jsint(this.declaration.tipo,rtp));
       } else {
         if (rtp.t==='i'||rtp.t==='u') {
           //resolve case types
           var nrtp={t:rtp.t,l:[]};
           for (var i=0;i<rtp.l.length;i++) {
             var _ct=rtp.l[i];
-            nrtp.l.push(typeof(_ct)==='string'?OpenTvar(OpenTypeParam(this.declaration.tipo,_ct)):_ct);
+            nrtp.l.push(typeof(_ct)==='string'?OpenTvar$jsint(OpenTypeParam$jsint(this.declaration.tipo,_ct)):_ct);
           }
           rtp=nrtp;
         }
-        targ = _openTypeFromTarg(rtp);
+        targ = _openTypeFromTarg(rtp,this.declaration);
       }
-      targs[otp]=targ;
+      targs[otp.qualifiedName]=[otp,targ];
     }
-    return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:OpenType$meta$declaration}});
+    return Mapita(targs,{V$Mapita:{t:OpenType$meta$declaration}});
   }
   return getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:OpenClassOrInterfaceType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','typeArguments']};});

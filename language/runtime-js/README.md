@@ -32,15 +32,17 @@ code being generated.
 With a toplevel method, such as `shared native void foo();` the compiler will look for the `foo.js` file inside
 this directory. If the method is not inside the main package (`ceylon.language`) but a subpackage, then the
 subpackages must be prepended to the name. For example if `foo()` is inside `meta/model` then the compiler
-will look for the file `_meta_declaration-foo.js` and stop with an error if it's not found.
+will look for the file `meta/model/foo.js` and stop with an error if it's not found.
 
-Toplevel objects are compiled just as regular objects, but any `native` members need to have a file in this directory.
-For example for `ceylon.language::process.write` the file needs to be called `process_write.js`.
+Toplevel objects are compiled just as regular objects, but any `native` members need to have a file in a
+subdirectory with the same name as the object.
+For example for `ceylon.language::process.write` the file needs to be called `process/write.js`.
 
 Toplevel types are a bit different. The compiler will look for a file with the declaration's name, with the
 `.js` extension (for example, `Array.js`); if it finds the file, it will use it instead of generating the code
 for the constructor (the file must contain the constructor function). If no JS file exists then the constructor
-is compiled from the Ceylon source.
+is compiled from the Ceylon source. But for the members of a type the lookup is the same; for example the
+`get` method of the `Array` type will be looked up in `Array/get.js`.
 
 After that, any members of the type annotated `native` are treated the same way already explained for object
 members.
@@ -50,7 +52,7 @@ members.
 For methods, the native file must contain a function definition.
 
 For values, the native file must only contain the code inside the getter function. For example for the value
-`ceylon.language::runtime.integerSize` the file `runtime_integerSize` only contains the code `return 53;`.
+`ceylon.language::runtime.integerSize` the file `runtime/integerSize` only contains the code `return 53;`.
 
 Remember the `exports` objects is actually called `ex$` if you want to export something in your JS code (this
 is usually only needed if the compiler generates references to that declaration).

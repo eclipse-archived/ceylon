@@ -186,7 +186,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
     var ct=[]; var ta=[];
     for (var i=0; i < casos.length; i++) {
       if (typeof(casos[i])==='string') {
-        ct.push(OpenTvar(OpenTypeParam(this, casos[i])));
+        ct.push(OpenTvar$jsint(OpenTypeParam$jsint(this, casos[i])));
         if (!ta.contains(OpenTypeVariable$meta$declaration))ta.push(OpenTypeVariable$meta$declaration);
       } else {
         var _t=casos[i];

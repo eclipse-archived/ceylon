@@ -20,16 +20,16 @@ atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
       if (this.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+this.string);
       var targs={};
       for (var tp in mm.$tp) {
-        var param = OpenTypeParam(this.tipo,tp);
+        var param = OpenTypeParam$jsint(this.tipo,tp);
         var targ = this.$targs[tp];
         if (targ) {
           targ=typeLiteral$meta({Type$typeLiteral:targ});
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs[param]=targ;
+        targs[param.qualifiedName]=[param,targ];
       }
-      return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return Mapita(targs,{V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }
