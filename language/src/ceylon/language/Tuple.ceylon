@@ -144,7 +144,7 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     }
     
     "Return a new tuple that starts with the specified
-     element, followed by the elements of this tuple."
+     [[element]], followed by the elements of this tuple."
     shared actual native
     Tuple<Element|Other,Other,Tuple<Element,First,Rest>> 
     withLeading<Other>(
@@ -152,10 +152,20 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
             Other element) 
             => Tuple(element, this);
     
+    "Return a new tuple containing the elements of this 
+     tuple, followed by the given [[element]]."
+    shared actual native
+    Tuple<Element|Other,First,[Element|Other+]> 
+            withTrailing<Other>(
+            "The last element of the resulting tuple."
+            Other element) 
+            => Tuple(first, rest withTrailing element);
+    
     "Return a tuple containing the elements of this 
      tuple, followed by the given [[elements]]."
     shared actual native
     Tuple<Element|Other,First,[Element|Other*]>
     append<Other>({Other*} elements)
             => Tuple(first, rest append elements);
+
 }

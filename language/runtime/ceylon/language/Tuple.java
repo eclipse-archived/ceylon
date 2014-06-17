@@ -2,6 +2,7 @@ package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+import static java.lang.System.arraycopy;
 
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
@@ -131,7 +132,8 @@ public final class Tuple<Element, First extends Element,
     
     private static java.lang.Object[] makeArray(java.lang.Object first, 
     		Sequential<?> rest) {
-        java.lang.Object[] elements = new java.lang.Object[Util.toInt(rest.getSize() + 1)];
+        java.lang.Object[] elements = 
+        		new java.lang.Object[Util.toInt(rest.getSize() + 1)];
         elements[0] = first;
         copyToArray(rest, elements, 1);
         return elements;
@@ -411,18 +413,6 @@ public final class Tuple<Element, First extends Element,
             if (x!=null && element.equals(x)) return true;
         }
         return false;
-    }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Annotations({
-        @Annotation("shared"),
-        @Annotation("actual")})
-    @Override
-    @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
-    public final <Other>Tuple 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
-        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther),
-                new java.lang.Object[]{e}, this);
     }
     
     @Ignore
@@ -900,15 +890,36 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, 
                 defaultValue);
     }
-    @Override
-    @Ignore
-    @SuppressWarnings("rawtypes")
-    public <Other>Sequence 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
-        return $ceylon$language$List$this.withTrailing($reifiedOther, e);
-    }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
+    public final <Other> Tuple 
+    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
+    	java.lang.Object[] array = new java.lang.Object[length+1];
+    	array[0] = e;
+    	arraycopy(this.array, first, array, 1, length);
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+    }
+    
+    @SuppressWarnings({ "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequence<Element|Other>>")
+    public <Other> Tuple 
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    	java.lang.Object[] array = new java.lang.Object[length+1];
+    	arraycopy(this.array, first, array, 0, length);
+    	array[length] = e;
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+    }
+    
+    @SuppressWarnings({ "rawtypes" })
     @Annotations({
         @Annotation("shared"),
         @Annotation("actual")})
@@ -916,8 +927,11 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequential<Element|Other>>")
     public <Other> Tuple
     append(@Ignore TypeDescriptor $reifiedOther, @Name("elements") Iterable<? extends Other, ?> es) {
-        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), 
-        		new java.lang.Object[] {getFirst()}, getRest().append($reifiedOther, es));
+    	Sequential<?> sequence = es.sequence();
+    	java.lang.Object[] array = new java.lang.Object[length+Util.toInt(sequence.getSize())];
+    	arraycopy(this.array, first, array, 0, length);
+    	copyToArray(sequence, array, length);
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
