@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,12 +11,13 @@ import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -204,13 +206,16 @@ public abstract class FreeClassOrInterface
             return (Sequential<? extends Kind>)empty_.get_();
         }
         checkInit();
-        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
+        ArrayList<Kind> members = new ArrayList<Kind>(declarations.size());
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
             if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
-                members.append((Kind) decl);
+                members.add((Kind) decl);
             }
         }
-        return members.sequence();
+        java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
+		ObjectArrayIterable<Kind> iterable = 
+				new ObjectArray.ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -221,13 +226,16 @@ public abstract class FreeClassOrInterface
             return (Sequential<? extends Kind>)empty_.get_();
         }
         checkInit();
-        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
+        ArrayList<Kind> members = new ArrayList<Kind>(declarations.size());
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declaredDeclarations){
             if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
-                members.append((Kind) decl);
+                members.add((Kind) decl);
             }
         }
-        return members.sequence();
+        java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
+		ObjectArrayIterable<Kind> iterable = 
+				new ObjectArray.ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

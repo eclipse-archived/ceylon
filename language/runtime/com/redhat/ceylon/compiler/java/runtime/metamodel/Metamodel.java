@@ -29,7 +29,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
-import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
@@ -58,6 +57,7 @@ import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -743,7 +743,7 @@ public class Metamodel {
     @SuppressWarnings("unchecked")
     private static <A extends ceylon.language.Annotation> void addAnnotation(
             Annotated annotated, 
-            SequenceBuilder<A> ceylonAnnotations,
+            ArrayList<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
             Predicates.Predicate<A> pred) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
@@ -787,7 +787,7 @@ public class Metamodel {
                 constructor.setAccessible(true);
                 A cAnnotation = constructor.newInstance(jAnnotation);
                 if (pred.accept(cAnnotation)) {
-                    ceylonAnnotations.append(cAnnotation);
+                    ceylonAnnotations.add(cAnnotation);
                 }
             } catch (RuntimeException e) {
                 throw e;
@@ -798,7 +798,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            Annotated annotated, SequenceBuilder<? extends ceylon.language.Annotation> ceylonAnnotations,
+            Annotated annotated, ArrayList<? extends ceylon.language.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -843,11 +843,14 @@ public class Metamodel {
         }
         
         // TODO Fix initial size estimate when query for OptionalAnnotation
-        SequenceBuilder<A> ceylonAnnotations = new SequenceBuilder<A>($reifiedValues, jAnnotations.length);
+        ArrayList<A> ceylonAnnotations = new ArrayList<A>(jAnnotations.length);
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
             addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
-        return ceylonAnnotations.sequence();
+        java.lang.Object[] array = ceylonAnnotations.toArray(new java.lang.Object[0]);
+		ObjectArrayIterable<A> iterable = 
+				new ObjectArrayIterable<A>($reifiedValues, (A[]) array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     public static String getJavaMethodName(Method method) {

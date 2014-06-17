@@ -11,7 +11,6 @@ import com.redhat.ceylon.compiler.java.TypeDescriptorTest;
 @SuiteClasses({
     FloatTest.class,
     IntegerTest.class,
-    SequenceBuilderTest.class,
     ArrayBuilderTest.class,
     TypeDescriptorTest.class,
     PrimitiveArrayIterableTest.class

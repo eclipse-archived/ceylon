@@ -2,18 +2,19 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import ceylon.language.Resource;
 import ceylon.language.Sequential;
-import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.FileResource;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ZipResource;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -89,14 +90,17 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         if(this.dependencies == null){
             List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
-            SequenceBuilder<FreeImport> sb = new SequenceBuilder<>(Import.$TypeDescriptor$, modelImports.size()-1);
+            ArrayList<FreeImport> sb = new ArrayList<FreeImport>(modelImports.size()-1);
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
                 if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
                     continue;
                 }
-                sb.append(new FreeImport(this, moduleImport));
+                sb.add(new FreeImport(this, moduleImport));
             }
-            this.dependencies = sb.sequence();
+            java.lang.Object[] array = sb.toArray(new java.lang.Object[0]);
+    		ObjectArrayIterable<FreeImport> iterable = 
+    				new ObjectArrayIterable<FreeImport>(Import.$TypeDescriptor$, (FreeImport[]) array);
+    		this.dependencies = (ceylon.language.Sequential) iterable.sequence();
         }
         return this.dependencies;
     }

@@ -4,11 +4,10 @@ import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-
-import ceylon.language.impl.SequenceBuilder;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -69,16 +68,20 @@ public final class Array<Element>
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element,?> elements) {
-    	SequenceBuilder<Element> builder;
+    	ArrayList<Element> builder;
     	final int size;
     	if (elements instanceof Array) {
     		size = Util.toInt(elements.getSize());
     		builder = null;
     	}
     	else {
-    	    builder = new SequenceBuilder<Element>($reifiedElement);
-    	    builder.appendAll(elements);
-    	    size = Util.toInt(builder.getSize());
+    	    builder = new ArrayList<Element>();
+    	    Iterator<?> iterator = elements.iterator();
+    	    java.lang.Object elem;
+    	    while ((elem=iterator.next())!=finished_.get_()) {
+    	    	builder.add((Element) elem);
+    	    }
+    	    size = Util.toInt(builder.size());
     	}
         java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
         if (!$reifiedElement.containsNull()) {
