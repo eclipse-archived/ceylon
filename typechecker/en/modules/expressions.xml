@@ -1209,11 +1209,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <itemizedlist>
                 <listitem>
-                    <literal>Empty</literal> if there are no argument expressions, or
+                    <para><literal>Iterable&lt;Nothing,Null&gt;</literal> if there are no 
+                    argument expressions, or</para>
                 </listitem>
                 <listitem>
-                    <literal>Iterable&lt;U,Nothing&gt;</literal> where <literal>U</literal>,
-                    the argument expression list is an invariant suptype of <literal>U[]</literal>.
+                    <para><literal>Iterable&lt;U,Nothing&gt;</literal> where 
+                    <literal>U</literal>, the argument expression list is an invariant 
+                    suptype of <literal>U[]</literal>.</para>
                 </listitem>
             </itemizedlist>
             
