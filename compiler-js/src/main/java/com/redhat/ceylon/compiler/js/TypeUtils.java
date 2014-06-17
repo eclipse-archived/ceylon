@@ -355,9 +355,8 @@ public class TypeUtils {
         term.visit(gen);
         gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
         TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
-        gen.out(")?", tmp, ":");
-        gen.generateThrow("dynamic objects cannot be used here", term);
-        gen.out(")");
+        gen.out(")?", tmp, ":function(){throw new Error('dynamic objects cannot be used here (",
+                term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
     }
 
     static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
