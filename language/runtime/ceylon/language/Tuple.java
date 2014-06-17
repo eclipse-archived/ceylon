@@ -603,7 +603,8 @@ public final class Tuple<Element, First extends Element,
 
     }
 
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     @Ignore
     public Sequence<Integer> getKeys() {
         return (Sequence)$ceylon$language$Sequence$this.getKeys();
@@ -878,6 +879,7 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Iterable$this.chain($reifiedOther, 
                 $reifiedOtherAbsent, other);
     }
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore 
     public <Other> Iterable
     follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
