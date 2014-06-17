@@ -93,7 +93,7 @@ public abstract class ModulesTest {
     protected void testArchive(Archive module, String run, Archive... libs) throws Throwable {
         File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
             public File run() {
-                return new File(System.getProperty("ceylon.repo", System.getProperty("java.io.tmpdir")));
+                return new File(System.getProperty("ceylon.user.repo", System.getProperty("java.io.tmpdir")));
             }
         });
 
@@ -122,6 +122,7 @@ public abstract class ModulesTest {
             }
 
             Map<String, String> args = new LinkedHashMap<String, String>();
+            args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.SYSTEM_REPOSITORY.toString(), getDistRepo());
             args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), tmpdir.toString());
             if (run != null)
                 args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.RUN.toString(), run);
@@ -162,11 +163,16 @@ public abstract class ModulesTest {
         execute(module, args);
     }
 
+    protected String getDistRepo() {
+        final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
+        String distRepo = projectHome + File.separator + ".." + File.separator + "ceylon-dist" + File.separator + "dist" + File.separator + "repo";
+        return distRepo;
+    }
+
     protected String getBootstrapModules() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
         String runtimeRepo = projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "repo";
-        String distRepo = projectHome + File.separator + ".." + File.separator + "ceylon-dist" + File.separator + "dist" + File.separator + "repo";
-        return distRepo + File.pathSeparator + runtimeRepo;
+        return getDistRepo() + File.pathSeparator + runtimeRepo;
     }
 
     protected static String toPathString(String name, String version) {
