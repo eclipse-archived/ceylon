@@ -912,7 +912,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequence<Element|Other>>")
     public <Other> Tuple 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
     	java.lang.Object[] array = new java.lang.Object[length+1];
     	arraycopy(this.array, first, array, 0, length);
     	array[length] = e;
