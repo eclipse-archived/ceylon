@@ -138,12 +138,12 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public final T get(final .ceylon.language.Integer index) {
+    public T get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
-    public final T getFromLast(final long index) {
+    public T getFromLast(final long index) {
         return $ceylon$language$List$this$.getFromLast(index);
     }
     
@@ -155,6 +155,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public .ceylon.language.List<? extends T> getReversed() {
         return $ceylon$language$List$this$.getReversed();
+    }
+    
+    @.java.lang.Override
+    public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.find(selecting);
     }
     
     @.java.lang.Override
@@ -332,11 +337,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public <Result>.java.lang.Object reduce(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this$.reduce($reified$Result, accumulating);
-    }
-    
-    @.java.lang.Override
-    public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.find(selecting);
     }
     
     @.java.lang.Override

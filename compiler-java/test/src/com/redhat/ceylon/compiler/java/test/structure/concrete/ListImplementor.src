@@ -54,13 +54,18 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final X get(final .ceylon.language.Integer index) {
+    public X get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
-    public final X getFromLast(final long index) {
+    public X getFromLast(final long index) {
         return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
+    public X find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.find(selecting);
     }
     
     @.java.lang.Override
@@ -246,11 +251,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public X find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.find(selecting);
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this$.sort(comparing);
     }
@@ -423,7 +423,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final X elementAt(final long index) {
+    public final X getFromFirst(final long index) {
         throw new .ceylon.language.Exception(null, null);
     }
     
