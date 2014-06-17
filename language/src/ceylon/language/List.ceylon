@@ -276,10 +276,10 @@ shared interface List<out Element>
             Other element)
             => [*(this chain Singleton(element))];
     
-    "Return a sequence containing the elements of this 
-     list, in the order in which they occur in this list, 
-     followed by the given [[elements]] in the order in 
-     which they occur in the given stream."
+    "Return a sequence containing the elements of this list, 
+     in the order in which they occur in this list, followed 
+     by the given [[elements]] in the order in which they 
+     occur in the given stream."
     see (`function extend`, 
          `function chain`,
          `function concatenate`)
