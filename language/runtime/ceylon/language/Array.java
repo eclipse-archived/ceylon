@@ -69,7 +69,7 @@ public final class Array<Element>
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element,?> elements) {
-    	final SequenceBuilder<Element> builder;
+    	SequenceBuilder<Element> builder;
     	final int size;
     	if (elements instanceof Array) {
     		size = Util.toInt(elements.getSize());
@@ -245,8 +245,61 @@ public final class Array<Element>
         
         java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
         		.newInstance($reifiedElement.getArrayElementClass(), size);
-        for (int i=0; i<size; i++) {
-        	array[i] = builder.get(i);
+        if (elements instanceof Array) {
+        	java.lang.Object otherArray = ((Array<?>) elements).array;
+			if (otherArray.getClass()==array.getClass()) {
+        		arraycopy(otherArray, 0, array, 0, size);
+        	}
+			else if (otherArray instanceof Object[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((Object[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof int[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((int[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof long[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((long[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof byte[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((byte[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof short[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((short[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof float[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((float[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof double[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((double[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof char[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((char[])otherArray)[i];
+	        	}
+			}
+			else if (otherArray instanceof boolean[]) {
+	        	for (int i=0; i<size; i++) {
+	        		array[i] = ((boolean[])otherArray)[i];
+	        	}
+			}
+        }
+        else {
+        	for (int i=0; i<size; i++) {
+        		array[i] = builder.get(i);
+        	}
         }
         return array;
     }
