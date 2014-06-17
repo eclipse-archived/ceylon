@@ -222,7 +222,9 @@ public class AetherUtils {
             }
 
             return result;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
         }
@@ -309,14 +311,13 @@ public class AetherUtils {
         if (classLoader == null)
             classLoader = ClassLoader.getSystemClassLoader();
 
-        ConfigurableMavenResolverSystem factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
-        MavenResolverSystem resolver;
+        ConfigurableMavenResolverSystem factory = Resolvers.use(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
+
         if (settingsXml.startsWith("classpath:")) {
-            resolver = factory.fromClassloaderResource(settingsXml.substring(10), classLoader);
+            return factory.fromClassloaderResource(settingsXml.substring(10), classLoader);
         } else {
-            resolver = factory.fromFile(settingsXml);
+            return factory.fromFile(settingsXml);
         }
-        return resolver;
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
