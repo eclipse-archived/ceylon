@@ -171,7 +171,7 @@ class MySequence<out Element>(Sequence<Element> seq)
 }
 
 void testIfNonempty() {
-    String[] s1 = {};
+    String[] s1 = [];
     String[] s2 = [ "abc" ];
     if (nonempty s1) {
         fail("if (nonempty x)");

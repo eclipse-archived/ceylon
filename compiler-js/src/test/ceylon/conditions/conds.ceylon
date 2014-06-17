@@ -26,7 +26,7 @@ shared void test() {
         count++;
     }
     String[] f = ["a","b","c"];
-    Integer[] g = {};
+    Integer[] g = [];
     if (f nonempty && g nonempty) {
         fail("WTF nonempty");
     } else if (nonempty f, !f.first.empty) {

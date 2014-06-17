@@ -461,6 +461,8 @@ void testSegments() {
     check("test"[1:2] == "es", "test[1:2] ``("test"[1:2])``");
     check("hello"[2:2] == "ll", "hello[2:2] ``("hello"[2:2])``");
     check(seq*.uppercased == [ "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN"], "spread op");
+    value iter = { for (c in "hola") c };
+    check(iter*.uppercased == [ 'H', 'O', 'L', 'A' ], "spread iterable");
     value s2 = 0:3;
     value s3 = 2:5;
     check(s2.size == 3, "0:3 [1]");

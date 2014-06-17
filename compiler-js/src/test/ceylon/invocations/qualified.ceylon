@@ -61,15 +61,15 @@ class QualifiedB() extends QualifiedA() {
 }
 
 class TestList() satisfies List<String> {
-    shared actual List<String> clone() => {};
+    shared actual List<String> clone() => [];
     shared actual String? getFromFirst(Integer index) { return null; }
     shared actual Integer? lastIndex = null;
     shared actual List<String> rest = [];
-    shared actual List<String> reversed = {};
-    shared actual List<String> segment(Integer from, Integer length) { return {}; }
-    shared actual List<String> span(Integer from, Integer to) { return {}; }
-    shared actual List<String> spanTo(Integer to) { return {}; }
-    shared actual List<String> spanFrom(Integer from) { return {}; }
+    shared actual List<String> reversed = [];
+    shared actual List<String> segment(Integer from, Integer length) { return []; }
+    shared actual List<String> span(Integer from, Integer to) { return []; }
+    shared actual List<String> spanTo(Integer to) { return []; }
+    shared actual List<String> spanFrom(Integer from) { return []; }
     shared actual Iterator<String> iterator() => emptyIterator;
     shared actual Boolean equals(Object that) { return (super of List<String>).equals(that); }
     shared actual Integer hash { return (super of List<String>).hash; }
