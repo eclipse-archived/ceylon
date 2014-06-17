@@ -301,6 +301,12 @@ shared interface List<out Element>
     shared default List<Element|Other> extend<Other>(List<Other> list) 
             => Extend(list);
     
+    shared default List<Element|Other> patch<Other>(List<Other> list,
+        Integer from, Integer length=0)
+            => length>=0 && 0<=from<size 
+                    then Patch(list, from, length)
+                    else this;
+    
     "Determine if the given list occurs at the start of this 
      list."
     shared default Boolean startsWith(List<Anything> sublist)
@@ -615,7 +621,8 @@ shared interface List<out Element>
     //shared default [List<Element>,List<Element>] slice(Integer index)
     //    => [this[...index-1], this[index...]];
     
-    shared actual formal List<Element> clone();
+    shared actual default List<Element> clone() 
+            => Array(this);
     
     
     class Indexes()
@@ -791,6 +798,58 @@ shared interface List<out Element>
         
         iterator() => ChainedIterator(outer,list);
         
+    }
+    
+    class Patch<Other>(List<Other> list, 
+        Integer from, Integer length)
+            extends Object()
+            satisfies List<Element|Other> {
+        
+        assert (length>=0);
+        assert (0<=from<outer.size);
+        
+        size => outer.size+list.size-length;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            if (index<from) {
+                return outer.getFromFirst(index);
+            }
+            else if (index-from<list.size) {
+                return list.getFromFirst(index-from);
+            }
+            else {
+                return outer.getFromFirst(index-list.size+length);
+            }
+        }
+        
+        clone() => outer.clone().Patch(list.clone(),from,length);
+        
+        shared actual Iterator<Element|Other> iterator() {
+            value iter = outer.iterator();
+            value patchIter = list.iterator();
+            object iterator satisfies Iterator<Element|Other> {
+                variable value index = -1;
+                shared actual Element|Other|Finished next() {
+                    if (++index==from) {
+                        for (skip in 0:length) {
+                            iter.next();
+                        }
+                    }
+                    if (0<=index-from<list.size) {
+                        return patchIter.next();
+                    }
+                    else {
+                        return iter.next();
+                    }
+                }
+            }
+            return iterator;
+        }
     }
     
     class Reversed()

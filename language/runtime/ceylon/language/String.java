@@ -1954,35 +1954,62 @@ public final class String
 
     @Override @Ignore
     @SuppressWarnings("rawtypes")
-    public <Other> Sequential append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
-        return $ceylon$language$List$this.append($reifiedOther, e);
+    public <Other> Sequential append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.append($reifiedOther, es);
     }
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
-    		java.lang.String value, Iterable<? extends Other, ?> e) {
-        return instance(value).append($reifiedOther, e);
+    		java.lang.String value, Iterable<? extends Other, ?> es) {
+        return instance(value).append($reifiedOther, es);
     }
 
     @Override @Ignore
     @SuppressWarnings("rawtypes")
-    public <Other> Sequential prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
-        return $ceylon$language$List$this.prepend($reifiedOther, e);
+    public <Other> Sequential prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.prepend($reifiedOther, es);
     }
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>Sequential prepend(@Ignore TypeDescriptor $reifiedOther, 
-    		java.lang.String value, Iterable<? extends Other, ?> e) {
-        return instance(value).prepend($reifiedOther, e);
+    		java.lang.String value, Iterable<? extends Other, ?> es) {
+        return instance(value).prepend($reifiedOther, es);
     }
 
     @Override @Ignore
     @SuppressWarnings("rawtypes")
-    public <Other> List extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
-        return $ceylon$language$List$this.extend($reifiedOther, e);
+    public <Other> List extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list) {
+        return $ceylon$language$List$this.extend($reifiedOther, list);
     }
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>List extend(@Ignore TypeDescriptor $reifiedOther, 
-    		java.lang.String value, List<? extends Other> e) {
-        return instance(value).extend($reifiedOther, e);
+    		java.lang.String value, List<? extends Other> list) {
+        return instance(value).extend($reifiedOther, list);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> List patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from, long length) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, length);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> list, long from, long length) {
+        return instance(value).patch($reifiedOther, list, from, length);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, 0);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> list, long from) {
+        return instance(value).patch($reifiedOther, list, from, 0);
+    }
+
+    @Override @Ignore 
+    public <Other> long patch$length(TypeDescriptor $reifiedOther,List<? extends Other> list, long from) {
+    	return 0;
     }
 
     @Override

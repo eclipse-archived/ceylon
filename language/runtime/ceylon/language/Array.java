@@ -1460,20 +1460,37 @@ public final class Array<Element>
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequential 
-    append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
-        return $ceylon$language$List$this.append($reifiedOther, e);
+    append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.append($reifiedOther, es);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequential 
-    prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
-        return $ceylon$language$List$this.prepend($reifiedOther, e);
+    prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.prepend($reifiedOther, es);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> List
-    extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
-        return $ceylon$language$List$this.extend($reifiedOther, e);
+    extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list) {
+        return $ceylon$language$List$this.extend($reifiedOther, list);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from, long length) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, length);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, 0);
+    }
+
+    @Override @Ignore 
+    public <Other> long patch$length(TypeDescriptor $reifiedOther,List<? extends Other> list, long from) {
+    	return 0;
     }
 
     @Ignore
