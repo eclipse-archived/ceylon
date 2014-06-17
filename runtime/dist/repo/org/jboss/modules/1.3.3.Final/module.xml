@@ -35,6 +35,8 @@
                 <path name="org/jboss/modules/filter"/>
                 <path name="org/jboss/modules/ref"/>
                 <path name="org/jboss/modules/management"/>
+                <path name="org/jboss/modules/security"/>
+                <path name="org/jboss/modules/xml"/>
             </paths>
         </system>
     </dependencies>
