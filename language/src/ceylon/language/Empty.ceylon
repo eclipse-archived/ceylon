@@ -86,6 +86,16 @@ shared interface Empty of e
             given OtherAbsent satisfies Null 
             => other;
     
+    shared actual [] defaultNullElements<Default>
+            (Default defaultValue) 
+            => this;
+    
+    shared actual [] cycle(Integer times) => this;
+    
+    shared actual [] repeat(Integer times) => this;
+    
+    shared actual [] cycled => this;
+    
     "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
     
@@ -98,8 +108,13 @@ shared interface Empty of e
     shared actual [] map<Result>(
             Result collecting(Nothing element)) => this;
     
-    shared actual [] filter
-            (Boolean selecting(Nothing element)) => this;
+    shared actual Callable<[],Args> spread<Result,Args>(
+        Callable<Result,Args> method(Nothing element))
+            given Args satisfies Anything[] 
+            => flatten((Args args) => this);
+    
+    shared actual [] filter(Boolean selecting(Nothing element)) 
+            => this;
     
     shared actual Result fold<Result>(Result initial,
             Result accumulating(Result partial, Nothing element)) 
@@ -113,7 +128,8 @@ shared interface Empty of e
             (Boolean selecting(Nothing element)) => null;
     
     shared actual [] sort
-            (Comparison comparing(Nothing a, Nothing b)) => this;
+            (Comparison comparing(Nothing a, Nothing b)) 
+            => this;
     
     shared actual [] collect<Result>
             (Result collecting(Nothing element)) => this;
@@ -131,6 +147,12 @@ shared interface Empty of e
     
     shared actual [] take(Integer taking) => this;
     
+    shared actual [] skipWhile(Boolean skipping(Nothing elem)) 
+            => this;
+    
+    shared actual [] takeWhile(Boolean taking(Nothing elem)) 
+            => this;
+    
     shared actual [] by(Integer step) => this;
     
     shared actual [Other] withLeading<Other>(Other element) 
@@ -144,6 +166,43 @@ shared interface Empty of e
     
     shared actual {Other+} following<Other>(Other head) 
             => { head };
+    
+    shared actual List<Other> extend<Other>(List<Other> list)
+            => list;
+    
+    shared actual [] sublist(Integer from, Integer to) => this;
+    
+    shared actual [] sublistFrom(Integer from) => this;
+    
+    shared actual [] sublistTo(Integer to) => this;
+    
+    shared actual [] initial(Integer length) => this;
+    
+    shared actual [] terminal(Integer length) => this;
+    
+    shared actual [] indexesWhere(
+        Boolean selecting(Nothing element)) 
+            => this;
+    
+    shared actual Null firstIndexWhere(
+        Boolean selecting(Nothing element)) 
+            => null;
+    
+    shared actual Null lastIndexWhere(
+        Boolean selecting(Nothing element)) 
+            => null;
+    
+    shared actual Boolean includes(List<Anything> sublist) 
+            => sublist.empty;
+    
+    shared actual [] trim(Boolean trimming(Nothing elem)) 
+            => this;
+    
+    shared actual [] trimLeading(Boolean trimming(Nothing elem)) 
+            => this;
+    
+    shared actual [] trimTrailing(Boolean trimming(Nothing elem)) 
+            => this;
     
 }
 
