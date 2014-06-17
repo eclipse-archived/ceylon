@@ -275,6 +275,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     protected Unit typeFactory;
     protected final Set<String> loadedPackages = new HashSet<String>();
+    protected final Map<String,Boolean> packageExistence = new HashMap<String,Boolean>();
     protected final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
     protected boolean packageDescriptorsNeedLoading = false;
     protected boolean isBootstrap;

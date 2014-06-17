@@ -20,7 +20,15 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import static javax.tools.StandardLocation.PLATFORM_CLASS_PATH;
+import static javax.tools.StandardLocation.CLASS_PATH;
+
+import java.io.IOException;
+import java.util.EnumSet;
+
 import javax.lang.model.element.NestingKind;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
@@ -76,6 +84,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private Log log;
     private Types types;
     private Options options;
+    private JavaFileManager fileManager;
     
     public static AbstractModelLoader instance(Context context) {
         AbstractModelLoader instance = context.get(AbstractModelLoader.class);
@@ -107,6 +116,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         moduleManager = phasedUnits.getModuleManager();
         modules = ceylonContext.getModules();
+        fileManager = context.get(JavaFileManager.class);
     }
 
     @Override
@@ -160,12 +170,20 @@ public class CeylonModelLoader extends AbstractModelLoader {
             // to load the declarations, because merely calling complete() on the package
             // is OK
             packageName = Util.quoteJavaKeywords(packageName);
-            if(loadDeclarations && !loadedPackages.add(cacheKeyByModule(module, packageName))){
-                return true;
+            String cacheKey = cacheKeyByModule(module, packageName);
+            if(loadDeclarations){
+                if(!loadedPackages.add(cacheKey)){
+                    return true;
+                }
+            }else{
+                Boolean exists = packageExistence.get(cacheKey);
+                if(exists != null)
+                    return exists.booleanValue();
             }
             PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
-            ceylonPkg.complete();
             if(loadDeclarations){
+                logVerbose("load package "+packageName+" full");
+                ceylonPkg.complete();
                 /*
                  * Eventually this will go away as we get a hook from the typechecker to load on demand, but
                  * for now the typechecker requires at least ceylon.language to be loaded 
@@ -193,10 +211,37 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 if(module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
                         && packageName.equals("java.lang"))
                     loadJavaBaseArrays();
+                // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
+                // might be too late
+                return ceylonPkg.members().getElements().iterator().hasNext();
+            }else{
+                logVerbose("load package "+packageName+" light");
+                try {
+                    // it is cheaper to verify that we have a class file somewhere than to complete the whole package
+                    // just to check for its existence
+                    Iterable<JavaFileObject> list = fileManager.list(PLATFORM_CLASS_PATH,
+                            packageName,
+                            EnumSet.of(JavaFileObject.Kind.CLASS),
+                            false);
+                    if(list.iterator().hasNext()){
+                        packageExistence.put(cacheKey, Boolean.TRUE);
+                        return true;
+                    }
+                    list = fileManager.list(CLASS_PATH,
+                            packageName,
+                            EnumSet.of(JavaFileObject.Kind.CLASS),
+                            false);
+                    if(list.iterator().hasNext()){
+                        packageExistence.put(cacheKey, Boolean.TRUE);
+                        return true;
+                    }else{
+                        packageExistence.put(cacheKey, Boolean.FALSE);
+                        return false;
+                    }
+                } catch (IOException e) {
+                    return false;
+                }
             }
-            // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
-            // might be too late
-            return ceylonPkg.members().getElements().iterator().hasNext();
         }
     }
 
@@ -254,6 +299,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
          * from its parent class. This is required because a.b.C.D (where D is an inner class
          * of C) is not found in symtab.classes but in C's ClassSymbol.enclosedElements.
          */
+
+        // make sure we load the class file, since we no longer complete packages unless we absolutely must
+        loadClass(outerName);
         do{
             // we must first try with no postfix, because we can have a valid class foo.bar in Java,
             // when in Ceylon it would be foo.bar_
@@ -299,6 +347,37 @@ public class CeylonModelLoader extends AbstractModelLoader {
             outerName = outerName.substring(0, lastDot);
         }while(classSymbol == null);
         return null;
+    }
+
+    private void loadClass(String className) {
+        String quotedName = Util.quoteJavaKeywords(className);
+        if(!loadClassInternal(quotedName)){
+            // try again with a postfix "_"
+            if (lastPartHasLowerInitial(className) && !className.endsWith("_")) {
+                loadClassInternal(Util.quoteJavaKeywords(className+"_"));
+            }
+        }
+    }
+
+    private boolean loadClassInternal(String quotedClassName) {
+        try {
+            Name name = names.fromString(quotedClassName);
+            if(syms().classes.containsKey(name))
+                return true;
+            JavaFileObject fileObject = fileManager.getJavaFileForInput(PLATFORM_CLASS_PATH, quotedClassName, JavaFileObject.Kind.CLASS);
+            if(fileObject == null){
+                fileObject = fileManager.getJavaFileForInput(CLASS_PATH, quotedClassName, JavaFileObject.Kind.CLASS);
+            }
+            if(fileObject != null){
+                reader.enterClass(name, fileObject);
+                return true;
+            }
+            return false;
+        } catch (IOException e) {
+            // this is not normal, but will result in an error elsewhere, so just log it
+            logVerbose("IOException loading class: "+e.getMessage());
+            return false;
+        }
     }
 
     private ClassSymbol lookupInnerClass(ClassSymbol classSymbol, String[] parts) {
