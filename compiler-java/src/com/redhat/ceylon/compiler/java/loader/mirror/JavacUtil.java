@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +35,20 @@ import com.sun.tools.javac.code.Symbol.TypeSymbol;
 public class JavacUtil {
 
     public static Map<String, AnnotationMirror> getAnnotations(Symbol symbol) {
-        HashMap<String, AnnotationMirror> result = new HashMap<String, AnnotationMirror>();
+        Map<String, AnnotationMirror> result;
         try{
             com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
-            for(Compound annotation : annotations){
-                result.put(annotation.type.tsym.getQualifiedName().toString(), new JavacAnnotation(annotation));
+            if(annotations.isEmpty()){
+                result = Collections.<String,AnnotationMirror>emptyMap();
+            }else{
+                result = new HashMap<String, AnnotationMirror>(annotations.size());
+                for(Compound annotation : annotations){
+                    result.put(annotation.type.tsym.getQualifiedName().toString(), new JavacAnnotation(annotation));
+                }
             }
         }catch(CompletionFailure x){
             // ignore, it will be logged somewhere else
+            result = Collections.<String,AnnotationMirror>emptyMap();
         }
         return result;
     }
