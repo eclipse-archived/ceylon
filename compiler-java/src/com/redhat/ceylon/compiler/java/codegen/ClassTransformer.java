@@ -329,16 +329,30 @@ public class ClassTransformer extends AbstractTransformer {
                     ListBuffer<JCStatement> stmts = ListBuffer.lb();
                     SyntheticName array = naming.synthetic(Unfix.$array$);
                     SyntheticName sb = naming.synthetic(Unfix.$sb$);
+                    SyntheticName index = naming.synthetic(Unfix.$index$);
                     SyntheticName element = naming.synthetic(Unfix.$element$);
                     stmts.append(makeVar(FINAL, sb, 
-                            makeSequenceBuilderType(iteratedType),
-                            make().NewClass(null, null, makeSequenceBuilderType(iteratedType), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));
+                            make().TypeArray(make().Type(syms().objectType)),
+                            make().NewArray(make().Type(syms().objectType), List.of(naming.makeQualIdent(array.makeIdent(), "length")), null)));
+                    stmts.append(makeVar(index, 
+                            make().Type(syms().intType),
+                            make().Literal(0)));
                     stmts.append(make().ForeachLoop(
                             makeVar(element, makeJavaType(iteratedType, JT_ANNOTATION), null), 
                             array.makeIdent(), 
-                            make().Exec(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "append"), 
-                                    List.<JCExpression>of(instantiateAnnotationClass(iteratedType, element.makeIdent()))))));
-                    stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "sequence"), List.<JCExpression>nil())));
+                            make().Exec(make().Assign(
+                                    make().Indexed(sb.makeIdent(), 
+                                            make().Unary(JCTree.POSTINC, index.makeIdent())), 
+                                    instantiateAnnotationClass(iteratedType, element.makeIdent())))));
+                    stmts.append(make().Return(
+                            make().NewClass(null,
+                                    null,
+                                    make().QualIdent(syms().ceylonTupleType.tsym),
+                                    List.of(makeReifiedTypeArgument(iteratedType),
+                                            sb.makeIdent(), make().Literal(0),
+                                            naming.makeQualIdent(sb.makeIdent(), "length"),
+                                            make().Literal(false)), 
+                                    null)));
                     classBuilder.method(
                             MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
                                 .ignoreModelAnnotations()

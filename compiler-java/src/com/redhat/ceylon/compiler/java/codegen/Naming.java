@@ -1536,6 +1536,13 @@ public class Naming implements LocalId {
         return makeSelect(makeName((Value)decl, NA_FQ | NA_WRAPPER), getGetterName(decl));
     }
     
+    /** Generates an ident for the getter method of a Value */
+    JCExpression makeLanguageFunction(String string) {
+        Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);
+        Assert.that(Decl.isMethod(decl));
+        return makeSelect(makeName((TypedDeclaration)decl, NA_FQ | NA_WRAPPER), getMethodNameInternal((TypedDeclaration)decl));
+    }
+    
     /*
      * Methods for making unique temporary and alias names
      */
