@@ -20,7 +20,6 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -551,7 +550,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
 		ObjectArrayIterable<Attribute> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
     
@@ -633,7 +632,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
 		ObjectArrayIterable<Attribute> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -699,7 +698,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -766,7 +765,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -851,7 +850,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -918,7 +917,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -999,7 +998,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -1062,7 +1061,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
-				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+				new ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 

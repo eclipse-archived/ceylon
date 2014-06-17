@@ -16,7 +16,6 @@ import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -214,7 +213,7 @@ public abstract class FreeClassOrInterface
         }
         java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
 		ObjectArrayIterable<Kind> iterable = 
-				new ObjectArray.ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+				new ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
@@ -234,7 +233,7 @@ public abstract class FreeClassOrInterface
         }
         java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
 		ObjectArrayIterable<Kind> iterable = 
-				new ObjectArray.ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+				new ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 

@@ -28,7 +28,6 @@ import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
@@ -847,10 +846,8 @@ public class Metamodel {
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
             addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
-        java.lang.Object[] array = ceylonAnnotations.toArray(new java.lang.Object[0]);
-		ObjectArrayIterable<A> iterable = 
-				new ObjectArrayIterable<A>($reifiedValues, (A[]) array);
-		return (ceylon.language.Sequential) iterable.sequence();
+        ceylon.language.Annotation[] array = ceylonAnnotations.toArray(new ceylon.language.Annotation[0]);
+		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 
     public static String getJavaMethodName(Method method) {
@@ -898,14 +895,9 @@ public class Metamodel {
             if(mod != null)
                 array[i++] = mod;
         }
-        Object result = sequence_.sequence(
-                ceylon.language.meta.declaration.Module.$TypeDescriptor$, 
-                Null.$TypeDescriptor$, 
-                new ObjectArray.ObjectArrayIterable<>(ceylon.language.meta.declaration.Module.$TypeDescriptor$, array).take(i));
-        if (result == null) {
-            return (Sequential)empty_.get_();
-        }
-        return (Sequential)result;
+        ObjectArrayIterable<ceylon.language.meta.declaration.Module> iterable = 
+        		new ObjectArrayIterable<ceylon.language.meta.declaration.Module>(ceylon.language.meta.declaration.Module.$TypeDescriptor$, array);
+        return iterable.take(i).sequence();
     }
 
     public static ceylon.language.meta.declaration.Module findLoadedModule(String name, String version) {
@@ -1032,12 +1024,13 @@ public class Metamodel {
         }
     }
     
-    public static <T> Sequential<T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class<?>[] refs) {
+    //TODO unused, delete me?
+    public static <T> Sequential<? extends T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class<?>[] refs) {
         Object[] array = new Object[refs.length];
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = parseEnumerationReference(refs[ii]);
         }
-        return (Sequential)new ObjectArray.ObjectArrayIterable<Object>($reifiedElement, array).sequence();
+        return new ObjectArrayIterable<T>($reifiedElement, (T[]) array).sequence();
     }
 
     public static Sequential<? extends ceylon.language.meta.declaration.TypeParameter> getTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic declaration) {
@@ -1350,7 +1343,7 @@ public class Metamodel {
         // FIXME: don't we need to spread any variadic param?
         
         // now do a regular invocation
-        Sequential<Object> argumentSequence = (Sequential)values.sequence();
+        Sequential<? extends Object> argumentSequence = values.sequence();
         return Util.apply(function, argumentSequence);
     }
     

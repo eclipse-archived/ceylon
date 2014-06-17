@@ -17,7 +17,7 @@ import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -1116,7 +1116,7 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty()) {
-            return new ObjectArray.ObjectArrayIterable<T>($reifiedT, elements).skip(start).take(length).sequence();
+            return new ObjectArrayIterable<T>($reifiedT, elements).skip(start).take(length).sequence();
         }
         // we have both, let's find the total size
         int total = toInt(rest.getSize() + length);
@@ -1127,7 +1127,7 @@ public class Util {
         for(Object elem; (elem = iterator.next()) != finished_.get_(); i++){
             newArray[i] = elem;
         }
-        return new ObjectArray.ObjectArrayIterable($reifiedT, newArray).sequence();
+        return new ObjectArrayIterable<T>($reifiedT, (T[])newArray).sequence();
     }
     
     /**
@@ -1540,7 +1540,7 @@ public class Util {
             final java.lang.Throwable exception) {
         java.lang.Throwable[] sup = exception.getSuppressed();
         if (sup.length > 0) {
-            return new ObjectArray.ObjectArrayIterable(TypeDescriptor.klass(java.lang.Throwable.class), sup).sequence();
+            return new ObjectArrayIterable(TypeDescriptor.klass(java.lang.Throwable.class), sup).sequence();
         } else {
             return (ceylon.language.Sequential)empty_.get_();
         }

@@ -97,10 +97,8 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
                 }
                 sb.add(new FreeImport(this, moduleImport));
             }
-            java.lang.Object[] array = sb.toArray(new java.lang.Object[0]);
-    		ObjectArrayIterable<FreeImport> iterable = 
-    				new ObjectArrayIterable<FreeImport>(Import.$TypeDescriptor$, (FreeImport[]) array);
-    		this.dependencies = (ceylon.language.Sequential) iterable.sequence();
+            FreeImport[] array = sb.toArray(new FreeImport[0]);
+    		this.dependencies = new ObjectArrayIterable<FreeImport>(Import.$TypeDescriptor$, array).sequence();
         }
         return this.dependencies;
     }
