@@ -16,7 +16,7 @@ shared class Singleton<out Element>(Element element)
     shared actual Element last => element;
     
     "Returns `Empty`."
-    shared actual Empty rest => {};
+    shared actual Empty rest => [];
     
     "Returns the contained element, if the specified 
      index is `0`."
