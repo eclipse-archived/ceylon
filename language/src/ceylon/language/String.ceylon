@@ -282,6 +282,12 @@ shared native final class String(characters)
     shared native String replaceFirst(String substring, 
                                       String replacement);
     
+    "Returns a string formed by replacing the last 
+     occurrence in this string of the given [[substring]], 
+     if any, with the given [[replacement]] string."
+    shared native String replaceLast(String substring, 
+                                     String replacement);
+    
     "Compare this string with the given string 
      lexicographically, according to the Unicode code points
      of the characters."

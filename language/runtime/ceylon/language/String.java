@@ -1276,6 +1276,26 @@ public final class String
     	}
     }
 
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String replaceLast(
+            @Name("substring") java.lang.String substring,
+            @Name("replacement") java.lang.String replacement) {
+        return replaceLast(value, substring, replacement);
+    }
+
+    @Ignore
+    public static java.lang.String replaceLast(java.lang.String value, 
+    		java.lang.String substring, java.lang.String replacement) {
+    	int index = value.lastIndexOf(substring);
+    	if (index<0) {
+    		return value;
+    	}
+    	else {
+    		return value.substring(0,index) + replacement + 
+    				value.substring(index+substring.length());
+    	}
+    }
+
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ?> split(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
