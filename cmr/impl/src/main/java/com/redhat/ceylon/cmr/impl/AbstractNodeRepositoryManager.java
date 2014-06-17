@@ -353,16 +353,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             if (addLeaf) {
                 Node parent = node;
                 context.toNode(parent);
-                String[] names = repository.getArtifactNames(context);
-                for (String name : names) {
-                    try {
+                try {
+                    String[] names = repository.getArtifactNames(context);
+                    for (String name : names) {
                         node = parent.getChild(name);
                         if (node != null) {
                             break;
                         }
-                    } finally {
-                        ArtifactContext.removeNode(parent);
                     }
+                } finally {
+                    ArtifactContext.removeNode(parent);
                 }
             }
 
