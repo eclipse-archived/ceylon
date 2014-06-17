@@ -415,12 +415,7 @@
         <delete dir="${ceylon.typechecker.repo}"/>
     </target>
 
-	<target name="ide-quick-internal">
-        <copy 
-            overwrite="true"
-            file="${build.dist.repo}/${ceylon.typechecker.jar}"
-            tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
-    </target>
+	<target name="ide-quick-internal"/>
 
     <target name="dist" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
