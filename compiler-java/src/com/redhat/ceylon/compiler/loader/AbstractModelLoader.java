@@ -436,21 +436,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public void loadStandardModules(){
         // set up the type factory
+        Timer nested = timer.nestedTimer();
+        nested.startTask("load ceylon.language");
         Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
         addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
+        nested.endTask();
         
+        nested.startTask("load JDK");
         // make sure the jdk modules are loaded
         for(String jdkModule : JDKUtils.getJDKModuleNames())
             findOrCreateModule(jdkModule, JDKUtils.jdk.version);
         for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
             findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
         Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
+        nested.endTask();
         
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
+        nested.startTask("load standard packages");
         loadPackage(jdkModule, "java.lang", false);
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.metadata", false);
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.language", false);
@@ -463,6 +469,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 //            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL, true);
 //            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL_DECLARATION, true);
         }
+        nested.endTask();
     }
 
     /**

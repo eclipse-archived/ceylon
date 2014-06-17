@@ -292,18 +292,28 @@ public class CeylonEnter extends Enter {
             languageModule.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
         }
         // load the standard modules
+        timer.startTask("loadStandardModules");
         modelLoader.loadStandardModules();
+        timer.endTask();
         // load the modules we are compiling first
         hasRun = true;
         // make sure we don't load the files we are compiling from their class files
+        timer.startTask("setupSourceFileObjects");
         modelLoader.setupSourceFileObjects(trees);
+        timer.endTask();
         // resolve module dependencies
+        timer.startTask("verifyModuleDependencyTree");
         ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
         validator.verifyModuleDependencyTree();
+        timer.endTask();
         // now load package descriptors
+        timer.startTask("loadPackageDescriptors");
         modelLoader.loadPackageDescriptors();
+        timer.endTask();
         // at this point, abort if we had any errors logged
+        timer.startTask("collectTreeErrors");
         collectTreeErrors(false);
+        timer.endTask();
         // check if we abort on errors or not
         if (options.get(OptionName.CEYLONCONTINUE) == null) {
             // if we didn't have any errors, we can go on, none were logged so
