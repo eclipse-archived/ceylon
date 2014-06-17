@@ -338,8 +338,7 @@ public class ExpressionTest extends CompilerTest {
     public void testAvoidBackwardBranchWithSuperInner(){
         compile("instantiation/AvoidBackwardBranchWithSuper.ceylon");
         // We're testing that we get a vaguely helpful error message
-        assertErrors("instantiation/AvoidBackwardBranchWithSuperInner",
-                new CompilerError(2, "compiler bug: use of expressions which imply a loop (or other backward branch) in the invocation of a super class initializer are currently only supported on top level classes"));
+        compile("instantiation/AvoidBackwardBranchWithSuperInner.ceylon");
     }
     
     // Operators
