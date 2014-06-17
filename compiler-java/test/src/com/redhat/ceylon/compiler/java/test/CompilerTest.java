@@ -90,7 +90,7 @@ public abstract class CompilerTest {
     protected final List<String> defaultOptions;
 
     public static final String[] CLASS_PATH = new String[] {
-        "../ceylon-spec/build/classes",
+        "../ceylon-spec/bin",
         "./build/classes",
         "./../ceylon-module-resolver/build/classes",
         "./../ceylon-common/build/classes",
