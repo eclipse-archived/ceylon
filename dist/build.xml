@@ -411,7 +411,7 @@ Used with another target such as 'package'">
         <pathconvert property="module.dir.relative" pathsep="${line.separator}">
             <propertyresource name="module.dir" />
             <mapper type="regexp"
-                from="^(.*)/build/dist/repo/(.*)"
+                from="^(.*)[/\\]build[/\\]dist[/\\]repo[/\\](.*)"
                 to="\2"/>
         </pathconvert>
         <pathconvert property="module.jar" setonempty="false">
