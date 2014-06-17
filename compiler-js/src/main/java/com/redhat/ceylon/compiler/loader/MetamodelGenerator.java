@@ -133,7 +133,7 @@ public class MetamodelGenerator {
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
     private Map<String, Object> typeMap(ProducedType pt, Declaration from) {
-        if (pt==null) {
+        if (pt==null || pt.isUnknown()) {
             return unknownTypeMap;
         }
         TypeDeclaration d = pt.getDeclaration();
@@ -291,12 +291,8 @@ public class MetamodelGenerator {
                 final MethodOrValue parmtype = parm.getModel();
                 if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parmtype.getName());
-                } else if (parm.getType() != null) {
-                    pm.put(KEY_TYPE, typeMap(parm.getType(), from));
                 } else {
-                    //Most likely a dynamic type, set it to Anything
-                    pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage(
-                            Module.LANGUAGE_MODULE_NAME).getDirectMember("Anything", null, false)).getType(), from));
+                    pm.put(KEY_TYPE, typeMap(parm.getType(), from));
                 }
                 if (parm.isHidden()) {
                     pm.put("$hdn", 1);
