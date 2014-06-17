@@ -53,7 +53,7 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
         return nothing;
     }
     shared actual Sequence<Element> reversed = nothing;
-    shared actual Element|Finished getFromFirst(Integer index) {
+    shared actual Element? getFromFirst(Integer index) {
         return nothing;
     }
 
