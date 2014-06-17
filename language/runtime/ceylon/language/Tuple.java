@@ -210,7 +210,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("Element|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|Element")
     public final Element getFromFirst(@Name("index")
     @TypeInfo("ceylon.language::Integer")
     final long index) {

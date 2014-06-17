@@ -854,13 +854,13 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element get(@Name("Index") Integer key) {
+    public Element get(@Name("index") Integer key) {
         return getFromFirst(key.longValue());
     }
 
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element getFromLast(@Name("Index") long key) {
+    public Element getFromLast(@Name("index") long key) {
         int index = toInt(key);
         int size = toInt(getSize());
         return index < 0 || index >= size ?
