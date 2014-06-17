@@ -539,11 +539,11 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Override
-        public <Other> Iterable<? extends Object, ? extends Object> following(
+        public <Other> Iterable<? extends Object, ? extends Object> follow(
                 @Ignore
                 TypeDescriptor $reified$Other, 
                 Other head) {
-            return $ceylon$language$Iterable$this.following($reified$Other, head);
+            return $ceylon$language$Iterable$this.follow($reified$Other, head);
         }
         
         @Override
@@ -554,6 +554,12 @@ public final class ByteArray implements ReifiedType {
         @Override
         public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends ceylon.language.Integer>, ? extends Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
+        }
+        
+        @Override @Ignore
+        public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends Null>>
+        spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+        	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
         }
         
         @Override

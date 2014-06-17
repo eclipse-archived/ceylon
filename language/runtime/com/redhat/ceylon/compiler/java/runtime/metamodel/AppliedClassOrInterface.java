@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,16 +10,18 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.meta.model.Attribute;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -534,8 +537,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Attribute.class, $reifiedType, $reifiedGet, $reifiedSet);
-        SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
+                new ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeValue decl = (FreeValue) it;
@@ -546,14 +549,17 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, reifiedGet, reifiedSet);
         }
-        return members.sequence();
+        Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
+		ObjectArrayIterable<Attribute> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
     
     @SuppressWarnings("unchecked")
     private <Container,Get,Set> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedGet,
             @Ignore TypeDescriptor $reifiedSet,
-            SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members,
+            ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members,
             FreeValue decl, ProducedType qualifyingType, 
             ProducedType reifiedGet, ProducedType reifiedSet){
         // now the types
@@ -565,7 +571,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedSet.isSubtypeOf(setType))
             return;
         // it's compatible!
-        members.append(decl.<Container,Get,Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Get,Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.meta.model.Type<Container>)this));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -608,8 +614,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Attribute.class, $reifiedContainer, $reifiedGet, $reifiedSet);
-        SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
+                new ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeValue decl = (FreeValue) it;
@@ -625,7 +631,10 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, qualifyingType, reifiedGet, reifiedSet);
         }
-        return members.sequence();
+        Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
+		ObjectArrayIterable<Attribute> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -672,8 +681,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Method.class, $reifiedContainer, $reifiedType, $reifiedArguments);
-        SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
+                new ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeFunction decl = (FreeFunction) it;
@@ -688,7 +697,10 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
         }
-        return members.sequence();
+        ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -731,8 +743,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Method.class, $reifiedContainer, $reifiedType, $reifiedArguments);
-        SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
+                new ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeFunction decl = (FreeFunction) it;
@@ -752,14 +764,17 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
         }
-        return members.sequence();
+        ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.Method>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })
     private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
-            SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
+            ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
             FreeFunction decl, ProducedType qualifyingType, 
             ProducedType reifiedType, ProducedType reifiedArguments){
         // now the types
@@ -771,7 +786,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
-        members.append(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -818,8 +833,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);
-        SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
+                new ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeClass decl = (FreeClass) it;
@@ -834,7 +849,10 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
         }
-        return members.sequence();
+        ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -877,8 +895,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);
-        SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
+                new ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeClass decl = (FreeClass) it;
@@ -898,14 +916,17 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
         }
-        return members.sequence();
+        ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberClass>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })
     private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
-            SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members,
+            ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members,
             FreeClass decl, ProducedType qualifyingType, 
             ProducedType reifiedType, ProducedType reifiedArguments){
         // now the types
@@ -917,7 +938,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
-        members.append(decl.<Container,Type,Arguments>memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type,Arguments>memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -960,8 +981,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberInterface.class, $reifiedContainer, $reifiedType);
-        SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
+                new ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeInterface decl = (FreeInterface) it;
@@ -976,7 +997,10 @@ public abstract class AppliedClassOrInterface<Type>
             
             addIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, reifiedType);
         }
-        return members.sequence();
+        ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -1015,8 +1039,8 @@ public abstract class AppliedClassOrInterface<Type>
         Object it;
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberInterface.class, $reifiedContainer, $reifiedType);
-        SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
-                new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
+        ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
+                new ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>((int) declaredDeclarations.getSize());
 
         while((it = iterator.next()) != finished_.get_()){
             FreeInterface decl = (FreeInterface) it;
@@ -1036,13 +1060,16 @@ public abstract class AppliedClassOrInterface<Type>
 
             addIfCompatible($reifiedContainer, $reifiedType, members, decl, qualifyingType, reifiedType);
         }
-        return members.sequence();
+        ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
+		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
+				new ObjectArray.ObjectArrayIterable<ceylon.language.meta.model.MemberInterface>(reifiedKind, array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "unchecked", "hiding" })
     private <Container,Type> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
-            SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members,
+            ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members,
             FreeInterface decl, ProducedType qualifyingType, 
             ProducedType reifiedType){
         // now the types
@@ -1051,7 +1078,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!type.isSubtypeOf(reifiedType))
             return;
         // it's compatible!
-        members.append(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type<Container>)this));
     }
 
     private boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
@@ -1095,7 +1122,6 @@ public abstract class AppliedClassOrInterface<Type>
         Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypeDeclarations = getDeclaration().getCaseTypes();
         Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
         Object it;
-        @SuppressWarnings("unchecked")
         Array<Type> ret = new Array<Type>($reifiedType, (int) caseTypeDeclarations.getSize(), null);
         int count = 0;
         while((it = iterator.next()) != finished_.get_()){

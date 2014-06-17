@@ -76,6 +76,25 @@ shared interface Sequence<out Element>
         return s;
     }
     
+    "Return a nonempty sequence containing the given 
+     [[elements]], followed by the elements of this 
+     sequence."
+    shared actual default [Other,Element+]
+    withLeading<Other>(Other element)
+            => [element, *this];
+    
+    "Return a nonempty sequence containing the elements of 
+     this sequence, followed by the given [[elements]]."
+    shared actual default [Element,Element|Other*]
+    append<Other>({Other*} elements)
+            => [first, *(rest chain elements)];
+    
+    "Return a nonempty sequence containing the elements of 
+     this sequence, followed by the given [[elements]]."
+    shared actual default [Element|Other+]
+    prepend<Other>({Other*} elements)
+            => [*(elements chain this)];
+    
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
     
@@ -99,29 +118,4 @@ shared interface Sequence<out Element>
     shared actual default Element[] repeat(Integer times)
             => (super of Element[]).repeat(times);
     
-    shared actual default [Other,Element+] following<Other>(Other head)
-            => [head,*this];
-
 }
-
-"A [[Sequence]] of the given elements, or `null` if the 
- iterable is empty. A [[Sequential]] can be obtained using 
- the `else` operator:
- 
-     sequence(elements) else []
- "
-by("Gavin")
-shared [Element+]|Absent sequence<Element,Absent>
-        (Iterable<Element, Absent> elements) 
-        given Absent satisfies Null {
-    if (is [Element+] elements) {
-        return elements;
-    }   
-    value array = Array(elements);
-    if (array.empty) {
-        assert (is Absent null);
-        return null;
-    }   
-    return ArraySequence(array);
-}
-

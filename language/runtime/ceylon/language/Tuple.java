@@ -2,11 +2,10 @@ package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+import static java.lang.System.arraycopy;
 
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
-
-import ceylon.language.impl.SequenceBuilder;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
@@ -133,7 +132,8 @@ public final class Tuple<Element, First extends Element,
     
     private static java.lang.Object[] makeArray(java.lang.Object first, 
     		Sequential<?> rest) {
-        java.lang.Object[] elements = new java.lang.Object[Util.toInt(rest.getSize() + 1)];
+        java.lang.Object[] elements = 
+        		new java.lang.Object[Util.toInt(rest.getSize() + 1)];
         elements[0] = first;
         copyToArray(rest, elements, 1);
         return elements;
@@ -413,20 +413,6 @@ public final class Tuple<Element, First extends Element,
             if (x!=null && element.equals(x)) return true;
         }
         return false;
-    }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Annotations({
-        @Annotation("shared"),
-        @Annotation("actual")})
-    @Override
-    @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
-    public final <Other>Tuple 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
-        return new Tuple(
-                $reifiedOther, 
-                $reifiedOther, $reifiedOther, 
-                e, this);
     }
     
     @Ignore
@@ -893,10 +879,9 @@ public final class Tuple<Element, First extends Element,
                 $reifiedOtherAbsent, other);
     }
     @Override @Ignore 
-    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequence<? extends Element>> 
-    following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Sequence$this.following($reifiedOther, 
-                other);
+    public <Other> Iterable
+    follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.follow($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> 
@@ -905,14 +890,79 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, 
                 defaultValue);
     }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
     @Override
-    @Ignore
-    @SuppressWarnings("rawtypes")
-    public <Other>Sequence 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
-        return $ceylon$language$List$this.withTrailing($reifiedOther, e);
+    @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
+    public final <Other> Tuple 
+    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
+    	java.lang.Object[] array = new java.lang.Object[length+1];
+    	array[0] = e;
+    	arraycopy(this.array, first, array, 1, length);
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
     }
     
+    @SuppressWarnings({ "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequence<Element|Other>>")
+    public <Other> Tuple 
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
+    	java.lang.Object[] array = new java.lang.Object[length+1];
+    	arraycopy(this.array, first, array, 0, length);
+    	array[length] = e;
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+    }
+    
+    @SuppressWarnings({ "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequential<Element|Other>>")
+    public <Other> Tuple
+    append(@Ignore TypeDescriptor $reifiedOther, @Name("elements") Iterable<? extends Other, ?> es) {
+    	Sequential<?> sequence = es.sequence();
+    	java.lang.Object[] array = new java.lang.Object[length+Util.toInt(sequence.getSize())];
+    	arraycopy(this.array, first, array, 0, length);
+    	copyToArray(sequence, array, length);
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), array);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> Sequence
+    prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$Sequence$this.prepend($reifiedOther, es);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list) {
+        return $ceylon$language$List$this.extend($reifiedOther, list);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from, long length) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, length);
+    }
+    
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, 0);
+    }
+
+    @Override @Ignore 
+    public <Other> long patch$length(TypeDescriptor $reifiedOther,List<? extends Other> list, long from) {
+    	return 0;
+    }
+
     @Override @Ignore
     public Sequential<? extends Element> 
     trim(Callable<? extends Boolean> characters) {
@@ -990,4 +1040,10 @@ public final class Tuple<Element, First extends Element,
         return length;
     }
 
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
+    
 }

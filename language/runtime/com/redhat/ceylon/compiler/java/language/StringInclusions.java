@@ -265,8 +265,8 @@ public class StringInclusions implements Iterable<Integer,java.lang.Object>, Rei
     }
     @Override @Ignore 
     public <Other> Iterable 
-    following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, other);
+    follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.follow($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> 
@@ -293,6 +293,12 @@ public class StringInclusions implements Iterable<Integer,java.lang.Object>, Rei
             Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType$() {

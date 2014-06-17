@@ -255,25 +255,57 @@ shared interface List<out Element>
         }
     }
     
-    "A list containing all indexes of this list.  This is a 
+    "A list containing all indexes of this list. This is a 
      lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
     "Returns a new `List` that starts with the specified
-     element, followed by the elements of this list."
-    see (`function following`)
-    shared default [Other|Element+] withLeading<Other>(
+     [[element]], followed by the elements of this list,
+     in the order they occur in this list."
+    see (`function follow`)
+    shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)
-            => [*(Singleton(element) chain this)];
+            => [element, *this];
     
-    "Returns a new `List` that contains the specified
-     element appended to the end of the elements of this 
-     list."
+    "Returns a new `List` that starts with the elements of 
+     this list, in the order they occur in this list, and 
+     ends with the specified [[element]]."
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element)
             => [*(this chain Singleton(element))];
+    
+    "Return a sequence containing the elements of this list, 
+     in the order in which they occur in this list, followed 
+     by the given [[elements]], in the order in which they 
+     occur in the given stream."
+    see (`function extend`, 
+         `function chain`,
+         `function concatenate`)
+    shared default [Element|Other*] append<Other>({Other*} elements) 
+            => [*(this chain elements)];
+    
+    "Return a sequence containing the given [[elements]], in 
+     the order in which they occur in the given stream,
+     followed by the elements of this list, in the order in 
+     which they occur in this list."
+    shared default [Element|Other*] prepend<Other>({Other*} elements) 
+            => [*(elements chain this)];
+    
+    "Return a list formed by extending this list with the 
+     elements of the given [[list]]. This is a lazy operation
+     returning a view over this list and the given list."
+    see (`function append`,
+         `function chain`)
+    shared default List<Element|Other> extend<Other>(List<Other> list) 
+            => Extend(list);
+    
+    shared default List<Element|Other> patch<Other>(List<Other> list,
+        Integer from, Integer length=0)
+            => length>=0 && 0<=from<size 
+                    then Patch(list, from, length)
+                    else this;
     
     "Determine if the given list occurs at the start of this 
      list."
@@ -316,6 +348,9 @@ shared interface List<out Element>
     "Determine if the given list occurs at some index in 
      this list."
     shared default Boolean includes(List<Anything> sublist) {
+        if (sublist.empty) {
+            return true;
+        }
         for (index in 0:size) {
             if (includesAt(index,sublist)) {
                 return true;
@@ -586,7 +621,8 @@ shared interface List<out Element>
     //shared default [List<Element>,List<Element>] slice(Integer index)
     //    => [this[...index-1], this[index...]];
     
-    shared actual formal List<Element> clone();
+    shared actual default List<Element> clone() 
+            => Array(this);
     
     
     class Indexes()
@@ -735,6 +771,85 @@ shared interface List<out Element>
             return iterator;
         }
         
+    }
+    
+    class Extend<Other>(List<Other> list)
+            extends Object()
+            satisfies List<Element|Other> {
+        
+        size => outer.size+list.size;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index<size) {
+                return outer.getFromFirst(index);
+            }
+            else {
+                return list.getFromFirst(index-size);
+            }
+        }
+        
+        clone() => outer.clone().Extend(list.clone());
+        
+        iterator() => ChainedIterator(outer,list);
+        
+    }
+    
+    class Patch<Other>(List<Other> list, 
+        Integer from, Integer length)
+            extends Object()
+            satisfies List<Element|Other> {
+        
+        assert (length>=0);
+        assert (0<=from<outer.size);
+        
+        size => outer.size+list.size-length;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            if (index<from) {
+                return outer.getFromFirst(index);
+            }
+            else if (index-from<list.size) {
+                return list.getFromFirst(index-from);
+            }
+            else {
+                return outer.getFromFirst(index-list.size+length);
+            }
+        }
+        
+        clone() => outer.clone().Patch(list.clone(),from,length);
+        
+        shared actual Iterator<Element|Other> iterator() {
+            value iter = outer.iterator();
+            value patchIter = list.iterator();
+            object iterator satisfies Iterator<Element|Other> {
+                variable value index = -1;
+                shared actual Element|Other|Finished next() {
+                    if (++index==from) {
+                        for (skip in 0:length) {
+                            iter.next();
+                        }
+                    }
+                    if (0<=index-from<list.size) {
+                        return patchIter.next();
+                    }
+                    else {
+                        return iter.next();
+                    }
+                }
+            }
+            return iterator;
+        }
     }
     
     class Reversed()

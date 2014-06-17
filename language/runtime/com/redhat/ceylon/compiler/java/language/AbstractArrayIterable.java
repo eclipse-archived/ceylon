@@ -188,11 +188,11 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
     }
 
     @Override
-    public <Other> Iterable<? extends Object, ? extends Object> following(
+    public <Other> Iterable<? extends Object, ? extends Object> follow(
             @Ignore
             TypeDescriptor $reified$Other, 
             Other head) {
-        return $ceylon$language$Iterable$this.following($reified$Other, head);
+        return $ceylon$language$Iterable$this.follow($reified$Other, head);
     }
 
     @Override
@@ -336,6 +336,12 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
         return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
+    
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends Null>>
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
     
     @Override
     public String toString() {

@@ -167,8 +167,8 @@ shared final class Range<Element>(first, last)
                 Element|Finished result = current;
                 if (!is Finished curr = current) {
                     if (decreasing 
-                        then curr<=last 
-                        else curr>=last) {
+                            then curr<=last 
+                            else curr>=last) {
                         current = finished;
                     } 
                     else {
@@ -271,11 +271,41 @@ shared final class Range<Element>(first, last)
                           else x>=first && x<=last;
     
     shared actual Boolean includes(List<Anything> sublist) {
+        if (sublist.empty) {
+            return true;
+        }
         if (is Range<Element> sublist) {
             return includesRange(sublist);
         }
         else {
-            return super.includes(sublist);
+            if (is Element start = sublist.first) {
+                if (decreasing
+                        then start>first || start<last
+                        else start<first || start>last) {
+                    return false;
+                }
+                variable value current=start;
+                for (element in sublist) {
+                    if (exists element) {
+                        if (element!=current ||
+                            decreasing
+                                then current<last
+                                else current>last) {
+                            return false;
+                        }
+                        current = next(current);
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
         }
     }
     

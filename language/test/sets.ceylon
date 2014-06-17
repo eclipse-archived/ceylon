@@ -103,18 +103,6 @@ class SetTest<Element>(Element* element) extends Object()
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
                 given Other satisfies Object {
-        //value sb = SequenceBuilder<Element&Other>();
-        //for (e in set) {
-        //    if (e is Element) {
-        //        for (e2 in elements) {
-        //            if (e2 == e) {
-        //                sb.append(e);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-        //return SetTest(sb.sequence()*);
         return nothing;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)

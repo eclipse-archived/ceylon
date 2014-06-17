@@ -1,9 +1,31 @@
+"A [[Sequence]] of the given elements, or `null` if the 
+ iterable is empty. A [[Sequential]] can be obtained using 
+ the `else` operator:
+ 
+     sequence(elements) else []
+ "
+by("Gavin")
+shared [Element+]|Absent sequence<Element,Absent=Null>
+        (Iterable<Element, Absent> elements)
+        given Absent satisfies Null {
+    if (is [Element+] elements) {
+        return elements;
+    }
+    value array = Array(elements);
+    if (array.empty) {
+        assert (is Absent null);
+        return null;
+    }
+    return ArraySequence(array);
+}
+
 "A [[Sequence]] backed by an [[Array]]. 
  
  Since `Array` is mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
 class ArraySequence<Element>(Array<Element> array) 
+        extends Object()
         satisfies [Element+] {
     
     assert (!array.empty);
@@ -35,18 +57,19 @@ class ArraySequence<Element>(Array<Element> array)
     }
     
     shared actual Element[] rest 
-            => package.sequence(array.rest) else [];
+            => size==1 then [] else ArraySequence(Array(array.rest));
     
-    shared actual [Element+] reversed {
-        assert (exists reversed = package.sequence(array.reversed));
-        return reversed;
-    }
+    shared actual [Element+] reversed 
+            => ArraySequence(Array(array.reversed));
     
     shared actual Element[] segment(Integer from, Integer length) {
-        if (from < 0) {
-            return package.sequence(array[0:length+from]) else [];
+        if (from>lastIndex || length<=0 || from+length<=0) {
+            return [];
+        }
+        else if (from < 0) {
+            return ArraySequence(array[0:length+from]);
         } else {
-            return package.sequence(array[from:length]) else [];
+            return ArraySequence(array[from:length]);
         }
     }
     
@@ -55,12 +78,12 @@ class ArraySequence<Element>(Array<Element> array)
             if (to < 0 || from > lastIndex) {
                 return [];
             }
-            return package.sequence(array[largest(from, 0)..smallest(to, lastIndex)]) else [];
+            return ArraySequence(array[largest(from, 0)..smallest(to, lastIndex)]);
         } else {
             if (from < 0 || to > lastIndex) {
                 return [];
             }
-            return package.sequence(array[smallest(from, lastIndex)..largest(to, 0)]) else [];
+            return ArraySequence(array[smallest(from, lastIndex)..largest(to, 0)]);
         }
     }
     
@@ -68,7 +91,7 @@ class ArraySequence<Element>(Array<Element> array)
         if (from > lastIndex) {
             return [];
         } else {
-            return package.sequence(array[largest(from, 0)...]) else [];
+            return ArraySequence(array[largest(from, 0)...]);
         }
     }
     
@@ -76,14 +99,8 @@ class ArraySequence<Element>(Array<Element> array)
         if (to < 0) {
             return [];
         } else { 
-            return package.sequence(array[...smallest(to, lastIndex)]) else [];
+            return ArraySequence(array[...smallest(to, lastIndex)]);
         }
     }
-    
-    shared actual Boolean equals(Object that) 
-            => (super of Sequence<Element>).equals(that);
-    
-    shared actual Integer hash 
-            => (super of Sequence<Element>).hash;
     
 }

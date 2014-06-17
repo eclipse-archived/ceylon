@@ -1,13 +1,14 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -118,14 +119,17 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
             return (Sequential<? extends Kind>)empty_.get_();
         }
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());
+        ArrayList<Kind> members = new ArrayList<Kind>(modelMembers.size());
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
             if (predicate.accept(modelDecl)) {
                 Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
-                members.append(member);
+                members.add(member);
             }
         }
-        return members.sequence();
+        java.lang.Object[] array = members.toArray(new java.lang.Object[0]);
+		ObjectArrayIterable<Kind> iterable = 
+				new ObjectArrayIterable<Kind>($reifiedKind, (Kind[]) array);
+		return (ceylon.language.Sequential) iterable.sequence();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

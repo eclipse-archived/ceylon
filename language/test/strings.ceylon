@@ -249,7 +249,7 @@ shared void strings() {
     check("hello world".initial(11)=="hello world", "string initial 6");
     check("hello world".terminal(11)=="hello world", "string terminal 6");
     check("hello".by(2)=="hlo", "string.by");
-    check(" world".following("hello").sequence()==["hello", ' ','w','o','r','l','d'], "string.following: ``" world".following("hello")``");
+    check(" world".follow("hello").sequence()==["hello", ' ','w','o','r','l','d'], "string.follow: ``" world".follow("hello")``");
     check("hello".skip(3)=="lo", "string.skip");
     check("hello".take(2)=="he", "string.take");
     check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
@@ -438,4 +438,11 @@ shared void strings() {
     check(("helloworld".getFromLast(9) else ' ')=='h', "string getFromLast(8)");
     check(!"helloworld".getFromLast(-1) exists, "string getFromLast(-1)");
     check(!"helloworld".getFromLast(10) exists, "string getFromLast(9)");
+    
+    check("hello".pad(10)=="  hello   ", "string pad");
+    check("hello".padLeft(10)=="     hello", "string padLeft");
+    check("hello".padRight(10)=="hello     ", "string padRight");
+    check("hello".pad(10,'-')=="--hello---", "string pad");
+    check("hello".padLeft(10,'-')=="-----hello", "string padLeft");
+    check("hello".padRight(10,'-')=="hello-----", "string padRight");
 }

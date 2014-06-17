@@ -179,7 +179,8 @@ shared interface Iterable<out Element, out Absent=Null>
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream."
-    shared default Element[] sequence() => [*this];
+    shared default Element[] sequence() 
+            => package.sequence(this) else [];
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
@@ -293,6 +294,21 @@ shared interface Iterable<out Element, out Absent=Null>
         }
         return last;
     }
+    
+    "Given a [[method]] of the element type [[Element]], 
+     return a function that, when supplied with a list of 
+     method arguments, produces a new iterable object
+     that applies the `method` to each element of this 
+     iterable object in turn.
+     
+         {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
+         print(fun(0)); //prints { false, true, false }"
+    shared default Callable<Iterable<Result,Absent>,Args> spread<Result,Args>(
+        Callable<Result,Args> method(Element element))
+            given Args satisfies Anything[] 
+            //=> flatten((Args args) => map(shuffle(method)(*args)));
+            => flatten((Args args) 
+                => { for (elem in this) method(elem)(*args) });
     
     "A sequence containing the elements of this stream, 
      sorted according to a [[comparator function|comparing]] 
@@ -587,9 +603,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "Produces a stream with a [[given initial element|head]], 
+    "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream."
-    shared default {Element|Other+} following<Other>(Other head) {
+    shared default {Element|Other+} follow<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
         object cons satisfies {Element|Other+} {
             shared actual Iterator<Element|Other> iterator() {
@@ -616,13 +632,13 @@ shared interface Iterable<out Element, out Absent=Null>
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
      in the given stream."
+    see (`function expand`, `function List.append`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
         object chained 
                 satisfies Iterable<Element|Other,Absent&OtherAbsent> {
-            shared actual Iterator<Element|Other> iterator() =>
-                    ChainedIterator(outer, other);
+            iterator() => ChainedIterator(outer, other);
         }
         return chained;
     }

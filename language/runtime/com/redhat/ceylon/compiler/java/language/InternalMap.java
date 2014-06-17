@@ -401,8 +401,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, other);
+    public <Other> Iterable follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.follow($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
@@ -509,6 +509,12 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Ignore
     public List<? extends Entry<? extends Key, ? extends Item>> repeat(long times) {
         return $ceylon$language$Iterable$this.repeat(times);
+    }
+    
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
+    spread(TypeDescriptor $reifiedResult,TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
     }
     
     @Override

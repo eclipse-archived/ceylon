@@ -1,10 +1,11 @@
 function(sub, repl) {
-    if (this.indexOf(sub) < 0) {
-      return this;
-    }
-    var ns = this.replace(sub, repl);
-    while (ns.indexOf(sub) >= 0) {
-      ns = ns.replace(sub, repl);
-    }
-    return ns;
+  var result = this;
+  var index = -1;
+  var from = 0;
+  while ((index = result.indexOf(sub,from)) >= 0) {
+    result = result.substring(0, index) + repl + 
+             result.substring(index + sub.length);
+    from = index + repl.length;
+  }
+  return result;
 }

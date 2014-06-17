@@ -1276,6 +1276,26 @@ public final class String
     	}
     }
 
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String replaceLast(
+            @Name("substring") java.lang.String substring,
+            @Name("replacement") java.lang.String replacement) {
+        return replaceLast(value, substring, replacement);
+    }
+
+    @Ignore
+    public static java.lang.String replaceLast(java.lang.String value, 
+    		java.lang.String substring, java.lang.String replacement) {
+    	int index = value.lastIndexOf(substring);
+    	if (index<0) {
+    		return value;
+    	}
+    	else {
+    		return value.substring(0,index) + replacement + 
+    				value.substring(index+substring.length());
+    	}
+    }
+
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ?> split(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
@@ -1894,34 +1914,31 @@ public final class String
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore 
     public <Other> Iterable 
-    following(@Ignore TypeDescriptor $reifiedOther, 
+    follow(@Ignore TypeDescriptor $reifiedOther, 
     		Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, 
+        return $ceylon$language$Iterable$this.follow($reifiedOther, 
         		other);
     }
     
     @Ignore
     @SuppressWarnings("rawtypes")
     public static <Other> Iterable 
-    following(@Ignore TypeDescriptor $reifiedOther, 
+    follow(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other other) {
-        return instance(value).following($reifiedOther, other);    
+        return instance(value).follow($reifiedOther, other);    
     }
     
     @Override @Ignore
-    @SuppressWarnings("rawtypes")
-    public <Other> Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
+    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
 
-    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <Other>Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, 
+    @Ignore
+    public static <Other>Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
+    withLeading(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
-        if (value.isEmpty()) {
-            return new Singleton($reifiedOther, e);
-        } else {
-            return instance(value).withLeading($reifiedOther, e);
-        }
+        return instance(value).withLeading($reifiedOther, e);
     }
 
     @Override @Ignore
@@ -1929,14 +1946,70 @@ public final class String
     public <Other> Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
-    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other e) {
-        if (value.isEmpty()) {
-            return new Singleton($reifiedOther, e);
-        } else {
-            return instance(value).withTrailing($reifiedOther, e);
-        }
+        return instance(value).withTrailing($reifiedOther, e);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> Sequential append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.append($reifiedOther, es);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, Iterable<? extends Other, ?> es) {
+        return instance(value).append($reifiedOther, es);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> Sequential prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$List$this.prepend($reifiedOther, es);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>Sequential prepend(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, Iterable<? extends Other, ?> es) {
+        return instance(value).prepend($reifiedOther, es);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> List extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list) {
+        return $ceylon$language$List$this.extend($reifiedOther, list);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List extend(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> list) {
+        return instance(value).extend($reifiedOther, list);
+    }
+
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
+    public <Other> List patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from, long length) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, length);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> list, long from, long length) {
+        return instance(value).patch($reifiedOther, list, from, length);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> List
+    patch(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> list, long from) {
+        return $ceylon$language$List$this.patch($reifiedOther, list, from, 0);
+    }
+    @Ignore @SuppressWarnings({ "rawtypes" })
+    public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
+    		java.lang.String value, List<? extends Other> list, long from) {
+        return instance(value).patch($reifiedOther, list, from, 0);
+    }
+
+    @Override @Ignore 
+    public <Other> long patch$length(TypeDescriptor $reifiedOther,List<? extends Other> list, long from) {
+    	return 0;
     }
 
     @Override
@@ -2029,4 +2102,121 @@ public final class String
     	return value.compareTo(other.value)<=0;
     }
 
+    @Override @Ignore
+    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>> 
+    spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
+    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+    }
+    
+    @Ignore
+    public static <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>> 
+    spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, java.lang.String value, Callable<? extends Callable<? extends Result>> method) {
+    	return instance(value).spread($reifiedResult, $reifiedArgs, method);
+    }
+    
+    public java.lang.String pad(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
+    	return pad(value, size, character);
+    }
+    
+    @Ignore
+    public java.lang.String pad(long size) {
+    	return pad(value, size, pad$character(size));
+    }
+    
+    @Ignore
+    public static java.lang.String pad(java.lang.String value, long size) {
+    	return pad(value, size, pad$character(size));
+    }
+    
+    @Ignore
+    public static int pad$character(long size) {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String pad(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return value;
+    	long leftPad = (size-length)/2;
+    	long rightPad = leftPad + (size-length)%2;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+    	for (int i=0;i<leftPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	builder.append(value);
+    	for (int i=0;i<rightPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	return builder.toString();
+    }
+    
+    public java.lang.String padLeft(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
+    	return padLeft(value, size, character);
+    }
+    
+    @Ignore
+    public java.lang.String padLeft(long size) {
+    	return padLeft(value, size, padLeft$character(size));
+    }
+    
+    @Ignore
+    public static java.lang.String padLeft(java.lang.String value, long size) {
+    	return padLeft(value, size, padLeft$character(size));
+    }
+    
+    @Ignore
+    public static int padLeft$character(long size) {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String padLeft(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return value;
+    	long leftPad = size-length;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+    	for (int i=0;i<leftPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	builder.append(value);
+    	return builder.toString();
+    }
+    
+    public java.lang.String padRight(@Name("size") long size, 
+    		@Name("character") @TypeInfo("ceylon.language::Character") 
+            @Defaulted int character) {
+    	return padRight(value, size, character);
+    }
+    
+    @Ignore
+    public java.lang.String padRight(long size) {
+    	return padRight(value, size, padRight$character(size));
+    }
+    
+    @Ignore
+    public static java.lang.String padRight(java.lang.String value, long size) {
+    	return padRight(value, size, padRight$character(size));
+    }
+    
+    @Ignore
+    public static int padRight$character(long size) {
+    	return ' ';
+    }
+    
+    @Ignore
+    public static java.lang.String padRight(java.lang.String value, long size, int character) {
+    	int length = value.length();
+    	if (size<=length) return value;
+    	long rightPad = size-length;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder(value);
+    	for (int i=0;i<rightPad;i++) {
+    		builder.appendCodePoint(character);
+    	}
+    	return builder.toString();
+    }
+    
 }

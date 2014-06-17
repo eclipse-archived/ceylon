@@ -155,7 +155,7 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,exception_addons.js,Error,Exception,Comparison,identityHash,impl/rethrow
 //#Anything
-//#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder,impl/SequenceBuilder
+//#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder
 //#native Boolean
 //#native Callable
 //#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
