@@ -301,6 +301,18 @@ shared interface List<out Element>
     shared default List<Element|Other> extend<Other>(List<Other> list) 
             => Extend(list);
     
+    "Return a list formed by patching the given [[list]] 
+     in place of a segment of this list identified by the
+     given [[starting index|from]] and [[length]]. This is a
+     lazy operations, returning a view over this list and 
+     the given list.
+     
+     For example:
+     
+     - `(-2..2).patch([],1,3)` produces the list `{-2,2}`, 
+       and
+     - `[-2, 2].patch(-1..1,1)` produces the list 
+       `{-2,-1,0,1,2}`.'"
     shared default List<Element|Other> patch<Other>(List<Other> list,
         Integer from, Integer length=0)
             => length>=0 && 0<=from<size 
