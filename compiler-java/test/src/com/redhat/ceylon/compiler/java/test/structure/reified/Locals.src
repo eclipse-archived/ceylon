@@ -3178,6 +3178,11 @@ public final class MyIterable$impl<Element, Absent> {
                 this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
             }
             
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.ActualAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterator<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
             public final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> iterator() {

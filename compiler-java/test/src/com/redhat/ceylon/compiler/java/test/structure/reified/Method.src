@@ -367,6 +367,11 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$specifier$;
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",

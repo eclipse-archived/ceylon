@@ -23,6 +23,9 @@ shared interface TopInterface {
 
     shared formal Integer topFormalMethod(Integer p1);
     shared default Integer concreteDefaultMethod(Integer p1){ return p1; }
+    
+    shared formal Integer topFormalAttr2;
+    shared formal Integer topFormalMethod2(Integer p1);
 }
 
 shared interface Interface satisfies TopInterface {
@@ -34,4 +37,7 @@ shared interface Interface satisfies TopInterface {
     shared formal Integer formalMethod(Integer p1);
     shared Integer concreteMethod(Integer p1){ return p1; }
     shared actual formal Integer concreteDefaultMethod(Integer p1);
+    
+    topFormalAttr2 => 1;
+    topFormalMethod2(Integer p1) => 1;
 }

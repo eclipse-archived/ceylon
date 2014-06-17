@@ -55,6 +55,11 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
         $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$.presentYourself();
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -62,6 +67,11 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
         return "foo";
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -184,6 +194,11 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.presentYourself();
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -191,6 +206,11 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.toString();
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
