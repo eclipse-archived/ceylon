@@ -65,6 +65,7 @@ public final class Array<Element>
         this($reifiedElement, createArray($reifiedElement, elements));
     }
 
+    @SuppressWarnings("unchecked")
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element,?> elements) {
@@ -1449,7 +1450,7 @@ public final class Array<Element>
         		new Array<Element>($reifiedElement, result));
     }
 
-    @Override @Ignore @SuppressWarnings("rawtypes")
+    @Override @Ignore
     public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Element>> 
     withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
