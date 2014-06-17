@@ -65,7 +65,7 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             }
             returning $ceylontmp$opV$5;
         )).getFirst();
-        final int c = ((.ceylon.language.Character)((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, "abc", .ceylon.language.Character.instance(100))).getFirst()).intValue();
+        final int c = ((.ceylon.language.Character)(.java.lang.Object)((.ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>)(.ceylon.language.Tuple).ceylon.language.String.<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, "abc", .ceylon.language.Character.instance(100))).getFirst()).intValue();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
