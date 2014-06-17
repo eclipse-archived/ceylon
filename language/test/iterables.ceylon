@@ -90,7 +90,7 @@ shared void testIterables() {
     check(myEmpty.skip(1).sequence()=={}, "empty.skip");
     check(myEmpty.take(1).sequence()=={}, "empty.take");
 
-    Integer[] vacio = {};
+    Integer[] vacio = [];
     check(vacio.map((Integer i) => i).empty, "empty.map");
     check(vacio.filter((Integer i) => true).empty, "empty.filter");
     check(!vacio.find((Integer i) => i>5) exists, "find 3");

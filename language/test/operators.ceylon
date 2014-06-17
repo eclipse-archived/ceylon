@@ -41,7 +41,7 @@ shared void operators() {
     //check(!maybeNot?[0] exists, "?[]");
     //check(!maybeNot?[10] exists, "?[]");
 
-    String[] empty = {};
+    String[] empty = [];
     String[] full = [ "hello", "world" ];
     check(!empty*.uppercased nonempty, "spread 1");
     check(full*.uppercased nonempty, "spread 2");
@@ -92,7 +92,7 @@ shared void operators() {
     check("hello" in "hello world", "in 1");
     check("world" in "hello world", "in 2");
 
-    Correspondence<Integer, String> c1 = {};
+    Correspondence<Integer, String> c1 = [];
     check(!c1[0] exists, "empty correspondence");
     
     Ranged<Integer,String,String[]> sequence = ["foo", "bar"];

@@ -18,8 +18,8 @@ shared void lists() {
     value b = LazyList({1,2,3,4,5,6,7,8});
     check(LazyList({}).size==0, "empty LazyList()");
     //withLeading
-    check({}.withLeading("A")=={"A"}.sequence(), "Empty.withLeading(A)");
-    check({}.withLeading("foo").size==1, "{}.withLeading.size");
+    check([].withLeading("A")=={"A"}.sequence(), "Empty.withLeading(A)");
+    check([].withLeading("foo").size==1, "{}.withLeading.size");
     check(Array{}.withLeading(1)=={1}.sequence(), "empty array.withLeading(1)");
     check(Array{1,2}.withLeading("A")=={"A",1,2}.sequence(), "Array.withLeading(a)`` Array{1,2}.withLeading("A") ``");
     check([1,2].withLeading("a")=={"a",1,2}.sequence(), "Sequence.withLeading(a)`` [1,2].withLeading("a") ``");
@@ -34,8 +34,8 @@ shared void lists() {
     check(b[1...]==b.rest, "LazyList[1...]");
 
     //withTrailing
-    check({}.withTrailing("A")=={"A"}.sequence(), "Empty.withTrailing(A)");
-    check({}.withTrailing("foo").size==1, "{}.withTrailing.size");
+    check([].withTrailing("A")=={"A"}.sequence(), "Empty.withTrailing(A)");
+    check([].withTrailing("foo").size==1, "{}.withTrailing.size");
     check(Array{}.withTrailing(1)=={1}.sequence(), "empty array.withTrailing(1)");
     check(Array{1,2}.withTrailing("A")=={1,2,"A"}.sequence(), "Array.withTrailing(a)");
     check([1,2].withTrailing("a")=={1,2,"a"}.sequence(), "Sequence.withTrailing(a)");

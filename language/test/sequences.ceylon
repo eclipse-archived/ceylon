@@ -184,7 +184,7 @@ void test_exists_nonempty() {
     check(t2 == "no doesn\'t exist", "exists 2");
     value t3 = empties nonempty then "nonempty works" else "nonempty broken";
     check(t3 == "nonempty works", "nonempty 1");
-    Integer[] _t4 = {};
+    Integer[] _t4 = [];
     value t4 = _t4 nonempty then "nonempty is broken" else "works";
     check(t4 == "works", "nonempty 2");
 }

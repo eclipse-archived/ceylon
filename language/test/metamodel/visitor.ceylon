@@ -64,7 +64,7 @@ void visitSatisfiedTypes(InterfaceModel<Anything> type, Integer level){
     }
 }
 
-variable ClassOrInterfaceDeclaration[] queue = {};
+variable ClassOrInterfaceDeclaration[] queue = [];
 
 void emptyQueue(){
     while(nonempty q = queue){
