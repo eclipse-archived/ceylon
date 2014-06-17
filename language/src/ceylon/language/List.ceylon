@@ -262,7 +262,7 @@ shared interface List<out Element>
     "Returns a new `List` that starts with the specified
      [[element]], followed by the elements of this list,
      in the order they occur in this list."
-    see (`function following`)
+    see (`function follow`)
     shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)

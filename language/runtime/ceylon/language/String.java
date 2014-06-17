@@ -1914,18 +1914,18 @@ public final class String
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore 
     public <Other> Iterable 
-    following(@Ignore TypeDescriptor $reifiedOther, 
+    follow(@Ignore TypeDescriptor $reifiedOther, 
     		Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, 
+        return $ceylon$language$Iterable$this.follow($reifiedOther, 
         		other);
     }
     
     @Ignore
     @SuppressWarnings("rawtypes")
     public static <Other> Iterable 
-    following(@Ignore TypeDescriptor $reifiedOther, 
+    follow(@Ignore TypeDescriptor $reifiedOther, 
     		java.lang.String value, Other other) {
-        return instance(value).following($reifiedOther, other);    
+        return instance(value).follow($reifiedOther, other);    
     }
     
     @Override @Ignore

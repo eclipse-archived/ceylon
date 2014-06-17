@@ -605,7 +605,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream."
-    shared default {Element|Other+} following<Other>(Other head) {
+    shared default {Element|Other+} follow<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
         object cons satisfies {Element|Other+} {
             shared actual Iterator<Element|Other> iterator() {

@@ -188,11 +188,11 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
     }
 
     @Override
-    public <Other> Iterable<? extends Object, ? extends Object> following(
+    public <Other> Iterable<? extends Object, ? extends Object> follow(
             @Ignore
             TypeDescriptor $reified$Other, 
             Other head) {
-        return $ceylon$language$Iterable$this.following($reified$Other, head);
+        return $ceylon$language$Iterable$this.follow($reified$Other, head);
     }
 
     @Override

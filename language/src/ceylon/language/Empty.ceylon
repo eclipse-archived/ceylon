@@ -164,7 +164,7 @@ shared interface Empty of e
     shared actual [Other*] append<Other>({Other*} elements) 
             => [*elements];
     
-    shared actual {Other+} following<Other>(Other head) 
+    shared actual {Other+} follow<Other>(Other head) 
             => { head };
     
     shared actual List<Other> extend<Other>(List<Other> list)

@@ -178,6 +178,6 @@ shared class Singleton<out Element>(Element element)
     shared actual {Element|Other+}
             chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null 
-            => other.following(element);
+            => other.follow(element);
     
 }

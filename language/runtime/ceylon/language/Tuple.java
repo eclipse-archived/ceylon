@@ -880,8 +880,8 @@ public final class Tuple<Element, First extends Element,
     }
     @Override @Ignore 
     public <Other> Iterable
-    following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, other);
+    follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.follow($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> 
