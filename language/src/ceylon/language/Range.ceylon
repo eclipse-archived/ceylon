@@ -281,7 +281,7 @@ shared final class Range<Element>(first, last)
             if (is Element start = sublist.first) {
                 if (decreasing
                         then start>first || start<last
-                        else start<first || start<last) {
+                        else start<first || start>last) {
                     return false;
                 }
                 variable value current=start;
@@ -299,7 +299,9 @@ shared final class Range<Element>(first, last)
                         return false;
                     }
                 }
-                return false;
+                else {
+                    return true;
+                }
             }
             else {
                 return false;
