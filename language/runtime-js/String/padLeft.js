@@ -1,3 +1,4 @@
 function(size, character) {
-  return Array(size-this.length+1).join(character||" ")+this;
+  var c=(character||' ').string;
+  return Array(size-this.length+1).join(c)+this;
 }
