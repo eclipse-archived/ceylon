@@ -34,6 +34,7 @@ public abstract class Declaration
     private String qualifiedNameAsStringCache;
 	private boolean nat;
 	private boolean otherInstanceAccess;
+    private DeclarationCompleter actualCompleter;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -115,6 +116,9 @@ public abstract class Declaration
     }
 
     public boolean isActual() {
+        if(actualCompleter != null){
+            completeActual();
+        }
         return actual;
     }
 
@@ -147,9 +151,18 @@ public abstract class Declaration
     }
     
     public Declaration getRefinedDeclaration() {
+        if(actualCompleter != null){
+            completeActual();
+        }
 		return refinedDeclaration;
 	}
     
+    private void completeActual() {
+        DeclarationCompleter completer = actualCompleter;
+        actualCompleter = null;
+        completer.completeActual(this);
+    }
+
     public void setRefinedDeclaration(Declaration refinedDeclaration) {
 		this.refinedDeclaration = refinedDeclaration;
 	}
@@ -416,5 +429,13 @@ public abstract class Declaration
 
     public boolean sameKind(Declaration m) {
         return m!=null && m.getModelClass()==getModelClass();
+    }
+
+    public DeclarationCompleter getActualCompleter() {
+        return actualCompleter;
+    }
+
+    public void setActualCompleter(DeclarationCompleter actualCompleter) {
+        this.actualCompleter = actualCompleter;
     }
 }
