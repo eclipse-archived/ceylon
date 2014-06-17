@@ -1906,19 +1906,4 @@ public final class Array<Element>
         Collections.<Element>sort(list, comparator);
     }
     
-//    @TypeInfo("ceylon.language::Array<Element&Object>")
-//    public Array<Element> coalescedArray() {
-//    	int resultSize = 0;
-//    	long size = getSize();
-//		for (int i=0; i<size; i++) {
-//    		if (unsafeItem(i)!=null) {
-//    			resultSize++;
-//    		}
-//    	}
-//        java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
-//        if (arrayElementClass==int.class) {
-//        	
-//        }
-//    }
-    
 }
