@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -206,7 +207,7 @@ public class CallBuilder {
                     throw Assert.fail(MISSING_TYPE);
                 }
                 SyntheticName qualName = getQualifierName(basename);
-                appendStatement(gen.makeVar(qualName, 
+                appendStatement(gen.makeVar(Flags.FINAL, qualName, 
                         instantiateQualfier.type, 
                         instantiateQualfier.expression));
                 newEncl = qualName.makeIdent();
@@ -221,7 +222,7 @@ public class CallBuilder {
                     throw Assert.fail(MISSING_TYPE);
                 }
                 if ((cbOpts & CB_ALIAS_ARGS) != 0) {
-                    appendStatement(gen.makeVar(name, 
+                    appendStatement(gen.makeVar(Flags.FINAL, name, 
                             argumentAndType.type, 
                             argumentAndType.expression));
                 }

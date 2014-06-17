@@ -114,6 +114,7 @@ public class Naming implements LocalId {
         $annotation$,
         $annotations$,
         $arg$,
+        $argthis$,
         $callable$,
         $canonical$,
         $element$,
@@ -132,8 +133,7 @@ public class Naming implements LocalId {
         $setter$,
         $specifier$,
         $this$,
-        $argthis$,
-        $variadic$
+        $variadic$, 
     }
     
     /**

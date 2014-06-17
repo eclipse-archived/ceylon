@@ -82,10 +82,12 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.LetExpr;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
@@ -3541,32 +3543,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // this holds the whole spread operation
         Naming.SyntheticName varBaseName = naming.alias("spread");
-        
-        // reset back here after transformExpression
-        at(expr);
-
-        // iterable
+        ListBuffer<JCStatement> letStmts = ListBuffer.<JCStatement>lb();
         Naming.SyntheticName srcIterableName = varBaseName.suffixedBy(Suffix.$iterable$);
-        // make sure we get an Iterable<T> where T is the type we're going to invoke the member on, because
-        // we might have a sequence of something erased to Object, like A&B, and we only invoke the member on A
-        // which is not erased, so let's not even look at the contents of the sequence, but just the target type
+        Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy(Suffix.$iterator$);
         ProducedType srcElementType = expr.getTarget().getQualifyingType();
         JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
         JCExpression srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
-
-        // sequenceBuilder
-        Naming.SyntheticName builderVar = varBaseName.suffixedBy(Suffix.$sb$);
-        ProducedType returnElementType = expr.getTarget().getType();
+        JCVariableDecl srcIterable = makeVar(Flags.FINAL, srcIterableName, srcIterableTypeExpr, srcIterableExpr);
+        ProducedType resultElementType = expr.getTarget().getType();
+        ProducedType resultAbsentType = typeFact().getIteratedAbsentType(expr.getPrimary().getTypeModel());
         
-        JCExpression builderInitExpr = make().NewClass(null, List.<JCExpression>nil(), makeSequenceBuilderType(returnElementType), 
-                List.<JCExpression>of(makeReifiedTypeArgument(returnElementType)), null);
-
-        // element.member
-        final SyntheticName elementVar = varBaseName.suffixedBy(Suffix.$element$);
-        JCExpression elementExpr = elementVar.makeIdent();
-        elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr.getPrimary()),
-                true, BoxingStrategy.BOXED, 
-                srcElementType, 0);
+        // private Iterator<srcElementType> iterator = srcIterableName.iterator();
+        JCVariableDecl srcIterator = makeVar(Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getIteratorType(srcElementType)), 
+                make().Apply(null,
+                        naming.makeQualIdent(srcIterableName.makeIdent(), "iterator"),
+                        List.<JCExpression>nil()));
+        
+        Naming.SyntheticName iteratorResultName = varBaseName.suffixedBy(Suffix.$element$);
+        /* public Object next() {
+         *     Object result;
+         *     if (!((result = iterator.next()) instanceof Finished)) {
+         *         result = transformedMember(result);
+         *     }
+         *     return result;
+         */
+        
+        /* Any arguments in the member of the spread would get re-evaluated on each iteration
+         * so we need to shift them to the scope of the Let to ensure they're evaluated once. 
+         */
         boolean aliasArguments = (transformer instanceof InvocationTermTransformer)
                 && ((InvocationTermTransformer)transformer).invocation.getNode() instanceof Tree.InvocationExpression
                 && ((Tree.InvocationExpression)((InvocationTermTransformer)transformer).invocation.getNode()).getPositionalArgumentList() != null;
@@ -3574,76 +3578,92 @@ public class ExpressionTransformer extends AbstractTransformer {
             ((InvocationTermTransformer)transformer).callBuilder.argumentHandling(
                     CallBuilder.CB_ALIAS_ARGS, varBaseName);
         }
-        JCExpression appliedExpr = transformMemberExpression(expr, elementExpr, transformer);
         
-        // This short-circuit is here for spread invocations
-        // The code has been called recursively and the part after this if-statement will
-        // be handled by the previous recursion
-        if (isFunctionalResult(expr.getTypeModel())) {
-            return appliedExpr;
+        JCNewClass iterableClass;
+        boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+        try {
+            JCExpression transformedElement = applyErasureAndBoxing(iteratorResultName.makeIdent(), typeFact().getAnythingDeclaration().getType(), CodegenUtil.hasTypeErased(expr.getPrimary()),
+                    true, BoxingStrategy.BOXED, 
+                    srcElementType, 0);
+            transformedElement = transformMemberExpression(expr, transformedElement, transformer);
+            
+            // This short-circuit is here for spread invocations
+            // The code has been called recursively and the part after this if-statement will
+            // be handled by the previous recursion
+            if (isFunctionalResult(expr.getTypeModel())) {
+                return transformedElement;
+            }
+            
+            transformedElement = applyErasureAndBoxing(transformedElement, resultElementType, 
+                    // don't trust the erased flag of expr, as it reflects the result type of the overall spread expr,
+                    // not necessarily of the applied member
+                    CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration()), 
+                    !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, resultElementType, 0);
+            
+            MethodDefinitionBuilder nextMdb = MethodDefinitionBuilder.systemMethod(this, "next");
+            nextMdb.isOverride(true);
+            nextMdb.annotationFlags(Annotations.IGNORE);
+            nextMdb.modifiers(Flags.PUBLIC | Flags.FINAL);
+            nextMdb.resultType(null, make().Type(syms().objectType));
+            nextMdb.body(List.of(
+                    makeVar(iteratorResultName, 
+                        make().Type(syms().objectType), null),
+                    make().If(
+                            make().Unary(JCTree.NOT, 
+                            make().TypeTest(make().Assign(
+                                    iteratorResultName.makeIdent(), 
+                                    make().Apply(null,
+                                            naming.makeQualIdent(srcIteratorName.makeIdent(), "next"),
+                                            List.<JCExpression>nil())), 
+                                    make().Type(syms().ceylonFinishedType))), 
+                            make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(iteratorResultName.makeIdent(), 
+                                    transformedElement)))), 
+                            null),
+                    make().Return(iteratorResultName.makeIdent())));
+            JCMethodDecl nextMethod = nextMdb.build();
+            
+            // new AbstractIterator()
+            JCNewClass iteratorClass = make().NewClass(null, 
+                    null, 
+                    make().TypeApply(make().QualIdent(syms().ceylonAbstractIteratorType.tsym),
+                            List.of(makeJavaType(resultElementType, JT_TYPE_ARGUMENT))),
+                    List.of(makeReifiedTypeArgument(resultElementType)),
+                    make().AnonymousClassDef(make().Modifiers(0), List.of(srcIterator, nextMethod)));
+                    
+            MethodDefinitionBuilder iteratorMdb = MethodDefinitionBuilder.systemMethod(this, "iterator");
+            iteratorMdb.isOverride(true);
+            iteratorMdb.annotationFlags(Annotations.IGNORE);
+            iteratorMdb.modifiers(Flags.PUBLIC | Flags.FINAL);
+            iteratorMdb.resultType(null, makeJavaType(typeFact().getIteratorType(resultElementType))); 
+            iteratorMdb.body(make().Return(iteratorClass));
+                    
+            // new AbstractIterable()
+            iterableClass = make().NewClass(null, 
+                    null, 
+                    make().TypeApply(make().QualIdent(syms().ceylonAbstractIterableType.tsym),
+                            List.of(makeJavaType(resultElementType, JT_TYPE_ARGUMENT), makeJavaType(resultAbsentType, JT_TYPE_ARGUMENT))),
+                    List.of(makeReifiedTypeArgument(resultElementType), makeReifiedTypeArgument(resultAbsentType)), 
+                    make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(iteratorMdb.build())));
+        } finally {
+            expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         }
         
-        // reset back here after transformMemberExpression
-        at(expr);
-        
-        // SRC_ELEMENT_TYPE element = (SRC_ELEMENT_TYPE)iteration;
-        final SyntheticName iterationVar = varBaseName.suffixedBy(Suffix.$iteration$);
-        JCExpression iteration = iterationVar.makeIdent();
-        if (!willEraseToObject(srcElementType)) {
-            iteration = make().TypeCast(makeJavaType(srcElementType, JT_NO_PRIMITIVES), 
-                    iteration);
-        }
-        JCVariableDecl elementVarDecl = makeVar(elementVar, 
-                makeJavaType(srcElementType, JT_NO_PRIMITIVES), 
-                iteration);
-        
-        // we always need to box to put in SequenceBuilder
-        appliedExpr = applyErasureAndBoxing(appliedExpr, returnElementType, 
-                // don't trust the erased flag of expr, as it reflects the result type of the overall spread expr,
-                // not necessarily of the applied member
-                CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration()), 
-                !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, returnElementType, 0);
-        // sequenceBuilder.append(APPLIED_EXPR)
-        JCStatement body = make().Exec(make().Apply(List.<JCExpression>nil(), 
-                naming.makeQualIdent(builderVar.makeIdent(), "append"), 
-                List.<JCExpression>of(appliedExpr)));
-        
-        // The for loop
-        final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy(Suffix.$iterator$);
-        backwardBranch(expr);
-        List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
-                null,
-                iterationVar, srcIteratorName, 
-                expr.getTarget().getType(), srcElementType, 
-                srcIterableName.makeIdent(), 
-                List.<JCStatement>of(elementVarDecl), 
-                List.<JCStatement>of(body), 
-                true, true);
-        
-        // build the whole spread operation
-        List<JCStatement> stmts = List.<JCStatement>of(
-                makeVar(srcIterableName, srcIterableTypeExpr, srcIterableExpr),
-                makeVar(builderVar, makeSequenceBuilderType(returnElementType), builderInitExpr));
         if (aliasArguments) {
-            stmts = stmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getStatements());
+            letStmts = letStmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getStatements());
         }
         
-        stmts = stmts.appendList(forStmt);
-        JCExpression spread = make().LetExpr(stmts, 
-                make().Apply(
-                        List.<JCExpression>nil(), 
-                        naming.makeQualIdent(builderVar.makeIdent(), "sequence"), 
-                        List.<JCExpression>nil()));
+        JCExpression spread = make().LetExpr(letStmts.prepend(srcIterable).toList(), make().Apply(null, 
+                naming.makeQualIdent(iterableClass, "sequence"),
+                List.<JCExpression>nil()));
         
         // Do we *statically* know the result must be a Sequence 
         final boolean primaryIsSequence = expr.getPrimary().getTypeModel().isSubtypeOf(
                 typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType());
-        
-        // if we want a Sequence and SequenceBuilder returns a Sequential, we need to force the downcast
+        ProducedType returnElementType = expr.getTarget().getType();
         if(primaryIsSequence){
             int flags = EXPR_DOWN_CAST;
             spread = applyErasureAndBoxing(spread, 
-                    typeFact().getSequentialType(returnElementType),// the type of SequenceBuilder.getSequence();
+                    typeFact().getSequentialType(returnElementType),
                     false,
                     true,
                     BoxingStrategy.BOXED, 
@@ -3652,8 +3672,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             : typeFact().getSequentialType(returnElementType),
                             flags);
         }
-        
         return spread;
+        
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
