@@ -1,4 +1,4 @@
-function $init$native$Throwable$before(exc) {
+function(msg,cause,exc) {
   var _caller=arguments.callee.caller.caller;
   exc.stack_trace=[];
   var ilc=0;
