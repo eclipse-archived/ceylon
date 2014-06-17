@@ -1412,6 +1412,12 @@ public final class Array<Element>
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other> Sequential 
+    prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
+        return $ceylon$language$List$this.prepend($reifiedOther, e);
+    }
+
+    @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> List
     extend(@Ignore TypeDescriptor $reifiedOther, List<? extends Other> e) {
         return $ceylon$language$List$this.extend($reifiedOther, e);

@@ -76,11 +76,25 @@ shared interface Sequence<out Element>
         return s;
     }
     
+    "Return a nonempty sequence containing the given 
+     [[elements]], followed by the elements of this 
+     sequence."
+    shared actual default [Other,Element+]
+    withLeading<Other>(Other element)
+            => [element, *this];
+    
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
-    shared actual default [Element|Other+] append<Other>({Other*} elements) 
-            => [*(this chain elements)];
-        
+    shared actual default [Element,Element|Other*]
+    append<Other>({Other*} elements)
+            => [first, *(rest chain elements)];
+    
+    "Return a nonempty sequence containing the elements of 
+     this sequence, followed by the given [[elements]]."
+    shared actual default [Element|Other+]
+    prepend<Other>({Other*} elements)
+            => [*(elements chain this)];
+    
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
     

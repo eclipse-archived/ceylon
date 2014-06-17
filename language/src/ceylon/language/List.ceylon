@@ -278,13 +278,20 @@ shared interface List<out Element>
     
     "Return a sequence containing the elements of this list, 
      in the order in which they occur in this list, followed 
-     by the given [[elements]] in the order in which they 
+     by the given [[elements]], in the order in which they 
      occur in the given stream."
     see (`function extend`, 
          `function chain`,
          `function concatenate`)
     shared default [Element|Other*] append<Other>({Other*} elements) 
             => [*(this chain elements)];
+    
+    "Return a sequence containing the given [[elements]], in 
+     the order in which they occur in the given stream,
+     followed by the elements of this list, in the order in 
+     which they occur in this list."
+    shared default [Element|Other*] prepend<Other>({Other*} elements) 
+            => [*(elements chain this)];
     
     "Return a list formed by extending this list with the 
      elements of the given [[list]]. This is a lazy operation

@@ -421,10 +421,8 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
     public final <Other>Tuple 
     withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
-        return new Tuple(
-                $reifiedOther, 
-                $reifiedOther, $reifiedOther, 
-                e, this);
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther),
+                new java.lang.Object[]{e}, this);
     }
     
     @Ignore
@@ -910,10 +908,22 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequential<Element|Other>>")
+    public <Other> Tuple
+    append(@Ignore TypeDescriptor $reifiedOther, @Name("elements") Iterable<? extends Other, ?> es) {
+        return new Tuple(TypeDescriptor.union($reifiedElement, $reifiedOther), 
+        		new java.lang.Object[] {getFirst()}, getRest().append($reifiedOther, es));
+    }
+
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequence
-    append(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> e) {
-        return $ceylon$language$Sequence$this.append($reifiedOther, e);
+    prepend(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> es) {
+        return $ceylon$language$Sequence$this.prepend($reifiedOther, es);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
