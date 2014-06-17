@@ -761,7 +761,7 @@
             
             <synopsis>TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)</synopsis>
             
-            <synopsis>DefaultedType: EntryType "="?</synopsis>
+            <synopsis>DefaultedType: Type "="?</synopsis>
             
             <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
             
