@@ -99,30 +99,50 @@ final class erasureCasting_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings = (
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ? extends .java.lang.Object> spread$11$iterable$ = sequenceOfErasedMethod;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$11$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-                .java.lang.Object spread$11$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> spread$11$iterator$ = spread$11$iterable$.iterator();
-                while (!((spread$11$iteration$ = spread$11$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String> spread$11$element$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>)spread$11$iteration$;
-                    spread$11$sb$.append((.ceylon.language.String)spread$11$element$.t());
-                }
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ? extends .java.lang.Object> spread$11$iterable$ = sequenceOfErasedMethod;
             }
-            returning spread$11$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> spread$11$iterator$ = spread$11$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$11$element$;
+                            if (!((spread$11$element$ = spread$11$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$11$element$ = (.ceylon.language.String)((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString)spread$11$element$).t();
+                            }
+                            return spread$11$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyIntegerSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$12$iterable$ = nonEmptyStringSequence;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$12$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$12$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$12$iterator$ = spread$12$iterable$.iterator();
-                while (!((spread$12$iteration$ = spread$12$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$12$element$ = (.ceylon.language.String)spread$12$iteration$;
-                    spread$12$sb$.append(.ceylon.language.Integer.instance(spread$12$element$.getSize()));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$12$iterable$ = nonEmptyStringSequence;
             }
-            returning spread$12$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$12$iterator$ = spread$12$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$12$element$;
+                            if (!((spread$12$element$ = spread$12$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$12$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$12$element$).getSize());
+                            }
+                            return spread$12$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         .java.lang.Object elem$13;
         .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence).iterator();
@@ -132,16 +152,26 @@ final class erasureCasting_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$15$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$15$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$15$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> spread$15$iterator$ = spread$15$iterable$.iterator();
-                while (!((spread$15$iteration$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A spread$15$element$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)spread$15$iteration$;
-                    spread$15$sb$.append(.ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)spread$15$element$).$int()));
-                }
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$15$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
             }
-            returning spread$15$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> spread$15$iterator$ = spread$15$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$15$element$;
+                            if (!((spread$15$element$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$15$element$ = .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)spread$15$element$).$int());
+                            }
+                            return spread$15$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>>>>> t = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.Integer, .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.Character.$TypeDescriptor$)), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),

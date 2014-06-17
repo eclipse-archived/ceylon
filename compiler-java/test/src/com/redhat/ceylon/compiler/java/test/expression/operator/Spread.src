@@ -9,94 +9,154 @@ final class spread_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ini1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$0$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$0$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
-                while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$0$element$ = (.ceylon.language.String)spread$0$iteration$;
-                    spread$0$sb$.append(.ceylon.language.Integer.instance(spread$0$element$.getSize()));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
             }
-            returning spread$0$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$0$element$).getSize());
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = seq;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-                .java.lang.String spread$1$arg$0 = x;
-                .java.lang.String spread$1$arg$1 = x;
-                .java.lang.Object spread$1$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator();
-                while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$1$element$ = (.ceylon.language.String)spread$1$iteration$;
-                    spread$1$sb$.append(.ceylon.language.String.instance(spread$1$element$.replace(spread$1$arg$0, spread$1$arg$1)));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = seq;
+                final .java.lang.String spread$1$arg$0 = x;
+                final .java.lang.String spread$1$arg$1 = x;
             }
-            returning spread$1$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$1$element$;
+                            if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$1$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$1$element$).replace(spread$1$arg$0, spread$1$arg$1));
+                            }
+                            return spread$1$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq2 = seq;
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini3 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$2$iterable$ = seq2;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$2$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
-                while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$2$element$ = (.ceylon.language.String)spread$2$iteration$;
-                    spread$2$sb$.append(.ceylon.language.Integer.instance(spread$2$element$.getSize()));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$2$iterable$ = seq2;
             }
-            returning spread$2$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$2$element$;
+                            if (!((spread$2$element$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$2$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$2$element$).getSize());
+                            }
+                            return spread$2$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> ini4 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$3$iterable$ = seq2;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$3$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-                .java.lang.String spread$3$arg$0 = x;
-                .java.lang.String spread$3$arg$1 = x;
-                .java.lang.Object spread$3$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator();
-                while (!((spread$3$iteration$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$3$element$ = (.ceylon.language.String)spread$3$iteration$;
-                    spread$3$sb$.append(.ceylon.language.String.instance(spread$3$element$.replace(spread$3$arg$0, spread$3$arg$1)));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$3$iterable$ = seq2;
+                final .java.lang.String spread$3$arg$0 = x;
+                final .java.lang.String spread$3$arg$1 = x;
             }
-            returning spread$3$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$3$element$;
+                            if (!((spread$3$element$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$3$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$3$element$).replace(spread$3$arg$0, spread$3$arg$1));
+                            }
+                            return spread$3$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.List<? extends .ceylon.language.String> seq3 = seq;
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini5 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$4$iterable$ = seq3;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$4$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$4$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator();
-                while (!((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$4$element$ = (.ceylon.language.String)spread$4$iteration$;
-                    spread$4$sb$.append(.ceylon.language.Integer.instance(spread$4$element$.getSize()));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$4$iterable$ = seq3;
             }
-            returning spread$4$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$4$element$;
+                            if (!((spread$4$element$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$4$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$4$element$).getSize());
+                            }
+                            return spread$4$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> ini6 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = seq3;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-                .java.lang.String spread$5$arg$0 = x;
-                .java.lang.String spread$5$arg$1 = x;
-                .java.lang.Object spread$5$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
-                while (!((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$5$element$ = (.ceylon.language.String)spread$5$iteration$;
-                    spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.replace(spread$5$arg$0, spread$5$arg$1)));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = seq3;
+                final .java.lang.String spread$5$arg$0 = x;
+                final .java.lang.String spread$5$arg$1 = x;
             }
-            returning spread$5$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$5$element$;
+                            if (!((spread$5$element$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$5$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$5$element$).replace(spread$5$arg$0, spread$5$arg$1));
+                            }
+                            return spread$5$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
     }
 }

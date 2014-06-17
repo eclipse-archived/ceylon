@@ -519,53 +519,83 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$48$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$48$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
-                .java.lang.Object spread$48$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$48$iterator$ = spread$48$iterable$.iterator();
-                while (!((spread$48$iteration$ = spread$48$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$48$element$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$48$iteration$;
-                    spread$48$sb$.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$48$element$).getLeftAndRightAttribute());
-                }
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$48$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
             }
-            returning spread$48$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$48$iterator$ = spread$48$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$48$element$;
+                            if (!((spread$48$element$ = spread$48$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$48$element$ = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$48$element$).getLeftAndRightAttribute();
+                            }
+                            return spread$48$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         .ceylon.language.Sequential spreadInvocation = null;
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$49$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$49$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
-                .java.lang.Object spread$49$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-                .java.lang.Object spread$49$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$49$iterator$ = spread$49$iterable$.iterator();
-                while (!((spread$49$iteration$ = spread$49$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$49$element$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$49$iteration$;
-                    spread$49$sb$.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$49$element$).leftAndRightMethod(spread$49$arg$0));
-                }
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$49$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+                final .java.lang.Object spread$49$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
             }
-            returning spread$49$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$49$iterator$ = spread$49$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$49$element$;
+                            if (!((spread$49$element$ = spread$49$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$49$element$ = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$49$element$).leftAndRightMethod(spread$49$arg$0);
+                            }
+                            return spread$49$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$51$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.impl.SequenceBuilder<.java.lang.Object> spread$51$sb$ = new .ceylon.language.impl.SequenceBuilder<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$));
-                .java.lang.Object spread$51$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$51$iterator$ = spread$51$iterable$.iterator();
-                while (!((spread$51$iteration$ = spread$51$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$51$element$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$51$iteration$;
-                    spread$51$sb$.append((
-                        let
-                        {
-                            .com.redhat.ceylon.compiler.java.test.expression.erasure.Top arg$50$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$51$element$;
-                            .java.lang.Object arg$50$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-                        }
-                        returning arg$50$callable$.leftAndRightMethod(arg$50$0);
-                    ));
-                }
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$51$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
             }
-            returning spread$51$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$51$iterator$ = spread$51$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$51$element$;
+                            if (!((spread$51$element$ = spread$51$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$51$element$ = (
+                                    let
+                                    {
+                                        .com.redhat.ceylon.compiler.java.test.expression.erasure.Top arg$50$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$51$element$;
+                                        .java.lang.Object arg$50$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                                    }
+                                    returning arg$50$callable$.leftAndRightMethod(arg$50$0);
+                                );
+                            }
+                            return spread$51$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
     }
     

@@ -755,16 +755,26 @@ final class bug708extra4_ {
             value = new .ceylon.language.Sequential[]{(
                 let
                 {
-                    .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$19$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();
-                    .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$19$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$));
-                    .java.lang.Object spread$19$iteration$;
-                    .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> spread$19$iterator$ = spread$19$iterable$.iterator();
-                    while (!((spread$19$iteration$ = spread$19$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> spread$19$element$ = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)spread$19$iteration$;
-                        spread$19$sb$.append((.ceylon.language.String)spread$19$element$.test());
-                    }
+                    final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$19$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();
                 }
-                returning spread$19$sb$.sequence();
+                returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                    
+                    @.java.lang.Override
+                    public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$)){
+                            final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> spread$19$iterator$ = spread$19$iterable$.iterator();
+                            
+                            @.java.lang.Override
+                            public final .java.lang.Object next() {
+                                .java.lang.Object spread$19$element$;
+                                if (!((spread$19$element$ = spread$19$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                    spread$19$element$ = (.ceylon.language.String)((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708)spread$19$element$).test();
+                                }
+                                return spread$19$element$;
+                            }
+                        };
+                    }
+                }.sequence();
             )};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {

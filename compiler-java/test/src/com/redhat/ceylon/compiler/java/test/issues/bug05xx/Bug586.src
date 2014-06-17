@@ -10,16 +10,26 @@ final class bug586_ {
         final .ceylon.language.String s = (.ceylon.language.String)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.String> spread$0$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-                .java.lang.Object spread$0$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
-                while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.String spread$0$element$ = (.ceylon.language.String)spread$0$iteration$;
-                    spread$0$sb$.append(.ceylon.language.String.instance(spread$0$element$.toString()));
-                }
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
             }
-            returning spread$0$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$0$element$).toString());
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
         ).getFirst();
     }
     

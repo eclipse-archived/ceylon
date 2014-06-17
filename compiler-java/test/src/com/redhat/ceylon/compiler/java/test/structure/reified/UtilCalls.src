@@ -161,7 +161,7 @@ public final class utilCalls_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ignore1 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$2$iterable$ = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$2$iterable$ = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -176,15 +176,27 @@ public final class utilCalls_ {
                         }
                     }
                 };
-                .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.impl.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-                .java.lang.Object spread$2$iteration$;
-                .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator();
-                while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .ceylon.language.Integer spread$2$element$ = (.ceylon.language.Integer)spread$2$iteration$;
-                    spread$2$sb$.append(spread$2$element$.getWholePart());
-                }
             }
-            returning spread$2$sb$.sequence();
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$2$element$;
+                            if (!((spread$2$element$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$2$element$ = ((.ceylon.language.Integer)spread$2$element$).getWholePart();
+                            }
+                            return spread$2$element$;
+                        }
+                    };
+                }
+            }.sequence();
         );
         .com.redhat.ceylon.compiler.java.test.structure.reified.variadicMethod_.variadicMethod(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }
