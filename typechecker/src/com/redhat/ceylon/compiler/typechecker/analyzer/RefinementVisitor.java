@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -1079,6 +1080,8 @@ public class RefinementVisitor extends Visitor {
         v.setName(sv.getName());
         v.setShared(true);
         v.setActual(true);
+        v.getAnnotations().add(new Annotation("shared"));
+        v.getAnnotations().add(new Annotation("actual"));
         v.setRefinedDeclaration(sv.getRefinedDeclaration());
         v.setUnit(that.getUnit());
         v.setContainer(c);
@@ -1176,6 +1179,8 @@ public class RefinementVisitor extends Visitor {
         }
         m.setShared(true);
         m.setActual(true);
+        m.getAnnotations().add(new Annotation("shared"));
+        m.getAnnotations().add(new Annotation("actual"));
         m.setRefinedDeclaration(sm.getRefinedDeclaration());
         m.setUnit(that.getUnit());
         m.setContainer(c);
