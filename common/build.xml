@@ -88,11 +88,7 @@
         <delete dir="${ceylon.common.repo}" />
     </target>
 
-	<target name="ide-quick-internal">
-        <copy overwrite="true"
-            file="${build.dist.repo}/${ceylon.common.jar}"
-            tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
-    </target>
+	<target name="ide-quick-internal"/>
 
     <target name="dist" depends="build">
         <antcall target="sha1sum">
