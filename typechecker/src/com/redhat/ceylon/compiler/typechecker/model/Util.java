@@ -232,8 +232,6 @@ public class Util {
         }
         ProducedType defParamType = unit.getDefiniteType(paramType);
         ProducedType defArgType = unit.getDefiniteType(argType);
-        ProducedType ast = defArgType.getSupertype(unit.getArrayDeclaration());
-        if (ast!=null) defArgType = ast;
         if (defArgType.isSubtypeOf(unit.getNullDeclaration().getType())) {
             return true;
         }
