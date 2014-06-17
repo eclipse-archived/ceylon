@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -67,6 +66,7 @@ public class MetamodelGenerator {
     public static final String METATYPE_PARAMETER       = "prm";
 
     private final Map<String, Object> model = new HashMap<>();
+    private static final Map<String,Object> unknownTypeMap = new HashMap<>();
     private final Module module;
 
     public MetamodelGenerator(Module module) {
@@ -93,6 +93,9 @@ public class MetamodelGenerator {
                 }
             }
             model.put("$mod-deps", imps);
+        }
+        if (unknownTypeMap.isEmpty()) {
+            unknownTypeMap.put(KEY_NAME, "$U");
         }
     }
 
@@ -131,7 +134,7 @@ public class MetamodelGenerator {
      * the list of types that compose it. */
     private Map<String, Object> typeMap(ProducedType pt, Declaration from) {
         if (pt==null) {
-            pt = new UnknownType(module.getUnit()).getType();
+            return unknownTypeMap;
         }
         TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<>();

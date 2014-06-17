@@ -702,6 +702,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 ((JsonPackage)td.getUnit().getPackage()).load(td.getName(), typeParams);
             }
         }
+        final String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
+        if ("$U".equals(tname)) {
+            m.put(MetamodelGenerator.KEY_METATYPE, unknown);
+            return unknown.getType();
+        }
         if (td == null && m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
             final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
@@ -724,7 +729,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 throw new IllegalArgumentException("Invalid composite type '" + m.get("comp") + "'");
             }
         } else if (td == null) {
-            final String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
             final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
                 //It's a ref to a type parameter
@@ -853,7 +857,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if ("Nothing".equals(name)) {
                 //Load Nothing from language module, regardless of what this package is
                 return nothing;
-            } else if ("unknown".equals(name)) {
+            } else if ("$U".equals(name)) {
                 return unknown;
             }
             throw new IllegalStateException("Cannot find " + pkgname + "::" + name + " in " + model.keySet());
