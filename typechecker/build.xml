@@ -364,6 +364,7 @@
                 srcdir="${src}:${gensrc}"
                 destdir="${build.classes}"
                 debug="true"
+                encoding="UTF-8"
                 classpath="${antlr.lib}">
             <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
         </javac>
@@ -387,6 +388,7 @@
                 srcdir="${src}:${gensrc}"
                 destdir="${build.classes}"
                 debug="true"
+                encoding="UTF-8"
                 classpathref="classpath">
             <include name="**/*.java"/>
         </javac>
