@@ -29,7 +29,7 @@ dynamic f366_3() {
   }
 }
 
-shared void issues() {
+void issue350() {
     Kid350 i350;
     dynamic {
       i350 = Kid350(value {a=1;b="2";});
@@ -38,6 +38,9 @@ shared void issues() {
       //Can leak, because the declaration is dynamic
       check(i350.nat.a == 1, "Issue 350");
     }
+}
+
+void issue366() {
     dynamic f1;
     dynamic {
         f1=f366_1();
@@ -61,4 +64,9 @@ shared void issues() {
     dynamic {
         check({1,2,*f366_3()}.sequence().size == 4, "Issue 366 #4");
     }
+}
+
+shared void issues() {
+    issue350();
+    issue366();
 }

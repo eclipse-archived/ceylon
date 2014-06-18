@@ -160,6 +160,7 @@ shared void test() {
       check(issue270.length==6, "dynamic spread #270 [2]");
     }
     issues();
+    testDynamicInterfaces();
     results();
 }
 
