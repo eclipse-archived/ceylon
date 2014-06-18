@@ -6,16 +6,16 @@ void avoidBackwardBranchWithVarargs_1() {
     {Character*} s = "Hello World";
     value x = join(s*.lowercase.string);
 }
-void avoidBackwardBranchWithVarargs_2(Character[] s={}) {
+void avoidBackwardBranchWithVarargs_2(Character[] s=[]) {
     avoidBackwardBranchWithVarargs(s*.integer);
 }
-void avoidBackwardBranchWithVarargs_3(List<Character> s={}) {
+void avoidBackwardBranchWithVarargs_3(List<Character> s=[]) {
     avoidBackwardBranchWithVarargs(s*.integer);
 }
-void avoidBackwardBranchWithVarargs_4(List<Character> s={}) {
+void avoidBackwardBranchWithVarargs_4(List<Character> s=[]) {
     avoidBackwardBranchWithVarargs(s*.integer*.string);
 }
-void avoidBackwardBranchWithVarargs_5(List<Character> s={}) {
+void avoidBackwardBranchWithVarargs_5(List<Character> s=[]) {
     avoidBackwardBranchWithVarargs(avoidBackwardBranchWithVarargs(s*.integer)*.string);
 }
 void avoidBackwardBranchWithVarargs_run() {

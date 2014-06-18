@@ -19,6 +19,6 @@
  */
 @noanno
 void bug586() {
-    String[] seq = {};
+    String[] seq = [];
     value s = seq*.string.first;
 }

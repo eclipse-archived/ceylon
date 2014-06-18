@@ -19,7 +19,7 @@
  */
 @noanno
 void callablePositionalInvocationSequencedComprehension(void foo(Integer* i), void bar(String a, Integer* i)) {
-    Integer[] em = {};
+    Integer[] em = [];
     foo(for (i in {1}) i);
     foo(for (i in em) i);
     bar("a", for (i in {1}) i);

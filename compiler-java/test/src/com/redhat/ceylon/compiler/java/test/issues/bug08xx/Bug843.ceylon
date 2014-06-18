@@ -30,6 +30,6 @@ class Bug843_2<out Rest>(rest)
 
 @noanno
 void bug843_test() {
-    Bug843_1<Integer, Empty>({});
-    Bug843_2<Empty>({});
+    Bug843_1<Integer, Empty>([]);
+    Bug843_2<Empty>([]);
 }

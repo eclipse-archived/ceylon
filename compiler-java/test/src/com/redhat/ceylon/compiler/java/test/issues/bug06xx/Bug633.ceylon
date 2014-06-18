@@ -37,5 +37,5 @@ void bug633(){
     Bug633EmptyImpl a = Bug633EmptyImpl();
     Bug633Empty b = Bug633EmptyImpl();
     Bug633Ranged<Integer, Integer> c = Bug633EmptyImpl();
-    Integer[] seq = {};
+    Integer[] seq = [];
 }

@@ -10,5 +10,5 @@ class AvoidBackwardBranchWithNew(Object[] arr){
 void avoidBackwardBranchWithNew_run() {
     // we don't actually have to run it, we just need to trigger bytecode 
     // verification
-    AvoidBackwardBranchWithNew({}).test();
+    AvoidBackwardBranchWithNew([]).test();
 }

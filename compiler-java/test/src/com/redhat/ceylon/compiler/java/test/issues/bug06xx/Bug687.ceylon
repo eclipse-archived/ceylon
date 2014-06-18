@@ -31,14 +31,14 @@ class Bug687()  {
     shared void sort2(Number<Integer>&Category* elements) { 
     }
     void foo(void p(Number<Integer>&Category* elements)){
-        sort(*{});
-        sort{elements = {};};
-        sort2(*{});
-        sort2{elements = {};};
-        p(*{});
-        p{elements = {};};
+        sort(*[]);
+        sort{elements = [];};
+        sort2(*[]);
+        sort2{elements = [];};
+        p(*[]);
+        p{elements = [];};
         
         value f = sort3<Nothing>;
-        f({});
+        f([]);
     }
 }

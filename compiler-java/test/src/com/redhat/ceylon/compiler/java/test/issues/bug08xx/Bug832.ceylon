@@ -28,7 +28,7 @@ void bug832() {
     Num n =  Bug832Integer();
     value sign = n.sign;
     alias L => List<Object>|Set<Object>;
-    L l = {};
+    L l = [];
     value s = l.size;
 }
 

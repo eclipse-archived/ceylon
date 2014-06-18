@@ -33,8 +33,8 @@ shared class InteropVariadicTest() {
         java.testVarargsByte3(*seq);
 
         java.testVarargsByte0();
-        java.testVarargsByte0(*{});
-        value empty = {};
+        java.testVarargsByte0(*[]);
+        value empty = [];
         java.testVarargsByte0(*empty);
     }
 
@@ -49,8 +49,8 @@ shared class InteropVariadicTest() {
         java.testVarargsShort3(*seq);
 
         java.testVarargsShort0();
-        java.testVarargsShort0(*{});
-        value empty = {};
+        java.testVarargsShort0(*[]);
+        value empty = [];
         java.testVarargsShort0(*empty);
     }
 
@@ -65,8 +65,8 @@ shared class InteropVariadicTest() {
         java.testVarargsInt3(*seq);
 
         java.testVarargsInt0();
-        java.testVarargsInt0(*{});
-        value empty = {};
+        java.testVarargsInt0(*[]);
+        value empty = [];
         java.testVarargsInt0(*empty);
     }
 
@@ -81,8 +81,8 @@ shared class InteropVariadicTest() {
         java.testVarargsLong3(*seq);
 
         java.testVarargsLong0();
-        java.testVarargsLong0(*{});
-        value empty = {};
+        java.testVarargsLong0(*[]);
+        value empty = [];
         java.testVarargsLong0(*empty);
     }
 
@@ -97,8 +97,8 @@ shared class InteropVariadicTest() {
         java.testVarargsFloat3(*seq);
 
         java.testVarargsFloat0();
-        java.testVarargsFloat0(*{});
-        value empty = {};
+        java.testVarargsFloat0(*[]);
+        value empty = [];
         java.testVarargsFloat0(*empty);
     }
 
@@ -113,8 +113,8 @@ shared class InteropVariadicTest() {
         java.testVarargsDouble3(*seq);
 
         java.testVarargsDouble0();
-        java.testVarargsDouble0(*{});
-        value empty = {};
+        java.testVarargsDouble0(*[]);
+        value empty = [];
         java.testVarargsDouble0(*empty);
     }
 
@@ -129,8 +129,8 @@ shared class InteropVariadicTest() {
         java.testVarargsBoolean3(*seq);
 
         java.testVarargsBoolean0();
-        java.testVarargsBoolean0(*{});
-        value empty = {};
+        java.testVarargsBoolean0(*[]);
+        value empty = [];
         java.testVarargsBoolean0(*empty);
     }
 
@@ -145,8 +145,8 @@ shared class InteropVariadicTest() {
         java.testVarargsChar3(*seq);
 
         java.testVarargsChar0();
-        java.testVarargsChar0(*{});
-        value empty = {};
+        java.testVarargsChar0(*[]);
+        value empty = [];
         java.testVarargsChar0(*empty);
     }
 
@@ -161,8 +161,8 @@ shared class InteropVariadicTest() {
         java.testVarargsCeylonInteger3(*seq);
 
         java.testVarargsCeylonInteger0();
-        java.testVarargsCeylonInteger0(*{});
-        value empty = {};
+        java.testVarargsCeylonInteger0(*[]);
+        value empty = [];
         java.testVarargsCeylonInteger0(*empty);
     }
 
@@ -177,8 +177,8 @@ shared class InteropVariadicTest() {
         java.testVarargsObject3(*seq);
 
         java.testVarargsObject0();
-        java.testVarargsObject0(*{});
-        value empty = {};
+        java.testVarargsObject0(*[]);
+        value empty = [];
         java.testVarargsObject0(*empty);
     }
 

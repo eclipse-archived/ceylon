@@ -19,10 +19,10 @@
  */
 @noanno
 shared void bug898() {
-    Iterable<Iterable<String>> fooForced = {};
-    value fooInferred = {};
-    Iterable<Iterable<String>> barForced = {{}};
-    value barInferred = {{}};
+    Iterable<Iterable<String>> fooForced = [];
+    value fooInferred = [];
+    Iterable<Iterable<String>> barForced = {[]};
+    value barInferred = {[]};
     Iterable<Iterable<String>> geeForced = {{""}};
     value geeInferred = {{""}};
 }

@@ -23,7 +23,7 @@ class SequenceLiteral(){
         String[] sequence = ["a", "b"];
         Iterable<String> iterable = {"a", "b"};
         
-        [] empty = {};
+        [] empty = [];
         {String*} iterableComp = { for (s in sequence) s };  
         [String*] sequenceComp = [ for (s in sequence) s ];  
         {String*} iterableComp2 = { "a", for (s in sequence) s };  

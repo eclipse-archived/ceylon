@@ -19,6 +19,6 @@
  */
 @noanno
 void bug568() {
-   Integer[] childPaths = {};
+   Integer[] childPaths = [];
    for (s in childPaths*.string) {}
 }

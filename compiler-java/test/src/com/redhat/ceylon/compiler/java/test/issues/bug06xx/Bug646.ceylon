@@ -19,15 +19,15 @@
  */
 @noanno
 void bug646() {
-    String[][] strs = {};
+    String[][] strs = [];
     Iterable<String[]> arrays = {};
     Iterable<Anything(String)> observers = {};
-    Anything(String)[] observers2 = {};
+    Anything(String)[] observers2 = [];
     Iterable<Integer(String)> observers3 = {};
-    Integer(Nothing)[] observers4 = {};
-    Integer(String|Integer)[] observers5 = {};
-    Integer(Null)[] observers6 = {};
-    Integer(Basic)[] observers7 = {};
+    Integer(Nothing)[] observers4 = [];
+    Integer(String|Integer)[] observers5 = [];
+    Integer(Null)[] observers6 = [];
+    Integer(Basic)[] observers7 = [];
     Iterable<Iterable<Integer|String>> foo = {};
     Iterable<String|Integer> union = {};
     Iterable<Basic> ident = {};

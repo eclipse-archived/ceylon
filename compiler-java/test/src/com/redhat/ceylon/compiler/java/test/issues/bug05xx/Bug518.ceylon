@@ -21,5 +21,5 @@
 void bug518() {
     value sp = [ 1 ].span(0,1);
     value sp2 = [ 1 ][0..1];
-    value e1 = {}[0..0];
+    value e1 = [][0..0];
 }

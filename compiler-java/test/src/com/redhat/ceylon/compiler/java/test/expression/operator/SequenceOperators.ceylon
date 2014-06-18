@@ -22,7 +22,7 @@ shared class SequenceOperators() {
     
     Correspondence<Integer, String> c1 = [""];
     Correspondence<Integer,String>? c2 = [""];
-    String[] sequence = {};
+    String[] sequence = [];
     
     T box<T>(T x){ return x; }
     
@@ -67,7 +67,7 @@ shared class SequenceOperators() {
         spreadInvoke = sequence*.get(0);
         spreadInvoke = sequence*.get{index = 0;};
 
-        String[] empty = {};
+        String[] empty = [];
         String[] upperCasedEmpty = empty*.uppercased;
     }
     

@@ -92,7 +92,7 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     Sequential<Integer> sequence = empty;
 
     // special case?
-    Integer[] sequence2 = false then {} else 0..2;
+    Integer[] sequence2 = false then [] else 0..2;
 
     // those ones require casts because there's a bound on its type parameter
     // See https://github.com/ceylon/ceylon-compiler/issues/953
@@ -137,7 +137,7 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     }
     
     // this one does an unnecessary cast for now, plus a necessary forced downcast
-    Empty|Sequence<Integer&EC_A> rawSequence = {};
+    Empty|Sequence<Integer&EC_A> rawSequence = [];
     if(nonempty rawSequence){}
     
     // make sure we can assign nothing to primitives, by considering that nothing is a boxed Boolean

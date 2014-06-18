@@ -41,19 +41,19 @@ shared class Duple<out Element, out First, out Rest>(first, rest)
 @noanno
 class Bug919() {
     void m(){
-        value t = Tuple("a", Tuple({}, {}));
-        value t2 = ["a", {}];
-        value t3 = {{}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}};
-        value t4 = Tuple({}, Tuple(Tuple("c", {}), {}));
-        value t5 = Tuple<Sequential<String>, Empty, Empty>({}, {});
+        value t = Tuple("a", Tuple([], []));
+        value t2 = ["a", []];
+        value t3 = {[], {{"a", "b"}, [], {"c"}, [], {"d", "e"}}, [], {{"a", "b"}, [], {"c"}, [], {"d", "e"}}, []};
+        value t4 = Tuple([], Tuple(Tuple("c", []), []));
+        value t5 = Tuple<Sequential<String>, Empty, Empty>([], []);
     }
 }
 
 @noanno
 shared void bug919_2(){
-    bug919_3({{{}},{}});
-    bug919_3(Tuple(Tuple({}, {}),Tuple({}, {})));
-    bug919_3({{}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}});
+    bug919_3({{[]},[]});
+    bug919_3(Tuple(Tuple([], []),Tuple([], [])));
+    bug919_3({[], {{"a", "b"}, [], {"c"}, [], {"d", "e"}}, [], {{"a", "b"}, [], {"c"}, [], {"d", "e"}}, []});
 }
 @noanno
 shared void bug919_3(Iterable<Iterable<Iterable<String>>> iterables){

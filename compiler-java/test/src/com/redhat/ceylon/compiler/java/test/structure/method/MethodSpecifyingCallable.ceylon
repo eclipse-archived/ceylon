@@ -40,12 +40,12 @@ class MethodSpecifyingCallable() {
     function oneSequencedParam1() => oneSequencedParam(1);
     function oneSequencedParam2() => oneSequencedParam(1, 2);
     function oneSequencedParam3() => oneSequencedParam(for (i in {1}) i);
-    function oneSequencedParam4() => oneSequencedParam(*{});
+    function oneSequencedParam4() => oneSequencedParam(*[]);
 
     value secondSequencedParam = function (Integer a, Integer* i) => nothing;
     function secondSequencedParam0() => secondSequencedParam(1);
     function secondSequencedParam1() => secondSequencedParam(1, 2);
     function secondSequencedParam2() => secondSequencedParam(1, 2, 3);
     function secondSequencedParam3() => secondSequencedParam(1, for (i in {1}) i);
-    function secondSequencedParam4() => secondSequencedParam(1, *{});
+    function secondSequencedParam4() => secondSequencedParam(1, *[]);
 }

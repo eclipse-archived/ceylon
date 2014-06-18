@@ -5,6 +5,6 @@ class AvoidBackwardBranchWithSuper_sub(Character[] cs) extends AvoidBackwardBran
 class AvoidBackwardBranchWithSuper_sub2<S>(Character[] cs, S s) extends AvoidBackwardBranchWithSuper<S>(1, s, cs*.integer) {
 }
 void avoidBackwardBranchWithSuper_run() {
-    AvoidBackwardBranchWithSuper_sub({});
-    AvoidBackwardBranchWithSuper_sub2<Integer>({}, 2);
+    AvoidBackwardBranchWithSuper_sub([]);
+    AvoidBackwardBranchWithSuper_sub2<Integer>([], 2);
 }

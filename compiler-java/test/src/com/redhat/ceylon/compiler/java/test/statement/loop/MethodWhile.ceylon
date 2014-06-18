@@ -34,7 +34,7 @@ class MethodWhile(){
     shared void whileNonEmpty(){
         variable Integer[] seq = [1];
         while (nonempty Integer[] s = seq) {
-            seq = {};
+            seq = [];
         }
     }
     shared void whileIs(){

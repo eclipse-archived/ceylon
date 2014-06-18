@@ -24,6 +24,6 @@ class InvocationWithVarargsAndComprehensions() {
         //m(for (i in {}) i);
         //m{for (i in {1}) i};
         //m{for (i in {}) i};
-        value t = [1, "a", {}];
+        value t = [1, "a", []];
     }
 }
