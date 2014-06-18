@@ -134,7 +134,7 @@ final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon
         final .java.lang.Object[] $sb$ = new .java.lang.Object[$array$.length];
         int $index$ = 0;
         for (.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ $element$ : $array$) $sb$[$index$++] = new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam($element$);
-        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$, $sb$, 0, $sb$.length, .ceylon.language.empty_.get_(), false);
+        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$, $sb$, .ceylon.language.empty_.get_(), false);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
