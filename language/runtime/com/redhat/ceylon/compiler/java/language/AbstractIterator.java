@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.impl.BaseIterator;
 
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -13,8 +11,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-@Ceylon(major = 7)
-@Class
 public abstract class AbstractIterator<Element> 
 extends BaseIterator<Element> {
     
