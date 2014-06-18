@@ -64,9 +64,9 @@ public final class Array<Element>
 
     @Ignore
     public Array(final TypeDescriptor $reifiedElement, 
-    		int size, Element element) {
+            int size, Element element) {
         this($reifiedElement, 
-        		createArray($reifiedElement, size, element));
+                createArray($reifiedElement, size, element));
     }
     
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
@@ -74,295 +74,295 @@ public final class Array<Element>
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
             final ceylon.language.Iterable<? extends Element,?> elements) {
         this($reifiedElement, 
-        		createArray($reifiedElement, elements));
+                createArray($reifiedElement, elements));
     }
 
     @SuppressWarnings("unchecked")
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element,?> elements) {
-    	
-    	final ArrayList<Element> list;
-    	final int size;
-    	if (elements instanceof Array) {
-    		size = Util.toInt(elements.getSize());
-    		list = null;
-    	}
-    	else {
-    	    list = new ArrayList<Element>();
-    	    Iterator<?> iterator = elements.iterator();
-    	    java.lang.Object elem;
-    	    while ((elem=iterator.next())!=finished_.get_()) {
-    	    	list.add((Element) elem);
-    	    }
-    	    size = Util.toInt(list.size());
-    	}
-    	
+        
+        final ArrayList<Element> list;
+        final int size;
+        if (elements instanceof Array) {
+            size = Util.toInt(elements.getSize());
+            list = null;
+        }
+        else {
+            list = new ArrayList<Element>();
+            Iterator<?> iterator = elements.iterator();
+            java.lang.Object elem;
+            while ((elem=iterator.next())!=finished_.get_()) {
+                list.add((Element) elem);
+            }
+            size = Util.toInt(list.size());
+        }
+        
         final java.lang.Class<?> clazz = 
-        		$reifiedElement.getArrayElementClass();
+                $reifiedElement.getArrayElementClass();
         if (!$reifiedElement.containsNull()) {
-        	if (clazz==String.class) {
-        		//note: we don't unbox strings in an Array<String?>
-        		//      because it would break javaObjectArray()
-        		java.lang.String[] array = 
-        				new java.lang.String[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				String s = (String) list.get(i);
-    					array[i] = s==null ? null : s.value;
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==Integer.class) {
-        		long[] array = new long[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((Integer) list.get(i)).value;
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==Float.class) {
-        		double[] array = new double[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((Float) list.get(i)).value;
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==Character.class) {
-        		int[] array = new int[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((Character) list.get(i))
-        						        .codePoint;
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((Boolean) list.get(i))
-        						        .booleanValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Boolean) list.get(i))
-        						        .booleanValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Character.class) {
-        		char[] array = new char[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Character) list.get(i))
-        						        .charValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Float.class) {
-        		float[] array = new float[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Float) list.get(i))
-        						        .floatValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Double.class) {
-        		double[] array = new double[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Double) list.get(i))
-        						        .doubleValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Byte.class) {
-        		byte[] array = new byte[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Byte) list.get(i))
-        						        .byteValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Short.class) {
-        		short[] array = new short[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Short) list.get(i))
-        						        .shortValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Integer.class) {
-        		int[] array = new int[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Integer) list.get(i))
-        						        .intValue();
-        			}
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Long.class) {
-        		long[] array = new long[size];
-        		if (elements instanceof Array) {
-        			arraycopy(((Array<?>)elements).array, 
-        					0, array, 0, size);
-        		}
-        		else {
-        			for (int i=0; i<size; i++) {
-        				array[i] = 
-        						((java.lang.Long) list.get(i))
-        						        .longValue();
-        			}
-        		}
-        		return array;
-        	}
+            if (clazz==String.class) {
+                //note: we don't unbox strings in an Array<String?>
+                //      because it would break javaObjectArray()
+                java.lang.String[] array = 
+                        new java.lang.String[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        String s = (String) list.get(i);
+                        array[i] = s==null ? null : s.value;
+                    }
+                }
+                return array;
+            }
+            else if (clazz==Integer.class) {
+                long[] array = new long[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((Integer) list.get(i)).value;
+                    }
+                }
+                return array;
+            }
+            else if (clazz==Float.class) {
+                double[] array = new double[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((Float) list.get(i)).value;
+                    }
+                }
+                return array;
+            }
+            else if (clazz==Character.class) {
+                int[] array = new int[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((Character) list.get(i))
+                                        .codePoint;
+                    }
+                }
+                return array;
+            }
+            else if (clazz==Boolean.class) {
+                boolean[] array = new boolean[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((Boolean) list.get(i))
+                                        .booleanValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Boolean.class) {
+                boolean[] array = new boolean[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Boolean) list.get(i))
+                                        .booleanValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Character.class) {
+                char[] array = new char[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Character) list.get(i))
+                                        .charValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Float.class) {
+                float[] array = new float[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Float) list.get(i))
+                                        .floatValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Double.class) {
+                double[] array = new double[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Double) list.get(i))
+                                        .doubleValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Byte.class) {
+                byte[] array = new byte[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Byte) list.get(i))
+                                        .byteValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Short.class) {
+                short[] array = new short[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Short) list.get(i))
+                                        .shortValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Integer.class) {
+                int[] array = new int[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Integer) list.get(i))
+                                        .intValue();
+                    }
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Long.class) {
+                long[] array = new long[size];
+                if (elements instanceof Array) {
+                    arraycopy(((Array<?>)elements).array, 
+                            0, array, 0, size);
+                }
+                else {
+                    for (int i=0; i<size; i++) {
+                        array[i] = 
+                                ((java.lang.Long) list.get(i))
+                                        .longValue();
+                    }
+                }
+                return array;
+            }
         }
         
         java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-        		.newInstance($reifiedElement.getArrayElementClass(), size);
+                .newInstance($reifiedElement.getArrayElementClass(), size);
         if (elements instanceof Array) {
-        	java.lang.Object otherArray = ((Array<?>) elements).array;
-			if (otherArray.getClass()==array.getClass()) {
-        		arraycopy(otherArray, 0, array, 0, size);
-        	}
-			else if (otherArray instanceof Object[]) {
-        		Object[] objects = (Object[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = objects[i];
-	        	}
-			}
-			else if (otherArray instanceof int[]) {
-        		int[] ints = (int[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = ints[i];
-	        	}
-			}
-			else if (otherArray instanceof long[]) {
-        		long[] longs = (long[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = longs[i];
-	        	}
-			}
-			else if (otherArray instanceof byte[]) {
-        		byte[] bytes = (byte[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = bytes[i];
-	        	}
-			}
-			else if (otherArray instanceof short[]) {
-        		short[] shorts = (short[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = shorts[i];
-	        	}
-			}
-			else if (otherArray instanceof float[]) {
-        		float[] floats = (float[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = floats[i];
-	        	}
-			}
-			else if (otherArray instanceof double[]) {
-        		double[] doubles = (double[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = doubles[i];
-	        	}
-			}
-			else if (otherArray instanceof char[]) {
-	        	for (int i=0; i<size; i++) {
-	        		array[i] = ((char[])otherArray)[i];
-	        	}
-			}
-			else if (otherArray instanceof boolean[]) {
-        		boolean[] bools = (boolean[])otherArray;
-	        	for (int i=0; i<size; i++) {
-					array[i] = bools[i];
-	        	}
-			}
+            java.lang.Object otherArray = ((Array<?>) elements).array;
+            if (otherArray.getClass()==array.getClass()) {
+                arraycopy(otherArray, 0, array, 0, size);
+            }
+            else if (otherArray instanceof Object[]) {
+                Object[] objects = (Object[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = objects[i];
+                }
+            }
+            else if (otherArray instanceof int[]) {
+                int[] ints = (int[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = ints[i];
+                }
+            }
+            else if (otherArray instanceof long[]) {
+                long[] longs = (long[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = longs[i];
+                }
+            }
+            else if (otherArray instanceof byte[]) {
+                byte[] bytes = (byte[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = bytes[i];
+                }
+            }
+            else if (otherArray instanceof short[]) {
+                short[] shorts = (short[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = shorts[i];
+                }
+            }
+            else if (otherArray instanceof float[]) {
+                float[] floats = (float[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = floats[i];
+                }
+            }
+            else if (otherArray instanceof double[]) {
+                double[] doubles = (double[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = doubles[i];
+                }
+            }
+            else if (otherArray instanceof char[]) {
+                for (int i=0; i<size; i++) {
+                    array[i] = ((char[])otherArray)[i];
+                }
+            }
+            else if (otherArray instanceof boolean[]) {
+                boolean[] bools = (boolean[])otherArray;
+                for (int i=0; i<size; i++) {
+                    array[i] = bools[i];
+                }
+            }
         }
         else {
-        	for (int i=0; i<size; i++) {
-        		array[i] = list.get(i);
-        	}
+            for (int i=0; i<size; i++) {
+                array[i] = list.get(i);
+            }
         }
         return array;
     }
@@ -372,112 +372,112 @@ public final class Array<Element>
         final int size, Element element) {
         java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
         if (!$reifiedElement.containsNull()) {
-        	if (clazz==String.class) {
-        		//note: we don't unbox strings in an Array<String?>
-        		//      because it would break javaObjectArray()
-        		java.lang.String[] array = new java.lang.String[size];
-        		String s = (String) element;
-        		if (s!=null) Arrays.fill(array, s.value); 
-        		return array;
-        	}
-        	else if (clazz==Integer.class) {
-        		long[] array = new long[size];
-        		long value = ((Integer) element).value;
-        		if (value!=0l) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==Float.class) {
-        		double[] array = new double[size];
-        		double value = ((Float) element).value;
-        		if (value!=0.0d) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==Character.class) {
-        		int[] array = new int[size];
-        		int value = ((Character) element).codePoint;
-        		if (value!=0) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		boolean value = ((Boolean) element).booleanValue();
-        		if (value!=false) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		boolean value = ((java.lang.Boolean) element).booleanValue();
-        		if (value!=false) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Character.class) {
-        		char[] array = new char[size];
-        		char value = ((java.lang.Character) element).charValue();
-        		if (value!=0) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Float.class) {
-        		float[] array = new float[size];
-        		float value = ((java.lang.Float) element).floatValue();
-        		if (value!=0.0f) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Double.class) {
-        		double[] array = new double[size];
-        		double value = ((java.lang.Double) element).doubleValue();
-        		if (value!=0.0d) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Byte.class) {
-        		byte[] array = new byte[size];
-        		byte value = ((java.lang.Byte) element).byteValue();
-        		if (value!=0) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Short.class) {
-        		short[] array = new short[size];
-        		short value = ((java.lang.Short) element).shortValue();
-        		if (value!=0) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Integer.class) {
-        		int[] array = new int[size];
-        		int value = ((java.lang.Integer) element).intValue();
-        		if (value!=0) Arrays.fill(array, value); 
-        		return array;
-        	}
-        	else if (clazz==java.lang.Long.class) {
-        		long[] array = new long[size];
-        		long value = ((java.lang.Long) element).longValue();
-        		if (value!=0l) Arrays.fill(array, value); 
-        		return array;
-        	}
+            if (clazz==String.class) {
+                //note: we don't unbox strings in an Array<String?>
+                //      because it would break javaObjectArray()
+                java.lang.String[] array = new java.lang.String[size];
+                String s = (String) element;
+                if (s!=null) Arrays.fill(array, s.value); 
+                return array;
+            }
+            else if (clazz==Integer.class) {
+                long[] array = new long[size];
+                long value = ((Integer) element).value;
+                if (value!=0l) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==Float.class) {
+                double[] array = new double[size];
+                double value = ((Float) element).value;
+                if (value!=0.0d) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==Character.class) {
+                int[] array = new int[size];
+                int value = ((Character) element).codePoint;
+                if (value!=0) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==Boolean.class) {
+                boolean[] array = new boolean[size];
+                boolean value = ((Boolean) element).booleanValue();
+                if (value!=false) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Boolean.class) {
+                boolean[] array = new boolean[size];
+                boolean value = ((java.lang.Boolean) element).booleanValue();
+                if (value!=false) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Character.class) {
+                char[] array = new char[size];
+                char value = ((java.lang.Character) element).charValue();
+                if (value!=0) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Float.class) {
+                float[] array = new float[size];
+                float value = ((java.lang.Float) element).floatValue();
+                if (value!=0.0f) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Double.class) {
+                double[] array = new double[size];
+                double value = ((java.lang.Double) element).doubleValue();
+                if (value!=0.0d) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Byte.class) {
+                byte[] array = new byte[size];
+                byte value = ((java.lang.Byte) element).byteValue();
+                if (value!=0) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Short.class) {
+                short[] array = new short[size];
+                short value = ((java.lang.Short) element).shortValue();
+                if (value!=0) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Integer.class) {
+                int[] array = new int[size];
+                int value = ((java.lang.Integer) element).intValue();
+                if (value!=0) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==java.lang.Long.class) {
+                long[] array = new long[size];
+                long value = ((java.lang.Long) element).longValue();
+                if (value!=0l) Arrays.fill(array, value); 
+                return array;
+            }
         }
         
-		java.lang.Object[] array = 
-				(java.lang.Object[]) java.lang.reflect.Array
-				        .newInstance(clazz, size);
-		if (element!=null) {
-			Arrays.fill(array, element);
-		}
-		return array;
+        java.lang.Object[] array = 
+                (java.lang.Object[]) java.lang.reflect.Array
+                        .newInstance(clazz, size);
+        if (element!=null) {
+            Arrays.fill(array, element);
+        }
+        return array;
     }
 
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = 
-        		new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
+                new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = 
-        		new Iterable$impl<Element,java.lang.Object>($reifiedElement, 
-        				Null.$TypeDescriptor$, this);
+                new Iterable$impl<Element,java.lang.Object>($reifiedElement, 
+                        Null.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this = 
-        		new Collection$impl<Element>($reifiedElement, this);
+                new Collection$impl<Element>($reifiedElement, this);
         this.$ceylon$language$List$this = 
-        		new List$impl<Element>($reifiedElement, this);
+                new List$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Correspondence$this = 
-        		new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, 
-        				$reifiedElement, this);
+                new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, 
+                        $reifiedElement, this);
         this.array = array;
         this.$reifiedElement = $reifiedElement;
     }
@@ -518,21 +518,21 @@ public final class Array<Element>
             return null;
         }
         java.lang.Class<?> componentType = array.getClass().getComponentType();
-		return new Array<T>(TypeDescriptor.klass(componentType), array);
+        return new Array<T>(TypeDescriptor.klass(componentType), array);
     }
     
     private static final TypeDescriptor CHAR_TYPE = 
-    		TypeDescriptor.klass(java.lang.Character.class);
+            TypeDescriptor.klass(java.lang.Character.class);
     @Ignore
     public static Array<java.lang.Character> instance(char[] array) {
         if (array == null) {
             return null;
         }
-		return new Array<java.lang.Character>(CHAR_TYPE, array);
+        return new Array<java.lang.Character>(CHAR_TYPE, array);
     }
 
     private static final TypeDescriptor BYTE_TYPE = 
-    		TypeDescriptor.klass(java.lang.Byte.class);
+            TypeDescriptor.klass(java.lang.Byte.class);
     @Ignore
     public static Array<java.lang.Byte> instance(byte[] array) {
         if (array == null) {
@@ -542,7 +542,7 @@ public final class Array<Element>
     }
 
     private static final TypeDescriptor SHORT_TYPE = 
-    		TypeDescriptor.klass(java.lang.Short.class);
+            TypeDescriptor.klass(java.lang.Short.class);
     @Ignore
     public static Array<java.lang.Short> instance(short[] array) {
         if (array == null) {
@@ -552,7 +552,7 @@ public final class Array<Element>
     }
     
     private static final TypeDescriptor INT_TYPE = 
-    		TypeDescriptor.klass(java.lang.Integer.class);
+            TypeDescriptor.klass(java.lang.Integer.class);
     @Ignore
     public static Array<java.lang.Integer> instance(int[] array) {
         if (array == null) {
@@ -562,7 +562,7 @@ public final class Array<Element>
     }
     
     private static final TypeDescriptor LONG_TYPE = 
-    		TypeDescriptor.klass(java.lang.Long.class);
+            TypeDescriptor.klass(java.lang.Long.class);
     @Ignore
     public static Array<java.lang.Long> instance(long[] array) {
         if (array == null) {
@@ -572,7 +572,7 @@ public final class Array<Element>
     }
     
     private static final TypeDescriptor FLOAT_TYPE = 
-    		TypeDescriptor.klass(java.lang.Float.class);
+            TypeDescriptor.klass(java.lang.Float.class);
     @Ignore
     public static Array<java.lang.Float> instance(float[] array) {
         if (array == null) {
@@ -582,7 +582,7 @@ public final class Array<Element>
     }
     
     private static final TypeDescriptor DOUBLE_TYPE = 
-    		TypeDescriptor.klass(java.lang.Double.class);
+            TypeDescriptor.klass(java.lang.Double.class);
     @Ignore
     public static Array<java.lang.Double> instance(double[] array) {
         if (array == null) {
@@ -592,7 +592,7 @@ public final class Array<Element>
     }
     
     private static final TypeDescriptor BOOLEAN_TYPE = 
-    		TypeDescriptor.klass(java.lang.Boolean.class);
+            TypeDescriptor.klass(java.lang.Boolean.class);
     @Ignore
     public static Array<java.lang.Boolean> instance(boolean[] array) {
         if (array == null) {
@@ -657,18 +657,18 @@ public final class Array<Element>
             fromIndex = swap;
         }
         if (fromIndex<0) {
-        	fromIndex = 0;
+            fromIndex = 0;
         }
         long size = getSize();
         if (toIndex>=size) {
-        	toIndex = size-1;
+            toIndex = size-1;
         }
         if (fromIndex>=size || toIndex<0 || toIndex<fromIndex) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
-        	int resultFromIndex = toInt(fromIndex); //inclusive
-        	int resultToIndex = toInt(toIndex+1); //exclusive
+            int resultFromIndex = toInt(fromIndex); //inclusive
+            int resultToIndex = toInt(toIndex+1); //exclusive
             java.lang.Object newArray;
             if (array instanceof char[]) {
                 char[] copy = copyOfRange((char[])array, 
@@ -789,12 +789,12 @@ public final class Array<Element>
         long fromIndex = from.longValue(); //inclusive
         long toIndex = fromIndex + length; //exclusive
         if (fromIndex<0) {
-        	fromIndex=0;
+            fromIndex=0;
         }
         long size = getSize();
-    	if (toIndex > size) {
-    		toIndex = size;
-    	}
+        if (toIndex > size) {
+            toIndex = size;
+        }
         if (fromIndex>=size || toIndex<=0) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
@@ -880,7 +880,7 @@ public final class Array<Element>
 
         @Override
         protected ArrayIterable newInstance(java.lang.Object array, 
-        		int start, int len, int step) {
+                int start, int len, int step) {
             return new ArrayIterable(array, start, len, step);
         }
 
@@ -901,7 +901,7 @@ public final class Array<Element>
                     && step == 1) {
                 // ok to cast here, since we know the size must fit in an int
                 return new java.lang.String((int[])array, start, 
-                		(int)this.getSize());
+                        (int)this.getSize());
             } 
             return null;
         }
@@ -911,7 +911,7 @@ public final class Array<Element>
     public Iterator<Element> iterator() {
         // ok to cast here, since we know the size must fit in an int
         return new AbstractArrayIterator<Element>($reifiedElement, 
-        		0, (int)getSize(), 1) {
+                0, (int)getSize(), 1) {
             protected Element get(int index) {
                 return unsafeItem(index);
             }
@@ -938,7 +938,7 @@ public final class Array<Element>
     public Element getFromFirst(@Name("index") long key) {
         int index = toInt(key);
         return index < 0 || index >= getSize() ? 
-        		null : unsafeItem(index);
+                null : unsafeItem(index);
     }
     
     // Used by the jvm backend code to avoid boxing the index
@@ -946,18 +946,18 @@ public final class Array<Element>
     @Ignore
     public Element unsafeItem(int index) {
         java.lang.Class<?> arrayElementClass = 
-        		$reifiedElement.getArrayElementClass();
+                $reifiedElement.getArrayElementClass();
         if (array instanceof char[]) {
             char val = ((char[])array)[index];
             return (Element) java.lang.Character.valueOf(val);
         } 
         else if (array instanceof byte[]) {
-        	byte val = ((byte[])array)[index];
-        	return (Element) java.lang.Byte.valueOf(val);
+            byte val = ((byte[])array)[index];
+            return (Element) java.lang.Byte.valueOf(val);
         } 
         else if (array instanceof short[]) {
-        	short val = ((short[])array)[index];
-        	return (Element) java.lang.Short.valueOf(val);
+            short val = ((short[])array)[index];
+            return (Element) java.lang.Short.valueOf(val);
         } 
         else if (array instanceof int[]) {
             int val = ((int[])array)[index];
@@ -971,42 +971,42 @@ public final class Array<Element>
         else if (array instanceof long[]) {
             long val = ((long[])array)[index];
             if (arrayElementClass == Integer.class) {
-            	return (Element) Integer.instance(val);
+                return (Element) Integer.instance(val);
             }
             else {
-            	return (Element) java.lang.Long.valueOf(val);
+                return (Element) java.lang.Long.valueOf(val);
             }
         } 
         else if (array instanceof float[]) {
-        	float val = ((float[])array)[index];
-        	return (Element) java.lang.Float.valueOf(val);
+            float val = ((float[])array)[index];
+            return (Element) java.lang.Float.valueOf(val);
         } 
         else if (array instanceof double[]) {
-        	double val = ((double[])array)[index];
+            double val = ((double[])array)[index];
             if (arrayElementClass == Float.class) {
-            	return (Element) Float.instance(val);
+                return (Element) Float.instance(val);
             }
             else {
-            	return (Element) java.lang.Double.valueOf(val);
+                return (Element) java.lang.Double.valueOf(val);
             }
         } 
         else if (array instanceof boolean[]) {
-        	boolean val = ((boolean[])array)[index];
+            boolean val = ((boolean[])array)[index];
             if (arrayElementClass == Boolean.class) {
-            	return (Element) Boolean.instance(val);
+                return (Element) Boolean.instance(val);
             }
             else {
-            	return (Element) java.lang.Boolean.valueOf(val);
+                return (Element) java.lang.Boolean.valueOf(val);
             }
         } 
         else if (array instanceof java.lang.String[]) {
-        	java.lang.String val = ((java.lang.String[])array)[index];
-			if (arrayElementClass == String.class) {
-        		return (Element) String.instance(val);
-        	}
-        	else {
-        		return (Element) val;
-        	}
+            java.lang.String val = ((java.lang.String[])array)[index];
+            if (arrayElementClass == String.class) {
+                return (Element) String.instance(val);
+            }
+            else {
+                return (Element) val;
+            }
         } 
         else {
             return (Element) ((java.lang.Object[])array)[index];
@@ -1014,82 +1014,82 @@ public final class Array<Element>
     }
 
     public void set(
-    		@Name("index") @TypeInfo("ceylon.language::Integer") long index,
+            @Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
-    	long size = getSize();
-		if (index<0) {
-    		throw new AssertionError("array index " + index + 
-    				" may not be negative");
-    	}
-    	else if (index>=size) {
-    		throw new AssertionError("array index " + index + 
-    				" must be less than size of array " + size);
-    	}
-    	else {
-    		int idx = toInt(index);
+        long size = getSize();
+        if (index<0) {
+            throw new AssertionError("array index " + index + 
+                    " may not be negative");
+        }
+        else if (index>=size) {
+            throw new AssertionError("array index " + index + 
+                    " must be less than size of array " + size);
+        }
+        else {
+            int idx = toInt(index);
             if (array instanceof char[]) {
-            	((char[])array)[idx] = 
-            			((java.lang.Character)element).charValue();
+                ((char[])array)[idx] = 
+                        ((java.lang.Character)element).charValue();
             }
             else if (array instanceof byte[]) {
-            	((byte[])array)[idx] = 
-            			((java.lang.Byte)element).byteValue();
+                ((byte[])array)[idx] = 
+                        ((java.lang.Byte)element).byteValue();
             }
             else if (array instanceof short[]) {
-            	((short[])array)[idx] = 
-            			((java.lang.Short)element).shortValue();
+                ((short[])array)[idx] = 
+                        ((java.lang.Short)element).shortValue();
             }
             else if (array instanceof int[]) {
-            	if (element instanceof Character) {
+                if (element instanceof Character) {
                     ((int[])array)[idx] = ((Character)element).codePoint;
                 }
                 else {
                     ((int[])array)[idx] = 
-                    		((java.lang.Integer)element).intValue();
+                            ((java.lang.Integer)element).intValue();
                 }
             }
             else if (array instanceof long[]) {
-            	if (element instanceof Integer) {
-                	((long[])array)[idx] = ((Integer)element).value;
+                if (element instanceof Integer) {
+                    ((long[])array)[idx] = ((Integer)element).value;
                 }
-            	else {
-            		((long[])array)[idx] = 
-            				((java.lang.Long) element).longValue();
-            	}
+                else {
+                    ((long[])array)[idx] = 
+                            ((java.lang.Long) element).longValue();
+                }
             }
             else if (array instanceof float[]) {
-            	((float[])array)[idx] = 
-            			((java.lang.Float)element).floatValue();
+                ((float[])array)[idx] = 
+                        ((java.lang.Float)element).floatValue();
             }
             else if (array instanceof double[]) {
-            	if (element instanceof Float) {
-            		((double[])array)[idx] = 
-            				((Float)element).value;
-            	}
-            	else {
-            		((double[])array)[idx] = 
-            				((java.lang.Double)element).doubleValue();
-            	}
+                if (element instanceof Float) {
+                    ((double[])array)[idx] = 
+                            ((Float)element).value;
+                }
+                else {
+                    ((double[])array)[idx] = 
+                            ((java.lang.Double)element).doubleValue();
+                }
             }
             else if (array instanceof boolean[]) {
-            	if (element instanceof Boolean) {
-            		((boolean[])array)[idx] = 
-            				((Boolean)element).booleanValue();
-            	}
-            	else {
-            		((boolean[])array)[idx] = 
-            				((java.lang.Boolean)element).booleanValue();
-            	}
+                if (element instanceof Boolean) {
+                    ((boolean[])array)[idx] = 
+                            ((Boolean)element).booleanValue();
+                }
+                else {
+                    ((boolean[])array)[idx] = 
+                            ((java.lang.Boolean)element).booleanValue();
+                }
             }
             else if (array instanceof java.lang.String[]) {
-            	if (element instanceof String) {
-            		((java.lang.String[])array)[idx] = 
-            				((String)element).value;
-            	}
-            	else {
-            		((java.lang.String[])array)[idx] = 
-            				((java.lang.String)element);
-            	}
+                if (element instanceof String) {
+                    ((java.lang.String[])array)[idx] = 
+                            ((String)element).value;
+                }
+                else {
+                    ((java.lang.String[])array)[idx] = 
+                            ((java.lang.String)element);
+                }
             }
             else {
                 ((java.lang.Object[])array)[idx] = element;
@@ -1133,45 +1133,45 @@ public final class Array<Element>
     }
     
     private java.lang.Object copyArray() {
-    	if (array instanceof java.lang.Object[]) {
-    		return Arrays.copyOf((java.lang.Object[]) array, 
-    				((java.lang.Object[]) array).length);
-    	}
-    	else if (array instanceof long[]) {
-    		return Arrays.copyOf((long[]) array, 
-    				((long[]) array).length);
-    	}
-    	else if (array instanceof double[]) {
-    		return Arrays.copyOf((double[]) array, 
-    				((double[]) array).length);
-    	}
-    	else if (array instanceof boolean[]) {
-    		return Arrays.copyOf((boolean[]) array, 
-    				((boolean[]) array).length);
-    	}
-    	else if (array instanceof int[]) {
-    		return Arrays.copyOf((int[]) array, 
-    				((int[]) array).length);
-    	}
-    	else if (array instanceof byte[]) {
-    		return Arrays.copyOf((byte[]) array, 
-    				((byte[]) array).length);
-    	}
-    	else if (array instanceof short[]) {
-    		return Arrays.copyOf((short[]) array, 
-    				((short[]) array).length);
-    	}
-    	else if (array instanceof float[]) {
-    		return Arrays.copyOf((float[]) array, 
-    				((float[]) array).length);
-    	}
-    	else if (array instanceof char[]) {
-    		return Arrays.copyOf((char[]) array, 
-    				((char[]) array).length);
-    	}
-    	else {
-    		throw new AssertionError("impossible array type");
-    	}
+        if (array instanceof java.lang.Object[]) {
+            return Arrays.copyOf((java.lang.Object[]) array, 
+                    ((java.lang.Object[]) array).length);
+        }
+        else if (array instanceof long[]) {
+            return Arrays.copyOf((long[]) array, 
+                    ((long[]) array).length);
+        }
+        else if (array instanceof double[]) {
+            return Arrays.copyOf((double[]) array, 
+                    ((double[]) array).length);
+        }
+        else if (array instanceof boolean[]) {
+            return Arrays.copyOf((boolean[]) array, 
+                    ((boolean[]) array).length);
+        }
+        else if (array instanceof int[]) {
+            return Arrays.copyOf((int[]) array, 
+                    ((int[]) array).length);
+        }
+        else if (array instanceof byte[]) {
+            return Arrays.copyOf((byte[]) array, 
+                    ((byte[]) array).length);
+        }
+        else if (array instanceof short[]) {
+            return Arrays.copyOf((short[]) array, 
+                    ((short[]) array).length);
+        }
+        else if (array instanceof float[]) {
+            return Arrays.copyOf((float[]) array, 
+                    ((float[]) array).length);
+        }
+        else if (array instanceof char[]) {
+            return Arrays.copyOf((char[]) array, 
+                    ((char[]) array).length);
+        }
+        else {
+            throw new AssertionError("impossible array type");
+        }
     }
 
     @Override
@@ -1384,7 +1384,7 @@ public final class Array<Element>
     @Override
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-	public Iterable<? extends Element, ?> 
+    public Iterable<? extends Element, ?> 
     skip(@Name("skipping") long skipping) {
         int intSkip = toInt(skipping);
         // ok to cast here, since we know the size must fit in an int
@@ -1394,37 +1394,37 @@ public final class Array<Element>
         }
         return new ArrayIterable(this.array, intSkip, 
                 Math.max(0, length-intSkip), 1);
-	}
+    }
 
-	@Override
-	@Annotations({ @Annotation("actual") })
-	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-	public Iterable<? extends Element, ?> 
-	take(@Name("taking") long taking) {
-	    // ok to cast here, since we know the size must fit in an int
-	    int length = (int)getSize();
-	    if (taking >= length) {
-	        return this;
-	    }
-		return new ArrayIterable(this.array, 0, 
-		        Math.max(toInt(taking), 0), 1);
-	}
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ?> 
+    take(@Name("taking") long taking) {
+        // ok to cast here, since we know the size must fit in an int
+        int length = (int)getSize();
+        if (taking >= length) {
+            return this;
+        }
+        return new ArrayIterable(this.array, 0, 
+                Math.max(toInt(taking), 0), 1);
+    }
 
-	@Override
-	@Annotations({ @Annotation("actual") })
-	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-	public Iterable<? extends Element, ?> 
-	by(@Name("step") long step) {
-	    if (step <= 0) {
-	        throw new AssertionError("step size must be greater than zero");
-	    } else if (step == 1) {
-	        return this;
-	    }
-		return new ArrayIterable(array, 0, 
-		        toInt((getSize()+step-1)/step), 
-		        toInt(step));
-	}
-	
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ?> 
+    by(@Name("step") long step) {
+        if (step <= 0) {
+            throw new AssertionError("step size must be greater than zero");
+        } else if (step == 1) {
+            return this;
+        }
+        return new ArrayIterable(array, 0, 
+                toInt((getSize()+step-1)/step), 
+                toInt(step));
+    }
+    
     @Override @Ignore
     public Iterable<? extends Element, ?> 
     getCoalesced() {
@@ -1432,43 +1432,43 @@ public final class Array<Element>
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>, 
-    		?> 
+            ?> 
     getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other,Absent>Iterable 
     chain(@Ignore TypeDescriptor $reifiedOther, 
-    		@Ignore TypeDescriptor $reifiedOtherAbsent, 
-    		Iterable<? extends Other, ? extends Absent> other) {
+            @Ignore TypeDescriptor $reifiedOtherAbsent, 
+            Iterable<? extends Other, ? extends Absent> other) {
         return $ceylon$language$Iterable$this.chain($reifiedOther, 
-        		$reifiedOtherAbsent, other);
+                $reifiedOtherAbsent, other);
     }
     @Override @Ignore 
     public <Other> Iterable<?,?>
     follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
         return $ceylon$language$Iterable$this.follow($reifiedOther, 
-        		other);
+                other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> 
     defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, 
-    		Default defaultValue) {
+            Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, 
-        		defaultValue);
+                defaultValue);
     }
     
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> sequence() {
         return new ArraySequence<Element>($reifiedElement, 
-        		new Array<Element>($reifiedElement, copyArray()));
+                new Array<Element>($reifiedElement, copyArray()));
     }
 
     @Override @Ignore
     public <Other> Tuple<java.lang.Object,
             ? extends Other,
-    		? extends Sequential<? extends Element>> 
+            ? extends Sequential<? extends Element>> 
     withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
@@ -1482,47 +1482,47 @@ public final class Array<Element>
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequential 
     append(@Ignore TypeDescriptor $reifiedOther, 
-    		Iterable<? extends Other, ?> es) {
+            Iterable<? extends Other, ?> es) {
         return $ceylon$language$List$this.append($reifiedOther, 
-        		es);
+                es);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequential 
     prepend(@Ignore TypeDescriptor $reifiedOther, 
-    		Iterable<? extends Other, ?> es) {
+            Iterable<? extends Other, ?> es) {
         return $ceylon$language$List$this.prepend($reifiedOther, 
-        		es);
+                es);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> List
     extend(@Ignore TypeDescriptor $reifiedOther, 
-    		List<? extends Other> list) {
+            List<? extends Other> list) {
         return $ceylon$language$List$this.extend($reifiedOther, 
-        		list);
+                list);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> List
     patch(@Ignore TypeDescriptor $reifiedOther, 
-    		List<? extends Other> list, long from, long length) {
+            List<? extends Other> list, long from, long length) {
         return $ceylon$language$List$this.patch($reifiedOther, 
-        		list, from, length);
+                list, from, length);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> List
     patch(@Ignore TypeDescriptor $reifiedOther, 
-    		List<? extends Other> list, long from) {
+            List<? extends Other> list, long from) {
         return $ceylon$language$List$this.patch($reifiedOther, 
-        		list, from, 0);
+                list, from, 0);
     }
 
     @Override @Ignore 
     public <Other> long patch$length(TypeDescriptor $reifiedOther,
-    		List<? extends Other> list, long from) {
-    	return 0;
+            List<? extends Other> list, long from) {
+        return 0;
     }
 
     @Ignore
@@ -1532,13 +1532,13 @@ public final class Array<Element>
 
     @Ignore
     public int copyTo$destinationPosition(Element[] destination, 
-    		int sourcePosition){
+            int sourcePosition){
         return 0;
     }
 
     @Ignore
     public int copyTo$length(Element[] destination, 
-    		int sourcePosition, int destinationPosition){
+            int sourcePosition, int destinationPosition){
         return java.lang.reflect.Array.getLength(array)-sourcePosition;
     }
 
@@ -1554,7 +1554,7 @@ public final class Array<Element>
 
     @Ignore
     public void copyTo(Array<Element> destination, 
-    		int sourcePosition, int destinationPosition){
+            int sourcePosition, int destinationPosition){
         copyTo(destination, sourcePosition, destinationPosition, 
                 java.lang.reflect.Array.getLength(array)-sourcePosition);
     }
@@ -1584,225 +1584,225 @@ public final class Array<Element>
             for (int i=0; i<length; i++) {
                 int desti = i+destinationPosition;
                 int sourcei = i+sourcePosition;
-				if (destination.array instanceof double[]) {
+                if (destination.array instanceof double[]) {
                     double[] target = (double[]) destination.array;
                     if (array instanceof Object[]) {
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
-                    	if (val instanceof Float) {
-                    		target[desti] = 
-                    				((Float) val).value;
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				((java.lang.Double) val).doubleValue();
-                    	}
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
+                        if (val instanceof Float) {
+                            target[desti] = 
+                                    ((Float) val).value;
+                        }
+                        else {
+                            target[desti] = 
+                                    ((java.lang.Double) val).doubleValue();
+                        }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof float[]) {
                     float[] target = (float[]) destination.array;
                     if (array instanceof Object[]) {
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
                         target[desti] = 
-                        		((java.lang.Float) val).floatValue();
+                                ((java.lang.Float) val).floatValue();
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof long[]) {
                     long[] target = (long[]) destination.array;
                     if (array instanceof Object[]) {
                         java.lang.Object val = 
-                        		((java.lang.Object[]) array)[sourcei];
-                    	if (val instanceof Integer) {
-                    		target[desti] = 
-                    				((Integer) val).value;
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				((java.lang.Long) val).longValue();
-                    	}
+                                ((java.lang.Object[]) array)[sourcei];
+                        if (val instanceof Integer) {
+                            target[desti] = 
+                                    ((Integer) val).value;
+                        }
+                        else {
+                            target[desti] = 
+                                    ((java.lang.Long) val).longValue();
+                        }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof int[]) {
-                	int[] target = (int[]) destination.array;
+                    int[] target = (int[]) destination.array;
                     if (array instanceof Object[]) {
                         java.lang.Object val = 
-                        		((java.lang.Object[]) array)[sourcei];
+                                ((java.lang.Object[]) array)[sourcei];
                         if (val instanceof Character) {
-                        	target[desti] = 
-                        			((Character) val).codePoint;
+                            target[desti] = 
+                                    ((Character) val).codePoint;
                         }
                         else {
-                        	target[desti] = 
-                        			((java.lang.Integer) val).intValue();
+                            target[desti] = 
+                                    ((java.lang.Integer) val).intValue();
                         }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof short[]) {
                     short[] target = (short[]) destination.array;
                     if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
+                        //TODO: think about java wrapper types here!!!
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
                         target[desti] = 
-                        		((java.lang.Short) val).shortValue();
+                                ((java.lang.Short) val).shortValue();
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof byte[]) {
                     byte[] target = (byte[]) destination.array;
                     if (array instanceof Object[]) {
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
                         target[desti] = 
-                        		((java.lang.Byte) val).byteValue();
+                                ((java.lang.Byte) val).byteValue();
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof boolean[]) {
                     boolean[] target = (boolean[]) destination.array;
                     if (array instanceof Object[]) {
-                    	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                    	if (val instanceof Boolean) {
-                    		target[desti] = 
-                    				((Boolean) val).booleanValue();
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				((java.lang.Boolean) val).booleanValue();
-                    	}
+                        java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
+                        if (val instanceof Boolean) {
+                            target[desti] = 
+                                    ((Boolean) val).booleanValue();
+                        }
+                        else {
+                            target[desti] = 
+                                    ((java.lang.Boolean) val).booleanValue();
+                        }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof char[]) {
                     char[] target = (char[]) destination.array;
                     if (array instanceof Object[]) {
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
                         target[desti] = 
-                        		((java.lang.Character) val).charValue();
+                                ((java.lang.Character) val).charValue();
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof java.lang.String[]) {
-                	java.lang.String[] target = 
-                			(java.lang.String[]) destination.array;
-                	if (array instanceof Object[]) {
-                    	java.lang.Object val = 
-                    			((java.lang.Object[]) array)[sourcei];
-                    	if (val instanceof String) {
-                    		String s = (String) val;
-							target[desti] = s.value;
-                    	}
-                    	else {
-                    		target[desti] = (java.lang.String) val;
-                    	}
+                    java.lang.String[] target = 
+                            (java.lang.String[]) destination.array;
+                    if (array instanceof Object[]) {
+                        java.lang.Object val = 
+                                ((java.lang.Object[]) array)[sourcei];
+                        if (val instanceof String) {
+                            String s = (String) val;
+                            target[desti] = s.value;
+                        }
+                        else {
+                            target[desti] = (java.lang.String) val;
+                        }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
                 else {
                     java.lang.Object[] target = 
-                    		(java.lang.Object[]) destination.array;
+                            (java.lang.Object[]) destination.array;
                     if (array instanceof long[]) {
-                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
-                    		target[desti] = 
-                    				Integer.instance(((long[])array)[sourcei]);
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				java.lang.Long.valueOf(((long[])array)[sourcei]);
-                    	}
+                        if ($reifiedElement==Integer.$TypeDescriptor$) {
+                            target[desti] = 
+                                    Integer.instance(((long[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    java.lang.Long.valueOf(((long[])array)[sourcei]);
+                        }
                     }
                     else if (array instanceof int[]) {
-                    	if ($reifiedElement==Character.$TypeDescriptor$) {
-                    		target[desti] = 
-                    				Character.instance(((int[])array)[sourcei]);
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				java.lang.Integer.valueOf(((int[])array)[sourcei]);
-                    	}
+                        if ($reifiedElement==Character.$TypeDescriptor$) {
+                            target[desti] = 
+                                    Character.instance(((int[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    java.lang.Integer.valueOf(((int[])array)[sourcei]);
+                        }
                     }
                     else if (array instanceof short[]) {
-                    	target[desti] = 
-                    			java.lang.Short.valueOf(((short[])array)[sourcei]);
+                        target[desti] = 
+                                java.lang.Short.valueOf(((short[])array)[sourcei]);
                     }
                     else if (array instanceof byte[]) {
-                    	target[desti] = 
-                    			java.lang.Byte.valueOf(((byte[])array)[sourcei]);
+                        target[desti] = 
+                                java.lang.Byte.valueOf(((byte[])array)[sourcei]);
                     }
                     else if (array instanceof double[]) {
-                    	if ($reifiedElement==Float.$TypeDescriptor$) {
-                    		target[desti] = 
-                    				Float.instance(((double[])array)[sourcei]);
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				java.lang.Double.valueOf(((double[])array)[sourcei]);
-                    	}
+                        if ($reifiedElement==Float.$TypeDescriptor$) {
+                            target[desti] = 
+                                    Float.instance(((double[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    java.lang.Double.valueOf(((double[])array)[sourcei]);
+                        }
                     }
                     else if (array instanceof float[]) {
-                    	target[desti] = 
-                    			java.lang.Float.valueOf(((float[])array)[sourcei]);
+                        target[desti] = 
+                                java.lang.Float.valueOf(((float[])array)[sourcei]);
                     }
                     else if (array instanceof boolean[]) {
-                    	if ($reifiedElement==Boolean.$TypeDescriptor$) {
-                    		target[desti] = 
-                    				Boolean.instance(((boolean[])array)[sourcei]);
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				java.lang.Boolean.valueOf(((boolean[])array)[sourcei]);
-                    	}
+                        if ($reifiedElement==Boolean.$TypeDescriptor$) {
+                            target[desti] = 
+                                    Boolean.instance(((boolean[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    java.lang.Boolean.valueOf(((boolean[])array)[sourcei]);
+                        }
                     }
                     else if (array instanceof char[]) {
-                    	target[desti] = 
-                    			java.lang.Character.valueOf(((char[])array)[sourcei]);
+                        target[desti] = 
+                                java.lang.Character.valueOf(((char[])array)[sourcei]);
                     }
                     else if (array instanceof java.lang.String[]) {
-                    	if ($reifiedElement==String.$TypeDescriptor$) {
-                    		target[desti] = 
-                    				String.instance(((java.lang.String[])array)[sourcei]);
-                    	}
-                    	else {
-                    		target[desti] = 
-                    				((java.lang.String[])array)[sourcei];
-                    	}
+                        if ($reifiedElement==String.$TypeDescriptor$) {
+                            target[desti] = 
+                                    String.instance(((java.lang.String[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    ((java.lang.String[])array)[sourcei];
+                        }
                     }
                     else {
                         throw new AssertionError(
-                        		"unexpected array types in copyTo()");
+                                "unexpected array types in copyTo()");
                     }
                 }
             }
@@ -1944,7 +1944,7 @@ public final class Array<Element>
     @Override @Ignore
     public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
     spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
-    	return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
+        return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
     }
     
     public void sortInPlace(
@@ -1952,7 +1952,7 @@ public final class Array<Element>
             @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
             final Callable<? extends Comparison> comparing) {
         java.util.List<Element> list = 
-        		new java.util.AbstractList<Element>() {
+                new java.util.AbstractList<Element>() {
             @Override
             public Element get(int index) {
                 return Array.this.unsafeItem(index);
@@ -1973,7 +1973,7 @@ public final class Array<Element>
             
         };
         Comparator<Element> comparator = 
-        		new Comparator<Element>() {
+                new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = comparing.$call$(x, y);
                 if (result==larger_.get_()) return 1;
