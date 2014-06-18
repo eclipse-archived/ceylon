@@ -6,11 +6,16 @@ function dre$$(object, type, loc) {
   //If it's already of another type, throw
   if (object.$$ !== undefined)throw new Error("Cannot modify the type of an object at runtime " + loc);
   //Check members
-  var expected = type.t.dynmem$;
   var actual = Object.getOwnPropertyNames(object);
-  for (var i=0; i < expected.length; i++) {
-    if (actual.indexOf(expected[i])<0) {
-      throw new Error("Native object is missing property " + expected[i] + " " + loc);
+  var sats = type.t.$$.prototype.getT$all();
+  for (var sat in sats) {
+    var expected = sats[sat].dynmem$;
+    if (typeof(expected)==='function') {
+      for (var i=0; i < expected.length; i++) {
+        if (actual.indexOf(expected[i])<0) {
+          throw new Error("Native object is missing property " + expected[i] + " " + loc);
+        }
+      }
     }
   }
   object.$$=type.t.$$;
