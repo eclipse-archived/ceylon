@@ -169,6 +169,22 @@ public class TypeGenerator {
         that.getInterfaceBody().visit(gen);
         //returnSelf(d);
         gen.endBlockNewLine();
+        if (d.isDynamic()) {
+            //Add the list of expected members here
+            final List<Declaration> members = d.getMembers();
+            gen.out(gen.getNames().name(d), ".dynmem$=[");
+            if (members.isEmpty()) {
+                gen.out("];");
+            } else {
+                gen.out("'");
+                boolean first = true;
+                for (Declaration m : members) {
+                    if (first)first=false;else gen.out("','");
+                    gen.out(gen.getNames().name(m));
+                }
+                gen.out("'];");
+            }
+        }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
