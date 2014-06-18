@@ -78,12 +78,12 @@ class ArraySequence<Element>(Array<Element> array)
             if (to < 0 || from > lastIndex) {
                 return [];
             }
-            return ArraySequence(array[largest(from, 0)..smallest(to, lastIndex)]);
+            return ArraySequence(array[from..to]);
         } else {
             if (from < 0 || to > lastIndex) {
                 return [];
             }
-            return ArraySequence(array[smallest(from, lastIndex)..largest(to, 0)]);
+            return ArraySequence(array[from..to]);
         }
     }
     
@@ -91,7 +91,7 @@ class ArraySequence<Element>(Array<Element> array)
         if (from > lastIndex) {
             return [];
         } else {
-            return ArraySequence(array[largest(from, 0)...]);
+            return ArraySequence(array[from...]);
         }
     }
     
@@ -99,7 +99,7 @@ class ArraySequence<Element>(Array<Element> array)
         if (to < 0) {
             return [];
         } else { 
-            return ArraySequence(array[...smallest(to, lastIndex)]);
+            return ArraySequence(array[...to]);
         }
     }
     

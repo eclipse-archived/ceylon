@@ -615,12 +615,32 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> span(Integer from, Integer to)
-            => [*sublist(from, to)]; //TODO: wrong!!!
+    shared actual default List<Element> span(Integer from, Integer to) {
+        if (exists end = lastIndex) {
+            if (from <= to) {
+                if (to < 0 || from > end) {
+                    return [];
+                }
+                return [*sublist(from,to)];
+            }
+            else {
+                if (from < 0 || to > end) {
+                    return [];
+                }
+                return [*reversed.sublist(end-from,end-to)];
+            }
+        }
+        else {
+            return [];
+        }
+    }
+    
     shared actual default List<Element> spanFrom(Integer from) 
             => from>=size then [] else [*sublistFrom(from)];
+    
     shared actual default List<Element> spanTo(Integer to) 
             => to<0 then [] else [*sublistTo(to)];
+    
     shared actual default List<Element> segment(Integer from, Integer length) 
             => length<1 then [] else [*sublist(from, from+length-1)];
     
