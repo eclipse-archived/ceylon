@@ -609,7 +609,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private String unquotePackageName(PackageMirror pkg) {
-        return pkg.getQualifiedName().replace("$", "");
+        return Util.removeChar('$', pkg.getQualifiedName());
     }
 
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {

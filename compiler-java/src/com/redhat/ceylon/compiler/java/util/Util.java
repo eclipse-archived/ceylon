@@ -238,4 +238,24 @@ public class Util {
     public static boolean isLowerCase(char c) {
         return Character.isLowerCase(c) || c == '_';
     }
+
+    /**
+     * Removes the given character from the given string. More efficient than using String.replace
+     * which uses regexes.
+     */
+    public static String removeChar(char c, String string) {
+        int nextChar = string.indexOf(c);
+        if(nextChar == -1)
+            return string;
+        int start = 0;
+        StringBuilder ret = new StringBuilder(string.length()-1);// we remove at least one
+        while(nextChar != -1){
+            ret.append(string, start, nextChar);
+            start = nextChar+1;
+            nextChar = string.indexOf(c, start);
+        }
+        // don't forget the end part
+        ret.append(string, start, string.length());
+        return ret.toString();
+    }
 }
