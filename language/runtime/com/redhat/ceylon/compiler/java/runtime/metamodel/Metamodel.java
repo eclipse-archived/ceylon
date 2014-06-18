@@ -218,6 +218,9 @@ public class Metamodel {
     }
 
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
+        if (o == null) {
+            return type.containsNull();
+        }
         TypeDescriptor instanceType = getTypeDescriptor(o);
         if(instanceType == null)
             return false;
