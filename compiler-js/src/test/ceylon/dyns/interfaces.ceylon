@@ -1,8 +1,11 @@
 import check { check, fail }
 
-//See #362
-dynamic Node {
+dynamic DataHolder {
   shared formal dynamic data;
+}
+
+//See #362
+dynamic Node satisfies DataHolder {
   shared formal Array<Node> children;
 }
 
