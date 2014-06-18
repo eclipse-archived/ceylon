@@ -189,11 +189,13 @@
     <target name="module-resolver.classes.api">
         <mkdir dir="${build.classes}"/>	
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-spi.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-api.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
@@ -210,21 +212,25 @@
         <mkdir dir="${build.classes}"/>
 
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-impl.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-webdav.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-ceylon.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-maven.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
@@ -262,11 +268,13 @@
     <target name="compile.tests" depends="build">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${cmr-testsuite-test.src}"
                destdir="${build.test}"
                classpathref="test.build.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${maven-test.src}"
                destdir="${build.test}"
                classpathref="test.build.classpath"
