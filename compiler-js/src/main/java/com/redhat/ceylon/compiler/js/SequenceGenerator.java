@@ -6,6 +6,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -22,7 +23,12 @@ public class SequenceGenerator {
         for (Tree.PositionalArgument expr : args) {
             if (expr == seqarg) {
                 gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},function(){return ");
-                expr.visit(gen);
+                if (gen.isInDynamicBlock() && expr instanceof Tree.SpreadArgument
+                        && Util.isTypeUnknown(expr.getTypeModel())) {
+                    TypeUtils.generateDynamicCheck(((Tree.SpreadArgument)expr).getExpression(), expr.getTypeModel(), gen, true);
+                } else {
+                    expr.visit(gen);
+                }
                 gen.out(";},");
             } else {
                 gen.out("case ", Integer.toString(count), ":return ");
@@ -57,7 +63,8 @@ public class SequenceGenerator {
                 if (count > 0) {
                     gen.out(",");
                 }
-                if (gen.isInDynamicBlock() && expr instanceof Tree.ListedArgument && TypeUtils.isUnknown(expr.getTypeModel())) {
+                if (gen.isInDynamicBlock() && expr instanceof Tree.ListedArgument && Util.isTypeUnknown(expr.getTypeModel())) {
+                    //TODO find out how to test this, if at all possible
                     TypeUtils.generateDynamicCheck(((Tree.ListedArgument)expr).getExpression(), gen.getTypeUtils().anything.getType(), gen, false);
                 } else {
                     expr.visit(gen);
