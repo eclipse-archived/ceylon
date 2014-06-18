@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -40,7 +39,9 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     @Override
     protected Package createPackage(String pkgName, Module module) {
         final Package pkg = new LazyPackage(getModelLoader());
-        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        List<String> name = pkgName.isEmpty() ? 
+        		Collections.<String>emptyList() : 
+        			splitModuleName(pkgName); 
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
@@ -60,7 +61,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         return module;
     }
 
-    public void loadModule(String name, String version, ArtifactResult artifact, ClassLoader classLoader) {
+    public void loadModule(String name, String version, 
+    		ArtifactResult artifact, ClassLoader classLoader) {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
             Module module = getOrCreateModule(splitModuleName(name), version);
@@ -88,11 +90,15 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
 
                     // Java modules must have their dependencies set by the artifact result, as there is no module info in the jar
                     for (ArtifactResult dep : artifact.dependencies()) {
-                        Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
+                        Module dependency = 
+                        		getOrCreateModule(splitModuleName(dep.name()), 
+                        				dep.version());
 
-                        ModuleImport depImport = findImport(module, dependency);
+                        ModuleImport depImport = 
+                        		findImport(module, dependency);
                         if (depImport == null) {
-                            ModuleImport moduleImport = new ModuleImport(dependency, false, false);
+                            ModuleImport moduleImport = 
+                            		new ModuleImport(dependency, false, false);
                             module.addImport(moduleImport);
                         }
                     }
@@ -110,10 +116,14 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         return getModelLoader().findModuleForClass(klass);
     }
     
-    private final LinkedHashMap<TypeDescriptor, ProducedType> producedTypeCache = new LinkedHashMap<TypeDescriptor, ProducedType>(100, (float)0.75, true) {
-        protected boolean removeEldestEntry(Map.Entry<TypeDescriptor, ProducedType> eldest) {
-            return size() > 100;
-         }
+    @SuppressWarnings("serial")
+    private final LinkedHashMap<TypeDescriptor, ProducedType> producedTypeCache = 
+    		new LinkedHashMap<TypeDescriptor, ProducedType>(100, (float)0.75, true) {
+    	@Override
+    	protected boolean removeEldestEntry
+    	        (Map.Entry<TypeDescriptor,ProducedType> eldest) {
+    		return size() > 100;
+    	}
     };
     
     public ProducedType getCachedProducedType(TypeDescriptor td) {
@@ -125,10 +135,14 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         return pt;
     }
     
-    private final LinkedHashMap<String, Boolean> isCache = new LinkedHashMap<String, Boolean>(100, (float)0.75, true) {
-        protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
-            return size() > 100;
-         }
+    @SuppressWarnings("serial")
+    private final LinkedHashMap<String, Boolean> isCache = 
+    		new LinkedHashMap<String, Boolean>(100, (float)0.75, true) {
+    	@Override
+    	protected boolean removeEldestEntry
+    	        (Map.Entry<String,Boolean> eldest) {
+    		return size() > 100;
+    	}
     };
     
     public boolean cachedIs(Object o, TypeDescriptor type) {

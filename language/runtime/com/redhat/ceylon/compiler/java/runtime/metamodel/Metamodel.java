@@ -836,6 +836,7 @@ public class Metamodel {
         return annotations($reifiedValues, annotated, predicate);
     }
 
+    @SuppressWarnings("unchecked")
     public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations$();
@@ -1026,7 +1027,7 @@ public class Metamodel {
         }
     }
     
-    //TODO unused, delete me?
+    @SuppressWarnings("unchecked")
     public static <T> Sequential<? extends T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class<?>[] refs) {
         Object[] array = new Object[refs.length];
         for (int ii = 0; ii < refs.length; ii++) {

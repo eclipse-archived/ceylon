@@ -1,6 +1,11 @@
 package ceylon.language.meta;
 
+import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getReflectedAnnotationClass;
+import ceylon.language.Annotated;
+import ceylon.language.Annotation;
 import ceylon.language.AssertionError;
+import ceylon.language.ConstrainedAnnotation;
+import ceylon.language.OptionalAnnotation;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.meta.model.Class;
@@ -21,20 +26,26 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Method
 public final class annotations_ {
     
-    private annotations_() {
-    }
+    private annotations_() {}
     
     // TODO @Shared$annotation
+    @SuppressWarnings({ "unchecked" })
     @Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @TypeInfo("Values")
     @TypeParameters({
-        @TypeParameter(value = "Value", satisfies = {"ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
+        @TypeParameter(value = "Value", 
+                satisfies = {"ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
         @TypeParameter(value = "Values"), 
-        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language::Annotated"}, variance=Variance.IN)
+        @TypeParameter(value = "ProgramElement", 
+                satisfies = {"ceylon.language::Annotated"}, 
+                variance=Variance.IN)
     })
-    public static <Value extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, 
+    public static <Value extends ConstrainedAnnotation
+                          <? extends Value, 
+                           ? extends Values, 
+                           ? super ProgramElement>, 
                    Values, 
-                   ProgramElement extends ceylon.language.Annotated>
+                   ProgramElement extends Annotated>
     Values annotations(
             @Ignore
             final TypeDescriptor $reifiedValue, 
@@ -44,19 +55,31 @@ public final class annotations_ {
             final TypeDescriptor $reifiedProgramElement, 
             @Name("annotationType")
             @TypeInfo("ceylon.language.meta.model::Class<ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>")
-            final Class<? extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>,?> annotationType, 
+            final Class<? extends ConstrainedAnnotation
+                    <? extends Value, 
+                     ? extends Values, 
+                     ? super ProgramElement>,
+                     ?> 
+            annotationType, 
             @Name("programElement")
             @TypeInfo("ProgramElement")
             final ProgramElement programElement) {
-        Sequential<? extends ceylon.language.Annotation> annots = Metamodel.annotations($reifiedValue, programElement);
-        final java.lang.Class<?> refAnnotationClass = Metamodel.getReflectedAnnotationClass(annotationType);
-        if (ceylon.language.OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
-            if (annots.getSize() > 1L) {
+        Sequential<? extends Annotation> results = 
+                Metamodel.annotations($reifiedValue, programElement);
+        boolean optional = OptionalAnnotation.class
+        		.isAssignableFrom(getReflectedAnnotationClass(annotationType));
+		if (optional) {
+            if (results.getSize() > 1L) {
                 throw new AssertionError("optional annotation occurs more than once");
             }
-            return (Values)(annots.getEmpty() ? null : ((Sequence)annots).getFirst());   
-        } else {
-            return (Values)annots;
+            Object singleResult = 
+                    results instanceof Sequence ? 
+                            ((Sequence<?>) results).getFirst() : 
+                            null;
+            return (Values) singleResult;   
+        }
+        else {
+            return (Values) results;
         }
     }
 }

@@ -18,7 +18,9 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 @Class
 public class EnumeratedTypeError extends Error {
 
-    public EnumeratedTypeError(String message) {
+    private static final long serialVersionUID = 4496076366345444435L;
+
+	public EnumeratedTypeError(String message) {
         super(message);
     }
 

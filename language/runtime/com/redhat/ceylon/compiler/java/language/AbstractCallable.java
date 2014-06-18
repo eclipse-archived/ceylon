@@ -132,6 +132,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      * <li>the last element of the given array is a Sequential, whose elements 
      *     make up the rest of the elements in the returned sequential.
      */
+    @SuppressWarnings("rawtypes")
     protected static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, Object[] argsAndVarargs) {
         Sequential<?> callsiteVarargs = (Sequential<?>)argsAndVarargs[argsAndVarargs.length-1];
@@ -148,6 +149,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      * <li>elements of {@code rest} 
      *     make up the rest of the elements in the returned sequential.
      */
+    @SuppressWarnings("rawtypes")
     protected static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, int length, Object[] initial, Sequential<?> rest) {
         return Util.sequentialCopy($reifiedElement, 

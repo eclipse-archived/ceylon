@@ -7,8 +7,9 @@ import static java.lang.System.arraycopy;
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
+import ceylon.language.impl.BaseIterator;
+
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -487,25 +488,19 @@ public final class Tuple<Element, First extends Element,
         TypeDescriptor type = $cachedType != null ? 
         		$cachedType.get() : null;
         if (type == null) {
-            type = foo();
+            TypeDescriptor restType = getTypeDescriptor(rest);
+			TypeDescriptor elementType = 
+					Metamodel.getIteratedTypeDescriptor(restType);
+			for (int ii = array.length-1; ii >= 0; ii--) {
+			    TypeDescriptor elemType = $getElementType(ii);
+			    elementType = TypeDescriptor.union(elementType, elemType);
+			    restType = TypeDescriptor.klass(Tuple.class, 
+			            elementType, elemType, restType);
+			}
+			type = restType;
             $cachedType = new SoftReference<TypeDescriptor>(type);
         }
         return type;
-    }
-    
-    private TypeDescriptor foo() {
-        TypeDescriptor restType = getTypeDescriptor(rest);
-        TypeDescriptor elementType = Metamodel.getIteratedTypeDescriptor(restType);
-        for (int ii = array.length-1 ;ii >= 0; ii--) {
-            
-            TypeDescriptor e = $getElementType(ii);
-            elementType = TypeDescriptor.union(elementType, e);
-            restType = TypeDescriptor.klass(Tuple.class, 
-                    elementType, 
-                    e, 
-                    restType);
-        }
-        return restType;
     }
     
     /*
@@ -531,13 +526,11 @@ public final class Tuple<Element, First extends Element,
         return TypeDescriptor.union(types);
     }
     */
+    
     @Ignore
     private TypeDescriptor $getElementType(int index) {
         return getTypeDescriptor(array[index]);
     }
-    
-    
-    
     
     // The array length is the first element in the array
     @Ignore
@@ -628,30 +621,31 @@ public final class Tuple<Element, First extends Element,
 
     @Ignore
     private class TupleIterator 
-            extends AbstractIterator<Element> {
-
+            extends BaseIterator<Element> {
+    	
         private TupleIterator() {
             super($getReifiedElement$());
         }
-
+        
         private long idx = 0;
         
         private Iterator<Element> restIter = rest.iterator(); 
-
+        
         @Override
         public java.lang.Object next() {
             if (idx < array.length) {
                 return array[Util.toInt(idx++)];
-            } else {
+            }
+            else {
                 return restIter.next();
             }
         }
-
+        
         @Override
         public java.lang.String toString() {
             return "TupleIterator";
         }
-
+        
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

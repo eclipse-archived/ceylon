@@ -1,8 +1,9 @@
 package ceylon.language;
 
+import ceylon.language.impl.BaseIterator;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
-import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
 import com.redhat.ceylon.compiler.java.language.StringTokens;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -699,7 +700,7 @@ public final class String
     
     @Ignore
     private static class StringIterator 
-            extends AbstractIterator<Character> 
+            extends BaseIterator<Character> 
             implements ReifiedType {
     	
         private static TypeDescriptor $TypeDescriptor$ = 
