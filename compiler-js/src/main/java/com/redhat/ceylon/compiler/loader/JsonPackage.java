@@ -533,6 +533,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             m.put(MetamodelGenerator.KEY_METATYPE, t);
             setAnnotations(t, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
         }
+        if (m.remove(MetamodelGenerator.KEY_DYNAMIC) != null) {
+            t.setDynamic(true);
+        }
         List<TypeParameter> tparms = t.getTypeParameters();
         List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         if (listOfMaps != null && (tparms == null || tparms.size() < listOfMaps.size())) {

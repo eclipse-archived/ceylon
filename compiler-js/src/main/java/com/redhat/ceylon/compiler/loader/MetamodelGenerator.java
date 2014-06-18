@@ -53,6 +53,7 @@ public class MetamodelGenerator {
     public static final String KEY_SATISFIES    = "$sts";
 
     public static final String KEY_DEFAULT      = "$def";
+    public static final String KEY_DYNAMIC      = "dyn";
 
     public static final String METATYPE_CLASS           = "c";
     public static final String METATYPE_INTERFACE       = "i";
@@ -441,6 +442,9 @@ public class MetamodelGenerator {
         //self type
         if (d.getSelfType() != null) {
             m.put(KEY_SELF_TYPE, d.getSelfType().getDeclaration().getName());
+        }
+        if (d.isDynamic()) {
+            m.put(KEY_DYNAMIC, 1);
         }
         //satisfies
         encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
