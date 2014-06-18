@@ -111,7 +111,7 @@ shared final class Range<Element>(first, last)
     
     "The rest of the range, without the start of the range."
     shared actual Element[] rest 
-            => first==last then [] else Range(next(first), last);
+            => first==last then [] else next(first)..last;
     
     "This range in reverse, with [[first]] and [[last]]
      interchanged.
@@ -119,7 +119,7 @@ shared final class Range<Element>(first, last)
      For any two range endpoints, `x` and `y`: 
      
          `(x..y).reversed == y..x`."
-    shared actual Range<Element> reversed => Range(last,first);
+    shared actual Range<Element> reversed => last..first;
     
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
@@ -183,7 +183,7 @@ shared final class Range<Element>(first, last)
         else {
             value start = first.neighbour(shift);
             value end = last.neighbour(shift);
-            return Range(start,end);
+            return start..end;
         }
     }
     
@@ -326,19 +326,34 @@ shared final class Range<Element>(first, last)
     }
     
     shared actual [Element*] segment(Integer from, Integer length) 
-            => length<=0 then [] else spanFrom(from).spanTo(length-1);
+            => length<=0 then [] else span(from, from+length-1);
     
-    shared actual [Element*] span(Integer from, Integer to) 
-            => to>=from then spanTo(to).spanFrom(from)
-                        else spanFrom(from).spanTo(to).reversed;
+    shared actual [Element*] span(Integer from, Integer to) {
+        if (from<=to) {
+            if (to<0 || !longerThan(from)) {
+                return [];
+            }
+            else {
+                return (this[from] else first)..(this[to] else last);
+            }
+        }
+        else {
+            if (from<0 || !longerThan(to)) {
+                return [];
+            }
+            else {
+                return (this[from] else last)..(this[to] else first);
+            }
+        }
+    }
     
     shared actual [Element*] spanFrom(Integer from) {
         if (from<=0) {
             return this;
         }
         else if (longerThan(from)) {
-            value shift = increasing then from else -from;
-            return Range(first.neighbour(shift), last);
+            assert (exists first = this[from]);
+            return first..last;
         }
         else {
             return [];
@@ -350,9 +365,8 @@ shared final class Range<Element>(first, last)
             return [];
         }
         else if (longerThan(to+1)) {
-            value offset = size-1-to;
-            value shift = increasing then -offset else offset;
-            return Range(first, last.neighbour(shift));
+            assert (exists last = this[to]);
+            return first..last;
         }
         else {
             return this;

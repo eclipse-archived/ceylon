@@ -616,7 +616,7 @@ shared interface List<out Element>
     }
     
     shared actual default List<Element> span(Integer from, Integer to)
-            => [*sublist(from, to)];
+            => [*sublist(from, to)]; //TODO: wrong!!!
     shared actual default List<Element> spanFrom(Integer from) 
             => from>=size then [] else [*sublistFrom(from)];
     shared actual default List<Element> spanTo(Integer to) 
