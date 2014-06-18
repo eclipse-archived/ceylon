@@ -1133,32 +1133,41 @@ public final class Array<Element>
     }
     
     private java.lang.Object copyArray() {
-    	if (array instanceof Object[]) {
-    		return Arrays.copyOf((Object[]) array, ((Object[]) array).length);
+    	if (array instanceof java.lang.Object[]) {
+    		return Arrays.copyOf((java.lang.Object[]) array, 
+    				((java.lang.Object[]) array).length);
     	}
     	else if (array instanceof long[]) {
-    		return Arrays.copyOf((long[]) array, ((long[]) array).length);
+    		return Arrays.copyOf((long[]) array, 
+    				((long[]) array).length);
     	}
     	else if (array instanceof double[]) {
-    		return Arrays.copyOf((double[]) array, ((double[]) array).length);
+    		return Arrays.copyOf((double[]) array, 
+    				((double[]) array).length);
     	}
     	else if (array instanceof boolean[]) {
-    		return Arrays.copyOf((boolean[]) array, ((boolean[]) array).length);
+    		return Arrays.copyOf((boolean[]) array, 
+    				((boolean[]) array).length);
     	}
     	else if (array instanceof int[]) {
-    		return Arrays.copyOf((int[]) array, ((int[]) array).length);
+    		return Arrays.copyOf((int[]) array, 
+    				((int[]) array).length);
     	}
     	else if (array instanceof byte[]) {
-    		return Arrays.copyOf((byte[]) array, ((byte[]) array).length);
+    		return Arrays.copyOf((byte[]) array, 
+    				((byte[]) array).length);
     	}
     	else if (array instanceof short[]) {
-    		return Arrays.copyOf((short[]) array, ((short[]) array).length);
+    		return Arrays.copyOf((short[]) array, 
+    				((short[]) array).length);
     	}
     	else if (array instanceof float[]) {
-    		return Arrays.copyOf((float[]) array, ((float[]) array).length);
+    		return Arrays.copyOf((float[]) array, 
+    				((float[]) array).length);
     	}
     	else if (array instanceof char[]) {
-    		return Arrays.copyOf((char[]) array, ((char[]) array).length);
+    		return Arrays.copyOf((char[]) array, 
+    				((char[]) array).length);
     	}
     	else {
     		throw new AssertionError("impossible array type");
