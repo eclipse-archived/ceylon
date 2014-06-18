@@ -338,12 +338,6 @@ public class TypeUtils {
         return r;
     }
 
-    static boolean isUnknown(ProducedType pt) {
-        return pt == null || pt.isUnknown();
-    }
-    static boolean isUnknown(Parameter param) {
-        return param == null || isUnknown(param.getType());
-    }
     static boolean isUnknown(Declaration d) {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
     }
