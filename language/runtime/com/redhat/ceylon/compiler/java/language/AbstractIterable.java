@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
 
-import ceylon.language.Iterable;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 
@@ -22,43 +21,43 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public abstract class AbstractIterable<Element,Absent>
 extends BaseIterable<Element,Absent>  {
     
-    @Ignore
-    private TypeDescriptor $reifiedElement;
-    @Ignore
-    private TypeDescriptor $reifiedAbsent;
-    
-    @Ignore
-    private final Iterable<?,?>[] $iterables;
+//    @Ignore
+//    private TypeDescriptor $reifiedElement;
+//    @Ignore
+//    private TypeDescriptor $reifiedAbsent;
+//    
+//    @Ignore
+//    private final Iterable<?,?>[] $iterables;
 
     public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, 
     		@Ignore TypeDescriptor $reifiedAbsent) {
     	super($reifiedElement, $reifiedAbsent);
-        this.$iterables = null;
+//        this.$iterables = null;
     }
     
-    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, 
-    		@Ignore TypeDescriptor $reifiedAbsent, 
-    		Iterable<?,?>... iterables) {
-    	super($reifiedElement, $reifiedAbsent);
-    	this.$reifiedElement = $reifiedElement;
-    	this.$reifiedAbsent = $reifiedAbsent;
-        this.$iterables = iterables;
-    }
-    
-    @Ignore
-    public Iterable<?,?>[] $getIterables$() {
-        return $iterables;
-    }
+//    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, 
+//    		@Ignore TypeDescriptor $reifiedAbsent, 
+//    		Iterable<?,?>... iterables) {
+//    	super($reifiedElement, $reifiedAbsent);
+//    	this.$reifiedElement = $reifiedElement;
+//    	this.$reifiedAbsent = $reifiedAbsent;
+//        this.$iterables = iterables;
+//    }
+//    
+//    @Ignore
+//    public Iterable<?,?>[] $getIterables$() {
+//        return $iterables;
+//    }
     
     @Override
     public boolean getEmpty() {
         return iterator().next() == finished_.get_();
     }
     
-    @Override
-    @Ignore
-    public final TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(AbstractIterable.class, 
-        		$reifiedElement, $reifiedAbsent);
-    }
+//    @Override
+//    @Ignore
+//    public final TypeDescriptor $getType$() {
+//        return TypeDescriptor.klass(AbstractIterable.class, 
+//        		$reifiedElement, $reifiedAbsent);
+//    }
 }
