@@ -152,4 +152,10 @@ public class OptimizationTest extends CompilerTest {
     public void testLopOptimStringIterationStatic() {
         compareWithJavaSource("loop/optim/StringIterationStatic");
     }
+    
+    @Test
+    public void testLopOptimDynamicIterationBench() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.dynamicIterationBench_main",
+                "loop/optim/DynamicIterationBench.ceylon");
+    }
 }
