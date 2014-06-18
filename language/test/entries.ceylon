@@ -189,9 +189,12 @@ Range<Integer> range {
     check(r1[...-1] == {}, "r1[...-1] `` r1[...-1] ``");
 
     //non-Integer Ranges
-    class TestRange(Integer number) satisfies Ordinal<TestRange> & Comparable<TestRange> {
+    class TestRange(Integer number) satisfies Enumerable<TestRange> & Comparable<TestRange> {
         shared actual TestRange predecessor { return TestRange(number-1); }
         shared actual TestRange successor { return TestRange(number+1); }
+        shared actual TestRange neighbour(Integer offset) { return TestRange(number+offset); }
+        shared actual Integer offset(TestRange other) { return number - other.number; }
+        shared actual Integer offsetSign(TestRange other) { return (number - other.number).sign; }
         shared actual Comparison compare(TestRange other) {
             return number <=> other.number;
         }

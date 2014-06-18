@@ -144,20 +144,20 @@ shared void testIterables() {
     //Skipping
     check({1,2,3,4,5}.skip(3).sequence()=={4,5}.sequence(), "skip [1]");
     check(!{1,2,3,4,5}.skip(9).sequence() nonempty, "skip [2]");
-    check((1..10).skip(5)==6..10, "Range.skip [3]");
+    check((1..10).skip(5).sequence()==6..10, "Range.skip [3]");
     check(!(1..5).skip(9).sequence() nonempty, "skip [4]");
-    check((5..1).skip(2)==3..1, "Range.skip [5]");
+    check((5..1).skip(2).sequence()==3..1, "Range.skip [5]");
     check("hola".skip(2)=="la", "String.skip");
     check({for(i in 1..10) i}.skip(8).sequence()=={9,10}.sequence(), "comprehension.skip");
 
     //Taking
     check({1,2,3,4,5}.take(3).sequence()=={1,2,3}.sequence(), "take [1]");
     check(!{1,2,3,4,5}.take(0).sequence() nonempty, "take [2]");
-    check((1..10).take(5)==1..5, "Range.take [3] was ``(1..10).take(5)``");
+    check((1..10).take(5).sequence()==1..5, "Range.take [3] was ``(1..10).take(5)``");
     check(!(1..5).take(0).sequence() nonempty, "Range.take [4]");
-    check((1..10).take(100)==1..10, "Range.take [5]");
+    check((1..10).take(100).sequence()==1..10, "Range.take [5]");
     check({1,2,3,4,5}.take(100).sequence()=={1,2,3,4,5}.sequence(), "take [6]");
-    check((5..1).take(3)==5..3, "Range.take [7] was ``(5..1).take(3)``");
+    check((5..1).take(3).sequence()==5..3, "Range.take [7] was ``(5..1).take(3)``");
     check("hola".take(2)=="ho", "String.take");
     check({for (i in 1..10) i}.take(2).sequence()=={1,2}.sequence(), "comprehension.take");
 
