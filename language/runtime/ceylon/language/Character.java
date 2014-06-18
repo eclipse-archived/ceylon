@@ -231,15 +231,6 @@ public final class Character
         return codePoint;
     }
 
-    public long getIntegerValue() {
-        return codePoint;
-    }
-
-    @Ignore
-    public static long getIntegerValue(int codePoint) {
-        return codePoint;
-    }
-
     @Override
     public Character neighbour(@Name("offset") long offset) {
         return instance(Util.toInt(codePoint+offset));
@@ -248,6 +239,26 @@ public final class Character
     @Ignore
     public static int neighbour(int codePoint, long offset) {
         return Util.toInt(codePoint+offset);
+    }
+
+    @Override
+    public long offset(@Name("other") Character other) {
+        return codePoint-other.codePoint;
+    }
+
+    @Ignore
+    public static long offsetSign(int codePoint, int other) {
+        return codePoint-other;
+    }
+
+    @Override
+    public long offsetSign(@Name("other") Character other) {
+        return codePoint-other.codePoint;
+    }
+
+    @Ignore
+    public static long offset(int codePoint, int other) {
+        return codePoint-other;
     }
 
     @Override

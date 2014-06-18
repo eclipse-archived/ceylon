@@ -95,7 +95,7 @@ shared final native class Character(Character character)
     /*"The directionality of the character."
     shared native CharacterDirectionality directionality;*/
     
-    "The code point of the character."
+    "The Unicode code point of the character."
     shared native Integer integer;
     
     "Compare this character with the given string character, 
@@ -117,10 +117,9 @@ shared final native class Character(Character character)
      less than this character."
     shared actual native Character successor;
     
-    "The code point of the character."
-    shared actual native Integer integerValue;
-    
     shared actual native Character neighbour(Integer offset);
+    shared actual native Integer offset(Character other);
+    shared actual native Integer offsetSign(Character other);
     
     shared actual native Boolean largerThan(Character other); 
     shared actual native Boolean smallerThan(Character other); 

@@ -1138,7 +1138,7 @@ public class Util {
      * @return A range
      */
     @SuppressWarnings({"unchecked","rawtypes"})
-    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> 
+    public static <T extends ceylon.language.Enumerable<? extends T>> Sequential<T> 
     spreadOp(TypeDescriptor $reifiedT, T start, long length) {
         if (length <= 0) {
             return (Sequential)empty_.get_();

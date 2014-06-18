@@ -184,8 +184,8 @@ class MyScalable(Float[] floats)
 
 class MyEnumerable(Float f) 
         satisfies Enumerable<MyEnumerable>&Comparable<MyEnumerable> {
-    integerValue => f.integer;
-    neighbour(Integer i) => MyEnumerable(f+i);
+    neighbour(Integer i) => MyEnumerable(f-i);
+    offset(MyEnumerable me) => (me.f-f).integer;
     successor => MyEnumerable(f-1);
     compare(MyEnumerable other) => f<=>other.f;
 }

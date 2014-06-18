@@ -1,48 +1,31 @@
-"Abstraction of ordinal types, that is, types with 
- [[successor]] and [[predecessor]] operations, including 
- [[Integer]] and other [[Integral]] numeric types.
- [[Character]] is also considered an ordinal type.
+"Abstraction of _ordinal types_, that is, types where each
+ values has a [[successor]] and [[predecessor]], such as:
+  
+ - types which represent or are isomorphic to the 
+   mathematical integers, for example, [[Integer]] and other 
+   [[Integral]] numeric types, and even [[Character]], along 
+   with
+ - enumerated types which are isomorphic to the mathematical
+   integers under modular arithmetic, for example, the days
+   of the week.
  
  The _increment_ operator `++` and _decrement_ operator `--`
- are defined for all `Ordinal` types.
+ are defined for all types which satisfy `Ordinal`.
  
      function increment() {
          count++;
      }
  
- An `Ordinal` type which is also [[Comparable]] may be used 
- to generate a [[Range]], using the span or segment 
- operators.
+ Most ordinal types have a [[total order|Comparable]]. If 
+ an ordinal type has a total order, then it should satisfy:
  
- The _span_ operator `..` accepts the first and last values 
- of the range.
- 
-     0..5    // [0, 1, 2, 3, 4, 5]
-     0..0    // [0]
- 
- If the last value is smaller than the first value, the
- range is reversed.
- 
-     5..0    // [5, 4, 3, 2, 1, 0]
-     0..-5   // [0, -1, -2, -3, -4, -5]
- 
- The _segment_ operator `:` accepts the first index and 
- maximum length of the subrange.
- 
-     0:5     // [0, 1, 2, 3, 4]
- 
- If the length is nonpositive, the subrange is empty.
- 
-     0:0     // []
-     5:0     // []
-     0:-5    // []
- 
- Most `Ordinal` types are also [[Enumerable]]."
+ - `x.successor > x`, and
+ - `x.predecessor < x`."
 see (`class Character`, 
      `class Integer`, 
      `interface Integral`, 
-     `interface Enumerable`,
-     `class Range`)
+     `interface Comparable`,
+     `interface Enumerable`)
 by ("Gavin")
 shared interface Ordinal<out Other> of Other
         given Other satisfies Ordinal<Other> {
@@ -53,32 +36,4 @@ shared interface Ordinal<out Other> of Other
     "The predecessor of this value."
     shared formal Other predecessor;
     
-}
-
-"Abstraction of [[ordinal types|Ordinal]] whose instances 
- can be mapped to the [[integers|Integer]] or to a range of 
- integers."
-shared interface Enumerable<out Other> of Other
-        satisfies Ordinal<Other> 
-        given Other satisfies Enumerable<Other> {
-        
-    "The corresponding integer. The implementation must
-     satisfy these constraints:
-    
-         (x.successor).integerValue = x.integerValue+1
-         (x.predecessor).integerValue = x.integerValue-1
-     
-     for every instance `x` of the enumerable type."
-    shared formal Integer integerValue;
-    
-    "The indirect successor or predecessor at the given
-     [[offset]], where:
-     
-     - `x.neighbour(0) == x`,
-     - `x.neighbour(i+1) == x.neighbour(i).successor`, and
-     - `x.neighbour(i-1) == x.neighbour(i).predecessor`."
-    shared formal Other neighbour(Integer offset);
-    
-    shared actual default Other successor => neighbour(1);
-    shared actual default Other predecessor => neighbour(-1);
 }

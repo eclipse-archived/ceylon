@@ -21,12 +21,11 @@
  See the documentation for [[Ordinal]] for more
  information about the span and segment operators."
 by ("Gavin")
-see (`interface Ordinal`)
+see (`interface Enumerable`)
 shared final class Range<Element>(first, last) 
         extends Object() 
         satisfies [Element+]
-        given Element satisfies Ordinal<Element> & 
-                                Comparable<Element> { 
+        given Element satisfies Enumerable<Element> { 
     
     "The start of the range."
     shared actual Element first;
@@ -37,70 +36,73 @@ shared final class Range<Element>(first, last)
     shared actual String string 
             => first.string + ".." + last.string;
     
-    "Determines if the range is decreasing."
-    shared Boolean decreasing => last<first; 
+    "Determines if the range is increasing, that is, if
+     successors occur after predecessors."
+    shared Boolean increasing 
+            = last.offsetSign(first)>=0;
+    
+    "Determines if the range is decreasing, that is, if
+     predecessors occur after successors."
+    shared Boolean decreasing => !increasing;
+    
+    "Determines if the range is of rescursive values, that 
+     is, if successors wrap back on themselves."
+    Boolean recursive 
+            => first.offsetSign(first.successor)>=0;
     
     Element next(Element x) 
-            => decreasing then x.predecessor 
-                          else x.successor;
-
+            => increasing then x.successor 
+                          else x.predecessor;
+    
+    Element nextStep(Element x, Integer step) 
+            => increasing then x.neighbour(step) 
+                          else x.neighbour(-step);
+    
+    Element fromFirst(Integer offset)
+            => increasing then first.neighbour(offset)
+                          else first.neighbour(-offset);
+    
+    Boolean afterLast(Element x)
+            => increasing then x.offsetSign(last)>0
+                          else x.offsetSign(last)<0;
+    
+    Boolean beforeLast(Element x)
+            => increasing then x.offsetSign(last)<0
+                          else x.offsetSign(last)>0;
+    
+    Boolean beforeFirst(Element x)
+            => increasing then x.offsetSign(first)<0
+                          else x.offsetSign(first)>0;
+    
+    Boolean afterFirst(Element x)
+            => increasing then x.offsetSign(first)>0
+                          else x.offsetSign(first)<0;
+    
     "The nonzero number of elements in the range."
-    shared actual Integer size {
-    	if (is Enumerable<Anything> last, 
-    	    is Enumerable<Anything> first) {
-    		return (last.integerValue - first.integerValue)
-    		            .magnitude+1;
-    	}
-    	else {
-    		variable Integer size = 1;
-    		variable Element current=first;
-    		while (current!=last) {
-    			size++;
-    			current = next(current);
-    		}
-            return size;
-    	}
-    }
+    shared actual Integer size 
+            => last.offset(first).magnitude+1;
     
     shared actual Boolean longerThan(Integer length) {
         if (length<1) {
             return true;
         }
-        else if (is Enumerable<Anything> last, 
-            is Enumerable<Anything> first) {
+        else if (recursive) {
             return size>length;
         }
         else {
-            variable Integer size = 1;
-            variable Element current=first;
-            while (current!=last) {
-                if (size++>length) {
-                    return true;
-                }
-                current = next(current);
-            }
-            return false;
+            return beforeLast(fromFirst(length-1));
         }
     }
     
     shared actual Boolean shorterThan(Integer length) {
-        if (length<=1) {
-            return false;
+        if (length<1) {
+            return true;
         }
-        else if (is Enumerable<Anything> last, 
-            is Enumerable<Anything> first) {
+        else if (recursive) {
             return size<length;
         }
         else {
-            variable Integer size = 1;
-            variable Element current=first;
-            while (current!=last) {
-                if (size++==length) {
-                    return false;
-                }
-                current = next(current);
-            }
-            return true;
+            return afterLast(fromFirst(length-1));
         }
     }
     
@@ -108,14 +110,8 @@ shared final class Range<Element>(first, last)
     shared actual Integer lastIndex => size-1; 
     
     "The rest of the range, without the start of the range."
-    shared actual Element[] rest {
-        if (first==last) {
-            return [];
-        }
-        else {
-            return next(first)..last;
-        }
-    }
+    shared actual Element[] rest 
+            => first==last then [] else Range(next(first), last);
     
     "This range in reverse, with [[first]] and [[last]]
      interchanged.
@@ -123,7 +119,7 @@ shared final class Range<Element>(first, last)
      For any two range endpoints, `x` and `y`: 
      
          `(x..y).reversed == y..x`."
-    shared actual Range<Element> reversed => last..first;
+    shared actual Range<Element> reversed => Range(last,first);
     
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
@@ -132,52 +128,31 @@ shared final class Range<Element>(first, last)
         if (index<0) {
             return null;
         }
-        else if (is Enumerable<Element> first) {
-            value result = first.neighbour(decreasing then -index else index);
-            return decreasing && result>=last || 
-                  !decreasing && result<=last 
-                          then result;
+        else if (recursive) {
+            return index<size then fromFirst(index);
         }
         else {
-            variable Integer current=0;
-            variable Element x=first;
-            while (current<index) {
-                if (x==last) {
-                    return null;
-                }
-                else {
-                    ++current;
-                    x=next(x);
-                }
-            }
-            return x;
+            value result = fromFirst(index);
+            return !afterLast(result) then result;
         }
     }
     
     "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator() {
-        if (is Enumerable<Element> first,
-            is Enumerable<Element> last) {
-            return EnumerableRangeBy(first, last, 1).iterator();
-        } 
-        object iterator
+        object iterator 
                 satisfies Iterator<Element> {
-            variable Element|Finished current = first;
+            variable value current = first; 
             shared actual Element|Finished next() {
-                Element|Finished result = current;
-                if (!is Finished curr = current) {
-                    if (decreasing 
-                            then curr<=last 
-                            else curr>=last) {
-                        current = finished;
-                    } 
-                    else {
-                        current = outer.next(curr);
-                    }
+                if (containsElement(current)) {
+                    value result = current;
+                    current = outer.next(current);
+                    return result;
                 }
-                return result;
+                else {
+                    return finished;
+                }
             }
-            string => "RangeIterator";
+            string => "``first``..``last``.iterator()";
         }
         return iterator;
     }
@@ -188,12 +163,8 @@ shared final class Range<Element>(first, last)
         if (step == 1) {
             return this;
         }
-        else if (is Enumerable<Element> first, 
-                is Enumerable<Element> last) {
-            return EnumerableRangeBy(first, last, step);
-        }
         else {
-            return super.by(step);
+            return EnumerableRangeBy(step);
         }
     }
     
@@ -209,40 +180,23 @@ shared final class Range<Element>(first, last)
         if (shift==0) {
             return this;
         }
-        else if (is Enumerable<Element> first, 
-                is Enumerable<Element> last) {
-            return first.neighbour(shift)..last.neighbour(shift);
-        }
         else {
-            variable value shiftedFirst = first;
-            variable value shiftedLast = last;
-            value max = shift.magnitude;
-            value increasing = shift.positive;
-            variable value count = 0;
-            while (count++<max) {
-                if (increasing) {
-                    shiftedFirst++;
-                    shiftedLast++;
-                }
-                else {
-                    shiftedFirst--;
-                    shiftedLast--;
-                }
-            }
-            return shiftedFirst..shiftedLast;
+            value start = first.neighbour(shift);
+            value end = last.neighbour(shift);
+            return Range(start,end);
         }
     }
     
     shared actual Integer count(Boolean selecting(Element element)) {
-        variable value e = first;
-        variable value c = 0;
-        while (containsElement(e)) {
-            if (selecting(e)) {
-                c++;
+        variable value element = first;
+        variable value count = 0;
+        while (containsElement(element)) {
+            if (selecting(element)) {
+                count++;
             }
-            e = next(e);
+            element = next(element);
         }
-        return c;
+        return count;
     }
     
     "Determines if this range includes the given object."
@@ -267,8 +221,8 @@ shared final class Range<Element>(first, last)
     
     "Determines if the range includes the given value."
     shared Boolean containsElement(Element x) 
-            => decreasing then x<=first && x>=last
-                          else x>=first && x<=last;
+            => recursive then x.offset(first) < last.offset(first)
+                         else !afterLast(x) && !beforeFirst(x);
     
     shared actual Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
@@ -278,7 +232,8 @@ shared final class Range<Element>(first, last)
             return includesRange(sublist);
         }
         else {
-            if (is Element start = sublist.first) {
+            return super.includes(sublist);
+            /*if (is Element start = sublist.first) {
                 if (decreasing
                         then start>first || start<last
                         else start<first || start>last) {
@@ -302,18 +257,24 @@ shared final class Range<Element>(first, last)
                 else {
                     return true;
                 }
-            }
-            else {
+             }
+             else {
                 return false;
-            }
+             }*/
         }
     }
     
     "Determines if this range includes the given range."
     shared Boolean includesRange(Range<Element> sublist) {
-        return decreasing == sublist.decreasing &&
-                first<=sublist.first<=last &&
-                first<=sublist.last<=last;
+        if (recursive) {
+            return sublist.first.offset(first)<size &&
+                    sublist.last.offset(first)<size;
+        }
+        else {
+            return increasing == sublist.increasing &&
+                    !sublist.afterFirst(first) &&
+                    !sublist.beforeLast(last);
+        }
     }
     
     "Determines if two ranges are the same by comparing
@@ -333,169 +294,6 @@ shared final class Range<Element>(first, last)
      immutable."
     shared actual Range<Element> clone() => this;
     
-    shared actual Range<Element>|[] segment(Integer from, 
-            Integer length) {
-        if (length<=0 || from+length<0) {
-            return [];
-        }
-        if (is Enumerable<Element> first) {
-            Element xx; Element yy;
-            if (decreasing) {
-                value x = first.neighbour(-from);
-                if (x<last) {
-                    return [];
-                }
-                value y = first.neighbour(-from-length);
-                yy = y<last then last else y;
-                xx = x>first then first else x;
-            }
-            else {
-                value x = first.neighbour(from);
-                if (x>last) {
-                    return [];
-                }
-                value y = first.neighbour(from+length-1);
-                yy = y>last then last else y;
-                xx = x<first then first else x;
-            }
-            return xx..yy;
-        }
-        else {
-            variable value x=first;
-            variable value i=0;
-            while (i++<from) {
-                x=next(x);
-            }
-            if (decreasing && x<last || 
-                !decreasing && x>last) {
-                return [];
-            }
-            variable value y=first;
-            variable value j=0;
-            while (j++<from+length-1 && 
-                (decreasing && y>last || 
-                !decreasing && y<last)) {
-                y=next(y); 
-            }
-            return x..y;
-        }
-    }
-    
-    shared actual Range<Element>|[] span(Integer from, 
-            Integer to) {
-        if (from<0 && to<0) {
-            return [];
-        }
-        if (is Enumerable<Element> first) {
-            Element x; Element y;
-            if (decreasing) {
-                x = first.neighbour(-from);
-                y = first.neighbour(-to);
-            }
-            else {
-                x = first.neighbour(from);
-                y = first.neighbour(to);
-            }
-            if (x<first && y<first ||
-                x>last && y>last) {
-                return [];
-            }
-            Element xx; Element yy;
-            if (decreasing) {
-                yy = (y<last then last) 
-                else (y>first then first) 
-                else y;
-                xx = (x<last then last) 
-                else (x>first then first) 
-                else x;
-            }
-            else {
-                yy = (y>last then last) 
-                else (y<first then first) 
-                else y;
-                xx = (x>last then last) 
-                else (x<first then first) 
-                else x;
-            }
-            return xx..yy;
-        }
-        else {
-            variable value x=first;
-            variable value i=0;
-            while (i++<from) {
-                x=next(x);
-            }
-            variable value y=first;
-            variable value j=0;
-            while (j++<to) {
-                y=next(y);
-            }
-            if (x>last && y>last) {
-                return [];
-            }
-            Element xx; Element yy;
-            if (decreasing) {
-                yy = y<last then last else y;
-                xx = x<last then last else x;
-            }
-            else {
-                yy = y>last then last else y;
-                xx = x>last then last else x;
-            }
-            return xx..yy;
-        }
-    }
-    
-    shared actual Range<Element>|[] spanTo(Integer to) {
-        return to < 0 then [] else span(0, to);
-    }
-    
-    shared actual Range<Element>|[] spanFrom(Integer from) {
-        return span(from, size);
-    }
-    
-    shared actual Range<Element>|[] skip(Integer skipping) {
-        if (skipping <= 0) {
-            return this;
-        }
-        Element elem;
-        if (is Enumerable<Element> first) {
-            elem = first.neighbour(decreasing then -skipping else skipping);
-        }
-        else {
-            variable value x=0;
-            variable value e = first;
-            while (x++<skipping) {
-                e = next(e);
-            }
-            elem = e;
-        }
-        return containsElement(elem) 
-                then elem..last 
-                else [];
-    }
-    
-    shared actual Range<Element>|[] take(Integer taking) {
-        if (taking <= 0) {
-            return [];
-        }
-        Element elem;
-        if (is Enumerable<Element> first) {
-            elem = first.neighbour(decreasing then -taking+1 else taking-1);
-        }
-        else {
-            variable value x=0;
-            variable value e=first;
-            while (++x<taking) {
-                e = next(e);
-            }
-            elem = e;
-        }
-        return containsElement(elem) 
-                then first..elem 
-                else this;
-    }
-
     "Returns the range itself, since a Range cannot
      contain nulls."
     shared actual Range<Element> coalesced => this;
@@ -503,41 +301,62 @@ shared final class Range<Element>(first, last)
     "Returns this range."
     shared actual Range<Element> sequence() => this;
     
-}
-
-class EnumerableRangeBy<Element>(Element first, Element last, 
-    Integer step) 
-        satisfies {Element+}
-        given Element satisfies Comparable<Element> {
-    shared actual Iterator<Element> iterator() {
-        assert (is Enumerable<Element> first, 
-                is Enumerable<Element> last);
-        object iterator 
-                satisfies Iterator<Element> {
-            variable value current = first; 
-            shared actual Element|Finished next() {
-                value result = current;
-                Element next;
-                if (last<first) {
-                    if (current < last) {
-                        //TODO: handle overflow
+    class EnumerableRangeBy(Integer step) 
+            satisfies {Element+} {
+        first => outer.first;
+        shared actual Iterator<Element> iterator() {
+            object iterator 
+                    satisfies Iterator<Element> {
+                variable value current = first; 
+                shared actual Element|Finished next() {
+                    if (containsElement(current)) {
+                        value result = current;
+                        current = nextStep(current, step);
+                        return result;
+                    }
+                    else {
                         return finished;
                     }
-                    next = current.neighbour(-step);
                 }
-                else {
-                    if (current > last) {
-                        //TODO: handle overflow
-                        return finished;
-                    }
-                    next = current.neighbour(step);
-                }
-                assert (is Enumerable<Element> next);
-                current = next;
-                return result;
+                string => "``first``..``last``.by(``step``).iterator()";
             }
-            string => "EnumerableRangeByIterator";
+            return iterator;
         }
-        return iterator;
+        string => "``first``..``last``.by(``step``)";
     }
+    
+    shared actual [Element*] segment(Integer from, Integer length) 
+            => length<=0 then [] else spanFrom(from).spanTo(length-1);
+    
+    shared actual [Element*] span(Integer from, Integer to) 
+            => to>=from then spanTo(to).spanFrom(from)
+                        else spanFrom(from).spanTo(to).reversed;
+    
+    shared actual [Element*] spanFrom(Integer from) {
+        if (from<=0) {
+            return this;
+        }
+        else if (longerThan(from)) {
+            value shift = increasing then from else -from;
+            return Range(first.neighbour(shift), last);
+        }
+        else {
+            return [];
+        }
+    }
+    
+    shared actual [Element*] spanTo(Integer to) {
+        if (to<0) {
+            return [];
+        }
+        else if (longerThan(to+1)) {
+            value offset = size-1-to;
+            value shift = increasing then -offset else offset;
+            return Range(first, last.neighbour(shift));
+        }
+        else {
+            return this;
+        }
+    }
+    
 }

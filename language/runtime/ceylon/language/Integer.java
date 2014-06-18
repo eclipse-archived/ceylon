@@ -352,18 +352,8 @@ public final class Integer
         return java.lang.Long.toString(value);
     }
 
-    // Conversions between numeric types
-
-    @Override
-    public long getIntegerValue() {
-        return value;
-    }
-
-    @Ignore
-    public static long getIntegerValue(long value) {
-        return value;
-    }
-
+    // Enumerable
+    
     @Override
     public Integer neighbour(@Name("offset") long offset) {
         return instance(value+offset);
@@ -374,6 +364,28 @@ public final class Integer
         return instance(value+offset);
     }
 
+    @Override
+    public long offset(@Name("other") Integer other) {
+        return value-other.value;
+    }
+
+    @Ignore
+    public static long offsetSign(long value, long other) {
+        return value-other;
+    }
+
+    @Override
+    public long offsetSign(@Name("other") Integer other) {
+        return value-other.value;
+    }
+
+    @Ignore
+    public static long offset(long value, long other) {
+        return value-other;
+    }
+
+    // Conversions between numeric types
+    
     public double getFloat() {
         if (value >= 9007199254740992L
                 || value <= -9007199254740992L) {

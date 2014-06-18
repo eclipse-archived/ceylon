@@ -119,8 +119,9 @@ shared native final class Integer(Integer integer)
     
     shared actual native Integer predecessor;
     shared actual native Integer successor;
-    shared actual native Integer integerValue;
     shared actual native Integer neighbour(Integer offset);
+    shared actual native Integer offset(Integer other);
+    shared actual native Integer offsetSign(Integer other);
     
     shared actual native Boolean unit;
     shared actual native Boolean zero;
