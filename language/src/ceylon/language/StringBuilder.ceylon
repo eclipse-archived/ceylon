@@ -2,8 +2,10 @@
  incrementally appending strings or characters"
 shared class StringBuilder() {
     "The storage"
-    variable Array<Character> array = arrayOfSize<Character>(10, 'X');
-    "The number of items in [[array]] which have actually been appended."
+    variable Array<Character> array 
+            = arrayOfSize<Character>(10, 'X');
+    "The number of items in [[array]] which have actually 
+     been appended."
     variable Integer length = 0;
     
     "Resize policy"
@@ -21,14 +23,17 @@ shared class StringBuilder() {
         return result;
     }
     
-    "Returns the storage array ready for storing [[extra]] more elements.
-     Reallocates and copies existing entries if needed."
+    "Returns the storage array ready for storing [[extra]] 
+     more elements. Reallocates and copies existing entries 
+     if needed."
     Array<Character> getStorage(Integer extra) {
         // extra should be > 0
         if (array.size >= length + extra) {
             return array;
         } else {
-            value newArray = arrayOfSize<Character>(newSize(array.size, extra), 'X');
+            value newArray 
+                    = arrayOfSize<Character>
+                        (newSize(array.size, extra), 'X');
             array.copyTo(newArray);
             array = newArray;
             return newArray;
@@ -87,7 +92,7 @@ shared class StringBuilder() {
     
     "Remove all content and return to initial state."
     shared StringBuilder reset() {
-        // TODO The sequnce version is called deleteAll
+        // TODO The sequence version is called deleteAll
         length = 0;
         return this;
     }
@@ -102,7 +107,9 @@ shared class StringBuilder() {
         if (!string.empty) {
             value store = getStorage(string.size);
             // make the gap
-            store.copyTo(store, index, index+string.size, this.length-index);
+            store.copyTo(store, index, 
+                index+string.size, 
+                this.length-index);
             // copy into it
             variable value i = 0;
             while (i < string.size) {
@@ -133,7 +140,8 @@ shared class StringBuilder() {
      characters from the given `index`, the content is 
      truncated at the given `index`. If `length` is 
      nonpositive, nothing is deleted."
-    shared StringBuilder delete(variable Integer index, Integer length=1) {
+    shared StringBuilder delete(variable Integer index, 
+            Integer length=1) {
         if (index < 0) {
             index = 0;
         } else if (index >= this.length) {
@@ -153,21 +161,17 @@ shared class StringBuilder() {
     "Deletes the specified [[number of characters|length]] 
      from the start of the string. If `length` is 
      nonpositive, nothing is deleted."
-    shared StringBuilder deleteInitial(Integer length) {
-        return delete(0, length);
-    }
+    shared StringBuilder deleteInitial(Integer length) 
+            => delete(0, length);
     
     "Deletes the specified [[number of characters|length]] 
      from the end of the string. If `length` is nonpositive, 
      nothing is deleted."
-    shared StringBuilder deleteTerminal(Integer length) {
-        return delete(size-length, length);
-    }
+    shared StringBuilder deleteTerminal(Integer length) 
+            => delete(size-length, length);
     
     "Returns the length of the current content, that is,
      the [[size|String.size]] of the produced [[string]]."
-    shared Integer size {
-        return length;
-    }
+    shared Integer size => length;
     
 }
