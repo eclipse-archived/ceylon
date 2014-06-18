@@ -28,7 +28,8 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType = "ceylon.language::Object", basic = false, identifiable = false)
+@Class(extendsType = "ceylon.language::Object", 
+       basic = false, identifiable = false)
 @Annotations({
         @Annotation(
                 value = "doc",
