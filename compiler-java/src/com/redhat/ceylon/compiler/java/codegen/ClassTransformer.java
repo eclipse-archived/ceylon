@@ -352,8 +352,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     null,
                                     make().QualIdent(syms().ceylonTupleType.tsym),
                                     List.of(makeReifiedTypeArgument(iteratedType),
-                                            sb.makeIdent(), make().Literal(0),
-                                            naming.makeQualIdent(sb.makeIdent(), "length"),
+                                            sb.makeIdent(),
                                             makeEmpty(),
                                             make().Literal(false)), 
                                     null)));
