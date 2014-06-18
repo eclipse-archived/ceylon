@@ -343,14 +343,24 @@ public class TypeUtils {
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    static void generateDynamicCheck(final Tree.Term term, final ProducedType t, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        String tmp = gen.getNames().createTempVariable();
-        gen.out("(", tmp, "=");
-        term.visit(gen);
-        gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
-        TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
-        gen.out(")?", tmp, ":function(){throw new Error('dynamic objects cannot be used here (",
-                term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
+    static void generateDynamicCheck(final Tree.Term term, final ProducedType t,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+        if (t.getDeclaration().isDynamic()) {
+            gen.out(GenerateJsVisitor.getClAlias(), "dre$$(");
+            term.visit(gen);
+            gen.out(",");
+            TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
+            gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
+        } else {
+            String tmp = gen.getNames().createTempVariable();
+            gen.out("(", tmp, "=");
+            term.visit(gen);
+            gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
+            TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
+            gen.out(")?", tmp, ":");
+            gen.out("function(){throw new Error('dynamic objects cannot be used here (",
+                    term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
+        }
     }
 
     static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
