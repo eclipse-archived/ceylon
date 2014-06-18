@@ -67,7 +67,7 @@
         <mkdir dir="${runtime}/${jslangpath}" />
         <mkdir dir="${build.classes}" />
         <!-- compile Java sources -->
-        <javac srcdir="${src}" destdir="${build.classes}" debug="true">
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8">
             <classpath>
                 <pathelement path="${antlr.lib}"/>
                 <pathelement path="${ceylon.common.lib}" />
@@ -92,7 +92,7 @@
         <delete dir="${build.classes}">
             <include name="**/*Main5.class"/>
         </delete>
-        <javac srcdir="${src}" destdir="${build.classes}" debug="true" source="1.5" target="1.5">
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" source="1.5" target="1.5">
             <classpath>
                 <pathelement path="${antlr.lib}"/>
                 <pathelement path="${ceylon.common.lib}" />
@@ -132,7 +132,7 @@
 
     <target name="test-compile" depends="build">
         <mkdir dir="${build.test-classes}" />
-        <javac srcdir="${test-src}" destdir="${build.test-classes}" debug="true">
+        <javac srcdir="${test-src}" destdir="${build.test-classes}" debug="true" encoding="UTF-8">
             <classpath>
                 <pathelement location="${ceylon.common.lib}" />
                 <pathelement location="${ceylon.typechecker.lib}" />
