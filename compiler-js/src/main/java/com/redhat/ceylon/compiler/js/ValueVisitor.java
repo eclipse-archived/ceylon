@@ -143,6 +143,7 @@ public class ValueVisitor extends Visitor {
     
     @Override
     public void visit(Tree.LazySpecifierExpression that) {
+        if(that.getExpression() == null)return;
         boolean cs = enterCapturingScope();
         sameScope++;
         that.getExpression().visit(this);
