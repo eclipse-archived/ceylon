@@ -113,7 +113,9 @@ public abstract class TypeDeclaration extends Declaration
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         List<ProducedType> sts = getSatisfiedTypes();
         List<TypeDeclaration> list = new ArrayList<TypeDeclaration>(sts.size());
-        for (ProducedType pt: sts) {
+        // cheaper iteration
+        for (int i=0,l=sts.size();i<l;i++) {
+            ProducedType pt = sts.get(i);
             list.add(pt==null?null:pt.getDeclaration());
         }
         return list;
