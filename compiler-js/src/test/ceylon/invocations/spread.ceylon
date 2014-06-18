@@ -55,4 +55,12 @@ void testSpread() {
   check(testIssue296("one") == "one B", "issue 296 [1]");
   check(issue296(testIssue296,["two", "three"])=="two three", "issue 296 [2]");
   check(issue296(testIssue296,["four"])=="four B", "issue 296 [3]");
+  value params = [3,'.'];
+  check("x".padLeft(*params)=="..x", "spread [14]");
+  value pad = String.padLeft;
+  value smrst1=pad("x")(*params);
+  check(smrst1=="..x", "static method ref spread 1 expected ..x got ``smrst1``");
+  value param = ['.'];
+  value smrst2=pad("x")(3,*param);
+  check(smrst2=="..x", "static method ref spread 2 expected ..x got ``smrst2``");
 }
