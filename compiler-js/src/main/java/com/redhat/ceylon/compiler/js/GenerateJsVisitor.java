@@ -2126,7 +2126,7 @@ public class GenerateJsVisitor extends Visitor
                     out(names.name(bmeDecl), "=");
                     if (dynblock > 0 && Util.isTypeUnknown(expr.getTypeModel())
                             && !Util.isTypeUnknown(((MethodOrValue) bmeDecl).getType())) {
-                        TypeUtils.generateDynamicCheck(expr, bme.getTypeModel(), this, false);
+                        TypeUtils.generateDynamicCheck(expr, ((MethodOrValue) bmeDecl).getType(), this, false);
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
                     }
@@ -2322,10 +2322,13 @@ public class GenerateJsVisitor extends Visitor
         out(" ");
         if (dynblock > 0 && Util.isTypeUnknown(that.getExpression().getTypeModel())) {
             Scope cont = Util.getRealScope(that.getScope()).getScope();
-            if (cont instanceof Declaration && !Util.isTypeUnknown(((Declaration)cont).getReference().getType())) {
-                TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this, false);
-                endLine(true);
-                return;
+            if (cont instanceof Declaration) {
+                final ProducedType dectype = ((Declaration)cont).getReference().getType();
+                if (!Util.isTypeUnknown(dectype)) {
+                    TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false);
+                    endLine(true);
+                    return;
+                }
             }
         }
         if (isNaturalLiteral(that.getExpression().getTerm())) {
