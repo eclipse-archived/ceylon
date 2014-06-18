@@ -153,7 +153,7 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 
 //#COMPILE core_functions.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
 
-//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow
+//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow,impl/bases
 //#Anything
 //#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder
 //#native Boolean
