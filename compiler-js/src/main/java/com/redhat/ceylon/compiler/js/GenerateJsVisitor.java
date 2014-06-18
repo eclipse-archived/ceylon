@@ -1909,7 +1909,7 @@ public class GenerateJsVisitor extends Visitor
         // Box the value
         final boolean fromNative = isNative(fromTerm);
         final ProducedType fromType = fromTerm.getTypeModel();
-        final String fromTypeName = TypeUtils.isUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
+        final String fromTypeName = Util.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
@@ -2000,7 +2000,7 @@ public class GenerateJsVisitor extends Visitor
     private void specifierStatement(final TypeDeclaration outer,
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
-        if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
             specStmt.getBaseMemberExpression().visit(this);
             out("=");
             int box = boxUnboxStart(expr, specStmt.getBaseMemberExpression());
@@ -2057,8 +2057,8 @@ public class GenerateJsVisitor extends Visitor
                     BmeGenerator.generateMemberAccess(bme, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
-                            if (dynblock > 0 && !TypeUtils.isUnknown(moval.getType())
-                                    && TypeUtils.isUnknown(expr.getTypeModel())) {
+                            if (dynblock > 0 && !Util.isTypeUnknown(moval.getType())
+                                    && Util.isTypeUnknown(expr.getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false);
                             } else {
                                 expr.visit(GenerateJsVisitor.this);
@@ -2124,7 +2124,8 @@ public class GenerateJsVisitor extends Visitor
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (dynblock > 0 && TypeUtils.isUnknown(expr.getTypeModel())) {
+                    if (dynblock > 0 && Util.isTypeUnknown(expr.getTypeModel())
+                            && !Util.isTypeUnknown(((MethodOrValue) bmeDecl).getType())) {
                         TypeUtils.generateDynamicCheck(expr, bme.getTypeModel(), this, false);
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
@@ -2164,7 +2165,7 @@ public class GenerateJsVisitor extends Visitor
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
@@ -2319,12 +2320,17 @@ public class GenerateJsVisitor extends Visitor
             return;
         }
         out(" ");
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
-            TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this, false);
-            endLine(true);
-            return;
+        if (dynblock > 0 && Util.isTypeUnknown(that.getExpression().getTypeModel())) {
+            Scope cont = Util.getRealScope(that.getScope()).getScope();
+            if (cont instanceof Declaration && !Util.isTypeUnknown(((Declaration)cont).getReference().getType())) {
+                TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this, false);
+                endLine(true);
+                return;
+            }
         }
-        if (!isNaturalLiteral(that.getExpression().getTerm())) {
+        if (isNaturalLiteral(that.getExpression().getTerm())) {
+            out(";");
+        } else {
             super.visit(that);
         }
     }
@@ -2489,13 +2495,13 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(final NegativeOp that) {
+    @Override public void visit(final Tree.NegativeOp that) {
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
         final boolean isint = d.inherits(types._integer);
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
 
-    @Override public void visit(final PositiveOp that) {
+    @Override public void visit(final Tree.PositiveOp that) {
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
         final boolean nat = d.inherits(types._integer) || d.inherits(types._float);
         //TODO if it's positive we leave it as is?
@@ -2503,7 +2509,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.EqualOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2519,7 +2525,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.NotEqualOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2568,7 +2574,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2590,7 +2596,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.LargerOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2612,7 +2618,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.SmallAsOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2636,7 +2642,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.LargeAsOp that) {
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2663,7 +2669,7 @@ public class GenerateJsVisitor extends Visitor
         out("(", ttmp, "=");
         box(that.getTerm());
         out(",");
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getTerm().getTypeModel())) {
+        if (dynblock > 0 && Util.isTypeUnknown(that.getTerm().getTypeModel())) {
             final String tmpl = names.createTempVariable();
             final String tmpu = names.createTempVariable();
             out(tmpl, "=");
@@ -2903,7 +2909,7 @@ public class GenerateJsVisitor extends Visitor
         if (eor instanceof Element) {
             final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
             final String _end;
-            if (TypeUtils.isUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
+            if (Util.isTypeUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
                 out("[");
                 _end = "]";
             } else {
