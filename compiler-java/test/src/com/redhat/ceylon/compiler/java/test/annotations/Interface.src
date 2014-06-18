@@ -169,6 +169,7 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public long getTopFormalAttr2();
     
     @.ceylon.language.SharedAnnotation$annotation$
