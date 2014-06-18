@@ -141,10 +141,14 @@ public abstract class Node {
 				+ token.getText().length()-1);
 	}
     
-    private boolean isMissingToken(Token t) {
-        return t.getText().startsWith("<missing ");
+    private static boolean isMissingToken(Token t) {
+        return t instanceof MissingToken;
     }
-    
+
+    public boolean isMissingToken() {
+        return isMissingToken(token);
+    }
+
     private Token getFirstChildToken() {
         Token token=this.token==null || 
                 //the tokens ANTLR inserts to represent missing tokens

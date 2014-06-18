@@ -5,6 +5,7 @@ options {
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser;
+                  import com.redhat.ceylon.compiler.typechecker.tree.MissingToken;
                   import com.redhat.ceylon.compiler.typechecker.tree.Node;
                   import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*;
                   import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.Package; }
@@ -24,6 +25,26 @@ options {
         return errors;
     }
     int expecting=-1;
+  @Override
+  protected Object getMissingSymbol(IntStream input,
+                    RecognitionException e,
+                    int expectedTokenType,
+                    BitSet follow)
+  {
+    String tokenText;
+    if ( expectedTokenType==Token.EOF ) tokenText = "<missing EOF>";
+    else tokenText = "<missing "+getTokenNames()[expectedTokenType]+">";
+    MissingToken t = new MissingToken(expectedTokenType, tokenText);
+    Token current = ((TokenStream)input).LT(1);
+    if ( current.getType() == Token.EOF ) {
+      current = ((TokenStream)input).LT(-1);
+    }
+    t.setLine(current.getLine());
+    t.setCharPositionInLine(current.getCharPositionInLine());
+    t.setChannel(DEFAULT_TOKEN_CHANNEL);
+    t.setInputStream(current.getInputStream());
+    return t;
+  }
 }
 
 @lexer::members {

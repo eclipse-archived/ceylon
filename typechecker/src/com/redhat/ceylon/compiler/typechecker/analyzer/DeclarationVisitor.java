@@ -151,7 +151,7 @@ public class DeclarationVisitor extends Visitor {
 
     private static boolean setModelName(Node that, Declaration model,
             Tree.Identifier id) {
-        if (id==null || id.getText().startsWith("<missing")) {
+        if (id==null || id.isMissingToken()) {
             that.addError("missing declaration name");
             return false;
         }
