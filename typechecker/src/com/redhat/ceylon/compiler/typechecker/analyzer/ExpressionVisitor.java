@@ -39,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -3031,7 +3030,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType pt, Tree.Term term) {
         if (!isTypeUnknown(pt)) {
             ProducedType ot = checkSupertype(pt, unit.getOrdinalDeclaration(), 
-                    term, "operand expression must be of ordinal type");
+                    term, "operand expression must be of enumerable type");
             if (ot!=null) {
                 ProducedType ta = ot.getTypeArgumentList().get(0);
                 checkAssignable(ta, pt, that, 
@@ -3117,15 +3116,9 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             ProducedType ot = checkOperandTypes(lhst, rhst, 
-                    unit.getOrdinalDeclaration(), that,
+                    unit.getEnumerableDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
-            ProducedType ct = checkOperandTypes(lhst, rhst, 
-                    unit.getComparableDeclaration(), that, 
-                    "operand expressions must be comparable");
             if (ot!=null) {
-                if (ct!=null) {
-                    checkAssignable(ot, ct, that, "ordinal type must be assignable to comparable type");
-                }
                 ProducedType pt = producedType(unit.getRangeDeclaration(), ot);
                 that.setTypeModel(pt);
             }
@@ -3136,7 +3129,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            ProducedType ot = checkSupertype(lhst, unit.getOrdinalDeclaration(), 
+            ProducedType ot = checkSupertype(lhst, unit.getEnumerableDeclaration(), 
                     that.getLeftTerm(), "left operand must be of ordinal type");
             checkAssignable(rhst, unit.getType(unit.getIntegerDeclaration()), 
                     that.getRightTerm(), "right operand must be an integer");

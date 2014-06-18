@@ -414,6 +414,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Ordinal");
     }
         
+    public Interface getEnumerableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Enumerable");
+    }
+        
     public Class getRangeDeclaration() {
         return (Class) getLanguageModuleDeclaration("Range");
     }
