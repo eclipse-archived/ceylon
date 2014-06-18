@@ -299,7 +299,7 @@ public class InvocationGenerator {
                     if (!first) gen.out(",");
                     expr = ((Tree.ListedArgument) arg).getExpression();
                     ProducedType exprType = expr.getTypeModel();
-                    boolean dyncheck = gen.isInDynamicBlock() && !TypeUtils.isUnknown(pd)
+                    boolean dyncheck = gen.isInDynamicBlock() && pd != null && !Util.isTypeUnknown(pd.getType())
                             && exprType.containsUnknowns();
                     if (forceSequenced || (pd != null && pd.isSequenced())) {
                         if (dyncheck) {

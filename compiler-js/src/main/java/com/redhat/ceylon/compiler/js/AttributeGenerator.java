@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -51,7 +52,8 @@ public class AttributeGenerator {
                 gen.out("=");
             }
             int boxType = gen.boxStart(expr.getExpression().getTerm());
-            if (gen.isInDynamicBlock() && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
+            if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getExpression().getTypeModel())
+                    && !Util.isTypeUnknown(decl.getType())) {
                 TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false);
             } else {
                 expr.visit(gen);
