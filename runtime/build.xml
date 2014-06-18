@@ -198,21 +198,25 @@
     <target name="runtime.classes">
         <mkdir dir="${build.classes}"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${runtime-spi.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${runtime-api.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${runtime-impl.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${runtime-bootstrap.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
@@ -238,6 +242,7 @@
     <target name="compile.tests" depends="dist">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
+               encoding="UTF-8"
                srcdir="${runtime-test.src}"
                destdir="${build.test}"
                classpathref="test.build.classpath"
