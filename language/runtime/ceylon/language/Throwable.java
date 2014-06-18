@@ -18,8 +18,6 @@ public abstract class Throwable extends java.lang.Object {
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Throwable.class);
 
-    private static final long serialVersionUID = -1790691559137471641L;
-    
     @Ignore
     private final java.lang.String description;
     
