@@ -28,12 +28,12 @@ class SegmentOp() {
         return segment;
     }
     shared T[] t<T>(T start, Integer length) 
-            given T satisfies Ordinal<T>{
+            given T satisfies Enumerable<T>{
         T[] segment = start:length;
         return segment;
     }
     shared T[] t2<T,S>(T&S start, Integer length) 
-            given T satisfies Ordinal<T>{
+            given T satisfies Enumerable<T>{
         T[] segment = start:length;
         return segment;
     }

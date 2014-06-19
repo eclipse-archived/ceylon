@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object> {
+public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object> {
     
     public Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element first, final Element last) {
         super();
@@ -458,12 +458,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     
     @.java.lang.Override
     public final long getSize() {
-        if ((Element)getLast() instanceof .ceylon.language.Enumerable) {
-            if ((Element)getFirst() instanceof .ceylon.language.Enumerable) {
-                return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable)(.ceylon.language.Enumerable)getLast()).getIntegerValue() - ((.ceylon.language.Enumerable)(.ceylon.language.Enumerable)getFirst()).getIntegerValue()) + 1L;
-            }
-        }
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<Element>)(.ceylon.language.Enumerable)getLast()).offset((Element)getFirst())) + 1L;
     }
     
     @.java.lang.Override

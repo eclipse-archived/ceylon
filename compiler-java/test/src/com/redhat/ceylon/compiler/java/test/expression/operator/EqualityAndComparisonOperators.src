@@ -83,7 +83,7 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$impl() {
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$impl() {
         return $ceylon$language$Enumerable$this$;
     }
     
@@ -95,6 +95,11 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getPredecessor() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override

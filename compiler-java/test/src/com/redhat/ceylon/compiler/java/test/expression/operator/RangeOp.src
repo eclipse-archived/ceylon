@@ -11,8 +11,8 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .ceylon.language.Range<.ceylon.language.Integer> range = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2));
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>void t$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t1, final T t2) {
-        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>($reified$T, (T)t1, (T)t2);
+    private final <T extends .ceylon.language.Enumerable<T>>void t$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t1, final T t2) {
+        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>($reified$T, t1, t2);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -25,47 +25,53 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOp.class, $reified$T);
     }
 }
-abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>, .ceylon.language.Ordinal<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> {
+abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> {
     
-    RangeOpEnum(final long i) {
-        this.i = i;
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$, this);
+    RangeOpEnum() {
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$, this);
     }
-    private final long i;
-    
-    private final long getI$priv$() {
-        return i;
-    }
-    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$this$;
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this$;
     }
     
     @.java.lang.Override
-    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override
-    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public final long offset(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$0 = this == other ? .ceylon.language.Integer.instance(0L) : null;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(1L);
+        ).longValue();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Comparison compare(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return .ceylon.language.Integer.instance(getI$priv$()).compare(.ceylon.language.Integer.instance(other.getI$priv$()));
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum neighbour(final long offset) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum $ceylontmp$1 = offset % 2L == 0L ^ this == .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_() ? .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_() : null;
+            }
+            returning $ceylontmp$1 != null ? $ceylontmp$1 : .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
+        );
     }
     
     @.java.lang.Override
@@ -77,17 +83,7 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
 final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum {
     
     private rangeOpF_() {
-        super(1L);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
+        super();
     }
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_[] value;
     private static final .java.lang.Throwable $initException$;
@@ -118,17 +114,7 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
 final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum {
     
     private rangeOpE_() {
-        super(2L);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_();
+        super();
     }
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_[] value;
     private static final .java.lang.Throwable $initException$;

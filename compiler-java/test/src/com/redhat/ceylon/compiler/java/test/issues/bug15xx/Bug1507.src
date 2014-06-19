@@ -250,8 +250,8 @@ final class bug1507test5_ {
         boolean doforelse$53 = true;
         final .ceylon.language.Range<.ceylon.language.Integer> range$49 = range;
         final .ceylon.language.Integer last$50 = range$49.getLast();
-        final boolean deceasing$51 = range$49.getDecreasing();
-        loop_5: for (.ceylon.language.Integer item$52 = range$49.getFirst(); item$52.compare(last$50) != (deceasing$51 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$52 = deceasing$51 ? item$52.getPredecessor() : item$52.getSuccessor()) {
+        final boolean increasing$51 = range$49.getIncreasing();
+        loop_5: for (.ceylon.language.Integer item$52 = range$49.getFirst(); increasing$51 ? item$52.offset(last$50) <= 0L : item$52.offset(last$50) >= 0L; item$52 = increasing$51 ? item$52.getSuccessor() : item$52.getPredecessor()) {
             final long i = item$52.longValue();
             if (i == 0L) {
                 found$48 = true;

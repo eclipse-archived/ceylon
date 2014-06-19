@@ -15,12 +15,12 @@ class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return segment;
     }
     
-    public final <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Sequential<? extends T> t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T start, final long length) {
+    public final <T extends .ceylon.language.Enumerable<T>>.ceylon.language.Sequential<? extends T> t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T start, final long length) {
         final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reified$T, (T)start, length);
         return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
-    public final <T extends .ceylon.language.Ordinal<? extends T>, S>.ceylon.language.Sequential<? extends T> t2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .java.lang.Object start, final long length) {
+    public final <T extends .ceylon.language.Enumerable<T>, S>.ceylon.language.Sequential<? extends T> t2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .java.lang.Object start, final long length) {
         final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reified$T, (T)start, length);
         return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }

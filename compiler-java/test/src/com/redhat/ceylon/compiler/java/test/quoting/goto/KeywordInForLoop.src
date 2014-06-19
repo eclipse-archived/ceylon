@@ -8,8 +8,8 @@ final class keywordInForLoop_ {
     static void keywordInForLoop(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
         final .ceylon.language.Range<.ceylon.language.Integer> range$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
         final .ceylon.language.Integer last$1 = range$0.getLast();
-        final boolean deceasing$2 = range$0.getDecreasing();
-        loop_0: for (.ceylon.language.Integer item$3 = range$0.getFirst(); item$3.compare(last$1) != (deceasing$2 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$3 = deceasing$2 ? item$3.getPredecessor() : item$3.getSuccessor()) {
+        final boolean increasing$2 = range$0.getIncreasing();
+        loop_0: for (.ceylon.language.Integer item$3 = range$0.getFirst(); increasing$2 ? item$3.offset(last$1) <= 0L : item$3.offset(last$1) >= 0L; item$3 = increasing$2 ? item$3.getSuccessor() : item$3.getPredecessor()) {
             final long $byte = item$3.longValue();
             if ($byte > 5L) {
             }

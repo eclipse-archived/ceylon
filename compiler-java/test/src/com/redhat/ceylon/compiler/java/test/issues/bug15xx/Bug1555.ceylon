@@ -19,8 +19,7 @@
  */
 @noanno
 class Bug1555<Element>(first, last) 
-        given Element satisfies Ordinal<Element> & 
-        Comparable<Element> { 
+        given Element satisfies Enumerable<Element> { 
     
     shared Integer first;
     shared Integer last;

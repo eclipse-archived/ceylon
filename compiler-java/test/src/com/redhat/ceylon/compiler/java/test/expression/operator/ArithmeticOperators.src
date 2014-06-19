@@ -77,7 +77,7 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$impl() {
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$impl() {
         return $ceylon$language$Enumerable$this$;
     }
     
@@ -89,6 +89,11 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getPredecessor() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override

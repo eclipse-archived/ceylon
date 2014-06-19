@@ -21,20 +21,14 @@
 shared abstract class Bug966<Element>(first, last) 
         extends Object() 
         satisfies [Element+] & Category
-        given Element satisfies Ordinal<Element> & 
-                                Comparable<Element> { 
+        given Element satisfies Enumerable<Element> { 
     
     shared actual Element first;
     
     shared actual Element last;
 
     shared actual Integer size {
-        if (is Enumerable<Anything> last, 
-            is Enumerable<Anything> first) {
-            return (last.integerValue - 
-                    first.integerValue)
+        return (last.offset(first))
                     .magnitude+1;
-        }
-        return nothing;
     }
 }

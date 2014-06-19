@@ -59,8 +59,6 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
         return nothing;
     }
 
-    shared actual Integer integerValue => nothing;
-    
     shared actual Comparison compare(IntegralImpl other) => nothing;
     
     //shared actual Float float => nothing;
@@ -85,4 +83,6 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
     shared actual IntegralImpl powerOfInteger(Integer power) => nothing;
     
     shared actual IntegralImpl neighbour(Integer integer) => nothing;
+    
+    shared actual Integer offset(IntegralImpl integer) => nothing;
 }

@@ -23,27 +23,25 @@ class RangeOp<T>() {
         Range<Integer> range = i1..i2;
     }
     void t<T>(T t1, T t2) 
-            given T satisfies Ordinal<T>&Comparable<T> {
+            given T satisfies Enumerable<T> {
         Range<T> range = t1..t2;
     }
     
 }
 // #1027
 @noanno
-abstract class RangeOpEnum(Integer i) of rangeOpE|rangeOpF 
-        satisfies Comparable<RangeOpEnum> & Ordinal<RangeOpEnum> {
-    shared actual Comparison compare(RangeOpEnum other) 
-            => i<=>other.i;
+abstract class RangeOpEnum() of rangeOpE|rangeOpF 
+        satisfies Enumerable<RangeOpEnum> {
+    shared actual Integer offset(RangeOpEnum other)
+            => this === other then 0 else 1;
+    shared actual RangeOpEnum neighbour(Integer offset)
+            => (offset%2 == 0).xor(this === rangeOpE) then rangeOpF else rangeOpE;
 }
 @noanno
-object rangeOpF extends RangeOpEnum(1) {
-    shared actual RangeOpEnum predecessor => rangeOpE;
-    shared actual RangeOpEnum successor => rangeOpE;
+object rangeOpF extends RangeOpEnum() {
 }
 @noanno
-object rangeOpE extends RangeOpEnum(2) {
-    shared actual RangeOpEnum predecessor => rangeOpF;
-    shared actual RangeOpEnum successor => rangeOpF;
+object rangeOpE extends RangeOpEnum() {
 }
 @noanno
 void bug() {

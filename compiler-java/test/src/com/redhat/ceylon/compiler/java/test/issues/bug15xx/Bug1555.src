@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
-class Bug1555<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1555(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final long first, final long last) {
         this.$reified$Element = $reified$Element;

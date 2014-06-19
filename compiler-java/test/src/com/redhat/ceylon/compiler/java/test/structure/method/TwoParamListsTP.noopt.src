@@ -5,14 +5,14 @@ final class twoParamListsTP_ {
     private twoParamListsTP_() {
     }
     
-    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+    static <T extends .ceylon.language.Enumerable<T> & .ceylon.language.Invertable<T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$T, $reified$T, .ceylon.language.Empty.$TypeDescriptor$), "Anything(T)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final T i = (T)$param$0;
                 .java.lang.Object elem$0;
-                .ceylon.language.Iterator<? extends T> x$iterator$$1 = new .ceylon.language.Range<T>($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegated(), (T)i).iterator();
+                .ceylon.language.Iterator<? extends T> x$iterator$$1 = new .ceylon.language.Range<T>($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegated(), i).iterator();
                 loop_0: while (!((elem$0 = x$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
                     final T x = (T)elem$0;
                     .ceylon.language.print_.print(.ceylon.language.String.instance("hello " + name));
