@@ -473,6 +473,7 @@ public class CeylonDocToolTest {
                 "ceylon.html",
                 "ceylon.interop.java", 
                 "ceylon.io",
+                "ceylon.logging", 
                 "ceylon.json", 
                 "ceylon.math",
                 "ceylon.net",
