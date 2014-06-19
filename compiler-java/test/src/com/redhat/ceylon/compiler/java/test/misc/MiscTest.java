@@ -268,11 +268,13 @@ public class MiscTest extends CompilerTest {
                 "interop.java",
                 "io",
                 "json",
+                "logging",
                 "math",
                 "net",
                 "process",
                 "test",
-                "time"
+                "time",
+                "unicode"
         };
         String[] extraModules = {
                 "com.redhat.ceylon.test",
