@@ -1149,7 +1149,9 @@ public class ProducedType extends ProducedReference {
                         new ArrayList<ProducedType>(tps.size());
                 Map<TypeParameter, ProducedType> args = 
                         getTypeArguments();
-                for (TypeParameter tp: tps) {
+                // cheaper c-for than foreach
+                for (int i=0,l=tps.size();i<l;i++) {
+                    TypeParameter tp = tps.get(i);
                     argList.add(args.get(tp));
                 }
                 typeArgumentList = argList;

@@ -454,20 +454,25 @@ public class Util {
             return;
         }
         if (pt.getDeclaration() instanceof UnionType) {
-            for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
+            // cheaper c-for than foreach
+            List<ProducedType> caseTypes = pt.getDeclaration().getCaseTypes();
+            for ( int i=0,l=caseTypes.size();i<l;i++ ) {
+                ProducedType t = caseTypes.get(i);
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
         else if (pt.isWellDefined()) {
             boolean add=true;
-            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                ProducedType t = iter.next();
+            // cheaper c-for than foreach
+            for (int i=0;i<list.size();i++) {
+                ProducedType t = list.get(i);
                 if (pt.isSubtypeOf(t)) {
                     add=false;
                     break;
                 }
                 else if (pt.isSupertypeOf(t)) {
-                    iter.remove();
+                    list.remove(i);
+                    i--; // redo this index
                 }
             }
             if (add) {
@@ -488,7 +493,10 @@ public class Util {
             return;
         }
         if (pt.getDeclaration() instanceof IntersectionType) {
-            for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
+            List<ProducedType> satisfiedTypes = pt.getDeclaration().getSatisfiedTypes();
+            // cheaper c-for than foreach
+            for ( int i=0,l=satisfiedTypes.size();i<l;i++ ) {
+                ProducedType t = satisfiedTypes.get(i);
                 addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);
             }
         }
@@ -497,21 +505,31 @@ public class Util {
             //there exists some enumerated type Baz with
             //    Baz of Foo | Bar 
             //(the intersection of disjoint types is empty)
-            for (ProducedType supertype: pt.getSupertypes()) {
+            
+            // cheaper c-for than foreach
+            List<ProducedType> supertypes = pt.getSupertypes();
+            for ( int i=0,l=supertypes.size();i<l;i++ ) {
+                ProducedType supertype = supertypes.get(i);
                 List<TypeDeclaration> ctds = supertype.getDeclaration()
                         .getCaseTypeDeclarations();
                 if (ctds!=null) {
                     TypeDeclaration ctd=null;
-                    for (TypeDeclaration ct: ctds) {
+                    // cheaper c-for than foreach
+                    for (int cti=0,ctl=ctds.size();cti<ctl;cti++) {
+                        TypeDeclaration ct = ctds.get(cti);
                         if (pt.getSupertype(ct)!=null) {
                             ctd = ct;
                             break;
                         }
                     }
                     if (ctd!=null) {
-                        for (TypeDeclaration ct: ctds) {
+                        // cheaper c-for than foreach
+                        for (int cti=0,ctl=ctds.size();cti<ctl;cti++) {
+                            TypeDeclaration ct = ctds.get(cti);
                             if (ct!=ctd) {
-                                for (ProducedType t: list) {
+                                // cheaper c-for than foreach
+                                for (int ti=0,tl=list.size();ti<tl;ti++) {
+                                    ProducedType t = list.get(ti);
                                     if (t.getSupertype(ct)!=null) {
                                         list.clear();
                                         list.add(new NothingType(unit).getType());
@@ -526,14 +544,16 @@ public class Util {
             
             Boolean add = pt.isWellDefined();
             if (add) {
-                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                    ProducedType t = iter.next();
+                // cheaper c-for than foreach
+                for (int i=0;i<list.size();i++) {
+                    ProducedType t = list.get(i);
                     if (pt.isSupertypeOf(t)) {
                         add = false;
                         break;
                     }
                     else if (pt.isSubtypeOf(t)) {
-                        iter.remove();
+                        list.remove(i);
+                        i--; // redo this index
                     }
                     else if (haveUninhabitableIntersection(pt,t, unit)) {
                         list.clear();
@@ -548,7 +568,7 @@ public class Util {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         ProducedType pi = principalInstantiation(pt.getDeclaration(), pt, t, unit);
                         if (!pi.containsUnknowns()) {
-                            iter.remove();
+                            list.remove(i);
                             list.add(pi);
                             return;
                         }
