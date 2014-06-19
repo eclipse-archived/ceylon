@@ -41,6 +41,7 @@ public class JsIdentifierNames {
         // source code anyway.
         //reservedWords.add("abstract");
         reservedWords.add("arguments");
+        reservedWords.add("undefined");
         reservedWords.add("boolean");
         //reservedWords.add("break");
         reservedWords.add("byte");
