@@ -39,8 +39,9 @@ public class BmeGenerator {
             final boolean isCallable = !forInvoke && decl instanceof Method
                     && gen.getTypeUtils().callable.equals(bme.getTypeModel().getDeclaration());
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
-            if (who != null && who.isEmpty()) {
-                who=null;
+            if (who == null || who.isEmpty()) {
+                //We may not need to wrap this in certain cases
+                who="0";
             }
             final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (who != null || hasTparms)) {
@@ -49,7 +50,7 @@ public class BmeGenerator {
                     printGenericMethodReference(gen, bme, who, exp);
                 } else {
                     //Member methods must be passed as JsCallables
-                    gen.out(GenerateJsVisitor.getClAlias(), "JsCallable(/*ESTEMERO*/", who, ",", exp, ")");
+                    gen.out(GenerateJsVisitor.getClAlias(), "JsCallable(", who, ",", exp, ")");
                 }
             } else {
                 gen.out(exp);
