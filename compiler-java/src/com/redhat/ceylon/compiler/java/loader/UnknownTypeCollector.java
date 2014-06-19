@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -64,7 +65,7 @@ public class UnknownTypeCollector extends Visitor {
     }
 
     private void collectUnknownTypes(ProducedType type) {
-        Map<Declaration, Declaration> visited = new IdentityHashMap<Declaration, Declaration>();
+        Map<Declaration, Declaration> visited = new IdentityHashMap<Declaration, Declaration>(0); // expect the best case: no error
         collectUnknownTypes(type, visited);
     }
 
@@ -79,7 +80,10 @@ public class UnknownTypeCollector extends Visitor {
             TypeDeclaration declaration = type.getDeclaration();
             if(declaration != null)
                 collectUnknownTypes(declaration, visited);
-            for(ProducedType tl : type.getTypeArgumentList()){
+            List<ProducedType> typeArguments = type.getTypeArgumentList();
+            // cheaper c-for than foreach
+            for (int i=0,l=typeArguments.size();i<l;i++) {
+                ProducedType tl = typeArguments.get(i);
                 collectUnknownTypesResolved(tl, visited);
             }
         }
