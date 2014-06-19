@@ -47,23 +47,23 @@ class RangeIterationStatic<Element>()
         }
     }
     void rangeOfElementWithStep(Range<Element> seq, Integer step) {
-        for (item in seq.by(step)) {
+        for (item in seq) {
             print(item);
         }
-        for (item in seq.by(step)) {
+        for (item in seq) {
             print(item);
             break;
         }
     }
     void rangeOfElementWithStepAndDefReturn(Range<Element> seq, Integer step) {
-        for (item in seq.by(step)) {
+        for (item in seq) {
             if (true) {
                 return;
             }
         }
     }
     void rangeOfElementWithStepAndObfuscDefReturn(Range<Element> seq, Integer step) {
-        for (item in seq.by(step)) {
+        for (item in seq) {
             print(item);
             if (false) {
                 
@@ -73,14 +73,14 @@ class RangeIterationStatic<Element>()
         }
     }
     void rangeOfElementWithStepAndDefExit(Range<Element> seq, Integer step) {
-        for (item in seq.by(step)) {
+        for (item in seq) {
             if (true) {
                 break;
             }
         }
     }
     void rangeOfElementWithStepAndObfuscDefExit(Range<Element> seq, Integer step) {
-        for (item in seq.by(step)) {
+        for (item in seq) {
             print(item);
             if (false) {
                 

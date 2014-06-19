@@ -60,25 +60,25 @@ class Correct() {
         }
     }
     
-    function steppedRangeIteration() {
+    function rangeIteration2() {
         variable value sum = 0;
         Range<MyOrdinal> range = MyOrdinal(1)..MyOrdinal(10);
-        for (i in range.by(1)) {
+        for (i in range) {
             sum+=i.i;
         }
         return sum;
     }
-    assert(expected == steppedRangeIteration());
+    assert(expected == rangeIteration2());
     
-    function steppedRangeIterationReverse() {
+    function rangeIterationReverse2() {
         variable value sum = 0;
         Range<MyOrdinal> range = MyOrdinal(10)..MyOrdinal(1);
-        for (i in range.by(1)) {
+        for (i in range) {
             sum+=i.i;
         }
         return sum;
     }
-    assert(expected == steppedRangeIterationReverse());
+    assert(expected == rangeIterationReverse2());
     
     function arrayIterationStatic() {
         Array<Integer> array = Array(0..10);
