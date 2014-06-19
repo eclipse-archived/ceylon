@@ -42,13 +42,13 @@ void rangeOpIterationOptimizationCorrect() {
     // First check that Range.by() (whose implementation is also optimized for 
     // Integer) behaves as we expect 
     function unoptimizedRangeWithBy(Integer start, Integer end, Integer step) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in (start..end).by(step)) {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
-        return unoptimized.sequence;
+        return unoptimized.sequence();
     }
     
     checkEq([0, 3, 6, 9], unoptimizedRangeWithBy(0, 10, 3), "(0, 10, 3)");
@@ -99,21 +99,21 @@ void rangeOpIterationOptimizationCorrect() {
     // Check that range iteration optimization of a 'for (i in lhs..rhs) { ' 
     // loop produces the same results as an unoptimized range iteration...
     void optimizedMatches(Integer start, Integer end) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in start..end) {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
         
-        value optimized = SequenceBuilder<Integer>();
+        value optimized = ArrayBuilder<Integer>();
         @requireOptimization:"RangeOpIteration"
         for (i in start..end) {
             //print("optimized " i "");
             optimized.append(i);
         } 
         
-        check(unoptimized.sequence == optimized.sequence, 
+        check(unoptimized.sequence() == optimized.sequence(), 
             "Incorrect optimization of `for (i in `` start ``..`` end ``) { ... }`");
     }
     
@@ -136,22 +136,22 @@ void rangeOpIterationOptimizationCorrect() {
     // Check that range iteration optimization of a 'for (i in (lhs..rhs).by(step)) { ' 
     // loop produces the same results as an unoptimized range iteration...
     void optimizedWithByMatches(Integer start, Integer end, Integer step) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in (start..end).by(step)) {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
         
-        value optimized = SequenceBuilder<Integer>();
+        value optimized = ArrayBuilder<Integer>();
         @requireOptimization:"RangeOpIteration"
         for (i in (start..end).by(step)) {
             //print("optimized " i "");
             optimized.append(i);
         }
         
-        check(unoptimized.sequence == optimized.sequence, 
-            "Incorrect optimization of `for (i in (`` start ``..`` end ``).by(`` by ``)) { ... }`");
+        check(unoptimized.sequence() == optimized.sequence(), 
+            "Incorrect optimization of `for (i in (`` start ``..`` end ``).by(`` step ``)) { ... }`");
     }
         
     optimizedWithByMatches(0,0,1);

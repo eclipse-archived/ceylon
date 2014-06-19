@@ -52,13 +52,12 @@ class Correct() {
     assert(expected == rangeIterationReverse());
     
     class MyOrdinal(shared Integer i)
-            satisfies Ordinal<MyOrdinal> & Comparable<MyOrdinal> {
-        shared actual Comparison compare(MyOrdinal other)
-                => i <=> other.i;
-        shared actual MyOrdinal successor
-                => MyOrdinal(i+1);
-        shared actual MyOrdinal predecessor
-                => MyOrdinal(i-1);
+            satisfies Enumerable<MyOrdinal> {
+        shared actual MyOrdinal neighbour(Integer n)
+            => MyOrdinal(i+n);
+        shared actual Integer offset(MyOrdinal other) {
+            return i-other.i;
+        }
     }
     
     function steppedRangeIteration() {

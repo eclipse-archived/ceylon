@@ -34,7 +34,8 @@ public class OptimizationTest extends CompilerTest {
     @Test @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1647")
     public void testLopRangeOpIterationOptimizationCorrect(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeOpIterationOptimizationCorrect", 
-                "loop/optim/RangeOpIterationOptimizationCorrect.ceylon");
+                "loop/optim/RangeOpIterationOptimizationCorrect.ceylon",
+                "loop/optim/ArrayBuilder.ceylon");
     }
     
     @Test

@@ -19,7 +19,7 @@
  */
 @noanno
 class RangeIterationStatic<Element>() 
-        given Element satisfies Comparable<Element> & Ordinal<Element> {
+        given Element satisfies Enumerable<Element> {
     
     void rangeOfIntegers(Range<Integer> seq) {
         for (item in seq) {
