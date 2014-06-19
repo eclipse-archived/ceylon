@@ -625,11 +625,11 @@ public class Naming implements LocalId {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         
-        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl), decl.toString());
+        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl), decl.getName());
         Assert.that(!flags.contains(DeclNameFlag.ANNOTATIONS) 
                 || Decl.isAnnotationClass(decl) 
                     && decl instanceof Class 
-                    && gen().isSequencedAnnotation((Class)decl), decl.toString());
+                    && gen().isSequencedAnnotation((Class)decl), decl.getName());
         
         
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
