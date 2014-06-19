@@ -200,7 +200,8 @@ Used with another target such as 'package'">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-                     copy-licenses, install-runtime-libs, install-language, install-runtime"
+                     copy-licenses, install-runtime-libs, install-language, install-runtime,
+                     add-module-descriptors"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -324,14 +325,16 @@ Used with another target such as 'package'">
         </copy>
     </target>
 
-    <target name="install-compiler" depends="install-typechecker">
+    <target name="install-compiler" depends="install-typechecker,install-compiler-nodeps" />
+    <target name="install-compiler-nodeps">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-js" depends="install-typechecker">
+    <target name="install-js" depends="install-typechecker,install-js-nodeps" />
+    <target name="install-js-nodeps">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -340,28 +343,32 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-typechecker" depends="install-cmr">
+    <target name="install-typechecker" depends="install-cmr,install-typechecker-nodeps" />
+    <target name="install-typechecker-nodeps">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries">
+    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
+    <target name="install-language-nodeps">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-common">
+    <target name="install-common" depends="install-common-nodeps" />
+    <target name="install-common-nodeps">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-common">
+    <target name="install-cmr" depends="install-common,install-cmr-nodeps" />
+    <target name="install-cmr-nodeps">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -379,7 +386,8 @@ Used with another target such as 'package'">
         </copy>
     </target>
 
-    <target name="install-runtime" depends="install-cmr">
+    <target name="install-runtime" depends="install-cmr,install-runtime-nodeps" />
+    <target name="install-runtime-nodeps">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -388,6 +396,9 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
         </copy>
+    </target>
+
+    <target name="add-module-descriptors">
         <foreach target="add-module-descriptor" param="module.descriptor.file">
             <fileset dir="${ceylon-runtime.dir}/build/dist" casesensitive="yes">
                 <include name="**/module.xml"/>
