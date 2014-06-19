@@ -1999,7 +1999,10 @@ public class ProducedType extends ProducedReference {
         }
         List<ProducedType> args = getTypeArgumentList();
         List<ProducedType> simpleArgs;
+        ProducedType qt = getQualifyingType();
         if (args.isEmpty()) {
+            if(qt == null)
+                return this;// we have nothing to simplify
             simpleArgs = Collections.<ProducedType>emptyList();
         }
         else{
@@ -2009,7 +2012,6 @@ public class ProducedType extends ProducedReference {
                 simpleArgs.add(arg==null ? null : arg.simple());
             }
         }
-        ProducedType qt = getQualifyingType();
         ProducedType simpleQualifyingType = qt==null ? 
                 null : qt.simple();
         ProducedType ret = 
