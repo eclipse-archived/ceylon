@@ -152,7 +152,7 @@ shared final class Range<Element>(first, last)
                         return current++;
                     } 
                 }
-                string => "``first``..``last``.iterator()";
+                string => outer.string + ".iterator()";
             }
             return iterator;
         }
@@ -170,7 +170,7 @@ shared final class Range<Element>(first, last)
                         return finished;
                     }
                 }
-                string => "``first``..``last``.iterator()";
+                string => outer.string + ".iterator()";
             }
             return iterator;
         }
@@ -179,12 +179,7 @@ shared final class Range<Element>(first, last)
     shared actual {Element+} by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
-        if (step == 1) {
-            return this;
-        }
-        else {
-            return EnumerableRangeBy(step);
-        }
+        return step == 1 then this else By(step);
     }
     
     "Returns a range of the same length and type as this
@@ -320,28 +315,55 @@ shared final class Range<Element>(first, last)
     "Returns this range."
     shared actual Range<Element> sequence() => this;
     
-    class EnumerableRangeBy(Integer step) 
+    class By(Integer step) 
             satisfies {Element+} {
+        
+        size => 1 + (outer.size-1) / step;
+        
         first => outer.first;
-        shared actual Iterator<Element> iterator() {
-            object iterator 
-                    satisfies Iterator<Element> {
-                variable value current = first; 
-                shared actual Element|Finished next() {
-                    if (containsElement(current)) {
-                        value result = current;
-                        current = nextStep(current, step);
-                        return result;
-                    }
-                    else {
-                        return finished;
-                    }
-                }
-                string => "``first``..``last``.by(``step``).iterator()";
-            }
-            return iterator;
-        }
+        
         string => "``first``..``last``.by(``step``)";
+        
+        shared actual Iterator<Element> iterator() {
+            if (recursive) {
+                object iterator
+                        satisfies Iterator<Element> {
+                    variable value count = 0;
+                    variable value current = first;
+                    shared actual Element|Finished next() {
+                        if (++count>size) {
+                            return finished;
+                        }
+                        else {
+                            value result = current;
+                            current = current.neighbour(step);
+                            return result;
+                        } 
+                    }
+                    string => outer.string + ".iterator()";
+                }
+                return iterator;
+            }
+            else {
+                object iterator 
+                        satisfies Iterator<Element> {
+                    variable value current = first; 
+                    shared actual Element|Finished next() {
+                        if (containsElement(current)) {
+                            value result = current;
+                            current = nextStep(current, step);
+                            return result;
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                    string => outer.string + ".iterator()";
+                }
+                return iterator;
+            }
+        }
+        
     }
     
     shared actual [Element*] segment(Integer from, Integer length) 
