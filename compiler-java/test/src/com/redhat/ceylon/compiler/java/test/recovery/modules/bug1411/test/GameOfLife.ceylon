@@ -101,7 +101,7 @@ shared void gol() {
         }
 
         shared Cell[] resurrections() {
-            variable Cell[] result = {};
+            variable Cell[] result = [];
             if (state == resurrected) { result = result.withTrailing(this); }
             if (ul.canResurrect()) { result = result.withTrailing(ul); }
             if (uc.canResurrect()) { result = result.withTrailing(uc); }
@@ -125,7 +125,7 @@ shared void gol() {
         shared Integer height;
         
         // The list of alive cells
-        variable Cell[] _living = {};
+        variable Cell[] _living = [];
         
         shared Cell[] living {
             return _living;
