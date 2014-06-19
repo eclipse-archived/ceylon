@@ -120,8 +120,12 @@ shared final class Range<Element>(first, last)
      
      For any two range endpoints, `x` and `y`: 
      
-         `(x..y).reversed == y..x`."
-    shared actual Range<Element> reversed => last..first;
+         `(x..y).reversed == y..x`
+     
+     except for [[recursive]] ranges."
+    shared actual [Element+] reversed 
+            => recursive then ArraySequence(Array(this)).reversed //TODO: return a view
+                         else last..first;
     
     "The element of the range that occurs [[index]] values 
      after the start of the range. Note that this operation 
@@ -385,7 +389,8 @@ shared final class Range<Element>(first, last)
                 return [];
             }
             else {
-                return (this[from] else last)..(this[to] else first);
+                value range = (this[to] else first)..(this[from] else last);
+                return range.reversed;
             }
         }
     }

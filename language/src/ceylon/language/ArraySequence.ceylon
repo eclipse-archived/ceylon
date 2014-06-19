@@ -59,6 +59,7 @@ class ArraySequence<Element>(Array<Element> array)
     shared actual Element[] rest 
             => size==1 then [] else ArraySequence(Array(array.rest));
     
+    //TODO: return a view!
     shared actual [Element+] reversed 
             => ArraySequence(Array(array.reversed));
     
