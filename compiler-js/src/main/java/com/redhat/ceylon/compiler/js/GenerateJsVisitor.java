@@ -1714,7 +1714,6 @@ public class GenerateJsVisitor extends Visitor
             if (BmeGenerator.hasTypeParameters(that)) {
                 BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
             } else {
-                
                 out(clAlias, "JsCallable(x,x.", name, ")");
             }
             out(";}");
