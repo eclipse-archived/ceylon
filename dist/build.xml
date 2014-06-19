@@ -117,7 +117,7 @@ Some more basic ant tasks:
         </ant>
     </target>
 
-    <target name="update-all" depends="siblings,git-update"
+    <target name="update-all" depends="git-update-dist,siblings,git-update"
             description="Updates sibling projects with latest code from git">
     </target>
 
@@ -703,6 +703,13 @@ You can now build the package by executing:
         <antcall target="checkout-internal">
             <param name="tag-internal" value="${tag}" />
         </antcall>
+    </target>
+
+    <target name="git-update-dist">
+        <exec executable="git" failonerror="no">
+            <arg value="pull"/>
+            <arg value="--rebase"/>
+        </exec>
     </target>
 
     <target name="clean"
