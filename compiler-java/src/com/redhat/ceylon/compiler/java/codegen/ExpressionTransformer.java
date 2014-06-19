@@ -21,12 +21,9 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
-import static com.sun.tools.javac.code.Flags.PRIVATE;
-import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -87,7 +84,6 @@ import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.tree.JCTree.LetExpr;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
@@ -1612,7 +1608,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.SegmentOp op) {
         // we need to get the range bound type
-        final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getOrdinalDeclaration()));
+        final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getEnumerableDeclaration()));
         JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
         return utilInvocation().spreadOp(List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr), 
