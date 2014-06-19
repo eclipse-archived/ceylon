@@ -162,21 +162,21 @@
     <target name="publish" depends="dist,init.repo,publish-internal">
     </target>
 
-    <target name="publish-libs">
-        <copy file="${jboss-modules.lib}"
-            tofile="${build.dist.repo}/${jboss-modules.repo}"/>
-        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.repo}"/>
-        <copy file="${jboss-logmanager.lib}"
-            tofile="${build.dist.repo}/${jboss-logmanager.repo}"/>
-        <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
-        <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
-        <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
-    </target>
-
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist.repo}"/>
         </copy>
+    </target>
+
+    <target name="publish-libs">
+        <copy file="${jboss-modules.lib}"
+            tofile="${ceylon.repo.dir}/${jboss-modules.repo}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${ceylon.repo.dir}/${jboss-jandex.repo}"/>
+        <copy file="${jboss-logmanager.lib}"
+            tofile="${ceylon.repo.dir}/${jboss-logmanager.repo}"/>
+        <copy file="${antlr.lib}" tofile="${ceylon.repo.dir}/${antlr.repo}"/>
+        <copy file="${antlr.stringtemplate.lib}" tofile="${ceylon.repo.dir}/${antlr.stringtemplate.repo}"/>
+        <copy file="${antlr.antlr.lib}" tofile="${ceylon.repo.dir}/${antlr.antlr.repo}"/>
     </target>
 
     <!-- Repository targets -->
