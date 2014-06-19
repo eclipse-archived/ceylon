@@ -905,6 +905,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setFinal(true);
             } else if ("late".equals(name) && d instanceof Value) {
                 ((Value)d).setLate(true);
+            } else if ("sealed".equals(name) && d instanceof TypeDeclaration) {
+                ((TypeDeclaration)d).setSealed(true);
             }
             Annotation ann = new Annotation();
             ann.setName(name);
