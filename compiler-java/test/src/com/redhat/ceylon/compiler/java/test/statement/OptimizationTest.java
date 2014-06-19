@@ -31,7 +31,8 @@ public class OptimizationTest extends CompilerTest {
         compareWithJavaSource("loop/optim/RangeOpIterationOptimization");
     }
     
-    @Test @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1647")
+    @Test 
+    //@Ignore("https://github.com/ceylon/ceylon-compiler/issues/1647")
     public void testLopRangeOpIterationOptimizationCorrect(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeOpIterationOptimizationCorrect", 
                 "loop/optim/RangeOpIterationOptimizationCorrect.ceylon",
@@ -131,6 +132,31 @@ public class OptimizationTest extends CompilerTest {
         compareWithJavaSource("loop/optim/RangeIterationStatic");
     }
     
+
+    /** 
+     * Is the range optimization *correct* 
+     * (is it possible to infer its use?)
+     */
+    @Ignore("For benchmarking only")
+    @Test
+    public void testLopOptimRangeIterationCorrect(){
+        /*Range<Integer> range = new Range<Integer>(Integer.$TypeDescriptor$, Integer.instance(1), Integer.instance(0));
+        Integer last = range.getLast();
+        int latch = 1;
+        for (Integer curr = range.getFirst();
+                (latch > 0 && curr.offset(last) != 0) || latch-- > 0;
+                curr = range.getIncreasing() ? curr.getSuccessor() : curr.getPredecessor()) {
+            System.out.println(curr);
+        }*/
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeIterationCorrect",
+                "loop/optim/ArrayBuilder.ceylon",
+                "loop/optim/RangeIterationCorrect.ceylon");
+    }
+    
+    /**
+     * Is the range optimization worthwile
+     * (is it actually an optimization?)
+     */
     @Ignore("For benchmarking only")
     @Test
     public void testLopOptimRangeIterationBench(){
