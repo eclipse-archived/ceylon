@@ -37,33 +37,17 @@ public class TypeUtils {
     final TypeDeclaration tuple;
     final TypeDeclaration iterable;
     final TypeDeclaration sequential;
-    final TypeDeclaration numeric;
-    final TypeDeclaration _integer;
-    final TypeDeclaration _boolean;
-    final TypeDeclaration _float;
     final TypeDeclaration _null;
-    final TypeDeclaration anything;
-    final TypeDeclaration callable;
     final TypeDeclaration empty;
-    final TypeDeclaration metaClass;
-    final TypeDeclaration destroyable;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
         tuple = (TypeDeclaration)pkg.getDirectMember("Tuple", null, false);
         iterable = (TypeDeclaration)pkg.getDirectMember("Iterable", null, false);
         sequential = (TypeDeclaration)pkg.getDirectMember("Sequential", null, false);
-        numeric = (TypeDeclaration)pkg.getDirectMember("Numeric", null, false);
-        _integer = (TypeDeclaration)pkg.getDirectMember("Integer", null, false);
-        _boolean = (TypeDeclaration)pkg.getDirectMember("Boolean", null, false);
-        _float = (TypeDeclaration)pkg.getDirectMember("Float", null, false);
         _null = (TypeDeclaration)pkg.getDirectMember("Null", null, false);
-        anything = (TypeDeclaration)pkg.getDirectMember("Anything", null, false);
-        callable = (TypeDeclaration)pkg.getDirectMember("Callable", null, false);
         empty = (TypeDeclaration)pkg.getDirectMember("Empty", null, false);
-        destroyable = (TypeDeclaration)pkg.getDirectMember("Destroyable", null, false);
         pkg = languageModule.getPackage("ceylon.language.meta.model");
-        metaClass = (TypeDeclaration)pkg.getDirectMember("Class", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */
@@ -811,46 +795,6 @@ public class TypeUtils {
         }
         gen.out("]}");
         return true;
-    }
-
-    ProducedType tupleFromParameters(List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params) {
-        if (params == null || params.isEmpty()) {
-            return empty.getType();
-        }
-        ProducedType tt = empty.getType();
-        ProducedType et = null;
-        for (int i = params.size()-1; i>=0; i--) {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter p = params.get(i);
-            if (et == null) {
-                et = p.getType();
-            } else {
-                UnionType ut = new UnionType(p.getModel().getUnit());
-                ArrayList<ProducedType> types = new ArrayList<>();
-                if (et.getCaseTypes() == null || et.getCaseTypes().isEmpty()) {
-                    types.add(et);
-                } else {
-                    types.addAll(et.getCaseTypes());
-                }
-                types.add(p.getType());
-                ut.setCaseTypes(types);
-                et = ut.getType();
-            }
-            Map<TypeParameter,ProducedType> args = new HashMap<>();
-            for (TypeParameter tp : tuple.getTypeParameters()) {
-                if ("First".equals(tp.getName())) {
-                    args.put(tp, p.getType());
-                } else if ("Element".equals(tp.getName())) {
-                    args.put(tp, et);
-                } else if ("Rest".equals(tp.getName())) {
-                    args.put(tp, tt);
-                }
-            }
-            if (i == params.size()-1) {
-                tt = tuple.getType();
-            }
-            tt = tt.substitute(args);
-        }
-        return tt;
     }
 
     static String pathToModelDoc(final Declaration d) {
