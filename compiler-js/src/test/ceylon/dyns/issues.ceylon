@@ -66,7 +66,29 @@ void issue366() {
     }
 }
 
+void issue369() {
+  Float r;
+  Integer f;
+  dynamic {
+    r = \iMath.random();
+    f = \iMath.floor(1.5);
+  }
+  Object x = r;
+  Object y = f;
+  check(x is Float, "Issue 369 #1");
+  check(!x is Integer, "Issue 369 #2");
+  check(y is Integer, "Issue 369 #3");
+  check(!y is Float, "Issue 369 #4");
+  //Check it has methods
+  check(!r.undefined, "Issue 369 #5");
+  check(r.largerThan(-1.0), "Issue 369 #6");
+  check(f.negated.sign!=f.sign, "Issue 369 #7");
+  check(f.largerThan(-1), "Issue 369 #8");
+  check(r.fractionalPart>0.0, "Issue 369 #9");
+}
+
 shared void issues() {
     issue350();
     issue366();
+    issue369();
 }
