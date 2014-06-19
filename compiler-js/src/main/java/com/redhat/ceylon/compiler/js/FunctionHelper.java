@@ -6,8 +6,10 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -58,9 +60,11 @@ public class FunctionHelper {
             gen.endBlock();
         } else {
             List<MplData> metas = new ArrayList<>(plist.size());
+            Method m = scope instanceof Method ? (Method)scope : null;
             for (Tree.ParameterList paramList : plist) {
                 final MplData mpl = new MplData();
                 metas.add(mpl);
+                mpl.n=context;
                 if (metas.size()==1) {
                     gen.out(GenerateJsVisitor.function);
                 } else {
@@ -73,18 +77,14 @@ public class FunctionHelper {
                     gen.beginBlock();
                     gen.initSelf(context);
                     Scope parent = scope == null ? null : scope.getContainer();
-                    gen.initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null,
-                            scope instanceof Method ? (Method)scope:null);
+                    gen.initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null, m);
                 }
                 else {
                     gen.out("{");
                 }
             }
             callback.completeFunction();
-            for (int i=metas.size()-1; i>0; i--) {
-                gen.endBlock(true, false);
-                metas.get(i).outputMetamodelAndReturn(context, gen);
-            }
+            closeMPL(metas, m.getType(), gen);
             gen.endBlock();
         }
     }
@@ -273,6 +273,7 @@ public class FunctionHelper {
             List<MplData> metas = new ArrayList<>(that.getParameterLists().size());
             for (Tree.ParameterList paramList : that.getParameterLists()) {
                 final MplData mpl = new MplData();
+                mpl.n=that;
                 metas.add(mpl);
                 if (metas.size()==1) {
                     gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
@@ -289,24 +290,54 @@ public class FunctionHelper {
                 gen.initParameters(paramList, null, d);
             }
             gen.visitStatements(that.getBlock().getStatements());
-            for (int i=metas.size()-1; i>0; i--) {
-                gen.endBlock(true,true);
-                metas.get(i).outputMetamodelAndReturn(that, gen);
-            }
+            closeMPL(metas, d.getType(), gen);
             gen.endBlock();
         }
 
         if (!gen.share(d)) { gen.out(";"); }
     }
 
+    private static void closeMPL(List<MplData> mpl, ProducedType rt, GenerateJsVisitor gen) {
+        for (int i=mpl.size()-1; i>0; i--) {
+            final MplData pl = mpl.get(i);
+            gen.endBlock(true,true);
+            pl.outputMetamodelAndReturn(gen, rt);
+            if (i>1) {
+                rt = Util.producedType(pl.n.getUnit().getCallableDeclaration(), rt, pl.tupleFromParameterList());
+            }
+        }
+    }
+
     private static class MplData {
         String name;
+        Node n;
         Tree.ParameterList params;
-        void outputMetamodelAndReturn(Node n, GenerateJsVisitor gen) {
-            //TODO complete metamodel info
+        void outputMetamodelAndReturn(GenerateJsVisitor gen, ProducedType t) {
             gen.out(name,  ".$crtmm$=function(){return{$ps:");
             TypeUtils.encodeParameterListForRuntime(n, params.getModel(), gen);
+            if (t != null) {
+                //Add the type to the innermost method
+                gen.out(",$t:");
+                TypeUtils.typeNameOrList(n, t, gen, false);
+            }
             gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", name, ");");
+        }
+        ProducedType tupleFromParameterList() {
+            if (params.getParameters().isEmpty()) {
+                return n.getUnit().getEmptyDeclaration().getType();
+            }
+            List<ProducedType> types = new ArrayList<>(params.getParameters().size());
+            int firstDefaulted=-1;
+            int count = 0;
+            for (Tree.Parameter p : params.getParameters()) {
+                types.add(p.getParameterModel().getType());
+                if (p.getParameterModel().isDefaulted())firstDefaulted=count;
+                count++;
+            }
+            return n.getUnit().getTupleType(types,
+                    params.getParameters().get(params.getParameters().size()-1).getParameterModel().isSequenced(),
+                    params.getParameters().get(params.getParameters().size()-1).getParameterModel().isAtLeastOne(),
+                    firstDefaulted);
         }
     }
 }
