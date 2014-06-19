@@ -1,13 +1,7 @@
 import check { check }
 
 //Tests for spread invocations
-Integer spread1(Integer* a) {
-  variable value r  = 0;
-  for (i in a) {
-    r+=i;
-  }
-  return r;
-}
+Integer spread1(Integer* a) => a.fold(0, (Integer a, Integer b) => a+b);
 
 Integer spread2({Integer*} a) {
   variable value r  = 0;
@@ -37,6 +31,9 @@ String testIssue296(String a, String b="B") {
 T issue296<T>(T(String, String=) callable, [String, String=] tup)
         => callable(*tup);
 
+Integer(Integer*) test367_1(Integer x) => spread1;
+Integer({Integer*}) test367_2(Integer x) => spread2;
+
 void testSpread() {
   value ints = [8,9,10];
   check(spread1(1,2,3)==6, "spread [1]");
@@ -65,4 +62,6 @@ void testSpread() {
   check(smrst2=="..x", "static method ref spread 2 expected ..x got ``smrst2``");
   value issue367={"hello","world"}.spread(String.padRight)(6,'!');
   check(issue367.sequence()=={"hello!","world!"}, "Issue 367 #1");
+  check(ints.spread(test367_1)(1,2,3).sequence()=={6,6,6}, "Issue 367 #2");
+  check(ints.spread(test367_2)({1,2,3}).sequence()=={6,6,6}, "Issue 367 #3");
 }
