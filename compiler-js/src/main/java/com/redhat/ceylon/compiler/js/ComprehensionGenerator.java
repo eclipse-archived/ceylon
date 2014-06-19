@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /** This component is used by the main JS visitor to generate code for comprehensions.
@@ -85,7 +86,8 @@ class ComprehensionGenerator {
                 gen.out(tail);
                 gen.endBlock(); // end one more block - this one is for the function
                 gen.out(",");
-                TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen, false);
+                TypeUtils.printTypeArguments(that,
+                        gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen, false);
                 gen.out(")");
                 return;
             } else {

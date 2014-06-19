@@ -115,7 +115,7 @@ public class InvocationGenerator {
                 if (fillInParams) {
                     //Get the callable and try to assign params from there
                     ProducedType callable = that.getPrimary().getTypeModel().getSupertype(
-                            gen.getTypeUtils().callable);
+                            that.getUnit().getCallableDeclaration());
                     if (callable != null) {
                         //This is a tuple with the arguments to the callable
                         //(can be union with empty if first param is defaulted)

@@ -134,10 +134,12 @@ public class TryCatchGenerator {
         Res(Tree.Resource r) {
             this.r = r;
             if (r.getVariable() != null) {
-                destroy = r.getVariable().getType().getTypeModel().getDeclaration().inherits(gen.getTypeUtils().destroyable);
+                destroy = r.getVariable().getType().getTypeModel().getDeclaration().inherits(
+                        r.getUnit().getDestroyableDeclaration());
                 var = gen.getNames().name(r.getVariable().getDeclarationModel());
             } else {
-                destroy = r.getExpression().getTypeModel().getDeclaration().inherits(gen.getTypeUtils().destroyable);
+                destroy = r.getExpression().getTypeModel().getDeclaration().inherits(
+                        r.getUnit().getDestroyableDeclaration());
                 var = gen.getNames().createTempVariable();
             }
         }

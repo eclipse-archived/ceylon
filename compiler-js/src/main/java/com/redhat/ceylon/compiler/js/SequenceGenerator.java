@@ -27,7 +27,7 @@ public class SequenceGenerator {
                         && Util.isTypeUnknown(expr.getTypeModel())) {
                     //TODO should we remove this check and just let it blow up anyway?
                     TypeUtils.generateDynamicCheck(((Tree.SpreadArgument)expr).getExpression(),
-                            gen.getTypeUtils().anything.getType(), gen, true);
+                            node.getUnit().getAnythingDeclaration().getType(), gen, true);
                 } else {
                     expr.visit(gen);
                 }
@@ -185,7 +185,7 @@ public class SequenceGenerator {
         }
         if (elem == null) {
             gen.out("/*WARNING no Element found* /");
-            elem = gen.getTypeUtils().anything.getType();
+            elem = that.getUnit().getAnythingDeclaration().getType();
         }
         TypeUtils.typeNameOrList(that, elem, gen, false);
         if (nonempty) {

@@ -2500,13 +2500,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(final Tree.NegativeOp that) {
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-        final boolean isint = d.inherits(types._integer);
+        final boolean isint = d.inherits(that.getUnit().getIntegerDeclaration());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
 
     @Override public void visit(final Tree.PositiveOp that) {
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-        final boolean nat = d.inherits(types._integer) || d.inherits(types._float);
+        final boolean nat = d.inherits(that.getUnit().getIntegerDeclaration())
+                || d.inherits(that.getUnit().getFloatDeclaration());
         //TODO if it's positive we leave it as is?
         Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
     }
@@ -2572,8 +2573,10 @@ public class GenerateJsVisitor extends Visitor
         }
         final ProducedType lt = left.getTypeModel();
         final ProducedType rt = right.getTypeModel();
-        return (types._integer.equals(lt.getDeclaration()) && types._integer.equals(rt.getDeclaration()))
-                || (types._boolean.equals(lt.getDeclaration()) && types._boolean.equals(rt.getDeclaration()));
+        return (left.getUnit().getIntegerDeclaration().equals(lt.getDeclaration())
+                && left.getUnit().getIntegerDeclaration().equals(rt.getDeclaration()))
+                || (left.getUnit().getBooleanDeclaration().equals(lt.getDeclaration())
+                        && left.getUnit().getBooleanDeclaration().equals(rt.getDeclaration()));
     }
 
     @Override public void visit(final Tree.SmallerOp that) {

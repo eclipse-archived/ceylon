@@ -37,7 +37,7 @@ public class BmeGenerator {
             gen.out(":", exp, ")");
         } else {
             final boolean isCallable = !forInvoke && decl instanceof Method
-                    && gen.getTypeUtils().callable.equals(bme.getTypeModel().getDeclaration());
+                    && bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration());
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
