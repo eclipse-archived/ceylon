@@ -23,7 +23,7 @@ shared void repeat(Integer times, void f(Integer iter)) {
 }
 
 class MySequence<out Element>(Sequence<Element> seq)
-            satisfies Sequence<Element> {
+            satisfies List<Element> {
     shared actual Integer lastIndex { return seq.lastIndex; }
     shared actual Element first { return seq.first; }
     shared actual Element[] rest { return seq.rest; }

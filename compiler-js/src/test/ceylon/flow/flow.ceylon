@@ -150,26 +150,6 @@ void testWhileExists() {
     check(i1==1, "while (exists x=expr)");
 }
 
-class MySequence<out Element>(Sequence<Element> seq)
-            satisfies Sequence<Element> {
-    shared actual Integer lastIndex { return seq.lastIndex; }
-    shared actual Element first { return seq.first; }
-    shared actual Element[] rest { return seq.rest; }
-    shared actual Element? getFromFirst(Integer index) { return seq.getFromFirst(index); }
-    shared actual Element[] span(Integer from, Integer to) { return seq.span(from, to); }
-    shared actual Element[] spanTo(Integer to) { return seq.spanTo(to); }
-    shared actual Element[] spanFrom(Integer from) { return seq.spanFrom(from); }
-    shared actual Element[] segment(Integer from, Integer length) { return seq.segment(from, length); }
-    shared actual String string { return seq.string; }
-    shared actual Integer hash { return seq.hash; }
-    shared actual Boolean equals(Object other) { return seq.equals(other); }
-    shared actual Sequence<Element> reversed { return seq.reversed; }
-    shared actual Element last => seq.last;
-    shared actual Integer size => seq.size;
-    shared actual Boolean contains(Object x) => seq.contains(x);
-    shared actual Iterator<Element> iterator() => seq.iterator();
-}
-
 void testIfNonempty() {
     String[] s1 = [];
     String[] s2 = [ "abc" ];
@@ -203,11 +183,6 @@ void testIfNonempty() {
         check(s6.first=="hi", "if (nonempty x=expr)");
     } else {
         fail("if (nonempty x=expr)");
-    }
-    String[] s = MySequence<String>(["hi"]);
-    if (nonempty s) {
-    } else {
-        fail("if (nonempty x) custom sequence");
     }
 }
 

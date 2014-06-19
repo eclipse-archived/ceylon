@@ -36,7 +36,7 @@ class AliasingSub2() extends AliasingSubclass() {
 interface Matrix<Cell> => Sequence<[Cell+]>;
 class Listleton<T>(List<T> l) => Singleton<List<T>>(l);
 
-class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
+class MiMatrix(Integer gridSize) satisfies List<[Integer+]> {
     value sb = [ for (i in 1..gridSize) [ for (j in 1..gridSize) j ] ];
     Matrix<Integer> grid = sb;
     shared actual Iterator<[Integer+]> iterator() { return grid.iterator(); }
@@ -54,10 +54,10 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual Boolean contains(Object other) => grid.contains(other);
     last => grid.last;
     shared actual [Integer+][] spanTo(Integer to) =>
-            to<0 then [] else span(0, to);
+            to<0 then [] else span(0, to).sequence();
 
     shared actual [Integer+][] spanFrom(Integer from) =>
-            span(from, size);
+            span(from, size).sequence();
 }
 
 shared void issue225_1(Integer|String content){}
