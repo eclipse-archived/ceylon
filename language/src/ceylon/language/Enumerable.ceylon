@@ -48,7 +48,7 @@ shared interface Enumerable<Other> of Other
      - `x.offset(x) == 0`,
      - `x.successor.offset(x) == 1`,
      - `x.predecessor.offset(x) == -1`,
-     - `x.offset(x.neighbour(n)) == n`,
+     - `x.neighbour(n).offset(x) == n`,
      - `x.offset(y) == -y.offset(x)`, and
      - `x.offset(y) == x.offset(z) + z.offset(y)`
      

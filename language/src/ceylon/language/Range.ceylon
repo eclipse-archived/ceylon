@@ -46,12 +46,14 @@ shared final class Range<Element>(first, last)
     shared Boolean decreasing => !increasing;
     
     "Determines if the range is of recursive values, that 
-     is, if successors wrap back on themselves."
-    Boolean recursive 
-            => first.offsetSign(first.successor)>=0;
+     is, if successors wrap back on themselves. All 
+     recursive ranges are [[increasing]]."
+    Boolean recursive
+            = first.offsetSign(first.successor)>0 &&
+              last.predecessor.offsetSign(last)>0;
     
-    Element next(Element x) 
-            => increasing then x.successor 
+    Element next(Element x)
+            => increasing then x.successor
                           else x.predecessor;
     
     Element nextStep(Element x, Integer step) 
