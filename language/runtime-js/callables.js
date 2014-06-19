@@ -23,10 +23,29 @@ function noop() { return null; }
 
 //This is used for plain method references
 function JsCallable(o,f) {
-    if (o === null) return noop;
-    var f2 = function() { return f.apply(o, arguments); };
-    f2.$crtmm$=f.$crtmm$===undefined?Callable.$crtmm$:f.$crtmm$;
-    return f2;
+  if (o===null || o===undefined) return noop;
+  var f2 = function() {
+    var arg=[].slice.call(arguments,0);
+    if (arg.length==1 && is$(arg[0],{t:Tuple})) {
+      //Possible spread
+      var mm=getrtmm$$(f);
+      var typecheck={t:Iterable};
+      if (arg[0].$$targs$$ && arg[0].$$targs$$.Element$Iterable)typecheck.a={Element$Iterable:arg[0].$$targs$$.Element$Iterable};
+      if (mm && mm.$ps!==undefined
+          && (mm.$ps.length>1 || (mm.$ps.length==1
+          && (mm.$ps[0].seq || !extendsType(mm.$ps[0].$t, typecheck))))) {
+        var a=arg[0].elem$;
+        if (a===undefined) {
+          a=[];
+          for (var i=0;i<arg[0].size;i++)a.push(arg[0].$_get(i));
+        }
+        arg=a;
+      }
+    }
+    return f.apply(o, arg);
+  };
+  f2.$crtmm$=f.$crtmm$===undefined?Callable.$crtmm$:f.$crtmm$;
+  return f2;
 }
 JsCallable.$crtmm$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   $tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};}

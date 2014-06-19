@@ -24,14 +24,12 @@ function tpl$(elems,types,spread){
   $init$Tuple();
   var that=new Tuple.$$;
   that.$$targs$$=types;
-  that.$opt=1;
   $_Object(that);
   var _t={t:'u',l:types.l};
   Sequence({Element$Sequence:_t},that);
   elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
     Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
   set_type_args(that,elems.$$targs$$);
-  that.$elems=elems;
   that.first_=elems[0];
   that.getFromFirst=function(i){
     var e=elems[i]
@@ -100,6 +98,7 @@ function tpl$(elems,types,spread){
   atr$(that,'reversed',function(){
     return ArraySequence(elems.reversed,{Element$ArraySequence:_t});
   },undefined,Tuple.$$.prototype.$prop$getReversed.$crtmm$);
+  that.nativeArray=function() { return elems; }
   return that;
 }
 ex$.tpl$=tpl$;
