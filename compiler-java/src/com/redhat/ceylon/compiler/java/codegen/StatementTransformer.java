@@ -1698,9 +1698,6 @@ public class StatementTransformer extends AbstractTransformer {
      * <pre>
      *   for (element in first..last) {
      *   }
-     *   // OR
-     *   for (element in (first..last).by(step)) {
-     *   }
      * </pre>
      * 
      * <p>The transformed code looks something like this:</p>
@@ -1709,8 +1706,8 @@ public class StatementTransformer extends AbstractTransformer {
      *   final Element last = range.getLast();
      *   ELEMENT_TYPE element = first;
      *   for (Element current = first; 
-     *            current.compare(last) == (range.decreasing ? larger : smaller); 
-     *            current = range.decreasing ? current.predecessor ? current.successor) {
+     *            range.increasing ? current.offset(last) <= 0 : current.offset(last) >= 0; 
+     *            current = range.increasing ? current.successor? current.predecessor ) {
      *       TRANSFORMED_BLOCK
      *   }
      * </pre>
@@ -1725,39 +1722,26 @@ public class StatementTransformer extends AbstractTransformer {
         
         private SyntheticName lastName;
         
-        private SyntheticName decreasingName;
+        private SyntheticName increasingName;
         
         private SyntheticName itemName;
 
-        private final Tree.Term step;
-
-        private final Tree.Primary steppedRange;
-        
         public RangeIterationOptimization(Tree.ForStatement stmt,
-                ProducedType iteratedType, Tree.Primary steppedRange, Tree.Term step) {
+                ProducedType iteratedType) {
             super(stmt);
             this.iteratedType = iteratedType;
-            this.steppedRange = steppedRange;
-            this.step = step;
             this.rangeName = naming.alias("range");
             this.lastName = naming.alias("last");
-            this.decreasingName = naming.alias("deceasing");
+            this.increasingName = naming.alias("increasing");
             this.itemName = naming.alias("item");
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
             ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
-            
-            if (steppedRange != null) {
-                result.add(makeVar(FINAL, rangeName,
-                        makeJavaType(steppedRange.getTypeModel()),
-                        expressionGen().transformExpression(steppedRange)));
-            } else {
-             // final Range<Element> range = RANGE_EXPR;
-                result.add(makeVar(FINAL, rangeName,
-                        makeJavaType(getIterable().getTypeModel()),
-                        expressionGen().transformExpression(getIterable())));
-            }
+            // final Range<Element> range = RANGE_EXPR;
+            result.add(makeVar(FINAL, rangeName,
+                    makeJavaType(getIterable().getTypeModel()),
+                    expressionGen().transformExpression(getIterable())));
             // final Element last = range.getLast();
             result.add(makeVar(FINAL, lastName, 
                     makeJavaType(iteratedType, JT_NO_PRIMITIVES), 
@@ -1766,10 +1750,10 @@ public class StatementTransformer extends AbstractTransformer {
                             List.<JCExpression>nil())));
             
             // final boolean decreasing = range.getDecreasing();
-            result.add(makeVar(FINAL, decreasingName, 
+            result.add(makeVar(FINAL, increasingName, 
                     make().Type(syms().booleanType), 
                     make().Apply(null,
-                            naming.makeQualIdent(rangeName.makeIdent(), "getDecreasing"),
+                            naming.makeQualIdent(rangeName.makeIdent(), "getIncreasing"),
                             List.<JCExpression>nil())));
             
             Tree.ControlClause prevForclause = currentForClause;
@@ -1796,71 +1780,33 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new RuntimeException();
             }
             
-            // next.compare(last) == (range.getDecreasing() ? larger_.get_() : smaller_.get_());
-            // Note we cheat slightly here: We do a "item != larger", rather than using .equals()
-            // but it amounts to the same thing.
-            JCExpression cond = make().Binary(step == null ? JCTree.NE : JCTree.EQ,
-                    make().Apply(null,
-                        naming.makeQualIdent(itemName.makeIdent(), "compare"),
-                        List.<JCExpression>of(lastName.makeIdent())),
-                    make().Conditional(decreasingName.makeIdent(),
-                            make().Apply(null,
-                                    naming.makeLanguageValue("smaller"),
-                                    List.<JCExpression>nil()),
-                            make().Apply(null, 
-                                    naming.makeLanguageValue("larger"),
-                                    List.<JCExpression>nil())));
+            // range.increasing ? current.offset(last) <= 0 : current.offset(last) >= 0;
+            JCExpression cond = 
+                    make().Conditional(increasingName.makeIdent(), 
+                        make().Binary(JCTree.LE,
+                        make().Apply(null,
+                            naming.makeQualIdent(itemName.makeIdent(), "offset"),
+                            List.<JCExpression>of(lastName.makeIdent())),
+                        make().Literal(0L)),
+                        make().Binary(JCTree.GE,
+                                make().Apply(null,
+                                    naming.makeQualIdent(itemName.makeIdent(), "offset"),
+                                    List.<JCExpression>of(lastName.makeIdent())),
+                                make().Literal(0L)));
             
             // next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor()) {
             JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(),
-                    make().Conditional(decreasingName.makeIdent(),
-                            make().Apply(null, 
-                                    naming.makeQualIdent(itemName.makeIdent(), "getPredecessor"), 
-                                    List.<JCExpression>nil()),
+                    make().Conditional(increasingName.makeIdent(),
                             make().Apply(null, 
                                     naming.makeQualIdent(itemName.makeIdent(), "getSuccessor"), 
+                                    List.<JCExpression>nil()),
+                            make().Apply(null, 
+                                    naming.makeQualIdent(itemName.makeIdent(), "getPredecessor"), 
                                     List.<JCExpression>nil()))));
-            
-            if (step == null) {
-                result.add(make().Labelled(this.label, make().ForLoop(List.<JCStatement>of(init), 
-                        cond, 
-                        List.<JCExpressionStatement>of(incr), 
-                        make().Block(0, transformedBlock))));
-            } else {
-                /*for (long kk = 0; kk < step; kk++) {
-                    next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor();
-                    if (next.compare(last) == (range.getDecreasing() ? smaller_.get_() : larger_.get_())) {
-                        break outer;
-                    }
-                }*/
-                
-                if (!stmt.getExits() && !getBlock().getDefinitelyReturns()) {
-                    SyntheticName stepName = naming.alias("step");
-                    result.add(makeVar(FINAL, stepName,
-                            make().Type(syms().longType),
-                            expressionGen().transformExpression(step,
-                                    BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType())));
-                    SyntheticName stepCounterName = naming.alias("stepi");
-                    
-                    JCStatement stepBlock = make().Block(0, List.<JCStatement>of(
-                            incr,
-                            make().If(cond, make().Break(this.label), null)));
-                    
-                    JCStatement stepLoop = make().ForLoop(
-                            List.<JCStatement>of(makeVar(stepCounterName, make().Type(syms().longType), makeLong(0))),
-                            make().Binary(JCTree.LT, stepCounterName.makeIdent(), stepName.makeIdent()),
-                            List.<JCExpressionStatement>of(make().Exec(make().Unary(JCTree.POSTINC, stepCounterName.makeIdent()))),
-                            stepBlock);
-                    
-                    transformedBlock = transformedBlock.append(stepLoop);
-                }
-                
-                JCStatement block = make().Block(0, transformedBlock);
-                
-                result.add(make().Labelled(this.label, 
-                        make().ForLoop(List.<JCStatement>of(init), null, List.<JCExpressionStatement>nil(), block)));
-            }
-            
+            result.add(make().Labelled(this.label, make().ForLoop(List.<JCStatement>of(init), 
+                    cond, 
+                    List.<JCExpressionStatement>of(incr), 
+                    make().Block(0, transformedBlock))));
             return result;
         }
 
@@ -1878,42 +1824,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         if (iterableType.getSupertype(typeFact().getRangeDeclaration()) != null) {
             // it's a range
-            return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType), null, null);
+            return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
         }
-        
-        // Check for "for (item in range.by(step))" where range is not a
-        // Range<Integer> (in the Integer case there's an optimization in 
-        // Range.by() which performs better than this optimization)
-        Tree.Term iterableTerm = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTerm();
-        if (iterableTerm instanceof Tree.InvocationExpression) {
-            Tree.InvocationExpression invocation = (Tree.InvocationExpression)iterableTerm;
-            if (invocation.getPrimary() instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression)invocation.getPrimary();
-                ProducedType primaryType = qme.getPrimary().getTypeModel();
-                ProducedType rangeType = primaryType.getSupertype(typeFact().getRangeDeclaration());
-                if (rangeType != null
-                        && !rangeType.isSubtypeOf(typeFact().getRangeType(typeFact().getIntegerDeclaration().getType()))) {
-                    if ("by".equals(qme.getIdentifier().getText())) {
-                        Tree.Term step = null;
-                        if (invocation.getPositionalArgumentList() != null) {
-                            Tree.PositionalArgument positionalArgument = invocation.getPositionalArgumentList().getPositionalArguments().get(0);
-                            if (positionalArgument instanceof Tree.ListedArgument) {
-                                step = ((Tree.ListedArgument)positionalArgument).getExpression().getTerm();
-                            }
-                        } else if (invocation.getNamedArgumentList() != null) {
-                            Tree.NamedArgument positionalArgument = invocation.getNamedArgumentList().getNamedArguments().get(0);
-                            if (positionalArgument instanceof Tree.SpecifiedArgument) {
-                                step = ((Tree.SpecifiedArgument)positionalArgument).getSpecifierExpression().getExpression().getTerm();
-                            }
-                        }
-                        return new RangeIterationOptimization(stmt, 
-                                typeFact().getIteratedType(iterableType), 
-                                qme.getPrimary(), step);
-                    }
-                }
-            }
-        }
-        
         return optimizationFailed(stmt, optName, 
                 "static type of iterable in for statement is not Range");
     }
