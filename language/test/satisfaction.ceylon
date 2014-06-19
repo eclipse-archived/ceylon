@@ -72,7 +72,7 @@ class MyIterator() satisfies Iterator<Integer> {
         return r;
     }
 }
-class MySequence() satisfies Sequence<Integer> {
+class MySequence() satisfies List<Integer> {
     shared actual Integer lastIndex => 0;
     shared actual Integer first => 1;
     shared actual Integer last => 1;
@@ -83,21 +83,24 @@ class MySequence() satisfies Sequence<Integer> {
     shared actual Boolean equals(Object other) => (super of List<Integer>).equals(other);
     shared actual Boolean contains(Object element) => element==1;
     shared actual MySequence clone() => MySequence();
-    shared actual Sequence<Integer> reversed => this;
+    shared actual Sequence<Integer> reversed {
+        assert(nonempty x=this.sequence());
+        return x;
+    }
     shared actual Integer? getFromFirst(Integer index) {
         return index==0 then 1;
     }
     shared actual Integer[] segment(Integer from, Integer length) {
-        return this;
+        return this.sequence();
     }
     shared actual Integer[] span(Integer from, Integer to) {
-        return this;
+        return this.sequence();
     }
     shared actual Integer[] spanFrom(Integer from) {
-        return this;
+        return this.sequence();
     }
     shared actual Integer[] spanTo(Integer to) {
-        return this;
+        return this.sequence();
     }
 }
 class MyRanged(Character[] contents='a'..'z') 
