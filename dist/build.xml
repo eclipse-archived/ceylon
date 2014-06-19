@@ -380,10 +380,6 @@ Used with another target such as 'package'">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-        <copy todir="${ceylon.dist.dir}">
-            <fileset dir="${ceylon-runtime.dir}/build/dist">
-            </fileset>
-        </copy>
     </target>
 
     <target name="install-runtime" depends="install-cmr,install-runtime-nodeps" />
@@ -392,10 +388,6 @@ Used with another target such as 'package'">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-        <copy todir="${ceylon.dist.dir}">
-            <fileset dir="${ceylon-runtime.dir}/build/dist">
-            </fileset>
-        </copy>
     </target>
 
     <target name="add-module-descriptors">
