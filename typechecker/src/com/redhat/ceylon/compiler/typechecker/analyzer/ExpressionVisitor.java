@@ -4204,6 +4204,7 @@ public class ExpressionVisitor extends Visitor {
                 typeArgumentsImplicit(that);
             }
 //            checkOverloadedReference(that);
+        	checkSealedReference(type, that);
         }
     }
 
@@ -4233,6 +4234,16 @@ public class ExpressionVisitor extends Visitor {
                         type.getName(unit) + " is not a class");
             }
         }
+    }
+
+	private void checkSealedReference(TypeDeclaration type,
+            Tree.MemberOrTypeExpression that) {
+	    if (type.isSealed() && !inSameModule(type) &&
+	    		(!that.getStaticMethodReferencePrimary())) {
+	    	that.addError("invokes or references a sealed class in a different module: " +
+	    			type.getName(unit) + " in " + 
+	    			type.getUnit().getPackage().getModule().getNameAsString());
+	    }
     }
     
     @Override public void visit(Tree.ExtendedTypeExpression that) {
@@ -4365,6 +4376,7 @@ public class ExpressionVisitor extends Visitor {
                     typeArgumentsImplicit(that);
                 }
 //                checkOverloadedReference(that);
+            	checkSealedReference(type, that);
             }
             //TODO: this is temporary until we get metamodel reference expressions!
             /*if (p instanceof Tree.BaseTypeExpression ||
@@ -5345,12 +5357,10 @@ public class ExpressionVisitor extends Visitor {
                             et.addError("extends a final class: " + 
                                     etd.getName(unit));
                         }
-                    	if (etd.isSealed()) {
-                    		if (!inSameModule(etd)) {
-                    			et.addError("extends a sealed class in a different module: " +
-                    					etd.getName(unit) + " in " + 
-                    					etd.getUnit().getPackage().getModule().getNameAsString());
-                    		}
+                    	if (etd.isSealed() && !inSameModule(etd)) {
+                    		et.addError("extends a sealed class in a different module: " +
+                    				etd.getName(unit) + " in " + 
+                    				etd.getUnit().getPackage().getModule().getNameAsString());
                     	}
                     }
                 }
@@ -5395,12 +5405,10 @@ public class ExpressionVisitor extends Visitor {
                             type.getDeclaration().getName(unit) +
                             " of " + td.getName());
                 }
-            	if (std.isSealed()) {
-            		if (!inSameModule(std)) {
-            			t.addError("satisfies a sealed interface in a different module: " +
-            					std.getName(unit) + " in " + 
-            					std.getUnit().getPackage().getModule().getNameAsString());
-            		}
+            	if (std.isSealed() && !inSameModule(std)) {
+        			t.addError("satisfies a sealed interface in a different module: " +
+        					std.getName(unit) + " in " + 
+        					std.getUnit().getPackage().getModule().getNameAsString());
             	}
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
