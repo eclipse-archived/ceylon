@@ -174,6 +174,12 @@ JSNum$proto.clear = function(index) {
 JSNum$proto.neighbour=function(offset) {
   return this+offset;
 }
+JSNum$proto.offset=function(other) {
+  return this-other;
+}
+JSNum$proto.offsetSign=function(other) {
+  return this-other;
+}
 atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
 
