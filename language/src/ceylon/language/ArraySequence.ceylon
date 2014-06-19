@@ -21,12 +21,14 @@ shared [Element+]|Absent sequence<Element,Absent=Null>
 
 "A [[Sequence]] backed by an [[Array]]. 
  
- Since `Array` is mutable, this class is private to the
+ Since [[Array]] is mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
-class ArraySequence<out Element>(Array<Element> array) 
+shared sealed class ArraySequence<out Element>(array) 
         extends Object()
         satisfies [Element+] {
+    
+    Array<Element> array;
     
     assert (!array.empty);
     

@@ -20,7 +20,7 @@
  _emptiness-preserving_."
 see (`interface Empty`)
 by ("Gavin")
-shared interface Sequence<out Element>
+shared sealed interface Sequence<out Element>
         satisfies Element[] & 
                   {Element+} {
     
