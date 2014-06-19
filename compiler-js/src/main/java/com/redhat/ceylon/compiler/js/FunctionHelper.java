@@ -83,9 +83,7 @@ public class FunctionHelper {
             callback.completeFunction();
             for (int i=metas.size()-1; i>0; i--) {
                 gen.endBlock(true, false);
-                gen.out(metas.get(i).name,  ".$crtmm$=function(){return{$ps:");
-                TypeUtils.encodeParameterListForRuntime(context, metas.get(i).params.getModel(), gen);
-                gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", metas.get(i).name, ");");
+                metas.get(i).outputMetamodelAndReturn(context, gen);
             }
             gen.endBlock();
         }
@@ -293,9 +291,7 @@ public class FunctionHelper {
             gen.visitStatements(that.getBlock().getStatements());
             for (int i=metas.size()-1; i>0; i--) {
                 gen.endBlock(true,true);
-                gen.out(metas.get(i).name,  ".$crtmm$=function(){return{$ps:");
-                TypeUtils.encodeParameterListForRuntime(that, metas.get(i).params.getModel(), gen);
-                gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", metas.get(i).name, ");");
+                metas.get(i).outputMetamodelAndReturn(that, gen);
             }
             gen.endBlock();
         }
@@ -306,5 +302,11 @@ public class FunctionHelper {
     private static class MplData {
         String name;
         Tree.ParameterList params;
+        void outputMetamodelAndReturn(Node n, GenerateJsVisitor gen) {
+            //TODO complete metamodel info
+            gen.out(name,  ".$crtmm$=function(){return{$ps:");
+            TypeUtils.encodeParameterListForRuntime(n, params.getModel(), gen);
+            gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", name, ");");
+        }
     }
 }
