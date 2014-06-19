@@ -11,8 +11,10 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration 
@@ -376,16 +378,15 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis) {
         return getRefinedMember(name, signature, ellipsis,
-                new ArrayList<TypeDeclaration>());
+                new HashSet<TypeDeclaration>());
     }
 
     private Declaration getRefinedMember(String name, 
-            List<ProducedType> signature, boolean ellipsis, List<TypeDeclaration> visited) {
-        if (visited.contains(this)) {
+            List<ProducedType> signature, boolean ellipsis, Set<TypeDeclaration> visited) {
+        if (!visited.add(this)) {
             return null;
         }
         else {
-            visited.add(this);
             TypeDeclaration et = getExtendedTypeDeclaration();
             if (et!=null) {
                 Declaration ed = et.getRefinedMember(name, signature, ellipsis, visited);
@@ -764,16 +765,21 @@ public abstract class TypeDeclaration extends Declaration
     	//TODO: do we need to handle union types here?
     	List<TypeDeclaration> result;
     	ClassOrInterface etd = getExtendedTypeDeclaration();
+    	List<TypeDeclaration> stds = getSatisfiedTypeDeclarations();
+    	boolean addThis = this instanceof ClassOrInterface;
 		if (etd==null) {
-    		result = new ArrayList<TypeDeclaration>();
+		    // predict the right size to avoid reallocating the buffer
+    		result = new ArrayList<TypeDeclaration>(stds.size() + (addThis ? 1 : 0));
     	}
 		else {
 			result = etd.getSuperTypeDeclarations();
 		}
-    	for (TypeDeclaration std: getSatisfiedTypeDeclarations()) {
+		// cheaper c-for than foreach
+    	for (int i=0,l=stds.size();i<l;i++) {
+    	    TypeDeclaration std = stds.get(i);
     		result.addAll(std.getSuperTypeDeclarations());
     	}
-    	if (this instanceof ClassOrInterface) {
+    	if (addThis) {
     		result.add(this);
     	}
     	return result;
