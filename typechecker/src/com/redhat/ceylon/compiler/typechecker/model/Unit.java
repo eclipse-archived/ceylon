@@ -1119,6 +1119,7 @@ public class Unit {
         put("actual");
         put("abstract");
         put("final");
+        put("sealed");
         put("variable");
         put("late");
         put("deprecated");

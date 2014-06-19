@@ -1108,6 +1108,14 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a class, and may not be annotated final", 1700);
             }
         }
+        if (hasAnnotation(al, "sealed", unit)) {
+            if (model instanceof ClassOrInterface) {
+                ((ClassOrInterface) model).setSealed(true);
+            }
+            else {
+                that.addError("declaration is not a class or interface, and may not be annotated sealed");
+            }
+        }
         if (hasAnnotation(al, "variable", unit)) {
             if (model instanceof Value) {
                 ((Value) model).setVariable(true);

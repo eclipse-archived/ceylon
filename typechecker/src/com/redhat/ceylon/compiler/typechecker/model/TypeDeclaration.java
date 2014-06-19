@@ -29,6 +29,15 @@ public abstract class TypeDeclaration extends Declaration
     private List<ProducedType> brokenSupertypes = null;
     private boolean inconsistentType;
     private boolean dynamic;
+	private boolean sealed;
+    
+	public boolean isSealed() {
+	    return sealed;
+    }
+	
+	public void setSealed(boolean sealed) {
+	    this.sealed = sealed;
+    }
     
     public boolean isDynamic() {
         return dynamic;
@@ -776,5 +785,5 @@ public abstract class TypeDeclaration extends Declaration
     public void clearProducedTypeCache() {
         // do nothing, work in subclasses
     }
-    
+
 }

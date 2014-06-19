@@ -5345,6 +5345,13 @@ public class ExpressionVisitor extends Visitor {
                             et.addError("extends a final class: " + 
                                     etd.getName(unit));
                         }
+                    	if (etd.isSealed()) {
+                    		if (!inSameModule(etd)) {
+                    			et.addError("extends a sealed class in a different module: " +
+                    					etd.getName(unit) + " in " + 
+                    					etd.getUnit().getPackage().getModule().getNameAsString());
+                    		}
+                    	}
                     }
                 }
 //                if (td.isParameterized() &&
@@ -5353,6 +5360,11 @@ public class ExpressionVisitor extends Visitor {
 //                }
             }
         }
+    }
+
+	private boolean inSameModule(TypeDeclaration etd) {
+	    return etd.getUnit().getPackage().getModule()
+	    		.equals(unit.getPackage().getModule());
     }
 
     @Override 
@@ -5365,6 +5377,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType type = t.getTypeModel();
             if (type!=null && type.getDeclaration()!=null) {
                 type = type.resolveAliases();
+                TypeDeclaration std = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
                         !inLanguageModule(that.getUnit())) {
                     if (unit.isCallableType(type)) {
@@ -5382,6 +5395,13 @@ public class ExpressionVisitor extends Visitor {
                             type.getDeclaration().getName(unit) +
                             " of " + td.getName());
                 }
+            	if (std.isSealed()) {
+            		if (!inSameModule(std)) {
+            			t.addError("satisfies a sealed interface in a different module: " +
+            					std.getName(unit) + " in " + 
+            					std.getUnit().getPackage().getModule().getNameAsString());
+            		}
+            	}
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
                 /*if (!(td instanceof TypeParameter)) {
