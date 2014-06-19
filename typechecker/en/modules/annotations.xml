@@ -378,6 +378,12 @@ shared deprecated</programlisting>
                     be extended.</para>
                 </listitem>
                 <listitem>
+                    <para><literal>sealed</literal> specifies that a class may not 
+                    be extended or instantiated outside the module in which it is
+                    defined, or that an interface may not be satisfied by a class
+                    or interface outside the module in which it is defined.</para>
+                </listitem>
+                <listitem>
                     <para><literal>annotation</literal> specifies that a class is
                     an annotation type, or that a toplevel function is an annotation
                     constructor.</para>
