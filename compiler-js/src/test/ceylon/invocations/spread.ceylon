@@ -33,6 +33,10 @@ T issue296<T>(T(String, String=) callable, [String, String=] tup)
 
 Integer(Integer*) test367_1(Integer x) => spread1;
 Integer({Integer*}) test367_2(Integer x) => spread2;
+Integer test367_3(Integer a)(Integer b, Integer c) {
+  return b+c;
+}
+Integer test367_4(Integer a)(Integer b, Integer c) => b+c;
 
 void testSpread() {
   value ints = [8,9,10];
@@ -64,4 +68,6 @@ void testSpread() {
   check(issue367.sequence()=={"hello!","world!"}, "Issue 367 #1");
   check(ints.spread(test367_1)(1,2,3).sequence()=={6,6,6}, "Issue 367 #2");
   check(ints.spread(test367_2)({1,2,3}).sequence()=={6,6,6}, "Issue 367 #3");
+  check(ints.spread(test367_3)(3,3).sequence()=={6,6,6}, "Issue 367 #4");
+  check(ints.spread(test367_4)(3,3).sequence()=={6,6,6}, "Issue 367 #5");
 }
