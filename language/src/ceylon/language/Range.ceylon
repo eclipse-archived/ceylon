@@ -45,7 +45,7 @@ shared final class Range<Element>(first, last)
      predecessors occur after successors."
     shared Boolean decreasing => !increasing;
     
-    "Determines if the range is of rescursive values, that 
+    "Determines if the range is of recursive values, that 
      is, if successors wrap back on themselves."
     Boolean recursive 
             => first.offsetSign(first.successor)>=0;
