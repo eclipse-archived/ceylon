@@ -1729,7 +1729,7 @@ public class GenerateJsVisitor extends Visitor
             //Method ref with type parameters
             BmeGenerator.printGenericMethodReference(this, that, primaryVar, member);
         } else {
-            out(clAlias, "JsCallable(", primaryVar, ",", primaryVar, "!==null?", member, ":null)");
+            out(clAlias, "JsCallable(", primaryVar, ",", clAlias, "nn$(", primaryVar, ")?", member, ":null)");
         }
         out(")");
     }
