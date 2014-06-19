@@ -63,4 +63,6 @@ void testSpread() {
   value param = ['.'];
   value smrst2=pad("x")(3,*param);
   check(smrst2=="..x", "static method ref spread 2 expected ..x got ``smrst2``");
+  value issue367={"hello","world"}.spread(String.padRight)(6,'!');
+  check(issue367.sequence()=={"hello!","world!"}, "Issue 367 #1");
 }
