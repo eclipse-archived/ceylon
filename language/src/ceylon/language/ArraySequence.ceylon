@@ -24,7 +24,7 @@ shared [Element+]|Absent sequence<Element,Absent=Null>
  Since `Array` is mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
-class ArraySequence<Element>(Array<Element> array) 
+class ArraySequence<out Element>(Array<Element> array) 
         extends Object()
         satisfies [Element+] {
     
