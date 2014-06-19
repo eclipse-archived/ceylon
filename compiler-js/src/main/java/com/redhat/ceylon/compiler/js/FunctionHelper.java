@@ -57,16 +57,19 @@ public class FunctionHelper {
             callback.completeFunction();
             gen.endBlock();
         } else {
-            int count=0;
+            List<MplData> metas = new ArrayList<>(plist.size());
             for (Tree.ParameterList paramList : plist) {
-                if (count==0) {
+                final MplData mpl = new MplData();
+                metas.add(mpl);
+                if (metas.size()==1) {
                     gen.out(GenerateJsVisitor.function);
                 } else {
-                    //TODO add metamodel
-                    gen.out("return function");
+                    mpl.name=gen.getNames().createTempVariable();
+                    mpl.params=paramList;
+                    gen.out("var ",  mpl.name, "=function");
                 }
                 paramList.visit(gen);
-                if (count == 0) {
+                if (metas.size()==1) {
                     gen.beginBlock();
                     gen.initSelf(context);
                     Scope parent = scope == null ? null : scope.getContainer();
@@ -76,12 +79,15 @@ public class FunctionHelper {
                 else {
                     gen.out("{");
                 }
-                count++;
             }
             callback.completeFunction();
-            for (int i=0; i < count; i++) {
-                gen.endBlock(false, i==count-1);
+            for (int i=metas.size()-1; i>0; i--) {
+                gen.endBlock(true, false);
+                gen.out(metas.get(i).name,  ".$crtmm$=function(){return{$ps:");
+                TypeUtils.encodeParameterListForRuntime(context, metas.get(i).params.getModel(), gen);
+                gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", metas.get(i).name, ");");
             }
+            gen.endBlock();
         }
     }
 
@@ -266,28 +272,39 @@ public class FunctionHelper {
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
         } else {
-            int count=0;
+            List<MplData> metas = new ArrayList<>(that.getParameterLists().size());
             for (Tree.ParameterList paramList : that.getParameterLists()) {
-                if (count==0) {
+                final MplData mpl = new MplData();
+                metas.add(mpl);
+                if (metas.size()==1) {
                     gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
                 } else {
-                    gen.out("return function");
+                    mpl.name=gen.getNames().createTempVariable();
+                    mpl.params=paramList;
+                    gen.out("var ", mpl.name, "=function");
                 }
                 paramList.visit(gen);
                 gen.beginBlock();
-                if (count==0 && d.getContainer() instanceof TypeDeclaration) {
+                if (metas.size()==1 && d.getContainer() instanceof TypeDeclaration) {
                     gen.initSelf(that);
                 }
                 gen.initParameters(paramList, null, d);
-                count++;
             }
             gen.visitStatements(that.getBlock().getStatements());
-            for (int i=0; i < count; i++) {
-                gen.endBlock();
+            for (int i=metas.size()-1; i>0; i--) {
+                gen.endBlock(true,true);
+                gen.out(metas.get(i).name,  ".$crtmm$=function(){return{$ps:");
+                TypeUtils.encodeParameterListForRuntime(that, metas.get(i).params.getModel(), gen);
+                gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", metas.get(i).name, ");");
             }
+            gen.endBlock();
         }
 
         if (!gen.share(d)) { gen.out(";"); }
     }
 
+    private static class MplData {
+        String name;
+        Tree.ParameterList params;
+    }
 }
