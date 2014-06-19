@@ -85,9 +85,7 @@ public class BmeGenerator {
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Method refs with type arguments must be passed as a special function
         final String tmpargs = gen.getNames().createTempVariable();
-        final String tmpi = gen.getNames().createTempVariable();
-        gen.out("function(){var ", tmpargs, "=[];for(var ", tmpi, "=0;",
-                tmpi, "<arguments.length;", tmpi, "++)", tmpargs, "[", tmpi, "]=arguments[", tmpi, "];",
+        gen.out("function(){var ", tmpargs, "=[].slice.call(arguments,0);",
                 tmpargs, ".push(");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true);
         gen.out(");return ", member, ".apply(", who==null?"null":who, ",", tmpargs, ");}");
