@@ -139,22 +139,41 @@ shared final class Range<Element>(first, last)
     
     "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator() {
-        object iterator 
-                satisfies Iterator<Element> {
-            variable value current = first; 
-            shared actual Element|Finished next() {
-                if (containsElement(current)) {
-                    value result = current;
-                    current = outer.next(current);
-                    return result;
+        if (recursive) {
+            object iterator
+                    satisfies Iterator<Element> {
+                variable value count = 0;
+                variable value current = first;
+                shared actual Element|Finished next() {
+                    if (++count>size) {
+                        return finished;
+                    }
+                    else {
+                        return current++;
+                    } 
                 }
-                else {
-                    return finished;
-                }
+                string => "``first``..``last``.iterator()";
             }
-            string => "``first``..``last``.iterator()";
+            return iterator;
         }
-        return iterator;
+        else {
+            object iterator 
+                    satisfies Iterator<Element> {
+                variable value current = first;
+                shared actual Element|Finished next() {
+                    if (containsElement(current)) {
+                        value result = current;
+                        current = outer.next(current);
+                        return result;
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+                string => "``first``..``last``.iterator()";
+            }
+            return iterator;
+        }
     }
     
     shared actual {Element+} by(Integer step) {
@@ -221,7 +240,7 @@ shared final class Range<Element>(first, last)
     
     "Determines if the range includes the given value."
     shared Boolean containsElement(Element x) 
-            => recursive then x.offset(first) < last.offset(first)
+            => recursive then x.offset(first) <= last.offset(first)
                          else !afterLast(x) && !beforeFirst(x);
     
     shared actual Boolean includes(List<Anything> sublist) {
