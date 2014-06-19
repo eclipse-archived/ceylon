@@ -59,6 +59,19 @@ shared final annotation class FinalAnnotation()
         satisfies OptionalAnnotation<FinalAnnotation, 
             ClassDeclaration> {}
 
+"Annotation to mark a class or interface as sealed. A 
+ `sealed` interface may not be satisfies outside of the 
+ module in which it is defined. A `sealed` class may not be
+ extended or instantiated outside of the module in which it
+ is defined."
+shared annotation SealedAnnotation sealed() 
+        => SealedAnnotation();
+
+"The annotation class for [[sealed]]."
+shared final annotation class SealedAnnotation()
+        satisfies OptionalAnnotation<SealedAnnotation, 
+            ClassOrInterfaceDeclaration> {}
+
 "Annotation to mark a class as final. A `final` class may 
  not be extended. Marking a class as final affects disjoint
  type analysis."
