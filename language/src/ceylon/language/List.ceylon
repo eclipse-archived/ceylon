@@ -246,14 +246,7 @@ shared interface List<out Element>
     shared actual default Element? first => getFromFirst(0);
     
     "Returns the last element of this `List`, if any."
-    shared actual default Element? last {
-        if (exists endIndex = lastIndex) {
-            return getFromLast(endIndex);
-        }
-        else {
-            return null;
-        }
-    }
+    shared actual default Element? last => getFromLast(0);
     
     "A list containing all indexes of this list. This is a 
      lazy operation."
