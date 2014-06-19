@@ -131,6 +131,13 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
+    public void testLopOptimRangeIterationBench(){
+        compileAndRun(
+                "com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeIterationBench_run",
+                "loop/optim/RangeIterationBench.ceylon");
+    }
+    
+    @Test
     public void testLopOptimArrayIterationDynamic(){
         compareWithJavaSource("loop/optim/ArrayIterationDynamic");
     }
