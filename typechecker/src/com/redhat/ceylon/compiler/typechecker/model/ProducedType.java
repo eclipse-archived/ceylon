@@ -923,8 +923,8 @@ public class ProducedType extends ProducedReference {
         List<ProducedType> satisfiedTypes = 
                 getInternalSatisfiedTypes();
         // cheaper iteration
-		for (int i=0,l=satisfiedTypes.size();i<l;i++) {
-		    ProducedType dst = satisfiedTypes.get(i);
+        for (int i=0,l=satisfiedTypes.size();i<l;i++) {
+            ProducedType dst = satisfiedTypes.get(i);
             ProducedType possibleResult = dst.getSupertype(c);
             if (possibleResult!=null) {
                 if (result==null || 
