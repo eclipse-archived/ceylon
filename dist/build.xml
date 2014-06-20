@@ -121,7 +121,7 @@ Some more basic ant tasks:
             description="Updates sibling projects with latest code from git">
     </target>
 
-    <target name="status-all" depends="siblings,git-status"
+    <target name="status-all" depends="git-status-dist,siblings,git-status"
             description="Shows git status of all sibling projects">
     </target>
 
@@ -705,7 +705,17 @@ You can now build the package by executing:
         </antcall>
     </target>
 
+    <target name="git-status-dist">
+        <echo>Status of ceylon-dist:</echo>
+        <exec executable="git" failonerror="no">
+            <arg value="status"/>
+            <arg value="--short"/>
+            <arg value="--branch"/>
+        </exec>
+    </target>
+
     <target name="git-update-dist">
+        <echo>Updating ceylon-dist:</echo>
         <exec executable="git" failonerror="no">
             <arg value="pull"/>
             <arg value="--rebase"/>
