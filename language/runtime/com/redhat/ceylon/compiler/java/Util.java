@@ -1129,37 +1129,6 @@ public class Util {
         }
         return new ObjectArrayIterable<T>($reifiedT, (T[])newArray).sequence();
     }
-    
-    /**
-     * Method for instantiating a Range (or Empty) from a Tree.SpreadOp, 
-     * {@code start:length}. 
-     * @param start The start
-     * @param length The size of the Range to create
-     * @return A range
-     */
-    @SuppressWarnings({"unchecked","rawtypes"})
-    public static <T extends ceylon.language.Enumerable<? extends T>> Sequential<T> 
-    spreadOp(TypeDescriptor $reifiedT, T start, long length) {
-        if (length <= 0) {
-            return (Sequential)empty_.get_();
-        }
-        if (start instanceof ceylon.language.Integer) {
-            ceylon.language.Integer startInt = (ceylon.language.Integer)start;
-            return new ceylon.language.Range($reifiedT, startInt, 
-                    ceylon.language.Integer.instance(startInt.longValue() + (length - 1)));
-        } else if (start instanceof ceylon.language.Character) {
-            ceylon.language.Character startChar = (ceylon.language.Character)start;
-            return new ceylon.language.Range($reifiedT, startChar, 
-                    ceylon.language.Character.instance(toInt(startChar.intValue() + length - 1)));
-        } else {
-            T end = start;
-            long ii = 0L;
-            while (++ii < length) {
-                end = end.getSuccessor();
-            }
-            return new ceylon.language.Range($reifiedT, start, end);
-        }
-    }
 
     /** 
      * <p>Equivalent to the Ceylon {@code sequential(iterable) else []}, this

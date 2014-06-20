@@ -245,3 +245,9 @@ shared class SizedRange<Element>(first, size)
         }
     }
 }
+
+"A SizedRange is size > 0, otherwise empty. This function corresponds to the 
+ segmented range operator expression `start:size`."
+shared Element[] sizedRange<Element>(Element first, Integer size) 
+        given Element satisfies Enumerable<Element> 
+    => size <= 0 then [] else SizedRange(first, size);
