@@ -3,8 +3,10 @@ package com.redhat.ceylon.common.tool;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,13 +53,15 @@ public abstract class ServiceToolLoader extends ToolLoader {
     private List<String> parseServiceInfo(final URL url) {
         List<String> result = new ArrayList<>();
         try {
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            URLConnection con = url.openConnection();
+            con.setUseCaches(false);
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
             try {
                 String className = reader.readLine();
                 while (className != null) {
                     className = className.trim().replaceAll("#.*", "");
                     if (!className.isEmpty()) {
-                        result.add(className);    
+                        result.add(className);
                     }
                     className = reader.readLine();
                 }
