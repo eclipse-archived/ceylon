@@ -159,7 +159,7 @@ public class AttributeGenerator {
         gen.comment(that);
         if (d.isFormal()) {
             gen.generateAttributeMetamodel(that, false, false);
-        } else if (gen.shouldStitch(d)) {
+        } else if (that.getSpecifierOrInitializerExpression() == null && gen.shouldStitch(d)) {
             gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
             gen.out("{");
             if (!gen.stitchNative(d, that)) {
