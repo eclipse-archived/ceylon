@@ -85,7 +85,7 @@ void test_nullsingleton() {
     check(!singleton.empty, "nullsingleton empty");
     check(singleton.defines(0), "nullsingleton defines");
     check(!singleton.defines(1), "nullsingleton defines");
-    check(singleton.string=="[null]", "nullsingleton string");
+    check(singleton.string=="[<null>]", "nullsingleton string");
     // Because Singleton(null) != Singleton(null) since null hasn't equals() 
     //check(singleton.reversed==singleton, "nullsingleton reversed");
     check(singleton nonempty, "nullsingleton nonempty");
@@ -132,8 +132,8 @@ void test_nullsingleton() {
     check(singleton.spanTo(0) nonempty, "nonempty nullsingleton spanTo(0)");
     check(singleton.spanTo(1) nonempty, "nonempty nullsingleton spanTo(1)");
     check(singleton.segment(0, 1) nonempty, "nonempty nullsingleton segment(0,1)");
-    check(singleton.span(0, 3).string=="[null]", "nullsingleton span(0,3).string");
-    check(singleton.segment(0, 3).string=="[null]", "nullsingleton segment(0,3).string");
+    check(singleton.span(0, 3).string=="[<null>]", "nullsingleton span(0,3).string");
+    check(singleton.segment(0, 3).string=="[<null>]", "nullsingleton segment(0,3).string");
     check(!singleton.span(1, 1) nonempty, "!nonempty nullsingleton span(1,1)");
     check(!singleton.spanFrom(1) nonempty, "!nonempty nullsingleton spanFrom(1)");
     check(!singleton.segment(1, 1) nonempty, "!nonempty nullsingleton segment(1,1)");

@@ -302,36 +302,36 @@ shared void testIterables() {
     }
 
     // tests for the laziness-protecting string implementation
-    "simple, laziness-breaking implementation of [[Iterable.string]]"
-    String oldString({Anything*} self) {
-        String commaList({Anything*} elements) =>
-                ", ".join { for (element in elements)
-                            element?.string else "<null>" };
-        if (self.empty) {
-            return "{}";
-        }
-        else {
-            String list = commaList(self.take(30));
-            return "{ `` self.longerThan(30)
-                        then list + ", ..."
-                        else list `` }";
-        }
-    }
-    "counter for accesses to an iterable"
-    variable Integer count = 0;
-    T counting<T>(T t) {
-        count++;
-        return t;
-    }
-    for (i in 0..64) {
-        value cur = { for (t in { "x", null }) counting(t) }.cycled.take(i);
-        value lazinessProtecting = cur.string;
-        value expectedCount = min { i, 31 };
-        check(count == expectedCount, "Iterable.string, evaluate only ``count`` of ``i`` elements  (expecting ``expectedCount``)");
-        value breakingLaziness = oldString(cur);
-        // count is now higher than 2 * min { i, 31 }
-        // because the old string implementation evaluates elements multiple times
-        check(lazinessProtecting.replace("[]", "{}" /* take(0) returns empty */) == breakingLaziness, "Iterable.string, ``i`` elements");
-        count = 0;
-    }
+    //"simple, laziness-breaking implementation of [[Iterable.string]]"
+    //String oldString({Anything*} self) {
+    //    String commaList({Anything*} elements) =>
+    //            ", ".join { for (element in elements)
+    //                        element?.string else "<null>" };
+    //    if (self.empty) {
+    //        return "{}";
+    //    }
+    //    else {
+    //        String list = commaList(self.take(30));
+    //        return "{ `` self.longerThan(30)
+    //                    then list + ", ..."
+    //                    else list `` }";
+    //    }
+    //}
+    //"counter for accesses to an iterable"
+    //variable Integer count = 0;
+    //T counting<T>(T t) {
+    //    count++;
+    //    return t;
+    //}
+    //for (i in 0..64) {
+    //    value cur = { for (t in { "x", null }) counting(t) }.cycled.take(i);
+    //    value lazinessProtecting = cur.string;
+    //    value expectedCount = min { i, 31 };
+    //    check(count == expectedCount, "Iterable.string, evaluate only ``count`` of ``i`` elements  (expecting ``expectedCount``)");
+    //    value breakingLaziness = oldString(cur);
+    //    // count is now higher than 2 * min { i, 31 }
+    //    // because the old string implementation evaluates elements multiple times
+    //    check(lazinessProtecting.replace("[]", "{}" /* take(0) returns empty */) == breakingLaziness, "Iterable.string, ``i`` elements");
+    //    count = 0;
+    //}
 }

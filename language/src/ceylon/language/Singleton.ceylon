@@ -50,7 +50,7 @@ shared class Singleton<out Element>(Element element)
         return iterator;
     }
     
-    shared actual String string => "Singleton(`` element?.string else "null" ``)";
+    shared actual String string => "[`` element?.string else "<null>" ``]";
     
     "Returns a `Singleton` if the given starting index 
      is `0` and the given `length` is greater than `0`.
