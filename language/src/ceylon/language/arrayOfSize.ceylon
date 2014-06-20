@@ -12,4 +12,3 @@ shared native Array<Element> arrayOfSize<Element>(
          All elements of the resulting array will have the 
          same value." 
         Element element);
-
