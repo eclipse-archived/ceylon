@@ -26,7 +26,9 @@ shared sealed interface Sequence<out Element>
     
     "The index of the last element of the sequence."
     see (`value Sequence.size`)
-    shared actual formal Integer lastIndex;
+    shared actual default Integer lastIndex => size-1;
+    
+    shared actual formal Integer size;
     
     "The first element of the sequence, that is, the element
      with index `0`."
@@ -60,10 +62,13 @@ shared sealed interface Sequence<out Element>
     shared default actual [Element+] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
-        value s = internalSort(comparing, this);
-        //TODO: fix internalSort() and remove this assertion
-        assert (nonempty s);
-        return s;
+        value array = arrayOfSize(size, first);
+        variable value index = 0;
+        for (element in this) {
+            array.set(index, element);
+        }
+        array.sortInPlace(comparing);
+        return ArraySequence(array);
     }
 
     "A nonempty sequence containing the results of applying 
@@ -71,9 +76,12 @@ shared sealed interface Sequence<out Element>
     shared default actual [Result+] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) {
-        value s = map(collecting).sequence();
-        assert (nonempty s);
-        return s;
+        value array = arrayOfSize(size, collecting(first));
+        variable value index = 0;
+        for (element in this) {
+            array.set(index, collecting(element));
+        }
+        return ArraySequence(array);
     }
     
     "Return a nonempty sequence containing the given 

@@ -1,5 +1,15 @@
-"Sort the given elements, returning a new sequence."
+"Sort the given elements according to their 
+ [[natural order|Comparable]], returning a new 
+ [[sequence|Sequential]]."
 see (`interface Comparable`)
 shared Element[] sort<Element>({Element*} elements) 
-        given Element satisfies Comparable<Element>
-        => internalSort(byIncreasing((Element e) => e), elements);
+        given Element satisfies Comparable<Element> {
+    value array = Array(elements);
+    if (array.empty) {
+        return [];
+    }
+    else {
+        array.sortInPlace(byIncreasing((Element e) => e));
+        return ArraySequence(array);
+    }
+}

@@ -58,22 +58,15 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
      first element. (The tail of the linked list.)"
     shared actual native Rest rest;
     
-    size => 1 + rest.size;
+    shared actual native Integer lastIndex => rest.size;
+    
+    shared actual native Integer size => 1 + rest.size;
     
     shared actual native Element? getFromFirst(Integer index) {
         switch (index<=>0)
         case (smaller) { return null; }
         case (equal) { return first; }
         case (larger) { return rest.getFromFirst(index-1); }
-    }
-    
-    shared actual native Integer lastIndex {
-        if (exists restLastIndex = rest.lastIndex) {
-            return restLastIndex+1;
-        }
-        else {
-            return 0;
-        }
     }
     
     "The last element of this tuple."
@@ -107,11 +100,14 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
                 else this[realEnd:realFrom-realEnd+1].reversed.sequence();
     }
     
-    spanTo(Integer to) => to<0 then [] else span(0, to);
+    shared actual native Element[] spanTo(Integer to) 
+            => to<0 then [] else span(0, to);
     
-    spanFrom(Integer from) => span(from, size);
+    shared actual native Element[] spanFrom(Integer from) 
+            => span(from, size);
     
-    reversed => rest.reversed.withTrailing(first);
+    shared actual native [Element+] reversed 
+            => rest.reversed.withTrailing(first);
     
     "This tuple."
     shared actual native Tuple<Element,First,Rest> clone() => this;

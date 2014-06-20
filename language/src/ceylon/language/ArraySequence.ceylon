@@ -1,10 +1,11 @@
-"A [[Sequence]] of the given elements, or `null` if the 
- iterable is empty. A [[Sequential]] can be obtained using 
- the `else` operator:
+"A [[nonempty sequence|Sequence]] of the given [[elements]], 
+ or  `null` if the given stream is empty. A non-null, but
+ possibly empty, [[sequence|Sequential]] may be obtained 
+ using the `else` operator:
  
-     sequence(elements) else []
- "
-by("Gavin")
+     [Element*] sequenceOfElements = sequence(elements) else []"
+by ("Gavin")
+see (`function generateSequence`)
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {
@@ -19,11 +20,51 @@ shared [Element+]|Absent sequence<Element,Absent=Null>
     return ArraySequence(array);
 }
 
+"Efficiently generate a [[nonempty sequence|Sequence]] of 
+ the given [[size]], by starting with the given [[first]]
+ element and recursively applying the given 
+ [[generator function|next]].
+ 
+     generateSequence(100, 1, (Integer last) => last*2);
+ 
+ Hint: to generate a sequence using a function of the 
+ element index, use `collect()` on a [[Range]]:
+ 
+     (0..100).collect((Integer index) => index*index)"
+throws (`class AssertionError`, "if `size<=0`")
+see (`function sequence`,
+     `function Sequence.collect`)
+by ("Gavin")
+shared [Element+] generateSequence<Element>(
+    "The [[size|Sequence.size]] of the resulting sequence."
+    Integer size,
+    "The [[first element|Sequence.first]] of the resulting
+     sequence."
+    Element first,
+    "A function to generate an element of the sequence, 
+     given the [[previous]] generated element."
+    Element next(Element previous)) {
+    
+    "size of the nonempty sequence must be greater than
+     zero"
+    assert (size>0);
+    
+    value array = arrayOfSize(size, first);
+    variable value element = first;
+    for (index in 1:size-1) {
+        element = next(element);
+        array.set(index, element);
+    }
+    return ArraySequence(array);
+}
+
+
 "A [[Sequence]] backed by an [[Array]]. 
  
  Since [[Array]] is mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
+by ("Tom")
 shared sealed class ArraySequence<out Element>(array) 
         extends Object()
         satisfies [Element+] {
@@ -59,7 +100,8 @@ shared sealed class ArraySequence<out Element>(array)
     }
     
     shared actual Element[] rest 
-            => size==1 then [] else ArraySequence(Array(array.rest));
+            => size==1 then [] 
+                    else ArraySequence(Array(array.rest));
     
     //TODO: return a view!
     shared actual [Element+] reversed 
@@ -71,7 +113,8 @@ shared sealed class ArraySequence<out Element>(array)
         }
         else if (from < 0) {
             return ArraySequence(array[0:length+from]);
-        } else {
+        }
+        else {
             return ArraySequence(array[from:length]);
         }
     }
@@ -82,7 +125,8 @@ shared sealed class ArraySequence<out Element>(array)
                 return [];
             }
             return ArraySequence(array[from..to]);
-        } else {
+        }
+        else {
             if (from < 0 || to > lastIndex) {
                 return [];
             }
@@ -93,7 +137,8 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element[] spanFrom(Integer from) {
         if (from > lastIndex) {
             return [];
-        } else {
+        }
+        else {
             return ArraySequence(array[from...]);
         }
     }
@@ -101,7 +146,8 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element[] spanTo(Integer to) {
         if (to < 0) {
             return [];
-        } else { 
+        }
+        else { 
             return ArraySequence(array[...to]);
         }
     }

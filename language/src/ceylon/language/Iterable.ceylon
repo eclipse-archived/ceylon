@@ -320,11 +320,20 @@ shared interface Iterable<out Element, out Absent=Null>
          \"Hello World!\".sort(byIncreasing(Character.lowercased))
      
      This operation is eager by nature."
-    see (`function byIncreasing`, `function byDecreasing`)
+    see (`function byIncreasing`, 
+         `function byDecreasing`)
     shared default Element[] sort(
             "The function comparing pairs of elements."
-            Comparison comparing(Element x, Element y)) 
-            => internalSort(comparing, this);
+            Comparison comparing(Element x, Element y)) {
+        value array = Array(this);
+        if (array.empty) {
+            return [];
+        }
+        else {
+            array.sortInPlace(comparing);
+            return ArraySequence(array);
+        }
+    }
     
     "Produces a sequence containing the results of applying 
      the [[given mapping|collecting]] to the elements of 
