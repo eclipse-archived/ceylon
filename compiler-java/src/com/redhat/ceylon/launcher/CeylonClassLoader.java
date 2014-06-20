@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -201,9 +202,13 @@ public class CeylonClassLoader extends URLClassLoader {
     @Override
     public InputStream getResourceAsStream(String name) {
         URL url = getResource(name);
-        try {
-            return url != null ? url.openStream() : null;
-        } catch (IOException e) {
+        if (url != null) {
+            try {
+                URLConnection con = url.openConnection();
+                con.setUseCaches(false);
+                return con.getInputStream();
+            } catch (IOException e) {
+            }
         }
         return null;
     }
