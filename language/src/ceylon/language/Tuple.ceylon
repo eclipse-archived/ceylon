@@ -127,7 +127,8 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
                 else {
                     return finished;
                 }
-            } 
+            }
+            shared actual String string => "``outer.string``.iterator()";
         }
         return iterator;
     }

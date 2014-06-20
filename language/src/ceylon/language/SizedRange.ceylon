@@ -72,7 +72,7 @@ shared class SizedRange<Element>(first, size)
                     return current++;
                 } 
             }
-            string => outer.string + ".iterator()"; // TODO don't we need to wrap outer.string in parentheses?
+            string => "(``outer.string``).iterator()";
         }
         return iterator;
     }
@@ -90,7 +90,7 @@ shared class SizedRange<Element>(first, size)
         
         first => outer.first;
         
-        string => "``outer.string``.by(``step``)"; // TODO parens around outer.string?
+        string => "(``outer.string``).by(``step``)";
         
         shared actual Iterator<Element> iterator() {
             object iterator
@@ -107,7 +107,7 @@ shared class SizedRange<Element>(first, size)
                         return result;
                     } 
                 }
-                string => outer.string + ".iterator()";
+                string => "``outer.string``.iterator()";
             }
             return iterator;
         }

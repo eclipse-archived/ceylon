@@ -158,7 +158,7 @@ shared final class Range<Element>(first, last)
                         return current++;
                     } 
                 }
-                string => outer.string + ".iterator()";
+                string => "(``outer.string``).iterator()";
             }
             return iterator;
         }
@@ -176,7 +176,7 @@ shared final class Range<Element>(first, last)
                         return finished;
                     }
                 }
-                string => outer.string + ".iterator()";
+                string => "(``outer.string``).iterator()";
             }
             return iterator;
         }
@@ -328,7 +328,7 @@ shared final class Range<Element>(first, last)
         
         first => outer.first;
         
-        string => "``first``..``last``.by(``step``)";
+        string => "(``outer.string``).by(``step``)";
         
         shared actual Iterator<Element> iterator() {
             if (recursive) {
@@ -346,7 +346,7 @@ shared final class Range<Element>(first, last)
                             return result;
                         } 
                     }
-                    string => outer.string + ".iterator()";
+                    string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
@@ -364,7 +364,7 @@ shared final class Range<Element>(first, last)
                             return finished;
                         }
                     }
-                    string => outer.string + ".iterator()";
+                    string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
