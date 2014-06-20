@@ -367,7 +367,7 @@ public final class Tuple<Element, First extends Element,
             length = length+fromIndex;
             fromIndex = 0;
         }
-        final long lastIndex = getLastIndex().longValue();
+        final long lastIndex = getSize()-1;
         
         if (fromIndex > lastIndex || length <= 0) {
             return (Sequential<? extends Element>)empty_.get_();
@@ -394,7 +394,7 @@ public final class Tuple<Element, First extends Element,
     final ceylon.language.Integer end) {
         long fromIndex = Util.toInt(from.longValue());
         long toIndex = end==null ? getSize() : end.longValue();
-        long lastIndex = getLastIndex().longValue();
+        long lastIndex = getSize()-1;
         boolean reverse = toIndex<fromIndex;
         if (reverse) {
             long tmp = fromIndex;

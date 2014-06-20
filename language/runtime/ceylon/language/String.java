@@ -1585,7 +1585,7 @@ public final class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return get(value, getLastIndex(value).longValue());
+            return get(value, value.length()-1);
         }
     }
 

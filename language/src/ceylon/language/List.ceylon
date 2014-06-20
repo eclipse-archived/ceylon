@@ -171,9 +171,9 @@ shared interface List<out Element>
         }
         if (is List<Anything> that) {
             if (that.size==size) {
-                for (i in 0..size-1) {
-                    value x = getFromFirst(i);
-                    value y = that.getFromFirst(i);
+                for (index in 0:size) {
+                    value x = getFromFirst(index);
+                    value y = that.getFromFirst(index);
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
@@ -289,14 +289,22 @@ shared interface List<out Element>
      in place of a segment of this list identified by the
      given [[starting index|from]] and [[length]]. This is a
      lazy operations, returning a view over this list and 
-     the given list.
+     the given list. Two special cases are interesting:
+     
+     - If `length=0`, the patched list has the given values 
+       \"inserted\" into this list at the given index `from`.
+     - If the given `list` is empty, the patched last has 
+       the segment of this list identified by `from:length` 
+       \"deleted\".
      
      For example:
      
      - `(-2..2).patch([],1,3)` produces the list `{-2,2}`, 
        and
      - `[-2, 2].patch(-1..1,1)` produces the list 
-       `{-2,-1,0,1,2}`.'"
+       `{-2,-1,0,1,2}`.'
+     
+     If `length<0`, return this list."
     shared default List<Element|Other> patch<Other>(List<Other> list,
         Integer from, Integer length=0)
             => length>=0 && 0<=from<size 
