@@ -18,6 +18,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.impl.IOUtils;
@@ -78,6 +79,13 @@ public class MainTest {
     @Test
     public void testJBossModuleProperties() throws IOException, ModuleNotFoundException{
         File jar = jar("module.properties", "META-INF/jbossmodules/foo/foo/1");
+        checkJarDependencies(jar);
+    }
+
+    @Ignore("Requires a fix to disable resolution since modules come from the classpath")
+    @Test
+    public void testMavenModule() throws IOException, ModuleNotFoundException{
+        File jar = jar("pom.xml", "META-INF/maven/foo/foo");
         checkJarDependencies(jar);
     }
 
