@@ -1611,8 +1611,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getEnumerableDeclaration()));
         JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
-        return utilInvocation().spreadOp(List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr), 
-                                  List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)));
+        return make().Apply(List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)), 
+                naming.makeLanguageFunction("sizedRange"), 
+                List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr));
     }
 
     public JCExpression transform(Tree.RangeOp op) {

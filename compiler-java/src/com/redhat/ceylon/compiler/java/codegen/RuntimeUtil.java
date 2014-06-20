@@ -114,11 +114,6 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "checkNull", List.of(expr));
     }
 
-    public JCExpression spreadOp(List<JCExpression> arguments,
-            List<JCExpression> typeArguments) {
-        return makeUtilInvocation(typeArguments, "spreadOp", arguments);
-    }
-
     public JCExpression sequentialInstance(JCExpression typeArgument,
             JCExpression reifiedTypeArgument, 
             JCExpression /*Sequential*/ rest, 
