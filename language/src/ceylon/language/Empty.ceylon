@@ -217,4 +217,5 @@ shared object empty
 shared object emptyIterator 
 		satisfies Iterator<Nothing> {
     next() => finished;
+    string => "empty.iterator()";
 }

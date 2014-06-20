@@ -19,4 +19,6 @@ class ChainedIterator<out Element,out Other>({Element*} first, {Other*} second)
         }
         return e;
     }
+    
+    shared actual String string => "ChainedIterator(``first.string``, ``second.string``)";
 }

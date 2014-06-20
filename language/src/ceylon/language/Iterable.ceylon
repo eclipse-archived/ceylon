@@ -427,10 +427,12 @@ shared interface Iterable<out Element, out Absent=Null>
                             return ++i>taking then finished
                                     else iter.next();
                         }
+                        shared actual String string => "``outer.string``.iterator()";
                     }
                     return iterator;
                 }
                 shared actual Element? first => outer.first;
+                shared actual String string => "(``outer.string``).take(``taking``)";
             }
             return iterable;
         }
@@ -458,12 +460,14 @@ shared interface Iterable<out Element, out Absent=Null>
                                     return iter.next();
                                 }
                             }
+                            shared actual String string => "``outer.string``.iterator()";
                         }
                         return iterator;
                     }
                 }
                 return emptyIterator;
             }
+            shared actual String string => "(``outer.string``).skipWhile(...)"; // no point in using a Callable's string
         }
         return iterable;
     }
@@ -531,9 +535,11 @@ shared interface Iterable<out Element, out Absent=Null>
                                     !iter.next() is Finished) {}
                             return next;
                         }
+                        shared actual String string => "``outer.string``.iterator()";
                     }
                     return iterator;
                 }
+                shared actual String string => "(``outer.string``).by(``step``)";
             }
             return iterable;
         }
@@ -596,9 +602,11 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
+                    shared actual String string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
+            shared actual String string => "(``outer.string``).indexed";
         }
         return indexes;
     }
@@ -621,9 +629,11 @@ shared interface Iterable<out Element, out Absent=Null>
                             return iter.next();
                         }
                     }
+                    shared actual String string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
+            shared actual String string => "(``outer.string``).follow(``head else "null"``)";
         }
         return cons;
     }
@@ -723,9 +733,11 @@ shared interface Iterable<out Element, out Absent=Null>
                         }
                         
                     }
+                    shared actual String string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
+            shared actual String string => "(``outer.string``).cycled";
         }
         return iterable;
     }
@@ -757,9 +769,11 @@ shared interface Iterable<out Element, out Absent=Null>
                         }
                         
                     }
+                    shared actual String string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
+            shared actual String string => "(``outer.string``).cycle(``times``)";
         }
         return iterable;
     }

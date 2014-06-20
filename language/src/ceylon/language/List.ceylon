@@ -145,6 +145,7 @@ shared interface List<out Element>
                         return finished;
                     }
                 }
+                shared actual String string => "(``outer.string``).iterator()";
             }
             return listIterator;
         }
@@ -694,6 +695,7 @@ shared interface List<out Element>
                         return finished;
                     }
                 }
+                shared actual String string => "``outer.string``.iterator()";
             }
             return iterator;
         }
@@ -738,10 +740,12 @@ shared interface List<out Element>
             }
             object iterator satisfies Iterator<Element> {
                 next() => iter.next();
+                shared actual String string => "``outer.string``.iterator()";
             }
             return iterator;
         }
         
+        shared actual String string => "(``outer.string``).sublistFrom(``from``)";
     }
     
     class Sublist(Integer to)
@@ -797,10 +801,12 @@ shared interface List<out Element>
                         return iter.next();
                     }
                 }
+                shared actual String string => "``outer.string``.iterator()";
             }
             return iterator;
         }
         
+        shared actual String string => "(``outer.string``).sublistTo(``to``)";
     }
     
     class Extend<Other>(List<Other> list)
@@ -877,9 +883,12 @@ shared interface List<out Element>
                         return iter.next();
                     }
                 }
+                shared actual String string => "``outer.string``.iterator()";
             }
             return iterator;
         }
+        
+        shared actual String string => "(``outer``).patch(``list``, ``from``, ``length``)";
     }
     
     class Reversed()
@@ -948,10 +957,12 @@ shared interface List<out Element>
                         return finished;
                     }
                 }
+                shared actual String string => "``outer.string``.iterator()";
             }
             return iterator;
         }
         
+        shared actual String string => "(``outer.string``).reversed";
     }
     
 }
