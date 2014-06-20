@@ -72,12 +72,12 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void disabled$priv$() {
         long sum = 0L;
         .java.lang.Object elem$20;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$21 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$21 = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L).iterator();
         loop_6: while (!((elem$20 = i$iterator$$21.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$20).longValue();
             sum += i;
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$24 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$24 = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L);
         final boolean isTuple$25 = iterable$24 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$24).$getArray$() != null;
         .java.lang.Object elem$22 = null;
         final .java.lang.Object array$26;

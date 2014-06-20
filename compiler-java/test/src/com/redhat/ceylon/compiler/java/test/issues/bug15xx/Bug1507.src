@@ -196,7 +196,7 @@ final class bug1507test4_ {
     static void bug1507test4() {
         final boolean found;
         boolean found$36 = false;
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> span = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 2L);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> span = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 2L);
         boolean doforelse$37 = true;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$42 = span;
         final boolean isTuple$43 = iterable$42 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$42).$getArray$() != null;

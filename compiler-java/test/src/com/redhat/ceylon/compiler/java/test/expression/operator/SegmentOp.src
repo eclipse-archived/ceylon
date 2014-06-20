@@ -6,22 +6,22 @@ class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $int(final long start, final long length) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(start), length);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(start), length);
         return segment;
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Character> $char(final int start, final long length) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Character> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Character>spreadOp(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(start), length);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Character> segment = .ceylon.language.sizedRange_.<.ceylon.language.Character>sizedRange(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(start), length);
         return segment;
     }
     
     public final <T extends .ceylon.language.Enumerable<T>>.ceylon.language.Sequential<? extends T> t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T start, final long length) {
-        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reified$T, (T)start, length);
+        final .ceylon.language.Sequential<? extends T> segment = .ceylon.language.sizedRange_.<T>sizedRange($reified$T, (T)start, length);
         return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
     public final <T extends .ceylon.language.Enumerable<T>, S>.ceylon.language.Sequential<? extends T> t2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .java.lang.Object start, final long length) {
-        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reified$T, (T)start, length);
+        final .ceylon.language.Sequential<? extends T> segment = .ceylon.language.sizedRange_.<T>sizedRange($reified$T, (T)start, length);
         return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
