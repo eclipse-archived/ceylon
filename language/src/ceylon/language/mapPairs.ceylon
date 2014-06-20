@@ -33,7 +33,6 @@ shared Iterable<Result,FirstAbsent|SecondAbsent> mapPairs<Result,FirstArgument,S
             }
             return iterator;
         }
-        shared actual String string => "mapPairs(..., ``firstArguments.string``, ``secondArguments.string``)";
     }
     return iterable;
 }
