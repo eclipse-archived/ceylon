@@ -92,7 +92,7 @@ shared interface List<out Element>
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
-            => 0 <= index <= (lastIndex else -1);
+            => 0 <= index < size;
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
@@ -103,6 +103,15 @@ shared interface List<out Element>
     shared formal Element? getFromFirst(Integer index);
     
     "Returns the element of this list with the given 
+     [[index]], where the list is indexed from the _end_ of 
+     the list instead of from the start, if the index refers
+     to an element of this list, or `null` otherwise. The
+     last element of the list has index `0`, and the first
+     element has index [[lastIndex]]."
+    shared default Element? getFromLast(Integer index)
+            => getFromFirst(size-1-index);
+    
+    "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
      list, that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index `0`,
@@ -110,28 +119,14 @@ shared interface List<out Element>
     shared actual default Element? get(Integer index) 
             => getFromFirst(index);
     
-    "Returns the element of this list with the given 
-     [[index]], where the list is indexed from the _end_ of 
-     the list instead of from the start, if the index refers
-     to an element of this list, or `null` otherwise. The
-     last element of the list has index `0`, and the first
-     element has index [[lastIndex]]."
-    shared default Element? getFromLast(Integer index) {
-        if (exists endIndex=lastIndex) {
-            return getFromFirst(endIndex-index);
-        }
-        else {
-            return null;
-        }
-    }
-    
     shared actual default Iterator<Element> iterator() {
-        if (exists max=lastIndex) {
+        if (size>0) {
             object listIterator
                     satisfies Iterator<Element> {
                 variable Integer index = 0;
+                value size = outer.size;
                 shared actual Element|Finished next() {
-                    if (index<=max) {
+                    if (index<size) {
                         if (exists element 
                                 = getFromFirst(index++)) {
                             return element;
@@ -214,13 +209,11 @@ shared interface List<out Element>
     
     shared default actual Element? find(
         Boolean selecting(Element&Object elem)) {
-        if (exists endIndex=lastIndex) {
-            variable value index = 0;
-            while (index <= endIndex) {
-                if (exists elem = getFromFirst(index++)) {
-                    if (selecting(elem)) {
-                        return elem;
-                    }
+        variable value index = 0;
+        while (index<size) {
+            if (exists elem = getFromFirst(index++)) {
+                if (selecting(elem)) {
+                    return elem;
                 }
             }
         }
@@ -229,13 +222,11 @@ shared interface List<out Element>
     
     shared default actual Element? findLast(
             Boolean selecting(Element&Object elem)) {
-        if (exists endIndex=lastIndex) {
-            variable value index = endIndex;
-            while (index >= 0) {
-                if (exists elem = getFromFirst(index--)) {
-                    if (selecting(elem)) {
-                        return elem;
-                    }
+        variable value index = size-1;
+        while (index >= 0) {
+            if (exists elem = getFromFirst(index--)) {
+                if (selecting(elem)) {
+                    return elem;
                 }
             }
         }
@@ -520,7 +511,8 @@ shared interface List<out Element>
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
-        if (exists end=lastIndex) {
+        if (size>0) {
+            value end = size-1;
             variable Integer from=-1;
             variable Integer to=-1;
             for (index in 0..end) {
@@ -557,7 +549,8 @@ shared interface List<out Element>
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
-        if (exists end=lastIndex) {
+        if (size>0) {
+            value end = size-1;
             for (index in 0..end) {
                 if (exists elem=getFromFirst(index),
                     !trimming(elem)) {
@@ -575,7 +568,8 @@ shared interface List<out Element>
             "The predicate function that the trimmed 
              elements satisfy."
             Boolean trimming(Element&Object elem)) {
-        if (exists end=lastIndex) {
+        if (size>0) {
+            value end = size-1;
             for (index in end..0) {
                 if (exists elem=getFromFirst(index),
                     !trimming(elem)) {
@@ -600,8 +594,11 @@ shared interface List<out Element>
      Otherwise return a list of the given length."
     see (`function List.initial`)
     shared default List<Element> terminal(Integer length) {
-        if (exists end = lastIndex, length>0) {
-            return this[end-length+1..end];
+        if (length>=size) {
+            return this;
+        }
+        else if (size>0, length>0) {
+            return this[size-length..size-1];
         }
         else {
             return [];
@@ -610,7 +607,8 @@ shared interface List<out Element>
     
     shared actual default List<Element> span
                             (Integer from, Integer to) {
-        if (exists end = lastIndex) {
+        if (size>0) {
+            value end = size-1;
             if (from <= to) {
                 if (to < 0 || from > end) {
                     return [];
@@ -751,7 +749,7 @@ shared interface List<out Element>
         assert (to>=0);
         
         shared actual Element? getFromFirst(Integer index) {
-            if (index<0||index>to) {
+            if (index<0 || index>to) {
                 return null;
             }
             else {
@@ -932,11 +930,11 @@ shared interface List<out Element>
         shared actual Iterator<Element> iterator() {
             value outerList=outer;
             object iterator satisfies Iterator<Element> {
-                variable value i=outerList.size-1;
+                variable value index=outerList.size-1;
                 shared actual Element|Finished next() {
-                    if (i>=0) {
+                    if (index>=0) {
                         if (exists elem 
-                                = outerList.getFromFirst(i--)) {
+                                = outerList.getFromFirst(index--)) {
                             return elem;
                         }
                         else {
