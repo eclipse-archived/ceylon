@@ -3060,60 +3060,13 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.SegmentOp that) {
         final Tree.Term left  = that.getLeftTerm();
         final Tree.Term right = that.getRightTerm();
-        final boolean leftNat = left instanceof Tree.NaturalLiteral;
-        final boolean rightNat = right instanceof Tree.NaturalLiteral;
-        if (leftNat && rightNat) {
-            //Optimize this case: simply generate a Range
-            try {
-                final long ln = parseNaturalLiteral((Tree.NaturalLiteral)left);
-                final long rn = parseNaturalLiteral((Tree.NaturalLiteral)right);
-                if (rn <= 0) {
-                    out(clAlias, "getEmpty()");
-                    return;
-                }
-                out(clAlias, "Range(", Long.toString(ln), ",", Long.toString(ln+rn-1), ",");
-                TypeUtils.printTypeArguments(that,
-                        that.getTypeModel().getTypeArguments(),
-                        GenerateJsVisitor.this, false);
-                out(")");
-                return;
-            } catch (NumberFormatException ex) {
-                //moving on...
-            }
-        }
-        String rhs = names.createTempVariable();
-        out("(function(){var ", rhs, "=");
-        that.getRightTerm().visit(this);
-        endLine(true);
-        String lhs = leftNat ? Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)left)) : names.createTempVariable();
-        String end = names.createTempVariable();
-        if (leftNat) {
-            out("return ", rhs, ">0?");
-        } else {
-            out("if(", rhs, ">0){");
-            endLine();
-            out("var ", lhs, "=");
-            that.getLeftTerm().visit(this);
-            out(",", end, "=", lhs);
-            endLine(true);
-            out("for(var i=1; i<", rhs, "; i++)", end, "=", end, ".successor;return ");
-        }
-        out(clAlias, "Range(");
-        out(lhs, ",");
-        if (leftNat) {
-            out(lhs, "+", rhs, "-1,");
-        } else {
-            out(end, ",");
-        }
-        TypeUtils.printTypeArguments(that,
-                that.getTypeModel().getTypeArguments(),
-                GenerateJsVisitor.this, false);
-        out(")");
-        if (leftNat) {
-            out(":", clAlias, "getEmpty();}())");
-        } else {
-            out("}else return ", clAlias, "getEmpty();}())");
-        }
+        out(clAlias, "sizedRange(");
+        left.visit(this);
+        out(",");
+        right.visit(this);
+        out(",{Element$sizedRange:");
+        TypeUtils.typeNameOrList(left, left.getTypeModel(), this, false);
+        out("})");
     }
 
     /** Encloses the block in a function, IF NEEDED. */
