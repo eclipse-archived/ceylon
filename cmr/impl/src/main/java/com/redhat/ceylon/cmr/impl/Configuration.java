@@ -29,11 +29,13 @@ import com.redhat.ceylon.cmr.api.DependencyResolvers;
 public class Configuration {
     private static final DependencyResolvers resolvers;
 
+    public static final String MAVEN_RESOLVER_CLASS = "com.redhat.ceylon.cmr.maven.MavenDependencyResolver";
+    
     static {
         resolvers = new DependencyResolvers();
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
-        addResolver("com.redhat.ceylon.cmr.maven.MavenDependencyResolver");
+        addResolver(MAVEN_RESOLVER_CLASS);
         resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
         resolvers.addResolver(BytecodeUtils.INSTANCE);
         resolvers.addResolver(JSUtils.INSTANCE);
