@@ -17,18 +17,18 @@ shared void testRange() {
     x = 0:1;
     check(x.size == 1, "0:1 size");
     check(x nonempty, "0:1 nonempty");
-    check(x.string == "0..0", "0:1 string == " + x.string);
+    check(x.string == "0:1", "0:1 string == " + x.string);
     
     x = 0:10;
     check(x.size == 10, "0:10 size");
     check(x nonempty, "0:10 nonempty");
-    check(x.string == "0..9", "0:1 string == " + x.string);
+    check(x.string == "0:10", "0:1 string == " + x.string);
     
     check((0..20).segment(0, 10) == 0:10, "segment method & segment op");
     check((0..20)[0:10] == 0:10, "segment index & segment op");
     
     variable value az = 'a':26;
-    check(az.string == "a..z", "a:26 string == " + az.string);
+    check(az.string == "a:26", "a:26 string == " + az.string);
     
     check((1..5).by(2).sequence()==[1,3,5], "int range by 1");
     check((1..4).by(2).sequence()==[1,3], "int range by 2");
