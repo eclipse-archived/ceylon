@@ -22,8 +22,7 @@ extends BaseIterable<Integer,java.lang.Object> {
 
     public StringInclusions(java.lang.String str, 
             java.lang.String oc) {
-        super(ceylon.language.String.$TypeDescriptor$, 
-                Null.$TypeDescriptor$);
+        super(Integer.$TypeDescriptor$, Null.$TypeDescriptor$);
         this.str = str;
         this.oc = oc;
     }
