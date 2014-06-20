@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -28,12 +31,15 @@ import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.Configuration;
+import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 
 /**
  * <p>
@@ -211,6 +217,7 @@ public class Main {
 
         private List<File> potentialJars = new LinkedList<File>();
         private Map<String,Module> modules = new HashMap<String,Module>();
+        private static DependencyResolver MavenResolver = getResolver(Configuration.MAVEN_RESOLVER_CLASS);
         
         ClassPath(){
             String classPath = System.getProperty("java.class.path");
@@ -220,6 +227,15 @@ public class Main {
                 if(entry.isFile()){
                     potentialJars.add(entry);
                 }
+            }
+        }
+        
+        private static DependencyResolver getResolver(String className) {
+            try {
+                ClassLoader cl = Configuration.class.getClassLoader();
+                return (DependencyResolver) cl.loadClass(className).newInstance();
+            } catch (Throwable t) {
+                return null;
             }
         }
 
@@ -252,37 +268,64 @@ public class Main {
         private Module loadJar(File file, String name, String version) throws IOException {
             ZipFile zipFile = new ZipFile(file);
             try{
+                // Modules that have a : MUST be Maven modules
                 int mavenSeparator = name.indexOf(":");
                 if(mavenSeparator != -1){
                     String groupId = name.substring(0, mavenSeparator);
                     String artifactId = name.substring(mavenSeparator+1);
-                    return loadMavenJar(file, zipFile, groupId, artifactId, version);
+                    String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
+                    ZipEntry mavenDescriptor = zipFile.getEntry(descriptorPath);
+                    if(mavenDescriptor != null){
+                        return loadMavenJar(file, zipFile, mavenDescriptor, name, version);
+                    }
                 }
+                
+                // Try Ceylon module first
                 String ceylonPath = name.replace('.', '/');
                 ZipEntry moduleDescriptor = zipFile.getEntry(ceylonPath+"/module_.class");
                 if(moduleDescriptor != null)
                     return loadCeylonModuleCar(file, zipFile, moduleDescriptor, name, version);
+                
+                // Special case for Ceylon default module
                 if(name.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME)
                         && version == null
                         && file.getName().equalsIgnoreCase("default.car"))
                     return new Module(name, null, Type.CEYLON, file);
+                
+                // JBoss modules next
                 ZipEntry moduleXml = zipFile.getEntry("META-INF/jbossmodules/"+ceylonPath+"/"+version+"/module.xml");
                 if(moduleXml != null)
                     return loadJBossModuleXmlJar(file, zipFile, moduleXml, name, version);
                 ZipEntry moduleProperties = zipFile.getEntry("META-INF/jbossmodules/"+ceylonPath+"/"+version+"/module.properties");
                 if(moduleProperties != null)
                     return loadJBossModulePropertiesJar(file, zipFile, moduleProperties, name, version);
+                
                 // try other combinations for Maven
-                int lastDot = name.lastIndexOf('.');
-                while(lastDot != -1){
-                    String groupId = name.substring(0, lastDot);
-                    String artifactId = name.substring(lastDot+1);
-                    Module module = loadMavenJar(file, zipFile, groupId, artifactId, version);
+                if(MavenResolver != null){
+                    // the case with : has already been taken care of first
+                    int lastDot = name.lastIndexOf('.');
+                    while(lastDot != -1){
+                        String groupId = name.substring(0, lastDot);
+                        String artifactId = name.substring(lastDot+1);
+                        String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
+                        ZipEntry mavenDescriptor = zipFile.getEntry(descriptorPath);
+                        if(mavenDescriptor != null){
+                            return loadMavenJar(file, zipFile, mavenDescriptor, name, version);
+                        }
+                        lastDot = name.lastIndexOf('.', lastDot - 1);
+                    }
+                }
+                
+                // last OSGi
+                ZipEntry osgiProperties = zipFile.getEntry(JarFile.MANIFEST_NAME);
+                if(osgiProperties != null){
+                    Module module = loadOsgiJar(file, zipFile, osgiProperties, name, version);
+                    // it's possible we have a MANIFEST but not for the module we're looking for
                     if(module != null)
                         return module;
-                    lastDot = name.lastIndexOf('.', lastDot - 1);
                 }
-                // TODO: one day support OSGi when the jboss modules backend also supports it
+                
+                // not found
                 return null;
             }finally{
                 zipFile.close();
@@ -338,11 +381,18 @@ public class Main {
             return loadJBossModuleJar(file, zipFile, moduleProperties, PropertiesDependencyResolver.INSTANCE, name, version);
         }
 
-        private Module loadJBossModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, DependencyResolver dependencyResolver, String name, String version) throws IOException {
+        private Module loadJBossModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, 
+                DependencyResolver dependencyResolver, String name, String version) throws IOException {
+            return loadFromResolver(file, zipFile, moduleDescriptor, dependencyResolver, name, version, Type.JBOSS_MODULES);
+        }
+        
+        private Module loadFromResolver(File file, ZipFile zipFile, ZipEntry moduleDescriptor, 
+                                        DependencyResolver dependencyResolver, String name, String version,
+                                        Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
                 Set<ModuleInfo> moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream);
-                Module module = new Module(name, version, Type.JBOSS_MODULES, file);
+                Module module = new Module(name, version, moduleType, file);
                 for(ModuleInfo dep : moduleDependencies){
                     module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
                 }
@@ -356,9 +406,24 @@ public class Main {
             return loadJBossModuleJar(file, zipFile, moduleXml, XmlDependencyResolver.INSTANCE, name, version);
         }
 
-        private Module loadMavenJar(File file, ZipFile zipFile, String groupId, String artifactId, String version) {
-            // TODO Auto-generated method stub
-            return null;
+        private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+            return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
+        }
+
+        private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+            // first verify that it is indeed for the module we're looking for
+            InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
+            try{
+                Manifest manifest = new Manifest(inputStream);
+                Attributes attributes = manifest.getMainAttributes();
+                if(!Objects.equals(name, attributes.getValue(OsgiManifest.Bundle_SymbolicName))
+                        || !Objects.equals(version, attributes.getValue(OsgiManifest.Bundle_Version)))
+                    return null;
+                
+            }finally{
+                inputStream.close();
+            }
+            return loadFromResolver(file, zipFile, moduleDescriptor, OSGiDependencyResolver.INSTANCE, name, version, Type.OSGi);
         }
     }
     
