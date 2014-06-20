@@ -1121,7 +1121,7 @@ public abstract class AppliedClassOrInterface<Type>
         Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypeDeclarations = getDeclaration().getCaseTypes();
         Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
         Object it;
-        Array<Type> ret = new Array<Type>($reifiedType, (int) caseTypeDeclarations.getSize(), null);
+        Array<Type> ret = new Array<Type>($reifiedType, (int) caseTypeDeclarations.getSize(), (Type) null);
         int count = 0;
         while((it = iterator.next()) != finished_.get_()){
             if(it instanceof ceylon.language.meta.declaration.OpenClassType == false)

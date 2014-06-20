@@ -71,14 +71,18 @@ shared sealed interface Sequence<out Element>
      the given mapping to the elements of this sequence."
     shared default actual [Result+] collect<Result>(
             "The transformation applied to the elements."
-            Result collecting(Element element)) {
-        value array = arrayOfSize(size, collecting(first));
-        variable value index = 0;
-        for (element in this) {
-            array.set(index, collecting(element));
-        }
-        return ArraySequence(array);
-    }
+            Result collecting(Element element))
+            => ArraySequence(populateArray(size,
+                (Integer index) {
+                    value element = getFromFirst(index);
+                    if (exists element) { 
+                        return collecting(element);
+                    }
+                    else {
+                        assert (is Element null);
+                        return collecting(null); 
+                    }
+                }));
     
     "Return a nonempty sequence containing the given 
      [[elements]], followed by the elements of this 

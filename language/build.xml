@@ -387,6 +387,10 @@
                 <include name="ceylon/language/Array.java"/>
                 <exclude name="ceylon/language/arrayOfSize.ceylon"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
+                <exclude name="ceylon/language/generateArray.ceylon"/>
+                <include name="ceylon/language/generateArray_.java"/>
+                <exclude name="ceylon/language/populateArray.ceylon"/>
+                <include name="ceylon/language/populateArray_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
                 <include name="ceylon/language/Boolean.java"/>
                 <include name="ceylon/language/true_.java"/>

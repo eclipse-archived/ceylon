@@ -3,15 +3,10 @@
  element and recursively applying the given 
  [[generator function|next]].
  
-     generateSequence(100, 1, (Integer last) => last*2);
- 
- Hint: to generate a sequence using a function of the 
- element index, use `collect()` on a [[Range]]:
- 
-     (0..100).collect((Integer index) => index*index)"
+     generateSequence(100, 1, (Integer last) => last*2);"
 throws (`class AssertionError`, "if `size<=0`")
 see (`function sequence`,
-    `function Sequence.collect`)
+     `function populateSequence`)
 by ("Gavin")
 shared [Element+] generateSequence<Element>(
         "The [[size|Sequence.size]] of the resulting sequence."
@@ -27,11 +22,5 @@ shared [Element+] generateSequence<Element>(
      zero"
     assert (size>0);
     
-    value array = arrayOfSize(size, first);
-    variable value element = first;
-    for (index in 1:size-1) {
-        element = next(element);
-        array.set(index, element);
-    }
-    return ArraySequence(array);
+    return ArraySequence(generateArray(size, first, next));
 }
