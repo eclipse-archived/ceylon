@@ -24,6 +24,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.launcher.Launcher;
 
@@ -33,28 +34,52 @@ import com.redhat.ceylon.launcher.Launcher;
  * before we have been able to configure our class loader with the required paths
  */
 class ModuleDescriptorReader {
-    private Object instance;
-    private Method moduleVersion;
-    private Method moduleName;
-    private Method moduleLicense;
-    private Method moduleAuthors;
-
+    private String moduleName;
+    private File srcDir;
+    
+    private boolean setupOk = false;
+    
+    private String readModuleName;
+    private String readModuleVersion;
+    private String readModuleLicense;
+    private List<String> readModuleAuthors;
+    
     public ModuleDescriptorReader(String moduleName, File srcDir) {
-        try {
-            Class<?> mdr = Launcher.getClassLoader().loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
-            this.moduleVersion = mdr.getMethod("getModuleVersion");
-            this.moduleVersion.setAccessible(true);
-            this.moduleName = mdr.getMethod("getModuleName");
-            this.moduleName.setAccessible(true);
-            this.moduleLicense = mdr.getMethod("getModuleLicense");
-            this.moduleLicense.setAccessible(true);
-            this.moduleAuthors = mdr.getMethod("getModuleAuthors");
-            this.moduleAuthors.setAccessible(true);
-            Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
-            constructor.setAccessible(true);
-            this.instance = constructor.newInstance(moduleName, srcDir);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        this.moduleName = moduleName;
+        this.srcDir = srcDir;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void setup() {
+        if (!setupOk) {
+            try {
+                Launcher.executeInContext(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+                        Class<?> mdr = loader.loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
+                        Method moduleNameMth = mdr.getMethod("getModuleName");
+                        moduleNameMth.setAccessible(true);
+                        Method moduleVersionMth = mdr.getMethod("getModuleVersion");
+                        moduleVersionMth.setAccessible(true);
+                        Method moduleLicenseMth = mdr.getMethod("getModuleLicense");
+                        moduleLicenseMth.setAccessible(true);
+                        Method moduleAuthorsMth = mdr.getMethod("getModuleAuthors");
+                        moduleAuthorsMth.setAccessible(true);
+                        Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
+                        constructor.setAccessible(true);
+                        Object instance = constructor.newInstance(moduleName, srcDir);
+                        readModuleName = (String)moduleNameMth.invoke(instance);
+                        readModuleVersion = (String)moduleVersionMth.invoke(instance);
+                        readModuleLicense = (String)moduleLicenseMth.invoke(instance);
+                        readModuleAuthors = (List<String>)moduleAuthorsMth.invoke(instance);
+                        return null;
+                    }
+                });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            setupOk = true;
         }
     }
     
@@ -63,11 +88,8 @@ class ModuleDescriptorReader {
      * @return The module version, or null if no version could be found
      */
     public String getModuleVersion() {
-        try {
-            return (String)moduleVersion.invoke(instance);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        setup();
+        return readModuleVersion;
     }
     
     /**
@@ -75,11 +97,8 @@ class ModuleDescriptorReader {
      * @return The module version, or null if no version could be found
      */
     public String getModuleName() {
-        try {
-            return (String)moduleName.invoke(instance);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        setup();
+        return readModuleName;
     }
     
     /**
@@ -87,23 +106,16 @@ class ModuleDescriptorReader {
      * @return The module version, or null if no version could be found
      */
     public String getModuleLicense() {
-        try {
-            return (String)moduleLicense.invoke(instance);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        setup();
+        return readModuleLicense;
     }
 
     /**
      * Gets the module authors
      * @return The list of module authors, or empty list of no authors could be found
      */
-    @SuppressWarnings("unchecked")
     public List<String> getModuleAuthors() {
-        try {
-            return (List<String>)moduleAuthors.invoke(instance);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        setup();
+        return readModuleAuthors;
     }
 }
