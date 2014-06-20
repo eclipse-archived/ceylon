@@ -1,5 +1,5 @@
 function(length) {
-    if (length >= this.codePoints) {return this}
+    if (length >= this.size) {return this}
     var count = 0;
     var i = 0;
     for (; i<this.length && count<length; ++i, ++count) {
