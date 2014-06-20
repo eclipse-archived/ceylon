@@ -19,8 +19,10 @@
  */
 package com.redhat.ceylon.tools.importjar;
 
+import com.redhat.ceylon.common.tool.ToolError;
+
 @SuppressWarnings("serial")
-public class ImportJarException extends RuntimeException {
+public class ImportJarException extends ToolError {
 
     public ImportJarException(String msgKey) {
         super(ImportJarMessages.msg(msgKey));
