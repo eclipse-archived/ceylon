@@ -22,14 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="foo" slot="1">
+<module xmlns="urn:jboss:module:1.0" name="foo.foo" slot="1">
     <resources>
         <resource-root path="foo.jar"/>
     </resources>
 
     <dependencies>
-        <module name="a" slot="1"/>
-        <module name="b" slot="2" export="true"/>
-        <module name="c" slot="3" optional="true"/>
+        <module name="a.a" slot="1"/>
+        <module name="b.b" slot="2" export="true"/>
+        <module name="c.c" slot="3" optional="true"/>
     </dependencies>
 </module>

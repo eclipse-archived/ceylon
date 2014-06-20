@@ -32,7 +32,7 @@ public class MainTest {
     public void testCeylonModule() throws IOException, ModuleNotFoundException{
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-        File moduleFile = new File("test-jvm/foo", "module_.java");
+        File moduleFile = new File("test-jvm/foo/foo", "module_.java");
         Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
         File destDir = new File("build/mainTest");
         FileUtil.delete(destDir);
@@ -41,10 +41,10 @@ public class MainTest {
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 
-        File compiledModuleFile = new File(destDir, "foo/module_.class");
+        File compiledModuleFile = new File(destDir, "foo/foo/module_.class");
         assertTrue(compiledModuleFile.isFile());
         
-        File jar = jar(compiledModuleFile, "foo");
+        File jar = jar(compiledModuleFile, "foo/foo");
         checkJarDependencies(jar);
     }
 
@@ -71,13 +71,13 @@ public class MainTest {
 
     @Test
     public void testJBossModuleXml() throws IOException, ModuleNotFoundException{
-        File jar = jar("module.xml", "META-INF/jbossmodules/foo/1");
+        File jar = jar("module.xml", "META-INF/jbossmodules/foo/foo/1");
         checkJarDependencies(jar);
     }
 
     @Test
     public void testJBossModuleProperties() throws IOException, ModuleNotFoundException{
-        File jar = jar("module.properties", "META-INF/jbossmodules/foo/1");
+        File jar = jar("module.properties", "META-INF/jbossmodules/foo/foo/1");
         checkJarDependencies(jar);
     }
 
@@ -86,14 +86,14 @@ public class MainTest {
             ArrayList<File> jars = new ArrayList<File>(1);
             jars.add(jar);
             ClassPath classPath = new Main.ClassPath(jars);
-            Module module = classPath.loadModule("foo", "1");
+            Module module = classPath.loadModule("foo.foo", "1");
             assertNotNull(module);
-            assertEquals("foo", module.name());
+            assertEquals("foo.foo", module.name());
             assertEquals("1", module.version());
             assertEquals(3, module.dependencies.size());
-            assertTrue(module.dependencies.contains(new ClassPath.Dependency("a", "1", false, false)));
-            assertTrue(module.dependencies.contains(new ClassPath.Dependency("b", "2", false, true)));
-            assertTrue(module.dependencies.contains(new ClassPath.Dependency("c", "3", true, false)));
+            assertTrue(module.dependencies.contains(new ClassPath.Dependency("a.a", "1", false, false)));
+            assertTrue(module.dependencies.contains(new ClassPath.Dependency("b.b", "2", false, true)));
+            assertTrue(module.dependencies.contains(new ClassPath.Dependency("c.c", "3", true, false)));
         }finally{
 //            System.err.println("Jar is at "+jar.getAbsolutePath());
             jar.delete();
