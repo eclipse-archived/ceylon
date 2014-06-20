@@ -159,4 +159,8 @@ shared void testArrays() {
     
     check(Array{}[-1:2]==[], "empty array segment");
     check(Array{}[-1..2]==[], "empty array span");
+    
+    check(Array([1..3])==[1..3], "array from range");
+    check(Array(["hello",0,"world"])==["hello",0,"world"], "array from tuple");
+    check(Array([for (i in 1..3) i.character])==[for (i in 1..3) i.character], "array from sequence");
 }

@@ -88,6 +88,10 @@ public final class Array<Element>
             size = Util.toInt(elements.getSize());
             list = null;
         }
+        else if (elements instanceof Sequential<?>) {
+        	size = Util.toInt(elements.getSize());
+        	list = null;
+        }
         else {
             list = new ArrayList<Element>();
             Iterator<?> iterator = elements.iterator();
@@ -110,6 +114,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		String s = (String) 
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = s==null ? null : s.value;
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         String s = (String) list.get(i);
@@ -123,6 +134,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		Integer e = (Integer)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.value;
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -138,6 +156,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		Float e = (Float)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.value;
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -151,6 +176,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		Character e = (Character)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.codePoint;
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -167,6 +199,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		Boolean e = (Boolean)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.booleanValue();
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -181,6 +220,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Boolean e = (java.lang.Boolean)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.booleanValue();
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -197,6 +243,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Character e = (java.lang.Character)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.charValue();
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -211,6 +264,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Float e = (java.lang.Float)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.floatValue();
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -227,6 +287,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Double e = (java.lang.Double)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.doubleValue();
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -241,6 +308,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Byte e = (java.lang.Byte)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.byteValue();
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -257,6 +331,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Short e = (java.lang.Short)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.shortValue();
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -272,6 +353,13 @@ public final class Array<Element>
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
                 }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Integer e = (java.lang.Integer)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.intValue();
+                	}
+                }
                 else {
                     for (int i=0; i<size; i++) {
                         array[i] = 
@@ -286,6 +374,13 @@ public final class Array<Element>
                 if (elements instanceof Array) {
                     arraycopy(((Array<?>)elements).array, 
                             0, array, 0, size);
+                }
+                else if (elements instanceof Sequential<?>) {
+                	for (int i=0; i<size; i++) {
+                		java.lang.Long e = (java.lang.Long)
+                				((Sequential<?>) elements).getFromFirst(i);
+                		array[i] = e.longValue();
+                	}
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -358,6 +453,13 @@ public final class Array<Element>
                     array[i] = bools[i];
                 }
             }
+        }
+        else if (elements instanceof Sequential<?>) {
+        	for (int i=0; i<size; i++) {
+        		java.lang.Object e = 
+        				((Sequential<?>) elements).getFromFirst(i);
+        		array[i] = e;
+        	}
         }
         else {
             for (int i=0; i<size; i++) {

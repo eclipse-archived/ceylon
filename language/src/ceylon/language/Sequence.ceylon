@@ -62,11 +62,7 @@ shared sealed interface Sequence<out Element>
     shared default actual [Element+] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
-        value array = arrayOfSize(size, first);
-        variable value index = 0;
-        for (element in this) {
-            array.set(index, element);
-        }
+        value array = Array(this);
         array.sortInPlace(comparing);
         return ArraySequence(array);
     }
