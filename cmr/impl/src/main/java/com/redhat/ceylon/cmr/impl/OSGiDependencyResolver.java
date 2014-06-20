@@ -40,7 +40,7 @@ import com.redhat.ceylon.cmr.spi.Node;
  */
 public class OSGiDependencyResolver extends AbstractDependencyResolver {
     private static final Logger log = Logger.getLogger(OSGiDependencyResolver.class.getName());
-    static final DependencyResolver INSTANCE = new OSGiDependencyResolver();
+    public static final DependencyResolver INSTANCE = new OSGiDependencyResolver();
 
     public Set<ModuleInfo> resolve(DependencyContext context) {
         if (context.ignoreInner() == false) {
@@ -60,6 +60,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
+    @Override
     public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
         if (stream == null) {
             return null;
