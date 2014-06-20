@@ -678,7 +678,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         Set<String> toBeRemoved = new HashSet<>();
         for (String className : externalClasses) {
             String pkgName = getPackageFromClass(className);
-            if (JDKUtils.isJDKPackage(jdkModule, pkgName)) {
+            if (JDKUtils.isJDKPackage(jdkModule, pkgName) || JDKUtils.isOracleJDKPackage(jdkModule, pkgName)) {
                 toBeRemoved.add(className);
             }
         }
