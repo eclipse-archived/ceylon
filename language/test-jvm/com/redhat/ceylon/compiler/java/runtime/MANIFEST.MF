@@ -1,0 +1,4 @@
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: foo
+Bundle-Version: 1
+Require-Bundle: a;bundle-version=1,b;bundle-version=2;visibility:=reexport,c;bundle-version=3;resolution:=optional

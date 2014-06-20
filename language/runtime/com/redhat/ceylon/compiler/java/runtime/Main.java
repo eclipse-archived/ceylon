@@ -71,7 +71,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
  */
 public class Main {
     
-    private static class ClassPath {
+    static class ClassPath {
         
         @SuppressWarnings("serial")
         public class ModuleNotFoundException extends Exception {
@@ -86,7 +86,7 @@ public class Main {
             CEYLON, JBOSS_MODULES, MAVEN, OSGi, UNKNOWN;
         }
         
-        private static class Dependency extends AbstractArtifactResult {
+        static class Dependency extends AbstractArtifactResult {
             public final boolean optional, shared;
 
             public Dependency(String name, String version, boolean optional, boolean shared) {
@@ -106,6 +106,31 @@ public class Main {
                 return b.toString();
             }
 
+            @Override
+            public boolean equals(Object obj) {
+                if(obj == null)
+                    return false;
+                if(obj == this)
+                    return true;
+                if(obj instanceof Dependency == false)
+                    return false;
+                Dependency other = (Dependency) obj;
+                return Objects.equals(name(), other.name())
+                        && Objects.equals(version(), other.version())
+                        && optional == other.optional
+                        && shared == other.shared;
+            }
+
+            @Override
+            public int hashCode() {
+                int ret = 17;
+                ret = (ret * 23) + (name() != null ? name().hashCode() : 0);
+                ret = (ret * 23) + (version() != null ? version().hashCode() : 0);
+                ret = (ret * 23) + (optional ? 1 : 0);
+                ret = (ret * 23) + (shared ? 1 : 0);
+                return ret;
+            }
+            
             @Override
             public ArtifactResultType type() {
                 throw new UnsupportedOperationException();
@@ -127,7 +152,7 @@ public class Main {
             }
         }
         
-        private static class Module extends AbstractArtifactResult {
+        static class Module extends AbstractArtifactResult {
             public final File jar;
             public final Type type;
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
@@ -228,6 +253,11 @@ public class Main {
                     potentialJars.add(entry);
                 }
             }
+        }
+        
+        // for tests
+        ClassPath(List<File> potentialJars){
+            this.potentialJars = potentialJars;
         }
         
         private static DependencyResolver getResolver(String className) {
