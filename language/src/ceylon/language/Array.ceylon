@@ -44,7 +44,8 @@ shared final native class Array<Element>({Element*} elements)
     shared native void copyTo(
         "The array into which to copy the elements." 
         Array<Element> destination,
-        "The index of the first element in this array to copy."  
+        "The index of the first element in this array to 
+         copy."  
         Integer sourcePosition = 0, 
         "The index in the given array into which to 
          copy the first element."
@@ -78,7 +79,12 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} take(Integer taking);
     shared actual native {Element*} by(Integer step);
     
-    "Sorts the elements in this array according 
-     to the ordering induced by the given function."
-    shared native void sortInPlace(Comparison comparing(Element x, Element y));
+    "Sorts the elements in this array according to the 
+     order induced by the given 
+     [[comparison function|comparing]]. This operation 
+     modifies the array."
+    shared native void sortInPlace(
+        "A comparison function that compares pairs of
+         elements of the array."
+        Comparison comparing(Element x, Element y));
 }
