@@ -2,7 +2,7 @@
  by starting with the given [[first]] element and 
  recursively applying the given [[generator function|next]].
  
-     generateArray(100, 1, (Integer last) => last*2);"
+     generateArray(100, 1, (Integer index) => index*2);"
 throws (`class AssertionError`, 
         "if `size<=0` or `size>runtime.maxArraySize`")
 see (`class Array`,
