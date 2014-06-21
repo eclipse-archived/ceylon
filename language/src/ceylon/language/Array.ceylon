@@ -87,4 +87,7 @@ shared final native class Array<Element>({Element*} elements)
         "A comparison function that compares pairs of
          elements of the array."
         Comparison comparing(Element x, Element y));
+    
+    shared actual native Element[] sort(
+        Comparison comparing(Element x, Element y));
 }

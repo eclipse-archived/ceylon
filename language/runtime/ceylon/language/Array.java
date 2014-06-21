@@ -1687,10 +1687,14 @@ public final class Array<Element>
         return $ceylon$language$Iterable$this.findLast(f);
     }
     @Override
-    @Ignore
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> 
-    sort(Callable<? extends Comparison> f) {
-        return $ceylon$language$Iterable$this.sort(f);
+    sort( @Name("comparing") @FunctionalParameter("(x,y)")
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
+    Callable<? extends Comparison> comparing) {
+        Array<Element> clone = $clone();
+        clone.sortInPlace(comparing);
+		return new ArraySequence<Element>($reifiedElement, clone);
     }
     @Override
     @Ignore

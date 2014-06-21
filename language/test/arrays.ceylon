@@ -163,4 +163,7 @@ shared void testArrays() {
     check(Array([1..3])==[1..3], "array from range");
     check(Array(["hello",0,"world"])==["hello",0,"world"], "array from tuple");
     check(Array([for (i in 1..3) i.character])==[for (i in 1..3) i.character], "array from sequence");
+    
+    check(Array { 4,1,3,2 }.sort(byIncreasing((Integer e) => e))==[1,2,3,4], "integer array sort");
+    check(Array {"world", "hello", "" }.sort(byIncreasing((String e) => e))==["", "hello", "world"], "string array sort");
 }
