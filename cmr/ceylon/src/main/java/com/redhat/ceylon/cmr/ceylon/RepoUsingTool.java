@@ -238,9 +238,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // if we did not find any version in the output repo, see if we have a single one in the source repo, that's
         // a lot cheaper than looking the version up
         ModuleVersionDetails srcVersion = null;
-        if (allowCompilation && version == null) {
+        if (allowCompilation) {
             srcVersion = getVersionFromSource(name);
-            if (srcVersion != null && versions == null) {
+            if (srcVersion != null && versions == null && version == null) {
                 // we found some source, let's compile it and not even look up anything else
                 versions = Collections.emptyList();
             }
@@ -255,7 +255,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             // Here we either have a single version or none
             if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
                 if (allowCompilation) {
-                    if (srcVersion != null && version.equals(srcVersion.getVersion())) {
+                    if (srcVersion != null && (version.equals(srcVersion.getVersion()) || srcVersion.getVersion().isEmpty())) {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
                         if (!runCompiler(repoMgr, name, type)) {
@@ -412,7 +412,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         final long[] newest = new long[] { -1L };
         List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
         for (File srcDir : srcDirs) {
-            File moduleDir = new File(srcDir, name);
+            File moduleDir = new File(srcDir, ModuleUtil.moduleToPath(name).getPath());
             if (moduleDir.isDirectory() && moduleDir.canRead()) {
                 Files.walkFileTree(moduleDir.toPath(), new SimpleFileVisitor<Path>() {
                     @Override
@@ -445,17 +445,17 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 try{
                     ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
                     String version = mdr.getModuleVersion();
-                    if (version != null) {
-                        ModuleVersionDetails mvd = new ModuleVersionDetails(version);
-                        mvd.setLicense(mdr.getModuleLicense());
-                        List<String> by = mdr.getModuleAuthors();
-                        if (by != null) {
-                            mvd.getAuthors().addAll(by);
-                        }
-                        mvd.setRemote(false);
-                        mvd.setOrigin("Local source folder");
-                        return mvd;
+                    // PS In case the module descriptor was found but could not be parsed
+                    // we'll create an invalid details object
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(version != null ? version : "");
+                    mvd.setLicense(mdr.getModuleLicense());
+                    List<String> by = mdr.getModuleAuthors();
+                    if (by != null) {
+                        mvd.getAuthors().addAll(by);
                     }
+                    mvd.setRemote(false);
+                    mvd.setOrigin("Local source folder");
+                    return mvd;
                 }catch(ModuleDescriptorReader.NoSuchModuleException x){
                     // skip this source folder and look in the next one
                 }
