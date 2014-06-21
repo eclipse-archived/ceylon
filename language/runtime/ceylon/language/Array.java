@@ -2336,7 +2336,7 @@ public final class Array<Element>
                 new java.util.AbstractList<Element>() {
             @Override
             public Element get(int index) {
-                return Array.this.unsafeItem(index);
+                return unsafeItem(index);
             }
             @Override
             public Element set(int index, Element element) {
@@ -2358,7 +2358,13 @@ public final class Array<Element>
                     return (java.lang.Object[]) array;
                 }
                 else {
-                    return super.toArray();
+                	int size = size();
+                	java.lang.Object[] result = 
+                			new java.lang.Object[size];
+                	for (int i=0; i<size; i++) {
+                		result[i] = unsafeItem(i);
+                	}
+                	return result;
                 }
             }
         };
