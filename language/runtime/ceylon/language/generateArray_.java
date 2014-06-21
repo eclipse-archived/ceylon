@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -26,7 +27,7 @@ public final class generateArray_ {
             @Name("first")
             @TypeInfo("Element")
             final Element first,
-            @Name("next")
+            @Name("next") @FunctionalParameter("(previous)")
             @TypeInfo("ceylon.language::Callable<Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Element> next) {
 		if (size>maxArraySize) {

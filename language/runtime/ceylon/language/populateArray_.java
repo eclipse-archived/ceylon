@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -23,7 +24,7 @@ public final class populateArray_ {
             @Name("size")
             @TypeInfo("ceylon.language::Integer")
             long size,
-            @Name("element")
+            @Name("element") @FunctionalParameter("(index)")
             @TypeInfo("ceylon.language::Callable<Element,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>")
             Callable<? extends Element> element) {
 		if (size>maxArraySize) {
