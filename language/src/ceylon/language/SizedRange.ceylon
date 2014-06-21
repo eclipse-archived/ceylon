@@ -281,7 +281,7 @@ shared sealed final class SizedRange<Element>(first, size)
 "Create a new [[SizedRange]] if the given [[size]] is 
  strictly positive, or return the 
  [[empty sequence|empty]] if `size <= 0`."
-shared /*SizedRange<Element>|[]*/Element[] sizedRange<Element>
+shared SizedRange<Element>|[] sizedRange<Element>
             (Element first, Integer size) 
         given Element satisfies Enumerable<Element> 
         => size <= 0 then [] else SizedRange(first, size);
