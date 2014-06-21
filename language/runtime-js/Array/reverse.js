@@ -1,5 +1,5 @@
-function(f) {
+function() {
   var clone = this.clone();
-  clone.sortInPlace();
+  clone.reverseInPlace();
   return ArraySequence(clone,{Element$ArraySequence:{t:this._elemTarg()}});
 }
