@@ -103,8 +103,8 @@ public final class Array<Element>
             list = null;
         }
         else if (elements instanceof Sequential<?>) {
-        	size = Util.toInt(elements.getSize());
-        	list = null;
+            size = Util.toInt(elements.getSize());
+            list = null;
         }
         else {
             list = new ArrayList<Element>();
@@ -129,11 +129,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		String s = (String) 
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = s==null ? null : s.value;
-                	}
+                    for (int i=0; i<size; i++) {
+                        String s = (String) 
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = s==null ? null : s.value;
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -150,11 +150,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		Integer e = (Integer)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.value;
-                	}
+                    for (int i=0; i<size; i++) {
+                        Integer e = (Integer)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.value;
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -171,11 +171,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		Float e = (Float)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.value;
-                	}
+                    for (int i=0; i<size; i++) {
+                        Float e = (Float)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.value;
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -192,11 +192,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		Character e = (Character)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.codePoint;
-                	}
+                    for (int i=0; i<size; i++) {
+                        Character e = (Character)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.codePoint;
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -214,11 +214,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		Boolean e = (Boolean)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.booleanValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        Boolean e = (Boolean)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.booleanValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -236,11 +236,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Boolean e = (java.lang.Boolean)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.booleanValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Boolean e = (java.lang.Boolean)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.booleanValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -258,11 +258,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Character e = (java.lang.Character)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.charValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Character e = (java.lang.Character)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.charValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -280,11 +280,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Float e = (java.lang.Float)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.floatValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Float e = (java.lang.Float)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.floatValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -302,11 +302,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Double e = (java.lang.Double)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.doubleValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Double e = (java.lang.Double)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.doubleValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -324,11 +324,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Byte e = (java.lang.Byte)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.byteValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Byte e = (java.lang.Byte)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.byteValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -346,11 +346,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Short e = (java.lang.Short)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.shortValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Short e = (java.lang.Short)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.shortValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -368,11 +368,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Integer e = (java.lang.Integer)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.intValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Integer e = (java.lang.Integer)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.intValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -390,11 +390,11 @@ public final class Array<Element>
                             0, array, 0, size);
                 }
                 else if (elements instanceof Sequential<?>) {
-                	for (int i=0; i<size; i++) {
-                		java.lang.Long e = (java.lang.Long)
-                				((Sequential<?>) elements).getFromFirst(i);
-                		array[i] = e.longValue();
-                	}
+                    for (int i=0; i<size; i++) {
+                        java.lang.Long e = (java.lang.Long)
+                                ((Sequential<?>) elements).getFromFirst(i);
+                        array[i] = e.longValue();
+                    }
                 }
                 else {
                     for (int i=0; i<size; i++) {
@@ -469,11 +469,11 @@ public final class Array<Element>
             }
         }
         else if (elements instanceof Sequential<?>) {
-        	for (int i=0; i<size; i++) {
-        		java.lang.Object e = 
-        				((Sequential<?>) elements).getFromFirst(i);
-        		array[i] = e;
-        	}
+            for (int i=0; i<size; i++) {
+                java.lang.Object e = 
+                        ((Sequential<?>) elements).getFromFirst(i);
+                array[i] = e;
+            }
         }
         else {
             for (int i=0; i<size; i++) {
@@ -591,8 +591,8 @@ public final class Array<Element>
                 java.lang.String[] array = new java.lang.String[size];
                 String s = (String) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.value;
-                	s = (String) next.$call$(s);
+                    array[i] = s.value;
+                    s = (String) next.$call$(s);
                 }
                 return array;
             }
@@ -600,8 +600,8 @@ public final class Array<Element>
                 long[] array = new long[size];
                 Integer s = (Integer) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.value;
-                	s = (Integer) next.$call$(s);
+                    array[i] = s.value;
+                    s = (Integer) next.$call$(s);
                 }
                 return array;
             }
@@ -609,8 +609,8 @@ public final class Array<Element>
                 double[] array = new double[size];
                 Float s = (Float) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.value;
-                	s = (Float) next.$call$(s);
+                    array[i] = s.value;
+                    s = (Float) next.$call$(s);
                 }
                 return array;
             }
@@ -618,8 +618,8 @@ public final class Array<Element>
                 int[] array = new int[size];
                 Character s = (Character) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.codePoint;
-                	s = (Character) next.$call$(s);
+                    array[i] = s.codePoint;
+                    s = (Character) next.$call$(s);
                 }
                 return array;
             }
@@ -627,8 +627,8 @@ public final class Array<Element>
                 boolean[] array = new boolean[size];
                 Boolean s = (Boolean) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.booleanValue();
-                	s = (Boolean) next.$call$(s);
+                    array[i] = s.booleanValue();
+                    s = (Boolean) next.$call$(s);
                 }
                 return array;
             }
@@ -636,8 +636,8 @@ public final class Array<Element>
                 boolean[] array = new boolean[size];
                 java.lang.Boolean s = (java.lang.Boolean) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.booleanValue();
-                	s = (java.lang.Boolean) next.$call$(s);
+                    array[i] = s.booleanValue();
+                    s = (java.lang.Boolean) next.$call$(s);
                 }
                 return array;
             }
@@ -645,8 +645,8 @@ public final class Array<Element>
                 char[] array = new char[size];
                 java.lang.Character s = (java.lang.Character) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.charValue();
-                	s = (java.lang.Character) next.$call$(s);
+                    array[i] = s.charValue();
+                    s = (java.lang.Character) next.$call$(s);
                 }
                 return array;
             }
@@ -654,8 +654,8 @@ public final class Array<Element>
                 float[] array = new float[size];
                 java.lang.Float s = (java.lang.Float) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.floatValue();
-                	s = (java.lang.Float) next.$call$(s);
+                    array[i] = s.floatValue();
+                    s = (java.lang.Float) next.$call$(s);
                 }
                 return array;
             }
@@ -663,8 +663,8 @@ public final class Array<Element>
                 double[] array = new double[size];
                 java.lang.Double s = (java.lang.Double) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.doubleValue();
-                	s = (java.lang.Double) next.$call$(s);
+                    array[i] = s.doubleValue();
+                    s = (java.lang.Double) next.$call$(s);
                 }
                 return array;
             }
@@ -672,8 +672,8 @@ public final class Array<Element>
                 byte[] array = new byte[size];
                 java.lang.Byte s = (java.lang.Byte) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.byteValue();
-                	s = (java.lang.Byte) next.$call$(s);
+                    array[i] = s.byteValue();
+                    s = (java.lang.Byte) next.$call$(s);
                 }
                 return array;
             }
@@ -681,8 +681,8 @@ public final class Array<Element>
                 short[] array = new short[size];
                 java.lang.Short s = (java.lang.Short) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.shortValue();
-                	s = (java.lang.Short) next.$call$(s);
+                    array[i] = s.shortValue();
+                    s = (java.lang.Short) next.$call$(s);
                 }
                 return array;
             }
@@ -690,8 +690,8 @@ public final class Array<Element>
                 int[] array = new int[size];
                 java.lang.Integer s = (java.lang.Integer) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.intValue();
-                	s = (java.lang.Integer) next.$call$(s);
+                    array[i] = s.intValue();
+                    s = (java.lang.Integer) next.$call$(s);
                 }
                 return array;
             }
@@ -699,8 +699,8 @@ public final class Array<Element>
                 long[] array = new long[size];
                 java.lang.Long s = (java.lang.Long) element;
                 for (int i=0; i<size; i++) {
-                	array[i] = s.longValue();
-                	s = (java.lang.Long) next.$call$(s);
+                    array[i] = s.longValue();
+                    s = (java.lang.Long) next.$call$(s);
                 }
                 return array;
             }
@@ -711,8 +711,8 @@ public final class Array<Element>
                         .newInstance(clazz, size);
         Element current = element;
         for (int i=0; i<size; i++) {
-        	array[i] = element;
-        	current = next.$call$(current);
+            array[i] = element;
+            current = next.$call$(current);
         }
         return array;
     }
@@ -727,109 +727,109 @@ public final class Array<Element>
                 //      because it would break javaObjectArray()
                 java.lang.String[] array = new java.lang.String[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = ((String) 
-                			element.$call$(Integer.instance(i)))
-                			.value;
+                    array[i] = ((String) 
+                            element.$call$(Integer.instance(i)))
+                            .value;
                 }
                 return array;
             }
             else if (clazz==Integer.class) {
                 long[] array = new long[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = ((Integer) 
-                			element.$call$(Integer.instance(i)))
-                			.value;
+                    array[i] = ((Integer) 
+                            element.$call$(Integer.instance(i)))
+                            .value;
                 }
                 return array;
             }
             else if (clazz==Float.class) {
                 double[] array = new double[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = ((Float) 
-                			element.$call$(Integer.instance(i)))
-                			.value;
+                    array[i] = ((Float) 
+                            element.$call$(Integer.instance(i)))
+                            .value;
                 }
                 return array;
             }
             else if (clazz==Character.class) {
                 int[] array = new int[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = ((Character) 
-                			element.$call$(Integer.instance(i)))
-                			.codePoint;
+                    array[i] = ((Character) 
+                            element.$call$(Integer.instance(i)))
+                            .codePoint;
                 }
                 return array;
             }
             else if (clazz==Boolean.class) {
                 boolean[] array = new boolean[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = ((Boolean) 
-                			element.$call$(Integer.instance(i)))
-                			.booleanValue();
+                    array[i] = ((Boolean) 
+                            element.$call$(Integer.instance(i)))
+                            .booleanValue();
                 }
                 return array;
             }
             else if (clazz==java.lang.Boolean.class) {
                 boolean[] array = new boolean[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Boolean) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Boolean) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Character.class) {
                 char[] array = new char[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Character) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Character) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Float.class) {
                 float[] array = new float[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Float) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Float) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Double.class) {
                 double[] array = new double[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Double) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Double) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Byte.class) {
                 byte[] array = new byte[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Byte) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Byte) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Short.class) {
                 short[] array = new short[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Short) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Short) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Integer.class) {
                 int[] array = new int[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Integer) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Integer) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
             else if (clazz==java.lang.Long.class) {
                 long[] array = new long[size];
                 for (int i=0; i<size; i++) {
-                	array[i] = (java.lang.Long) 
-                			element.$call$(Integer.instance(i));
+                    array[i] = (java.lang.Long) 
+                            element.$call$(Integer.instance(i));
                 }
                 return array;
             }
@@ -839,7 +839,7 @@ public final class Array<Element>
                 (java.lang.Object[]) java.lang.reflect.Array
                         .newInstance(clazz, size);
         for (int i=0; i<size; i++) {
-        	array[i] = element.$call$(Integer.instance(i));
+            array[i] = element.$call$(Integer.instance(i));
         }
         return array;
     }
@@ -2329,7 +2329,7 @@ public final class Array<Element>
     }
     
     public void sortInPlace(
-            @Name("comparing")@FunctionalParameter("(x,y)")
+            @Name("comparing") @FunctionalParameter("(x,y)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
             final Callable<? extends Comparison> comparing) {
         java.util.List<Element> list = 
@@ -2351,7 +2351,16 @@ public final class Array<Element>
             public int size() {
                 return (int)Array.this.getSize();
             }
-            
+            @Override
+            public java.lang.Object[] toArray() {
+                if (array instanceof java.lang.Object[] &&
+                    !(array instanceof java.lang.String[])) {
+                    return (java.lang.Object[]) array;
+                }
+                else {
+                    return super.toArray();
+                }
+            }
         };
         Comparator<Element> comparator = 
                 new Comparator<Element>() {
