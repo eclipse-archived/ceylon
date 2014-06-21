@@ -2338,7 +2338,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs..rhs</literal></entry>
             <entry>spanned range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
-            <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T given T satisfies Enumerable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Range&lt;T&gt;</literal></entry>
         </row>
@@ -2347,9 +2347,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs:rhs</literal></entry>
             <entry>segmented range</entry>
             <entry><literal>if (lhs&lt;=0) [] else TODO</literal></entry>
-            <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T given T satisfies Enumerable&lt;T&gt;</literal></entry>
             <entry><literal>Integer</literal></entry>
-            <entry><literal>T[]</literal></entry>
+            <entry><literal>SizedRange&lt;T&gt;|[]</literal></entry>
         </row>
         
         <row>
