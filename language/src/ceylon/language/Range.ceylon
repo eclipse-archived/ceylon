@@ -13,8 +13,9 @@
    opposite of the sign of the offset of `last` from `first`.
  
  A range is always nonempty, containing at least one value.
+ Thus, it is a [[Sequence]].
  
- More formally, if `x`, `first`, and `last` are of 
+ More precisely, if `x`, `first`, and `last` are of 
  `Enumerable` type `X`, then `x in first..last` if and 
  only if:
  
@@ -43,8 +44,6 @@
  A range for a recursive enumerable type is always 
  increasing.
  
- A range is a [[Sequence]].
- 
  The _span_ operator `..` is an abbreviation for `Range`
  instantiation.
  
@@ -62,8 +61,9 @@
      5..0    // [5, 4, 3, 2, 1, 0]
      0..-5   // [0, -1, -2, -3, -4, -5]"
 by ("Gavin")
-see (`interface Enumerable`)
-shared final class Range<Element>(first, last) 
+see (`class SizedRange`,
+     `interface Enumerable`)
+shared sealed final class Range<Element>(first, last) 
         extends Object() 
         satisfies [Element+]
         given Element satisfies Enumerable<Element> { 
@@ -369,7 +369,7 @@ shared final class Range<Element>(first, last)
         
         first => outer.first;
         
-        string => "(``outer.string``).by(``step``)";
+        string => "(``outer.string`` by ``step``)";
         
         shared actual Iterator<Element> iterator() {
             if (recursive) {
@@ -463,3 +463,9 @@ shared final class Range<Element>(first, last)
     }
     
 }
+
+"Create a new [[Range]]."
+shared Range<Element> range<Element>
+            (Element first, Element last) 
+        given Element satisfies Enumerable<Element> 
+        => Range(first, last);
