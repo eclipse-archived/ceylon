@@ -422,6 +422,10 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Range");
     }
     
+    public Class getSizedRangeDeclaration() {
+        return (Class) getLanguageModuleDeclaration("SizedRange");
+    }
+    
     public Class getTupleDeclaration() {
         return (Class) getLanguageModuleDeclaration("Tuple");
     }
@@ -596,6 +600,16 @@ public class Unit {
      */
     public ProducedType getRangeType(ProducedType rt) {
         return Util.producedType(getRangeDeclaration(), rt);
+    }
+
+    /**
+     * Returns a ProducedType corresponding to {@code SizedRange<T>|[]}
+     * @param rt The ProducedType corresponding to {@code T}
+     * @return The ProducedType corresponding to {@code SizedRange<T>|[]}
+     */
+    public ProducedType getSizedRangeType(ProducedType rt) {
+        return unionType(Util.producedType(getSizedRangeDeclaration(), rt), 
+        		getType(getEmptyDeclaration()), this);
     }
 
     public ProducedType getEntryType(ProducedType kt, ProducedType vt) {

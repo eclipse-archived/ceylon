@@ -3135,7 +3135,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getRightTerm(), "right operand must be an integer");
             if (ot!=null) {
                 ProducedType ta = ot.getTypeArgumentList().get(0);
-                that.setTypeModel(unit.getSequentialType(ta));
+                that.setTypeModel(unit.getSizedRangeType(ta));
             }
         }
     }
