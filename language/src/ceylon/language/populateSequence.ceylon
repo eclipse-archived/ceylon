@@ -2,7 +2,7 @@
  the given [[size]], using a [[function|element]] of the 
  element index.
  
-     populateSequence(100, 1, (Integer last) => last*2);"
+     populateSequence(100, 1, (Integer index) => index*index);"
 throws (`class AssertionError`, "if `size<=0`")
 see (`function sequence`,
      `function generateSequence`)

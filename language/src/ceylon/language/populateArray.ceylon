@@ -1,7 +1,7 @@
 "Efficiently populate an [[Array]] of the given [[size]], 
  using a [[function|element]] of the element index.
  
-     populateArray(100, 1, (Integer last) => last*2);"
+     populateArray(100, 1, (Integer index) => index*index);"
 throws (`class AssertionError`, 
         "if `size<0` or `size>runtime.maxArraySize`")
 see (`class Array`,

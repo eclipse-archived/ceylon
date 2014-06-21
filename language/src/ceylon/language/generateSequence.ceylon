@@ -3,7 +3,7 @@
  element and recursively applying the given 
  [[generator function|next]].
  
-     generateSequence(100, 1, (Integer index) => index*2);"
+     generateSequence(100, 1, (Integer last) => last*2);"
 throws (`class AssertionError`, "if `size<=0`")
 see (`function sequence`,
      `function populateSequence`)
