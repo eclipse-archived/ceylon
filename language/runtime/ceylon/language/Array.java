@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ceylon.language.impl.BaseIterator;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterator;
@@ -1380,6 +1382,33 @@ public final class Array<Element>
     }
     
     @Ignore
+    private final class ArrayIterator extends BaseIterator<Element> {
+    	
+	    private int index = 0;
+	    // ok to cast here, since we know the size must fit in an int
+	    private final int size = (int) getSize();
+
+	    private ArrayIterator(TypeDescriptor $reified$Element) {
+		    super($reified$Element);
+	    }
+
+	    @Override
+	    public java.lang.Object next() {
+	    	if (index++<size) {
+	    		return unsafeItem(index);
+	    	}
+	    	else {
+	    		return finished_.get_();
+	    	}
+	    }
+
+	    @Override
+	    public java.lang.String toString() {
+	        return Array.this.toString() + ".iterator()";
+	    }
+    }
+
+	@Ignore
     static final class Collector<Result> {
 	    private final Callable<? extends Result> collecting;
 	    private final Array<?> array;
@@ -1438,13 +1467,7 @@ public final class Array<Element>
     
     @Override
     public Iterator<Element> iterator() {
-        // ok to cast here, since we know the size must fit in an int
-        return new AbstractArrayIterator<Element>($reifiedElement, 
-                0, (int)getSize(), 1) {
-            protected Element get(int index) {
-                return unsafeItem(index);
-            }
-        };
+        return new ArrayIterator($reifiedElement);
     }
     
     @Override
