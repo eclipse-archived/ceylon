@@ -83,6 +83,13 @@ public final class Array<Element>
                 createArray($reifiedElement, size, element));
     }
     
+    @Ignore
+    public Array(final TypeDescriptor $reifiedElement, 
+            int size, Collector<? extends Element> element) {
+        this($reifiedElement, 
+                createArray($reifiedElement, size, element));
+    }
+    
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("elements")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
@@ -844,6 +851,133 @@ public final class Array<Element>
         return array;
     }
 
+    private static <Element> java.lang.Object createArray(
+            final TypeDescriptor $reifiedElement,
+            final int size, final Collector<? extends Element> element) {
+        java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
+        if (!$reifiedElement.containsNull()) {
+            if (clazz==String.class) {
+                //note: we don't unbox strings in an Array<String?>
+                //      because it would break javaObjectArray()
+                java.lang.String[] array = new java.lang.String[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = ((String) 
+                            element.call(i))
+                            .value;
+                }
+                return array;
+            }
+            else if (clazz==Integer.class) {
+                long[] array = new long[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = ((Integer) 
+                            element.call(i))
+                            .value;
+                }
+                return array;
+            }
+            else if (clazz==Float.class) {
+                double[] array = new double[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = ((Float) 
+                            element.call(i))
+                            .value;
+                }
+                return array;
+            }
+            else if (clazz==Character.class) {
+                int[] array = new int[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = ((Character) 
+                            element.call(i))
+                            .codePoint;
+                }
+                return array;
+            }
+            else if (clazz==Boolean.class) {
+                boolean[] array = new boolean[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = ((Boolean) 
+                            element.call(i))
+                            .booleanValue();
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Boolean.class) {
+                boolean[] array = new boolean[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Boolean) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Character.class) {
+                char[] array = new char[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Character) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Float.class) {
+                float[] array = new float[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Float) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Double.class) {
+                double[] array = new double[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Double) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Byte.class) {
+                byte[] array = new byte[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Byte) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Short.class) {
+                short[] array = new short[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Short) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Integer.class) {
+                int[] array = new int[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Integer) 
+                            element.call(i);
+                }
+                return array;
+            }
+            else if (clazz==java.lang.Long.class) {
+                long[] array = new long[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = (java.lang.Long) 
+                            element.call(i);
+                }
+                return array;
+            }
+        }
+        
+        java.lang.Object[] array = 
+                (java.lang.Object[]) java.lang.reflect.Array
+                        .newInstance(clazz, size);
+        for (int i=0; i<size; i++) {
+            array[i] = element.call(i);
+        }
+        return array;
+    }
+
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
@@ -1244,8 +1378,22 @@ public final class Array<Element>
         long ind = key.longValue();
         return ind >= 0 && ind < getSize();
     }
-
+    
     @Ignore
+    static final class Collector<Result> {
+	    private final Callable<? extends Result> collecting;
+	    private final Array<?> array;
+	    private Collector(Array<?> array, 
+	            Callable<? extends Result> fun) {
+		    this.collecting = fun;
+		    this.array = array;
+	    }
+	    Result call(int index) {
+	    	return collecting.$call$(array.unsafeItem(index));
+	    }
+    }
+
+	@Ignore
     final class ArrayIterable 
     extends AbstractArrayIterable<Element, java.lang.Object> {
 
@@ -1686,15 +1834,46 @@ public final class Array<Element>
     public Element findLast(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.findLast(f);
     }
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Result>")
+    @TypeParameters(@TypeParameter("Result"))
+    public <Result> Sequential<? extends Result> 
+    collect(@Ignore TypeDescriptor $reifiedResult, 
+            @Name("collecting") @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+            final Callable<? extends Result> collecting) {
+        if (getEmpty()) {
+        	return (Sequential<? extends Result>) empty_.get_();
+        }
+    	return new ArraySequence<Result>($reifiedResult, 
+                new Array<Result>($reifiedResult, (int) getSize(), 
+                		new Collector<Result>(this,collecting)));
+    }
+    @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> 
-    sort( @Name("comparing") @FunctionalParameter("(x,y)")
+    sort(@Name("comparing") @FunctionalParameter("(x,y)")
     @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
     Callable<? extends Comparison> comparing) {
+        if (getEmpty()) {
+        	return (Sequential<? extends Element>) empty_.get_();
+        }
         Array<Element> clone = $clone();
         clone.sortInPlace(comparing);
-		return new ArraySequence<Element>($reifiedElement, clone);
+        return new ArraySequence<Element>($reifiedElement, clone);
+    }
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language::Sequential<Element>")
+    public Sequential<? extends Element> 
+    reverse() {
+        if (getEmpty()) {
+        	return (Sequential<? extends Element>) empty_.get_();
+        }
+        Array<Element> clone = $clone();
+        clone.reverseInPlace();
+        return new ArraySequence<Element>($reifiedElement, clone);
     }
     @Override
     @Ignore
@@ -1725,11 +1904,6 @@ public final class Array<Element>
     public Integer 
     lastIndexWhere(Callable<? extends Boolean> f) {
         return $ceylon$language$List$this.lastIndexWhere(f);
-    }
-    @Override @Ignore
-    public <Result> Sequential<? extends Result> 
-    collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
@@ -2332,6 +2506,94 @@ public final class Array<Element>
         return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
     }
     
+    public void reverseInPlace() {
+        int size = (int) getSize();
+        if (array instanceof java.lang.Object[]) {
+        	for (int index=0; index<size/2; index++) {
+        		java.lang.Object[] arr = (java.lang.Object[]) array;
+				java.lang.Object swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof long[]) {
+        	for (int index=0; index<size/2; index++) {
+        		long[] arr = (long[]) array;
+        		long swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof int[]) {
+        	for (int index=0; index<size/2; index++) {
+        		int[] arr = (int[]) array;
+        		int swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof short[]) {
+        	for (int index=0; index<size/2; index++) {
+        		short[] arr = (short[]) array;
+        		short swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof byte[]) {
+        	for (int index=0; index<size/2; index++) {
+        		byte[] arr = (byte[]) array;
+        		byte swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof double[]) {
+        	for (int index=0; index<size/2; index++) {
+        		double[] arr = (double[]) array;
+        		double swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof float[]) {
+        	for (int index=0; index<size/2; index++) {
+        		float[] arr = (float[]) array;
+        		float swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof boolean[]) {
+        	for (int index=0; index<size/2; index++) {
+        		boolean[] arr = (boolean[]) array;
+        		boolean swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else if (array instanceof char[]) {
+        	for (int index=0; index<size/2; index++) {
+        		char[] arr = (char[]) array;
+        		char swap = arr[index];
+        		int indexFromLast = size-index-1;
+        		arr[index] = arr[indexFromLast];
+        		arr[indexFromLast] = swap;
+        	}
+        }
+        else {
+        	throw new AssertionError("illegal array type");
+        }
+    }
+    
     public void sortInPlace(
             @Name("comparing") @FunctionalParameter("(x,y)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
@@ -2362,13 +2624,13 @@ public final class Array<Element>
                     return (java.lang.Object[]) array;
                 }
                 else {
-                	int size = size();
-                	java.lang.Object[] result = 
-                			new java.lang.Object[size];
-                	for (int i=0; i<size; i++) {
-                		result[i] = unsafeItem(i);
-                	}
-                	return result;
+                    int size = size();
+                    java.lang.Object[] result = 
+                            new java.lang.Object[size];
+                    for (int i=0; i<size; i++) {
+                        result[i] = unsafeItem(i);
+                    }
+                    return result;
                 }
             }
         };

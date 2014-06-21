@@ -1313,7 +1313,7 @@ public class Metamodel {
         java.util.List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
         
         // store the values in an array
-        Array<java.lang.Object> values = new Array<java.lang.Object>(ceylon.language.Anything.$TypeDescriptor$, parameters.size(), null);
+        Array<java.lang.Object> values = new Array<java.lang.Object>(Anything.$TypeDescriptor$, parameters.size(), (java.lang.Object) null);
         int parameterIndex = 0;
         for(Parameter parameter : parameters){
             // get the parameter value and remove it so we can keep track of those we used

@@ -79,6 +79,9 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} take(Integer taking);
     shared actual native {Element*} by(Integer step);
     
+    shared native void reverseInPlace();
+    shared native Element[] reverse();
+    
     "Sorts the elements in this array according to the 
      order induced by the given 
      [[comparison function|comparing]]. This operation 
@@ -90,4 +93,7 @@ shared final native class Array<Element>({Element*} elements)
     
     shared actual native Element[] sort(
         Comparison comparing(Element x, Element y));
+    
+    shared actual native Result[] collect<Result>(
+        Result collecting(Element element));
 }

@@ -26,7 +26,7 @@ shared [Element+]|Absent sequence<Element,Absent=Null>
 
 "A [[Sequence]] backed by an [[Array]]. 
  
- Since [[Array]] is mutable, this class is private to the
+ Since [[Array]]s are mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
 by ("Tom")
@@ -39,39 +39,54 @@ shared sealed class ArraySequence<out Element>(array)
     
     assert (!array.empty);
     
-    shared actual Element? getFromFirst(Integer index)
-            => array.getFromFirst(index);
+    getFromFirst(Integer index) => array.getFromFirst(index);
     
-    shared actual Boolean contains(Object element) 
-            => array.contains(element);
+    contains(Object element) => array.contains(element);
     
-    shared actual Integer size => array.size;
+    size => array.size;
     
-    shared actual Iterator<Element> iterator() 
-            => array.iterator();
+    iterator() => array.iterator();
     
     shared actual Element first {
-        assert (is Element first = array.first);
-        return first;
+        if (exists first = array.first) {
+            return first;
+        }
+        else {
+            assert (is Element null);
+            return null;
+        }
     }
     
     shared actual Element last {
-        assert (is Element last = array.last);
-        return last;
+        if (exists last = array.last) {
+            return last;
+        }
+        else {
+            assert (is Element null);
+            return null;
+        }
     }
     
-    shared actual Integer lastIndex {
-        assert (exists lastIndex = array.lastIndex);
-        return lastIndex;
+    rest => size==1 then [] else ArraySequence(array[1...]);
+    
+    clone() => ArraySequence(array.clone());
+    
+    shared default actual [Result+] collect<Result>(
+        Result collecting(Element element)) {
+        assert (nonempty sequence = array.collect(collecting));
+        return sequence;
     }
     
-    shared actual Element[] rest 
-            => size==1 then [] 
-                    else ArraySequence(Array(array.rest));
+    shared actual [Element+] sort(
+        Comparison comparing(Element x, Element y)) {
+        assert (nonempty sequence = array.sort(comparing));
+        return sequence;
+    }
     
-    //TODO: return a view!
-    shared actual [Element+] reversed 
-            => ArraySequence(Array(array.reversed));
+    shared actual [Element+] reversed {
+        assert (nonempty sequence = array.reverse());
+        return sequence;
+    }
     
     shared actual Element[] segment(Integer from, Integer length) {
         if (from>lastIndex || length<=0 || from+length<=0) {
