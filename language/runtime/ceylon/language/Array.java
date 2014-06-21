@@ -1394,8 +1394,8 @@ public final class Array<Element>
 
 	    @Override
 	    public java.lang.Object next() {
-	    	if (index++<size) {
-	    		return unsafeItem(index);
+	    	if (index<size) {
+	    		return unsafeItem(index++);
 	    	}
 	    	else {
 	    		return finished_.get_();
