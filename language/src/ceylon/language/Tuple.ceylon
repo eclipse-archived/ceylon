@@ -106,7 +106,7 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     shared actual native Element[] spanFrom(Integer from) 
             => span(from, size);
     
-    shared actual native [Element+] reversed 
+    shared actual native [Element+] reverse()
             => rest.reversed.withTrailing(first);
     
     "This tuple."

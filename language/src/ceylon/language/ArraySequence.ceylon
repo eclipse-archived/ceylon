@@ -83,7 +83,7 @@ shared sealed class ArraySequence<out Element>(array)
         return sequence;
     }
     
-    shared actual [Element+] reversed {
+    shared actual [Element+] reverse() {
         assert (nonempty sequence = array.reverse());
         return sequence;
     }

@@ -74,7 +74,7 @@ shared class Singleton<out Element>(Element element)
             (Integer from) => from>0 then [] else this;
 
     "Return this singleton."
-    shared actual Singleton<Element> reversed => this;
+    shared actual Singleton<Element> reverse() => this;
     
     "A `Singleton` can be equal to another `List` if 
      that `List` has only one element which is equal to 

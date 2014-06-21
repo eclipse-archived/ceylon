@@ -321,7 +321,7 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Sequence<Element>")
     @Transient
     public final ceylon.language.Sequence<? extends Element> 
-    getReversed() {
+    reverse() {
         java.lang.Object[] reversed = new java.lang.Object[Util.toInt(getSize())];
         int jj = 0;
         for (int ii = Util.toInt(this.rest.getSize())-1; ii >= 0; ii--) {
@@ -331,6 +331,13 @@ public final class Tuple<Element, First extends Element,
             reversed[jj++] = this.array[ii];
         }
         return new Tuple($reifiedElement, reversed, empty_.get_(), false);
+    }
+    
+    @Override
+    @Ignore
+    public final ceylon.language.Sequence<? extends Element>
+    getReversed() {
+    	return $ceylon$language$Sequence$this.getReversed();
     }
     
     @Override

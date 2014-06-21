@@ -1202,6 +1202,16 @@ public final class String
 
     @Ignore
     public static java.lang.String getReversed(java.lang.String value) {
+    	return reverse(value);
+    }
+    
+    @Override
+    public Sequential<? extends Character> reverse() {
+        return $ceylon$language$List$this.reverse();
+    }
+
+    @Ignore
+    public static java.lang.String reverse(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
             return value;

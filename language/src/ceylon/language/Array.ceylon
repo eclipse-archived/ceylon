@@ -80,7 +80,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} by(Integer step);
     
     shared native void reverseInPlace();
-    shared native Element[] reverse();
+    shared actual native Element[] reverse();
     
     "Sorts the elements in this array according to the 
      order induced by the given 

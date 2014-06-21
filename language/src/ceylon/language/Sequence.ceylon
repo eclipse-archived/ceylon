@@ -54,11 +54,13 @@ shared sealed interface Sequence<out Element>
     
     "Reverse this sequence, returning a new nonempty
      sequence."
-    shared default actual [Element+] reversed {
+    shared default actual [Element+] reverse() {
         value array = Array(this);
         array.reverseInPlace();
         return ArraySequence(array);
     }
+    
+    shared default actual [Element+] reversed => reverse();
     
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 

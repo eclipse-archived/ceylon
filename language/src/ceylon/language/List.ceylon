@@ -140,6 +140,8 @@ shared interface List<out Element>
      order. This is a lazy operation."
     shared default List<Element> reversed => Reversed();
     
+    shared default Element[] reverse() => [*reversed];
+    
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
      `list` is the set of elements of `list.indexed`. This 
