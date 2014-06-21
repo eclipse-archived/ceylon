@@ -1,33 +1,54 @@
 "Abstraction of [[ordinal types|Ordinal]] whose values may 
- be used as endpoints of a [[Range]]. A range may be 
- specified using:
+ be used as endpoints of a [[Range]] or [[SizedRange]].
+ 
+ An `Enumerable` type is characterized by each element 
+ having well-defined [[offset]] and [[neighbour]] functions.
+ Given an instance `x` of an enumerable type `X`:
+ 
+ - for any integer-valued offset, there is a unique 
+   _neighbour_ `y` of `X` with that offset, and
+ - if `y` is an instance of `X`, then there is a
+   well-defined integer-valued _offset_ of `x` from `y`.
+ 
+ The offset function must satisfy:
+ 
+ - `x.offset(x) == 0`, and
+ - `x.successor.offset(x) == 1` if `x!=x.successor`.
+ 
+ The neighbour function must satisfy:
+ 
+ - `x.neighbour(0) == x`,
+ - `x.neighbour(n-1) == x.neighbour(n).predecessor`, and
+ - `x.neighbour(n+1) == x.neighbour(n).successor`.
+ 
+ Of course, it follows that:
+ 
+ - `x.neighbour(-1) == x.predecessor`, and
+ - `x.neighbour(1) == x.successor`.
+ 
+ An enumerable type may be _linear_ or _recursive_. If `X` 
+ is a linear enumerable type, then the offset function 
+ satisfies:
+ 
+ - `x.predecessor.offset(x) == -1` if `x!=x.predecessor`
+ - `x.offset(y) == -y.offset(x)` for any instance `y` of `X`, 
+   and
+ - `x.offset(y) == x.offset(z) + z.offset(y)`.
+ 
+ Otherwise, `X` is a recursive enumerable type with a finite
+ list of enumerated instances of size `count`, and its 
+ offset and neighbour functions must satisfy:
+ 
+ - `x.neighbour(count)==x`,
+ - `x.offset(y)>=0` for any instance `y` of `X`, and 
+ - `x.predecessor.offset(x)==count`.
+ 
+ A range of values of an enumerable type may be specified 
+ using:
  
  - the _span operator_, written `first..last`, or 
- - the _segment operator_, written `first:length`.
- 
- The span operator accepts the first and last values of 
- the range.
- 
-     0..5    // [0, 1, 2, 3, 4, 5]
-     0..0    // [0]
- 
- If the last value is smaller than the first value, the
- range is reversed.
- 
-     5..0    // [5, 4, 3, 2, 1, 0]
-     0..-5   // [0, -1, -2, -3, -4, -5]
- 
- The segment operator accepts the first index and maximum 
- length of the range.
- 
-     0:5     // [0, 1, 2, 3, 4]
- 
- If the length is nonpositive, the subrange is empty.
- 
-     0:0     // []
-     5:0     // []
-     0:-5    // []"
-see (`class Range`)
+ - the _segment operator_, written `first:length`."
+see (`class Range`, `class SizedRange`)
 shared interface Enumerable<Other> of Other
         satisfies Ordinal<Other>
         given Other satisfies Enumerable<Other> {
@@ -45,14 +66,8 @@ shared interface Enumerable<Other> of Other
     
     "Compute the offset from the given value, where:
      
-     - `x.offset(x) == 0`,
-     - `x.successor.offset(x) == 1`,
-     - `x.predecessor.offset(x) == -1`,
-     - `x.neighbour(n).offset(x) == n`,
-     - `x.offset(y) == -y.offset(x)`, and
-     - `x.offset(y) == x.offset(z) + z.offset(y)`
-     
-     unless this `Enumerable` type has a circular structure."
+     - `x.offset(x) == 0`, and
+     - `x.successor.offset(x) == 1` if `x!=x.successor`."
     shared formal Integer offset(Other other);
     
     "The sign of the offset from the given value."

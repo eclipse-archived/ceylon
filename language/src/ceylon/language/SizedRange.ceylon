@@ -1,11 +1,22 @@
-"A range constructed from a first element,
- which is [[Enumerable]], and a positive size.
+"A range constructed from a first element, which is 
+ [[Enumerable]], and a positive size.
  
  The _segment_ operator `:` is an abbreviation for
  `SizedRange` instantiation if the size is positive.
  
      for (i in start:size) { ... }
-     for (char in '0':10) { ... }"
+     for (char in '0':10) { ... }
+
+ The segment operator accepts the first index and maximum 
+ length of the range:
+ 
+     0:5     // [0, 1, 2, 3, 4]
+ 
+ If the length is nonpositive, the subrange is empty.
+ 
+     0:0     // []
+     5:0     // []
+     0:-5    // []"
 see (`class Range`, `interface Enumerable`)
 shared class SizedRange<Element>(first, size) 
         extends Object() 

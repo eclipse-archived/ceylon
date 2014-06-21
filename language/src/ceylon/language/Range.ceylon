@@ -51,8 +51,16 @@
      for (i in min..max) { ... }
      if (char in 'A'..'Z') { ... }
  
- See the documentation for [[Enumerable]] for more
- information about the span and segment operators."
+ The span operator accepts the first and last values of 
+ the range. It may produce an increasing range:
+ 
+     0..5    // [0, 1, 2, 3, 4, 5]
+     0..0    // [0]
+ 
+ Or it may produce a decreasing range:
+ 
+     5..0    // [5, 4, 3, 2, 1, 0]
+     0..-5   // [0, -1, -2, -3, -4, -5]"
 by ("Gavin")
 see (`interface Enumerable`)
 shared final class Range<Element>(first, last) 

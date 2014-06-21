@@ -7,7 +7,9 @@
    with
  - enumerated types which are isomorphic to the mathematical
    integers under modular arithmetic, for example, the days
-   of the week.
+   of the week, and
+ - enumerated types which are isomorphic to a bounded range 
+   of integers, for example, a list of priorities.
  
  The _increment_ operator `++` and _decrement_ operator `--`
  are defined for all types which satisfy `Ordinal`.
@@ -16,11 +18,20 @@
          count++;
      }
  
- Most ordinal types have a [[total order|Comparable]]. If 
- an ordinal type has a total order, then it should satisfy:
+ Many ordinal types have a [[total order|Comparable]]. If an
+ ordinal type has a total order, then it should satisfy:
  
- - `x.successor > x`, and
- - `x.predecessor < x`."
+ - `x.successor >= x`, and
+ - `x.predecessor <= x`.
+ 
+ An ordinal enumerated type `X` with a total order has 
+ well-defined `maximum` and `minimum` values where
+ `minimum<x<maximum` for any other instance `x` of `X`.
+ Then the `successor` and `predecessor` operations should
+ satisfy:
+ 
+ - `minimum.predecessor==minimum`, and
+ - `maximum.successor==maximum`."
 see (`class Character`, 
      `class Integer`, 
      `interface Integral`, 
