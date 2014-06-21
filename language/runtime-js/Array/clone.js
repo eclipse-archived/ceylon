@@ -1,1 +1,3 @@
-function(){return this;}
+function(){
+  return this.slice(0);
+}
