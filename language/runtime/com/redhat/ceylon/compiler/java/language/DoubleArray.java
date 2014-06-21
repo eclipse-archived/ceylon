@@ -443,6 +443,11 @@ public final class DoubleArray implements ReifiedType {
         }
         
         @Override
+        public Sequential<? extends ceylon.language.Float> reverse() {
+            return $ceylon$language$Iterable$this.reverse();
+        }
+        
+        @Override
         public Iterable<? extends ceylon.language.Float, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
             return $ceylon$language$Iterable$this.skipWhile(skip);

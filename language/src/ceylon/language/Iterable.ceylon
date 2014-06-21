@@ -57,8 +57,8 @@ import ceylon.language { internalFirst = first }
      memory allocation and iteration of the receiving 
      iterable object.
    
-   Lazy operations are preferred, because they can be 
-   efficiently chained. For example:
+   Lazy operations are generally preferred, because they can 
+   be efficiently chained. For example:
    
        string.filter((Character c) => c.letter)
              .map((Character c) => c.uppercased)
@@ -75,19 +75,28 @@ import ceylon.language { internalFirst = first }
        [ *string.filter((Character c) => c.letter)
              .map((Character c) => c.uppercased) ]
    
-   Lazy operations normally return an instance of `Iterable`, 
-   or even a [[List]], [[Map]], or [[Set]].
-   
    However, there are certain scenarios where an eager 
    operation is more useful, more convenient, or no more 
    expensive than a lazy operation, including:
    
-   - sorting operations, which are eager by nature,
+   - sorting operations, for example [[sort]], which are 
+     eager by nature,
    - operations which preserve emptiness/nonemptiness of
-     the receiving iterable object.
+     the receiving iterable object, for example [[reverse]]
+     and [[collect]].
    
-   Eager operations normally return a 
-   [[sequence|Sequential]]."""
+   Certain operations come in both lazy and eager flavors,
+   for example:
+   
+   - [[map]] vs [[collect]],
+   - [[filter]] vs [[select]],
+   - [[List.reversed]] vs [[reverse]],
+   - [[follow]] vs [[List.withLeading]], and
+   - [[List.sublist]] vs [[List.segment]].
+   
+   Lazy operations normally return an instance of `Iterable`, 
+   or even a [[List]], [[Map]], or [[Set]]. Eager operations 
+   usually return a [[sequence|Sequential]]."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
@@ -310,9 +319,33 @@ shared interface Iterable<out Element, out Absent=Null>
             => flatten((Args args) 
                 => { for (elem in this) method(elem)(*args) });
     
-    "A sequence containing the elements of this stream, 
-     sorted according to a [[comparator function|comparing]] 
-     imposing a partial order upon the elements.
+    "Produce a new [[sequence|Sequential]] containing the 
+     elements of this stream, in the reverse order to the 
+     order in which they occur in this stream.
+     
+     That is, if a stream `i` is stable, and if `x` and `y` 
+     are elements `i`, and `x` is produced before `y` by the 
+     [[iterator]] for `i`, then `y` occurs before `x` in the 
+     sequence `i.reverse()`.
+     
+     This operation is an eager counterpart to 
+     [[List.reversed]]."
+    see (`value List.reversed`)
+    shared default Element[] reverse() {
+        value array = Array(this);
+        if (array.empty) {
+            return [];
+        }
+        else {
+            array.reverseInPlace();
+            return ArraySequence(array);
+        }
+    }
+    
+    "Produce a new [[sequence|Sequential]] containing the 
+     elements of this stream, sorted according to the given 
+     [[comparator function|comparing]] imposing a partial 
+     order upon the elements of the stream.
      
      For convenience, the functions [[byIncreasing]] and 
      [[byDecreasing]] produce suitable comparator functions:
@@ -335,18 +368,23 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces a sequence containing the results of applying 
-     the [[given mapping|collecting]] to the elements of 
-     this stream. An eager counterpart to [[map]]."
+    "Produce a new [[sequence|Sequential]] containing the 
+     results of applying the [[given mapping|collecting]] to
+     the elements of this stream.
+     
+     This operation is an eager counterpart to [[map]]."
     see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) 
             => map(collecting).sequence();
     
-    "Produces a sequence containing all elements of this 
-     stream that satisfy the [[given predicate|selecting]].
-     An eager counterpart to [[filter]]."
+    "Produce a new [[sequence|Sequential]] containing all 
+     elements of this stream that satisfy the given 
+     [[predicate function|selecting]], in the order in 
+     which they occur in this stream.
+     
+     This operation is an eager counterpart to [[filter]]."
     see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."

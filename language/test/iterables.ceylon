@@ -300,6 +300,8 @@ shared void testIterables() {
     } else {
       fail("String.reduce returned null");
     }
+    
+    check({for (i in 1..4) i*i}.reverse()==[16,9,4,1], "iterable reverse");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"

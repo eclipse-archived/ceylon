@@ -137,10 +137,13 @@ shared interface List<out Element>
     }
     
     "A list containing the elements of this list in reverse 
-     order. This is a lazy operation."
+     order. This is a lazy operation returing a view of this
+     list."
+    see (`function reverse`)
     shared default List<Element> reversed => Reversed();
     
-    shared default Element[] reverse() => [*reversed];
+    see (`value reversed`)
+    shared actual default Element[] reverse() => [*reversed];
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 

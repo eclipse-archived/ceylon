@@ -443,6 +443,11 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
+        public Sequential<? extends ceylon.language.Character> reverse() {
+            return $ceylon$language$Iterable$this.reverse();
+        }
+        
+        @Override
         public Iterable<? extends ceylon.language.Character, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
             return $ceylon$language$Iterable$this.skipWhile(skip);

@@ -443,6 +443,11 @@ public final class @Classname@ implements ReifiedType {
         }
         
         @Override
+        public Sequential<? extends @BoxedType@> reverse() {
+            return $ceylon$language$Iterable$this.reverse();
+        }
+        
+        @Override
         public Iterable<? extends @BoxedType@, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
             return $ceylon$language$Iterable$this.skipWhile(skip);
