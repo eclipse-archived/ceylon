@@ -32,6 +32,33 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final void notEmpty$priv$(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
     }
     
+    private final void possiblyEmptyInBody$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                possiblyEmptyInBody$priv$$canonical$($ceylontmp$args$1);
+            }
+            returning null;
+        );
+    }
+    
+    private void possiblyEmptyInBody$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    }
+    
+    private final void possiblyEmptyInBody$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        (
+            let
+            {
+                possiblyEmptyInBody$priv$$canonical$(args);
+            }
+            returning null;
+        );
+    }
+    
+    private final void notEmptyInBody$priv$(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.Variadic();
