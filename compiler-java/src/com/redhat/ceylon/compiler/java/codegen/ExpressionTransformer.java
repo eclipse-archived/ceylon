@@ -1618,14 +1618,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.RangeOp op) {
         // we need to get the range bound type
-        ProducedType comparableType = getSupertype(op.getLeftTerm(), op.getUnit().getComparableDeclaration());
-        ProducedType paramType = getTypeArgument(comparableType);
-        JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
-        JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
-        ProducedType rangeType = op.getTypeModel();
-        ProducedType elementType = getTypeArgument(rangeType);
-        JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.JT_CLASS_NEW);
-        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(makeReifiedTypeArgument(elementType), lower, upper), null);
+        final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getEnumerableDeclaration()));
+        JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
+        JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, type);
+        return make().Apply(List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)), 
+                naming.makeLanguageFunction("range"), 
+                List.<JCExpression>of(makeReifiedTypeArgument(type), lower, upper));
     }
 
     public JCExpression transform(Tree.EntryOp op) {
