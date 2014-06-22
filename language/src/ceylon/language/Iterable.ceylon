@@ -772,6 +772,11 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
+            string => "(``outer.string``).cycled";
+            shared actual Integer size {
+                "stream is infinite" 
+                assert (false); 
+            }
             shared actual Iterator<Element> iterator() {
                 object iterator satisfies Iterator<Element> {
                     variable Iterator<Element> iter = emptyIterator;
@@ -785,11 +790,10 @@ shared interface Iterable<out Element, out Absent=Null>
                         }
                         
                     }
-                    shared actual String string => "``outer.string``.iterator()";
+                    string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
-            shared actual String string => "(``outer.string``).cycled";
         }
         return iterable;
     }
@@ -801,6 +805,8 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
+            size => times * outer.size;
+            string => "(``outer.string``).cycle(``times``)";
             shared actual Iterator<Element> iterator() {
                 object iterator satisfies Iterator<Element> {
                     variable Iterator<Element> iter = emptyIterator;
@@ -821,11 +827,10 @@ shared interface Iterable<out Element, out Absent=Null>
                         }
                         
                     }
-                    shared actual String string => "``outer.string``.iterator()";
+                    string => "``outer.string``.iterator()";
                 }
                 return iterator;
             }
-            shared actual String string => "(``outer.string``).cycle(``times``)";
         }
         return iterable;
     }
@@ -852,4 +857,38 @@ Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     else {
         return false;
     }
+}
+
+"Produces the [[stream|Iterable]] that results from repeated 
+ application of the given [[function|next]] to the given 
+ [[first]] element of the stream. The stream ends when the 
+ function first returns [[finished]]. If the function never 
+ returns `finished`, the stream is infinite."
+shared {Element+} iterable<Element>(
+        "The first element of the resulting stream."
+        Element first, 
+        "The function that produces the next element of the
+         stream, given the current element."
+        Element|Finished next(Element element)) {
+    value start = first;
+    object iterable satisfies {Element+} {
+        first => start;
+        function nextElement(Element element) => next(element);
+        shared actual Iterator<Element> iterator() {
+            variable Element|Finished current = start;
+            object iterator satisfies Iterator<Element> {
+                shared actual Element|Finished next() {
+                    if (!is Finished result = current) {
+                        current = nextElement(result);
+                        return result;
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+            }
+            return iterator;
+        }
+    }
+    return iterable;
 }

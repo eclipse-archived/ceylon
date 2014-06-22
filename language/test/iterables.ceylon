@@ -302,6 +302,9 @@ shared void testIterables() {
     }
     
     check({for (i in 1..4) i*i}.reverse()==[16,9,4,1], "iterable reverse");
+    
+    value itfun = iterable(1, (Integer i) => i<5 then i*2 else finished);
+    check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"
