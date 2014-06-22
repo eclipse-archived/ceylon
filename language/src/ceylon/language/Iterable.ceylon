@@ -208,7 +208,7 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
-            Result collecting(Element elem)) 
+            Result collecting(Element element)) 
             => { for (elem in this) collecting(elem) };
     
     /*shared default Callable<{Result*},Args> spread<Result,Args>(
@@ -229,7 +229,7 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
-            Boolean selecting(Element elem)) 
+            Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
     "The result of applying the [[given accumulating 
@@ -244,7 +244,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Result fold<Result>(Result initial,
             "The accumulating function that accepts an
              intermediate result, and the next element."
-            Result accumulating(Result partial, Element elem)) {
+            Result accumulating(Result partial, Element element)) {
         variable value partial = initial;
         for (elem in this) {
             partial = accumulating(partial, elem);
@@ -264,7 +264,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
-            Result accumulating(Result|Element partial, Element elem)) {
+            Result accumulating(Result|Element partial, Element element)) {
         value it = iterator();
         if (!is Finished initial = it.next()) {
             variable Result|Element partial = initial;
@@ -285,7 +285,7 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` otherwise."
     shared default Element? find(
             "The predicate the element must satisfy."
-            Boolean selecting(Element&Object elem)) {
+            Boolean selecting(Element&Object element)) {
         for (elem in this) {
             if (exists elem, selecting(elem)) {
                 return elem;
@@ -299,7 +299,7 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` otherwise."
     shared default Element? findLast(
             "The predicate the element must satisfy."
-            Boolean selecting(Element&Object elem)) {
+            Boolean selecting(Element&Object element)) {
         variable Element? last = null;
         for (elem in this) {
             if (exists elem, selecting(elem)) {
@@ -403,7 +403,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Boolean any(
             "The predicate that at least one element 
              must satisfy."
-            Boolean selecting(Element e)) {
+            Boolean selecting(Element element)) {
         for (e in this) {
             if (selecting(e)) {
                 return true;
@@ -418,7 +418,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Boolean every(
             "The predicate that all elements must 
              satisfy."
-            Boolean selecting(Element e)) {
+            Boolean selecting(Element element)) {
         for (e in this) {
             if (!selecting(e)) {
                 return false;
@@ -492,8 +492,12 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream containing the elements of this 
      stream, after skipping the leading elements until the 
-     [[given predicate function|skipping]] returns `false`."
-    shared default {Element*} skipWhile(Boolean skipping(Element elem)) {
+     given [[predicate function|skipping]] returns `false`."
+    shared default {Element*} skipWhile(
+            "The function that returns `false` when the 
+             resulting stream should stop skipping
+             elements from the stream."
+            Boolean skipping(Element element)) {
         object iterable 
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
@@ -524,9 +528,13 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the leading elements of 
-     this stream until the [[given predicate function|taking]]
+     this stream until the given [[predicate function|taking]]
      returns `false`."
-    shared default {Element*} takeWhile(Boolean taking(Element elem)) {
+    shared default {Element*} takeWhile(
+            "The function that returns `false` when the 
+             resulting stream should stop taking elements
+             from this stream."
+            Boolean taking(Element element)) {
         object iterable 
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
