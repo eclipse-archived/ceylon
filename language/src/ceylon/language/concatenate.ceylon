@@ -1,7 +1,9 @@
-"Given a list of iterable objects, return a new sequence 
- of all elements of the all given objects. If there are
+"Given a list of [[streams|iterables]], return a new sequence 
+ containing all elements of every given stream. If there are
  no arguments, or if none of the arguments contains any
- elements, return the empty sequence."
+ elements, return the empty sequence.
+ 
+     [Integer|Float|String*] stuff = concatenate(1..3, [0.0], {\"hello\", \"world\"});"
 see (`function expand`, 
      `function List.append`)
 shared Element[] concatenate<Element>(
@@ -9,10 +11,12 @@ shared Element[] concatenate<Element>(
         {Element*}* iterables) 
         => [ for (it in iterables) for (val in it) val ];
 
-"Given an iterable object whose elements are also iterable,
- return a new stream with all the elements of the nested
- iterables. If there are no arguments, or if none of the 
- arguments contains any elements, return an empty iterable."
+"Given a [[stream|iterables]] whose elements are also 
+ streams, return a new stream with all elements of every 
+ nested stream. If there are no nested streams, or if all of
+ the nested streams are empty, return an empty stream.
+ 
+     {Address*} addresses = expand { for (m in members) if (m.active) m.addresses };"
 see (`function concatenate`, 
      `function Iterable.chain`)
 shared Iterable<Element,OuterAbsent|InnerAbsent>
