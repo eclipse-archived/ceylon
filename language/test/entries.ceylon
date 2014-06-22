@@ -1,9 +1,11 @@
+import ceylon.language { createRange=range }
+
 Entry<Integer,String> entry = Entry<Integer,String> {
     item="hello";
     key=1;
 };
 
-Range<Integer> range = Range<Integer> {
+Range<Integer> range = createRange<Integer> {
     first=-3;
     last=+10;
 };
