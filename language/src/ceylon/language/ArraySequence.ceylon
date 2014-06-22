@@ -1,28 +1,4 @@
 import ceylon.language { seq=sequence }
-
-"A [[nonempty sequence|Sequence]] of the given [[elements]], 
- or  `null` if the given stream is empty. A non-null, but
- possibly empty, [[sequence|Sequential]] may be obtained 
- using the `else` operator:
- 
-     [Element*] sequenceOfElements = sequence(elements) else []"
-by ("Gavin")
-see (`function populateSequence`)
-shared [Element+]|Absent sequence<Element,Absent=Null>
-        (Iterable<Element, Absent> elements)
-        given Absent satisfies Null {
-    if (is [Element+] elements) {
-        return elements;
-    }
-    value array = Array(elements);
-    if (array.empty) {
-        assert (is Absent null);
-        return null;
-    }
-    return ArraySequence(array);
-}
-
-
 "A [[Sequence]] backed by an [[Array]]. 
  
  Since [[Array]]s are mutable, this class is private to the

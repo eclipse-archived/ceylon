@@ -13,7 +13,6 @@ import ceylon.language.impl.BaseIterator;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
-import com.redhat.ceylon.compiler.java.language.AbstractArrayIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -2040,11 +2039,17 @@ public final class Array<Element>
                 defaultValue);
     }
     
+    @SuppressWarnings("unchecked")
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> sequence() {
-        return new ArraySequence<Element>($reifiedElement, 
-                new Array<Element>($reifiedElement, copyArray()));
+    	if (getEmpty()) {
+    		return (Sequential<? extends Element>) empty_.get_();
+    	}
+    	else {
+    		return new ArraySequence<Element>($reifiedElement, 
+    				new Array<Element>($reifiedElement, copyArray()));
+    	}
     }
 
     @Override @Ignore

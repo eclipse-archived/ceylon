@@ -133,3 +133,25 @@ shared sealed interface Sequence<out Element>
             => (super of Element[]).repeat(times);
     
 }
+
+"A [[nonempty sequence|Sequence]] of the given [[elements]], 
+ or  `null` if the given stream is empty. A non-null, but
+ possibly empty, [[sequence|Sequential]] may be obtained 
+ using the `else` operator:
+ 
+     [Element*] sequenceOfElements = sequence(elements) else []"
+by ("Gavin")
+see (`function Iterable.sequence`,
+    `function populateSequence`)
+shared [Element+]|Absent sequence<Element,Absent=Null>
+        (Iterable<Element, Absent> elements)
+        given Absent satisfies Null {
+    if (nonempty sequence = elements.sequence()) {
+        return sequence;
+    }
+    else {
+        assert (is Absent null);
+        return null;
+    }
+}
+

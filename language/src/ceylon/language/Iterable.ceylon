@@ -1,5 +1,3 @@
-import ceylon.language { internalFirst = first }
-
 """Abstract supertype of [[categories|Category]] whose 
    elements may be iterated. Iterable categories are often 
    called _streams_. A stream need not be finite, but its 
@@ -158,8 +156,8 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` if this stream is empty. For a stream with an
      unstable iteration order, a different value might be
      produced each time `first` is evaluated."
-    shared default Absent|Element first 
-            => internalFirst(this);
+    shared default Absent|Element first
+            => package.first(this);
     
     "The last element returned by the iterator, if any, or 
      `null` if this stream is empty. In the case of an 
@@ -188,8 +186,15 @@ shared interface Iterable<out Element, out Absent=Null>
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream."
-    shared default Element[] sequence() 
-            => package.sequence(this) else [];
+    shared default Element[] sequence() {
+        value array = Array(this);
+        if (array.empty) {
+            return [];
+        }
+        else {
+            return ArraySequence(array);
+        }
+    }
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
