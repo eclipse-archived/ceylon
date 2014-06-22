@@ -91,7 +91,7 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     public Tuple(@Ignore TypeDescriptor $reifiedElement, 
             java.lang.Object[] array, Sequential rest, boolean copy) {
-    	super($reifiedElement);
+        super($reifiedElement);
         int length = array.length;
         if (array.length==0 || 
                 length == 0 ||
@@ -455,18 +455,18 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     public TypeDescriptor $getType$() {
         TypeDescriptor type = $cachedType != null ? 
-        		$cachedType.get() : null;
+                $cachedType.get() : null;
         if (type == null) {
             TypeDescriptor restType = getTypeDescriptor(rest);
-			TypeDescriptor elementType = 
-					Metamodel.getIteratedTypeDescriptor(restType);
-			for (int ii = array.length-1; ii >= 0; ii--) {
-			    TypeDescriptor elemType = $getElementType(ii);
-			    elementType = TypeDescriptor.union(elementType, elemType);
-			    restType = TypeDescriptor.klass(Tuple.class, 
-			            elementType, elemType, restType);
-			}
-			type = restType;
+            TypeDescriptor elementType = 
+                    Metamodel.getIteratedTypeDescriptor(restType);
+            for (int ii = array.length-1; ii >= 0; ii--) {
+                TypeDescriptor elemType = $getElementType(ii);
+                elementType = TypeDescriptor.union(elementType, elemType);
+                restType = TypeDescriptor.klass(Tuple.class, 
+                        elementType, elemType, restType);
+            }
+            type = restType;
             $cachedType = new SoftReference<TypeDescriptor>(type);
         }
         return type;
@@ -488,7 +488,7 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     private TypeDescriptor $getUnionOfAllType(int offset) {
         TypeDescriptor[] types = 
-        		new TypeDescriptor[Util.toInt(getSize() - offset)];
+                new TypeDescriptor[Util.toInt(getSize() - offset)];
         for (int i = 0; i < getSize() - offset; i++) {
             types[i] = $getElementType(offset + i);
         }
@@ -515,7 +515,7 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     private class TupleIterator 
             extends BaseIterator<Element> {
-    	
+        
         private TupleIterator() {
             super($getReifiedElement$());
         }

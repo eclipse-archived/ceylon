@@ -961,8 +961,8 @@ public final class Array<Element>
 
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
-    	super($reifiedElement);
-    	this.$reifiedElement = $reifiedElement;
+        super($reifiedElement);
+        this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
         this.array = array;
     }
@@ -1321,46 +1321,46 @@ public final class Array<Element>
     
     @Ignore
     private final class ArrayIterator extends BaseIterator<Element> {
-    	
-	    private int index = 0;
-	    // ok to cast here, since we know the size must fit in an int
-	    private final int size = (int) getSize();
+        
+        private int index = 0;
+        // ok to cast here, since we know the size must fit in an int
+        private final int size = (int) getSize();
 
-	    private ArrayIterator(TypeDescriptor $reified$Element) {
-		    super($reified$Element);
-	    }
+        private ArrayIterator(TypeDescriptor $reified$Element) {
+            super($reified$Element);
+        }
 
-	    @Override
-	    public java.lang.Object next() {
-	    	if (index<size) {
-	    		return unsafeItem(index++);
-	    	}
-	    	else {
-	    		return finished_.get_();
-	    	}
-	    }
+        @Override
+        public java.lang.Object next() {
+            if (index<size) {
+                return unsafeItem(index++);
+            }
+            else {
+                return finished_.get_();
+            }
+        }
 
-	    @Override
-	    public java.lang.String toString() {
-	        return Array.this.toString() + ".iterator()";
-	    }
+        @Override
+        public java.lang.String toString() {
+            return Array.this.toString() + ".iterator()";
+        }
     }
 
-	@Ignore
+    @Ignore
     static final class Collector<Result> {
-	    private final Callable<? extends Result> collecting;
-	    private final Array<?> array;
-	    private Collector(Array<?> array, 
-	            Callable<? extends Result> fun) {
-		    this.collecting = fun;
-		    this.array = array;
-	    }
-	    Result call(int index) {
-	    	return collecting.$call$(array.unsafeItem(index));
-	    }
+        private final Callable<? extends Result> collecting;
+        private final Array<?> array;
+        private Collector(Array<?> array, 
+                Callable<? extends Result> fun) {
+            this.collecting = fun;
+            this.array = array;
+        }
+        Result call(int index) {
+            return collecting.$call$(array.unsafeItem(index));
+        }
     }
 
-	@Ignore
+    @Ignore
     final class ArrayIterable 
     extends AbstractArrayIterable<Element, java.lang.Object> {
 
@@ -1702,11 +1702,11 @@ public final class Array<Element>
             @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             final Callable<? extends Result> collecting) {
         if (getEmpty()) {
-        	return (Sequential<? extends Result>) empty_.get_();
+            return (Sequential<? extends Result>) empty_.get_();
         }
-    	return new ArraySequence<Result>($reifiedResult, 
+        return new ArraySequence<Result>($reifiedResult, 
                 new Array<Result>($reifiedResult, (int) getSize(), 
-                		new Collector<Result>(this,collecting)));
+                        new Collector<Result>(this,collecting)));
     }
     @SuppressWarnings("unchecked")
     @Override
@@ -1716,7 +1716,7 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
     Callable<? extends Comparison> comparing) {
         if (getEmpty()) {
-        	return (Sequential<? extends Element>) empty_.get_();
+            return (Sequential<? extends Element>) empty_.get_();
         }
         Array<Element> clone = $clone();
         clone.sortInPlace(comparing);
@@ -1727,7 +1727,7 @@ public final class Array<Element>
     public Sequential<? extends Element> 
     reverse() {
         if (getEmpty()) {
-        	return (Sequential<? extends Element>) empty_.get_();
+            return (Sequential<? extends Element>) empty_.get_();
         }
         Array<Element> clone = $clone();
         clone.reverseInPlace();
@@ -1782,13 +1782,13 @@ public final class Array<Element>
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> sequence() {
-    	if (getEmpty()) {
-    		return (Sequential<? extends Element>) empty_.get_();
-    	}
-    	else {
-    		return new ArraySequence<Element>($reifiedElement, 
-    				new Array<Element>($reifiedElement, copyArray()));
-    	}
+        if (getEmpty()) {
+            return (Sequential<? extends Element>) empty_.get_();
+        }
+        else {
+            return new ArraySequence<Element>($reifiedElement, 
+                    new Array<Element>($reifiedElement, copyArray()));
+        }
     }
     
     @Ignore
@@ -2084,88 +2084,88 @@ public final class Array<Element>
     public void reverseInPlace() {
         int size = (int) getSize();
         if (array instanceof java.lang.Object[]) {
-        	for (int index=0; index<size/2; index++) {
-        		java.lang.Object[] arr = (java.lang.Object[]) array;
-				java.lang.Object swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                java.lang.Object[] arr = (java.lang.Object[]) array;
+                java.lang.Object swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof long[]) {
-        	for (int index=0; index<size/2; index++) {
-        		long[] arr = (long[]) array;
-        		long swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                long[] arr = (long[]) array;
+                long swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof int[]) {
-        	for (int index=0; index<size/2; index++) {
-        		int[] arr = (int[]) array;
-        		int swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                int[] arr = (int[]) array;
+                int swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof short[]) {
-        	for (int index=0; index<size/2; index++) {
-        		short[] arr = (short[]) array;
-        		short swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                short[] arr = (short[]) array;
+                short swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof byte[]) {
-        	for (int index=0; index<size/2; index++) {
-        		byte[] arr = (byte[]) array;
-        		byte swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                byte[] arr = (byte[]) array;
+                byte swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof double[]) {
-        	for (int index=0; index<size/2; index++) {
-        		double[] arr = (double[]) array;
-        		double swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                double[] arr = (double[]) array;
+                double swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof float[]) {
-        	for (int index=0; index<size/2; index++) {
-        		float[] arr = (float[]) array;
-        		float swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                float[] arr = (float[]) array;
+                float swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof boolean[]) {
-        	for (int index=0; index<size/2; index++) {
-        		boolean[] arr = (boolean[]) array;
-        		boolean swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                boolean[] arr = (boolean[]) array;
+                boolean swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else if (array instanceof char[]) {
-        	for (int index=0; index<size/2; index++) {
-        		char[] arr = (char[]) array;
-        		char swap = arr[index];
-        		int indexFromLast = size-index-1;
-        		arr[index] = arr[indexFromLast];
-        		arr[indexFromLast] = swap;
-        	}
+            for (int index=0; index<size/2; index++) {
+                char[] arr = (char[]) array;
+                char swap = arr[index];
+                int indexFromLast = size-index-1;
+                arr[index] = arr[indexFromLast];
+                arr[indexFromLast] = swap;
+            }
         }
         else {
-        	throw new AssertionError("illegal array type");
+            throw new AssertionError("illegal array type");
         }
     }
     
