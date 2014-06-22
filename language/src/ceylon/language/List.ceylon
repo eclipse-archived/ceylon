@@ -631,15 +631,13 @@ shared interface List<out Element>
                 if (to < 0 || from > end) {
                     return [];
                 }
-                return ArraySequence(populateArray(to-from+1, 
-                    (Integer i) => getElement(from+i)));
+                return [*sublist(from,to)];
             }
             else {
                 if (from < 0 || to > end) {
                     return [];
                 }
-                return ArraySequence(populateArray(from-to+1,
-                    (Integer i) => getElement(from-i)));
+                return [*reversed.sublist(end-from,end-to)];
             }
         }
         else {
@@ -647,45 +645,18 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> spanFrom(Integer from) {
-        if (from<=0) {
-            return clone();
-        }
-        else if (from<size) {
-            return ArraySequence(populateArray(size-from, 
-                (Integer i) => getElement(from+i)));
-        }
-        else {
-            return [];
-        }
-    }
+    shared actual default List<Element> spanFrom(Integer from) 
+            => from<size then [*sublistFrom(from)]
+                         else [];
     
-    shared actual default List<Element> spanTo(Integer to) {
-        if (to>=size-1) {
-            return this;
-        }
-        else if (to>=0) {
-            return ArraySequence(populateArray(to+1, 
-                    (Integer i) => getElement(i)));
-        }
-        else {
-            return [];
-        }
-    }
+    shared actual default List<Element> spanTo(Integer to) 
+            => to>=0 then [*sublistTo(to)]
+                     else [];
     
     shared actual default List<Element> segment
-                            (Integer from, Integer length) {
-        if (length>size) {
-            return this;
-        }
-        else if (length>=1) {
-            return ArraySequence(populateArray(length, 
-                    (Integer i) => getElement(from+i)));
-        }
-        else {
-            return [];
-        }
-    }
+                            (Integer from, Integer length)
+            => length>=1 then [*sublist(from, from+length-1)]
+                         else [];
     
     //TODO: enable when backend bug is fixed
     //"Return two lists, the first containing the elements
