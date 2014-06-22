@@ -16,3 +16,11 @@ shared abstract class BaseMap<Key,Item>()
 shared abstract class BaseList<Element>()
         extends Object()
         satisfies List<Element> {}
+
+shared abstract class BaseCharacterList()
+        extends Object()
+        satisfies List<Character> {}
+
+shared abstract class BaseSequence<Element>()
+        extends Object()
+        satisfies [Element+] {}

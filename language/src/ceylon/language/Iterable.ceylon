@@ -671,6 +671,31 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
+    /*shared default {[Element,Element]*} paired {
+         object pairs satisfies {[Element,Element]*} {
+             size=>outer.size/2;
+             shared actual Iterator<[Element, Element]> iterator() {
+                 value iter = outer.iterator();
+                 object iterator 
+                         satisfies Iterator<[Element, Element]> {
+                     variable value previous = iter.next();
+                     shared actual [Element, Element]|Finished next() {
+                         if (!is Finished head = previous,
+                             !is Finished tip = iter.next()) {
+                             previous = tip;
+                             return [head, tip];
+                         }
+                         else {
+                             return finished;
+                         }
+                     }
+                 }
+                 return iterator;
+             }
+         }
+         return pairs;
+    }*/
+    
     "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream."
     shared default {Element|Other+} follow<Other>(Other head) {

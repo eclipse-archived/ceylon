@@ -305,6 +305,8 @@ shared void testIterables() {
     
     value itfun = iterable(1, (Integer i) => i<5 then i*2 else finished);
     check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
+    
+    //check([*(0:5).paired]==[[0,1],[1,2],[2,3],[3,4],[4,5]], "range paired");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"

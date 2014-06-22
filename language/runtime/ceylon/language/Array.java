@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.BaseList;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -25,7 +26,6 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
@@ -35,34 +35,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::List<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
 })
-public final class Array<Element> 
-        implements List<Element>, ReifiedType {
-    
-    @Ignore
-    protected final Category$impl<java.lang.Object> 
-    $ceylon$language$Category$this;
-    
-    @Ignore
-    protected final Iterable$impl<Element,java.lang.Object> 
-    $ceylon$language$Iterable$this;
-    
-    @Ignore
-    protected final Collection$impl<Element> 
-    $ceylon$language$Collection$this;
-    
-    @Ignore
-    protected final List$impl<Element> 
-    $ceylon$language$List$this;
-    
-    @Ignore
-    protected final Correspondence$impl<Integer,Element> 
-    $ceylon$language$Correspondence$this;
+public final class Array<Element>
+        extends BaseList<Element>
+        implements List<Element> {
     
     private final java.lang.Object array;
     
-    @Ignore
-    private TypeDescriptor $reifiedElement;
-
+    private final TypeDescriptor $reifiedElement;
+    
     @Ignore
     public Array(final TypeDescriptor $reifiedElement, 
             int size, Element element) {
@@ -981,53 +961,12 @@ public final class Array<Element>
 
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
+    	super($reifiedElement);
+    	this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
-        this.$ceylon$language$Category$this = 
-                new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
-        this.$ceylon$language$Iterable$this = 
-                new Iterable$impl<Element,java.lang.Object>($reifiedElement, 
-                        Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Collection$this = 
-                new Collection$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$List$this = 
-                new List$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$Correspondence$this = 
-                new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, 
-                        $reifiedElement, this);
         this.array = array;
-        this.$reifiedElement = $reifiedElement;
     }
-
-    @Ignore
-    @Override
-    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
-        return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$impl(){
-        return $ceylon$language$Iterable$this;
-    }
-
-    @Ignore
-    @Override
-    public Collection$impl<Element> $ceylon$language$Collection$impl(){
-        return $ceylon$language$Collection$this;
-    }
-
-    @Ignore
-    @Override
-    public List$impl<Element> $ceylon$language$List$impl(){
-        return $ceylon$language$List$this;
-    }
-
-    @Ignore
-    @Override
-    public Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$impl(){
-        return $ceylon$language$Correspondence$this;
-    }
-
+    
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array == null) {
@@ -1648,36 +1587,7 @@ public final class Array<Element>
         }
     }
 
-    @Override
-    @Ignore
-    public List<? extends ceylon.language.Integer> getKeys() {
-        return $ceylon$language$List$this.getKeys();
-    }
-
-    @Override
-    @Ignore
-    public boolean definesEvery(@Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ?> keys) {
-        return $ceylon$language$Correspondence$this.definesEvery(keys);
-    }
-
-    @Override
-    @Ignore
-    public boolean definesAny(@Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ?> keys) {
-        return $ceylon$language$Correspondence$this.definesAny(keys);
-    }
-
-    @Override
-    @Ignore
-    public Sequential<? extends Element> items(@Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ?> keys){
-        return $ceylon$language$Correspondence$this.items(keys);
-    }
-
+    
     @Override
     public Array<Element> $clone() {
         return new Array<Element>($reifiedElement, copyArray());
@@ -1725,29 +1635,9 @@ public final class Array<Element>
         }
     }
 
-    @Override
-    @Ignore
-    public java.lang.String toString() {
-        return $ceylon$language$Collection$this.toString();
-    }
-
     @Ignore
     public java.lang.Object toArray() {
         return array;
-    }
-
-    @Override
-    @Ignore
-    public boolean equals(@Name("that") 
-    @TypeInfo("ceylon.language::Object")
-    java.lang.Object that) {
-        return $ceylon$language$List$this.equals(that);
-    }
-
-    @Override
-    @Ignore
-    public int hashCode() {
-        return $ceylon$language$List$this.hashCode();
     }
 
     @Override
@@ -1782,22 +1672,6 @@ public final class Array<Element>
     }
 
     @Override
-    @Ignore
-    public boolean containsEvery(@Name("elements")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
-    Iterable<?,?> elements) {
-        return $ceylon$language$Category$this.containsEvery(elements);
-    }
-
-    @Override
-    @Ignore
-    public boolean containsAny(@Name("elements")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
-    Iterable<?,?> elements) {
-        return $ceylon$language$Category$this.containsAny(elements);
-    }
-    
-    @Override
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
@@ -1818,44 +1692,6 @@ public final class Array<Element>
         return size > 0 ? unsafeItem(size-1) : null;
     }
     
-    @Override
-    @Ignore
-    public List<? extends Element> getRest() {
-        return $ceylon$language$List$this.getRest();
-    }
-    
-    @Override
-    @Ignore
-    public List<? extends Element> sublistFrom(long index) {
-        return $ceylon$language$List$this.sublistFrom(index);
-    }
-    
-    @Override
-    @Ignore
-    public List<? extends Element> sublistTo(long index) {
-        return $ceylon$language$List$this.sublistTo(index);
-    }
-    
-    @Override
-    @Ignore
-    public List<? extends Element> sublist(long from, long to) {
-        return $ceylon$language$List$this.sublist(from, to);
-    }
-    
-    @Override
-    @Ignore
-    public List<? extends Element> getReversed() {
-        return $ceylon$language$List$this.getReversed();
-    }
-
-    @Override @Ignore
-    public Element find(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.find(f);
-    }
-    @Override @Ignore
-    public Element findLast(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.findLast(f);
-    }
     @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("ceylon.language::Sequential<Result>")
@@ -1896,70 +1732,6 @@ public final class Array<Element>
         Array<Element> clone = $clone();
         clone.reverseInPlace();
         return new ArraySequence<Element>($reifiedElement, clone);
-    }
-    @Override
-    @Ignore
-    public <Result> Iterable<? extends Result, ?> 
-    map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.map($reifiedResult, f);
-    }
-    @Override
-    @Ignore
-    public Iterable<? extends Element, ?> 
-    filter(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.filter(f);
-    }
-    @Override
-    @Ignore
-    public Iterable<? extends Integer, ?> 
-    indexesWhere(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.indexesWhere(f);
-    }
-    @Override
-    @Ignore
-    public Integer 
-    firstIndexWhere(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.firstIndexWhere(f);
-    }
-    @Override
-    @Ignore
-    public Integer 
-    lastIndexWhere(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.lastIndexWhere(f);
-    }
-    @Override @Ignore
-    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.select(f);
-    }
-    @Override
-    @Ignore
-    public <Result> Result 
-    fold(@Ignore TypeDescriptor $reifiedResult, Result ini, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.fold($reifiedResult, ini, f);
-    }
-    @Override
-    @Ignore
-    public <Result> java.lang.Object 
-    reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
-    }
-    @Override @Ignore
-    public boolean any(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.any(f);
-    }
-    @Override @Ignore
-    public boolean every(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$this.every(f);
-    }
-    
-    @Override @Ignore
-    public boolean longerThan(long length) {
-        return $ceylon$language$List$this.longerThan(length);
-    }
-    
-    @Override @Ignore
-    public boolean shorterThan(long length) {
-        return $ceylon$language$List$this.shorterThan(length);
     }
     
     @Override
@@ -2006,39 +1778,6 @@ public final class Array<Element>
                 toInt(step));
     }
     
-    @Override @Ignore
-    public Iterable<? extends Element, ?> 
-    getCoalesced() {
-        return $ceylon$language$Iterable$this.getCoalesced();
-    }
-    @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, 
-            ?> 
-    getIndexed() {
-        return $ceylon$language$Iterable$this.getIndexed();
-    }
-    @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other,Absent>Iterable 
-    chain(@Ignore TypeDescriptor $reifiedOther, 
-            @Ignore TypeDescriptor $reifiedOtherAbsent, 
-            Iterable<? extends Other, ? extends Absent> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, 
-                $reifiedOtherAbsent, other);
-    }
-    @Override @Ignore 
-    public <Other> Iterable<?,?>
-    follow(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.follow($reifiedOther, 
-                other);
-    }
-    @Override @Ignore
-    public <Default>Iterable<?,?> 
-    defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, 
-            Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, 
-                defaultValue);
-    }
-    
     @SuppressWarnings("unchecked")
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
@@ -2051,67 +1790,7 @@ public final class Array<Element>
     				new Array<Element>($reifiedElement, copyArray()));
     	}
     }
-
-    @Override @Ignore
-    public <Other> Tuple<java.lang.Object,
-            ? extends Other,
-            ? extends Sequential<? extends Element>> 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
-        return $ceylon$language$List$this.withLeading($reifiedOther, e);
-    }
     
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Sequence 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
-        return $ceylon$language$List$this.withTrailing($reifiedOther, e);
-    }
-
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Sequential 
-    append(@Ignore TypeDescriptor $reifiedOther, 
-            Iterable<? extends Other, ?> es) {
-        return $ceylon$language$List$this.append($reifiedOther, 
-                es);
-    }
-
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Sequential 
-    prepend(@Ignore TypeDescriptor $reifiedOther, 
-            Iterable<? extends Other, ?> es) {
-        return $ceylon$language$List$this.prepend($reifiedOther, 
-                es);
-    }
-
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> List
-    extend(@Ignore TypeDescriptor $reifiedOther, 
-            List<? extends Other> list) {
-        return $ceylon$language$List$this.extend($reifiedOther, 
-                list);
-    }
-
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> List
-    patch(@Ignore TypeDescriptor $reifiedOther, 
-            List<? extends Other> list, long from, long length) {
-        return $ceylon$language$List$this.patch($reifiedOther, 
-                list, from, length);
-    }
-
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> List
-    patch(@Ignore TypeDescriptor $reifiedOther, 
-            List<? extends Other> list, long from) {
-        return $ceylon$language$List$this.patch($reifiedOther, 
-                list, from, 0);
-    }
-
-    @Override @Ignore 
-    public <Other> long patch$length(TypeDescriptor $reifiedOther,
-            List<? extends Other> list, long from) {
-        return 0;
-    }
-
     @Ignore
     public int copyTo$sourcePosition(Element[] destination){
         return 0;
@@ -2398,140 +2077,8 @@ public final class Array<Element>
     
     @Override
     @Ignore
-    public Iterable<? extends Integer,?> inclusions(List<?> element) {
-        return $ceylon$language$List$this.inclusions(element);
-    }
-
-    @Override
-    @Ignore
-    public Integer firstInclusion(List<?> element) {
-        return $ceylon$language$List$this.firstInclusion(element);
-    }
-
-    @Override
-    @Ignore
-    public Integer lastInclusion(List<?> element) {
-        return $ceylon$language$List$this.lastInclusion(element);
-    }
-
-    @Override
-    @Ignore
-    public Iterable<? extends Integer,?> occurrences(java.lang.Object element) {
-        return $ceylon$language$List$this.occurrences(element);
-    }
-
-    @Override
-    @Ignore
-    public Integer firstOccurrence(java.lang.Object element) {
-        return $ceylon$language$List$this.firstOccurrence(element);
-    }
-
-    @Override
-    @Ignore
-    public Integer lastOccurrence(java.lang.Object element) {
-        return $ceylon$language$List$this.lastOccurrence(element);
-    }
-
-    @Override
-    @Ignore
-    public boolean occurs(java.lang.Object element) {
-        return $ceylon$language$List$this.occurs(element);
-    }
-    
-    @Override
-    @Ignore
-    public boolean occursAt(long index, java.lang.Object element) {
-        return $ceylon$language$List$this.occursAt(index, element);
-    }
-
-    @Override
-    @Ignore
-    public boolean includesAt(long index, List<?> element) {
-        return $ceylon$language$List$this.includesAt(index, element);
-    }
-        
-    @Override
-    @Ignore
-    public boolean includes(List<?> element) {
-        return $ceylon$language$List$this.includes(element);
-    }
-        
-    @Override
-    @Ignore
-    public boolean startsWith(List<?> element) {
-        return $ceylon$language$List$this.startsWith(element);
-    }
-        
-    @Override
-    @Ignore
-    public boolean endsWith(List<?> element) {
-        return $ceylon$language$List$this.endsWith(element);
-    }
-    
-    @Override @Ignore
-    public List<? extends Element> trim(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trim(characters);
-    }
-
-    @Override @Ignore
-    public List<? extends Element> 
-    trimLeading(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trimLeading(characters);
-    }
-
-    @Override @Ignore
-    public List<? extends Element> 
-    trimTrailing(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trimTrailing(characters);
-    }
-    
-    @Override @Ignore
-    public List<? extends Element> initial(long length) {
-        return $ceylon$language$List$this.initial(length);
-    }
-    
-    @Override @Ignore
-    public List<? extends Element> terminal(long length) {
-        return $ceylon$language$List$this.terminal(length);
-    }
-    
-    @Override @Ignore
-    public Iterable<? extends Element, ?> 
-    takeWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takeWhile(take);
-    }
-    
-    @Override @Ignore
-    public Iterable<? extends Element, ?> 
-    skipWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skipWhile(skip);
-    }
-    
-    @Override
-    @Ignore
-    public Iterable<? extends Element,?> getCycled() {
-        return $ceylon$language$Iterable$this.getCycled();
-    }
-    @Override
-    @Ignore
-    public Iterable<? extends Element,?> cycle(long times) {
-        return $ceylon$language$Iterable$this.cycle(times);
-    }
-    @Override
-    @Ignore
-    public List<? extends Element> repeat(long times) {
-        return $ceylon$language$Iterable$this.repeat(times);
-    }
-    @Override
-    @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(Array.class, $reifiedElement);
-    }
-    
-    @Override @Ignore
-    public final <Result,Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ?>>
-    spread(@Ignore TypeDescriptor $reifiedResult,@Ignore TypeDescriptor $reifiedArgs, Callable<? extends Callable<? extends Result>> method) {
-        return $ceylon$language$Iterable$this.spread($reifiedResult, $reifiedArgs, method);
     }
     
     public void reverseInPlace() {
