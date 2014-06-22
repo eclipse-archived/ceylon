@@ -7,8 +7,7 @@ import ceylon.language { seq=sequence }
  
      [Element*] sequenceOfElements = sequence(elements) else []"
 by ("Gavin")
-see (`function generateSequence`,
-     `function populateSequence`)
+see (`function populateSequence`)
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

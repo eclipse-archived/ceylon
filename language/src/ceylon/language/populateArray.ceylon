@@ -5,7 +5,6 @@
 throws (`class AssertionError`, 
         "if `size<0` or `size>runtime.maxArraySize`")
 see (`class Array`,
-     `function generateArray`,
      `value runtime.maxArraySize`)
 by ("Gavin")
 shared native Array<Element> populateArray<Element>(

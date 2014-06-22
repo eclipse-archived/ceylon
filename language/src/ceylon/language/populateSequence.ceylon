@@ -4,8 +4,7 @@
  
      populateSequence(100, 1, (Integer index) => index*index);"
 throws (`class AssertionError`, "if `size<=0`")
-see (`function sequence`,
-     `function generateSequence`)
+see (`function sequence`)
 by ("Gavin")
 shared [Element+] populateSequence<Element>(
         "The [[size|Sequence.size]] of the resulting sequence."
