@@ -1121,7 +1121,10 @@ public class TypeVisitor extends Visitor {
         if (dec!=null && dec.isParameter() && 
                 dec.getInitializerParameter().isHidden()) {
             Parameter param = dec.getInitializerParameter();
-            param.setSequenced(that.getType() instanceof Tree.SequencedType);
+            if (that.getType() instanceof Tree.SequencedType) {
+                param.setSequenced(true);
+                param.setAtLeastOne(((Tree.SequencedType)that.getType()).getAtLeastOne());
+            }
             if (sie!=null) {
                 sie.addError("value is an initializer parameter and may not have an initial value: " + 
                         dec.getName());
