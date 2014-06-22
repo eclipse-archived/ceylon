@@ -19,17 +19,29 @@ shared native Array<Element> generateArray<Element>(
          given the [[previous]] generated element."
         Element next(Element previous)) {
     
+    "illegal array size"
+    assert (0<=size<runtime.maxArraySize);
+    
     value length = size;
-    object iterable satisfies {Element+} {
+    value start = first;
+    object iterable satisfies {Element*} {
         function nextElement(Element previous) 
                 => next(previous);
         size => length;
+        shared actual Element? first {
+            if (length>0) {
+                return start;
+            }
+            else {
+                return null;
+            }
+        }
         shared actual Iterator<Element> iterator() {
             object iterator satisfies Iterator<Element> {
-                variable value current = first;
+                variable value current = start;
                 variable value index = 0;
                 shared actual Element|Finished next() {
-                    if (index++<size) {
+                    if (index++<length) {
                         value result = current;
                         current = nextElement(current);
                         return result;

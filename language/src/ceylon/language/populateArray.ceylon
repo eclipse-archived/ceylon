@@ -13,5 +13,8 @@ shared native Array<Element> populateArray<Element>(
         Integer size,
         "A function to populate an element of the array, 
          given its [[index]]."
-        Element element(Integer index))
-        => Array { for (index in 0:size) element(index) };
+        Element element(Integer index)) {
+    "illegal array size"
+    assert (0<=size<runtime.maxArraySize);
+    return Array { for (index in 0:size) element(index) };
+}
