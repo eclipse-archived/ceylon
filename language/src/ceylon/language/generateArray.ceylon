@@ -17,4 +17,30 @@ shared native Array<Element> generateArray<Element>(
         Element first,
         "A function to generate an element of the array, 
          given the [[previous]] generated element."
-        Element next(Element previous));
+        Element next(Element previous)) {
+    
+    value length = size;
+    object iterable satisfies {Element+} {
+        function nextElement(Element previous) 
+                => next(previous);
+        size => length;
+        shared actual Iterator<Element> iterator() {
+            object iterator satisfies Iterator<Element> {
+                variable value current = first;
+                variable value index = 0;
+                shared actual Element|Finished next() {
+                    if (index++<size) {
+                        value result = current;
+                        current = nextElement(current);
+                        return result;
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+            }
+            return iterator;
+        }
+    }
+    return Array(iterable);
+}

@@ -11,4 +11,5 @@ shared native Array<Element> arrayOfSize<Element>(
         "The element value with which to populate the array.
          All elements of the resulting array will have the 
          same value." 
-        Element element);
+        Element element)
+        => Array { for (index in 0:size) element };

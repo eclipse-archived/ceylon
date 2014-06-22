@@ -13,4 +13,5 @@ shared native Array<Element> populateArray<Element>(
         Integer size,
         "A function to populate an element of the array, 
          given its [[index]]."
-        Element element(Integer index));
+        Element element(Integer index))
+        => Array { for (index in 0:size) element(index) };
