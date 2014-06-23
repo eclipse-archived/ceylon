@@ -203,10 +203,9 @@ public final class Array<Element>
     			return array;
     		}
     	}
-
+    	
     	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
     			.newInstance($reifiedElement.getArrayElementClass(), size);
-
     	for (int i=0; i<size; i++) {
     		array[i] = list.get(i);
     	}
@@ -449,61 +448,13 @@ public final class Array<Element>
         
         java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
         		.newInstance($reifiedElement.getArrayElementClass(), size);
-        java.lang.Object otherArray = ((Array<?>) elements).array;
+        java.lang.Object otherArray = elements.array;
         if (otherArray.getClass()==array.getClass()) {
         	arraycopy(otherArray, 0, array, 0, size);
         }
-        else if (otherArray instanceof int[]) {
-        	int[] ints = (int[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = ints[i];
-        	}
-        }
-        else if (otherArray instanceof long[]) {
-        	long[] longs = (long[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = longs[i];
-        	}
-        }
-        else if (otherArray instanceof byte[]) {
-        	byte[] bytes = (byte[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = bytes[i];
-        	}
-        }
-        else if (otherArray instanceof short[]) {
-        	short[] shorts = (short[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = shorts[i];
-        	}
-        }
-        else if (otherArray instanceof float[]) {
-        	float[] floats = (float[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = floats[i];
-        	}
-        }
-        else if (otherArray instanceof double[]) {
-        	double[] doubles = (double[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = doubles[i];
-        	}
-        }
-        else if (otherArray instanceof char[]) {
-        	for (int i=0; i<size; i++) {
-        		array[i] = ((char[])otherArray)[i];
-        	}
-        }
-        else if (otherArray instanceof boolean[]) {
-        	boolean[] bools = (boolean[])otherArray;
-        	for (int i=0; i<size; i++) {
-        		array[i] = bools[i];
-        	}
-        }
         else {
-        	java.lang.Object[] objects = (java.lang.Object[])otherArray;
         	for (int i=0; i<size; i++) {
-        		array[i] = objects[i];
+        		array[i] = elements.getFromFirst(i);
         	}
         }
         return array;

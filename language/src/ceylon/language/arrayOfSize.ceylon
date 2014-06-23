@@ -3,7 +3,7 @@
  be in the range `0..runtime.maxArraySize`."
 throws (`class AssertionError`, 
         "if `size<0` or `size>runtime.maxArraySize`")
-//see (`value runtime.maxArraySize`)
+see (`value runtime.maxArraySize`)
 shared native Array<Element> arrayOfSize<Element>(
         "The size of the resulting array. If the size is 
          non-positive, an empty array will be created."
