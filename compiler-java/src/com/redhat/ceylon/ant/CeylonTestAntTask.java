@@ -30,13 +30,11 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 
 
-public class CeylonTestAntTask extends CeylonAntTask {
+public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Test failed; see the error output for details.";
     
     private final ModuleSet moduleSet = new ModuleSet();
-    private String systemRepository;
-    private RepoSet reposet = new RepoSet();
     private String compileFlags;
     
     public CeylonTestAntTask() {
@@ -44,30 +42,10 @@ public class CeylonTestAntTask extends CeylonAntTask {
     }
 
     /**
-     * Calling the run tool ATM needs a new JVM: https://github.com/ceylon/ceylon-compiler/issues/1366
+     * Calling the test tool ATM needs a new JVM: https://github.com/ceylon/ceylon-compiler/issues/1366
      */
     protected boolean shouldSpawnJvm() {
         return true;
-    }
-
-    /**
-     * Adds a module repository
-     * @param repo the new module repository
-     */
-    public void addConfiguredRep(Repo repo){
-        this.reposet.addConfiguredRepo(repo);
-    }
-    
-    public void addConfiguredReposet(RepoSet reposet){
-        this.reposet.addConfiguredRepoSet(reposet);
-    }
-    
-    /**
-     * Sets the system repository
-     * @param rep the new system repository
-     */
-    public void setSysRep(String rep) {
-        systemRepository = rep;
     }
 
     public void addConfiguredModuleSet(ModuleSet moduleset) {
@@ -111,18 +89,8 @@ public class CeylonTestAntTask extends CeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        if (systemRepository != null) {
-            appendOptionArgument(cmd, "--sysrep", systemRepository);
-        }
         if(compileFlags != null){
             appendOptionArgument(cmd, "--compile", compileFlags);
-        }
-        
-        for(Repo rep : this.reposet.getRepos()){
-            // skip empty entries
-            if(rep.url == null || rep.url.isEmpty())
-                continue;
-            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         for (Module module : moduleSet.getModules()) {
