@@ -1591,8 +1591,18 @@ public final class String
             return instance(value);
         }
         else {
-            return instance(new String(instance(value)
-                    .by(step).sequence()));
+            return instance(value).by(step);
+        }
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
+    public Iterable<? extends Character, ?> by(@Name("step") long step) {
+        if (value.isEmpty()) {
+            return instance(value);
+        }
+        else {
+            return super.by(step);
         }
     }
 
