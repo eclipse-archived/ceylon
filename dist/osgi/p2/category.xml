@@ -3,8 +3,8 @@
    <category-def name="module-bundles" label="Ceylon Distribution Runtime Bundles">
       <description>Ceylon distribution modules available as OSGI bundles</description>
    </category-def>
-   <iu>
+   <feature id="com.redhat.ceylon.dist.feature" version="0.0.0">
       <category name="module-bundles"/>
-      <query><expression type="match">providedCapabilities.exists(p | p.namespace == 'osgi.bundle')</expression></query>
-   </iu>
+   </feature>
+   
 </site>

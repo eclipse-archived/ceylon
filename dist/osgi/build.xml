@@ -34,6 +34,7 @@
     <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
     <property name="p2" location="${basedir}/p2" />
     <property name="build.dist.plugins" location="${build.dist}/plugins" />
+    <property name="build.dist.features" location="${build.dist}/features" />
 
     <path id="classpath">
         <pathelement path="${ceylon.common.lib}" />
@@ -111,23 +112,46 @@
         </zip>
     </target>
 
-    <target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
-        <mkdir dir="${build.dist.plugins}" />
+	<target name="copyModuleArchiveForOSGI">
     	<loadproperties>
-			<zipentry zipfile="${ceylon.language.lib}" name="META-INF/MANIFEST.MF"/>
+			<zipentry zipfile="${currentFile}" name="META-INF/MANIFEST.MF"/>
     	     <filterchain>
     	        <linecontainsregexp>
-    	        	<regexp pattern="^Bundle-Version: \s*\d+\.\d+\.\d+\..+\s*$"/>
+    	        	<regexp pattern="^(Bundle-SymbolicName)"/>
     	        </linecontainsregexp>
     	     	<replaceregex pattern="\s+$" replace=""/>
-    	     	<replaceregex pattern="^\s+" replace=""/>
     	      </filterchain>
     	</loadproperties>
-    	
-    	<copy todir="${build.dist.plugins}" overwrite="true" >
-			<fileset file="${ceylon.language.lib}"/>
-			<mapper type="regexp" from="([^-]+)-(.+)\.car" to="\1_${Bundle-Version}.jar"/>
-		</copy>
+    	<loadproperties>
+			<zipentry zipfile="${currentFile}" name="META-INF/MANIFEST.MF"/>
+    	     <filterchain>
+    	        <linecontainsregexp>
+    	        	<regexp pattern="^(Bundle-Version)"/>
+    	        </linecontainsregexp>
+    	     	<replaceregex pattern="\s+$" replace=""/>
+    	     	<replaceregex pattern=" (\d+)$" replace="\1.0.0"/>
+    	     	<replaceregex pattern=" (\d+\.\d+)$" replace="\1.0"/>
+    	      </filterchain>
+    	</loadproperties>
+		<if>
+			<isset property="Bundle-SymbolicName"/>
+			<then>
+		    	<copy file="${currentFile}" 
+		    		tofile="${build.dist.plugins}/${Bundle-SymbolicName}_${Bundle-Version}.jar" 
+		    		overwrite="true"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
+        <mkdir dir="${build.dist.plugins}" />
+    	<foreach target="copyModuleArchiveForOSGI" param="currentFile">
+    		<path>
+    			<fileset dir="${basedir}/defaultRepository" includes="**/*.jar"/>
+    			<fileset dir="${basedir}/defaultRepository" includes="**/*.car"/>
+    		</path>
+    	</foreach>
+
 		<copy file="${build}/${ceylon.dist.osgi.jar}" overwrite="true" 
 			todir="${build.dist.plugins}">
 		</copy>
@@ -142,6 +166,16 @@
 
 	<!-- Rule to setup a plugins directory with required bundles -->
     <target name="osgi-p2" depends="osgi">
+    	<mkdir dir="${build.dist.features}"/>
+    	<property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
+    	<property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+    	<property name="feature.dir" value="${build.dist.features}/${feature.id}_${feature.version}"/>
+    	<mkdir dir="${feature.dir}"/>
+    	<property name="featureFile" value="${feature.dir}/feature.xml"/>
+		<xslt style="${p2}/generateFeature.xsl" in="${build.dist}/repository.xml" out="${featureFile}">
+			<param name="featureId" expression="${feature.id}"/>
+			<param name="featureVersion" expression="${feature.version}"/>
+		</xslt>    		
     	<makeurl property="destinationRepository" file="${build.dist}"/>
     	<makeurl property="categoryDefinition" file="${p2}/category.xml"/>
     	<exec dir="${basedir}" executable="eclipse" failonerror="true">

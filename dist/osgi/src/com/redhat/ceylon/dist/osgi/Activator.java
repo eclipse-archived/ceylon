@@ -66,7 +66,7 @@ public class Activator implements BundleActivator {
 		public List<ArtifactResult> dependencies() throws RepositoryException {
 			List<ArtifactResult> results = new ArrayList<>();
 			for (BundleWire dep : wiring.getRequiredWires(null)) {
-				if (! "ceylon.dist.osgi".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
+				if (! "com.redhat.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
 					results.add(new BundleArtifactResult(dep.getProviderWiring()));
 				}
 			}

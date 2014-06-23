@@ -5,7 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/ceylon/language/1.1.0/ceylon.language-1.1.0.car" sourcepath="/home/david/git/ceylon.language/runtime"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/ceylon/runtime/1.1.0/ceylon.runtime-1.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="defaultRepository/com/github/rjeschke/txtmark/0.8-c0dcd373ce/com.github.rjeschke.txtmark-0.8-c0dcd373ce.jar"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/com/googlecode/sardine/314/com.googlecode.sardine-314.jar"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/common/1.1.0/com.redhat.ceylon.common-1.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/compiler/java/1.1.0/com.redhat.ceylon.compiler.java-1.1.0.jar" sourcepath="/home/david/git/ceylon-compiler/src"/>
@@ -28,5 +27,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/org.osgi.core-4.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/com/redhat/ceylon/maven-support/2.0/com.redhat.ceylon.maven-support-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="defaultRepository/org/jboss/modules/1.3.3.Final/org.jboss.modules-1.3.3.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="defaultRepository/com/github/rjeschke/txtmark/0.8.0.c0dcd373ce/com.github.rjeschke.txtmark-0.8.0.c0dcd373ce.jar"/>
+	<classpathentry kind="lib" path="lib/ceylon-bootstrap.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
