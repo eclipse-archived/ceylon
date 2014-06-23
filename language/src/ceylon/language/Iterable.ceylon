@@ -436,6 +436,8 @@ shared interface Iterable<out Element, out Absent=Null>
      stream has no elements. If the specified number of 
      elements to skip is zero or fewer, the resulting stream 
      contains the same elements as this stream."
+    see (`function List.sublistFrom`, 
+         `function skipWhile`)
     shared default {Element*} skip(Integer skipping) {
         if (skipping <= 0) {
             return this;
@@ -464,6 +466,8 @@ shared interface Iterable<out Element, out Absent=Null>
      resulting stream contains the same elements as this 
      stream. If the specified number of elements to take is
      fewer than one, the resulting stream has no elements."
+    see (`function List.sublistTo`, 
+         `function takeWhile`)
     shared default {Element*} take(Integer taking) {
         if (taking <= 0) {
             return {}; 
@@ -493,6 +497,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces a stream containing the elements of this 
      stream, after skipping the leading elements until the 
      given [[predicate function|skipping]] returns `false`."
+    see (`function skip`)
     shared default {Element*} skipWhile(
             "The function that returns `false` when the 
              resulting stream should stop skipping
@@ -530,6 +535,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces a stream containing the leading elements of 
      this stream until the given [[predicate function|taking]]
      returns `false`."
+    see (`function take`)
     shared default {Element*} takeWhile(
             "The function that returns `false` when the 
              resulting stream should stop taking elements

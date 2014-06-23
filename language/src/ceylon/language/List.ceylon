@@ -73,12 +73,14 @@ shared interface List<out Element>
     "A sublist of this list, starting at the element with
      the given [[index|from]]. This is a lazy operation, 
      returning a view of this list."
+    see (`function skip`)
     shared default List<Element> sublistFrom(Integer from) 
             => from<0 then this else Rest(from); 
     
     "A sublist of this list, ending at the element with the 
      given [[index|to]]. This is a lazy operation, returning 
      a view of this list."
+    see (`function take`)
     shared default List<Element> sublistTo(Integer to) 
             => to<0 then this else Sublist(to);
     
