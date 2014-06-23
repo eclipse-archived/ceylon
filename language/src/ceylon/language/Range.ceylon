@@ -187,43 +187,36 @@ shared sealed final class Range<Element>(first, last)
         }
     }
     
-    "An iterator for the elements of the range."
+    "An iterator for the elements of the range. 
+     The returned iterator produces elements from [[first]] and 
+     continues producing elements until it reaches an element 
+     whose `offset` from [[last] is zero."
     shared actual Iterator<Element> iterator() {
-        if (recursive) {
-            object iterator
-                    satisfies Iterator<Element> {
-                variable value count = 0;
-                variable value current = first;
-                shared actual Element|Finished next() {
-                    if (++count>size) {
-                        return finished;
-                    }
-                    else {
-                        return current++;
-                    } 
-                }
-                string => "(``outer.string``).iterator()";
-            }
-            return iterator;
-        }
-        else {
-            object iterator 
-                    satisfies Iterator<Element> {
-                variable value current = first;
-                shared actual Element|Finished next() {
-                    if (containsElement(current)) {
-                        value result = current;
-                        current = outer.next(current);
+        
+        object iterator 
+                satisfies Iterator<Element> {
+            variable Element|Finished current = first;
+            shared actual Element|Finished next() {
+                if (!is Finished c=current) {
+                    if (c.offset(last) != 0) {
+                        value result = c;
+                        this.current = outer.next(c);
                         return result;
                     }
                     else {
-                        return finished;
+                        value result = c;
+                        this.current = finished;
+                        return result;
                     }
                 }
-                string => "(``outer.string``).iterator()";
+                else {
+                    return current;
+                }
             }
-            return iterator;
+            string => "(``outer.string``).iterator()";
         }
+        return iterator;
+    
     }
     
     shared actual {Element+} by(Integer step) {
