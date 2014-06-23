@@ -46,42 +46,39 @@ shared Float? parseFloat(String string) {
         return null;
     }
     
-    value whole = parseInteger(wholePart);
-    if (exists whole) {
-        if (exists fractional 
-            = parseInteger(fractionalPart)) {
-            value shift = fractionalPart.size;
-            Integer exponent;
-            if (exists rest) {
-                if (exists magnitude
-                    = parseFloatExponent(rest)) {
-                    exponent = magnitude-shift;
-                }
-                else {
-                    return null;
-                }
+    if (exists whole = parseInteger(wholePart), 
+        exists fractional = parseInteger(fractionalPart)) {
+        value shift = fractionalPart.size;
+        Integer exponent;
+        if (exists rest) {
+            if (exists magnitude
+                = parseFloatExponent(rest)) {
+                exponent = magnitude-shift;
             }
             else {
-                exponent = -shift; 
+                return null;
             }
-            Integer numerator 
-                    = whole*10^shift + fractional;
-            value em = exponent.magnitude;
-            if (em==0) {
-                return numerator.float;
-            }
-            else if (em<maximumIntegerExponent) {
-                value scale = 10^em;
-                return exponent<0
-                then numerator.float / scale
-                else numerator.float * scale;
-            }
-            else {
-                //scale can't be represented as 
-                //an integer, resulting in some
-                //rounding error
-                return numerator * 10.0^exponent;
-            }
+        }
+        else {
+            exponent = -shift; 
+        }
+        Integer numerator 
+                = whole*10^shift + fractional;
+        value em = exponent.magnitude;
+        if (em==0) {
+            return numerator.float;
+        }
+        else if (em<maximumIntegerExponent) {
+            value scale = 10^em;
+            return exponent<0
+            then numerator.float / scale
+            else numerator.float * scale;
+        }
+        else {
+            //scale can't be represented as 
+            //an integer, resulting in some
+            //rounding error
+            return numerator * 10.0^exponent;
         }
     }
     
