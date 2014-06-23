@@ -41,7 +41,7 @@ shared Float? parseFloat(String string) {
         fractionalPart = "0";
     }
     
-    if (!wholePart.rest.every(Character.digit) ||
+    if (!wholePart.every(digitOrSign) ||
         !fractionalPart.every(Character.digit)) {
         return null;
     }
@@ -123,7 +123,8 @@ Integer? parseFloatExponent(String string) {
         return -15;
     }
     else {
-        if (string.lowercased.startsWith("e")) {
+        if (string.lowercased.startsWith("e") &&
+            string.rest.every(digitOrSign)) {
             return parseInteger(string.rest);
         }
         else {
@@ -131,3 +132,6 @@ Integer? parseFloatExponent(String string) {
         }
     }
 }
+
+Boolean(Character) digitOrSign 
+        = or(Character.digit, "+-".contains);
