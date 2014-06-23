@@ -158,9 +158,6 @@ shared native final class String(characters)
     "This string, with the characters in reverse order."
     shared native actual String reverse();
     
-    "This string, with the characters in reverse order."
-    shared native actual Character[] reverse();
-    
     shared native actual Boolean defines(Integer index);
     
     "Select the characters between the given indexes. If the 

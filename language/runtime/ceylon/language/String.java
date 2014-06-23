@@ -1071,15 +1071,13 @@ public final class String
     
     @Override
     public String reverse() {
-        return instance(reverse(value));
+        return reverse(value);
     }
     
-    @Override
-    @TypeInfo("ceylon.language::String")
-    public String reverse() {
+    public static String reverse(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
-            return this.sequence();
+            return instance(value);
         }
         // FIXME: this would be better to directly build the Sequence<Character>
         java.lang.StringBuilder builder = new java.lang.StringBuilder();
@@ -1089,7 +1087,7 @@ public final class String
             builder.appendCodePoint(c);
             offset -= java.lang.Character.charCount(c);
         }
-        return instance(builder.toString()).sequence();
+        return instance(builder.toString());
     }
 
     @TypeInfo("ceylon.language::String")
