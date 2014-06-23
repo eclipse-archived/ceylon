@@ -38,6 +38,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
+import org.junit.ComparisonFailure;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -241,8 +242,21 @@ public class ModelLoaderTest extends CompilerTest {
         Listener listener = new Listener();
         task2.setTaskListener(listener);
 
-        Boolean success = task2.call();
-        Assert.assertTrue("Compilation failed", success);
+        try{
+            Boolean success = task2.call();
+            Assert.assertTrue("Compilation failed", success);
+        }catch(AssertionError x){
+            throw x;
+        }catch(Throwable x){
+            // make sure we unwrap it
+            while(x.getCause() != null)
+                x = x.getCause();
+            if(x instanceof Error)
+                throw (Error)x;
+            if(x instanceof RuntimeException)
+                throw (RuntimeException)x;
+            throw new RuntimeException(x);
+        }
     }
     
     protected void verifyRuntimeClassLoading(RunnableTest test) {
