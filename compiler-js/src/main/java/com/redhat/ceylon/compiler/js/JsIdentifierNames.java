@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,102 +33,43 @@ public class JsIdentifierNames {
     }
 
     private static Set<String> reservedWords = new HashSet<String>();
-    private static Set<String> substitutedMemberNames = new HashSet<String>();
 
     static {
         // Identifiers that have to be escaped because they are keywords in
         // JavaScript. We don't have to include identifiers that are also
         // keywords in Ceylon because no such identifiers can occur in Ceylon
         // source code anyway.
-        //reservedWords.add("abstract");
-        reservedWords.add("arguments");
-        reservedWords.add("undefined");
-        reservedWords.add("boolean");
-        //reservedWords.add("break");
-        reservedWords.add("byte");
-        //reservedWords.add("case");
-        //reservedWords.add("catch");
-        reservedWords.add("char");
-        //reservedWords.add("class");
-        reservedWords.add("const");
-        //reservedWords.add("continue");
-        reservedWords.add("debugger");
-        reservedWords.add("default");
-        reservedWords.add("delete");
-        reservedWords.add("do");
-        reservedWords.add("double");
-        //reservedWords.add("else");
-        reservedWords.add("enum");
-        reservedWords.add("export");
-        //reservedWords.add("extends");
-        reservedWords.add("false");
-        reservedWords.add("final");
-        //reservedWords.add("finally");
-        reservedWords.add("float");
-        //reservedWords.add("for");
-        //reservedWords.add("function");
-        reservedWords.add("goto");
-        //reservedWords.add("if");
-        reservedWords.add("implements");
-        //reservedWords.add("import");
-        //reservedWords.add("in");
-        reservedWords.add("instanceof");
-        reservedWords.add("int");
-        //reservedWords.add("interface");
-        reservedWords.add("long");
-        reservedWords.add("native");
-        reservedWords.add("new");
-        reservedWords.add("null");
-        //reservedWords.add("package");
-        reservedWords.add("private");
-        reservedWords.add("protected");
-        reservedWords.add("public");
-        //reservedWords.add("return");
-        reservedWords.add("short");
-        reservedWords.add("static");
-        //reservedWords.add("super");
-        //reservedWords.add("switch");
-        reservedWords.add("synchronized");
-        //reservedWords.add("this");
-        //reservedWords.add("throw");
-        reservedWords.add("throws");
-        reservedWords.add("transient");
-        reservedWords.add("true");
-        //reservedWords.add("try");
-        reservedWords.add("typeof");
-        reservedWords.add("var");
-        //reservedWords.add("void");
-        reservedWords.add("volatile");
-        //reservedWords.add("while");
-        reservedWords.add("with");
-        reservedWords.add("apply");
-        reservedWords.add("call");
-        reservedWords.add("Date");
-        reservedWords.add("get");
-        reservedWords.add("bind");
-        reservedWords.add("Object");
-        reservedWords.add("Array");
-        reservedWords.add("Boolean");
-        reservedWords.add("Error");
-        reservedWords.add("Number");
+        //Language
+        reservedWords.addAll(Arrays.asList("undefined", "boolean", "byte", "char", "const",
+                "debugger", "default", "delete", "do", "double", "enum", "export", "false",
+                "final", "float", "goto", "implements", "instanceof", "int", "long",
+                "native", "new", "null", "private", "protected", "public", "short", "static",
+                "synchronized", "throws", "transient", "true", "typeof", "var", "volatile",
+                "with"));
+        //Types
+        reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number"));
+        //JS Object
+        reservedWords.addAll(Arrays.asList("hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable"));
+        //JS Function
+        reservedWords.add("Function");
+        reservedWords.addAll(Arrays.asList("call", "arguments", "caller", "apply", "bind")); //name?
+        //JS Number
+        reservedWords.addAll(Arrays.asList("toFixed", "valueOf", "toPrecision", "toExponential"));
+        //JS String
         reservedWords.add("String");
-        reservedWords.add("push");
-        reservedWords.add("slice");
-        reservedWords.add("toString");
-        reservedWords.add("sort");
-        reservedWords.add("reverse");
-        reservedWords.add("split");
-        reservedWords.add("replace");
-        reservedWords.add("length");
-
-        // The names of the following members also have to be escaped to avoid
-        // collisions with members of native JavaScript classes in the
-        // implementation of the language module.
-        substitutedMemberNames.add("ceylon.language::String.substr");
-        substitutedMemberNames.add("ceylon.language::Iterable.filter");
-        substitutedMemberNames.add("ceylon.language::Iterable.every");
-        substitutedMemberNames.add("ceylon.language::Iterable.map");
-        substitutedMemberNames.add("ceylon.language::Iterable.reduce");
+        reservedWords.addAll(Arrays.asList("charAt", "strike", "fixed", "sub", "charCodeAt",
+                "trimLeft", "toLocaleUpperCase", "toUpperCase", "fontsize", "search",
+                "toLocaleLowerCase", "small", "big", "fontcolor", "blink", "trim",
+                "bold", "match", "substr", "trimRight", "replace", "split", "sup", "link",
+                "localeCompare", "valueOf", "substring", "toLowerCase", "italics", "anchor"));
+        //JS Array
+        reservedWords.add("Array");
+        reservedWords.addAll(Arrays.asList("toLocaleString", "splice", "map", "forEach", "reverse",
+                "join", "push", "shift", "pop", "sort", "unshift", "reduceRight", "reduce",
+                "every", "filter"));
+        //String, Array, etc
+        reservedWords.addAll(Arrays.asList("length", "toString", "constructor", "prototype",
+                "concat", "indexOf", "lastIndexOf", "slice", "get"));
     }
 
     /**
@@ -156,13 +98,6 @@ public class JsIdentifierNames {
             } else if (reservedWords.contains(name)) {
                 // JavaScript keyword
                 name = "$_" + name;
-            } else {
-                Declaration refinedDecl = originalDeclaration(decl);
-                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
-                    // member name that could collide with the name of a native
-                    // JavaScript class
-                    name = "$_" + name;
-                }
             }
         }
         else {
@@ -307,13 +242,6 @@ public class JsIdentifierNames {
             } else if (!forGetterSetter && reservedWords.contains(name)) {
                 // JavaScript keyword
                 name = "$_" + name;
-            } else {
-                Declaration refinedDecl = originalDeclaration(decl);
-                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
-                    // member name that could collide with the name of a native
-                    // JavaScript class
-                    name = "$_" + name;
-                }
             }
         }
         else {
