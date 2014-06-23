@@ -230,9 +230,9 @@ shared void arraySequence() {
     check(abc[2] exists, "abc[2]");
     check(!(abc[3] exists), "abc[3]");
     
-    check(abc.reverse().string=="[c, b, a]", "abc.reversed ``abc.reversed``");
-    check(abc.reverse().reverse()==abc, "abc.reversed.reversed");
-    check(abc.reversed.string=="{ c, b, a }", "abc.reversed ``abc.reversed``");
+    check(abc.reverse().string=="[c, b, a]", "abc.reverse ``abc.reversed``");
+    check(abc.reverse().reverse()==abc, "abc.reverse.reverse");
+    check(abc.reversed.string=="[c, b, a]", "abc.reversed ``abc.reversed``");
     check(abc.reversed.reversed.sequence()==abc, "abc.reversed.reversed");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");

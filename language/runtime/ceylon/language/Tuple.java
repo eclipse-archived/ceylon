@@ -304,25 +304,6 @@ public final class Tuple<Element, First extends Element,
             @Annotation("shared"),
             @Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language::Sequence<Element>")
-    @Transient
-    public final ceylon.language.Sequence<? extends Element> 
-    reverse() {
-        java.lang.Object[] reversed = new java.lang.Object[Util.toInt(getSize())];
-        int jj = 0;
-        for (int ii = Util.toInt(this.rest.getSize())-1; ii >= 0; ii--) {
-            reversed[jj++] = rest.getFromFirst(ii);
-        }
-        for (int ii = this.array.length-1; ii >= 0; ii--) {
-            reversed[jj++] = this.array[ii];
-        }
-        return new Tuple($reifiedElement, reversed, empty_.get_(), false);
-    }
-    
-    @Annotations({
-            @Annotation("shared"),
-            @Annotation("actual")})
-    @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
     public final ceylon.language.Sequential<? extends Element> 
     segment(@Name("from")

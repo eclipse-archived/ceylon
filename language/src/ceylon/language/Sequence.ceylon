@@ -52,13 +52,9 @@ shared sealed interface Sequence<out Element>
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
-    "Reverse this sequence, returning a new nonempty
-     sequence."
-    shared default actual [Element+] reverse() {
-        value array = Array(this);
-        array.reverseInPlace();
-        return ArraySequence(array);
-    }
+    shared default actual [Element+] reversed => reverse();
+    
+    shared default actual [Element+] reverse() => Reverse();
     
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 
@@ -110,8 +106,8 @@ shared sealed interface Sequence<out Element>
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
     
-    shared actual default String string 
-            => (super of Sequential<Element>).string;
+    shared actual default Boolean contains(Object element) 
+            => (super of List<Element>).contains(element);
     
     shared actual default Boolean shorterThan(Integer length) 
             => (super of List<Element>).shorterThan(length);
@@ -132,6 +128,80 @@ shared sealed interface Sequence<out Element>
     
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
+    
+    shared actual default String string 
+            => (super of Sequential<Element>).string;
+    
+    Element getElement(Integer index) {
+        value element = getFromFirst(index);
+        if (exists element) { 
+            return element;
+        }
+        else {
+            assert (is Element null);
+            return null; 
+        }
+    }
+    
+    class Reverse() 
+            extends Object() 
+            satisfies [Element+] {
+        
+        size => outer.size;
+        first => outer.first;
+        last => outer.last;
+        rest => outer[0:size-1];
+        
+        reverse() => outer;
+        reversed => outer;
+        
+        getFromFirst(Integer index) 
+                => outer.getFromFirst(size-1-index);
+        
+        shared actual Element[] segment(Integer from, Integer length) {
+            if (length>1) {
+                value start = size-1-from;
+                return outer[start..start-length+1];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        span(Integer from, Integer to) => outer[to..from];
+        
+        shared actual Element[] spanFrom(Integer from) {
+            value endIndex = size-1;
+            if (from<=endIndex) { 
+                return outer[endIndex-from..0];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        shared actual Element[] spanTo(Integer to) {
+            value endIndex = size-1;
+            if (to>=0) { 
+                return outer[endIndex..endIndex-to];
+            }
+            else {
+                return [];
+            }
+        }
+        
+        shared actual Iterator<Element> iterator() {
+            value outerList=outer;
+            object iterator satisfies Iterator<Element> {
+                variable value index=outerList.size-1;
+                next() => index<0 then finished 
+                                  else outerList.getElement(index--);
+                string => "``outer.string``.iterator()";
+            }
+            return iterator;
+        }
+
+    }
     
 }
 

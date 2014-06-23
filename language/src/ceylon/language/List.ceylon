@@ -978,6 +978,9 @@ shared interface List<out Element>
         
         lastIndex => outer.lastIndex;
         
+        reverse() => outer;
+        reversed => outer;
+        
         shared actual Element? getFromFirst(Integer index) {
             if (size>0) {
                 return outer.getFromFirst(size-1-index);
