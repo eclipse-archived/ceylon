@@ -454,4 +454,11 @@ shared void strings() {
     check("hello".pad(10,'-')=="--hello---", "string pad");
     check("hello".padLeft(10,'-')=="-----hello", "string padLeft");
     check("hello".padRight(10,'-')=="hello-----", "string padRight");
+    
+    check("".every(Character.digit), "empty string every");
+    check("123".every(Character.digit), "string every");
+    check(!"123 ".every(Character.digit), "string every");
+    check(!"".any(Character.digit), "empty string any");
+    check(!"asd".any(Character.digit), "string any");
+    check("asd1".any(Character.digit), "string any");
 }
