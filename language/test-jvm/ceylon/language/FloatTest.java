@@ -50,30 +50,29 @@ public class FloatTest {
         assertParseFloat(1e-3, "1m");
         assertParseFloat(1e-3, "1.0e-3");
         assertParseFloat(1e-3, "1.0E-3");
-        assertParseFloat(1e-6, "0.000_001");
-        assertParseFloat(1e-9, "0.000_000_001");
+        assertParseFloat(1e-6, "0.000001");
+        assertParseFloat(1e-9, "0.000000001");
         
         assertParseFloat(1e3, "+1.0E+3");
         
-        assertParseFloat(1e3, "+1.000_000E+3");
-        assertParseFloat(1e3, "+1_000.0");
-        assertParseFloat(1e6, "+1_000_000.0");
-        assertParseFloat(1e6, "+1000000.000_000_000");
-        assertParseFloat(1e6, "+1000000.000_000_000e000_000");
+        assertParseFloat(1e3, "+1.000000E+3");
+        assertParseFloat(1e3, "+1000.0");
+        assertParseFloat(1e6, "+1000000.0");
+        assertParseFloat(1e6, "+1000000.000000000");
+        assertParseFloat(1e6, "+1000000.000000000e000000");
         
-        assertParseFloat(Double.POSITIVE_INFINITY, "+1.0E+1_000");
+        assertParseFloat(Double.POSITIVE_INFINITY, "+1.0E+1000");
         
-        assertParseFloat(1.0, "1.000_0");
+        assertParseFloat(1.0, "1.0000");
         
-        assertParseFloat(null, "1E+3");
-        assertParseFloat(null, "1e+3");
-        assertParseFloat(null, "1e+1_00");
-        assertParseFloat(null, "1e+1000_000");
-        assertParseFloat(null, "1000_000.0");
-        assertParseFloat(null, "1_000_00.0");
-        assertParseFloat(null, "0.00_1");
-        assertParseFloat(null, "0.0000_1");
-        assertParseFloat(null, "1T");
+        assertParseFloat(1e+3, "1E+3");
+        assertParseFloat(1e+3, "1e+3");
+        assertParseFloat(1e+100, "1e+100");
+        assertParseFloat(null, "1_000_000.0");
+        assertParseFloat(null, "100_000.0");
+        assertParseFloat(null, "0.0_01");
+        assertParseFloat(null, "0.000_01");
+        assertParseFloat(1.0e12, "1T");
         assertParseFloat(null, "1_T");
         assertParseFloat(null, "1_m");
         assertParseFloat(null, "1.");
