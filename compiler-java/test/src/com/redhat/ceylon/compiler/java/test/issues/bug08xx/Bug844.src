@@ -97,6 +97,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> reverse() {
+        return $ceylon$language$Sequence$this$.reverse();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Sequence$this$.sort(comparing);
     }
@@ -204,13 +209,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public Element getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
-    public Element getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
@@ -343,11 +348,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends Element, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
-    }
-    
-    @.java.lang.Override
-    public long getSize() {
-        return $ceylon$language$Iterable$this$.getSize();
     }
     
     @.java.lang.Override

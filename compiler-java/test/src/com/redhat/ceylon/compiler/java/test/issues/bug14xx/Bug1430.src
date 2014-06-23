@@ -34,6 +34,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> reverse() {
+        return $ceylon$language$Sequence$this$.reverse();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequence<? extends .ceylon.language.Integer> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Sequence$this$.sort(comparing);
     }
@@ -146,13 +151,13 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public .ceylon.language.Integer getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public .ceylon.language.Integer get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override

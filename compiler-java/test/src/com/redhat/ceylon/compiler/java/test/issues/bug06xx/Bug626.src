@@ -95,6 +95,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> reverse() {
+        return $ceylon$language$Iterable$this$.reverse();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this$.sort(comparing);
     }

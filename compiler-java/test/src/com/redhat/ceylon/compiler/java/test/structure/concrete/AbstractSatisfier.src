@@ -94,6 +94,11 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends T> reverse() {
+        return $ceylon$language$Iterable$this$.reverse();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this$.sort(comparing);
     }

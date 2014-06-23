@@ -6,7 +6,7 @@ public final class bug1127_ {
     }
     
     public static void bug1127() {
-        final .ceylon.language.Range<.ceylon.language.Integer> r = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(4L));
+        final .ceylon.language.Range<.ceylon.language.Integer> r = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(4L));
         final boolean b = (
             let
             {

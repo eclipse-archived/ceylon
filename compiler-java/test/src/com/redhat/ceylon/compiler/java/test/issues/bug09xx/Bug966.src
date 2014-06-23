@@ -24,6 +24,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Integer getLastIndex() {
+        return $ceylon$language$Sequence$this$.getLastIndex();
+    }
+    
+    @.java.lang.Override
     public final boolean getEmpty() {
         return $ceylon$language$Sequence$this$.getEmpty();
     }
@@ -36,6 +41,16 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> sequence() {
         return $ceylon$language$Sequence$this$.sequence();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> reverse() {
+        return $ceylon$language$Sequence$this$.reverse();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> getReversed() {
+        return $ceylon$language$Sequence$this$.getReversed();
     }
     
     @.java.lang.Override
@@ -156,13 +171,13 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public Element getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
-    public Element getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override

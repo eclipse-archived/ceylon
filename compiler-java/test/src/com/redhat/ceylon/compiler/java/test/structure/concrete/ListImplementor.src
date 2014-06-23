@@ -54,13 +54,18 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public X getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
+    }
+    
+    @.java.lang.Override
     public X get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
-    public X getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public .ceylon.language.Sequential<? extends X> reverse() {
+        return $ceylon$language$List$this$.reverse();
     }
     
     @.java.lang.Override
@@ -242,6 +247,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public .ceylon.language.List<? extends X> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends X> sequence() {
+        return $ceylon$language$List$this$.sequence();
+    }
     protected final .ceylon.language.Collection$impl<X> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -263,11 +273,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends X, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<? extends X> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override

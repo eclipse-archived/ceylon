@@ -50,7 +50,7 @@ final class bug1227_ifBreak_returnElse_opt_ {
         long from$6 = 0L;
         boolean doforelse$7 = true;
         .java.lang.Object elem$8;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$9 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$9 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_1: while (!((elem$8 = index$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$8).longValue();
             if (someBoolean) {
@@ -113,7 +113,7 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
         long from$19 = 0L;
         boolean doforelse$20 = true;
         .java.lang.Object elem$21;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$22 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$22 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_3: while (!((elem$21 = index$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$21).longValue();
             if (someBoolean) {
@@ -205,7 +205,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
         long from$34 = 0L;
         boolean doforelse$35 = true;
         .java.lang.Object elem$36;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$37 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$37 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_5: while (!((elem$36 = index$iterator$$37.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$36).longValue();
             if (someBoolean) {
@@ -302,7 +302,7 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
         final long from;
         long from$48 = 0L;
         .java.lang.Object elem$49;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$50 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$50 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_7: while (!((elem$49 = index$iterator$$50.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$49).longValue();
             if (someBoolean) {
@@ -368,7 +368,7 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
         final long from;
         long from$60 = 0L;
         .java.lang.Object elem$61;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$62 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$62 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_9: while (!((elem$61 = index$iterator$$62.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$61).longValue();
             if (someBoolean) {

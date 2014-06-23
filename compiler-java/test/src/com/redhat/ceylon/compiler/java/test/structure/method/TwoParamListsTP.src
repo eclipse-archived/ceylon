@@ -11,7 +11,7 @@ final class twoParamListsTP_ {
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final T i = (T)$param$0;
-                final .ceylon.language.Range<T> range$0 = new .ceylon.language.Range<T>($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegated(), i);
+                final .ceylon.language.Range<T> range$0 = .ceylon.language.range_.<T>range($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegated(), (T)i);
                 final T last$1 = range$0.getLast();
                 final boolean increasing$2 = range$0.getIncreasing();
                 loop_0: for (T item$3 = range$0.getFirst(); increasing$2 ? item$3.offset(last$1) <= 0L : item$3.offset(last$1) >= 0L; item$3 = increasing$2 ? item$3.getSuccessor() : item$3.getPredecessor()) {

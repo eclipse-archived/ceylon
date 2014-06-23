@@ -6,7 +6,7 @@ class RangeInstantiation implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public final .java.lang.Object m() {
-        return new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        return .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
     }
     
     public static void main(.java.lang.String[] args) {

@@ -127,7 +127,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
             {
                 .java.lang.Object $ceylontmp$13 = false ? .ceylon.language.empty_.get_() : null;
             }
-            returning $ceylontmp$13 != null ? $ceylontmp$13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
+            returning $ceylontmp$13 != null ? $ceylontmp$13 : .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
     }
     

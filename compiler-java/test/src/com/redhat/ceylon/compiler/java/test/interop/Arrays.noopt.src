@@ -121,7 +121,7 @@ final class test_booleans_ {
         );
         final boolean[][] matrix = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(10L)][];
         .java.lang.Object elem$9;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$10 = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$10 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length)).iterator();
         loop_1: while (!((elem$9 = x$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
             final long x = ((.ceylon.language.Integer)elem$9).longValue();
             matrix[.com.redhat.ceylon.compiler.java.Util.toInt(x)] = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];

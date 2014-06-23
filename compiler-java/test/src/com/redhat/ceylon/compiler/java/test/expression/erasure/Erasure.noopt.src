@@ -503,7 +503,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         }
         long sync = 0L;
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)(.ceylon.language.List)naturals).getSize();
-        sync = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).getSize();
+        sync = ((.ceylon.language.Sequence)leftsAndRights).getSize();
         .java.lang.Object naturals$45;
         if ((naturals$45 = naturals) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .java.lang.Object> naturals$46 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)naturals$45;

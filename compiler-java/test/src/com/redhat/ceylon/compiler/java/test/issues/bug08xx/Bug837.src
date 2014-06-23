@@ -45,6 +45,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> reverse() {
+        return $ceylon$language$Sequence$this$.reverse();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Sequence$this$.sort(comparing);
     }
@@ -152,13 +157,13 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public Element getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
-    public Element getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public Element get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override

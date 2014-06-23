@@ -84,12 +84,12 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     private final void disabled$priv$() {
         long sum = 0L;
         .java.lang.Object elem$32;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$33 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
         loop_6: while (!((elem$32 = i$iterator$$33.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
-        final .ceylon.language.Range<.ceylon.language.Integer> range$34 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Range<.ceylon.language.Integer> range$34 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
         final .ceylon.language.Integer last$35 = range$34.getLast();
         final boolean increasing$36 = range$34.getIncreasing();
         loop_7: for (.ceylon.language.Integer item$37 = range$34.getFirst(); increasing$36 ? item$37.offset(last$35) <= 0L : item$37.offset(last$35) >= 0L; item$37 = increasing$36 ? item$37.getSuccessor() : item$37.getPredecessor()) {

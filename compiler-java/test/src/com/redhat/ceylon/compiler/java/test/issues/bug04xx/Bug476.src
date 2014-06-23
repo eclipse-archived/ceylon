@@ -138,13 +138,13 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public T get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+    public T getFromLast(final long index) {
+        return $ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
-    public T getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+    public T get(final .ceylon.language.Integer index) {
+        return $ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
@@ -155,6 +155,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public .ceylon.language.List<? extends T> getReversed() {
         return $ceylon$language$List$this$.getReversed();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends T> reverse() {
+        return $ceylon$language$List$this$.reverse();
     }
     
     @.java.lang.Override
@@ -338,6 +343,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends T> sequence() {
+        return $ceylon$language$List$this$.sequence();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.List<? extends T> $clone() {
         return $ceylon$language$List$this$.$clone();
     }
@@ -357,11 +367,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends T, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
