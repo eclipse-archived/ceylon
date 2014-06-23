@@ -283,7 +283,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise."
+     `null` otherwise.  For an infinite stream, this 
+     operation might not terminate."
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
@@ -297,7 +298,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The last element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise."
+     `null` otherwise. For an infinite stream, this operation 
+     might not terminate."
     shared default Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
@@ -425,8 +427,9 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Determines if there is at least one element of this 
      stream that satisfies the [[given predicate 
-     function|selecting]].
-     This method returns `false` for empty Iterables."
+     function|selecting]]. This method returns `false` for 
+     empty streams. For an infinite stream, this operation 
+     might not terminate."
     shared default Boolean any(
             "The predicate that at least one element 
              must satisfy."
@@ -440,8 +443,9 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Determines if all elements of this stream satisfy the 
-     [[given predicate function|selecting]].
-     This method returns `true` for empty Iterables."
+     [[given predicate function|selecting]]. This method 
+     returns `true` for empty streams.  For an infinite 
+     stream, this operation might not terminate."
     shared default Boolean every(
             "The predicate that all elements must 
              satisfy."
