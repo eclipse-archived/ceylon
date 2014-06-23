@@ -246,9 +246,16 @@
     <!-- Rule to build module-resolver jar -->
     <target name="module-resolver.jar" depends="module-resolver.classes">
         <mkdir dir="${build.lib}"/>
+		<tstamp>
+		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+		</tstamp>    	
         <jar destfile="${module-resolver.jar}">
             <fileset dir="${build.classes}">
             </fileset>
+        	<manifest>
+        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
+        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.version}.${qualifier}"/>
+        	</manifest>
         </jar>
     </target>
 
