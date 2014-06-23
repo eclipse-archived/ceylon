@@ -25,6 +25,10 @@
 
 package com.sun.tools.javac.main;
 
+import java.util.Arrays;
+
+import com.redhat.ceylon.compiler.java.codegen.Optimization;
+
 
 /**
  * TODO: describe com.sun.tools.javac.main.OptionName
@@ -62,8 +66,7 @@ public enum OptionName {
     CEYLONRESOURCEPATH("-res"),
     CEYLONRESOURCEROOT("-resroot"),
     CEYLONDISABLEOPT("-disableOptimization"),
-    // Keep the following list in sync with Optimization
-    CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{RangeOpIteration,SegmentOpIteration,RangeIterationStatic,ArrayIterationStatic,JavaArrayIterationStatic,TupleIterationStatic,TupleIterationDynamic,ArrayIterationDynamic}"),
+    CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{"+optimizations()+"}"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),
@@ -123,6 +126,10 @@ public enum OptionName {
     @Override
     public String toString() {
         return optionName;
+    }
+    
+    public static String optimizations() {
+        return Arrays.toString(Optimization.values()).replace("[", "").replace("]", "").replace(",  ", ",");
     }
 
 }
