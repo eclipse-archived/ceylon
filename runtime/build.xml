@@ -230,9 +230,16 @@
     <!-- Rule to build runtime jar -->
     <target name="runtime.jar" depends="runtime.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.runtime.dir}"/>
+		<tstamp>
+		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+		</tstamp>    	
         <jar destfile="${build.dist.repo}/${ceylon.runtime.jar}">
             <fileset dir="${build.classes}">
             </fileset>
+        	<manifest>
+        		<attribute name="Bundle-SymbolicName" value="ceylon.runtime"/>
+        		<attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
+        	</manifest>
         </jar>
     </target>
 
