@@ -207,6 +207,9 @@
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
+		<tstamp>
+		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+		</tstamp>    	
         <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
@@ -217,6 +220,10 @@
             <fileset dir="${javac.src}">
                 <include name="com/sun/tools/javac/resources/*.properties" />
             </fileset>
+        	<manifest>
+        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>
+        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.version}.${qualifier}"/>
+        	</manifest>
         </jar>
     </target>
 
