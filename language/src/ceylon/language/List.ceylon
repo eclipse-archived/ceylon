@@ -148,10 +148,6 @@ shared interface List<out Element>
     shared actual default List<Element> reverse() 
             => [*reversed];
     
-    shared actual default Element[] sequence() 
-            => empty then []
-                     else populateSequence(size, getElement);
-    
     shared actual default List<Element> clone() 
             => Array(this);
     
@@ -664,7 +660,8 @@ shared interface List<out Element>
         `function chain`,
         `function withTrailing`,
         `function concatenate`)
-    shared default [Element|Other*] append<Other>({Other*} elements) 
+    shared default [Element|Other*] append<Other>
+                            ({Other*} elements) 
             => [*(this chain elements)];
     
     "Return a sequence containing the given [[elements]], in 
@@ -674,7 +671,8 @@ shared interface List<out Element>
      
      This is an eager operation."
     see (`function withLeading`)
-    shared default [Element|Other*] prepend<Other>({Other*} elements) 
+    shared default [Element|Other*] prepend<Other>
+                            ({Other*} elements) 
             => [*(elements chain this)];
     
     Element getElement(Integer index) {
@@ -693,18 +691,14 @@ shared interface List<out Element>
         if (size>0) {
             value end = size-1;
             if (from <= to) {
-                if (to < 0 || from > end) {
-                    return [];
-                }
-                return ArraySequence(populateArray(to-from+1, 
-                    (Integer i) => getElement(from+i)));
+                return to < 0 || from > end 
+                    then [] 
+                    else ArraySequence(Array(sublist(from,to)));
             }
             else {
-                if (from < 0 || to > end) {
-                    return [];
-                }
-                return ArraySequence(populateArray(from-to+1,
-                    (Integer i) => getElement(from-i)));
+                return from < 0 || to > end 
+                    then [] 
+                    else ArraySequence(Array(sublist(to,from).reversed));
             }
         }
         else {
@@ -717,8 +711,7 @@ shared interface List<out Element>
             return clone();
         }
         else if (from<size) {
-            return ArraySequence(populateArray(size-from, 
-                (Integer i) => getElement(from+i)));
+            return ArraySequence(Array(sublistFrom(from)));
         }
         else {
             return [];
@@ -730,8 +723,7 @@ shared interface List<out Element>
             return this;
         }
         else if (to>=0) {
-            return ArraySequence(populateArray(to+1, 
-                    (Integer i) => getElement(i)));
+            return ArraySequence(Array(sublistTo(to)));
         }
         else {
             return [];
@@ -744,8 +736,7 @@ shared interface List<out Element>
             return this;
         }
         else if (length>=1) {
-            return ArraySequence(populateArray(length, 
-                    (Integer i) => getElement(from+i)));
+            return ArraySequence(Array(sublist(from, from+length-1)));
         }
         else {
             return [];

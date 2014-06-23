@@ -71,18 +71,22 @@ shared sealed interface Sequence<out Element>
      the given mapping to the elements of this sequence."
     shared default actual [Result+] collect<Result>(
             "The transformation applied to the elements."
-            Result collecting(Element element))
-            => ArraySequence(populateArray(size,
-                (Integer index) {
-                    value element = getFromFirst(index);
-                    if (exists element) { 
-                        return collecting(element);
-                    }
-                    else {
-                        assert (is Element null);
-                        return collecting(null); 
-                    }
-                }));
+            Result collecting(Element element)) {
+        object list
+                extends Object() 
+                satisfies List<Result> {
+            lastIndex => outer.lastIndex;
+            shared actual Result? getFromFirst(Integer index) {
+                if (0<=index<outer.size) {
+                    return collecting(outer.getElement(index));
+                }
+                else {
+                    return null;
+                }
+            }
+        }
+        return ArraySequence(Array(list)); 
+    }
     
     "Return a nonempty sequence containing the given 
      [[element]], followed by the elements of this 
@@ -212,8 +216,7 @@ shared sealed interface Sequence<out Element>
  
      [Element*] sequenceOfElements = sequence(elements) else []"
 by ("Gavin")
-see (`function Iterable.sequence`,
-    `function populateSequence`)
+see (`function Iterable.sequence`)
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

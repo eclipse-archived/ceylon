@@ -534,8 +534,5 @@ shared void sequences() {
     check(![1,2,3].longerThan(3), "Sequence.longerThan");
     check([1,2,3,4,5].shorterThan(6), "Sequence.shorterThan");
     check(![1,2,3].shorterThan(3), "Sequence.shorterThan");
-    
-    check(populateSequence(3, (Integer i) => i*i)==[0,1,4], "populateSequence");
-    check(populateSequence(4, Integer.successor)==[1,2,3,4], "populateSequence");
-    
+        
 }
