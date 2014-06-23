@@ -96,6 +96,4 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Element[] sort(
         Comparison comparing(Element x, Element y));
     
-    shared actual native Result[] collect<Result>(
-        Result collecting(Element element));
 }

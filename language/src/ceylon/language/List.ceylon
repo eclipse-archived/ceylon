@@ -743,6 +743,32 @@ shared interface List<out Element>
         }
     }
     
+    "A nonempty sequence containing the results of applying 
+     the given mapping to the elements of this sequence."
+    shared default actual Result[] collect<Result>(
+        "The transformation applied to the elements."
+        Result collecting(Element element)) {
+        if (empty) {
+            return [];
+        }
+        else {
+            object list
+                    extends Object() 
+                    satisfies List<Result> {
+                lastIndex => outer.lastIndex;
+                size = outer.size;
+                shared actual Result? getFromFirst(Integer index) {
+                    if (0<=index<size) {
+                        return collecting(outer.getElement(index));
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            }
+            return ArraySequence(Array(list));
+        }
+    }
     
     class Indexes()
             extends Object()

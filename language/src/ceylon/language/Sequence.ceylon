@@ -76,8 +76,9 @@ shared sealed interface Sequence<out Element>
                 extends Object() 
                 satisfies List<Result> {
             lastIndex => outer.lastIndex;
+            size = outer.size;
             shared actual Result? getFromFirst(Integer index) {
-                if (0<=index<outer.size) {
+                if (0<=index<size) {
                     return collecting(outer.getElement(index));
                 }
                 else {

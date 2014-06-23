@@ -50,13 +50,6 @@ public final class Array<Element>
                 createArrayWithElement($reifiedElement, size, element));
     }
     
-    @Ignore
-    public Array(final TypeDescriptor $reifiedElement, 
-            Collector<? extends Element> element) {
-        this($reifiedElement, 
-                createArrayFromCollector($reifiedElement, element));
-    }
-    
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("elements")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
@@ -204,9 +197,9 @@ public final class Array<Element>
     		}
     	}
     	
-    	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-    			.newInstance($reifiedElement.getArrayElementClass(), size);
-    	for (int i=0; i<size; i++) {
+        java.lang.Object[] array = (java.lang.Object[]) 
+        		java.lang.reflect.Array.newInstance(clazz, size);
+        for (int i=0; i<size; i++) {
     		array[i] = list.get(i);
     	}
         return array;
@@ -347,8 +340,8 @@ public final class Array<Element>
         	}
         }
 
-        java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-        		.newInstance($reifiedElement.getArrayElementClass(), size);
+        java.lang.Object[] array = (java.lang.Object[]) 
+        		java.lang.reflect.Array.newInstance(clazz, size);
         for (int i=0; i<size; i++) {
         	array[i] = elements.getFromFirst(i);
         }
@@ -446,9 +439,9 @@ public final class Array<Element>
             }
         }
         
-        java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-        		.newInstance($reifiedElement.getArrayElementClass(), size);
-        java.lang.Object otherArray = elements.array;
+        java.lang.Object[] array = (java.lang.Object[]) 
+        		java.lang.reflect.Array.newInstance(clazz, size);
+       java.lang.Object otherArray = elements.array;
         if (otherArray.getClass()==array.getClass()) {
         	arraycopy(otherArray, 0, array, 0, size);
         }
@@ -556,137 +549,7 @@ public final class Array<Element>
         }
         return array;
     }
-
-    private static <Element> java.lang.Object createArrayFromCollector(
-            final TypeDescriptor $reifiedElement,
-            final Collector<? extends Element> collector) {
-    	
-        java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
-        int size = Util.toInt(collector.getSize());
-        
-        if (!$reifiedElement.containsNull()) {
-            if (clazz==String.class) {
-                //note: we don't unbox strings in an Array<String?>
-                //      because it would break javaObjectArray()
-                java.lang.String[] array = new java.lang.String[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = ((String) 
-                            collector.call(i))
-                            .value;
-                }
-                return array;
-            }
-            else if (clazz==Integer.class) {
-                long[] array = new long[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = ((Integer) 
-                            collector.call(i))
-                            .value;
-                }
-                return array;
-            }
-            else if (clazz==Float.class) {
-                double[] array = new double[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = ((Float) 
-                            collector.call(i))
-                            .value;
-                }
-                return array;
-            }
-            else if (clazz==Character.class) {
-                int[] array = new int[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = ((Character) 
-                            collector.call(i))
-                            .codePoint;
-                }
-                return array;
-            }
-            else if (clazz==Boolean.class) {
-                boolean[] array = new boolean[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = ((Boolean) 
-                            collector.call(i))
-                            .booleanValue();
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Boolean.class) {
-                boolean[] array = new boolean[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Boolean) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Character.class) {
-                char[] array = new char[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Character) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Float.class) {
-                float[] array = new float[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Float) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Double.class) {
-                double[] array = new double[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Double) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Byte.class) {
-                byte[] array = new byte[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Byte) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Short.class) {
-                short[] array = new short[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Short) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Integer.class) {
-                int[] array = new int[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Integer) 
-                            collector.call(i);
-                }
-                return array;
-            }
-            else if (clazz==java.lang.Long.class) {
-                long[] array = new long[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = (java.lang.Long) 
-                            collector.call(i);
-                }
-                return array;
-            }
-        }
-        
-        java.lang.Object[] array = 
-                (java.lang.Object[]) java.lang.reflect.Array
-                        .newInstance(clazz, size);
-        for (int i=0; i<size; i++) {
-            array[i] = collector.call(i);
-        }
-        return array;
-    }
-
+    
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         super($reifiedElement);
@@ -1073,24 +936,7 @@ public final class Array<Element>
             return Array.this.toString() + ".iterator()";
         }
     }
-
-    @Ignore
-    static final class Collector<Result> {
-        private final Callable<? extends Result> collecting;
-        private final Array<?> array;
-        private Collector(Array<?> array, 
-                Callable<? extends Result> fun) {
-            this.collecting = fun;
-            this.array = array;
-        }
-        Result call(int index) {
-            return collecting.$call$(array.unsafeItem(index));
-        }
-        long getSize() {
-        	return array.getSize();
-        }
-    }
-
+    
     @Ignore
     final class ArrayIterable 
     extends AbstractArrayIterable<Element, java.lang.Object> {
@@ -1423,22 +1269,6 @@ public final class Array<Element>
         return size > 0 ? unsafeItem(size-1) : null;
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    @TypeInfo("ceylon.language::Sequential<Result>")
-    @TypeParameters(@TypeParameter("Result"))
-    public <Result> Sequential<? extends Result> 
-    collect(@Ignore TypeDescriptor $reifiedResult, 
-            @Name("collecting") @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
-            final Callable<? extends Result> collecting) {
-        if (getEmpty()) {
-            return (Sequential<? extends Result>) empty_.get_();
-        }
-        return new ArraySequence<Result>($reifiedResult, 
-                new Array<Result>($reifiedResult, 
-                        new Collector<Result>(this, collecting)));
-    }
     @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
