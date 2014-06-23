@@ -107,9 +107,16 @@
     <!-- build jscompiler jar -->
     <target name="ceylon.js.jar" depends="compile">
         <mkdir dir="${ceylon.js.dist}"/>
+		<tstamp>
+		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+		</tstamp>    	
         <jar destfile="${ceylon.js.lib}">
             <fileset dir="${build.classes}">
             </fileset>
+        	<manifest>
+        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.js"/>
+        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.js.version}.${qualifier}"/>
+        	</manifest>
         </jar>
         <antcall target="sha1sum">
             <param name="file" value="${ceylon.js.lib}" />
