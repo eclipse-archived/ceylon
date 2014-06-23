@@ -373,6 +373,7 @@
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
+            fork="true"
             verbose="false"
             encoding="UTF-8"
             noMtimeCheck="true"
@@ -506,6 +507,7 @@
     <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup">
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
+            fork="true"
             src="${test.src}:${test.java.src}"
             sysrep="${build.test.repo}"
             encoding="UTF-8"
@@ -607,6 +609,7 @@
     <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup">
         <ceylon-compile-js
             executable="${ceylon.compiler.loc}"
+            fork="true"
             encoding="UTF-8"
             src="${test.src}"
             sysrep="${build.test.repo}"
