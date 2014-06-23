@@ -286,6 +286,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sequence() {
         return $ceylon$language$List$this$.sequence();
     }

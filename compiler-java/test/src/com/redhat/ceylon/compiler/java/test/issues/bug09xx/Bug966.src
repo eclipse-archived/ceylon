@@ -112,6 +112,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
         return $ceylon$language$Sequence$this$.repeat(times);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
     @.java.lang.Override

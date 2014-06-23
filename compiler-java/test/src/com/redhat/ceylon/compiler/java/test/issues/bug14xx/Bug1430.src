@@ -92,6 +92,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public .ceylon.language.Sequential<? extends .ceylon.language.Integer> repeat(final long times) {
         return $ceylon$language$Sequence$this$.repeat(times);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    }
     protected final .ceylon.language.Sequential$impl<.ceylon.language.Integer> $ceylon$language$Sequential$this$;
     
     @.java.lang.Override

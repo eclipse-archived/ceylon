@@ -286,6 +286,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sequence() {
         return $ceylon$language$List$this$.sequence();
     }
@@ -780,6 +785,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
         return $ceylon$language$List$this$.segment(from, length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends T>, ? extends .ceylon.language.List<? extends T>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends T>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
     }
     
     @.java.lang.Override

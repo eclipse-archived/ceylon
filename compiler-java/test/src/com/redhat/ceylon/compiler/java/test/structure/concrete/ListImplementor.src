@@ -249,6 +249,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> sequence() {
         return $ceylon$language$List$this$.sequence();
     }

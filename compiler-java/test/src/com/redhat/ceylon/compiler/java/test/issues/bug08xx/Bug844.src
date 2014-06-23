@@ -150,6 +150,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
         return $ceylon$language$Sequence$this$.repeat(times);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
     @.java.lang.Override
@@ -523,7 +528,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
                 );
             }
             returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.String.instance("null");
-        ).toString()).append(", ").append(((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).toString())).spanFrom(.ceylon.language.Integer.instance(1L)).toString()).toString();
+        ).toString()).append(", ").append(((.ceylon.language.String)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).toString())).spanFrom(.ceylon.language.Integer.instance(1L))).toString()).toString();
     }
     
     @.java.lang.Override
