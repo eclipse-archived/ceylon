@@ -133,7 +133,7 @@
             <filtermapper>
                 <replacestring from="_version_" to="${ceylon.base.version}"/>
             </filtermapper>
-        	<filterset>
+            <filterset>
                 <filter token="ceylon-version" value="${ceylon.base.version}"/>
             </filterset>
         </copy>
@@ -147,7 +147,7 @@
         <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
     </target>
 
-	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
+    <target name="dist-for-tests" description="Copy jars in the repo used by tests">
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.typechecker.lib}" tofile="${build.dist.repo}/${ceylon.typechecker.jar}"/>
         <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
@@ -157,8 +157,8 @@
         <copy todir="${build.dist}">
             <fileset dir="./testsuite/src/test/resources/"/>
         </copy>
-	</target>
-	
+    </target>
+    
     <target name="publish" depends="dist,init.repo,publish-internal">
     </target>
 
@@ -190,7 +190,7 @@
         <delete dir="${ceylon.runtime.repo}"/>
     </target>
 
-	<target name="ide-quick-internal">
+    <target name="ide-quick-internal">
     </target>
 
     <!-- Tasks related to building the runtime -->
@@ -230,16 +230,16 @@
     <!-- Rule to build runtime jar -->
     <target name="runtime.jar" depends="runtime.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.runtime.dir}"/>
-		<tstamp>
-		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
-		</tstamp>    	
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
         <jar destfile="${build.dist.repo}/${ceylon.runtime.jar}">
             <fileset dir="${build.classes}">
             </fileset>
-        	<manifest>
-        		<attribute name="Bundle-SymbolicName" value="ceylon.runtime"/>
-        		<attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
-        	</manifest>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="ceylon.runtime"/>
+                <attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
+            </manifest>
         </jar>
     </target>
 
