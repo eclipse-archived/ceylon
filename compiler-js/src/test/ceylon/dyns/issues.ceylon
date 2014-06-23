@@ -91,8 +91,26 @@ void issue369() {
   check(r.fractionalPart>0.0, "Issue 369 #9");
 }
 
+void dynamicNumbers() {
+  Float f;
+  Integer i;
+  dynamic {
+    f=\iMath.random();
+    i=\iMath.random();
+  }
+  variable Object x = f;
+  check(x is Float, "dynamic float #1");
+  check(0.0 <= f <= 1.0, "dynamic float #2");
+  check(!x is Integer, "dynamic float #3");
+  x = i;
+  check(x is Integer, "dynamic int #1");
+  check(i == 0, "dynamic int #2");
+  check(!x is Float, "dynamic int #3");
+}
+
 shared void issues() {
     issue350();
     issue366();
     issue369();
+    dynamicNumbers();
 }
