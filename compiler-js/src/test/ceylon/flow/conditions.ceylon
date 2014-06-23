@@ -1,6 +1,6 @@
 import check {...}
 
-shared void test() {
+shared void testConditions() {
     Boolean a = true;
     Boolean b = false;
     variable value count = 0;
@@ -69,5 +69,4 @@ shared void test() {
     if (exists c, nonempty seq2, exists zz5=c[0]) {
         check(zz5=='X',"exists,nonempty,boolean");
     } else { fail("exists,nonempty,boolean"); }
-    results();
 }
