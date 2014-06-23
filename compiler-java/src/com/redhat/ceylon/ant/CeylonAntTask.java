@@ -20,7 +20,9 @@
 
 package com.redhat.ceylon.ant;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
+import org.apache.tools.ant.util.FileUtils;
 
 import com.redhat.ceylon.launcher.Launcher;
 
@@ -39,6 +42,8 @@ import com.redhat.ceylon.launcher.Launcher;
  */
 public abstract class CeylonAntTask extends Task {
 
+    private static final int MAX_COMMAND_LENGTH = 4096;
+    
     public static class Define {
         String key;
         String value;
@@ -61,6 +66,7 @@ public abstract class CeylonAntTask extends Task {
     private ExitHandler exitHandler = new ExitHandler();
     private String verbose;
     private List<Define> defines = new ArrayList<Define>(0);
+    private Boolean fork;
     
     /**
      * @param toolName The name of the ceylon tool which this task executes.
@@ -85,6 +91,15 @@ public abstract class CeylonAntTask extends Task {
     /** Sets the location of the ceylon executable script */
     public void setExecutable(String executable) {
         this.executable = new File(Util.getScriptName(executable));
+    }
+    
+    public boolean getFork() {
+        return (fork != null) ? fork : shouldSpawnJvm();
+    }
+
+    /** Sets whether the task should be run in a separate VM */
+    public void setFork(boolean fork) {
+        this.fork = fork;
     }
     
     public boolean getFailOnError() {
@@ -129,14 +144,36 @@ public abstract class CeylonAntTask extends Task {
      * @param cmd The commandline
      */
     protected void executeCommandline(Commandline cmd) {
+        File tmpFile = null;
         try {
             int exitValue;
-            if(shouldSpawnJvm()){
+            if(getFork()){
                 log("Spawning new process: " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
+                
+                String[] args = cmd.getCommandline();
+                if (Commandline.toString(args).length() > MAX_COMMAND_LENGTH) {
+                    BufferedWriter out = null;
+                    try {
+                        tmpFile = File.createTempFile("ceyloncmd", "ant");
+                        out = new BufferedWriter(new FileWriter(tmpFile));
+                        for (int i = 1; i < args.length; i++) {
+                            out.write(args[i]);
+                            out.newLine();
+                        }
+                        out.flush();
+                        String[] newArgs = new String[2];
+                        newArgs[0] = args[0];
+                        newArgs[1] = "@" + tmpFile.getAbsolutePath();
+                        args = newArgs;
+                    } finally {
+                        FileUtils.close(out);
+                    }
+                }
+                
                 Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
                 exe.setAntRun(getProject());
                 exe.setWorkingDirectory(getProject().getBaseDir());
-                exe.setCommandline(cmd.getCommandline());
+                exe.setCommandline(args);
                 exe.execute();
                 exitValue = exe.getExitValue();
             }else{
@@ -151,6 +188,10 @@ public abstract class CeylonAntTask extends Task {
             }
         } catch (Throwable e) {
             throw new BuildException("Error running Ceylon " + toolName + " tool (an exception was thrown, run ant with -v parameter to see the exception)", e, getLocation());
+        } finally {
+            if (tmpFile != null) {
+                tmpFile.delete();
+            }
         }
     }
 
