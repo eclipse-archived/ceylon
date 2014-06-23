@@ -91,7 +91,7 @@ shared sealed interface Sequence<out Element>
                 }));
     
     "Return a nonempty sequence containing the given 
-     [[elements]], followed by the elements of this 
+     [[element]], followed by the elements of this 
      sequence."
     shared actual default [Other,Element+]
     withLeading<Other>(Other element)
