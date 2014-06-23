@@ -39,7 +39,7 @@ class TestIs2(Integer|String x) {
     }
 }
 
-shared void test() {
+shared void testSwitches() {
     value enums = [1, 2.0];
     //is cases
     value e0 = enums[0];
@@ -98,7 +98,5 @@ shared void test() {
     case("2") { fail("it's null!"); }
     case(null) { check(true, "case with literals against optional"); }
     else { fail("how did you get here?"); }
-
-    results();
 }
 
