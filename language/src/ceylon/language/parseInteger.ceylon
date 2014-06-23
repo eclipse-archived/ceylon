@@ -10,8 +10,9 @@ Integer maxRadix = 36;
  
  The syntax accepted by this function is the same as the 
  syntax for an `Integer` literal in the Ceylon language 
- except that it may optionally begin with a sign 
- character (`+` or `-`).
+ except that it may optionally begin with a sign character 
+ (`+` or `-`) and may not contain grouping underscore 
+ characters.
  
  The given `radix` specifies the base of the string 
  representation. The list of available digits starts from 

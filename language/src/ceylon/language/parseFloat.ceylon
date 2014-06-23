@@ -6,7 +6,8 @@
  The syntax accepted by this method is the same as the 
  syntax for a `Float` literal in the Ceylon language 
  except that it may optionally begin with a sign 
- character (`+` or `-`)."
+ character (`+` or `-`) and may not contain grouping 
+ underscore characters."
 see (`function parseInteger`)
 shared Float? parseFloat(String string) {
     
