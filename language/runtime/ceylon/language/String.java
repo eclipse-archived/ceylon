@@ -7,6 +7,8 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
 import com.redhat.ceylon.compiler.java.language.StringTokens;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -21,12 +23,22 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
+@Class(extendsType="ceylon.language::Object", 
+       basic = false, identifiable = false)
 @SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Character,ceylon.language::String>"})
 @ValueType
+@Annotations({
+    @Annotation(
+            value = "doc",
+            arguments = {"A string of characters..."}),
+    @Annotation(
+            value = "by",
+            arguments = {"Gavin"}),
+    @Annotation("shared"),
+    @Annotation("final")})
 public final class String
     extends BaseCharacterList
     implements Comparable<String>, List<Character>,
