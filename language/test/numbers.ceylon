@@ -601,9 +601,9 @@ void checkParseInteger() {
         check(!parseInteger("-1y2p0ij32e8e9", 36) exists, "parseInteger(-1y2p0ij32e8e9, 36)");
     } else if (runtime.integerSize == 53) {
         check(9007199254740989==(parseInteger("9007199254740989") else ""), "parseInteger(9007199254740989)");
-        check(9_007_199_254_740_989==(parseInteger("9_007_199_254_740_989") else ""), "parseInteger(9_007_199_254_740_989)");
+        check(9_007_199_254_740_989==(parseInteger("9007199254740989") else ""), "parseInteger(9_007_199_254_740_989)");
         check(-9007199254740991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9007199254740991)");
-        check(-9_007_199_254_740_991==(parseInteger("-9_007_199_254_740_991") else ""), "parseInteger(-9_007_199_254_740_991)");
+        check(-9_007_199_254_740_991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9_007_199_254_740_991)");
         check(!parseInteger("9007199254740990") exists, "parseInteger(9007199254740990)");
         check(!parseInteger("-9007199254740992") exists, "parseInteger(-9007199254740992)");
         
@@ -617,9 +617,9 @@ void checkParseInteger() {
           "parseInteger(-100000000000000000000000000000000000000000000000000000, 2)");
         
         check(9007199254740989==(parseInteger("1ffffffffffffd", 16) else ""), "parseInteger(1ffffffffffffd, 16)");
-        check(9_007_199_254_740_989==(parseInteger("1f_ffff_ffff_fffd", 16) else ""), "parseInteger(1f_ffff_ffff_fffd, 16)");
+        check(9_007_199_254_740_989==(parseInteger("1ffffffffffffd", 16) else ""), "parseInteger(1f_ffff_ffff_fffd, 16)");
         check(-9007199254740991==(parseInteger("-1fffffffffffff", 16) else ""), "parseInteger(-1fffffffffffff, 16)");
-        check(-9_007_199_254_740_991==(parseInteger("-1f_ffff_ffff_ffff", 16) else ""), "parseInteger(-1f_ffff_ffff_ffff, 16)");
+        check(-9_007_199_254_740_991==(parseInteger("-1fffffffffffff", 16) else ""), "parseInteger(-1f_ffff_ffff_ffff, 16)");
         check(!parseInteger("1ffffffffffffe", 16) exists, "parseInteger(1ffffffffffffe, 16)");
         check(!parseInteger("-20000000000000", 16) exists, "parseInteger(-20000000000000, 16)");
         
