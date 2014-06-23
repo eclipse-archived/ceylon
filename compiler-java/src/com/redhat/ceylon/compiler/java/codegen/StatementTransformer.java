@@ -1704,9 +1704,9 @@ public class StatementTransformer extends AbstractTransformer {
      * <pre>
      *   final Range<Element> range = RANGE_EXPR;
      *   final Element last = range.getLast();
-     *   ELEMENT_TYPE element = first;
+     *   int latch = 1;
      *   for (Element current = first; 
-     *            range.increasing ? current.offset(last) <= 0 : current.offset(last) >= 0; 
+     *            (latch > 0 && curr.offset(last) != 0) || latch-- > 0; 
      *            current = range.increasing ? current.successor? current.predecessor ) {
      *       TRANSFORMED_BLOCK
      *   }
@@ -1726,6 +1726,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         private SyntheticName itemName;
 
+        private SyntheticName latchName;
+
         public RangeIterationOptimization(Tree.ForStatement stmt,
                 ProducedType iteratedType) {
             super(stmt);
@@ -1734,6 +1736,7 @@ public class StatementTransformer extends AbstractTransformer {
             this.lastName = naming.alias("last");
             this.increasingName = naming.alias("increasing");
             this.itemName = naming.alias("item");
+            this.latchName = naming.alias("latch");
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
@@ -1748,6 +1751,11 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Apply(null,
                             naming.makeQualIdent(rangeName.makeIdent(), "getLast"),
                             List.<JCExpression>nil())));
+            
+            // int latch = 1;
+            result.add(makeVar(latchName, 
+                    make().Type(syms().intType), 
+                    make().Literal(1)));
             
             // final boolean decreasing = range.getDecreasing();
             result.add(makeVar(FINAL, increasingName, 
@@ -1780,19 +1788,21 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new RuntimeException();
             }
             
-            // range.increasing ? current.offset(last) <= 0 : current.offset(last) >= 0;
-            JCExpression cond = 
-                    make().Conditional(increasingName.makeIdent(), 
-                        make().Binary(JCTree.LE,
-                        make().Apply(null,
-                            naming.makeQualIdent(itemName.makeIdent(), "offset"),
-                            List.<JCExpression>of(lastName.makeIdent())),
-                        make().Literal(0L)),
-                        make().Binary(JCTree.GE,
+            // (latch > 0 && curr.offset(last) != 0) || latch-- > 0;
+            JCExpression cond =
+                    make().Binary(JCTree.OR, 
+                        make().Binary(JCTree.AND,
+                            make().Binary(JCTree.GT, 
+                                latchName.makeIdent(), 
+                                make().Literal(0)),
+                            make().Binary(JCTree.NE,
                                 make().Apply(null,
                                     naming.makeQualIdent(itemName.makeIdent(), "offset"),
                                     List.<JCExpression>of(lastName.makeIdent())),
-                                make().Literal(0L)));
+                                make().Literal(0L))),
+                        make().Binary(JCTree.GT, 
+                                make().Unary(JCTree.POSTDEC, latchName.makeIdent()), 
+                                make().Literal(0)));
             
             // next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor()) {
             JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(),
