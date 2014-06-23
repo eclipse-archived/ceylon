@@ -34,6 +34,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -323,28 +324,30 @@ public class JarEntryManifestFileObject implements JavaFileObject {
          */
         private String getRequireBundle() {
             StringBuilder requires = new StringBuilder();
-            if (!isLanguageModule()) {
-                for (ModuleImport anImport : module.getImports()) {
-                    Module m = anImport.getModule();
-                    if (!m.isJava() && !m.equals(module)) {
-                        if (requires.length() > 0) {
-                            requires.append(",");
-                        }
+            for (ModuleImport anImport : module.getImports()) {
+                Module m = anImport.getModule();
+                String moduleName = m.getNameAsString();
+                if (!JDKUtils.isJDKModule(moduleName)
+                        && !JDKUtils.isOracleJDKModule(moduleName)
+                        && !m.equals(module)) {
+                    if (requires.length() > 0) {
+                        requires.append(",");
+                    }
 
-                        requires.append(m.getNameAsString())
-                                .append(";bundle-version=").append(m.getVersion());
+                    requires.append(m.getNameAsString())
+                            .append(";bundle-version=").append(m.getVersion());
 
-                        if (anImport.isExport()) {
-                            requires.append(";visibility:=reexport");
-                        }
-                        if (anImport.isOptional()) {
-                            requires.append(";resolution:=optional");
-                        }
+                    if (anImport.isExport()) {
+                        requires.append(";visibility:=reexport");
+                    }
+                    if (anImport.isOptional()) {
+                        requires.append(";resolution:=optional");
                     }
                 }
-            } else {
-                requires.append("com.redhat.ceylon.dist")
-                .append(";bundle-version=").append(module.getVersion());
+            }
+            if (isLanguageModule()) {
+                requires.append(",com.redhat.ceylon.dist")
+                .append(";bundle-version=").append(module.getVersion()).append(";visibility:=reexport");
             }
             return requires.toString();
         }
