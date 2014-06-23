@@ -24,7 +24,7 @@
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
     <property name="module-resolver-api.jar" location="${build.lib}/module-resolver-api.jar"/>
-	
+    
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
@@ -112,7 +112,7 @@
         <delete dir="${cmr-testsuite-test.src}/repo/com"/>
     </target>
 
-	<target name="ide-quick-internal">
+    <target name="ide-quick-internal">
     </target>
 
     <target name="dist"
@@ -188,7 +188,7 @@
     <!-- Tasks related to building the module-resolver -->
     <!-- Rule to build module-resolver classes from their Java sources -->
     <target name="module-resolver.classes.api">
-        <mkdir dir="${build.classes}"/>	
+        <mkdir dir="${build.classes}"/>    
         <javac debug="true"
                encoding="UTF-8"
                srcdir="${cmr-spi.src}"
@@ -207,7 +207,7 @@
             </fileset>
         </copy>
     </target>
-	
+    
     <!-- Rule to build module-resolver classes from their Java sources -->
     <target name="module-resolver.classes" depends="module-resolver.classes.api">
         <mkdir dir="${build.classes}"/>
@@ -246,16 +246,16 @@
     <!-- Rule to build module-resolver jar -->
     <target name="module-resolver.jar" depends="module-resolver.classes">
         <mkdir dir="${build.lib}"/>
-		<tstamp>
-		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
-		</tstamp>    	
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
         <jar destfile="${module-resolver.jar}">
             <fileset dir="${build.classes}">
             </fileset>
-        	<manifest>
-        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
-        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.version}.${qualifier}"/>
-        	</manifest>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.version}.${qualifier}"/>
+            </manifest>
         </jar>
     </target>
 
@@ -264,12 +264,12 @@
         <mkdir dir="${build.lib}"/>
         <jar destfile="${module-resolver-api.jar}">
             <fileset dir="${build.classes}">
-            	<include name="**/spi/*"/>
-            	<include name="**/api/*"/>
+                <include name="**/spi/*"/>
+                <include name="**/api/*"/>
             </fileset>
         </jar>
     </target>
-        	
+            
     <!-- Rule to compile and test -->
     <target name="build" depends="module-resolver.jar"/>
 
