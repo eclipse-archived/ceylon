@@ -95,8 +95,13 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> reverse() {
+    public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> reverse() {
         return $ceylon$language$Iterable$this$.reverse();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> repeat(final long times) {
+        return $ceylon$language$Iterable$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -112,6 +117,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.select(selecting);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.count(selecting);
     }
     
     @.java.lang.Override
@@ -150,8 +160,8 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.count(selecting);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.defaultNullElements($reified$Default, defaultValue);
     }
     
     @.java.lang.Override
@@ -175,16 +185,6 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.defaultNullElements($reified$Default, defaultValue);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Iterable$this$.toString();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
     }
@@ -195,8 +195,8 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> repeat(final long times) {
-        return $ceylon$language$Iterable$this$.repeat(times);
+    public .java.lang.String toString() {
+        return $ceylon$language$Iterable$this$.toString();
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
