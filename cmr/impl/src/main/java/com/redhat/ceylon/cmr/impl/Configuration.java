@@ -33,12 +33,12 @@ public class Configuration {
     
     static {
         resolvers = new DependencyResolvers();
+        resolvers.addResolver(BytecodeUtils.INSTANCE);
+        resolvers.addResolver(JSUtils.INSTANCE);
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
         addResolver(MAVEN_RESOLVER_CLASS);
         resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
-        resolvers.addResolver(BytecodeUtils.INSTANCE);
-        resolvers.addResolver(JSUtils.INSTANCE);
     }
 
     public static DependencyResolvers getResolvers() {
