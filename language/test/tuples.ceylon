@@ -63,4 +63,11 @@ shared void tuples() {
     check((["foo", "bar"] of Object) is [String+], "is [String+] 1");
     check(!([1, 2] of Object) is [String+], "is [String+] 2");
     check([1,2,3].getFromFirst(100) is Null, "Tuple.getFromFirst");
+
+    value strs = ["hello", "world"];
+    check(strs.withLeading("yo!").first=="yo!", "tuple withLeading");
+    check(strs.withTrailing("yo!").last=="yo!", "tuple withTrailing");
+    [Integer+] ints = [1,2,3];
+    check(ints.append(5..7)==[1,2,3,5,6,7], "tuple append");
+    check(ints.prepend(5..7)==[5,6,7,1,2,3], "tuple prepend");
 }
