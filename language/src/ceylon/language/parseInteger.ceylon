@@ -19,12 +19,7 @@ Integer maxRadix = 36;
  specific base, the first `radix` digits from the available 
  digits list is used. This function is not case sensitive; 
  `a` and `A` both correspond to the digit `a` whose decimal 
- value is `10`.
- 
- The `_` character may be used to separate groups of digits
- for bases 2, 10, and 16, as for `Integer` literals in the
- Ceylon language. For any other base, no grouping is
- supported."
+ value is `10`."
 throws (`class AssertionError`, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
@@ -36,120 +31,95 @@ shared Integer? parseInteger(
             "The base, between [[minRadix]] and [[maxRadix]] 
              inclusive."
             Integer radix = 10) {
-    assert (radix >= minRadix, radix <= maxRadix); 
-    variable Integer ii = 0;
+    
+    assert (minRadix <= radix <= maxRadix); 
+    
+    variable Integer index = 0;
     Integer max = runtime.minIntegerValue / radix;
+    
+    // Parse the sign
     Boolean negative;
-    if (exists char = string[ii]) {
+    if (exists char = string[index]) {
         if (char == '-') {
             negative = true;
-            ii++;
-        } else if (char == '+') {
+            index++;
+        }
+        else if (char == '+') {
             negative = false;
-            ii++;
-        } else {
+            index++;
+        }
+        else {
             negative = false;
         }
-    } else {
+    }
+    else {
         return null;
     }
+    
     Integer limit = negative 
             then runtime.minIntegerValue 
             else -runtime.maxIntegerValue;
+    
     Integer length = string.size;
     variable Integer result = 0;
-    variable Integer sep = -1;
     variable Integer digitIndex = 0;
-    variable Integer groupingSize = -1;
-    while (ii < length) {
+    while (index < length) {
         Character ch;
-        if (exists char = string[ii]) {
+        if (exists char = string[index]) {
             ch = char;
-        } else {
+        }
+        else {
             return null;
         }
-        if (ch == '_') {
-            if (sep == -1) {
-                if (exists digitGroupSize = 
-                        computeDigitGroupingSize(radix, digitIndex, string, ii), 
-                        digitIndex <= digitGroupSize) {
-                    groupingSize = digitGroupSize;
-                    sep = digitIndex;
-                } else {
+        
+        if (index + 1 == length && 
+                radix == 10 && 
+                ch in "kMGTP") {
+            // The SI-style magnitude
+            if (exists exp = parseIntegerExponent(ch)) {
+                Integer magnitude = 10^exp;
+                if ((limit / magnitude) < result) {
+                    result *= magnitude;
+                    break;
+                }
+                else {
+                    // overflow
                     return null;
                 }
-            } else if ((digitIndex - sep) == groupingSize) {
-                return null;
-            } else {
-                sep = digitIndex;
             }
-        } else {
-            if (sep != -1 && 
-                    (digitIndex - sep) == (groupingSize + 1)) {
-                return null;
-            }
-            if (ii + 1 == length && 
-                    radix == 10 && 
-                    ch in "kMGTP") {
-                // The magnitude
-                if (exists exp = parseIntegerExponent(ch)) {
-                    Integer magnitude = 10^exp;
-                    if ((limit / magnitude) < result) {
-                        result *= magnitude;
-                        break;
-                    } else { // overflow
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
-            } else if (exists digit = parseDigit(ch, radix)) {
-                if (result < max) { // overflow
-                    return null;
-                }
-                result *= radix;
-                if (result < limit + digit) { // overflow
-                    return null;
-                }
-                // += would be much more obvious, but it doesn't work for minIntegerValue
-                result -= digit;
-            } else { // Invalid digit
+            else {
                 return null;
             }
         }
-        ii++;
+        else if (exists digit = parseDigit(ch, radix)) {
+            // A regular digit
+            if (result < max) { 
+                // overflow
+                return null;
+            }
+            result *= radix;
+            if (result < limit + digit) { 
+                // overflow
+                return null;
+            }
+            // += would be much more obvious, but it doesn't work for minIntegerValue
+            result -= digit;
+        }
+        else {
+            // Invalid character
+            return null;
+        }
+        
+        index++;
         digitIndex++;
     }
-    // check for insufficient digits after the last _
-    if (sep != -1 && 
-            (digitIndex - sep) != (groupingSize + 1)) {
-        return null;
-    }
+    
     if (digitIndex == 0) {
         return null;
     }
-    return negative then result else -result;
-}
-
-Integer? computeDigitGroupingSize(Integer radix, 
-        Integer digitIndex, String string, Integer ii) {
-    Integer? groupingSize;
-    if (radix == 2) {
-        groupingSize = 4;
-    } else if (radix == 10) {
-        groupingSize = 3;
-    } else if (radix == 16) {
-        if (digitIndex <= 2, 
-                exists char = string[ii + 3], 
-                char == '_') {
-            groupingSize = 2;
-        } else {
-            groupingSize = 4;
-        }
-    } else {
-        groupingSize = null;
+    else {
+        return negative then result else -result;
     }
-    return groupingSize;
 }
 
 Integer? parseIntegerExponent(Character char) {
