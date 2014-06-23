@@ -71,10 +71,10 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
             Attributes attributes = manifest.getMainAttributes();
             String requireBundle = attributes.getValue("Require-Bundle");
             if (requireBundle == null) {
-                if (log.isLoggable(Level.INFO)) {
+                if (log.isLoggable(Level.FINE)) {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     manifest.write(baos);
-                    log.info(String.format("No OSGi Require-Bundle attribute, main-attributes: %s", new String(baos.toByteArray())));
+                    log.fine(String.format("No OSGi Require-Bundle attribute, main-attributes: %s", new String(baos.toByteArray())));
                 }
                 return Collections.emptySet();
             } else {
