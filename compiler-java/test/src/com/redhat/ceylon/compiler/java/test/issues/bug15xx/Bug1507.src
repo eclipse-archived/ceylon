@@ -233,24 +233,23 @@ final class bug1507test5_ {
         final boolean found;
         boolean found$43 = false;
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
-        boolean doforelse$48 = true;
-        final .ceylon.language.Range<.ceylon.language.Integer> range$44 = range;
-        final .ceylon.language.Integer last$45 = range$44.getLast();
-        final boolean increasing$46 = range$44.getIncreasing();
-        loop_5: for (.ceylon.language.Integer item$47 = range$44.getFirst(); increasing$46 ? item$47.offset(last$45) <= 0L : item$47.offset(last$45) >= 0L; item$47 = increasing$46 ? item$47.getSuccessor() : item$47.getPredecessor()) {
-            final long i = item$47.longValue();
+        boolean doforelse$44 = true;
+        .java.lang.Object elem$45;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$46 = range.iterator();
+        loop_5: while (!((elem$45 = i$iterator$$46.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$45).longValue();
             if (i == 0L) {
                 found$43 = true;
-                final boolean found$50 = found$43;
-                doforelse$48 = false;
+                final boolean found$48 = found$43;
+                doforelse$44 = false;
                 break loop_5;
             } else {
                 .ceylon.language.process_.get_().write("");
             }
         }
-        if (doforelse$48) {
+        if (doforelse$44) {
             found$43 = false;
-            final boolean found$51 = found$43;
+            final boolean found$49 = found$43;
         }
         found = found$43;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
@@ -268,28 +267,28 @@ final class bug1507test6_ {
     
     static void bug1507test6() {
         final boolean found;
-        boolean found$52 = false;
-        boolean doforelse$53 = true;
-        final long $ceylontmp$start$54 = 1L;
-        final long $ceylontmp$end$55 = 2L;
-        final boolean $ceylontmp$increasing$56 = $ceylontmp$start$54 <= $ceylontmp$end$55;
-        final long $ceylontmp$incr$57 = $ceylontmp$increasing$56 ? 1L : -1L;
-        loop_6: for (long i$58 = $ceylontmp$start$54; $ceylontmp$increasing$56 ? i$58 - $ceylontmp$end$55 <= 0L : i$58 - $ceylontmp$end$55 >= 0L; i$58 += $ceylontmp$incr$57) {
-            final long i = i$58;
+        boolean found$50 = false;
+        boolean doforelse$51 = true;
+        final long $ceylontmp$start$52 = 1L;
+        final long $ceylontmp$end$53 = 2L;
+        final boolean $ceylontmp$increasing$54 = $ceylontmp$start$52 <= $ceylontmp$end$53;
+        final long $ceylontmp$incr$55 = $ceylontmp$increasing$54 ? 1L : -1L;
+        loop_6: for (long i$56 = $ceylontmp$start$52; $ceylontmp$increasing$54 ? i$56 - $ceylontmp$end$53 <= 0L : i$56 - $ceylontmp$end$53 >= 0L; i$56 += $ceylontmp$incr$55) {
+            final long i = i$56;
             if (i == 0L) {
-                found$52 = true;
-                final boolean found$60 = found$52;
-                doforelse$53 = false;
+                found$50 = true;
+                final boolean found$58 = found$50;
+                doforelse$51 = false;
                 break loop_6;
             } else {
                 .ceylon.language.process_.get_().write("");
             }
         }
-        if (doforelse$53) {
-            found$52 = false;
-            final boolean found$61 = found$52;
+        if (doforelse$51) {
+            found$50 = false;
+            final boolean found$59 = found$50;
         }
-        found = found$52;
+        found = found$50;
         .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append(found).toString());
     }
     

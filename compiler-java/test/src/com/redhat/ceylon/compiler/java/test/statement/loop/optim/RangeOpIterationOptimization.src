@@ -89,152 +89,151 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
-        final .ceylon.language.Range<.ceylon.language.Integer> range$34 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
-        final .ceylon.language.Integer last$35 = range$34.getLast();
-        final boolean increasing$36 = range$34.getIncreasing();
-        loop_7: for (.ceylon.language.Integer item$37 = range$34.getFirst(); increasing$36 ? item$37.offset(last$35) <= 0L : item$37.offset(last$35) >= 0L; item$37 = increasing$36 ? item$37.getSuccessor() : item$37.getPredecessor()) {
-            final long i = item$37.longValue();
+        .java.lang.Object elem$34;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$35 = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        loop_7: while (!((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$34).longValue();
             sum += i;
         }
     }
     
     private final void flow$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$38 = 1L;
-        final long $ceylontmp$end$39 = 10L;
-        final boolean $ceylontmp$increasing$40 = $ceylontmp$start$38 <= $ceylontmp$end$39;
-        final long $ceylontmp$incr$41 = $ceylontmp$increasing$40 ? 1L : -1L;
-        loop_8: for (long withElse$42 = $ceylontmp$start$38; $ceylontmp$increasing$40 ? withElse$42 - $ceylontmp$end$39 <= 0L : withElse$42 - $ceylontmp$end$39 >= 0L; withElse$42 += $ceylontmp$incr$41) {
-            final long withElse = withElse$42;
+        final long $ceylontmp$start$36 = 1L;
+        final long $ceylontmp$end$37 = 10L;
+        final boolean $ceylontmp$increasing$38 = $ceylontmp$start$36 <= $ceylontmp$end$37;
+        final long $ceylontmp$incr$39 = $ceylontmp$increasing$38 ? 1L : -1L;
+        loop_8: for (long withElse$40 = $ceylontmp$start$36; $ceylontmp$increasing$38 ? withElse$40 - $ceylontmp$end$37 <= 0L : withElse$40 - $ceylontmp$end$37 >= 0L; withElse$40 += $ceylontmp$incr$39) {
+            final long withElse = withElse$40;
             sum += withElse;
         }
         sum = 0L;
-        final long $ceylontmp$start$43 = 10L;
-        final long $ceylontmp$end$44 = 1L;
-        final boolean $ceylontmp$increasing$45 = $ceylontmp$start$43 <= $ceylontmp$end$44;
-        final long $ceylontmp$incr$46 = $ceylontmp$increasing$45 ? 1L : -1L;
-        loop_9: for (long breaks$47 = $ceylontmp$start$43; $ceylontmp$increasing$45 ? breaks$47 - $ceylontmp$end$44 <= 0L : breaks$47 - $ceylontmp$end$44 >= 0L; breaks$47 += $ceylontmp$incr$46) {
-            final long breaks = breaks$47;
+        final long $ceylontmp$start$41 = 10L;
+        final long $ceylontmp$end$42 = 1L;
+        final boolean $ceylontmp$increasing$43 = $ceylontmp$start$41 <= $ceylontmp$end$42;
+        final long $ceylontmp$incr$44 = $ceylontmp$increasing$43 ? 1L : -1L;
+        loop_9: for (long breaks$45 = $ceylontmp$start$41; $ceylontmp$increasing$43 ? breaks$45 - $ceylontmp$end$42 <= 0L : breaks$45 - $ceylontmp$end$42 >= 0L; breaks$45 += $ceylontmp$incr$44) {
+            final long breaks = breaks$45;
             sum += breaks;
             break loop_9;
         }
-        boolean doforelse$48 = true;
-        final long $ceylontmp$start$49 = 10L;
-        final long $ceylontmp$end$50 = 1L;
-        final boolean $ceylontmp$increasing$51 = $ceylontmp$start$49 <= $ceylontmp$end$50;
-        final long $ceylontmp$incr$52 = $ceylontmp$increasing$51 ? 1L : -1L;
-        loop_10: for (long breaksWithElse$53 = $ceylontmp$start$49; $ceylontmp$increasing$51 ? breaksWithElse$53 - $ceylontmp$end$50 <= 0L : breaksWithElse$53 - $ceylontmp$end$50 >= 0L; breaksWithElse$53 += $ceylontmp$incr$52) {
-            final long breaksWithElse = breaksWithElse$53;
+        boolean doforelse$46 = true;
+        final long $ceylontmp$start$47 = 10L;
+        final long $ceylontmp$end$48 = 1L;
+        final boolean $ceylontmp$increasing$49 = $ceylontmp$start$47 <= $ceylontmp$end$48;
+        final long $ceylontmp$incr$50 = $ceylontmp$increasing$49 ? 1L : -1L;
+        loop_10: for (long breaksWithElse$51 = $ceylontmp$start$47; $ceylontmp$increasing$49 ? breaksWithElse$51 - $ceylontmp$end$48 <= 0L : breaksWithElse$51 - $ceylontmp$end$48 >= 0L; breaksWithElse$51 += $ceylontmp$incr$50) {
+            final long breaksWithElse = breaksWithElse$51;
             sum += breaksWithElse;
-            doforelse$48 = false;
+            doforelse$46 = false;
             break loop_10;
         }
-        if (doforelse$48) {
+        if (doforelse$46) {
             sum = 0L;
         }
-        boolean doforelse$54 = true;
-        final long $ceylontmp$start$55 = 10L;
-        final long $ceylontmp$end$56 = 1L;
-        final boolean $ceylontmp$increasing$57 = $ceylontmp$start$55 <= $ceylontmp$end$56;
-        final long $ceylontmp$incr$58 = $ceylontmp$increasing$57 ? 1L : -1L;
-        loop_11: for (long breaksWithElse$59 = $ceylontmp$start$55; $ceylontmp$increasing$57 ? breaksWithElse$59 - $ceylontmp$end$56 <= 0L : breaksWithElse$59 - $ceylontmp$end$56 >= 0L; breaksWithElse$59 += $ceylontmp$incr$58) {
-            final long breaksWithElse = breaksWithElse$59;
+        boolean doforelse$52 = true;
+        final long $ceylontmp$start$53 = 10L;
+        final long $ceylontmp$end$54 = 1L;
+        final boolean $ceylontmp$increasing$55 = $ceylontmp$start$53 <= $ceylontmp$end$54;
+        final long $ceylontmp$incr$56 = $ceylontmp$increasing$55 ? 1L : -1L;
+        loop_11: for (long breaksWithElse$57 = $ceylontmp$start$53; $ceylontmp$increasing$55 ? breaksWithElse$57 - $ceylontmp$end$54 <= 0L : breaksWithElse$57 - $ceylontmp$end$54 >= 0L; breaksWithElse$57 += $ceylontmp$incr$56) {
+            final long breaksWithElse = breaksWithElse$57;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
-                doforelse$54 = false;
+                doforelse$52 = false;
                 break loop_11;
             }
         }
-        if (doforelse$54) {
+        if (doforelse$52) {
             sum = 0L;
         }
-        final long $ceylontmp$start$61 = 10L;
-        final long $ceylontmp$end$62 = 1L;
-        final boolean $ceylontmp$increasing$63 = $ceylontmp$start$61 <= $ceylontmp$end$62;
-        final long $ceylontmp$incr$64 = $ceylontmp$increasing$63 ? 1L : -1L;
-        loop_12: for (long returns$65 = $ceylontmp$start$61; $ceylontmp$increasing$63 ? returns$65 - $ceylontmp$end$62 <= 0L : returns$65 - $ceylontmp$end$62 >= 0L; returns$65 += $ceylontmp$incr$64) {
-            final long returns = returns$65;
+        final long $ceylontmp$start$59 = 10L;
+        final long $ceylontmp$end$60 = 1L;
+        final boolean $ceylontmp$increasing$61 = $ceylontmp$start$59 <= $ceylontmp$end$60;
+        final long $ceylontmp$incr$62 = $ceylontmp$increasing$61 ? 1L : -1L;
+        loop_12: for (long returns$63 = $ceylontmp$start$59; $ceylontmp$increasing$61 ? returns$63 - $ceylontmp$end$60 <= 0L : returns$63 - $ceylontmp$end$60 >= 0L; returns$63 += $ceylontmp$incr$62) {
+            final long returns = returns$63;
             sum += returns;
             break loop_12;
         }
-        boolean doforelse$66 = true;
-        final long $ceylontmp$start$67 = 10L;
-        final long $ceylontmp$end$68 = 1L;
-        final boolean $ceylontmp$increasing$69 = $ceylontmp$start$67 <= $ceylontmp$end$68;
-        final long $ceylontmp$incr$70 = $ceylontmp$increasing$69 ? 1L : -1L;
-        loop_13: for (long returnsWithElse$71 = $ceylontmp$start$67; $ceylontmp$increasing$69 ? returnsWithElse$71 - $ceylontmp$end$68 <= 0L : returnsWithElse$71 - $ceylontmp$end$68 >= 0L; returnsWithElse$71 += $ceylontmp$incr$70) {
-            final long returnsWithElse = returnsWithElse$71;
+        boolean doforelse$64 = true;
+        final long $ceylontmp$start$65 = 10L;
+        final long $ceylontmp$end$66 = 1L;
+        final boolean $ceylontmp$increasing$67 = $ceylontmp$start$65 <= $ceylontmp$end$66;
+        final long $ceylontmp$incr$68 = $ceylontmp$increasing$67 ? 1L : -1L;
+        loop_13: for (long returnsWithElse$69 = $ceylontmp$start$65; $ceylontmp$increasing$67 ? returnsWithElse$69 - $ceylontmp$end$66 <= 0L : returnsWithElse$69 - $ceylontmp$end$66 >= 0L; returnsWithElse$69 += $ceylontmp$incr$68) {
+            final long returnsWithElse = returnsWithElse$69;
             sum += returnsWithElse;
-            doforelse$66 = false;
+            doforelse$64 = false;
             break loop_13;
         }
-        if (doforelse$66) {
+        if (doforelse$64) {
             sum = 0L;
         }
-        boolean doforelse$72 = true;
-        final long $ceylontmp$start$73 = 10L;
-        final long $ceylontmp$end$74 = 1L;
-        final boolean $ceylontmp$increasing$75 = $ceylontmp$start$73 <= $ceylontmp$end$74;
-        final long $ceylontmp$incr$76 = $ceylontmp$increasing$75 ? 1L : -1L;
-        loop_14: for (long returnsWithElse$77 = $ceylontmp$start$73; $ceylontmp$increasing$75 ? returnsWithElse$77 - $ceylontmp$end$74 <= 0L : returnsWithElse$77 - $ceylontmp$end$74 >= 0L; returnsWithElse$77 += $ceylontmp$incr$76) {
-            final long returnsWithElse = returnsWithElse$77;
+        boolean doforelse$70 = true;
+        final long $ceylontmp$start$71 = 10L;
+        final long $ceylontmp$end$72 = 1L;
+        final boolean $ceylontmp$increasing$73 = $ceylontmp$start$71 <= $ceylontmp$end$72;
+        final long $ceylontmp$incr$74 = $ceylontmp$increasing$73 ? 1L : -1L;
+        loop_14: for (long returnsWithElse$75 = $ceylontmp$start$71; $ceylontmp$increasing$73 ? returnsWithElse$75 - $ceylontmp$end$72 <= 0L : returnsWithElse$75 - $ceylontmp$end$72 >= 0L; returnsWithElse$75 += $ceylontmp$incr$74) {
+            final long returnsWithElse = returnsWithElse$75;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
-                doforelse$72 = false;
+                doforelse$70 = false;
                 break loop_14;
             }
         }
-        if (doforelse$72) {
+        if (doforelse$70) {
             sum = 0L;
         }
-        final long $ceylontmp$start$79 = 10L;
-        final long $ceylontmp$end$80 = 1L;
-        final boolean $ceylontmp$increasing$81 = $ceylontmp$start$79 <= $ceylontmp$end$80;
-        final long $ceylontmp$incr$82 = $ceylontmp$increasing$81 ? 1L : -1L;
-        loop_15: for (long throws$83 = $ceylontmp$start$79; $ceylontmp$increasing$81 ? throws$83 - $ceylontmp$end$80 <= 0L : throws$83 - $ceylontmp$end$80 >= 0L; throws$83 += $ceylontmp$incr$82) {
-            final long $throws = throws$83;
+        final long $ceylontmp$start$77 = 10L;
+        final long $ceylontmp$end$78 = 1L;
+        final boolean $ceylontmp$increasing$79 = $ceylontmp$start$77 <= $ceylontmp$end$78;
+        final long $ceylontmp$incr$80 = $ceylontmp$increasing$79 ? 1L : -1L;
+        loop_15: for (long throws$81 = $ceylontmp$start$77; $ceylontmp$increasing$79 ? throws$81 - $ceylontmp$end$78 <= 0L : throws$81 - $ceylontmp$end$78 >= 0L; throws$81 += $ceylontmp$incr$80) {
+            final long $throws = throws$81;
             sum += $throws;
             break loop_15;
         }
-        boolean doforelse$84 = true;
-        final long $ceylontmp$start$85 = 10L;
-        final long $ceylontmp$end$86 = 1L;
-        final boolean $ceylontmp$increasing$87 = $ceylontmp$start$85 <= $ceylontmp$end$86;
-        final long $ceylontmp$incr$88 = $ceylontmp$increasing$87 ? 1L : -1L;
-        loop_16: for (long throwsWithElse$89 = $ceylontmp$start$85; $ceylontmp$increasing$87 ? throwsWithElse$89 - $ceylontmp$end$86 <= 0L : throwsWithElse$89 - $ceylontmp$end$86 >= 0L; throwsWithElse$89 += $ceylontmp$incr$88) {
-            final long throwsWithElse = throwsWithElse$89;
+        boolean doforelse$82 = true;
+        final long $ceylontmp$start$83 = 10L;
+        final long $ceylontmp$end$84 = 1L;
+        final boolean $ceylontmp$increasing$85 = $ceylontmp$start$83 <= $ceylontmp$end$84;
+        final long $ceylontmp$incr$86 = $ceylontmp$increasing$85 ? 1L : -1L;
+        loop_16: for (long throwsWithElse$87 = $ceylontmp$start$83; $ceylontmp$increasing$85 ? throwsWithElse$87 - $ceylontmp$end$84 <= 0L : throwsWithElse$87 - $ceylontmp$end$84 >= 0L; throwsWithElse$87 += $ceylontmp$incr$86) {
+            final long throwsWithElse = throwsWithElse$87;
             sum += throwsWithElse;
-            doforelse$84 = false;
+            doforelse$82 = false;
             break loop_16;
         }
-        if (doforelse$84) {
+        if (doforelse$82) {
             sum = 0L;
         }
-        boolean doforelse$90 = true;
-        final long $ceylontmp$start$91 = 10L;
-        final long $ceylontmp$end$92 = 1L;
-        final boolean $ceylontmp$increasing$93 = $ceylontmp$start$91 <= $ceylontmp$end$92;
-        final long $ceylontmp$incr$94 = $ceylontmp$increasing$93 ? 1L : -1L;
-        loop_17: for (long throwsWithElse$95 = $ceylontmp$start$91; $ceylontmp$increasing$93 ? throwsWithElse$95 - $ceylontmp$end$92 <= 0L : throwsWithElse$95 - $ceylontmp$end$92 >= 0L; throwsWithElse$95 += $ceylontmp$incr$94) {
-            final long throwsWithElse = throwsWithElse$95;
+        boolean doforelse$88 = true;
+        final long $ceylontmp$start$89 = 10L;
+        final long $ceylontmp$end$90 = 1L;
+        final boolean $ceylontmp$increasing$91 = $ceylontmp$start$89 <= $ceylontmp$end$90;
+        final long $ceylontmp$incr$92 = $ceylontmp$increasing$91 ? 1L : -1L;
+        loop_17: for (long throwsWithElse$93 = $ceylontmp$start$89; $ceylontmp$increasing$91 ? throwsWithElse$93 - $ceylontmp$end$90 <= 0L : throwsWithElse$93 - $ceylontmp$end$90 >= 0L; throwsWithElse$93 += $ceylontmp$incr$92) {
+            final long throwsWithElse = throwsWithElse$93;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
-                doforelse$90 = false;
+                doforelse$88 = false;
                 break loop_17;
             }
         }
-        if (doforelse$90) {
+        if (doforelse$88) {
             sum = 0L;
         }
     }
     
     private final void captured$priv$() {
-        final long $ceylontmp$start$97 = 0L;
-        final long $ceylontmp$end$98 = 10L;
-        final boolean $ceylontmp$increasing$99 = $ceylontmp$start$97 <= $ceylontmp$end$98;
-        final long $ceylontmp$incr$100 = $ceylontmp$increasing$99 ? 1L : -1L;
-        loop_18: for (long i$101 = $ceylontmp$start$97; $ceylontmp$increasing$99 ? i$101 - $ceylontmp$end$98 <= 0L : i$101 - $ceylontmp$end$98 >= 0L; i$101 += $ceylontmp$incr$100) {
-            final long i = i$101;
+        final long $ceylontmp$start$95 = 0L;
+        final long $ceylontmp$end$96 = 10L;
+        final boolean $ceylontmp$increasing$97 = $ceylontmp$start$95 <= $ceylontmp$end$96;
+        final long $ceylontmp$incr$98 = $ceylontmp$increasing$97 ? 1L : -1L;
+        loop_18: for (long i$99 = $ceylontmp$start$95; $ceylontmp$increasing$97 ? i$99 - $ceylontmp$end$96 <= 0L : i$99 - $ceylontmp$end$96 >= 0L; i$99 += $ceylontmp$incr$98) {
+            final long i = i$99;
             
             final class x_ {
                 
