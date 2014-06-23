@@ -112,13 +112,16 @@ public class JsIdentifierNames {
         reservedWords.add("Number");
         reservedWords.add("String");
         reservedWords.add("push");
+        reservedWords.add("slice");
+        reservedWords.add("toString");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
         // implementation of the language module.
         substitutedMemberNames.add("ceylon.language::String.split");
         substitutedMemberNames.add("ceylon.language::String.replace");
-        substitutedMemberNames.add("ceylon.language::String.slice");
+        substitutedMemberNames.add("ceylon.language::String.substr");
+        substitutedMemberNames.add("ceylon.language::String.length");
         substitutedMemberNames.add("ceylon.language::Iterable.filter");
         substitutedMemberNames.add("ceylon.language::Iterable.every");
         substitutedMemberNames.add("ceylon.language::Iterable.map");
