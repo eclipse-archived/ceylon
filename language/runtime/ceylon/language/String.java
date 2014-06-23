@@ -1252,6 +1252,7 @@ public final class String
         return true;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
     @Override
     public Tuple slice(@Name("index") long index) {
