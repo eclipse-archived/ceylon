@@ -185,7 +185,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
-     stream."
+     stream. This operation eagerly evaluates and collects 
+     every element of the stream."
     shared default Element[] sequence() {
         value array = Array(this);
         if (array.empty) {
@@ -317,8 +318,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
-    shared default Callable<Iterable<Result,Absent>,Args> spread<Result,Args>(
-        Callable<Result,Args> method(Element element))
+    shared default Callable<Iterable<Result,Absent>,Args> 
+    spread<Result,Args>(Callable<Result,Args> method(Element element))
             given Args satisfies Anything[] 
             //=> flatten((Args args) => map(shuffle(method)(*args)));
             => flatten((Args args) 
@@ -346,6 +347,15 @@ shared interface Iterable<out Element, out Absent=Null>
             return ArraySequence(array);
         }
     }
+    
+    "Produces a list formed by repeating the elements of 
+     this stream the [[given number of times|times]], or an 
+     empty list if `times<=0`. 
+     
+     This operation is an eager counterpart to [[cycle]]."
+    see (`function cycle`)
+    shared default List<Element> repeat(Integer times)
+            => cycle(times).sequence();
     
     "Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, sorted according to the given 
@@ -395,6 +405,23 @@ shared interface Iterable<out Element, out Absent=Null>
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) 
              => filter(selecting).sequence();
+    
+    "Produces the number of elements in this stream that 
+     satisfy the [[given predicate function|selecting]].
+     For an infinite stream, this operation never 
+     terminates."
+    shared default Integer count(
+        "The predicate satisfied by the elements to
+         be counted."
+        Boolean selecting(Element element)) {
+        variable value count=0;
+        for (elem in this) {
+            if (selecting(elem)) {
+                count++;
+            }
+        }
+        return count;
+    }
     
     "Determines if there is at least one element of this 
      stream that satisfies the [[given predicate 
@@ -616,22 +643,16 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces the number of elements in this stream that 
-     satisfy the [[given predicate function|selecting]].
-     For an infinite stream, this operation never 
-     terminates."
-    shared default Integer count(
-            "The predicate satisfied by the elements to
-             be counted."
-            Boolean selecting(Element element)) {
-        variable value count=0;
-        for (elem in this) {
-            if (selecting(elem)) {
-                count++;
-            }
-        }
-        return count;
-    }
+    "Produces a stream containing the elements of this 
+     stream, replacing every `null` element with the [[given 
+     default value|defaultValue]]. The resulting stream does 
+     not have the value `null`."
+    see (`value coalesced`)
+    shared default Iterable<Element&Object|Default,Absent>
+            defaultNullElements<Default>(
+        "A default value that replaces `null` elements."
+        Default defaultValue)
+            => { for (elem in this) elem else defaultValue };
     
     "The non-null elements of this stream, in the order in
      which they occur in this stream. For null elements of 
@@ -653,6 +674,7 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 2->\"world\" }`."
+    see (`function entries`)
     shared default Iterable<<Integer->Element&Object>,Element&Null|Absent> indexed {
         object indexes
                 satisfies Iterable<<Integer->Element&Object>,Element&Null|Absent> {
@@ -686,7 +708,7 @@ shared interface Iterable<out Element, out Absent=Null>
     //TODO: add when backend bug is fixed
     /*shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
-             size=>outer.size/2;
+             size => (outer.size/2)*2;
              shared actual Iterator<[Element, Element]> iterator() {
                  value iter = outer.iterator();
                  object iterator 
@@ -750,16 +772,6 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
-    "Produces a stream containing the elements of this 
-     stream, replacing every `null` element with the [[given 
-     default value|defaultValue]]. The resulting stream does 
-     not have the value `null`."
-    shared default Iterable<Element&Object|Default,Absent>
-    defaultNullElements<Default>(
-            "A default value that replaces `null` elements."
-            Default defaultValue)
-            => { for (elem in this) elem else defaultValue };
-    
     /*"Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
@@ -769,42 +781,6 @@ shared interface Iterable<out Element, out Absent=Null>
                 Grouping grouping(Element elem))
             given Grouping satisfies Object;*/
         
-    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
-     `z` are the `string` representations of the elements of 
-     this collection, as produced by the iterator of the 
-     stream, or the string `\"{}\"` if this stream is empty. 
-     If the stream is very long, the list of elements might 
-     be truncated, as indicated by an ellipse."
-    shared actual default String string {
-        value sb = StringBuilder();
-        sb.append("{");
-        value it = iterator();
-        variable value current = it.next();
-        if (!is Finished c1 = current) {
-            sb.append(" ")
-              .append(current?.string else "<null>");
-            variable value count = 1;
-            while (true) {
-                current = it.next();
-                if (is Finished c2 = current) {
-                    sb.append(" ");
-                    break;
-                }
-                else if (count == 30) {
-                    sb.append(", ... "); // TODO use Unicode ellipse '…'?
-                    break;
-                }
-                else {
-                    sb.append(", ")
-                      .append(current?.string else "<null>");
-                    count++;
-                }
-            }
-        }
-        sb.append("}");
-        return sb.string;
-    }
-    
     "An infinite stream that produces the elements of this 
      stream, repeatedly.
      
@@ -846,7 +822,8 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces a stream formed by repeating the elements of 
      this stream the [[given number of times|times]], or an 
      empty stream if `times<=0`."
-    see (`value cycled`, `function repeat`)
+    see (`value cycled`, 
+         `function repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -880,20 +857,43 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produces a list formed by repeating the elements of 
-     this stream the [[given number of times|times]], or an 
-     empty list if `times<=0`. An eager counterpart to 
-     [[cycle]]."
-    see (`function cycle`)
-    shared default List<Element> repeat(Integer times) {
-        return cycle(times).sequence();
+    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
+     `z` are the `string` representations of the elements of 
+     this collection, as produced by the iterator of the 
+     stream, or the string `\"{}\"` if this stream is empty. 
+     If the stream is very long, the list of elements might 
+     be truncated, as indicated by an ellipse."
+    shared actual default String string {
+        value sb = StringBuilder();
+        sb.append("{");
+        value it = iterator();
+        variable value current = it.next();
+        if (!is Finished c1 = current) {
+            sb.append(" ")
+                    .append(current?.string else "<null>");
+            variable value count = 1;
+            while (true) {
+                current = it.next();
+                if (is Finished c2 = current) {
+                    sb.append(" ");
+                    break;
+                }
+                else if (count == 30) {
+                    sb.append(", ... "); // TODO use Unicode ellipse '…'?
+                    break;
+                }
+                else {
+                    sb.append(", ")
+                            .append(current?.string else "<null>");
+                    count++;
+                }
+            }
+        }
+        sb.append("}");
+        return sb.string;
     }
     
 }
-
-String commaList({Anything*} elements) 
-        => ", ".join { for (element in elements)
-                       element else "<null>" };
 
 Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {

@@ -59,3 +59,7 @@ shared interface Collection<out Element>
             empty then "{}" else "{ ``commaList(this)`` }";
     
 }
+
+String commaList({Anything*} elements) 
+        => ", ".join { for (element in elements) 
+                           element else "<null>" };

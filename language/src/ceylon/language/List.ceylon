@@ -66,40 +66,27 @@ shared interface List<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => size>length;
     
+    "Returns the first element of this `List`, if any."
+    shared actual default Element? first => getFromFirst(0);
+    
+    "Returns the last element of this `List`, if any."
+    shared actual default Element? last => getFromLast(0);
+    
     "The rest of the list, without the first element.
      
      This is a lazy operation returning a view of this list."
     shared actual default List<Element> rest => Rest(1);
     
-    "A sublist of this list, starting at the element with
-     the given [[index|from]].
-     
-     This is a lazy operation, returning a view of this list."
-    see (`function skip`)
-    shared default List<Element> sublistFrom(Integer from) 
-            => from<0 then this else Rest(from); 
-    
-    "A sublist of this list, ending at the element with the 
-     given [[index|to]].
-     
-     This is a lazy operation, returning a view of this list."
-    see (`function take`,
-         `function initial`)
-    shared default List<Element> sublistTo(Integer to) 
-            => to<0 then this else Sublist(to);
-    
-    "A sublist of this list, starting at the element with
-     index [[from]], ending at the element with the index 
-     [[to]].
-     
-     This is a lazy operation, returning a view of this list."
-    shared default List<Element> sublist(Integer from, Integer to) 
-            => sublistTo(to).sublistFrom(from);
-    
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
             => 0 <= index < size;
+    
+    "Determines if this list contains the given value.
+     Returns `true` for every element of this list."
+    see (`function occurs`)
+    shared actual default Boolean contains(Object element) 
+            => occurs(element);
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
@@ -143,8 +130,15 @@ shared interface List<out Element>
         }
     }
     
+    "A list containing all indexes of this list.
+     
+     This is a lazy operation."
+    shared actual default List<Integer> keys => Indexes();
+    
     "A list containing the elements of this list in reverse 
-     order.
+     order. For every `index` of a `list`:
+     
+         list.reversed[index]==list[size-1-index]
      
      This is a lazy operation returning a view of this list."
     see (`function reverse`)
@@ -152,6 +146,13 @@ shared interface List<out Element>
     
     see (`value reversed`)
     shared actual default Element[] reverse() => [*reversed];
+    
+    shared actual default Element[] sequence() 
+            => empty then []
+                     else populateSequence(size, getElement);
+    
+    shared actual default List<Element> clone() 
+            => Array(this);
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
@@ -234,64 +235,30 @@ shared interface List<out Element>
         return null;
     }
     
-    "Returns the first element of this `List`, if any."
-    shared actual default Element? first => getFromFirst(0);
-    
-    "Returns the last element of this `List`, if any."
-    shared actual default Element? last => getFromLast(0);
-    
-    "A list containing all indexes of this list.
+    "A sublist of this list, starting at the element with
+     the given [[index|from]].
      
-     This is a lazy operation."
-    shared actual default List<Integer> keys => Indexes();
+     This is a lazy operation, returning a view of this list."
+    see (`function skip`)
+    shared default List<Element> sublistFrom(Integer from) 
+            => from<0 then this else Rest(from); 
     
-    "Returns a new `List` that starts with the specified
-     [[element]], followed by the elements of this list,
-     in the order they occur in this list.
+    "A sublist of this list, ending at the element with the 
+     given [[index|to]].
      
-     This is an eager operation."
-    see (`function follow`, 
-         `function prepend`,
-         `function withTrailing`)
-    shared default [Other,Element*] withLeading<Other>(
-            "The first element of the resulting sequence."
-            Other element)
-            => [element, *this];
+     This is a lazy operation, returning a view of this list."
+    see (`function take`,
+        `function initial`)
+    shared default List<Element> sublistTo(Integer to) 
+            => to<0 then this else Sublist(to);
     
-    "Returns a new `List` that starts with the elements of 
-     this list, in the order they occur in this list, and 
-     ends with the specified [[element]].
+    "A sublist of this list, starting at the element with
+     index [[from]], ending at the element with the index 
+     [[to]].
      
-     This is an eager operation."
-    see (`function prepend`,
-         `function withLeading`)
-    shared default [Element|Other+] withTrailing<Other>(
-            "The last element of the resulting sequence."
-            Other element)
-            => [*(this chain Singleton(element))];
-    
-    "Return a sequence containing the elements of this list, 
-     in the order in which they occur in this list, followed 
-     by the given [[elements]], in the order in which they 
-     occur in the given stream.
-     
-     This is an eager operation."
-    see (`function extend`, 
-         `function chain`,
-         `function withTrailing`,
-         `function concatenate`)
-    shared default [Element|Other*] append<Other>({Other*} elements) 
-            => [*(this chain elements)];
-    
-    "Return a sequence containing the given [[elements]], in 
-     the order in which they occur in the given stream,
-     followed by the elements of this list, in the order in 
-     which they occur in this list.
-     
-     This is an eager operation."
-    see (`function withLeading`)
-    shared default [Element|Other*] prepend<Other>({Other*} elements) 
-            => [*(elements chain this)];
+     This is a lazy operation, returning a view of this list."
+    shared default List<Element> sublist(Integer from, Integer to) 
+            => sublistTo(to).sublistFrom(from);
     
     "Return a list formed by extending this list with the 
      elements of the given [[list]].
@@ -457,12 +424,6 @@ shared interface List<out Element>
         return false;
     }
     
-    "Determines if this list contains the given value.
-     Returns `true` for every element of this list."
-    see (`function occurs`)
-    shared actual default Boolean contains(Object element) 
-            => occurs(element);
-        
     "The indexes in this list at which the given element 
      occurs."
     shared default {Integer*} occurrences(Anything element)
@@ -656,6 +617,65 @@ shared interface List<out Element>
         }
     }
     
+    "Return two lists, the first containing the elements
+     that occur before the given [[index]], the second with
+     the elements that occur after the given `index`. If the
+     given `index` is outside the range of indices of this
+     list, one of the returned lists will be empty.
+     
+     This is an eager operation."
+    shared default [List<Element>,List<Element>] slice
+    (Integer index)
+            => [this[...index-1], this[index...]];
+    
+    "Returns a new `List` that starts with the specified
+     [[element]], followed by the elements of this list,
+     in the order they occur in this list.
+     
+     This is an eager operation."
+    see (`function follow`, 
+        `function prepend`,
+        `function withTrailing`)
+    shared default [Other,Element*] withLeading<Other>(
+            "The first element of the resulting sequence."
+            Other element)
+            => [element, *this];
+    
+    "Returns a new `List` that starts with the elements of 
+     this list, in the order they occur in this list, and 
+     ends with the specified [[element]].
+     
+     This is an eager operation."
+    see (`function prepend`,
+        `function withLeading`)
+    shared default [Element|Other+] withTrailing<Other>(
+            "The last element of the resulting sequence."
+            Other element)
+            => [*(this chain Singleton(element))];
+    
+    "Return a sequence containing the elements of this list, 
+     in the order in which they occur in this list, followed 
+     by the given [[elements]], in the order in which they 
+     occur in the given stream.
+     
+     This is an eager operation."
+    see (`function extend`, 
+        `function chain`,
+        `function withTrailing`,
+        `function concatenate`)
+    shared default [Element|Other*] append<Other>({Other*} elements) 
+            => [*(this chain elements)];
+    
+    "Return a sequence containing the given [[elements]], in 
+     the order in which they occur in the given stream,
+     followed by the elements of this list, in the order in 
+     which they occur in this list.
+     
+     This is an eager operation."
+    see (`function withLeading`)
+    shared default [Element|Other*] prepend<Other>({Other*} elements) 
+            => [*(elements chain this)];
+    
     Element getElement(Integer index) {
         value element = getFromFirst(index);
         if (exists element) { 
@@ -730,29 +750,6 @@ shared interface List<out Element>
             return [];
         }
     }
-    
-    "Return two lists, the first containing the elements
-     that occur before the given [[index]], the second with
-     the elements that occur after the given `index`. If the
-     given `index` is outside the range of indices of this
-     list, one of the returned lists will be empty.
-     
-     This is an eager operation."
-    shared default [List<Element>,List<Element>] slice
-                (Integer index)
-            => [this[...index-1], this[index...]];
-    
-    shared actual default Element[] sequence() {
-        if (empty) {
-            return [];
-        }
-        else {
-            return populateSequence(size, getElement);
-        }
-    }
-    
-    shared actual default List<Element> clone() 
-            => Array(this);
     
     
     class Indexes()
