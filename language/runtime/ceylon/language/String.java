@@ -1528,7 +1528,7 @@ public final class String
     public static boolean every(java.lang.String value, 
             Callable<? extends Boolean> f) {
         if (value.isEmpty()) {
-            return false;
+            return true;
         } else {
             return instance(value).every(f);
         }
