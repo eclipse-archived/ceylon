@@ -749,7 +749,6 @@ public final class String
         }
     }
 
-    @TypeInfo("ceylon.language::String")
     @Transient
     public java.lang.String getTrimmed() {
         return getTrimmed(value);
@@ -771,7 +770,6 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::String")
     public String trimLeading(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("trimming")@FunctionalParameter("(elem)")
@@ -793,7 +791,6 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::String")
     public String trimTrailing(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("trimming")@FunctionalParameter("(elem)")
@@ -815,7 +812,6 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::String")
     public String trim(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("trimming")@FunctionalParameter("(elem)")
@@ -851,7 +847,6 @@ public final class String
         return value.substring(from, to);
     }
 
-    @TypeInfo("ceylon.language::String")
     public java.lang.String getNormalized() {
         return getNormalized(value);
     }
@@ -878,7 +873,6 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
     public String initial(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
         return instance(initial(value, length));
@@ -898,9 +892,7 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
-    public String terminal(@TypeInfo("ceylon.language::Integer")
-    @Name("length") long length) {
+    public String terminal(@Name("length") long length) {
         return instance(terminal(value, length));
     }
 
@@ -918,7 +910,6 @@ public final class String
         }
     }
 
-    @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("objects") 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
     Iterable<? extends java.lang.Object,?> objects) {
@@ -952,7 +943,7 @@ public final class String
 
     @Override
     public String segment(@Name("from") final Integer from,
-            @Name("length") final long length) {
+                          @Name("length") final long length) {
         return instance(segment(value, from.longValue(), length));
     }
 
@@ -975,7 +966,7 @@ public final class String
 
     @Override
     public String span(@Name("from") final Integer from,
-            @Name("to") final Integer to) {
+                       @Name("to") final Integer to) {
         return instance(span(value, from.longValue(), to.longValue()));
     }
 
@@ -1006,7 +997,7 @@ public final class String
     }
     
     @Override
-    public String spanTo(@Name("to")  final Integer to) {
+    public String spanTo(@Name("to") final Integer to) {
         return instance(spanTo(value, to.longValue()));
     }
      
@@ -1070,6 +1061,7 @@ public final class String
         return instance(reverse(value));
     }
     
+    @Ignore
     public static java.lang.String reverse(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
@@ -1086,11 +1078,8 @@ public final class String
         return builder.toString();
     }
 
-    @TypeInfo("ceylon.language::String")
     @Override
-    public String repeat(
-            @TypeInfo("ceylon.language::Integer")
-            @Name("times") long times) {
+    public String repeat(@Name("times") long times) {
         return instance(repeat(value, times));
     }
 
@@ -1107,7 +1096,6 @@ public final class String
         return builder.toString();
     }
 
-    @TypeInfo("ceylon.language::String")
     public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
@@ -1126,8 +1114,7 @@ public final class String
         }
         return value;
     }
-
-    @TypeInfo("ceylon.language::String")
+    
     public java.lang.String replaceFirst(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
@@ -1147,7 +1134,6 @@ public final class String
         }
     }
 
-    @TypeInfo("ceylon.language::String")
     public java.lang.String replaceLast(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
@@ -1171,16 +1157,20 @@ public final class String
     public Iterable<? extends String, ?> split(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
-            
-            @Name("splitting")@FunctionalParameter("(ch)") Callable<? extends Boolean> splitting,
+            @Name("splitting") 
+            @FunctionalParameter("(ch)") 
+            Callable<? extends Boolean> splitting,
             @Defaulted
-            @Name("discardSeparators") boolean discardSeparators,
+            @Name("discardSeparators") 
+            boolean discardSeparators,
             @Defaulted
-            @Name("groupSeparators") boolean groupSeparators) {
+            @Name("groupSeparators") 
+            boolean groupSeparators) {
         if (value.isEmpty()) {
             return new Singleton<String>(String.$TypeDescriptor$, this);
         }
-        return new StringTokens(value, splitting, !discardSeparators, groupSeparators);
+        return new StringTokens(value, splitting, 
+        		!discardSeparators, groupSeparators);
     }
 
     @Ignore
@@ -1193,8 +1183,8 @@ public final class String
             return new Singleton<String>(String.$TypeDescriptor$, 
                     instance(value));
         }
-        return new StringTokens(value, splitting, !discardSeparators, 
-                groupSeparators);
+        return new StringTokens(value, splitting, 
+        		!discardSeparators, groupSeparators);
     }
 
     @Ignore
@@ -1264,17 +1254,13 @@ public final class String
     
     @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
     @Override
-    public
-    Tuple
-    slice(@Name("index") long index) {
+    public Tuple slice(@Name("index") long index) {
         return slice(value,index);
     }
     
     @Ignore
     @SuppressWarnings("rawtypes")
-    public static
-    Tuple
-    slice(java.lang.String value, long index) {
+    public static Tuple slice(java.lang.String value, long index) {
         java.lang.String first;
         java.lang.String second;
         if (index<=0) {
@@ -1353,7 +1339,6 @@ public final class String
         return instance(value).select(f);
     }
 
-    @TypeInfo("ceylon.language::String")
     @Transient
     @Override
     public String getCoalesced() {
@@ -1740,9 +1725,13 @@ public final class String
         return instance(value).spread($reifiedResult, $reifiedArgs, method);
     }
     
-    public java.lang.String pad(@Name("size") long size, 
-            @Name("character") @TypeInfo("ceylon.language::Character") 
-            @Defaulted int character) {
+    public java.lang.String pad(
+    		@Name("size") 
+    		long size, 
+            @Name("character") 
+    		@TypeInfo("ceylon.language::Character") 
+            @Defaulted 
+            int character) {
         return pad(value, size, character);
     }
     
@@ -1778,9 +1767,13 @@ public final class String
         return builder.toString();
     }
     
-    public java.lang.String padLeft(@Name("size") long size, 
-            @Name("character") @TypeInfo("ceylon.language::Character") 
-            @Defaulted int character) {
+    public java.lang.String padLeft(
+    		@Name("size") 
+    		long size, 
+            @Name("character") 
+    		@TypeInfo("ceylon.language::Character") 
+            @Defaulted 
+            int character) {
         return padLeft(value, size, character);
     }
     
@@ -1812,9 +1805,13 @@ public final class String
         return builder.toString();
     }
     
-    public java.lang.String padRight(@Name("size") long size, 
-            @Name("character") @TypeInfo("ceylon.language::Character") 
-            @Defaulted int character) {
+    public java.lang.String padRight(
+    		@Name("size") 
+    		long size, 
+            @Name("character") 
+            @TypeInfo("ceylon.language::Character") 
+            @Defaulted 
+            int character) {
         return padRight(value, size, character);
     }
     
