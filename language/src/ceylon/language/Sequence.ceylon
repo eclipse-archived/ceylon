@@ -132,6 +132,9 @@ shared sealed interface Sequence<out Element>
     shared actual default Element[] repeat(Integer times)
             => (super of Element[]).repeat(times);
     
+    shared actual default [Element[],Element[]] slice(Integer index)
+            => [this[...index-1], this[index...]];
+    
 }
 
 "A [[nonempty sequence|Sequence]] of the given [[elements]], 

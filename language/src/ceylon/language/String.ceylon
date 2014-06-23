@@ -210,7 +210,7 @@ shared native final class String(characters)
      the characters that occur after the given `index`. If 
      the given `index` is outside the range of indices of 
      this string, one of the returned strings will be empty."
-    shared native [String,String] slice(Integer index);
+    shared native actual [String,String] slice(Integer index);
     
     "The length of the string (the number of characters it 
      contains). In the case of the empty string, the string 

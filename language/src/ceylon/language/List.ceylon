@@ -137,8 +137,8 @@ shared interface List<out Element>
     }
     
     "A list containing the elements of this list in reverse 
-     order. This is a lazy operation returing a view of this
-     list."
+     order. This is a lazy operation returning a view of 
+     this list."
     see (`function reverse`)
     shared default List<Element> reversed => Reversed();
     
@@ -513,7 +513,9 @@ shared interface List<out Element>
     
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start and end of this list, 
-     returning a list no longer than this list."
+     returning a list no longer than this list.
+     
+     This is an eager operation."
     shared default List<Element> trim(
             "The predicate function that the trimmed 
              elements satisfy."
@@ -551,7 +553,9 @@ shared interface List<out Element>
     
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the start of this list, 
-     returning a list no longer than this list."
+     returning a list no longer than this list.
+     
+     This is an eager operation."
     shared default List<Element> trimLeading(
             "The predicate function that the trimmed 
              elements satisfy."
@@ -570,7 +574,9 @@ shared interface List<out Element>
     
     "Trim the elements satisfying the given [[predicate 
      function|trimming]] from the end of this list, 
-     returning a list no longer than this list."
+     returning a list no longer than this list.
+     
+     This is an eager operation."
     shared default List<Element> trimTrailing(
             "The predicate function that the trimmed 
              elements satisfy."
@@ -590,7 +596,9 @@ shared interface List<out Element>
     "Select the first elements of this list, returning a 
      list no longer than the given length. If this list is 
      shorter than the given length, return this list. 
-     Otherwise return a list of the given length."
+     Otherwise return a list of the given length.
+     
+     This is an eager operation."
     see (`function List.terminal`)
     shared default List<Element> initial(Integer length)
             => this[0:length];
@@ -598,7 +606,9 @@ shared interface List<out Element>
     "Select the last elements of the list, returning a list 
      no longer than the given length. If this list is 
      shorter than the given length, return this list. 
-     Otherwise return a list of the given length."
+     Otherwise return a list of the given length.
+     
+     This is an eager operation."
     see (`function List.initial`)
     shared default List<Element> terminal(Integer length) {
         if (length>=size) {
@@ -687,13 +697,16 @@ shared interface List<out Element>
         }
     }
     
-    //"Return two lists, the first containing the elements
-    // that occur before the given [[index]], the second with
-    // the elements that occur after the given `index`. If the
-    // given `index` is outside the range of indices of this
-    // list, one of the returned lists will be empty."
-    //shared default [List<Element>,List<Element>] slice(Integer index)
-    //    => [this[...index-1], this[index...]];
+    "Return two lists, the first containing the elements
+     that occur before the given [[index]], the second with
+     the elements that occur after the given `index`. If the
+     given `index` is outside the range of indices of this
+     list, one of the returned lists will be empty.
+     
+     This is an eager operation."
+    shared default [List<Element>,List<Element>] slice
+                (Integer index)
+            => [this[...index-1], this[index...]];
     
     shared actual default Element[] sequence() {
         if (empty) {

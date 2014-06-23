@@ -1267,20 +1267,17 @@ public final class String
     }
     
     @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
+    @Override
     public
-    Tuple<String,? extends String,
-            ? extends Tuple<String,? extends String,
-                    ? extends Sequential<? extends String>>>
+    Tuple
     slice(@Name("index") long index) {
         return slice(value,index);
     }
     
     @Ignore
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("rawtypes")
     public static
-    Tuple<String,? extends String,
-            ? extends Tuple<String,? extends String,
-                    ? extends Sequential<? extends String>>>
+    Tuple
     slice(java.lang.String value, long index) {
         java.lang.String first;
         java.lang.String second;

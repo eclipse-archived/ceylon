@@ -75,6 +75,10 @@ shared interface Sequential<out Element>
     shared actual default Element[] trimTrailing(
         Boolean trimming(Element&Object elem))
             => [*super.trimTrailing(trimming)]; //TODO: inefficient?
+    
+    //TODO: add when backend bug is fixed
+    //shared actual default [Element[],Element[]] slice(Integer index)
+    //        => [this[...index-1], this[index...]];
         
     "This sequence."
     shared actual default Element[] clone() => this;

@@ -204,6 +204,7 @@ shared interface Empty of e
     shared actual [] trimTrailing(Boolean trimming(Nothing elem)) 
             => this;
     
+    shared actual [[],[]] slice(Integer index) => [this, this];
 }
 
 "A sequence with no elements, abbreviated `[]`. The unique 
