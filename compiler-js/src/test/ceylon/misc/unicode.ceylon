@@ -1,6 +1,7 @@
-import check {...}
+import check { checkEqual, fail }
 
-void testCharacter() {
+shared void testUnicode() {
+    //Characters
     Character c1 = 'A';
     //Character c2 = '𝄞';
     Character c3 = 'Ũ';
@@ -35,9 +36,8 @@ void testCharacter() {
     
     checkEqual('A'.successor, 'B', "Character.successor");
     checkEqual('w'.predecessor, 'v', "Character.predecessor");
-}
 
-void testString() {
+    //String
     checkEqual("".empty, true, "String.empty");
     checkEqual("x".empty, false, "String.empty");
     checkEqual("".size, 0, "String.size");
@@ -129,11 +129,5 @@ void testString() {
     checkEqual("abc".endsWith("b"), false, "String.endsWith");
     
     checkEqual("Hello
-                 world!".normalized, "Hello world!", "String with line break");
-}
-
-shared void test() {
-    testCharacter();
-    testString();
-    results();
+                world!".normalized, "Hello world!", "String with line break");
 }

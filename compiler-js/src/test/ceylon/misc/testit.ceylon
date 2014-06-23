@@ -35,6 +35,7 @@ shared void test() {
     check(c.count == 2, "Counter.count");
     
     value v2 = var();
+    testUnicode();
     test_objects();
     testAliasing();
     testLate();
