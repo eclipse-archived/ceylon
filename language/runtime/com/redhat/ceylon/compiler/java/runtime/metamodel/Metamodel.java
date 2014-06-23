@@ -320,16 +320,16 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration){
-        return getOrCreateMetamodel(declaration, null);
+        return getOrCreateMetamodel(declaration, null, false /* not optional */);
     }
 
     private static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration,
-            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules){
+            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules, boolean optional){
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure it is loaded
-                loadModule(declaration, visitedModules);
+                loadModule(declaration, visitedModules, optional);
                 if(!declaration.isAvailable())
                     return null;
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule(declaration); 
@@ -340,7 +340,7 @@ public class Metamodel {
     }
 
     private static void loadModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration, 
-            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules) {
+            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules, boolean optional) {
         // don't do if not running JBoss modules
         if(!isJBossModules()){
             return;
@@ -388,12 +388,12 @@ public class Metamodel {
                 com.redhat.ceylon.compiler.typechecker.model.Module importedModule = mi.getModule();
                 // make sure we don't run in circles
                 if(importedModule != null && !visitedModules.contains(importedModule))
-                    getOrCreateMetamodel(importedModule, visitedModules);
+                    getOrCreateMetamodel(importedModule, visitedModules, mi.isOptional());
             }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
-            // present
-            if(!declaration.isDefault())
+            // present. Also not an issue for optional modules.
+            if(!declaration.isDefault() && !optional)
                 throw Metamodel.newModelError(e);
         } catch (SecurityException e) {
             throw Metamodel.newModelError(e);
@@ -893,7 +893,7 @@ public class Metamodel {
         ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.Module module : view){
-            FreeModule mod = getOrCreateMetamodel(module);
+            FreeModule mod = getOrCreateMetamodel(module, null, true); // optional means don't throw if it's not available
             // skip unavailable modules
             if(mod != null)
                 array[i++] = mod;
@@ -903,15 +903,23 @@ public class Metamodel {
         return iterable.take(i).sequence();
     }
 
+    /**
+     * Used by c.l.meta.modules.find, which accepts null
+     */
     public static ceylon.language.meta.declaration.Module findLoadedModule(String name, String version) {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
-        return module != null ? getOrCreateMetamodel(module) : null;
+        // consider it optional to get null rather than exception
+        return module != null ? getOrCreateMetamodel(module, null, true) : null;
     }
 
+    /**
+     * Used by c.l.meta.modules.find, which accepts null
+     */
     public static Module getDefaultModule() {
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.getContext().getModules().getDefaultModule();
-        return module != null ? getOrCreateMetamodel(module) : null;
+        // consider it optional to get null rather than exception
+        return module != null ? getOrCreateMetamodel(module, null, true) : null;
     }
 
     public static List<ProducedType> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
