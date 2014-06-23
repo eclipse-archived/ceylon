@@ -78,9 +78,9 @@
     <path id="test.run.classpath">
         <path refid="test.compile.classpath"/>
         <pathelement path="${build.test}"/>
-    	<pathelement path="${ceylon.typechecker.lib}"/>
-    	<pathelement path="${ceylon.compiler.lib}"/>
-        <pathelement path="${jandex.lib}" />
+        <pathelement path="${ceylon.typechecker.lib}"/>
+        <pathelement path="${ceylon.compiler.lib}"/>
+        <pathelement path="${jandex.lib}"/>
     </path>
     
     <path id="ant-tasks">
@@ -122,7 +122,7 @@
         <delete dir="${build.dir}"/>
     </target>
 
-	<target name="ide-quick-internal">
+    <target name="ide-quick-internal">
     </target>
 
     <target name="dist"
@@ -364,8 +364,8 @@
             <filter token="CeylonArrayGetter" value="NOTUSED"/>
           </filterset>
         </copy>-->
-	</target>
-	
+    </target>
+    
     <!-- Tasks related to building the ceylon.language module -->
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language.java"
@@ -428,8 +428,8 @@
                 <include name="ceylon/language/process_.java"/>
                 <exclude name="ceylon/language/system.ceylon"/>
                 <include name="ceylon/language/system_.java"/>
-            	<exclude name="ceylon/language/printStackTrace.ceylon"/>
-            	<include name="ceylon/language/printStackTrace_.java"/>
+                <exclude name="ceylon/language/printStackTrace.ceylon"/>
+                <include name="ceylon/language/printStackTrace_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
                 <include name="ceylon/language/string_.java"/>
@@ -508,7 +508,7 @@
             executable="${ceylon.compiler.loc}"
             src="${test.src}:${test.java.src}"
             sysrep="${build.test.repo}"
-        	encoding="UTF-8"
+            encoding="UTF-8"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
@@ -524,7 +524,7 @@
             includeantruntime="false">
             <include name="**/*.java"/>
         </javac>
-    	<!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
         <delete dir="${build.test}/modules/optional"/>
     </target>
     
@@ -573,8 +573,8 @@
                 <not><equals arg1="${test.ceylon.result.1}" arg2="0"/></not>
                 <not><equals arg1="${test.ceylon.result.2}" arg2="0"/></not>
                 <not><equals arg1="${test.ceylon.result.3}" arg2="0"/></not>
-	            <not><equals arg1="${test.ceylon.result.4}" arg2="0"/></not>
-            	<not><equals arg1="${test.ceylon.result.5}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.4}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.5}" arg2="0"/></not>
             </and>
         </condition>
         
@@ -613,7 +613,7 @@
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
-            	<exclude name="jvm/**"/>
+                <exclude name="jvm/**"/>
             </files>
         </ceylon-compile-js>
     </target>
@@ -641,6 +641,6 @@
     </target>
 
     <target name="test" depends="test.java,test.js" 
-    	description="compile and run the tests for JVM and Node.js (requires node)">
+        description="compile and run the tests for JVM and Node.js (requires node)">
     </target>
 </project>
