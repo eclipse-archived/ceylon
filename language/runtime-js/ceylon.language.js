@@ -152,13 +152,12 @@ $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothi
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
 //#COMPILE core_functions.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
-
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow,impl/bases
 //#Anything
 //#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder
 //#native Boolean
 //#native Callable
-//#COMPILE Binary,Destroyable,Obtainable,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,OverflowException,InitializationError,Resource
+//#COMPILE Binary,Destroyable,Obtainable,Comparable,Invertable,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry
 //#Number
 //#COMPILE Set,Range,SizedRange,Singleton,AssertionError,Map,String,strings.js,Character
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
@@ -171,7 +170,7 @@ Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$C
 //#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
 //#COMPILE jsint/Importa,jsint/Paquete,jsint/Modulo,jsint/FreeUnion,jsint/FreeIntersection,jsint/OpenTvar,jsint/OpenTypeParam,jsint/AppliedUnionType,jsint/AppliedIntersectionType
 //#COMPILE annotations
-//#COMPILE Number,numbers.js,misc1.js,tuples.js,metamodel_functions1.js,metamodel_functions2.js,JsResource.js,appliedtypes.js,opentypes.js
+//#COMPILE misc1.js,tuples.js,metamodel_functions1.js,metamodel_functions2.js,JsResource.js,appliedtypes.js,opentypes.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
