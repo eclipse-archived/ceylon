@@ -66,28 +66,33 @@ shared interface List<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => size>length;
     
-    "The rest of the list, without the first element. This 
-     is a lazy operation."
+    "The rest of the list, without the first element.
+     
+     This is a lazy operation returning a view of this list."
     shared actual default List<Element> rest => Rest(1);
     
     "A sublist of this list, starting at the element with
-     the given [[index|from]]. This is a lazy operation, 
-     returning a view of this list."
+     the given [[index|from]].
+     
+     This is a lazy operation, returning a view of this list."
     see (`function skip`)
     shared default List<Element> sublistFrom(Integer from) 
             => from<0 then this else Rest(from); 
     
     "A sublist of this list, ending at the element with the 
-     given [[index|to]]. This is a lazy operation, returning 
-     a view of this list."
-    see (`function take`)
+     given [[index|to]].
+     
+     This is a lazy operation, returning a view of this list."
+    see (`function take`,
+         `function initial`)
     shared default List<Element> sublistTo(Integer to) 
             => to<0 then this else Sublist(to);
     
     "A sublist of this list, starting at the element with
      index [[from]], ending at the element with the index 
-     [[to]]. This is a lazy operation, returning a view of 
-     this list."
+     [[to]].
+     
+     This is a lazy operation, returning a view of this list."
     shared default List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
     
@@ -129,7 +134,7 @@ shared interface List<out Element>
                 value size = outer.size;
                 next() => index>=size then finished 
                                       else getElement(index++);
-                string => "(``outer.string``).iterator()";
+                string => outer.string + ".iterator()";
             }
             return listIterator;
         }
@@ -139,8 +144,9 @@ shared interface List<out Element>
     }
     
     "A list containing the elements of this list in reverse 
-     order. This is a lazy operation returning a view of 
-     this list."
+     order.
+     
+     This is a lazy operation returning a view of this list."
     see (`function reverse`)
     shared default List<Element> reversed => Reversed();
     
@@ -234,14 +240,19 @@ shared interface List<out Element>
     "Returns the last element of this `List`, if any."
     shared actual default Element? last => getFromLast(0);
     
-    "A list containing all indexes of this list. This is a 
-     lazy operation."
+    "A list containing all indexes of this list.
+     
+     This is a lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
     "Returns a new `List` that starts with the specified
      [[element]], followed by the elements of this list,
-     in the order they occur in this list."
-    see (`function follow`)
+     in the order they occur in this list.
+     
+     This is an eager operation."
+    see (`function follow`, 
+         `function prepend`,
+         `function withTrailing`)
     shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)
@@ -249,7 +260,11 @@ shared interface List<out Element>
     
     "Returns a new `List` that starts with the elements of 
      this list, in the order they occur in this list, and 
-     ends with the specified [[element]]."
+     ends with the specified [[element]].
+     
+     This is an eager operation."
+    see (`function prepend`,
+         `function withLeading`)
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element)
@@ -258,9 +273,12 @@ shared interface List<out Element>
     "Return a sequence containing the elements of this list, 
      in the order in which they occur in this list, followed 
      by the given [[elements]], in the order in which they 
-     occur in the given stream."
+     occur in the given stream.
+     
+     This is an eager operation."
     see (`function extend`, 
          `function chain`,
+         `function withTrailing`,
          `function concatenate`)
     shared default [Element|Other*] append<Other>({Other*} elements) 
             => [*(this chain elements)];
@@ -268,23 +286,32 @@ shared interface List<out Element>
     "Return a sequence containing the given [[elements]], in 
      the order in which they occur in the given stream,
      followed by the elements of this list, in the order in 
-     which they occur in this list."
+     which they occur in this list.
+     
+     This is an eager operation."
+    see (`function withLeading`)
     shared default [Element|Other*] prepend<Other>({Other*} elements) 
             => [*(elements chain this)];
     
     "Return a list formed by extending this list with the 
-     elements of the given [[list]]. This is a lazy operation
-     returning a view over this list and the given list."
+     elements of the given [[list]].
+     
+     This is a lazy operation returning a view over this 
+     list and the given list."
     see (`function append`,
-         `function chain`)
+         `function chain`,
+         `function patch`)
     shared default List<Element|Other> extend<Other>(List<Other> list) 
             => Extend(list);
     
     "Return a list formed by patching the given [[list]] 
      in place of a segment of this list identified by the
-     given [[starting index|from]] and [[length]]. This is a
-     lazy operations, returning a view over this list and 
-     the given list. Two special cases are interesting:
+     given [[starting index|from]] and [[length]].
+     
+     This is a lazy operations, returning a view over this 
+     list and the given list.
+     
+     Two special cases are interesting:
      
      - If `length=0`, the patched list has the given values 
        \"inserted\" into this list at the given index `from`.
@@ -300,6 +327,7 @@ shared interface List<out Element>
        `{-2,-1,0,1,2}`.'
      
      If `length<0`, return this list."
+    see (`function extend`)
     shared default List<Element|Other> patch<Other>(
         "The list of new elements."
         List<Other> list,
@@ -314,11 +342,13 @@ shared interface List<out Element>
     
     "Determine if the given list occurs at the start of this 
      list."
+    see (`function endsWith`)
     shared default Boolean startsWith(List<Anything> sublist)
             => includesAt(0, sublist);
     
     "Determine if the given list occurs at the end of this 
      list."
+    see (`function startsWith`)
     shared default Boolean endsWith(List<Anything> sublist)
             => includesAt(size-sublist.size, sublist);
     
@@ -601,7 +631,9 @@ shared interface List<out Element>
      Otherwise return a list of the given length.
      
      This is an eager operation."
-    see (`function List.terminal`)
+    see (`function terminal`, 
+         `function sublistTo`,
+         `function take`)
     shared default List<Element> initial(Integer length)
             => this[0:length];
     
@@ -611,7 +643,7 @@ shared interface List<out Element>
      Otherwise return a list of the given length.
      
      This is an eager operation."
-    see (`function List.initial`)
+    see (`function initial`)
     shared default List<Element> terminal(Integer length) {
         if (length>=size) {
             return this;
