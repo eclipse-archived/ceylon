@@ -8,7 +8,6 @@ public enum Optimization {
 
     RangeOpIteration,
     SegmentOpIteration,
-    RangeIterationStatic,
     ArrayIterationStatic,
     JavaArrayIterationStatic,
     TupleIterationStatic,

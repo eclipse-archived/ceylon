@@ -59,7 +59,6 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCArrayAccess;
 import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -1251,9 +1250,6 @@ public class StatementTransformer extends AbstractTransformer {
             transformation = rangeOpIteration(stmt);
         }
         if (transformation == null) {
-            transformation = rangeIteration(stmt);
-        }
-        if (transformation == null) {
             transformation = new ForStatementTransformation(stmt);
         }
         return transformation.transform();
@@ -1687,157 +1683,6 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.ArrayIterationStatic, "static type of iterable in for statement is not Array");
         }
         return null;
-    }
-    
-    /**
-     * <p>Optimized transformation for a {@code for} loop where the iterable is 
-     * statically known to be a {@code Range}, and therefore can be 
-     * iterated using a C-style {@code for}.</p>
-     * 
-     * <p>The optimization applies to Ceylon code like this:</p>
-     * <pre>
-     *   for (element in first..last) {
-     *   }
-     * </pre>
-     * 
-     * <p>The transformed code looks something like this:</p>
-     * <pre>
-     *   final Range<Element> range = RANGE_EXPR;
-     *   final Element last = range.getLast();
-     *   int latch = 1;
-     *   for (Element current = first; 
-     *            (latch > 0 && curr.offset(last) != 0) || latch-- > 0; 
-     *            current = range.increasing ? current.successor? current.predecessor ) {
-     *       TRANSFORMED_BLOCK
-     *   }
-     * </pre>
-     */
-    class RangeIterationOptimization extends ForStatementTransformation {
-        
-        final static String OPT_NAME = "RangeIterationStatic";
-        
-        final ProducedType iteratedType;
-        
-        private SyntheticName rangeName;
-        
-        private SyntheticName lastName;
-        
-        private SyntheticName increasingName;
-        
-        private SyntheticName itemName;
-
-        private SyntheticName latchName;
-
-        public RangeIterationOptimization(Tree.ForStatement stmt,
-                ProducedType iteratedType) {
-            super(stmt);
-            this.iteratedType = iteratedType;
-            this.rangeName = naming.alias("range");
-            this.lastName = naming.alias("last");
-            this.increasingName = naming.alias("increasing");
-            this.itemName = naming.alias("item");
-            this.latchName = naming.alias("latch");
-        }
-        
-        protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
-            // final Range<Element> range = RANGE_EXPR;
-            result.add(makeVar(FINAL, rangeName,
-                    makeJavaType(getIterable().getTypeModel()),
-                    expressionGen().transformExpression(getIterable())));
-            // final Element last = range.getLast();
-            result.add(makeVar(FINAL, lastName, 
-                    makeJavaType(iteratedType, JT_NO_PRIMITIVES), 
-                    make().Apply(null,
-                            naming.makeQualIdent(rangeName.makeIdent(), "getLast"),
-                            List.<JCExpression>nil())));
-            
-            // int latch = 1;
-            result.add(makeVar(latchName, 
-                    make().Type(syms().intType), 
-                    make().Literal(1)));
-            
-            // final boolean decreasing = range.getDecreasing();
-            result.add(makeVar(FINAL, increasingName, 
-                    make().Type(syms().booleanType), 
-                    make().Apply(null,
-                            naming.makeQualIdent(rangeName.makeIdent(), "getIncreasing"),
-                            List.<JCExpression>nil())));
-            
-            Tree.ControlClause prevForclause = currentForClause;
-            currentForClause = stmt.getForClause();
-            List<JCStatement> transformedBlock = transformBlock(getBlock());
-            currentForClause = prevForclause;
-            
-            JCVariableDecl init = makeVar(itemName, 
-                    makeJavaType(iteratedType, JT_NO_PRIMITIVES),
-                    make().Apply(null, naming.makeQualIdent(rangeName.makeIdent(), "getFirst"),
-                            List.<JCExpression>nil()));
-            
-            Tree.ForIterator iterator = getForIterator();
-            if (iterator instanceof Tree.ValueIterator) {
-                ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
-                transformedBlock = transformedBlock.prepend(makeVar(FINAL,
-                        Naming.getVariableName(getElementOrKeyVariable()), 
-                        makeJavaType(iteratedType), 
-                        expressionGen().applyErasureAndBoxing(itemName.makeIdent(),
-                                iteratedType, true, BoxingStrategy.UNBOXED, iteratedType)));
-            } else {
-                // Note we don't need to handle KeyValueIterator because Entry is final
-                // and doesn't satisfy the constraints of Range
-                throw new RuntimeException();
-            }
-            
-            // (latch > 0 && curr.offset(last) != 0) || latch-- > 0;
-            JCExpression cond =
-                    make().Binary(JCTree.OR, 
-                        make().Binary(JCTree.AND,
-                            make().Binary(JCTree.GT, 
-                                latchName.makeIdent(), 
-                                make().Literal(0)),
-                            make().Binary(JCTree.NE,
-                                make().Apply(null,
-                                    naming.makeQualIdent(itemName.makeIdent(), "offset"),
-                                    List.<JCExpression>of(lastName.makeIdent())),
-                                make().Literal(0L))),
-                        make().Binary(JCTree.GT, 
-                                make().Unary(JCTree.POSTDEC, latchName.makeIdent()), 
-                                make().Literal(0)));
-            
-            // next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor()) {
-            JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(),
-                    make().Conditional(increasingName.makeIdent(),
-                            make().Apply(null, 
-                                    naming.makeQualIdent(itemName.makeIdent(), "getSuccessor"), 
-                                    List.<JCExpression>nil()),
-                            make().Apply(null, 
-                                    naming.makeQualIdent(itemName.makeIdent(), "getPredecessor"), 
-                                    List.<JCExpression>nil()))));
-            result.add(make().Labelled(this.label, make().ForLoop(List.<JCStatement>of(init), 
-                    cond, 
-                    List.<JCExpressionStatement>of(incr), 
-                    make().Block(0, transformedBlock))));
-            return result;
-        }
-
-        
-    }
-    
-    private ForStatementTransformation rangeIteration(Tree.ForStatement stmt) {
-        final Optimization optName = Optimization.RangeIterationStatic;
-        if (isOptimizationDisabled(stmt, optName)) {
-            return optimizationFailed(stmt, optName, 
-                    "optimization explicitly disabled by @disableOptimization");
-        }
-        
-        ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
-        
-        if (iterableType.getSupertype(typeFact().getRangeDeclaration()) != null) {
-            // it's a range
-            return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
-        }
-        return optimizationFailed(stmt, optName, 
-                "static type of iterable in for statement is not Range");
     }
 
     private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
