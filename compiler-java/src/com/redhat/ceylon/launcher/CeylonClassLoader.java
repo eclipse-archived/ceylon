@@ -99,7 +99,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
         // For the "doc" tool
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
-        archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.8-c0dcd373ce"));
+        archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.8.0.c0dcd373ce"));
         // For the --out http:// functionality of the compiler
         archives.add(getRepoJar(ceylonRepo, "com.googlecode.sardine", "314"));
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.1.1"));
