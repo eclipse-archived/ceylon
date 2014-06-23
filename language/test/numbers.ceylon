@@ -319,16 +319,19 @@ shared void numbers() {
     
     check((parseFloat("012340.0") else 0.0)==12.34e3, "parseFloat(012340.0)");
     check((parseFloat("+12340.0") else 0.0)==12.34e3, "parseFloat(+12340.0)");
+    check((parseFloat("012340") else 0.0)==12.34e3, "parseFloat(012340.0)");
+    check((parseFloat("+12340") else 0.0)==12.34e3, "parseFloat(+12340.0)");
     
     check((parseFloat("-12340.0") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
+    check((parseFloat("-12340") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
     
-    check((parseFloat("1.234_0") else 0.0)==1.234_0, "parseFloat(1.234_0)");
-    check((parseFloat("0.000_1") else 0.0)==0.000_1, "parseFloat(0.000_1)");
-    check((parseFloat("1.234_56") else 0.0)==1.234_56, "parseFloat(1.234_56)");
-    check((parseFloat("1.000_00") else 0.0)==1.0, "parseFloat(1.000_00)");
-    check((parseFloat("1.000_000") else 0.0)==1.0, "parseFloat(1.000_000)");
-    check((parseFloat("1.000_000_000") else 0.0)==1.0, "parseFloat(1.000_000_000)");
-    check((parseFloat("1.000_000_000_0") else 0.0)==1.0, "parseFloat(1.000_000_000_0)");
+    check((parseFloat("1.2340") else 0.0)==1.234_0, "parseFloat(1.234_0)");
+    check((parseFloat("0.0001") else 0.0)==0.000_1, "parseFloat(0.000_1)");
+    check((parseFloat("1.23456") else 0.0)==1.234_56, "parseFloat(1.234_56)");
+    check((parseFloat("1.00000") else 0.0)==1.0, "parseFloat(1.000_00)");
+    check((parseFloat("1.000000") else 0.0)==1.0, "parseFloat(1.000_000)");
+    check((parseFloat("1.000000000") else 0.0)==1.0, "parseFloat(1.000_000_000)");
+    check((parseFloat("1.0000000000") else 0.0)==1.0, "parseFloat(1.000_000_000_0)");
 
     //type safety
     check(obj(1+1)    is Integer, "int+int Integer");

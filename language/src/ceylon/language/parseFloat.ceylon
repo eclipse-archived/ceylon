@@ -9,24 +9,16 @@
  character (`+` or `-`)."
 see (`function parseInteger`)
 shared Float? parseFloat(String string) {
-    value dot = string.firstOccurrence('.');
-    if (exists dot) {
-        //TODO: handle shortcut format, e.g. 12u
-        value wholePart = string[...dot-1];
-        value positiveWholePart =
-                wholePart.startsWith("+") ||
-                wholePart.startsWith("-") 
-        then wholePart.rest else wholePart;
-        value nonDigit = 
-                not(or(Character.digit, '_'.equals));
-        if (positiveWholePart any nonDigit) {
-            return null;
-        }
-        value afterWholePart = string[dot+1...];
-        value mag = afterWholePart firstIndexWhere nonDigit;
-        variable String fractionalPart;
-        String? rest;
-        if (exists mag) {
+    
+    // split into three main parts
+    String wholePart;
+    String fractionalPart;
+    String? rest;
+    if (exists dot = string.firstOccurrence('.')) {
+        wholePart = string[...dot-1];
+        String afterWholePart = string[dot+1...];
+        if (exists mag 
+            = afterWholePart firstIndexWhere Character.letter) {
             fractionalPart = afterWholePart[...mag-1];
             rest = afterWholePart[mag...];
         }
@@ -34,70 +26,59 @@ shared Float? parseFloat(String string) {
             fractionalPart = afterWholePart;
             rest = null;
         }
-        value whole = parseInteger(wholePart);
-        if (exists whole) {
-            if (exists digitOrUnderscore 
-                    = fractionalPart[3],
-                digitOrUnderscore == '_') {
-                // validate+remove underscores
-                // TODO: find a better way
-                StringBuilder sb = StringBuilder();
-                variable value i = 0;
-                variable value nu = 3;
-                for (digit in fractionalPart) {
-                    if (i == nu) {
-                        if (digit != '_') {
-                            return null;
-                        }
-                        nu = i+4;
-                    }
-                    else {
-                        if (!digit.digit) {
-                            return null;
-                        }
-                        sb.appendCharacter(digit);
-                    }
-                    i++;
+    }
+    else {
+        if (exists mag
+            = string firstIndexWhere Character.letter) {
+            wholePart = string[...mag-1];
+            rest = string[mag...];
+        }
+        else {
+            wholePart = string;
+            rest = null;
+        }
+        fractionalPart = "0";
+    }
+    
+    value whole = parseInteger(wholePart);
+    if (exists whole) {
+        if (exists fractional 
+            = parseInteger(fractionalPart)) {
+            value shift = fractionalPart.size;
+            Integer exponent;
+            if (exists rest) {
+                if (exists magnitude
+                    = parseFloatExponent(rest)) {
+                    exponent = magnitude-shift;
                 }
-                fractionalPart = sb.string;
+                else {
+                    return null;
+                }
             }
-            if (exists fractional 
-                    = parseInteger(fractionalPart)) {
-                value shift = fractionalPart.size;
-                Integer exponent;
-                if (exists rest) {
-                    if (exists magnitude
-                            = parseFloatExponent(rest)) {
-                        exponent = magnitude-shift;
-                    }
-                    else {
-                        return null;
-                    }
-                }
-                else {
-                    exponent = -shift; 
-                }
-                Integer numerator 
-                        = whole*10^shift + fractional;
-                value em = exponent.magnitude;
-                if (em==0) {
-                    return numerator.float;
-                }
-                else if (em<maximumIntegerExponent) {
-                    value scale = 10^em;
-                    return exponent<0
-                            then numerator.float / scale
-                            else numerator.float * scale;
-                }
-                else {
-                    //scale can't be represented as 
-                    //an integer, resulting in some
-                    //rounding error
-                    return numerator * 10.0^exponent;
-                }
+            else {
+                exponent = -shift; 
+            }
+            Integer numerator 
+                    = whole*10^shift + fractional;
+            value em = exponent.magnitude;
+            if (em==0) {
+                return numerator.float;
+            }
+            else if (em<maximumIntegerExponent) {
+                value scale = 10^em;
+                return exponent<0
+                then numerator.float / scale
+                else numerator.float * scale;
+            }
+            else {
+                //scale can't be represented as 
+                //an integer, resulting in some
+                //rounding error
+                return numerator * 10.0^exponent;
             }
         }
     }
+    
     return null;
 }
 
