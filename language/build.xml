@@ -70,14 +70,14 @@
     
     <path id="test.compile.classpath">
         <pathelement path="${build.dist.repo}/${ceylon.language.car}"/>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${junit.lib}"/>
     </path>
     
     <path id="test.run.classpath">
         <path refid="test.compile.classpath"/>
         <pathelement path="${build.test}"/>
-        <pathelement path="${ceylon.common.lib}"/>
-    	<pathelement path="${ceylon.module-resolver.lib}"/>
     	<pathelement path="${ceylon.typechecker.lib}"/>
     	<pathelement path="${ceylon.compiler.lib}"/>
     </path>
