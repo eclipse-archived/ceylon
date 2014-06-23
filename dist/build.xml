@@ -97,14 +97,14 @@ Some more basic ant tasks:
 
     <target name="ide" depends="siblings, install-all">
         <property name="buildtarget" value="ide-internal" />
-    	<antcall target="ide-quick"/>
+        <antcall target="ide-quick"/>
     </target>
     <target name="ide-quick" depends="siblings">
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
                  inheritall="true" />
-    	<antcall target="osgi-p2-quick"/>
+        <antcall target="osgi-p2-quick"/>
     </target>
     <target name="ide-item">
         <fail unless="projects.base.dir" />
@@ -205,38 +205,38 @@ Used with another target such as 'package'">
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
-	<target name="osgi"             
+    <target name="osgi"             
             description="Generates the OSGI bundle of the overall dist, with OSGI-specific metamodel initialization logic">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-		<antcall target="osgi-internal"/>
+        <antcall target="osgi-internal"/>
     </target>
-	<target name="osgi-internal"
-		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
-		<antcall target="osgi-quick"/>
-	</target>
-	<target name="osgi-quick">
-		<ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+    <target name="osgi-internal"
+        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        <antcall target="osgi-quick"/>
+    </target>
+    <target name="osgi-quick">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-	</target>
-
-	<target name="osgi-p2"> 
-        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-		<antcall target="osgi-p2-internal"/>
     </target>
-	<target name="osgi-p2-internal"
-		depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
-		<antcall target="osgi-p2-quick"/>
-	</target>
-	<target name="osgi-p2-quick">
+
+    <target name="osgi-p2"> 
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <antcall target="osgi-p2-internal"/>
+    </target>
+    <target name="osgi-p2-internal"
+        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        <antcall target="osgi-p2-quick"/>
+    </target>
+    <target name="osgi-p2-quick">
         <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi-p2" dir="${ceylon-dist-osgi.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-	</target>
+    </target>
 
-	<target name="zip">
+    <target name="zip">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
@@ -409,92 +409,92 @@ Used with another target such as 'package'">
         <echo file="${file}.sha1" message="${value}" />
     </target>
 
-	<taskdef resource="aQute/bnd/ant/taskdef.properties"
-	      classpath="${basedir}/lib/biz.aQute.bnd-2.3.0.jar"/>
+    <taskdef resource="aQute/bnd/ant/taskdef.properties"
+          classpath="${basedir}/lib/biz.aQute.bnd-2.3.0.jar"/>
 
-	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
-		<classpath>
-			<pathelement location="${basedir}/lib/xmltask-1.16.jar"/>
-		</classpath>
-	</taskdef>
+    <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+        <classpath>
+            <pathelement location="${basedir}/lib/xmltask-1.16.jar"/>
+        </classpath>
+    </taskdef>
 
-	<target name="addRequiredOSGIHeaders">
-		<echo>module.jar = ${module.jar}</echo>
-    	<loadproperties>
-			<zipentry zipfile="${module.jar}" name="META-INF/MANIFEST.MF"/>
-    	     <filterchain>
-    	        <linecontainsregexp>
-    	        	<regexp pattern="^(Bundle-Version)"/>
-    	        </linecontainsregexp>
-    	     	<replaceregex pattern="\s+$" replace=""/>
-    	      </filterchain>
-    	</loadproperties>
-		
-		<var name="Require-Bundle" value=""/>
-		<xmltask source="${module.descriptor.file}" standalone="true">
-			<call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
-				<param name="moduleName" path="@name" default="unknown"/>
-				<param name="moduleSlot" path="@slot" default="0.0.0"/>
-				<param name="moduleExport" path="@export" default="false"/>
-				<param name="moduleOptional" path="@optional" default="false"/>
-				<actions>
-					<if>
-						<not>
-							<equals arg1="${Require-Bundle}" arg2=""/>
-						</not>
-						<then>
-							<var name="Require-Bundle" value="${Require-Bundle}," />
-						</then>
-					</if>
-					<var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
-					<if>
-						<equals arg1="@{moduleExport}" arg2="true"/>
-						<then>
-							<var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
-						</then>
-					</if>
-					<if>
-						<equals arg1="@{moduleOptional}" arg2="true"/>
-						<then>
-							<var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
-						</then>
-					</if>
-				</actions>
-			</call>
-		</xmltask>
-		<xmlproperty file="${module.descriptor.file}" />
-		<property name="Bundle-SymbolicName" value="${module(name)}"/>
-		<if>
-			<not><isset property="Bundle-Version"/></not>
-			<then><property name="Bundle-Version" value="${module(slot)}"/></then>
-		</if>
-		<if>
-			<equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
-			<then>
-				<var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
-			</then>
-		</if>
-		<tempfile property="bundleDefinitionFile"/>
-		<echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
-		<echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
-		<echo file="${bundleDefinitionFile}" append="true">Export-Package: *${line.separator}</echo>
-		<echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
-		<echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
-		<if>
-			<not>
-				<equals arg1="${Require-Bundle}" arg2=""/>
-			</not>
-			<then>
-				<echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
-			</then>
-		</if>
-		<bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}" definitions="${bundleDefinitionFile}">
-		</bndwrap>
-		<delete file="${module.jar}.bak" failonerror="false"/>
-		<delete file="${bundleDefinitionFile}"/>
-	</target>
-	
-	<target name="add-module-descriptor">
+    <target name="addRequiredOSGIHeaders">
+        <echo>module.jar = ${module.jar}</echo>
+        <loadproperties>
+            <zipentry zipfile="${module.jar}" name="META-INF/MANIFEST.MF"/>
+            <filterchain>
+                <linecontainsregexp>
+                    <regexp pattern="^(Bundle-Version)"/>
+                </linecontainsregexp>
+                <replaceregex pattern="\s+$" replace=""/>
+            </filterchain>
+        </loadproperties>
+        
+        <var name="Require-Bundle" value=""/>
+        <xmltask source="${module.descriptor.file}" standalone="true">
+            <call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
+                <param name="moduleName" path="@name" default="unknown"/>
+                <param name="moduleSlot" path="@slot" default="0.0.0"/>
+                <param name="moduleExport" path="@export" default="false"/>
+                <param name="moduleOptional" path="@optional" default="false"/>
+                <actions>
+                    <if>
+                        <not>
+                            <equals arg1="${Require-Bundle}" arg2=""/>
+                        </not>
+                        <then>
+                            <var name="Require-Bundle" value="${Require-Bundle}," />
+                        </then>
+                    </if>
+                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+                    <if>
+                        <equals arg1="@{moduleExport}" arg2="true"/>
+                        <then>
+                            <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
+                        </then>
+                    </if>
+                    <if>
+                        <equals arg1="@{moduleOptional}" arg2="true"/>
+                        <then>
+                            <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
+                        </then>
+                    </if>
+                </actions>
+            </call>
+        </xmltask>
+        <xmlproperty file="${module.descriptor.file}" />
+        <property name="Bundle-SymbolicName" value="${module(name)}"/>
+        <if>
+            <not><isset property="Bundle-Version"/></not>
+            <then><property name="Bundle-Version" value="${module(slot)}"/></then>
+        </if>
+        <if>
+            <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
+            <then>
+                <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
+            </then>
+        </if>
+        <tempfile property="bundleDefinitionFile"/>
+        <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Export-Package: *${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
+        <if>
+            <not>
+                <equals arg1="${Require-Bundle}" arg2=""/>
+            </not>
+            <then>
+                <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+            </then>
+        </if>
+        <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}" definitions="${bundleDefinitionFile}">
+        </bndwrap>
+        <delete file="${module.jar}.bak" failonerror="false"/>
+        <delete file="${bundleDefinitionFile}"/>
+    </target>
+    
+    <target name="add-module-descriptor">
         <dirname property="module.dir" file="${module.descriptor.file}"/>
         <pathconvert property="module.dir.relative" pathsep="${line.separator}">
             <propertyresource name="module.dir" />
@@ -514,7 +514,7 @@ Used with another target such as 'package'">
                             fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
         </jar>
         <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
-    	<antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
+        <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
         <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
             <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
         </pathconvert>
