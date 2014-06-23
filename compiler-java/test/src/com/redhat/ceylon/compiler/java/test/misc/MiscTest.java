@@ -99,9 +99,8 @@ public class MiscTest extends CompilerTest {
                 for (String s : new String[]{"Boolean", "Integer", "Float", "Character", "String", 
                         "Array", "Tuple", "Exception", "Error", "Callable", 
                         "flatten", "className", "identityHash", "integerRangeByIterable",
-                        "language", "metamodel", "modules", "operatingSystem",
-                        "populateArray", "generateArray", 
-                        "printStackTrace", "process", "runtime", "system", 
+                        "language", "metamodel", "modules", "operatingSystem", 
+                        "populateArray", "printStackTrace", "process", "runtime", "system", 
                         "Throwable",
                         "infinity", "arrayOfSize", "unflatten"}) {
 
