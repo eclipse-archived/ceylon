@@ -209,7 +209,8 @@ public class Util {
     public static Annotation findAnnotation(Declaration decl, String name) {
         Annotation a = getAnnotation(decl.getAnnotations(), name);
         if (a == null && decl.isActual()) {
-            a = getAnnotation(decl.getRefinedDeclaration().getAnnotations(), name);
+            // keep looking up
+            a = findAnnotation(decl.getRefinedDeclaration(), name);
         }
         return a;
     }
