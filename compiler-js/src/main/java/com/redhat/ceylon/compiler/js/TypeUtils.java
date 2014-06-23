@@ -41,13 +41,12 @@ public class TypeUtils {
     final TypeDeclaration empty;
 
     TypeUtils(Module languageModule) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
+        final com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
         tuple = (TypeDeclaration)pkg.getDirectMember("Tuple", null, false);
         iterable = (TypeDeclaration)pkg.getDirectMember("Iterable", null, false);
         sequential = (TypeDeclaration)pkg.getDirectMember("Sequential", null, false);
         _null = (TypeDeclaration)pkg.getDirectMember("Null", null, false);
         empty = (TypeDeclaration)pkg.getDirectMember("Empty", null, false);
-        pkg = languageModule.getPackage("ceylon.language.meta.model");
     }
 
     /** Prints the type arguments, usually for their reification. */
@@ -336,13 +335,21 @@ public class TypeUtils {
             TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
             gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
         } else {
+            final boolean checkFloat = term.getUnit().getFloatDeclaration().equals(t.getDeclaration());
+            final boolean checkInt = checkFloat ? false : term.getUnit().getIntegerDeclaration().equals(t.getDeclaration());
             String tmp = gen.getNames().createTempVariable();
             gen.out("(", tmp, "=");
             term.visit(gen);
-            gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
-            TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
-            gen.out(")?", tmp, ":");
-            gen.out("function(){throw new Error('dynamic objects cannot be used here (",
+            if (checkFloat) {
+                gen.out(",typeof(", tmp, ")==='number'?", GenerateJsVisitor.getClAlias(), "Float(", tmp, ")");
+            } else if (checkInt) {
+                gen.out(",typeof(", tmp, ")==='number'?Math.floor(", tmp, ")");
+            } else {
+                gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
+                TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
+                gen.out(")?", tmp);
+            }
+            gen.out(":function(){throw new Error('dynamic objects cannot be used here (",
                     term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
         }
     }
