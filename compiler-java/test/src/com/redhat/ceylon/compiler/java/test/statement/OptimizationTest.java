@@ -68,7 +68,7 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
-    @Ignore
+    @Ignore("For benchmarking only")
     public void testLopOptimArrayIterationStaticBench(){
         compile("loop/optim/ArrayIterationStaticBench.ceylon");
         long java = arrayIterationStaticJava();
@@ -109,7 +109,7 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
-    @Ignore
+    @Ignore("For benchmarking only")
     public void testLopOptimTupleIterationStaticBench(){
         compile("loop/optim/TupleIterationStaticBench.ceylon");
         long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.tupleIterationStaticBench");
@@ -131,8 +131,8 @@ public class OptimizationTest extends CompilerTest {
         compareWithJavaSource("loop/optim/RangeIterationStatic");
     }
     
+    @Ignore("For benchmarking only")
     @Test
-    @Ignore
     public void testLopOptimRangeIterationBench(){
         compileAndRun(
                 "com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeIterationBench_run",
@@ -162,8 +162,8 @@ public class OptimizationTest extends CompilerTest {
         compareWithJavaSource("loop/optim/StringIterationStatic");
     }
     
+    @Ignore("For benchmarking only")
     @Test
-    @Ignore
     public void testLopOptimDynamicIterationBench() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.dynamicIterationBench_main",
                 "loop/optim/DynamicIterationBench.ceylon");
