@@ -1,3 +1,4 @@
+package main;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;

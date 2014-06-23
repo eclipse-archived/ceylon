@@ -421,11 +421,18 @@
 
     <target name="dist" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
-        <zip destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
+		<tstamp>
+		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+		</tstamp>    	
+        <jar destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
             </fileset>
-        </zip>
+        	<manifest>
+        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.typechecker"/>
+        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.version}.${qualifier}"/>
+        	</manifest>
+        </jar>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
         </antcall>
@@ -444,7 +451,7 @@
     <target name="test"
             depends="publish"
             description="Run rudimentary tests">
-        <java classname="MainForTest">
+        <java classname="main.MainForTest">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>
@@ -455,7 +462,7 @@
     <target name="test.language"
             depends="publish"
             description="Run rudimentary tests">
-        <java classname="MainForLanguage">
+        <java classname="main.MainForLanguage">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>

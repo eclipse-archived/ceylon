@@ -1,3 +1,4 @@
+package main;
 import java.io.File;
 
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
