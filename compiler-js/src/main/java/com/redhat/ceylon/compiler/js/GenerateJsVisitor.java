@@ -439,6 +439,9 @@ public class GenerateJsVisitor extends Visitor
         @Override public void visit(Tree.Outer that) {
             refs = true;
         }
+        @Override public void visit(Tree.Super that) {
+            refs = true;
+        }
         public void visit(Tree.MemberOrTypeExpression that) {
             if (refs)return;
             if (that.getDeclaration() == null) {
