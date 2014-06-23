@@ -314,9 +314,13 @@ shared void strings() {
     compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==' ', true), "High-surrogate Unicode string");
     compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) => c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
     
-    check("".reversed=="", "string reversed 1");
-    check("x".reversed=="x", "string reversed 2");
-    check(hello.reversed=="olleh", "string reversed 3");
+    check("".reversed==[], "string reversed 1");
+    check("x".reversed==['x'], "string reversed 2");
+    check(hello.reversed=="olleh".sequence(), "string reversed 3");
+    
+    check("".reverse()=="", "string reverse 1");
+    check("x".reverse()=="x", "string reverse 2");
+    check(hello.reverse()=="olleh", "string reverse 3");
     
     check("hello".repeat(0)=="", "string repeat 1");
     check("hello".repeat(1)=="hello", "string repeat 2");
@@ -418,7 +422,8 @@ shared void strings() {
     check("\{#0001F638}\{#0001f63e}".rest.size==1, "1 cats");
     check(("\{#0001F638}\{#0001f63e}".first else ' ')=='\{#0001F638}', "first cats");
     check(("\{#0001F638}\{#0001f63e}".rest.first else ' ')=='\{#0001f63e}', "second cats");
-    check("\{#0001F638}\{#0001f63e}".reversed=="\{#0001f63e}\{#0001F638}", "cats reversed");
+    check("\{#0001F638}\{#0001f63e}".reversed==['\{#0001f63e}','\{#0001F638}'], "cats reversed");
+    check("\{#0001F638}\{#0001f63e}".reverse()=="\{#0001f63e}\{#0001F638}", "cats reverse");
     
     check("helloworld".slice(5)==["hello","world"], "string slice 1");
     check("helloworld".slice(0)==["","helloworld"], "string slice 2");

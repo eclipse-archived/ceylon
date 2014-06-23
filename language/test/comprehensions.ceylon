@@ -23,7 +23,7 @@ shared void comprehensions() {
   check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={'A', 'C'}.sequence(), "comprehensions w/exists 2");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}.sequence(), "comprehensions w/nonempty 1");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}.sequence(), "comprehensions w/nonempty 2");
-  check([for (x in {1,2,"3.1",4}) if (is String x) x.reversed]=={"1.3"}.sequence(), "comprehensions w/is 1");
+  check([for (x in {1,2,"3.1",4}) if (is String x) x.reverse()]=={"1.3"}.sequence(), "comprehensions w/is 1");
   check([for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2]=={6}.sequence(), "comprehensions w/is 2");
   check(Array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension

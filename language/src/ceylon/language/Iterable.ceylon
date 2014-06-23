@@ -320,7 +320,7 @@ shared interface Iterable<out Element, out Absent=Null>
          print(fun(0)); //prints { false, true, false }"
     shared default Callable<Iterable<Result,Absent>,Args> 
     spread<Result,Args>(Callable<Result,Args> method(Element element))
-            given Args satisfies Anything[] 
+            given Args satisfies Anything[]
             //=> flatten((Args args) => map(shuffle(method)(*args)));
             => flatten((Args args) 
                 => { for (elem in this) method(elem)(*args) });
@@ -337,7 +337,7 @@ shared interface Iterable<out Element, out Absent=Null>
      This operation is an eager counterpart to 
      [[List.reversed]]."
     see (`value List.reversed`)
-    shared default Element[] reverse() {
+    shared default List<Element> reverse() {
         value array = Array(this);
         if (array.empty) {
             return [];

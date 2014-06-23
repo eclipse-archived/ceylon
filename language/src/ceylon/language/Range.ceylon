@@ -163,9 +163,12 @@ shared sealed final class Range<Element>(first, last)
      
          `(x..y).reversed == y..x`
      
-     except for [[recursive]] ranges."
-    shared actual [Element+] reversed 
-            => recursive then ArraySequence(Array(this)).reversed //TODO: return a view
+     except for [[recursive]] ranges, where the elements are
+     evaluated and collected into a new sequence."
+    //TODO: we should have a way to produce a decreasing
+    //      recursive range
+    shared actual [Element+] reverse()
+            => recursive then super.reverse()
                          else last..first;
     
     "The element of the range that occurs [[index]] values 
@@ -431,7 +434,7 @@ shared sealed final class Range<Element>(first, last)
             }
             else {
                 value range = (this[to] else first)..(this[from] else last);
-                return range.reversed;
+                return range.reverse();
             }
         }
     }

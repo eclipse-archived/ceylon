@@ -156,7 +156,7 @@ shared native final class String(characters)
     shared native String normalized;
     
     "This string, with the characters in reverse order."
-    shared native actual String reversed;
+    shared native actual String reverse();
     
     "This string, with the characters in reverse order."
     shared native actual Character[] reverse();

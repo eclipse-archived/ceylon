@@ -64,10 +64,6 @@ shared sealed final class SizedRange<Element>(first, size)
     shared actual Element[] rest 
             => size==1 then [] 
                        else SizedRange(first.successor,size-1);
-
-    shared actual [Element+] reversed 
-            => ArraySequence(Array(this)).reversed; //TODO: return a view
-    
     
     "The element of the sized range that occurs [[index]] values
      after the start of the sized range. Note that, depending on
@@ -248,7 +244,7 @@ shared sealed final class SizedRange<Element>(first, size)
             else {
                 value len = from < size then from-to+1 
                                         else size-to;
-                return SizedRange(first.neighbour(to),len).reversed;
+                return SizedRange(first.neighbour(to),len).reverse();
             }
         }
     }

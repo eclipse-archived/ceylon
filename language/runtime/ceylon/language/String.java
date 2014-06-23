@@ -1061,39 +1061,22 @@ public final class String
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
-        return reverse ? getReversed(result) : instance(result);
-    }
-
-    @Override
-    public String getReversed() {
-        return instance(getReversed(value));
-    }
-
-    @Ignore
-    public static String getReversed(java.lang.String value) {
-        long len = getSize(value);
-        if (len < 2) {
-            return instance(value);
-        }
-        // FIXME: this would be better to directly build the Sequence<Character>
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
-        int offset = value.length();
-        while (offset > 0) {
-            int c = value.codePointBefore(offset);
-            builder.appendCodePoint(c);
-            offset -= java.lang.Character.charCount(c);
-        }
-        return instance(builder.toString());
+        return reverse ? reverse(result) : instance(result);
     }
     
     @Ignore
-    public static Sequential<? extends Character> reverse(java.lang.String value) {
-        return instance(value).reverse();
+    public static List<? extends Character> getReversed(java.lang.String value) {
+        return instance(value).getReversed();
     }
-
+    
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
-    public Sequential<? extends Character> reverse() {
+    public String reverse() {
+        return instance(reverse(value));
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::String")
+    public String reverse() {
         long len = getSize(value);
         if (len < 2) {
             return this.sequence();

@@ -210,7 +210,7 @@ void test_max_min() {
 }
 
 shared void arraySequence() {
-    value abc = sequence({"a", "b", "c"});
+    value abc = sequence {"a", "b", "c"};
     check(3==abc.size, "abc.size");
     check(!abc.empty, "abc.empty");
     check(2==abc.lastIndex, "abc.lastIndex");
@@ -230,8 +230,10 @@ shared void arraySequence() {
     check(abc[2] exists, "abc[2]");
     check(!(abc[3] exists), "abc[3]");
     
-    check(abc.reversed.string=="[c, b, a]", "abc.reversed ``abc.reversed``");
-    check(abc.reversed.reversed==abc, "abc.reversed.reversed");
+    check(abc.reverse().string=="[c, b, a]", "abc.reversed ``abc.reversed``");
+    check(abc.reverse().reverse()==abc, "abc.reversed.reversed");
+    check(abc.reversed.string=="{ c, b, a }", "abc.reversed ``abc.reversed``");
+    check(abc.reversed.reversed.sequence()==abc, "abc.reversed.reversed");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
     check(abc.span(-1, 0)=={"a"}.sequence(), "abc.span(-1,0)");

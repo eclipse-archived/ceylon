@@ -145,7 +145,8 @@ shared interface List<out Element>
     shared default List<Element> reversed => Reversed();
     
     see (`value reversed`)
-    shared actual default Element[] reverse() => [*reversed];
+    shared actual default List<Element> reverse() 
+            => [*reversed];
     
     shared actual default Element[] sequence() 
             => empty then []

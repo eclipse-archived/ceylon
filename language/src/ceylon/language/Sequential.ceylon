@@ -15,9 +15,6 @@ shared interface Sequential<out Element>
         satisfies List<Element> & 
                   Ranged<Integer,Element,Element[]> {
     
-    "Reverse this sequence, returning a new sequence."
-    shared actual formal Element[] reversed;
-    
     "This sequence."
     shared actual default Element[] sequence() => this;
     
@@ -26,6 +23,9 @@ shared interface Sequential<out Element>
     
     "A sequence containing all indexes of this sequence."
     shared actual default Integer[] keys => 0:size;
+    
+    "Reverse this sequence, returning a new sequence."
+    shared actual formal Element[] reverse();
     
     "Returns a sequence formed by repeating the elements of 
      this sequence the given number of times, or an empty 

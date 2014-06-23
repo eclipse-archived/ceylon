@@ -4,7 +4,7 @@ shared void testIterables() {
     value s2 = { "Hello", "World" };
     //Map
     check(s1.map((Integer i) => i*2).sequence() == { 2, 4, 6, 8, 10 }.sequence(), "Iterable.map 1");
-    check(s2.map((String s) => s.reversed).sequence() == { "olleH", "dlroW" }.sequence(), "Iterable.map 2");
+    check(s2.map((String s) => s.reverse()).sequence() == { "olleH", "dlroW" }.sequence(), "Iterable.map 2");
     check("hola".map((Character c) => c.uppercased).sequence() == {'H', 'O', 'L', 'A'}.sequence(), "String.map");
 
     //Filter
@@ -14,7 +14,7 @@ shared void testIterables() {
 
     //Collect (like map, but it's already T[])
     check(s1.collect((Integer i) => i*2) == [2, 4, 6, 8, 10], "Iterable.map 1");
-    check(s2.collect((String s) => s.reversed) == ["olleH", "dlroW"], "Iterable.map 2");
+    check(s2.collect((String s) => s.reverse()) == ["olleH", "dlroW"], "Iterable.map 2");
     check("hola".collect((Character c) => c.uppercased) == ['H', 'O', 'L', 'A'], "String.map");
 
     //Select

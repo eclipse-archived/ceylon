@@ -60,8 +60,6 @@ shared sealed interface Sequence<out Element>
         return ArraySequence(array);
     }
     
-    shared default actual [Element+] reversed => reverse();
-    
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 
      partial order upon the elements."
