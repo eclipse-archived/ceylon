@@ -248,10 +248,10 @@ shared void strings() {
     check("hello world".terminal(10)=="ello world", "string terminal 5");
     check("hello world".initial(11)=="hello world", "string initial 6");
     check("hello world".terminal(11)=="hello world", "string terminal 6");
-    check("hello".by(2)=="hlo", "string.by");
+    check("hello".by(2).sequence()=="hlo".sequence(), "string.by");
     check(" world".follow("hello").sequence()==["hello", ' ','w','o','r','l','d'], "string.follow: ``" world".follow("hello")``");
-    check("hello".skip(3)=="lo", "string.skip");
-    check("hello".take(2)=="he", "string.take");
+    check("hello".skip(3).sequence()=="lo".sequence(), "string.skip");
+    check("hello".take(2).sequence()=="he".sequence(), "string.take");
     check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
     check(String("hElLo".filter((Character c) => c.uppercase)) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
     check("what".sort(byIncreasing(Character))=="ahtw".sequence(), "string.sort");
@@ -325,6 +325,10 @@ shared void strings() {
     check("hello".repeat(0)=="", "string repeat 1");
     check("hello".repeat(1)=="hello", "string repeat 2");
     check("hello".repeat(3)=="hellohellohello", "string repeat 3");
+    
+    check("hello".span(0,0)=="h", "string span 1");
+    check("hello".span(0,1)=="he", "string span 2");
+    check("hello".span(1,10)=="ello", "string span 3");
     
     check("hello world".replace("hello","goodbye")=="goodbye world", "string replace 1");
     check("hello hello world".replace("hello","goodbye")=="goodbye goodbye world", "string replace 1");

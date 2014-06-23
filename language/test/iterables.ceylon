@@ -147,7 +147,7 @@ shared void testIterables() {
     check((1..10).skip(5).sequence()==6..10, "Range.skip [3]");
     check(!(1..5).skip(9).sequence() nonempty, "skip [4]");
     check((5..1).skip(2).sequence()==3..1, "Range.skip [5]");
-    check("hola".skip(2)=="la", "String.skip");
+    check("hola".skip(2).sequence()=="la".sequence(), "String.skip");
     check({for(i in 1..10) i}.skip(8).sequence()=={9,10}.sequence(), "comprehension.skip");
 
     //Taking
@@ -158,7 +158,7 @@ shared void testIterables() {
     check((1..10).take(100).sequence()==1..10, "Range.take [5]");
     check({1,2,3,4,5}.take(100).sequence()=={1,2,3,4,5}.sequence(), "take [6]");
     check((5..1).take(3).sequence()==5..3, "Range.take [7] was ``(5..1).take(3)``");
-    check("hola".take(2)=="ho", "String.take");
+    check("hola".take(2).sequence()=="ho".sequence(), "String.take");
     check({for (i in 1..10) i}.take(2).sequence()=={1,2}.sequence(), "comprehension.take");
 
     //By
@@ -167,12 +167,12 @@ shared void testIterables() {
     check({1,2,3,4,5}.by(3).sequence()=={1,4}.sequence(), "by [3]");
     check({1,2,3,4,5}.by(4).sequence()=={1,5}.sequence(), "by [4]");
     check({1,2,3,4,5}.by(5).sequence()=={1,2,3,4,5}.by(9).sequence(), "by [5]");
-    check("AaEeIiOoUu".by(2)=="AEIOU", "String.by [1]");
-    check("1234567890".by(3)=="1470", "String.by [2]");
-    check("1234567890".by(4)=="159", "String.by [3]");
-    check("1234567890".by(5)=="16", "String.by [4]");
-    check("1234567890".by(8)=="19", "String.by [5]");
-    check("1234567890".by(11)=="1", "String.by [6]");
+    check("AaEeIiOoUu".by(2).sequence()=="AEIOU".sequence(), "String.by [1]");
+    check("1234567890".by(3).sequence()=="1470".sequence(), "String.by [2]");
+    check("1234567890".by(4).sequence()=="159".sequence(), "String.by [3]");
+    check("1234567890".by(5).sequence()=="16".sequence(), "String.by [4]");
+    check("1234567890".by(8).sequence()=="19".sequence(), "String.by [5]");
+    check("1234567890".by(11).sequence().sequence()=="1".sequence(), "String.by [6]");
     check((1..10).by(2).sequence()=={1,3,5,7,9}.sequence(), "Range.by [1]");
     check((10..1).by(2).sequence()=={10,8,6,4,2}.sequence(), "Range.by [2]");
     check((1..10).by(6).sequence()=={1,7}.sequence(), "Range.by [3]");

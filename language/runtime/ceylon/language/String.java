@@ -951,7 +951,6 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
     public String segment(@Name("from") final Integer from,
             @Name("length") final long length) {
         return instance(segment(value, from.longValue(), length));
@@ -975,14 +974,12 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
     public String span(@Name("from") final Integer from,
             @Name("to") final Integer to) {
-        return span(value, from.longValue(), to.longValue());
+        return instance(span(value, from.longValue(), to.longValue()));
     }
 
     @Override
-    @TypeInfo("ceylon.language::String")
     public String spanFrom(@Name("from") final Integer from) {
         return instance(spanFrom(value, from.longValue()));
     }
@@ -1009,7 +1006,6 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::String")
     public String spanTo(@Name("to")  final Integer to) {
         return instance(spanTo(value, to.longValue()));
     }
@@ -1036,11 +1032,11 @@ public final class String
     
 
     @Ignore
-    public static String span(java.lang.String value, 
+    public static java.lang.String span(java.lang.String value, 
             long from, long toIndex) {
         long len = getSize(value);
         if (len == 0) {
-            return instance("");
+            return "";
         }
         boolean reverse = toIndex < from;
         if (reverse) {
@@ -1049,7 +1045,7 @@ public final class String
             from = _tmp;
         }
         if (toIndex < 0 || from >= len) {
-            return instance("");
+            return "";
         }
         if (toIndex >= len) {
             toIndex = len - 1;
@@ -1061,7 +1057,7 @@ public final class String
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
-        return reverse ? reverse(result) : instance(result);
+        return reverse ? reverse(result) : result;
     }
     
     @Ignore
@@ -1071,13 +1067,13 @@ public final class String
     
     @Override
     public String reverse() {
-        return reverse(value);
+        return instance(reverse(value));
     }
     
-    public static String reverse(java.lang.String value) {
+    public static java.lang.String reverse(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
-            return instance(value);
+            return value;
         }
         // FIXME: this would be better to directly build the Sequence<Character>
         java.lang.StringBuilder builder = new java.lang.StringBuilder();
@@ -1087,7 +1083,7 @@ public final class String
             builder.appendCodePoint(c);
             offset -= java.lang.Character.charCount(c);
         }
-        return instance(builder.toString());
+        return builder.toString();
     }
 
     @TypeInfo("ceylon.language::String")
@@ -1540,36 +1536,16 @@ public final class String
         }
     }
 
-    @Override
-    public String 
-    skip(@Name("skipping") long skip) {
-        return instance(this.segment(Integer.instance(skip), this.getSize()));
-    }
-    
     @Ignore
-    public static java.lang.String 
+    public static Iterable<? extends Character, ?>
     skip(java.lang.String value, long skip) {
-        if (value.isEmpty()) {
-            return value;
-        } else {
-            return segment(value, skip, getSize(value));
-        }
-    }
-
-    @Override 
-    public String 
-    take(@Name("taking") long take) {
-        return instance(this.segment(Integer.instance(0), take));
+        return instance(value).skip(skip);
     }
     
     @Ignore
-    public static java.lang.String 
+    public static Iterable<? extends Character, ?>
     take(java.lang.String value, long take) {
-        if (value.isEmpty()) {
-            return value;
-        } else {
-            return segment(value, 0, take);
-        }
+    	return instance(value).take(take);
     }
     
     @Ignore
@@ -1587,23 +1563,7 @@ public final class String
     @Ignore
     public static Iterable<? extends Character, ?> 
     by(java.lang.String value, long step) {
-        if (value.isEmpty()) {
-            return instance(value);
-        }
-        else {
-            return instance(value).by(step);
-        }
-    }
-
-    @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
-    public Iterable<? extends Character, ?> by(@Name("step") long step) {
-        if (value.isEmpty()) {
-            return instance(value);
-        }
-        else {
-            return super.by(step);
-        }
+    	return instance(value).by(step);
     }
 
     @Ignore
