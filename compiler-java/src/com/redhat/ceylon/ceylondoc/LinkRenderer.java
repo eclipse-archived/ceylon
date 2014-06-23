@@ -522,7 +522,7 @@ public class LinkRenderer {
         String url;
         
         Method method = null;
-        if(to instanceof Method){
+        while(to instanceof Method){
             method = (Method) to;
             to = method.getContainer();
         }
