@@ -185,7 +185,7 @@
     <target name="test.classes" depends="compiler.classes">
         <mkdir dir="${build.classes}" />
         <javac destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
-        	<src path="${test.ceylond.src}"/>
+            <src path="${test.ceylond.src}"/>
             <src path="${test.src}"/>
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
@@ -207,9 +207,9 @@
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
         <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
-		<tstamp>
-		    <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
-		</tstamp>    	
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>
         <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
@@ -220,10 +220,10 @@
             <fileset dir="${javac.src}">
                 <include name="com/sun/tools/javac/resources/*.properties" />
             </fileset>
-        	<manifest>
-        		<attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>
-        		<attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.version}.${qualifier}"/>
-        	</manifest>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.version}.${qualifier}"/>
+            </manifest>
         </jar>
     </target>
 
