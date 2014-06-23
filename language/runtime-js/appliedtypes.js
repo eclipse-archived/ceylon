@@ -418,7 +418,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   if ($$targs$$===undefined) {
     throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
   }
-  Function$meta$model($$targs$$,f);
+  $_Function$meta$model($$targs$$,f);
   f.tipo=m;
   f.$targs=ttargs;
   if (o)f.$bound=o;
@@ -479,9 +479,9 @@ f.namedApply=function(args) {
 
   return f;
 }
-AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},$an:function(){return [shared(),actual()];}};};
+AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],satisfies:{t:$_Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},$an:function(){return [shared(),actual()];}};};
 ex$.AppliedFunction$meta$model=AppliedFunction;
-initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,Function$meta$model);
+initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,$_Function$meta$model);
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
   if (attr===undefined)throw Exception("Value reference not found. Metamodel doesn't work with modules compiled in lexical scope style.");
