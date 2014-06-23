@@ -41,6 +41,11 @@ shared Float? parseFloat(String string) {
         fractionalPart = "0";
     }
     
+    if (!wholePart.rest.every(Character.digit) ||
+        !fractionalPart.every(Character.digit)) {
+        return null;
+    }
+    
     value whole = parseInteger(wholePart);
     if (exists whole) {
         if (exists fractional 
