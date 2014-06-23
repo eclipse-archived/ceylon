@@ -349,14 +349,8 @@ public final class ByteArray implements ReifiedType {
         public Sequential<? extends ceylon.language.Integer> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            Object result = ceylon.language.sequence_.sequence(ceylon.language.Integer.$TypeDescriptor$,
-                        ceylon.language.Null.$TypeDescriptor$,
-                        ByteArrayIterable.this);
-            if (result == null) {
-                return (Sequential)empty_.get_();
-            } else {
-                return (Sequential)result;
-            }
+        	//TODO: use a more efficient imple, like in List.sequence()
+            return super.sequence();
         }
         
         @Override
