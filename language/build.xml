@@ -523,6 +523,8 @@
             includeantruntime="false">
             <include name="**/*.java"/>
         </javac>
+    	<!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
     </target>
     
     <target name="test.java" depends="compile.tests.java"
