@@ -483,7 +483,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     
     @.java.lang.Override
     public final long getSize() {
-        return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<Element>)(.ceylon.language.Enumerable)getLast()).offset((Element)getFirst())) + 1L;
+        return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<Element>)(.ceylon.language.Enumerable)getLast()).offset((Element)(.java.lang.Object)getFirst())) + 1L;
     }
     
     @.java.lang.Override

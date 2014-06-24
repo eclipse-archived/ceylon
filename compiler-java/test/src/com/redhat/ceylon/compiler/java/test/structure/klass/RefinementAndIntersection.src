@@ -88,8 +88,8 @@ final class refinementAndIntersection_method_ {
     
     static void refinementAndIntersection_method() {
         final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood sub = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
-        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)sub.get()).g();
-        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H)sub.get()).h();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)(.java.lang.Object)sub.get()).g();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H)(.java.lang.Object)sub.get()).h();
     }
     
     public static void main(.java.lang.String[] args) {

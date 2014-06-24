@@ -53,7 +53,7 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
         super();
         this.$reified$Element = $reified$Element;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>($reified$Element, this);
-        this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893).ceylon.language.nothing_.get_();
+        this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.get_();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$;
@@ -64,18 +64,18 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 getSuccess() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893).ceylon.language.nothing_.get_();
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getSuccess() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 getFail1() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893).ceylon.language.nothing_.get_();
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail1() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.get_();
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 fail2;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> fail2;
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 getFail2() {
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail2() {
         return fail2;
     }
     
