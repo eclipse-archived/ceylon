@@ -164,8 +164,7 @@ final class Span<Element>(first, last)
                          else last..first;
     
     "The element of the range that occurs [[index]] values 
-     after the start of the range. Note that this operation 
-     may be inefficient for large ranges."
+     after the start of the range."
     shared actual Element? getFromFirst(Integer index) {
         if (index<0) {
             return null;

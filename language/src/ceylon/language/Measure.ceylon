@@ -61,10 +61,8 @@ final class Measure<Element>(first, size)
             => size==1 then [] 
                        else Measure(first.successor,size-1);
     
-    "The element of the sized range that occurs [[index]] values
-     after the start of the sized range. Note that, depending on
-     [[Element]]'s [[neighbour|Enumerable.neighbour]] implementation,
-     this operation may be inefficient for large ranges."
+    "The element of the range that occurs [[index]] values
+     after the start of the range."
     shared actual Element? getFromFirst(Integer index) {
         if (index<0 || index >= size) {
             return null;

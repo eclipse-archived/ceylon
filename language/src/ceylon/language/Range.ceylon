@@ -22,7 +22,9 @@ import ceylon.language {
  - via an endpoint and length, `first:size`.
  
  Furthermore, certain operations are much more efficient 
- than for other lists.
+ than for other lists, assuming that the enumerable type has 
+ efficient [[neighbour|Enumerable.neighbour]] and
+ [[offset|Enumerable.offset]] functions.
  
  The functions [[span|makeSpan]] and [[measure|makeMeasure]],
  and corresponding operators `..` and `:` are used to create
