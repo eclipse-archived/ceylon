@@ -96,7 +96,7 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.tipo=tipo;
   return that;
 }
-AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Class:{'var':'out','def':{t:Anything}},Arguments$Class:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],an:function(){return[shared()];},d:['ceylon.language.meta.model','Class']};};
+AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Class:{'var':'out','def':{t:Anything}},Arguments$Class:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],pa:1,d:['ceylon.language.meta.model','Class']};};
 function $init$AppliedClass(){
   if (AppliedClass.$$===undefined){
     initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
@@ -286,7 +286,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   that.tipo=tipo;
   return that;
 }
-AppliedInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Interface:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}}],an:function(){return[shared()];},d:['ceylon.language.meta.model','Interface']};};
+AppliedInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Interface:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}}],pa:1,d:['ceylon.language.meta.model','Interface']};};
 ex$.AppliedInterface=AppliedInterface;
 
 function $init$AppliedInterface(){
@@ -517,7 +517,7 @@ atr$($$appliedValue,'string',function(){
   return $$appliedValue;
 }
 AppliedValue.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out'},Set:{'var':'in'}},
-  satisfies:[{t:Value$meta$model,a:{Get:'Get',Set:'Set'}}],an:function(){return[shared()];},d:['ceylon.language.meta.model','Value']};};
+  satisfies:[{t:Value$meta$model,a:{Get:'Get',Set:'Set'}}],pa:1,d:['ceylon.language.meta.model','Value']};};
 ex$.AppliedValue$meta$model=AppliedValue;
 function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
@@ -648,7 +648,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedMethod};});
   return $$appliedMethod;
 }
-AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
+AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],pa:1,d:['ceylon.language.meta.model','Method']};};
 ex$.AppliedMethod$meta$model=AppliedMethod;
 function $init$AppliedMethod(){
     if (AppliedMethod.$$===undefined){
@@ -719,7 +719,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   }
   return $$appliedAttribute;
 }
-AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out','def':{t:Anything}},Set:{'var':'in','def':{t:Nothing}},Container:{'var':'in'}},satisfies:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],an:function(){return[shared()];},d:['ceylon.language.meta.model','Attribute']};};
+AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out','def':{t:Anything}},Set:{'var':'in','def':{t:Nothing}},Container:{'var':'in'}},satisfies:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};
 ex$.AppliedAttribute=AppliedAttribute;
 function $init$AppliedAttribute(){
     if (AppliedAttribute.$$===undefined){

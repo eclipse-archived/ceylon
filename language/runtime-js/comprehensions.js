@@ -6,7 +6,7 @@ function Comprehension(makeNextFunc, $$targs$$, compr) {
     compr.$$targs$$=$$targs$$;
     return compr;
 }
-Comprehension.$crtmm$={nm:'Comprehension',an:function(){return[shared()];},mod:$CCMM$,d:['$','Iterable']};
+Comprehension.$crtmm$={nm:'Comprehension',pa:1,mod:$CCMM$,d:['$','Iterable']};
 function $init$Comprehension() {
     if (Comprehension.$$===undefined) {
         initTypeProto(Comprehension, 'ceylon.language::Comprehension', $init$Basic(), $init$Iterable());
@@ -32,7 +32,7 @@ function ComprehensionIterator(nextFunc, $$targs$$, it) {
     it.next = nextFunc;
     return it;
 }
-ComprehensionIterator.$crtmm$={nm:'ComprehensionIterator',an:function(){return[shared()];},mod:$CCMM$,d:['$','Iterator']};
+ComprehensionIterator.$crtmm$={nm:'ComprehensionIterator',pa:1,mod:$CCMM$,d:['$','Iterator']};
 function $init$ComprehensionIterator() {
     if (ComprehensionIterator.$$===undefined) {
         initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',

@@ -15,7 +15,7 @@ function JSNumber(value) {
   return Float(value);
 }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$crtmm$=function(){return{nm:'JSNumber',mt:'c',an:function(){return[shared()];},
+JSNumber.$crtmm$=function(){return{nm:'JSNumber',mt:'c',pa:1,
   mod:$CCMM$,d:['$','Number']};}
 
 var origNumToString = Number.prototype.toString;

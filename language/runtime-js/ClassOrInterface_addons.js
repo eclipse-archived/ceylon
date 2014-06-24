@@ -325,7 +325,17 @@ ClassOrInterface$meta$model.$$.prototype.getClasses=function getClasses(anntypes
         if (noInherit && mm.$cont!==$$$mptypes.Container$getClasses.t)continue;
         if (!extendsType({t:this.tipo},$$$mptypes.Container$getClasses))continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getClasses))continue;
-        var anns=mm.an; if (typeof(anns)==='function'){anns=anns();mm.an=anns;}
+        if (typeof(mm.an)==='function')mm.an=mm.an();
+        var a2=getAnnotationsForBitmask(mm.pa);
+        if (a2) {
+          mm.pa=0;
+          if (mm.an) {
+            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
+          } else {
+            mm.an=a2;
+          }
+        }
+        var anns=mm.an;
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getClasses,'',1)) {
           mems.push(AppliedMemberClass(mem, {Container$MemberClass:this.tipo,Type$MemberClass:{t:mem}, Arguments$MemberClass:$$$mptypes.Arguments$getClasses}));
         }
@@ -350,7 +360,17 @@ ClassOrInterface$meta$model.$$.prototype.getInterfaces=function getInterfaces(an
         if (noInherit && mm.$cont!==$$$mptypes.Container$getInterfaces.t)continue;
         if (!extendsType({t:this.tipo},$$$mptypes.Container$getInterfaces))continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getInterfaces))continue;
-        var anns=mm.an; if (typeof(anns)==='function'){anns=anns();mm.an=anns;}
+        if (typeof(mm.an)==='function')mm.an=mm.an();
+        var a2=getAnnotationsForBitmask(mm.pa);
+        if (a2) {
+          mm.pa=0;
+          if (mm.an) {
+            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
+          } else {
+            mm.an=a2;
+          }
+        }
+        var anns=mm.an;
         if (anns && coi$is$anns(anns,ats)) {
           mems.push(AppliedMemberInterface(mem, {Container$MemberInterface:this.tipo,Type$MemberInterface:{t:mem}}));
         }
@@ -376,7 +396,17 @@ ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(an
         var setter=this.tipo.$$.prototype[m].set && extendsType($$$mptypes.Set$getAttributes,mm.$t);
         if ($$$mptypes.Set$getAttributes.t!==Nothing && !setter)continue;
         if (!extendsType({t:this.tipo},$$$mptypes.Container$getAttributes))continue;
-        var anns=mm.an; if (typeof(anns)==='function'){anns=anns();mm.an=anns;}
+        if (typeof(mm.an)==='function')mm.an=mm.an();
+        var a2=getAnnotationsForBitmask(mm.pa);
+        if (a2) {
+          mm.pa=0;
+          if (mm.an) {
+            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
+          } else {
+            mm.an=a2;
+          }
+        }
+        var anns=mm.an;
         if (anns && coi$is$anns(anns,ats)) {
           var atname=mm.d[mm.d.length-1];
           if (atname.indexOf('$')>0)atname=atname.substring(0,atname.indexOf('$'));
@@ -402,7 +432,17 @@ ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes
       if (mm && mm.d && mm.d[mm.d.length-2]=='$m') {
         if (noInherit && mm.$cont!==$$$mptypes.Container$getMethods.t)continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
-        var anns=mm.an; if (typeof(anns)==='function'){anns=anns();mm.an=anns;}
+        if (typeof(mm.an)==='function')mm.an=mm.an();
+        var a2=getAnnotationsForBitmask(mm.pa);
+        if (a2) {
+          mm.pa=0;
+          if (mm.an) {
+            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
+          } else {
+            mm.an=a2;
+          }
+        }
+        var anns=mm.an;
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
           var types=[].reifyCeylonType({t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {

@@ -10,7 +10,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-StringIterator.$crtmm$=function(){return{nm:'StringIterator',mt:'c',ps:[{nm:'string',$t:{t:$_String}}],an:function(){return[shared()];},mod:$CCMM$,d:['$','Iterator']}};
+StringIterator.$crtmm$=function(){return{nm:'StringIterator',mt:'c',ps:[{nm:'string',$t:{t:$_String}}],pa:1,mod:$CCMM$,d:['$','Iterator']}};
 
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;

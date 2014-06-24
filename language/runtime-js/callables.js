@@ -48,7 +48,7 @@ function JsCallable(o,f) {
   return f2;
 }
 JsCallable.$crtmm$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
-  tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};}
+  tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 //This is used for spread method references
 function JsCallableList(value) {
@@ -61,7 +61,7 @@ function JsCallableList(value) {
         return value.length===0?getEmpty():ArraySequence(rval,{Element$ArraySequence:{t:Callable}});
     };
 }
-JsCallableList.$crtmm$={tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};
+JsCallableList.$crtmm$={tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
 
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;

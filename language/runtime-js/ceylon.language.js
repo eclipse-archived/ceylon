@@ -136,7 +136,7 @@ $init$Anything();
 if(anything$===undefined)throwexc(InvocationException$meta$model("Cannot instantiate abstract class"),'?','?')
 return anything$;
 }
-Anything.$crtmm$=function(){return{mod:$CCMM$,ps:[],of:[{t:$_Object},{t:Null}],an:function(){return[doc($CCMM$['ceylon.language'].Anything.an.doc[0]),by(["Gavin"].reifyCeylonType({t:$_String})),shared(),abstract()];},d:['$','Anything']};};
+Anything.$crtmm$=function(){return{mod:$CCMM$,ps:[],of:[{t:$_Object},{t:Null}],pa:257,an:function(){return[doc($CCMM$['ceylon.language'].Anything.an.doc[0]),by(["Gavin"].reifyCeylonType({t:$_String}))];},d:['$','Anything']};};
 ex$.Anything=Anything;
 function $init$Anything(){
 if(Anything.$$===undefined){initTypeProto(Anything,'ceylon.language::Anything');}
@@ -149,7 +149,7 @@ function Nothing(wat) {
 initType(Nothing, 'ceylon.language::Nothing');
 //This is quite a special case, since Nothing is not in the model, we need to insert it there
 $CCMM$['ceylon.language']["Nothing"]={mt:"c",an:{"shared":[]},nm:"Nothing"};
-Nothing.$crtmm$=function(){return{ps:[],an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
+Nothing.$crtmm$=function(){return{ps:[],pa:1,mod:$CCMM$,d:['$','Nothing']};}
 
 //#COMPILE core_functions.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow,impl/bases
@@ -188,7 +188,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$crtmm$=function(){return{nm:'NativeException',mt:'c',ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
+NativeException.$crtmm$=function(){return{nm:'NativeException',mt:'c',ps:[{t:Exception}],pa:1,mod:$CCMM$,d:['$','Exception']};}
 ex$.Anything=Anything;
 ex$.Nothing=Nothing;
 ex$.getTrue=getTrue;
