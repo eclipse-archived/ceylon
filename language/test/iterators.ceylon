@@ -58,14 +58,14 @@ void test_foreach() {
     //with iterator
     sum = 0;
     variable Boolean did_else = false;
-    for (idx -> elem in entries {2,4,6}) {
+    for (idx -> elem in {2,4,6}.indexed) {
         sum += idx + elem;
     } else {
         did_else = true;
     }
     check(sum==15, "foreach with iterator");
     check(did_else, "for/else with iterator");
-    for (idx -> elem in entries {2,4,6}) {
+    for (idx -> elem in {2,4,6}.indexed) {
         if (idx == 0) { break; }
     } else {
         sum = 0;

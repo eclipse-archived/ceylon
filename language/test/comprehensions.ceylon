@@ -25,7 +25,7 @@ shared void comprehensions() {
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}.sequence(), "comprehensions w/nonempty 2");
   check([for (x in {1,2,"3.1",4}) if (is String x) x.reverse()]=={"1.3"}.sequence(), "comprehensions w/is 1");
   check([for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2]=={6}.sequence(), "comprehensions w/is 2");
-  check(Array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
+  check(Array{for (k->v in ["a","b","c","d","e"].indexed) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
   check([for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension ``[for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]`` instead of {{1,1,1,2},{2,1,2,2}}");
   //comprehensions beginning with if clause: ceylon-spec#869
@@ -81,11 +81,11 @@ shared void comprehensions() {
   check(b599_2 is Sequence<Anything>, "ceylon-compiler #599 [1]");
   check(b599_1.sequence() == b599_2, "ceylon-compiler #599 [2]");
   //ceylon-compiler#601
-  Iterable<String>? b601 = first { [ for (s in "hello world".split()) s ], {""} };
+  Iterable<String>? b601 = { [ for (s in "hello world".split()) s ], {""} }.first;
   if (exists b601) {
     check(b601=={"hello", "world"}.sequence(), "ceylon-compiler #601 [1]");
   } else { fail("ceylon-compiler #601 [2]"); }
-  Iterable<String> b85 = {for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased};
+  Iterable<String> b85 = {for (k->v in ["a","b","c","d","e"].indexed) if (k%2==0) v.uppercased};
   Iterator<String> iter85 = b85.iterator();
   if (is String x=iter85.next()) {
     check(x=="A", "ceylon-language #85");

@@ -478,7 +478,7 @@ shared void sequences() {
     }
     check(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls).sequence();
+    value coalesced = nulls.coalesced.sequence();
     check(coalesced.size==2, "coalesce size");
     check(coalesced.string=="[hello, world]", "coalesce.string");
     check(coalesced.keys.contains(0), "coalesced keys");
@@ -505,7 +505,7 @@ shared void sequences() {
         check(name.initial(1)==initial.string, "entry iteration");
     }
 
-    value sequenceEntries = entries { "X1", "X2", "X3" };
+    value sequenceEntries = { "X1", "X2", "X3" }.indexed;
     check(sequenceEntries.sequence().size==3, "entries size");
     check(sequenceEntries.sequence() nonempty, "nonempty entries");
     value primero = sequenceEntries.first;

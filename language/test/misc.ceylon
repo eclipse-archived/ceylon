@@ -32,7 +32,7 @@ shared void misc() {
     }
     check(s=="", "while nonempty");
     
-    for (n->e in entries(Array(0..10).sequence())) {
+    for (n->e in Array(0..10).sequence().indexed) {
         check(n==e, "entry iteration ``n`` != ``e``");
     }
     
@@ -48,10 +48,10 @@ shared void misc() {
     [1,2,3].definesEvery([]);
     [1,2,3].containsAny([]);
     [1,2,3].containsEvery([]);
-    check(first{1,null,3} exists, "first [1]");
-    check(!first{null,2,3} exists, "first [2]");
-    check(!first{null,null,3} exists, "first [3]");
+    check({1,null,3}.first exists, "first [1]");
+    check(!{null,2,3}.first exists, "first [2]");
+    check(!{null,null,3}.first exists, "first [3]");
     {Integer*} noints={};
-    check(!first(noints) exists, "first [4]");
+    check(!noints.first exists, "first [4]");
     print(null);
 }

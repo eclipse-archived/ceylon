@@ -156,8 +156,17 @@ shared interface Iterable<out Element, out Absent=Null>
      `null` if this stream is empty. For a stream with an
      unstable iteration order, a different value might be
      produced each time `first` is evaluated."
-    shared default Absent|Element first
-            => package.first(this);
+    shared default Absent|Element first {
+        if (!is Finished first = iterator().next()) {
+            return first;
+        }
+        else {
+            "iterator for nonempty iterable must produce at 
+             least one element"
+            assert (is Absent null);
+            return null;
+        }
+    }
     
     "The last element returned by the iterator, if any, or 
      `null` if this stream is empty. In the case of an 
@@ -679,7 +688,6 @@ shared interface Iterable<out Element, out Absent=Null>
      which they occur in this stream. For null elements of 
      the original stream, there is no entry in the resulting 
      stream."
-    see (`function coalesce`)
     shared default {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
@@ -695,7 +703,6 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 2->\"world\" }`."
-    see (`function entries`)
     shared default Iterable<<Integer->Element&Object>,Element&Null|Absent> indexed {
         object indexes
                 satisfies Iterable<<Integer->Element&Object>,Element&Null|Absent> {
