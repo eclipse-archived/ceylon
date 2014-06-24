@@ -28,9 +28,8 @@
      0:-5    // []"
 see (`class Span`, 
      `interface Enumerable`)
-shared sealed final class Measure<Element>(first, size) 
-        extends Object() 
-        satisfies [Element+]
+shared sealed final class Measure<Element>(first, size)
+        extends Range<Element>()
         given Element satisfies Enumerable<Element> {
 
     "The start of the range."
@@ -139,7 +138,7 @@ shared sealed final class Measure<Element>(first, size)
        [[decrements|Ordinal.predecessor]], and 
      - a positive `shift` measures 
        [[increments|Ordinal.successor]]."
-    shared Measure<Element> shifted(Integer shift) {
+    shared actual Measure<Element> shifted(Integer shift) {
         if (shift==0) {
             return this;
         }
@@ -169,7 +168,7 @@ shared sealed final class Measure<Element>(first, size)
     }
     
     "Determines if this range includes the given value."
-    shared Boolean containsElement(Element x)
+    shared actual Boolean containsElement(Element x)
             => 0 <= x.offset(first) < size;
     
     shared actual Boolean includes(List<Anything> sublist) {
