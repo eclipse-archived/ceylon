@@ -7,11 +7,11 @@
  type `X`, and `size` is an integer, then `x in first:size` 
  if and only if `0 <= x.offset(first) < size`.
  
- A sized range is always nonempty, containing at least one 
+ A measure is always nonempty, containing at least one 
  value. Thus, it is a [[Sequence]].
  
  The _segment_ operator `:` is an abbreviation for
- `SizedRange` instantiation.
+ `Measure` instantiation.
  
      for (i in start:size) { ... }
      for (char in '0':10) { ... }
@@ -28,7 +28,7 @@
      0:-5    // []"
 see (`class Span`, 
      `interface Enumerable`)
-shared sealed final class SizedRange<Element>(first, size) 
+shared sealed final class Measure<Element>(first, size) 
         extends Object() 
         satisfies [Element+]
         given Element satisfies Enumerable<Element> {
@@ -63,7 +63,7 @@ shared sealed final class SizedRange<Element>(first, size)
     "The rest of the range, without its first element."
     shared actual Element[] rest 
             => size==1 then [] 
-                       else SizedRange(first.successor,size-1);
+                       else Measure(first.successor,size-1);
     
     "The element of the sized range that occurs [[index]] values
      after the start of the sized range. Note that, depending on
@@ -139,12 +139,12 @@ shared sealed final class SizedRange<Element>(first, size)
        [[decrements|Ordinal.predecessor]], and 
      - a positive `shift` measures 
        [[increments|Ordinal.successor]]."
-    shared SizedRange<Element> shifted(Integer shift) {
+    shared Measure<Element> shifted(Integer shift) {
         if (shift==0) {
             return this;
         }
         else {
-            return SizedRange(first.neighbour(shift),size);
+            return Measure(first.neighbour(shift),size);
         }
     }
     
@@ -176,8 +176,8 @@ shared sealed final class SizedRange<Element>(first, size)
         if (sublist.empty) {
             return true;
         }
-        else if (is SizedRange<Element> sublist) {
-            return includesSizedRange(sublist);
+        else if (is Measure<Element> sublist) {
+            return includesMeasure(sublist);
         }
         else {
             return super.includes(sublist);
@@ -186,7 +186,7 @@ shared sealed final class SizedRange<Element>(first, size)
     
     "Determines if this range includes the given sized 
      range."
-    shared Boolean includesSizedRange(SizedRange<Element> sublist) {
+    shared Boolean includesMeasure(Measure<Element> sublist) {
         value offset = sublist.first.offset(first);
         return offset >= 0 && offset + sublist.size <= size;
     }
@@ -194,8 +194,8 @@ shared sealed final class SizedRange<Element>(first, size)
     "Efficiently determines if two sized ranges are the same
      by comparing their sizes and start points."
     shared actual Boolean equals(Object that) {
-        if (is SizedRange<Object> that) {
-            //optimize for another SizedRange
+        if (is Measure<Object> that) {
+            //optimize for another Measure
             return that.size==size && that.first==first;
         }
         else {
@@ -204,16 +204,16 @@ shared sealed final class SizedRange<Element>(first, size)
         }
     }
     
-    "Returns the range itself, since sized ranges are 
+    "Returns the measure itself, since sized ranges are 
      immutable."
-    shared actual SizedRange<Element> clone() => this;
+    shared actual Measure<Element> clone() => this;
     
-    "Returns the range itself, since a sized range cannot 
+    "Returns the measure itself, since a sized range cannot 
      contain nulls."
-    shared actual SizedRange<Element> coalesced => this;
+    shared actual Measure<Element> coalesced => this;
     
-    "Returns this range."
-    shared actual SizedRange<Element> sequence() => this;
+    "Returns this measure."
+    shared actual Measure<Element> sequence() => this;
     
     shared actual Element[] segment(Integer from, Integer length) {
         if (length<=0) {
@@ -222,7 +222,7 @@ shared sealed final class SizedRange<Element>(first, size)
         else {
             value len = from+length < size then length 
                                            else size-from;
-            return SizedRange(first.neighbour(from),len);
+            return Measure(first.neighbour(from),len);
         }
     }
     
@@ -234,7 +234,7 @@ shared sealed final class SizedRange<Element>(first, size)
             else {
                 value len = to < size then to-from+1
                                       else size-from;
-                return SizedRange(first.neighbour(from),len);
+                return Measure(first.neighbour(from),len);
             }
         }
         else {
@@ -244,7 +244,7 @@ shared sealed final class SizedRange<Element>(first, size)
             else {
                 value len = from < size then from-to+1 
                                         else size-to;
-                return SizedRange(first.neighbour(to),len).reverse();
+                return Measure(first.neighbour(to),len).reverse();
             }
         }
     }
@@ -254,7 +254,7 @@ shared sealed final class SizedRange<Element>(first, size)
             return this;
         }
         else if (from < size) {
-            return SizedRange(first.neighbour(from),size-from);
+            return Measure(first.neighbour(from),size-from);
         }
         else {
             return [];
@@ -266,7 +266,7 @@ shared sealed final class SizedRange<Element>(first, size)
             return [];
         }
         else if (to < size-1) {
-            return SizedRange(first,to);
+            return Measure(first,to);
         }
         else {
             return this;
@@ -274,10 +274,10 @@ shared sealed final class SizedRange<Element>(first, size)
     }
 }
 
-"Create a new [[SizedRange]] if the given [[size]] is 
+"Create a new [[Measure]] if the given [[size]] is 
  strictly positive, or return the 
  [[empty sequence|empty]] if `size <= 0`."
-shared SizedRange<Element>|[] sizedRange<Element>
+shared Measure<Element>|[] measure<Element>
             (Element first, Integer size) 
         given Element satisfies Enumerable<Element> 
-        => size <= 0 then [] else SizedRange(first, size);
+        => size <= 0 then [] else Measure(first, size);

@@ -159,7 +159,7 @@ Nothing.$crtmm$=function(){return{ps:[],pa:1,mod:$CCMM$,d:['$','Nothing']};}
 //#native Callable
 //#COMPILE Binary,Destroyable,Obtainable,Comparable,Invertable,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Span,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry
 //#Number
-//#COMPILE Set,Span,SizedRange,Singleton,AssertionError,Map,String,strings.js,Character
+//#COMPILE Set,Span,Measure,Singleton,AssertionError,Map,String,strings.js,Character
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,apply
 //#COMPILE every,first,forItem,forKey,concatenate,largest,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
 //#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,sort,and,or,not,arrayOfSize
