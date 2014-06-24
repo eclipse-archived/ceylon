@@ -1229,7 +1229,8 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
-                    operators <literal>..</literal> and <literal>-></literal>.</para>
+                    operators <literal>..</literal>, <literal>:</literal>, and 
+                    <literal>-></literal>.</para>
                 </listitem>
             </itemizedlist>
             

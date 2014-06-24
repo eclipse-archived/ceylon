@@ -2149,7 +2149,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
         <para>These operators provide a simplified syntax for accessing values 
         of a <literal>Correspondence</literal>, and for joining and obtaining
-        subranges of <literal>Sequence</literal>s.</para>
+        subranges of <literal>Ranged</literal> objects.</para>
     
     <table>
     <tgroup cols="6">
@@ -2182,19 +2182,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>Y?</literal></entry>
         </row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Spans and segments</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Subranges</emphasis></entry></row>
         
         <row>
             <entry><literal>lhs[from:length]</literal></entry>
-            <entry>segment</entry>
-            <entry><literal>lhs.segment(from,length)</literal></entry>
+            <entry>measured subrange</entry>
+            <entry><literal>lhs.measure(from,length)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal>, <literal>Integer</literal></entry>
             <entry><literal>Y</literal></entry>
         </row>
         <row>
             <entry><literal>lhs[from..to]</literal></entry>
-            <entry>span</entry>
+            <entry>spanned subrange</entry>
             <entry><literal>lhs.span(from,to)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal>, <literal>X</literal></entry>
@@ -2202,7 +2202,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         </row>
         <row>
             <entry><literal>lhs[from...]</literal></entry>
-            <entry>upper span</entry>
+            <entry>upper spanned subrange</entry>
             <entry><literal>lhs.spanFrom(from)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -2210,7 +2210,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         </row>
         <row>
             <entry><literal>lhs[...to]</literal></entry>
-            <entry>lower span</entry>
+            <entry>lower spanned subrange</entry>
             <entry><literal>lhs.spanTo(to)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
@@ -2337,7 +2337,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs..rhs</literal></entry>
             <entry>spanned range</entry>
-            <entry><literal>range(lhs, rhs)</literal></entry>
+            <entry><literal>span(lhs, rhs)</literal></entry>
             <entry><literal>T given T satisfies Enumerable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
             <entry><literal>Range&lt;T&gt;</literal></entry>
@@ -2345,11 +2345,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <row>
             <entry><literal>lhs:rhs</literal></entry>
-            <entry>segmented range</entry>
-            <entry><literal>sizedRange(lhs,rhs)</literal></entry>
+            <entry>measured range</entry>
+            <entry><literal>measure(lhs,rhs)</literal></entry>
             <entry><literal>T given T satisfies Enumerable&lt;T&gt;</literal></entry>
             <entry><literal>Integer</literal></entry>
-            <entry><literal>SizedRange&lt;T&gt;|[]</literal></entry>
+            <entry><literal>Range&lt;T&gt;|[]</literal></entry>
         </row>
         
         <row>
