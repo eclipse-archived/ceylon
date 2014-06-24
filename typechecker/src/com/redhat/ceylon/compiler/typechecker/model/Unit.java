@@ -418,6 +418,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Enumerable");
     }
         
+    public Class getRangeDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Range");
+    }
+    
     public Class getSpanDeclaration() {
         return (Class) getLanguageModuleDeclaration("Span");
     }
@@ -599,7 +603,7 @@ public class Unit {
      * @return The ProducedType corresponding to {@code Span<T>}
      */
     public ProducedType getSpanType(ProducedType rt) {
-        return Util.producedType(getSpanDeclaration(), rt);
+        return Util.producedType(getRangeDeclaration(), rt);
     }
 
     /**
@@ -608,7 +612,7 @@ public class Unit {
      * @return The ProducedType corresponding to {@code SizedRange<T>|[]}
      */
     public ProducedType getMeasureType(ProducedType rt) {
-        return unionType(Util.producedType(getMeasureDeclaration(), rt), 
+        return unionType(Util.producedType(getRangeDeclaration(), rt), 
         		getType(getEmptyDeclaration()), this);
     }
 

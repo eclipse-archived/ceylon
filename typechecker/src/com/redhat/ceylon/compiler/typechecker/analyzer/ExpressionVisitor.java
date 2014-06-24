@@ -3119,8 +3119,7 @@ public class ExpressionVisitor extends Visitor {
                     unit.getEnumerableDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
             if (ot!=null) {
-                ProducedType pt = producedType(unit.getSpanDeclaration(), ot);
-                that.setTypeModel(pt);
+                that.setTypeModel(unit.getSpanType(ot));
             }
         }
     }
