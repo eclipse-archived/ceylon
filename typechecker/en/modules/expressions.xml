@@ -1439,7 +1439,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             </row>
     
             <row>
-                <entry>Member invocation and selection, index, span,
+                <entry>Member invocation and selection, index, subrange,
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>,
