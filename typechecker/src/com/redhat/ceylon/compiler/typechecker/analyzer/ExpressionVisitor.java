@@ -3125,7 +3125,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitSegmentOperator(Tree.SegmentOp that) {
+    private void visitMeasureOperator(Tree.SegmentOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
@@ -3135,7 +3135,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getRightTerm(), "right operand must be an integer");
             if (ot!=null) {
                 ProducedType ta = ot.getTypeArgumentList().get(0);
-                that.setTypeModel(unit.getSizedRangeType(ta));
+                that.setTypeModel(unit.getMeasureType(ta));
             }
         }
     }
@@ -3667,7 +3667,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SegmentOp that) {
         super.visit(that);
-        visitSegmentOperator(that);
+        visitMeasureOperator(that);
     }
         
     @Override public void visit(Tree.EntryOp that) {

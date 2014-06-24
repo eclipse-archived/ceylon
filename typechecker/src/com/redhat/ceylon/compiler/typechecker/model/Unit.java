@@ -422,8 +422,8 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Span");
     }
     
-    public Class getSizedRangeDeclaration() {
-        return (Class) getLanguageModuleDeclaration("SizedRange");
+    public Class getMeasureDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Measure");
     }
     
     public Class getTupleDeclaration() {
@@ -607,8 +607,8 @@ public class Unit {
      * @param rt The ProducedType corresponding to {@code T}
      * @return The ProducedType corresponding to {@code SizedRange<T>|[]}
      */
-    public ProducedType getSizedRangeType(ProducedType rt) {
-        return unionType(Util.producedType(getSizedRangeDeclaration(), rt), 
+    public ProducedType getMeasureType(ProducedType rt) {
+        return unionType(Util.producedType(getMeasureDeclaration(), rt), 
         		getType(getEmptyDeclaration()), this);
     }
 
