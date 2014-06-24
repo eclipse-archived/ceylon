@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1701_ {
+    
+    private bug1701_() {
+    }
+    
+    static void bug1701() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>> split = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))))), "{String*}(Boolean(Character)=, Boolean=, Boolean=)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$() {
+                return .ceylon.language.String.split("hello");
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
+                return .ceylon.language.String.split("hello", $ceylontmp$splitting);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
+                final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
+                return .ceylon.language.String.split("hello", $ceylontmp$splitting, $ceylontmp$discardSeparators);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
+                final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
+                final boolean $ceylontmp$groupSeparators = ((.ceylon.language.Boolean)$param$2).booleanValue();
+                return .ceylon.language.String.split("hello", $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1701_.bug1701();
+    }
+}
