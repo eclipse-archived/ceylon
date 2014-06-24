@@ -5404,7 +5404,8 @@ public class ExpressionVisitor extends Visitor {
                             type.getDeclaration().getName(unit) +
                             " of " + td.getName());
                 }
-            	if (std.isSealed() && !inSameModule(std)) {
+            	if (td instanceof ClassOrInterface && 
+            			std.isSealed() && !inSameModule(std)) {
         			t.addError("satisfies a sealed interface in a different module: " +
         					std.getName(unit) + " in " + 
         					std.getUnit().getPackage().getModule().getNameAsString());
