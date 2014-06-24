@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -1263,7 +1264,16 @@ class NamedArgumentInvocation extends Invocation {
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
         Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-        ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+
+        final MethodOrValue model = declaredParam.getModel();
+        ProducedTypedReference typedRef = gen.getTypedReference(model);
+        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        ProducedType type;
+        if(nonWideningTypedRef != typedRef)
+            type = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        else
+            type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
         int jtFlags = 0;
         int exprFlags = 0;
