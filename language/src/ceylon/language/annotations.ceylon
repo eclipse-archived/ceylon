@@ -60,7 +60,7 @@ shared final annotation class FinalAnnotation()
             ClassDeclaration> {}
 
 "Annotation to mark a class or interface as sealed. A 
- `sealed` interface may not be satisfies outside of the 
+ `sealed` interface may not be satisfied outside of the 
  module in which it is defined. A `sealed` class may not be
  extended or instantiated outside of the module in which it
  is defined."
