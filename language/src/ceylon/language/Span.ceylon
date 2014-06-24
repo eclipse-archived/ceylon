@@ -44,7 +44,7 @@
  A range for a recursive enumerable type is always 
  increasing.
  
- The _span_ operator `..` is an abbreviation for `Range`
+ The _span_ operator `..` is an abbreviation for `Span`
  instantiation.
  
      for (i in min..max) { ... }
@@ -63,7 +63,7 @@
 by ("Gavin")
 see (`class SizedRange`,
      `interface Enumerable`)
-shared sealed final class Range<Element>(first, last) 
+shared sealed final class Span<Element>(first, last) 
         extends Object() 
         satisfies [Element+]
         given Element satisfies Enumerable<Element> { 
@@ -233,7 +233,7 @@ shared sealed final class Range<Element>(first, last)
        [[decrements|Ordinal.predecessor]], and 
      - a positive `shift` measures 
        [[increments|Ordinal.successor]]."
-    shared Range<Element> shifted(Integer shift) {
+    shared Span<Element> shifted(Integer shift) {
         if (shift==0) {
             return this;
         }
@@ -285,8 +285,8 @@ shared sealed final class Range<Element>(first, last)
         if (sublist.empty) {
             return true;
         }
-        if (is Range<Element> sublist) {
-            return includesRange(sublist);
+        if (is Span<Element> sublist) {
+            return includesSpan(sublist);
         }
         else {
             return super.includes(sublist);
@@ -322,7 +322,7 @@ shared sealed final class Range<Element>(first, last)
     }
     
     "Determines if this range includes the given range."
-    shared Boolean includesRange(Range<Element> sublist) {
+    shared Boolean includesSpan(Span<Element> sublist) {
         if (recursive) {
             return sublist.first.offset(first)<size &&
                     sublist.last.offset(first)<size;
@@ -337,8 +337,8 @@ shared sealed final class Range<Element>(first, last)
     "Determines if two ranges are the same by comparing
      their endpoints."
     shared actual Boolean equals(Object that) {
-        if (is Range<Object> that) {
-            //optimize for another Range
+        if (is Span<Object> that) {
+            //optimize for another Span
             return that.first==first && that.last==last;
         }
         else {
@@ -347,16 +347,16 @@ shared sealed final class Range<Element>(first, last)
         }
     }
     
-    "Returns the range itself, since ranges are 
+    "Returns the Span itself, since Spans are 
      immutable."
-    shared actual Range<Element> clone() => this;
+    shared actual Span<Element> clone() => this;
     
-    "Returns the range itself, since a Range cannot
+    "Returns the Span itself, since a Span cannot
      contain nulls."
-    shared actual Range<Element> coalesced => this;
+    shared actual Span<Element> coalesced => this;
     
-    "Returns this range."
-    shared actual Range<Element> sequence() => this;
+    "Returns this Span."
+    shared actual Span<Element> sequence() => this;
     
     class By(Integer step) 
             satisfies {Element+} {
@@ -460,8 +460,8 @@ shared sealed final class Range<Element>(first, last)
     
 }
 
-"Create a new [[Range]]."
-shared Range<Element> range<Element>
+"Create a new [[Span]]."
+shared Span<Element> span<Element>
             (Element first, Element last) 
         given Element satisfies Enumerable<Element> 
-        => Range(first, last);
+        => Span(first, last);

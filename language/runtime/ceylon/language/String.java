@@ -304,7 +304,7 @@ public final class String
             return (Sequential) empty_.get_();
         }
         else {
-            return new Range<Integer>(Integer.$TypeDescriptor$, 
+            return new Span<Integer>(Integer.$TypeDescriptor$, 
                     Integer.instance(0), Integer.instance(size-1));
         }
     }

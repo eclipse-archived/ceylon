@@ -26,7 +26,7 @@
      0:0     // []
      5:0     // []
      0:-5    // []"
-see (`class Range`, 
+see (`class Span`, 
      `interface Enumerable`)
 shared sealed final class SizedRange<Element>(first, size) 
         extends Object() 

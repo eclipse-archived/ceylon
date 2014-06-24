@@ -1,5 +1,5 @@
 "Abstraction of [[ordinal types|Ordinal]] whose values may 
- be used as endpoints of a [[Range]] or [[SizedRange]].
+ be used as endpoints of a [[Span]] or [[SizedRange]].
  
  An `Enumerable` type is characterized by each element 
  having well-defined [[offset]] and [[neighbour]] functions.
@@ -48,7 +48,7 @@
  
  - the _span operator_, written `first..last`, or 
  - the _segment operator_, written `first:length`."
-see (`class Range`, `class SizedRange`)
+see (`class Span`, `class SizedRange`)
 shared interface Enumerable<Other> of Other
         satisfies Ordinal<Other>
         given Other satisfies Enumerable<Other> {
