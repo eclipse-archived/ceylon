@@ -580,16 +580,18 @@ public class MetamodelGenerator {
     }
 
     /** Encodes all annotations as a map which is then stored under the
-     * {@link #KEY_ANNOTATIONS} key in the specified map. */
-    public static void encodeAnnotations(Declaration d, Map<String, Object> m) {
-        HashMap<String, List<String>> anns = new HashMap<>();
+     * {@link #KEY_ANNOTATIONS} key in the specified map.
+     * If the map is null, only the bitset annotations are calculated and returned.
+     * @return The bitmask for the bitset annotations. */
+    public static int encodeAnnotations(Declaration d, Map<String, Object> m) {
+        HashMap<String, List<String>> anns = m == null ? null : new HashMap<String, List<String>>();
         int bits = 0;
         for (Annotation a : d.getAnnotations()) {
             String name = a.getName();
             int idx = annotationBits.indexOf(name);
             if (idx >= 0) {
                 bits |= (1 << idx);
-            } else {
+            } else if (anns != null) {
                 List<String> args = a.getPositionalArguments();
                 if (args == null) {
                     args = Collections.emptyList();
@@ -597,12 +599,13 @@ public class MetamodelGenerator {
                 anns.put(name, args);
             }
         }
-        if (bits > 0) {
+        if (bits > 0 && m != null) {
             m.put(KEY_PACKED_ANNS, bits);
         }
-        if (!anns.isEmpty()) {
+        if (anns != null && m != null && !anns.isEmpty()) {
             m.put(KEY_ANNOTATIONS, anns);
         }
+        return bits;
     }
 
     private void addPackage(final Map<String,Object> map, final String pkgName) {
