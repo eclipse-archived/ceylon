@@ -5,7 +5,7 @@ Entry<Integer,String> entry = Entry<Integer,String> {
     key=1;
 };
 
-Span<Integer> range = createRange<Integer> {
+Range<Integer> range = createRange<Integer> {
     first=-3;
     last=+10;
 };

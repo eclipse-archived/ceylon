@@ -5,5 +5,9 @@ shared sealed abstract class Range<Element>()
     
     shared formal Boolean containsElement(Element x);
     shared formal Range<Element> shifted(Integer shift);
+    
+    shared formal Boolean increasing;
+    shared formal Boolean decreasing;
+    
     //TODO: includesRange()
 }

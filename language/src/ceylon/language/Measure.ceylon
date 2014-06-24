@@ -28,7 +28,7 @@
      0:-5    // []"
 see (`class Span`, 
      `interface Enumerable`)
-shared sealed final class Measure<Element>(first, size)
+final class Measure<Element>(first, size)
         extends Range<Element>()
         given Element satisfies Enumerable<Element> {
 
@@ -74,6 +74,9 @@ shared sealed final class Measure<Element>(first, size)
         }
         return first.neighbour(index);
     }
+    
+    shared actual Boolean increasing => true;
+    shared actual Boolean decreasing => false;
     
     "An iterator for the elements of the sized range."
     shared actual Iterator<Element> iterator() {
@@ -276,7 +279,7 @@ shared sealed final class Measure<Element>(first, size)
 "Create a new [[Measure]] if the given [[size]] is 
  strictly positive, or return the 
  [[empty sequence|empty]] if `size <= 0`."
-shared Measure<Element>|[] measure<Element>
+shared Range<Element>|[] measure<Element>
             (Element first, Integer size) 
         given Element satisfies Enumerable<Element> 
         => size <= 0 then [] else Measure(first, size);

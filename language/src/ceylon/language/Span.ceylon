@@ -63,7 +63,7 @@
 by ("Gavin")
 see (`class Measure`,
      `interface Enumerable`)
-shared sealed final class Span<Element>(first, last)
+final class Span<Element>(first, last)
         extends Range<Element>()
         given Element satisfies Enumerable<Element> {
     
@@ -78,12 +78,12 @@ shared sealed final class Span<Element>(first, last)
     
     "Determines if the range is increasing, that is, if
      successors occur after predecessors."
-    shared Boolean increasing 
+    shared actual Boolean increasing 
             = last.offsetSign(first)>=0;
     
     "Determines if the range is decreasing, that is, if
      predecessors occur after successors."
-    shared Boolean decreasing => !increasing;
+    shared actual Boolean decreasing => !increasing;
     
     "Determines if the range is of recursive values, that 
      is, if successors wrap back on themselves. All 
@@ -459,8 +459,8 @@ shared sealed final class Span<Element>(first, last)
     
 }
 
-"Create a new [[Span]]."
-shared Span<Element> span<Element>
+"Create a new [[Span]] with the given endpoints."
+shared Range<Element> span<Element>
             (Element first, Element last) 
         given Element satisfies Enumerable<Element> 
         => Span(first, last);
