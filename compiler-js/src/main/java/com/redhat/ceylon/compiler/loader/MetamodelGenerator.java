@@ -41,6 +41,7 @@ public class MetamodelGenerator {
     public static final String KEY_METHODS      = "$m";
     public static final String KEY_ATTRIBUTES   = "$at";
     public static final String KEY_ANNOTATIONS  = "an";
+    public static final String KEY_PACKED_ANNS  = "pa";
     public static final String KEY_TYPE         = "$t";
     public static final String KEY_TYPES        = "l";
     public static final String KEY_TYPE_PARAMS  = "tp";
@@ -66,7 +67,9 @@ public class MetamodelGenerator {
     public static final String METATYPE_SETTER          = "s";
     public static final String METATYPE_TYPE_PARAMETER  = "tp";
     public static final String METATYPE_PARAMETER       = "prm";
-    public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default", "native", "sealed", "final", "abstract");
+    //DO NOT REARRANGE, only append
+    public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
+            "sealed", "final", "native", "late", "abstract");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
@@ -408,9 +411,6 @@ public class MetamodelGenerator {
 
         //Annotations
         encodeAnnotations(d, m);
-        if (d.isAbstract()) {
-            m.put("abstract", 1);
-        }
         if (d.isAnonymous()) {
             m.put("$anon", 1);
         }
@@ -582,15 +582,24 @@ public class MetamodelGenerator {
 
     /** Encodes all annotations as a map which is then stored under the
      * {@link #KEY_ANNOTATIONS} key in the specified map. */
-    private void encodeAnnotations(Declaration d, Map<String, Object> m) {
+    public static void encodeAnnotations(Declaration d, Map<String, Object> m) {
         HashMap<String, List<String>> anns = new HashMap<>();
+        int bits = 0;
         for (Annotation a : d.getAnnotations()) {
             String name = a.getName();
-            List<String> args = a.getPositionalArguments();
-            if (args == null) {
-                args = Collections.emptyList();
+            int idx = annotationBits.indexOf(name);
+            if (idx >= 0) {
+                bits |= (1 << idx);
+            } else {
+                List<String> args = a.getPositionalArguments();
+                if (args == null) {
+                    args = Collections.emptyList();
+                }
+                anns.put(name, args);
             }
-            anns.put(name, args);
+        }
+        if (bits > 0) {
+            m.put(KEY_PACKED_ANNS, bits);
         }
         if (d.isAnnotation()) {
             m.put(KEY_IS_ANNOTATION, 1);
