@@ -1,11 +1,11 @@
-import ceylon.language { createRange=range }
+import ceylon.language { createRange=span }
 
 Entry<Integer,String> entry = Entry<Integer,String> {
     item="hello";
     key=1;
 };
 
-Range<Integer> range = createRange<Integer> {
+Span<Integer> range = createRange<Integer> {
     first=-3;
     last=+10;
 };
@@ -16,7 +16,7 @@ shared Entry<Integer,String> entry {
     key=1;
 }
 
-shared Range<Integer> range {
+shared Span<Integer> range {
     first=-3;
     last=+10;
 }
@@ -39,7 +39,7 @@ shared void entriesAndRanges() {
     key=1;
 }
 
-Range<Integer> range {
+ Span<Integer> range {
     first=-3;
     last=+10;
 }*/
