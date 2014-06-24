@@ -34,7 +34,13 @@ class Bug1695B(shared actual [<Bug1695A|Bug1695B>+] c) extends Bug1695T() {
 }
 
 @noanno
-interface It<Element,Absent> 
+void bug1695(){
+    Bug1695B b1 = Bug1695B { c = [Bug1695A()]; };
+    Bug1695B b2 = Bug1695B ( [Bug1695A()] );
+}
+
+@noanno
+interface Bug1695It<Element,Absent> 
         given Absent satisfies Null {
     
     shared default Callable<Iterable<Result,Absent>,Args> 
@@ -44,7 +50,7 @@ interface It<Element,Absent>
 }
 
 @noanno
-class Emp() satisfies It<Nothing,Null>{
+class Bug1695Emp() satisfies Bug1695It<Nothing,Null>{
     shared actual Callable<[],Args> spread<Result,Args>(
         Callable<Result,Args> method(Nothing element))
             given Args satisfies Anything[] 
