@@ -6,6 +6,7 @@ import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.declaration.TypeParameter;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
 /**
@@ -26,16 +27,21 @@ import ceylon.language.meta.declaration.ValueDeclaration;
  * absolutePackage  ::= '.' dottedIdent ;
  *                      // note: to suport package names which don't start 
  *                      // with the module name
- * declaration      ::= type | function | value ;
- * type             ::= class | interface ;
- * class            ::= 'C' ident ( '.' member )?
- * interface        ::= 'I' ident ( '.' member )?
- * alias            ::= 'A' ident ( '.' member )?
+ * declaration      ::= type | function | value;
+ * type             ::= class | interface | alias ;
+ * class            ::= 'C' ident ( '.' memberOrTp )? ;
+ * interface        ::= 'I' ident ( '.' memberOrTp )? ;
+ * alias            ::= 'A' ident ( '.' memberOrTp )? ;
+ * memberOrTp       ::= typeParameter | member ;
  * member           ::= declaration ;
- * function         ::= 'F' ident ;
+ * typeParameter    ::= 'P' ident ;
+ * function         ::= 'F' ident ( '.' typeParameter )?;
  * value            ::= 'V' ident ;
  * </pre>
- * TODO Alias
+ * Note: The scope of a type parameter (or value parameter) is the scope of 
+ * the class or function, which means you can't make references to them 
+ * from outside, so although `given Element` makes sense within the scope 
+ * of `sort`, `given sort.Element` is disallowed.
  */
 
 class DeclarationParser {
@@ -181,9 +187,17 @@ class DeclarationParser {
         if (!at('F')) {
             return null;
         }
+        Declaration result;
         String fn = ident();
-        if (fn != null && atEnd()) {
-            return makeFunction(packageOrType, fn);
+        if (fn != null) {
+            result = makeFunction(packageOrType, fn);
+            if (at('.')) {
+                result = typeParameter(result);
+            }
+            if (!atEnd()) {
+                throw unexpectedToken();
+            }
+            return result;
         } else {
             throw unexpectedToken();
         }
@@ -194,7 +208,7 @@ class DeclarationParser {
             return null;
         }
         String fn = ident();
-        if (fn != null && atEnd()) {
+        if (fn != null) {
             return makeValue(packageOrType, fn);
         } else {
             throw unexpectedToken();
@@ -209,9 +223,16 @@ class DeclarationParser {
         if (result == null) {
             result = alias(packageOrType);
         }
-        
         if (result != null && at('.')) {
-            return declaration(result);
+            return tpOrMember(result);
+        }
+        return result;
+    }
+    
+    private Declaration tpOrMember(Declaration type) {
+        Declaration result = typeParameter(type);
+        if (result == null) {
+            result = declaration(type);
         }
         return result;
     }
@@ -245,6 +266,17 @@ class DeclarationParser {
         String fn = ident();
         if (fn != null) {
             return makeAlias(packageOrType, fn);
+        }
+        throw unexpectedToken();
+    }
+    
+    private TypeParameter typeParameter(Declaration packageOrType) {
+        if (!at('P')) {
+            return null;
+        }
+        String fn = ident();
+        if (fn != null) {
+            return makeTypeParameter(packageOrType, fn);
         }
         throw unexpectedToken();
     }
@@ -303,6 +335,23 @@ class DeclarationParser {
         }
         if (result == null) {
             throw metamodelNotFound("Could not find alias: " + aliasName + " in " + packageOrType.getName());
+        }
+        return result;
+    }
+    
+    protected TypeParameter makeTypeParameter(Declaration packageOrType, String typeParameter) {
+        final TypeParameter result;
+        if (packageOrType instanceof ClassOrInterfaceDeclaration) {
+            result = ((ClassOrInterfaceDeclaration)packageOrType).getTypeParameterDeclaration(typeParameter);
+        } else if (packageOrType instanceof FunctionDeclaration) {
+            result = ((FunctionDeclaration)packageOrType).getTypeParameterDeclaration(typeParameter);
+        } else if (packageOrType instanceof AliasDeclaration) {
+            result = ((AliasDeclaration)packageOrType).getTypeParameterDeclaration(typeParameter);
+        } else {
+            throw metamodelError("Unexpected container " + packageOrType.getClass() + " for type parameter " + typeParameter);
+        }
+        if (result == null) {
+            throw metamodelNotFound("Could not find alias: " + typeParameter + " in " + packageOrType.getName());
         }
         return result;
     }
