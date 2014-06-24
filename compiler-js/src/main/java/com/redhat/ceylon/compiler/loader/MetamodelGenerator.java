@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -39,20 +40,20 @@ public class MetamodelGenerator {
     public static final String KEY_OBJECTS      = "$o";
     public static final String KEY_METHODS      = "$m";
     public static final String KEY_ATTRIBUTES   = "$at";
-    public static final String KEY_ANNOTATIONS  = "$an";
+    public static final String KEY_ANNOTATIONS  = "an";
     public static final String KEY_TYPE         = "$t";
-    public static final String KEY_TYPES        = "$ts";
-    public static final String KEY_TYPE_PARAMS  = "$tp";
-    public static final String KEY_METATYPE     = "$mt";
-    public static final String KEY_MODULE       = "$md";
-    public static final String KEY_NAME         = "$nm";
-    public static final String KEY_PACKAGE      = "$pk";
-    public static final String KEY_PARAMS       = "$ps";
-    public static final String KEY_SELF_TYPE    = "$st";
-    public static final String KEY_IS_ANNOTATION= "$annot";
-    public static final String KEY_SATISFIES    = "$sts";
+    public static final String KEY_TYPES        = "l";
+    public static final String KEY_TYPE_PARAMS  = "tp";
+    public static final String KEY_METATYPE     = "mt";
+    public static final String KEY_MODULE       = "md";
+    public static final String KEY_NAME         = "nm";
+    public static final String KEY_PACKAGE      = "pk";
+    public static final String KEY_PARAMS       = "ps";
+    public static final String KEY_SELF_TYPE    = "st";
+    public static final String KEY_IS_ANNOTATION= "annot";
+    public static final String KEY_SATISFIES    = "sts";
 
-    public static final String KEY_DEFAULT      = "$def";
+    public static final String KEY_DEFAULT      = "def";
     public static final String KEY_DYNAMIC      = "dyn";
 
     public static final String METATYPE_CLASS           = "c";
@@ -65,6 +66,7 @@ public class MetamodelGenerator {
     public static final String METATYPE_SETTER          = "s";
     public static final String METATYPE_TYPE_PARAMETER  = "tp";
     public static final String METATYPE_PARAMETER       = "prm";
+    public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default", "native", "sealed", "final", "abstract");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();

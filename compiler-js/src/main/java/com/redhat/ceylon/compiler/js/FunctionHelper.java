@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -313,11 +314,11 @@ public class FunctionHelper {
         Node n;
         Tree.ParameterList params;
         void outputMetamodelAndReturn(GenerateJsVisitor gen, ProducedType t) {
-            gen.out(name,  ".$crtmm$=function(){return{$ps:");
+            gen.out(name,  ".$crtmm$=function(){return{", MetamodelGenerator.KEY_PARAMS,":");
             TypeUtils.encodeParameterListForRuntime(n, params.getModel(), gen);
             if (t != null) {
                 //Add the type to the innermost method
-                gen.out(",$t:");
+                gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
                 TypeUtils.typeNameOrList(n, t, gen, false);
             }
             gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", name, ");");

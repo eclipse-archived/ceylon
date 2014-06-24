@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +40,8 @@ public class TypeUtils {
     final TypeDeclaration sequential;
     final TypeDeclaration _null;
     final TypeDeclaration empty;
+    static final List<String> splitMetamodelAnnotations = Arrays.asList("ceylon.language::doc",
+            "ceylon.language::throws", "ceylon.language::see", "ceylon.language::by");
 
     TypeUtils(Module languageModule) {
         final com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
@@ -822,7 +825,7 @@ public class TypeUtils {
                 sb.append(".").append(p);
             }
         }
-        sb.append(".$an.doc[0]");
+        sb.append(".").append(MetamodelGenerator.KEY_ANNOTATIONS).append(".doc[0]");
         return sb.toString();
     }
 
