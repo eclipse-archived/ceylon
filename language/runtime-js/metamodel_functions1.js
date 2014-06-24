@@ -38,15 +38,29 @@ function applyIntersectionType(it) { //return AppliedIntersectionType
 
 function getAnnotationBitmask(t) {
   var mask = 0;
-  mask |= is$(shared(),t)?1:0;
-  mask |= is$(actual(),t)?2:0;
-  mask |= is$(formal(),t)?4:0;
-  mask |= is$($_default(),t)?8:0;
-  mask |= is$(sealed(),t)?16:0;
-  mask |= is$($_final(),t)?32:0;
-  mask |= is$($_native(),t)?64:0;
-  mask |= is$(late(),t)?128:0;
-  mask |= is$(abstract(),t)?256:0;
+  mask |= extendsType({t:SharedAnnotation},t)?1:0;
+  mask |= extendsType({t:ActualAnnotation},t)?2:0;
+  mask |= extendsType({t:FormalAnnotation},t)?4:0;
+  mask |= extendsType({t:DefaultAnnotation},t)?8:0;
+  mask |= extendsType({t:SealedAnnotation},t)?16:0;
+  mask |= extendsType({t:FinalAnnotation},t)?32:0;
+  mask |= extendsType({t:NativeAnnotation},t)?64:0;
+  mask |= extendsType({t:LateAnnotation},t)?128:0;
+  mask |= extendsType({t:AbstractAnnotation},t)?256:0;
+  mask |= extendsType({t:AnnotationAnnotation},t)?512:0;
   return mask;
 }
-
+function getAnnotationsForBitmask(bits) {
+  var ans=[];
+  if (bits&1)ans.push(shared());
+  if (bits&2)ans.push(actual());
+  if (bits&4)ans.push(formal());
+  if (bits&8)ans.push($_default());
+  if (bits&16)ans.push(sealed());
+  if (bits&32)ans.push($_final());
+  if (bits&64)ans.push($_native());
+  if (bits&128)ans.push(late());
+  if (bits&256)ans.push(abstract());
+  if (bits&512)ans.push(annotation());
+  return ans;
+}
