@@ -1,4 +1,6 @@
-"Multiply the given [[Numeric]] values."
+"Multiply the given [[Numeric]] values.
+ 
+     (1..100 by 2).fold(1, times<Integer>)"
 see (`function plus`, `function product`)
 shared Value times<Value>(Value x, Value y)
         given Value satisfies Numeric<Value>
