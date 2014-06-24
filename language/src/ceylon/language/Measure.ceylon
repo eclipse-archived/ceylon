@@ -7,9 +7,6 @@
  type `X`, and `size` is an integer, then `x in first:size` 
  if and only if `0 <= x.offset(first) < size`.
  
- A measure is always nonempty, containing at least one 
- value. Thus, it is a [[Sequence]].
- 
  The _measure_ operator `:` is an abbreviation for
  `Measure` instantiation.
  
@@ -133,14 +130,6 @@ final class Measure<Element>(first, size)
         }
     }
     
-    "Returns a sized range of the same size and type as this
-     range, with its starting point shifted by the given 
-     number of elements, where:
-     
-     - a negative [[shift]] measures 
-       [[decrements|Ordinal.predecessor]], and 
-     - a positive `shift` measures 
-       [[increments|Ordinal.successor]]."
     shared actual Measure<Element> shifted(Integer shift) {
         if (shift==0) {
             return this;
@@ -170,7 +159,6 @@ final class Measure<Element>(first, size)
         }
     }
     
-    "Determines if this range includes the given value."
     shared actual Boolean containsElement(Element x)
             => 0 <= x.offset(first) < size;
     
@@ -178,44 +166,45 @@ final class Measure<Element>(first, size)
         if (sublist.empty) {
             return true;
         }
-        else if (is Measure<Element> sublist) {
-            return includesMeasure(sublist);
+        else if (is Range<Element> sublist) {
+            return includesRange(sublist);
         }
         else {
             return super.includes(sublist);
         }
     }
     
-    "Determines if this range includes the given sized 
-     range."
-    shared Boolean includesMeasure(Measure<Element> sublist) {
-        value offset = sublist.first.offset(first);
-        return offset >= 0 && offset + sublist.size <= size;
+    shared actual Boolean includesRange(Range<Element> sublist) {
+        switch (sublist)
+        case (is Measure<Element>) {
+            value offset = sublist.first.offset(first);
+            return offset >= 0 && offset + sublist.size <= size;
+        }
+        case (is Span<Element>) {
+            if (sublist.decreasing) {
+                return false;
+            }
+            else {
+                value offset = sublist.first.offset(first);
+                return offset >= 0 && offset + sublist.size <= size;
+            }
+        }
     }
     
-    "Efficiently determines if two sized ranges are the same
-     by comparing their sizes and start points."
     shared actual Boolean equals(Object that) {
         if (is Measure<Object> that) {
             //optimize for another Measure
             return that.size==size && that.first==first;
+        }
+        else if (is Span<Object> that) {
+            return that.increasing && 
+                    that.first == first && that.size == size; 
         }
         else {
             //it might be another sort of List
             return super.equals(that);
         }
     }
-    
-    "Returns the measure itself, since sized ranges are 
-     immutable."
-    shared actual Measure<Element> clone() => this;
-    
-    "Returns the measure itself, since a sized range cannot 
-     contain nulls."
-    shared actual Measure<Element> coalesced => this;
-    
-    "Returns this measure."
-    shared actual Measure<Element> sequence() => this;
     
     shared actual Element[] measure(Integer from, Integer length) {
         if (length<=0) {

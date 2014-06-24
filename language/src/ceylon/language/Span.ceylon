@@ -12,9 +12,6 @@
    `first` and the sign of its offset from `last` is the 
    opposite of the sign of the offset of `last` from `first`.
  
- A range is always nonempty, containing at least one value.
- Thus, it is a [[Sequence]].
- 
  More precisely, if `x`, `first`, and `last` are of 
  `Enumerable` type `X`, then `x in first..last` if and 
  only if:
@@ -76,13 +73,9 @@ final class Span<Element>(first, last)
     shared actual String string 
             => first.string + ".." + last.string;
     
-    "Determines if the range is increasing, that is, if
-     successors occur after predecessors."
     shared actual Boolean increasing 
             = last.offsetSign(first)>=0;
     
-    "Determines if the range is decreasing, that is, if
-     predecessors occur after successors."
     shared actual Boolean decreasing => !increasing;
     
     "Determines if the range is of recursive values, that 
@@ -224,14 +217,6 @@ final class Span<Element>(first, last)
         return step == 1 then this else By(step);
     }
     
-    "Returns a range of the same length and type as this
-     range, with its endpoints shifted by the given number 
-     of elements, where:
-     
-     - a negative [[shift]] measures 
-       [[decrements|Ordinal.predecessor]], and 
-     - a positive `shift` measures 
-       [[increments|Ordinal.successor]]."
     shared actual Span<Element> shifted(Integer shift) {
         if (shift==0) {
             return this;
@@ -284,8 +269,8 @@ final class Span<Element>(first, last)
         if (sublist.empty) {
             return true;
         }
-        if (is Span<Element> sublist) {
-            return includesSpan(sublist);
+        if (is Range<Element> sublist) {
+            return includesRange(sublist);
         }
         else {
             return super.includes(sublist);
@@ -320,42 +305,44 @@ final class Span<Element>(first, last)
         }
     }
     
-    "Determines if this range includes the given range."
-    shared Boolean includesSpan(Span<Element> sublist) {
-        if (recursive) {
-            return sublist.first.offset(first)<size &&
-                    sublist.last.offset(first)<size;
+    shared actual Boolean includesRange(Range<Element> sublist) {
+        switch (sublist)
+        case (is Span<Element>) {
+            if (recursive) {
+                return sublist.first.offset(first)<size &&
+                        sublist.last.offset(first)<size;
+            }
+            else {
+                return increasing == sublist.increasing &&
+                        !sublist.afterFirst(first) &&
+                        !sublist.beforeLast(last);
+            }
         }
-        else {
-            return increasing == sublist.increasing &&
-                    !sublist.afterFirst(first) &&
-                    !sublist.beforeLast(last);
+        case (is Measure<Element>) {
+            if (decreasing) {
+                return false;
+            }
+            else {
+                value offset = sublist.first.offset(first);
+                return offset >= 0 && offset + sublist.size <= size;
+            }
         }
     }
     
-    "Determines if two ranges are the same by comparing
-     their endpoints."
     shared actual Boolean equals(Object that) {
         if (is Span<Object> that) {
             //optimize for another Span
             return that.first==first && that.last==last;
+        }
+        else if (is Measure<Object> that) {
+            return increasing && 
+                    that.first == first && that.size == size;
         }
         else {
             //it might be another sort of List
             return super.equals(that);
         }
     }
-    
-    "Returns the Span itself, since Spans are 
-     immutable."
-    shared actual Span<Element> clone() => this;
-    
-    "Returns the Span itself, since a Span cannot
-     contain nulls."
-    shared actual Span<Element> coalesced => this;
-    
-    "Returns this Span."
-    shared actual Span<Element> sequence() => this;
     
     class By(Integer step) 
             satisfies {Element+} {
