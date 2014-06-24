@@ -280,9 +280,7 @@ atr$($$openValue,'container',function(){
         return false;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       atr$($$openValue,'variable',function(){
-        var _m = get_model(getrtmm$$(this.tipo));
-        if (_m && _m['var']) return true;
-        return find$ann(this.tipo,VariableAnnotation)!==null;
+        return (getrtmm$$(this.tipo).pa & 1024) > 0;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
             
   atr$($$openValue,'openType',function(){
@@ -805,7 +803,7 @@ function $init$ValParamDecl(){
         return this.param.seq!==undefined;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       atr$($$valParamDecl,'variable',function(){
-        return find$ann(this.param,VariableAnnotation)!==null;
+        return (getrtmm$(this.param).pa & 1024) > 0;
       },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:ValParamDecl,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variable']};});
       atr$($$valParamDecl,'container',function(){
         return this.cont;

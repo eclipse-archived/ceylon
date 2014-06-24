@@ -48,6 +48,7 @@ function getAnnotationBitmask(t) {
   mask |= extendsType({t:LateAnnotation},t)?128:0;
   mask |= extendsType({t:AbstractAnnotation},t)?256:0;
   mask |= extendsType({t:AnnotationAnnotation},t)?512:0;
+  mask |= extendsType({t:VariableAnnotation},t)?1024:0;
   return mask;
 }
 function getAnnotationsForBitmask(bits) {
@@ -62,5 +63,6 @@ function getAnnotationsForBitmask(bits) {
   if (bits&128)ans.push(late());
   if (bits&256)ans.push(abstract());
   if (bits&512)ans.push(annotation());
+  if (bits&1024)ans.push(variable());
   return ans;
 }
