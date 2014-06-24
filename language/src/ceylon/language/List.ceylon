@@ -94,7 +94,7 @@ shared interface List<out Element>
      `null` otherwise. The first element of the list has 
      index `0`, and the last element has index [[lastIndex]]."
     see (`function getFromLast`)
-    shared formal Element? getFromFirst(Integer index);
+    shared actual formal Element? getFromFirst(Integer index);
     
     "Returns the element of this list with the given 
      [[index]], where the list is indexed from the _end_ of 

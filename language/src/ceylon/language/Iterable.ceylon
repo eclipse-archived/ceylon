@@ -197,6 +197,23 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
+    "The [[index]]th element returned by an iterator of this 
+     stream, or `null` if there are fewer than `index+1`
+     elements in the stream. For a stream with an unstable 
+     iteration order, a different value might be produced 
+     each time `getFromFirst()` is called."
+    shared default Element? getFromFirst(Integer index) {
+        variable value current = 0;
+        for (element in this) {
+            if (current++==index) {
+                return element;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
      this stream.
