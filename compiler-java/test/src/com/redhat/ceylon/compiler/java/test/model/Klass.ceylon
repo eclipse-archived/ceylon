@@ -26,3 +26,5 @@ shared class Klass() {
 shared class KlassWithConstructor(Integer param, Integer* varargs) {
 }
 final class FinalKlass(){}
+shared sealed class SealedKlass(){}
+shared sealed interface SealedInterface{}

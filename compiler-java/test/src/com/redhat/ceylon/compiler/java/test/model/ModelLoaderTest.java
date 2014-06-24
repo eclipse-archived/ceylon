@@ -421,6 +421,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
             Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
             Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+            Assert.assertEquals(name+" [sealed]", validDeclaration.isSealed(), modelDeclaration.isSealed());
             // extended type
             if(validDeclaration.getExtendedTypeDeclaration() == null)
                 Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
