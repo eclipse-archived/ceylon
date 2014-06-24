@@ -3111,7 +3111,7 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel( unit.getType(unit.getBooleanDeclaration()) );            
     }
 
-    private void visitRangeOperator(Tree.RangeOp that) {
+    private void visitSpanOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
@@ -3119,7 +3119,7 @@ public class ExpressionVisitor extends Visitor {
                     unit.getEnumerableDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
             if (ot!=null) {
-                ProducedType pt = producedType(unit.getRangeDeclaration(), ot);
+                ProducedType pt = producedType(unit.getSpanDeclaration(), ot);
                 that.setTypeModel(pt);
             }
         }
@@ -3662,7 +3662,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
-        visitRangeOperator(that);
+        visitSpanOperator(that);
     }
     
     @Override public void visit(Tree.SegmentOp that) {
