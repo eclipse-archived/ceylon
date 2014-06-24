@@ -1,4 +1,4 @@
-var tp=getrtmm$$(this.container).$tp[this._fname];
+var tp=getrtmm$$(this.container).tp[this._fname];
 if (tp.satisfies) {
   var a=[];
   for (var i=0;i<tp.satisfies.length;i++) {

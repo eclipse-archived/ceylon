@@ -1,7 +1,7 @@
 function getMember(name$3,$$$mptypes){
   var m = this._pkg[name$3];
   if (m) {
-    var mt = m['$mt'];
+    var mt = m['mt'];
     //There's a member alright, but check its type
     if ((mt==='a'||mt==='g'||mt==='o'||mt==='s')&&extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
       return mt==='s'?OpenSetter(OpenValue(this, m)):OpenValue(this, m);

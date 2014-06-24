@@ -1,5 +1,5 @@
 atr$(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
-  var ps=this.tipo.$crtmm$.$ps;
+  var ps=this.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
@@ -16,10 +16,10 @@ atr$(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
 atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
   var mm = this.tipo.$crtmm$;
   if (mm) {
-    if (mm.$tp) {
+    if (mm.tp) {
       if (this.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+this.string);
       var targs={};
-      for (var tp in mm.$tp) {
+      for (var tp in mm.tp) {
         var param = OpenTypeParam$jsint(this.tipo,tp);
         var targ = this.$targs[tp];
         if (targ) {
@@ -34,17 +34,17 @@ atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
     return getEmpty();
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
-},undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
   var mm=this.tipo.$crtmm$;
   var qn;
   if (mm.$cont) {
     qn=$qname(mm.$cont);
-    if (mm.$cont.$crtmm$.$tp) {
+    if (mm.$cont.$crtmm$.tp) {
       var cnt=this.$$targs$$&&this.$$targs$$.Container$Function&&this.$$targs$$.Container$Function.a;
       if (!cnt)cnt=this.$$targs$$&&this.$$targs$$.Container$Method&&this.$$targs$$.Container$Method.a;
       qn+="<";var first=true;
-      for (var tp in mm.$cont.$crtmm$.$tp) {
+      for (var tp in mm.$cont.$crtmm$.tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
         qn+=$qname(_ta||Anything);
@@ -55,10 +55,10 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
   } else {
     qn=$qname(mm);
   }
-  if (mm.$tp) {
+  if (mm.tp) {
     qn+="<";
     var first=true;
-    for (var tp in mm.$tp) {
+    for (var tp in mm.tp) {
       if (first)first=false; else qn+=",";
       var targ=this.$targs[tp];
       if (targ.t) {

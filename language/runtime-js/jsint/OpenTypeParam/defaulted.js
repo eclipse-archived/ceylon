@@ -1,4 +1,4 @@
-var tp=getrtmm$$(this.container).$tp[this._fname];
+var tp=getrtmm$$(this.container).tp[this._fname];
 if (tp) {
   return tp['def'] !== undefined;
 }

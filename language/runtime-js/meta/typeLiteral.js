@@ -23,21 +23,21 @@ function typeLiteral$meta($$targs$$) {
     } else {
       var mm = getrtmm$$(t);
       var mdl = get_model(mm);
-      if (mdl['$mt'] === 'c') {
+      if (mdl['mt'] === 'c') {
         //TODO tupleize Arguments
         var r=AppliedClass(t,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
-      } else if (mdl['$mt'] === 'i') {
+      } else if (mdl['mt'] === 'i') {
         var r=AppliedInterface(t,{Type$Interface:$$targs$$.Type$typeLiteral});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
-      } else if (mdl['$mt'] === 'm') {
+      } else if (mdl['mt'] === 'm') {
         return AppliedFunction(t,{Type$Function:$$targs$$.Type$typeLiteral,Arguments$Function:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
-      } else if (mdl['$mt'] === 'a' || mdl['$mt'] === 'g' || mdl['$mt'] === 'o'||mdl.$mt==='s') {
+      } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g' || mdl['mt'] === 'o'||mdl.mt==='s') {
         return AppliedValue(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
       } else {
-        console.log("WTF is a metatype " + mdl['$mt'] + " on a closed type???????");
+        console.log("WTF is a metatype " + mdl['mt'] + " on a closed type???????");
       }
       console.log("typeLiteral<" + t.getT$name() + "> (closed type)");
     }
@@ -49,18 +49,18 @@ function typeLiteral$meta($$targs$$) {
     //We need the module
     var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
-    if (mdl.$mt==='c' || mdl.$mt==='o') {
+    if (mdl.mt==='c' || mdl.mt==='o') {
       return OpenClass(_pkg, t);
-    } else if (mdl['$mt'] === 'i') {
+    } else if (mdl['mt'] === 'i') {
       return OpenInterface(_pkg, t);
-    } else if (mdl['$mt'] === 'm') {
+    } else if (mdl['mt'] === 'm') {
       return OpenFunction(_pkg, t);
-    } else if (mdl['$mt'] === 'a' || mdl['$mt'] === 'g') {
+    } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g') {
       return OpenValue(_pkg, t);
-    } else if (mdl.$mt==='s') {
+    } else if (mdl.mt==='s') {
       return OpenSetter(OpenValue(_pkg, t));
     } else {
-      console.log("WTF is a metatype " + mdl['$mt'] + " on an open type???????");
+      console.log("WTF is a metatype " + mdl['mt'] + " on an open type???????");
     }
     console.log("typeLiteral<" + t.getT$name() + "> (open type)");
   }

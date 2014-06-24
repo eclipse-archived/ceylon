@@ -1,6 +1,6 @@
 //Addendum to ClassModel
 atr$(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
-  var ps=this.tipo.$crtmm$.$ps;
+  var ps=this.tipo.$crtmm$.ps;
   if (!ps || ps.length==0)return getEmpty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
@@ -21,10 +21,10 @@ atr$(ClassModel$meta$model.$$.prototype,'declaration',function(){
   var mm = getrtmm$$($$clase.tipo);
   $$clase._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
   return $$clase._decl;
-},undefined,function(){return{mod:$CCMM$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});
 ClassModel$meta$model.$$.prototype.equals=function(o){
 return is$(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
 };
 ClassModel$meta$model.$$.prototype.equals.$crtmm$=function(){return{
-  mod:$CCMM$,d:['$','Object','$m','equals'],$t:{t:$_Boolean},$ps:[{$nm:'other',$t:{t:$_Object},$mt:'prm'}]
+  mod:$CCMM$,d:['$','Object','$m','equals'],$t:{t:$_Boolean},ps:[{nm:'other',$t:{t:$_Object},mt:'prm'}]
 }};

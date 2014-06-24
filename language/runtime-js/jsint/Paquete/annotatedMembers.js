@@ -6,8 +6,8 @@ function annotatedMembers($$$mptypes){
       var _mem=ms.$_get(i);
       if (_mem.tipo && _mem.tipo.$crtmm$) {
         var mm=getrtmm$$(_mem.tipo);
-        var ans=mm.$an;
-        if (typeof(ans)==='function'){ans=ans();mm.$an=ans;}
+        var ans=mm.an;
+        if (typeof(ans)==='function'){ans=ans();mm.an=ans;}
         if (ans) for (var j=0; j<ans.length;j++) {
           if (is$(ans[j],$$$mptypes.Annotation$annotatedMembers)) {
             rv.push(_mem);

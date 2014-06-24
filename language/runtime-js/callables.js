@@ -4,9 +4,9 @@ function $JsCallable(callable,parms,targs) {
     }
     var set_meta = callable.$crtmm$ === undefined;
     if (set_meta) {
-        callable.$crtmm$={$ps:[],mod:$CCMM$,d:['$','Callable']};
+        callable.$crtmm$={ps:[],mod:$CCMM$,d:['$','Callable']};
         if (parms !== undefined) {
-            callable.$crtmm$['$ps']=parms;
+            callable.$crtmm$['ps']=parms;
         }
     }
     if (targs !== undefined && callable.$$targs$$ === undefined) {
@@ -31,9 +31,9 @@ function JsCallable(o,f) {
       var mm=getrtmm$$(f);
       var typecheck={t:Iterable};
       if (arg[0].$$targs$$ && arg[0].$$targs$$.Element$Iterable)typecheck.a={Element$Iterable:arg[0].$$targs$$.Element$Iterable};
-      if (mm && mm.$ps!==undefined
-          && (mm.$ps.length>1 || (mm.$ps.length==1
-          && (mm.$ps[0].seq || !extendsType(mm.$ps[0].$t, typecheck))))) {
+      if (mm && mm.ps!==undefined
+          && (mm.ps.length>1 || (mm.ps.length==1
+          && (mm.ps[0].seq || !extendsType(mm.ps[0].$t, typecheck))))) {
         var a=arg[0].elem$;
         if (a===undefined) {
           a=[];
@@ -48,7 +48,7 @@ function JsCallable(o,f) {
   return f2;
 }
 JsCallable.$crtmm$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
-  $tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};}
+  tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};}
 
 //This is used for spread method references
 function JsCallableList(value) {
@@ -61,7 +61,7 @@ function JsCallableList(value) {
         return value.length===0?getEmpty():ArraySequence(rval,{Element$ArraySequence:{t:Callable}});
     };
 }
-JsCallableList.$crtmm$={$tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};
+JsCallableList.$crtmm$={tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};
 
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;

@@ -15,7 +15,7 @@ function JSNumber(value) {
   return Float(value);
 }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[shared()];},
+JSNumber.$crtmm$=function(){return{nm:'JSNumber',mt:'c',an:function(){return[shared()];},
   mod:$CCMM$,d:['$','Number']};}
 
 var origNumToString = Number.prototype.toString;
@@ -31,7 +31,7 @@ function Integer(value) {
 }
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number,
         $init$Integral(), Exponentiable, Binary);
-Integer.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
+Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
 function Float(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -42,7 +42,7 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,Exponentiable);
-Float.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
+Float.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
@@ -60,7 +60,7 @@ atr$(JSNum$proto,'$$targs$$',function(){
 });
 JSNum$proto.toString = origNumToString;
 atr$(JSNum$proto, 'string', function(){ return this.toString(); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 JSNum$proto.plus = function(other) {
     return (nflt$(this)||nflt$(other)) ? Float(this+other) : (this+other);
 }
@@ -93,13 +93,13 @@ JSNum$proto.power = function(exp) {
 }
 atr$(JSNum$proto, 'negated', function() {
     return nflt$(this) ? Float(-this) : -this;
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['$','Invertable','$at','negated']};});
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['$','Invertable','$at','negated']};});
 atr$(JSNum$proto, 'negative', function(){
   return nflt$(this) ? this < 0.0 : this.valueOf() < 0;
-},undefined,function(){return{$t:{t:$_Boolean},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','negative']};});
+},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','negative']};});
 atr$(JSNum$proto, 'positive', function(){
   return nflt$(this) ? this > 0.0 : this.valueOf() > 0;
-},undefined,function(){return{$t:{t:$_Boolean},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','positive']};});
+},undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','positive']};});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
@@ -118,38 +118,38 @@ JSNum$proto.notLargerThan=function(o) {
   return Comparable.$$.prototype.notLargerThan.call(this,o);
 }
 atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','float']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','float']};});
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','integer']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','integer']};});
 atr$(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
 atr$(JSNum$proto, 'successor', function(){ return this+1; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','successor']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','successor']};});
 atr$(JSNum$proto, 'predecessor', function(){ return this-1; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','predecessor']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','predecessor']};});
 atr$(JSNum$proto, 'unit', function(){ return this == 1; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','unit']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','unit']};});
 atr$(JSNum$proto, 'zero', function(){ return this == 0; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','zero']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','zero']};});
 atr$(JSNum$proto, 'fractionalPart', function() {
     if (!nflt$(this)) { return 0; }
     return Float(this - toInt(this));
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
 atr$(JSNum$proto, 'wholePart', function() {
     if (!nflt$(this)) { return this.valueOf(); }
     return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
 atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
 atr$(JSNum$proto, 'hash', function() {
     return nflt$(this) ? $_String(this.toPrecision()).hash : this.valueOf();
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','hash']};});
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','hash']};});
 JSNum$proto.distanceFrom = function(other) {
     return (nflt$(this) ? this.wholePart : this) - other;
 }
 //Binary interface
 atr$(JSNum$proto, 'not', function(){ return ~this; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
 JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
@@ -192,18 +192,18 @@ JSNum$proto.offsetSign=function(other) {
 }
 
 atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
 
 atr$(JSNum$proto, '$_undefined', function(){ return isNaN(this); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
 atr$(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','finite']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','finite']};});
 atr$(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','infinite']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','infinite']};});
 atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
 atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }

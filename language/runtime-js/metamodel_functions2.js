@@ -71,7 +71,7 @@ function tupleize$params(ps,aux) {
     } else { //union
       tupa={t:'T',l:[e,tupa]};
     }
-    if (ps[i].$def) {
+    if (ps[i].def) {
       tupa={t:'u',l:[{t:Empty},tupa]};
     }
   }
@@ -93,10 +93,10 @@ function $qname(mm) {
   return qn;
 }
 function resolve$typearg(ta,mm) {
-  var r=mm.$tp?mm.$tp[ta]:undefined;
+  var r=mm.tp?mm.tp[ta]:undefined;
   while (!r && mm.$cont) {
     mm=mm.$cont;
-    if (mm.$tp)r=mm.$tp[ta];
+    if (mm.tp)r=mm.tp[ta];
   }
   if (r) {
     if (r.satisfies)
@@ -108,7 +108,7 @@ function resolve$typearg(ta,mm) {
 }
 
 function convert$params(mm,a) {
-  var ps=mm.$ps;
+  var ps=mm.ps;
   if (ps===undefined || ps.length===0){
     if (a && a.size>0)
       throw InvocationException$meta$model("Passing parameters to no-args callable");
@@ -122,7 +122,7 @@ function convert$params(mm,a) {
     var val_t=sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,mm;
     if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
     if (a[i]===undefined) {
-      if (p.$def||p.seq)fa.push(undefined);
+      if (p.def||p.seq)fa.push(undefined);
       else {
         throw InvocationException$meta$model("Wrong number of arguments (should be " + ps.length + ")");
       }

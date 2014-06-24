@@ -1,6 +1,6 @@
 function $_Boolean(value) {return Boolean(value)}
 initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
-$_Boolean.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
+$_Boolean.$crtmm$={ps:[],an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
 ex$.$_Boolean=$_Boolean;
 function trueClass() {}
 initType(trueClass, "ceylon.language::true", $_Boolean);
@@ -14,12 +14,12 @@ Boolean.prototype.getT$all = function() {
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','hash']});
+  undefined,{an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','hash']});
 atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?"true":"false"; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
+  undefined,{an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
 atr$(Boolean.prototype, 'not', function(){ return !this.valueOf(); },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
 Boolean.prototype.leftLogicalShift = function(i) { return this.valueOf(); }
 Boolean.prototype.rightLogicalShift = function(i) { return this.valueOf(); }
 Boolean.prototype.rightArithmeticShift = function(i) { return this.valueOf(); }
@@ -54,11 +54,11 @@ function Mapita(o,$$targs$$,$$mapita){
     $$mapita.o=o;
     
     //AttributeDecl hash at caca.ceylon (6:2-6:56)
-    $$mapita.$prop$getHash={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$at','hash']};}};
+    $$mapita.$prop$getHash={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,an:function(){return[shared(),actual()];},d:['$','Map','$at','hash']};}};
     $$mapita.$prop$getHash.get=function(){return hash};
     return $$mapita;
 }
-Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{V$Mapita:{'var':'out','satisfies':[{t:$_Object}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],$an:function(){return[shared()];},d:['','Mapita']};};
+Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{V$Mapita:{'var':'out','satisfies':[{t:$_Object}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],an:function(){return[shared()];},d:['','Mapita']};};
 ex$.Mapita=Mapita;
 function $init$Mapita(){
     if(Mapita.$$===undefined){
@@ -70,19 +70,19 @@ function $init$Mapita(){
                 var $$mapita=this;
                 return $$mapita.getT$all()['ceylon.language::Map'].$$.prototype.equals.call(this,other$2);
             };
-            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
+            $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{nm:'other',mt:'prm',$t:{t:$_Object},an:function(){return[];}}],$cont:Mapita,an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
             
             //AttributeDecl hash at caca.ceylon (6:2-6:56)
             atr$($$mapita,'hash',function(){
                 var $$mapita=this;
                 return attrGetter($$mapita.getT$all()['ceylon.language::Map'],'hash').call(this);
-            },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$at','hash']};});
+            },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,an:function(){return[shared(),actual()];},d:['$','Map','$at','hash']};});
             
             //MethodDecl clone at caca.ceylon (7:2-7:43)
             $$mapita.clone=function (){
                 return this;
             };
-            $$mapita.clone.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Mapita,a:{V$Mapita:'V$Mapita'}},$ps:[],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','clone']};};
+            $$mapita.clone.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Mapita,a:{V$Mapita:'V$Mapita'}},ps:[],$cont:Mapita,an:function(){return[shared(),actual()];},d:['','Mapita','$m','clone']};};
             
             //MethodDef iterator at caca.ceylon (8:2-10:2)
             $$mapita.iterator=function iterator(){
@@ -114,7 +114,7 @@ function $init$Mapita(){
                                 var k$8=$$miter.keys[$$miter.idx];
                                 var v$8=$$mapita.o[k$8]||null;
                                 return Entry(v$8[0],v$8[1],{Key$Entry:{t:TypeParameter$meta$declaration},Item$Entry:$$mapita.$$targs$$.V$mapita});
-                            };$$miter$3.next.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u', l:[{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}},{t:Finished}]},$ps:[],$cont:miter$3,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','iterator','$o','miter','$m','next']};};
+                            };$$miter$3.next.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u', l:[{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}},{t:Finished}]},ps:[],$cont:miter$3,an:function(){return[shared(),actual()];},d:['','Mapita','$m','iterator','$o','miter','$m','next']};};
                         })(miter$3.$$.prototype);
                     }
                     return miter$3;
@@ -128,13 +128,13 @@ function $init$Mapita(){
                 getMiter$9.$crtmm$=function(){return{mod:$CCMM$,$t:{t:miter$3},d:['','Mapita','$m','iterator','$o','miter']};};
                 $prop$getMiter$9={get:getMiter$9,$crtmm$:getMiter$9.$crtmm$};
                 return getMiter$9();
-            };$$mapita.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}}}},$ps:[],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','iterator']};};
+            };$$mapita.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}}}},ps:[],$cont:Mapita,an:function(){return[shared(),actual()];},d:['','Mapita','$m','iterator']};};
             
             //MethodDef get at caca.ceylon (11:2-13:2)
             $$mapita.$_get=function $_get(k$3){
               var v=this.o[k$3.qualifiedName];
               return v===undefined?null:v[1];
-            };$$mapita.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',$ps:[{$nm:'k',$mt:'prm',$t:{t:$_Object},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
+            };$$mapita.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',ps:[{nm:'k',mt:'prm',$t:{t:$_Object},an:function(){return[];}}],$cont:Mapita,an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
         })(Mapita.$$.prototype);
     }
     return Mapita;

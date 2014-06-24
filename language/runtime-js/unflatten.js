@@ -1,8 +1,8 @@
 function unflatten(ff, $$$mptypes) {
-  if (getrtmm$$(ff) && ff.$crtmm$.$ps) {
+  if (getrtmm$$(ff) && ff.$crtmm$.ps) {
     var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
-      var pmeta = ff.$crtmm$.$ps;
+      var pmeta = ff.$crtmm$.ps;
       var _lim=Math.max(pmeta.length,seq.size);
       var a = [];
       for (var i = 0; i < _lim; i++) {
@@ -13,7 +13,7 @@ function unflatten(ff, $$$mptypes) {
           a.push(seq.$_get(i));
         }
       }
-      if ($mptypes && ff.$crtmm$.$tp)a.push($mptypes);
+      if ($mptypes && ff.$crtmm$.tp)a.push($mptypes);
       return ff.apply(ru, a);
     }
   } else {

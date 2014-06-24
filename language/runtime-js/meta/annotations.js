@@ -2,13 +2,13 @@
 function annotations$meta(anntype, progelem, $$$mptypes) {
   if (progelem.tipo)progelem=progelem.tipo;
   var mm = getrtmm$$(progelem);
-  if (progelem.$anns)mm={$an:typeof(progelem.$anns)==='function'?progelem.$anns():progelem.$anns};
-  else if (progelem._anns)mm={$an:typeof(progelem._anns)==='function'?progelem._anns():progelem._anns};
-  if (mm && mm.$an) {
-    var anns=mm.$an;
+  if (progelem.$anns)mm={an:typeof(progelem.$anns)==='function'?progelem.$anns():progelem.$anns};
+  else if (progelem._anns)mm={an:typeof(progelem._anns)==='function'?progelem._anns():progelem._anns};
+  if (mm && mm.an) {
+    var anns=mm.an;
     if (typeof(anns) === 'function') {
       anns=anns();
-      mm.$an=anns;
+      mm.an=anns;
     }
     if (anntype.tipo.$$.T$all['ceylon.language::OptionalAnnotation'] !== undefined) {
       //find the first one and return it
