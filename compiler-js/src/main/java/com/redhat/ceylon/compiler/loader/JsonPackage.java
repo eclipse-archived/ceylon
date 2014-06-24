@@ -151,7 +151,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             parent.addMember(cls);
             m.put(MetamodelGenerator.KEY_METATYPE, cls);
-            setAnnotations(cls, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            setAnnotations(cls, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                    (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
             if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
                 cls.setAnnotation(true);
             }
@@ -401,7 +402,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     }
                     @SuppressWarnings("unchecked")
                     final Map<String,List<String>> _anns = (Map<String,List<String>>)p.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-                    setAnnotations(param.getModel(), _anns);
+                    setAnnotations(param.getModel(), (Integer)p.remove(MetamodelGenerator.KEY_PACKED_ANNS), _anns);
                 }
                 //owner.getMembers().add(param);
                 plist.getParameters().add(param);
@@ -416,7 +417,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         md.setName(name);
         m.remove(MetamodelGenerator.KEY_NAME);
         md.setContainer(parent);
-        setAnnotations(md, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+        setAnnotations(md, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
         md.setUnit(u2);
         if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
             md.setAnnotation(true);
@@ -463,7 +465,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         @SuppressWarnings("unchecked")
         final Map<String,List<String>> _anns = (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-        setAnnotations(d, _anns);
+        setAnnotations(d, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS), _anns);
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
@@ -485,7 +487,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             @SuppressWarnings("unchecked")
             final Map<String,List<String>> sanns = (Map<String,List<String>>)smap.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-            setAnnotations(s, sanns);
+            setAnnotations(s, (Integer)smap.remove(MetamodelGenerator.KEY_PACKED_ANNS), sanns);
             s.setType(d.getType());
         }
         return d;
@@ -531,7 +533,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             parent.addMember(t);
             m.put(MetamodelGenerator.KEY_METATYPE, t);
-            setAnnotations(t, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            setAnnotations(t, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                    (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
         }
         if (m.remove(MetamodelGenerator.KEY_DYNAMIC) != null) {
             t.setDynamic(true);
@@ -597,8 +600,10 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             parent.addMember(obj);
             obj.setType(type.getType());
-            setAnnotations(obj, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
-            setAnnotations(obj.getTypeDeclaration(), (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            setAnnotations(obj, (Integer)m.get(MetamodelGenerator.KEY_PACKED_ANNS),
+                    (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
+            setAnnotations(obj.getTypeDeclaration(), (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                    (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
             if (type.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     type.setExtendedType(getTypeFromJson((Map<String,Object>)m.remove("super"),
@@ -650,7 +655,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 alias.setContainer(parent);
                 alias.setName(name);
                 alias.setUnit(u2);
-                setAnnotations(alias, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+                setAnnotations(alias, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
+                        (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
                 if (parent == this) {
                     u2.addDeclaration(alias);
                 }
@@ -887,27 +893,33 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         return null;
     }
 
-    private void setAnnotations(Declaration d, Map<String,List<String>> m) {
+    public static boolean hasAnnotationBit(int bits, String annotationName) {
+        final int idx = MetamodelGenerator.annotationBits.indexOf(annotationName);
+        if (idx < 0) return false;
+        return (bits & (1 << idx)) > 0;
+    }
+
+    private void setAnnotations(Declaration d, Integer bits, Map<String,List<String>> m) {
+        if (bits != null) {
+            d.setShared(hasAnnotationBit(bits, "shared"));
+            d.setActual(hasAnnotationBit(bits, "actual"));
+            d.setFormal(hasAnnotationBit(bits, "formal"));
+            d.setDefault(hasAnnotationBit(bits, "default"));
+            d.setNative(hasAnnotationBit(bits, "native"));
+            if (hasAnnotationBit(bits, "sealed")) {
+                ((TypeDeclaration)d).setSealed(true);
+            }
+            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
+                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
+            }
+            if (hasAnnotationBit(bits, "late")) {
+                ((Value)d).setLate(true);
+            }
+        }
         if (m == null) return;
         for (Map.Entry<String, List<String>> e : m.entrySet()) {
             String name = e.getKey();
-            if ("shared".equals(name)) {
-                d.setShared(true);
-            } else if ("formal".equals(name)) {
-                d.setFormal(true);
-            } else if ("actual".equals(name)) {
-                d.setActual(true);
-            } else if ("default".equals(name)) {
-                d.setDefault(true);
-            } else if ("native".equals(name)) {
-                d.setNative(true);
-            } else if ("final".equals(name)) {
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setFinal(true);
-            } else if ("late".equals(name) && d instanceof Value) {
-                ((Value)d).setLate(true);
-            } else if ("sealed".equals(name) && d instanceof TypeDeclaration) {
-                ((TypeDeclaration)d).setSealed(true);
-            }
             Annotation ann = new Annotation();
             ann.setName(name);
             for (String arg : e.getValue()) {
