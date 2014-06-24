@@ -830,7 +830,7 @@ public final class Array<Element>
     }
 
     @Override
-    public Array<Element> segment(@Name("from") Integer from,
+    public Array<Element> measure(@Name("from") Integer from,
             @Name("length") long length) {
         long fromIndex = from.longValue(); //inclusive
         long toIndex = fromIndex + length; //exclusive

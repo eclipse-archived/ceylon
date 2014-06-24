@@ -20,7 +20,7 @@ arrprot$._elemTarg=function(){
     Element$Array:t, Element$List:t, Element$Iterable:t,
     Element$Collection:t, Item$Correspondence:t,Element$Ranged:t,
     Absent$Iterable:Null, Key$Correspondence:{t:Integer},
-    Index$Ranged:{t:Integer}, Span$Ranged:{t:$_Array,a:{Element$Array:'Element$Array'}}
+    Index$Ranged:{t:Integer}, Subrange$Ranged:{t:$_Array,a:{Element$Array:'Element$Array'}}
   };
   return t;
 }

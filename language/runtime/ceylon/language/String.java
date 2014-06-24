@@ -954,13 +954,13 @@ public final class String
     }
 
     @Override
-    public String segment(@Name("from") final Integer from,
+    public String measure(@Name("from") final Integer from,
                           @Name("length") final long length) {
-        return instance(segment(value, from.longValue(), length));
+        return instance(measure(value, from.longValue(), length));
     }
 
     @Ignore
-    public static java.lang.String segment(java.lang.String value, 
+    public static java.lang.String measure(java.lang.String value, 
             final long from, final long length) {
         long fromIndex = from;
         long resultLength = length;

@@ -55,7 +55,7 @@ shared class Singleton<out Element>(Element element)
     "Returns a `Singleton` if the given starting index 
      is `0` and the given `length` is greater than `0`.
      Otherwise, returns an instance of `Empty`."
-    shared actual Empty|Singleton<Element> segment
+    shared actual Empty|Singleton<Element> measure
             (Integer from, Integer length) 
             => from<=0 && from+length>0 then this else [];
     

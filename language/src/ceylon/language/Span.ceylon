@@ -409,7 +409,7 @@ shared sealed final class Span<Element>(first, last)
         
     }
     
-    shared actual [Element*] segment(Integer from, Integer length) 
+    shared actual [Element*] measure(Integer from, Integer length) 
             => length<=0 then [] else span(from, from+length-1);
     
     shared actual [Element*] span(Integer from, Integer to) {

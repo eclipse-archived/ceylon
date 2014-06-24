@@ -30,8 +30,8 @@ shared interface Empty of e
     "Returns an `Empty`."
     shared actual [] keys => this;
     
-    "Returns an `Empty` for any given segment."
-    shared actual [] segment(Integer from, Integer length) 
+    "Returns an `Empty` for any given measure."
+    shared actual [] measure(Integer from, Integer length) 
             => this;
     
     "Returns an `Empty` for any given span."

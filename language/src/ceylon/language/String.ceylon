@@ -190,7 +190,7 @@ shared native final class String(characters)
      Otherwise, return a string of the given length. If the 
      start index is larger than the last index of the 
      string, return the empty string."
-    shared native actual String segment(Integer from, 
+    shared native actual String measure(Integer from, 
                                         Integer length);
     
     "Select the first characters of this string, returning a 

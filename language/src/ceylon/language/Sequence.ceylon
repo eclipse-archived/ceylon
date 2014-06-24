@@ -163,7 +163,7 @@ shared sealed interface Sequence<out Element>
         getFromFirst(Integer index) 
                 => outer.getFromFirst(size-1-index);
         
-        shared actual Element[] segment(Integer from, Integer length) {
+        shared actual Element[] measure(Integer from, Integer length) {
             if (length>1) {
                 value start = size-1-from;
                 return outer[start..start-length+1];

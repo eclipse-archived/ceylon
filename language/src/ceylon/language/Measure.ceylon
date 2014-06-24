@@ -10,13 +10,13 @@
  A measure is always nonempty, containing at least one 
  value. Thus, it is a [[Sequence]].
  
- The _segment_ operator `:` is an abbreviation for
+ The _measure_ operator `:` is an abbreviation for
  `Measure` instantiation.
  
      for (i in start:size) { ... }
      for (char in '0':10) { ... }
  
- The segment operator accepts the first index and size of 
+ The measure operator accepts the first index and size of 
  the range:
  
      0:5     // [0, 1, 2, 3, 4]
@@ -215,7 +215,7 @@ shared sealed final class Measure<Element>(first, size)
     "Returns this measure."
     shared actual Measure<Element> sequence() => this;
     
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual Element[] measure(Integer from, Integer length) {
         if (length<=0) {
              return []; 
         }

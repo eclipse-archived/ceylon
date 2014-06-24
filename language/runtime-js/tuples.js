@@ -61,11 +61,11 @@ function tpl$(elems,types,spread){
     return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
-  that.segment=function(a,b){
-    var r=elems.segment(a,b);
+  that.measure=function(a,b){
+    var r=elems.measure(a,b);
     return r.size===0?getEmpty():ArraySequence(r,{Element$ArraySequence:_t});
   }
-  that.segment.$crtmm$=Tuple.$$.prototype.segment.$crtmm$;
+  that.measure.$crtmm$=Tuple.$$.prototype.measure.$crtmm$;
   that.equals=function(o){return elems.equals(o);}
   that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
   that.withTrailing=function(a,b){

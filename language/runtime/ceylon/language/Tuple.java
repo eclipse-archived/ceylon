@@ -329,7 +329,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
     public final ceylon.language.Sequential<? extends Element> 
-    segment(@Name("from")
+    measure(@Name("from")
     @TypeInfo("ceylon.language::Integer")
     final ceylon.language.Integer from, @Name("length")
     @TypeInfo("ceylon.language::Integer")

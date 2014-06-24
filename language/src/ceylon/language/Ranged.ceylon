@@ -1,9 +1,9 @@
 "Abstract supertype of _ranged objects_ mapping a range of 
  discrete indices to elements, and supporting operations 
  that produce a subrange of indexed elements. The type 
- parameter [[Span]] abstracts the type of the resulting 
+ parameter [[Subrange]] abstracts the type of the resulting 
  subrange. A subrange may be obtained from an instance of 
- `Ranged` using the _span_ and _segment_ operators.
+ `Ranged` using the _span_ and _measure_ operators.
  
  Often, in a [[List]] or sorted map for example, an index
  and its element are distinct values. Sometimes, in a sorted 
@@ -51,7 +51,7 @@
  
      print(\"hello world\"[11...]); //prints \"\"
  
- The _segment_ operator accepts the first index and maximum 
+ The _measure_ operator accepts the first index and maximum 
  length of the subrange.
  
      print(\"hello world\"[6:5]) //prints \"world\"
@@ -67,7 +67,7 @@
      print(\"hello world\"[11:3]) //prints \"\"
      print(\"hello world\"[6:-3]) //prints \"\"
  
- The span and segment operations must be consistent. That is, 
+ The span and measure operations must be consistent. That is, 
  for every pair of indices `x` and `y` in the ranged object 
  `ranged` such that `y` does not occur before `x` and the 
  span `ranged[x..y]` has length `n`:
@@ -76,10 +76,10 @@
 see (`interface List`, 
      `interface Sequence`, 
      `class String`)
-shared interface Ranged<in Index, out Element, out Span> 
-        of Span
+shared interface Ranged<in Index, out Element, out Subrange> 
+        of Subrange
         satisfies {Element*}
-        given Span satisfies Ranged<Index,Element,Span> {
+        given Subrange satisfies Ranged<Index,Element,Subrange> {
     
     "Obtain a span containing the elements between the two 
      given indices. 
@@ -95,7 +95,7 @@ shared interface Ranged<in Index, out Element, out Span>
      When one or both of the given indices does not belong 
      to this ranged object, the behavior is implementation 
      dependent."
-    shared formal Span span(Index from, Index to);
+    shared formal Subrange span(Index from, Index to);
    
     "Obtain a span containing the elements between the given
      [[starting index|from]] and the last index of this 
@@ -108,7 +108,7 @@ shared interface Ranged<in Index, out Element, out Span>
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
-    shared formal Span spanFrom(Index from);
+    shared formal Subrange spanFrom(Index from);
 
     "Obtain a span containing the elements between the first 
      index of this ranged object and given [[end index|to]].
@@ -120,14 +120,14 @@ shared interface Ranged<in Index, out Element, out Span>
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
-    shared formal Span spanTo(Index to);
+    shared formal Subrange spanTo(Index to);
  
-    "Obtain a segment containing the mapped values starting 
+    "Obtain a measure containing the mapped values starting 
      from the given [[starting index|from]], with the given 
-     [[length]]. If `length<=0`, the resulting segment is 
+     [[length]]. If `length<=0`, the resulting measure is 
      empty.
      
-     The segment should contain the given [[number|length]] 
+     The measure should contain the given [[number|length]] 
      of elements of this iterable object, starting from the
      element at the given [[starting index|from]], in the 
      same order as they are produced by the [[iterator]]. In
@@ -139,6 +139,6 @@ shared interface Ranged<in Index, out Element, out Span>
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
-    shared formal Span segment(Index from, Integer length);
+    shared formal Subrange measure(Index from, Integer length);
     
 }

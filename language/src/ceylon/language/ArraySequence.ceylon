@@ -58,7 +58,7 @@ shared sealed class ArraySequence<out Element>(array)
         return sequence;
     }
     
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual Element[] measure(Integer from, Integer length) {
         if (from>lastIndex || length<=0 || from+length<=0) {
             return [];
         }

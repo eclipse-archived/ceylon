@@ -730,7 +730,7 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> segment
+    shared actual default List<Element> measure
                             (Integer from, Integer length) {
         if (length>size) {
             return this;
@@ -781,7 +781,7 @@ shared interface List<out Element>
         
         clone() => 0:size;
         
-        segment(Integer from, Integer length)
+        measure(Integer from, Integer length)
                 => clone()[from:length];
         
         span(Integer from, Integer to)
@@ -829,7 +829,7 @@ shared interface List<out Element>
             return size>0 then size-1;
         }
         
-        segment(Integer from, Integer length) 
+        measure(Integer from, Integer length) 
                 => outer[from+this.from:length];
         
         span(Integer from, Integer to) 
@@ -879,7 +879,7 @@ shared interface List<out Element>
             }
         }
         
-        segment(Integer from, Integer length) 
+        measure(Integer from, Integer length) 
                 => from+length-1>to 
                     then outer[from:to] 
                     else outer[from:length];
@@ -1007,7 +1007,7 @@ shared interface List<out Element>
             }
         }
         
-        shared actual List<Element> segment(Integer from, Integer length) {
+        shared actual List<Element> measure(Integer from, Integer length) {
             if (size>0, length>1) {
                 value start = size-1-from;
                 return outer[start..start-length+1];

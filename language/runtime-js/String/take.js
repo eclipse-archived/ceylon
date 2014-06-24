@@ -1,4 +1,4 @@
 function(take) {
     if (take==0) return getEmpty();
-    return this.segment(0, take);
+    return this.measure(0, take);
 }

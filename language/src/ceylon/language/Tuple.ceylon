@@ -79,7 +79,7 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
-    shared actual native Element[] segment(Integer from, Integer length) {
+    shared actual native Element[] measure(Integer from, Integer length) {
         if(length <= 0){
             return [];
         }

@@ -73,7 +73,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Array<Element> span(Integer from, Integer to);
     shared actual native Array<Element> spanFrom(Integer from);
     shared actual native Array<Element> spanTo(Integer to);
-    shared actual native Array<Element> segment(Integer from, Integer length);
+    shared actual native Array<Element> measure(Integer from, Integer length);
         
     shared actual native {Element*} skip(Integer skipping);
     shared actual native {Element*} take(Integer taking);
