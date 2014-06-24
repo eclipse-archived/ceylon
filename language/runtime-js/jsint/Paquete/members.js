@@ -8,8 +8,8 @@ function members($$$mptypes){
   var r=[];
   for (var mn in this._pkg) {
     var m = this._pkg[mn];
-    var mt = m['mt'];
-    if (filter.indexOf(mt)>=0 && m['an'] && m['an']['shared']) {
+    var mt = m.mt;
+    if (filter.indexOf(mt)>=0 && (m.pa&1)) {
       if (mt === 'm') {
         r.push(OpenFunction(this, m));
       } else if (mt==='c') {

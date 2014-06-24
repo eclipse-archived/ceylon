@@ -247,13 +247,18 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
   var list=this.memberDeclarations({Kind$memberDeclarations:$$$mptypes.Kind$annotatedMemberDeclarations},inherited);
   if (list.size>0) {
     var rv=[];
+    var bits = getAnnotationBitmask($$$mptypes.Annotation$annotatedMemberDeclarations);
     for (var i=0; i < list.size; i++) {
-      var mm = getrtmm$$(list.getFromFirst(i).tipo);
+      var mm = getrtmm$$(list.$_get(i).tipo);
+      if (mm.pa&bits) {
+        rv.push(list.$_get(i));
+        continue;
+      }
       var anns = mm&&mm.an;
       if (typeof(anns)==='function'){anns=anns();mm.an=anns;}
       if (anns) for (var j=0; j<anns.length; j++) {
         if (is$(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
-          rv.push(list.getFromFirst(i));
+          rv.push(list.$_get(i));
           break;
         }
       }

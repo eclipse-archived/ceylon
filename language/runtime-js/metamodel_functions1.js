@@ -35,3 +35,18 @@ function applyIntersectionType(it) { //return AppliedIntersectionType
   pushTypes(sats, it.l);
   return AppliedIntersectionType$jsint(it, sats.reifyCeylonType({t:Type$meta$model}), {Intersection$IntersectionType:{t:Anything}});
 }
+
+function getAnnotationBitmask(t) {
+  var mask = 0;
+  mask |= is$(shared(),t)?1:0;
+  mask |= is$(actual(),t)?2:0;
+  mask |= is$(formal(),t)?4:0;
+  mask |= is$($_default(),t)?8:0;
+  mask |= is$(sealed(),t)?16:0;
+  mask |= is$($_final(),t)?32:0;
+  mask |= is$($_native(),t)?64:0;
+  mask |= is$(late(),t)?128:0;
+  mask |= is$(abstract(),t)?256:0;
+  return mask;
+}
+
