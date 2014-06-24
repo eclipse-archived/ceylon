@@ -1,0 +1,151 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1695T implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1695T() {
+        this.c = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> c;
+    
+    public .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> getC() {
+        return c;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T.class);
+}
+class Bug1695A extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T {
+    
+    Bug1695A() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.class);
+}
+class Bug1695B extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T {
+    
+    Bug1695B(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> c) {
+        super();
+        this.c = c;
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> c;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential getC() {
+        return c;
+    }
+    
+    private final void f$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Sequence $ceylontmp$c1$0 = f$c1();
+                f$priv$$canonical$($ceylontmp$c1$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Sequence f$c1() {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)getC();
+    }
+    
+    private void f$priv$$canonical$(final .ceylon.language.Sequence c1) {
+        final .ceylon.language.Sequence c2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)getC();
+        final .ceylon.language.Sequence c3 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)this.getC();
+    }
+    
+    private final void f$priv$(final .ceylon.language.Sequence c1) {
+        (
+            let
+            {
+                f$priv$$canonical$(c1);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B.class);
+}
+interface It<Element, Absent> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It$impl<Element, Absent> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$It$impl();
+    
+    public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends Absent>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method);
+}
+final class It$impl<Element, Absent> {
+    
+    It$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It<Element, Absent> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It<Element, Absent> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Absent = $reified$Absent;
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends Absent>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
+        return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+    }
+}
+class Emp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It<.java.lang.Object, .java.lang.Object> {
+    
+    Emp() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$It$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$It$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.It$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$It$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$It$this$;
+    }
+    
+    @.java.lang.Override
+    public final <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
+        return (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>>)(.ceylon.language.Callable).ceylon.language.flatten_.<.ceylon.language.Empty, Args>flatten(.ceylon.language.Empty.$TypeDescriptor$, $reified$Args, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Args, $reified$Args, .ceylon.language.Empty.$TypeDescriptor$), "[](Args)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Empty $call$(final .java.lang.Object $param$0) {
+                final Args args = (Args)$param$0;
+                return .ceylon.language.empty_.get_();
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Emp();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Emp.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Emp.class);
+}
