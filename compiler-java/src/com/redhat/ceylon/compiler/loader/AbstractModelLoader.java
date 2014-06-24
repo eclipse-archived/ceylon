@@ -1225,9 +1225,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean actual = classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
         klass.setActual(actual);
         klass.setActualCompleter(this);
-        klass.setFinal(classMirror.isFinal() 
-                // ArraySequnce isn't final in the Java runtime, but is in the Ceylon runtime
-                || "ceylon.language.ArraySequence".equals(classMirror.getQualifiedName()));
+        klass.setFinal(classMirror.isFinal());
         klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
         return klass;
     }
