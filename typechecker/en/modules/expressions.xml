@@ -2145,11 +2145,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
 
     <section id="listmap">
-    <title>Correspondence and subrange operators</title>
+    <title>Correspondence, subrange, and stream operators</title>
     
         <para>These operators provide a simplified syntax for accessing values 
-        of a <literal>Correspondence</literal>, and for joining and obtaining
-        subranges of <literal>Ranged</literal> objects.</para>
+        of a <literal>Correspondence</literal>, for obtaining subranges of 
+        <literal>Ranged</literal> objects, and for spreading member access
+        over a stream.</para>
     
     <table>
     <tgroup cols="6">
