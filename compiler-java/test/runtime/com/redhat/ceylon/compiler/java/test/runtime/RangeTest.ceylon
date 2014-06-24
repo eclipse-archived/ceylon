@@ -17,41 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class RangeTest() {
+shared class SpanTest() {
 
     @test
-    shared void testFirst() {    
-        Range<Integer> range = Range(1, 10);
+    shared void testFirst() {
+        Span<Integer> range = Span(1, 10);
         assertEquals(range.first, 1);
     }
     
     @test
-    shared void testLast() {    
-        Range<Integer> range = Range(1, 10);
+    shared void testLast() {
+        Span<Integer> range = Span(1, 10);
         assertEquals(range.last, 10);
     }
     
     @test
-    shared void testString() {    
-        Range<Integer> range = Range(1, 10);
-        String name =  range.string;        
+    shared void testString() {
+        Span<Integer> range = Span(1, 10);
+        String name =  range.string;
     }
     
     @test
-    shared void testSize() {    
-        Range<Integer> range = Range(1, 10);
-        assertEquals(range.size, 10);        
+    shared void testSize() {
+        Span<Integer> range = Span(1, 10);
+        assertEquals(range.size, 10);
     }
     
     @test
-    shared void testLastIndex() {    
-        Range<Integer> range = Range(1, 10);
-        assertEquals(range.lastIndex, 9);        
+    shared void testLastIndex() {
+        Span<Integer> range = Span(1, 10);
+        assertEquals(range.lastIndex, 9);
     }
     
     @test
-    shared void testRest() {    
-        Range<Integer> range = Range(1, 10);
+    shared void testRest() {
+        Span<Integer> range = Span(1, 10);
         Integer[] rest = range.rest;
         assertEquals(9, rest.size);
         assertEquals(2, rest[0]);
@@ -68,8 +68,8 @@ shared class RangeTest() {
     }
     
     @test
-    shared void testItem() {    
-        Range<Integer> range = Range(0, 9);
+    shared void testItem() {
+        Span<Integer> range = Span(0, 9);
         Integer? first = range.get(1);
         if (exists first) {
             assertEquals(first,1);
@@ -77,12 +77,12 @@ shared class RangeTest() {
         Integer? ten = range.get(10);
         if (exists ten) {
             fail();
-        }                        
-    }                            
+        }
+    }
     
     @test
-    shared void testContains() {    
-        Range<Integer> range = Range(1, 10);
+    shared void testContains() {
+        Span<Integer> range = Span(1, 10);
         assertTrue(range.contains(1));
         assertTrue(range.contains(5));
         assertTrue(range.contains(10));
@@ -90,26 +90,26 @@ shared class RangeTest() {
     }
     
     @test
-    shared void testDecreasing() {    
-        Range<Integer> rangeIncreasing = Range(1, 10);        
-        Range<Integer> rangeDecreasing = Range(10, 1);
+    shared void testDecreasing() {
+        Span<Integer> rangeIncreasing = Span(1, 10);
+        Span<Integer> rangeDecreasing = Span(10, 1);
         assertFalse(rangeIncreasing.decreasing);
         assertTrue(rangeDecreasing.decreasing);
     }
     
     @test
-    shared void testEquals() {    
-        Range<Integer> oneToTen = Range(1, 10);
-        Range<Integer> anotherOneToTen = Range(1, 10);        
-        Range<Integer> tenToOne = Range(10, 1);
+    shared void testEquals() {
+        Span<Integer> oneToTen = Span(1, 10);
+        Span<Integer> anotherOneToTen = Span(1, 10);
+        Span<Integer> tenToOne = Span(10, 1);
         assertEquals(oneToTen, anotherOneToTen);
         assertFalse(oneToTen == tenToOne);
     }
     
     @test
-    shared void testHash() {    
-        Range<Integer> range = Range(1, 10);
+    shared void testHash() {
+        Span<Integer> range = Span(1, 10);
         Integer rangeHash = range.hash;
-    }        
+    }
     
-}      
+}

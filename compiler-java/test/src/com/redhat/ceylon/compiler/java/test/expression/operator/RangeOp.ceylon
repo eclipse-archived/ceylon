@@ -20,11 +20,11 @@
 @noanno
 class RangeOp<T>() {
     void int(Integer i1, Integer i2) {   
-        Range<Integer> range = i1..i2;
+        Span<Integer> range = i1..i2;
     }
     void t<T>(T t1, T t2) 
             given T satisfies Enumerable<T> {
-        Range<T> range = t1..t2;
+        Span<T> range = t1..t2;
     }
     
 }
@@ -45,5 +45,5 @@ object rangeOpE extends RangeOpEnum() {
 }
 @noanno
 void bug() {
-    Range<RangeOpEnum> range = rangeOpE..rangeOpF;
+    Span<RangeOpEnum> range = rangeOpE..rangeOpF;
 }

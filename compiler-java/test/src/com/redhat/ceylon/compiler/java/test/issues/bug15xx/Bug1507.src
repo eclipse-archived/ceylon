@@ -232,7 +232,7 @@ final class bug1507test5_ {
     static void bug1507test5() {
         final boolean found;
         boolean found$43 = false;
-        final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.range_.<.ceylon.language.Integer>range(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+        final .ceylon.language.Span<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         boolean doforelse$44 = true;
         .java.lang.Object elem$45;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$46 = range.iterator();
