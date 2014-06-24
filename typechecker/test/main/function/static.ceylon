@@ -56,7 +56,8 @@ void testAB() {
     value val6 = AB<String>.G.m<Float>;
     @error value val7 = AB<String>.G.m;
     @error value val9 = Singleton;
-    @error value val10 = coalesce;
+    @error value val10 = sum;
     value val11 = Singleton<String>;
-    value val12 = coalesce<Integer>;
+    value val12 = sum<Integer>;
+    value val13 = every;
 }

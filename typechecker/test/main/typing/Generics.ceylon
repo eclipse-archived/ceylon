@@ -93,6 +93,7 @@ class Generics() {
         shared class BadClass(@error X x) {}
         shared class GoodClass2(Y[] y) {}
         shared class BadClass2(@error X[] x) {}
+        @error: "sealed interface"
         shared class GoodClassInheritance() 
                 extends Object() 
                 satisfies Sequence<X> {
@@ -103,7 +104,7 @@ class Generics() {
             shared actual GoodClassInheritance clone() => GoodClassInheritance();
             shared actual X? getFromFirst(Integer key) { return null; }
             shared actual Boolean contains(Object x) { return false; }
-            shared actual X[] segment(Integer from, Integer length) { return this; }
+            shared actual X[] measure(Integer from, Integer length) { return this; }
             shared actual X first { throw; }
             shared actual X last { throw; }
             shared actual Sequence<X> reversed { return this; }
@@ -218,6 +219,7 @@ class Generics() {
         }
     }
     
+    @error: "sealed interface"
     abstract class SortedList<T>(T* elements) 
         extends Object()
         satisfies Sequence<T> 
@@ -239,14 +241,16 @@ class Generics() {
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
+    @error: "sealed interface"
     interface SequenceSequence<out T, out X> 
             satisfies Sequence<T>
             given T satisfies Sequence<X> & Object
             given X satisfies Object {}
     
+	@error: "sealed interface" 
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Object
+	        given T satisfies Sequence<X> & Object
             @error given X satisfies Object {}
     
     class Upper<X>(X x)
@@ -530,6 +534,11 @@ class Generics() {
     @type:"String" genericMethod2("hello");
     @type:"String" genericMethod2(true then "hello");
     
+    function coalesce<Element,Absent>(Iterable<Element,Absent> iterable) 
+            given Absent satisfies Null {
+        return iterable.coalesced;
+    }
+	    
     @type:"Iterable<String,Null>" coalesce{null, "hello"};
     @type:"Sequential<String>" concatenate({}, {"hello", "world"}, {"goodbye"});
     

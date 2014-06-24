@@ -1,5 +1,10 @@
 class Assignability() {
     
+    function entries<Element,Absent>(Iterable<Element,Absent> iterable) 
+            given Absent satisfies Null {
+        return iterable.indexed;
+    }
+	    
     class X() {
         shared String hello = "Hello";
     }

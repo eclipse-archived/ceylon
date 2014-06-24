@@ -1,8 +1,8 @@
 class LanguageModule() {
     
-    @type:"Iterable<Entry<Integer,String>,Nothing>" entries{"hello", "world"};
-    @type:"Iterable<Entry<Integer,String>,Nothing>" entries(["hello", "world"]);
-    for (Integer i->String s in entries{"hello", "world", "!"}) {}
+    @type:"Iterable<Entry<Integer,String>,Nothing>" value e1 = {"hello", "world"}.indexed;
+    @type:"Iterable<Entry<Integer,String>,Nothing>" value e2 = ["hello", "world"].indexed;
+    for (Integer i->String s in {"hello", "world", "!"}.indexed) {}
     
     //print(append({"one", "two" , "three"}, "four").size==4);
     print(["one", "two" , "three"].withTrailing("four").size==4);

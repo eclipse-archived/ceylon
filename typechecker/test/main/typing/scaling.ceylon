@@ -25,6 +25,7 @@ shared interface Numeric<Other> of Other
 
 }
 
+@error: "sealed interface" 
 interface Vec<Num> satisfies Scalable<Num,Vec<Num>>&[Num+] {}
 interface Num satisfies Numeric<Num> {}
 

@@ -1,5 +1,10 @@
 void comprehensions() {
     
+    function coalesce<Element,Absent>(Iterable<Element,Absent> iterable) 
+            given Absent satisfies Null {
+        return iterable.coalesced;
+    }
+    
     {String*} words = { "hello", "world", "goodbye" };
     String?[] wordsAnNulls = [ "hello", "world", null, "goodbye" ];
     

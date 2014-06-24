@@ -74,7 +74,7 @@ void test<T>() {
     value toplevelMethod = `method`;
     @error:"does not accept type arguments: method"
     value toplevelMethodErr = `method<String>`;
-    @error:"function or value does not exist: method"
+    @error:"function or value does not exist: missingMethod"
     value toplevelMethodErr2 = `missingMethod`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
@@ -88,7 +88,7 @@ void test<T>() {
     value containerMethodFunction = `function Container.method`;
     @type:"Method<Container,Anything,Empty>"
     value containerMethod = `Container.method`;
-    @error:"member method or attribute is ambiguous: missing"
+    @error:"method or attribute does not exist: missing in type Container"
     value containerMethodErr = `Container.missing`;
     @type:"Method<ParameterisedContainer<String>,Anything,Tuple<Integer,Integer,Empty>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
@@ -195,22 +195,22 @@ void test<T>() {
     value classMethodAndParameter = `Container.methodAndParameter`;
     
     // private attributes
-    @error:"metamodel references to non-shared attributes not supported yet"
+    @error:"method or attribute is not visible: privateAttribute of type Container"
     value privateAttributeValue = `value Container.privateAttribute`;
-    @error:"metamodel references to non-shared attributes not supported yet"
+    @error:"method or attribute is not visible: privateAttribute of type Container"
     value privateAttribute = `Container.privateAttribute`;
     
     // local values and methods
     value localValue = 2;
     void localFunction(){}
     
-    @error:"metamodel references to local values not supported"
+    @error:"metamodel reference to local"
     value localValueDeclValue = `value localValue`;
-    @error:"metamodel references to local functions not supported"
+    @error:"metamodel reference to local"
     value localFunctionDeclFunction = `function localFunction`;
-    @error:"metamodel references to local values not supported"
+    @error:"metamodel reference to local"
     value localValueDecl = `localValue`;
-    @error:"metamodel references to local functions not supported"
+    @error:"metamodel reference to local"
     value localFunctionDecl = `localFunction`;
     
     class LocalClass(String arg) {}
