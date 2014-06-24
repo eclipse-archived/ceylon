@@ -187,6 +187,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_SEALED_ANNOTATION = "ceylon.language.SealedAnnotation$annotation$";
 
     // important that these are with ::
     private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
@@ -1220,6 +1221,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setAbstract(classMirror.isAbstract());
         klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
         klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
+        klass.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         boolean actual = classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
         klass.setActual(actual);
         klass.setActualCompleter(this);
@@ -1232,6 +1234,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
+        iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setStaticallyImportable(!iface.isCeylon());
         return iface;
     }
