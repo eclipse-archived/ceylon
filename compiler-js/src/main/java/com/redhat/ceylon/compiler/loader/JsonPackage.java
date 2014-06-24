@@ -153,9 +153,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             m.put(MetamodelGenerator.KEY_METATYPE, cls);
             setAnnotations(cls, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
                     (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
-            if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
-                cls.setAnnotation(true);
-            }
         }
         //Type parameters are about the first thing we need to load
         final List<TypeParameter> tparms = parseTypeParameters(
@@ -420,9 +417,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         setAnnotations(md, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
                 (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
         md.setUnit(u2);
-        if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
-            md.setAnnotation(true);
-        }
         if (parent == this) {
             //Top-level declarations are directly added to the unit
             u2.addDeclaration(md);
@@ -906,6 +900,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             d.setFormal(hasAnnotationBit(bits, "formal"));
             d.setDefault(hasAnnotationBit(bits, "default"));
             d.setNative(hasAnnotationBit(bits, "native"));
+            d.setAnnotation(hasAnnotationBit(bits, "annotation"));
             if (hasAnnotationBit(bits, "sealed")) {
                 ((TypeDeclaration)d).setSealed(true);
             }

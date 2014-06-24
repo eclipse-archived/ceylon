@@ -51,7 +51,6 @@ public class MetamodelGenerator {
     public static final String KEY_PACKAGE      = "pk";
     public static final String KEY_PARAMS       = "ps";
     public static final String KEY_SELF_TYPE    = "st";
-    public static final String KEY_IS_ANNOTATION= "annot";
     public static final String KEY_SATISFIES    = "sts";
 
     public static final String KEY_DEFAULT      = "def";
@@ -69,7 +68,7 @@ public class MetamodelGenerator {
     public static final String METATYPE_PARAMETER       = "prm";
     //DO NOT REARRANGE, only append
     public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
-            "sealed", "final", "native", "late", "abstract");
+            "sealed", "final", "native", "late", "abstract", "annotation");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
@@ -600,9 +599,6 @@ public class MetamodelGenerator {
         }
         if (bits > 0) {
             m.put(KEY_PACKED_ANNS, bits);
-        }
-        if (d.isAnnotation()) {
-            m.put(KEY_IS_ANNOTATION, 1);
         }
         if (!anns.isEmpty()) {
             m.put(KEY_ANNOTATIONS, anns);
