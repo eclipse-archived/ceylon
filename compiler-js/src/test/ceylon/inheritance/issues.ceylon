@@ -52,7 +52,7 @@ class Issue266_4() satisfies Issue266i<Issue266i<String>&Issue266two> {}
 class MyList360() extends Object() satisfies List<String> {
     getFromFirst(Integer index) => index.string;
     lastIndex => 100;
-    segment(Integer from, Integer length) => nothing;
+    measure(Integer from, Integer length) => nothing;
     span(Integer from, Integer to) => nothing;
     spanFrom(Integer from) => nothing;
     spanTo(Integer to) => nothing;

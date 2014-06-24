@@ -44,7 +44,7 @@ class MiMatrix(Integer gridSize) satisfies List<[Integer+]> {
     shared actual Integer hash = grid.hash;
     shared actual Boolean equals(Object other) => grid.equals(other);
     span = grid.span;
-    segment = grid.segment;
+    measure = grid.measure;
     shared actual Matrix<Integer> reversed = grid.reversed;
     shared actual Integer lastIndex = grid.lastIndex;
     shared actual [Integer+]? getFromFirst(Integer i) => grid.getFromFirst(i);
