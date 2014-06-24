@@ -35,7 +35,7 @@ abstract class RangedImpl<in Index, out Element, out Span>()
         return nothing;
     }
     
-    shared actual Span segment(Index from, Integer length) {
+    shared actual Span measure(Index from, Integer length) {
         return nothing;
     }
 

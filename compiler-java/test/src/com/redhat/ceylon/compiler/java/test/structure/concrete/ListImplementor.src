@@ -443,7 +443,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> segment(final .ceylon.language.Integer from, final long length) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> measure(final .ceylon.language.Integer from, final long length) {
         throw new .ceylon.language.Exception(null, null);
     }
     

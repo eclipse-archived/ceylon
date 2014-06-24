@@ -37,7 +37,7 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
         return nothing;
     }
     
-    shared actual Element[] segment(Integer from, Integer len) {
+    shared actual Element[] measure(Integer from, Integer len) {
         return nothing;
     }
     

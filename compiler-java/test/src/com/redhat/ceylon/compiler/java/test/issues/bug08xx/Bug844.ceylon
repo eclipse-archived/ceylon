@@ -58,7 +58,7 @@ shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest
         return rest.reversed.withTrailing(first);
     }
 
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual Element[] measure(Integer from, Integer length) {
         return from<=0 then rest[0:length+from-1].withLeading(first) 
                 else rest[from-1:length];
     }

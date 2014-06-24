@@ -59,7 +59,7 @@ shared abstract class Bug476<out T>() satisfies List<T> {
     shared actual T[] spanTo(Integer to) {
         return nothing;
     }
-    shared actual T[] segment(Integer from, Integer length) {
+    shared actual T[] measure(Integer from, Integer length) {
         return nothing;
     }
     shared actual String string = nothing;

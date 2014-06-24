@@ -44,7 +44,7 @@ class Bug837<Element>(first, Integer length)
         throw;
     }
 
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual Element[] measure(Integer from, Integer length) {
         throw;
     }
 

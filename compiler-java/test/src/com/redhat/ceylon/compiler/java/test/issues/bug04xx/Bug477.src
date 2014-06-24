@@ -286,8 +286,8 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
-        return $ceylon$language$List$this$.segment(from, length);
+    public .ceylon.language.List<? extends T> measure(final .ceylon.language.Integer from, final long length) {
+        return $ceylon$language$List$this$.measure(from, length);
     }
     
     @.java.lang.Override
@@ -788,8 +788,8 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
-        return $ceylon$language$List$this$.segment(from, length);
+    public .ceylon.language.List<? extends T> measure(final .ceylon.language.Integer from, final long length) {
+        return $ceylon$language$List$this$.measure(from, length);
     }
     
     @.java.lang.Override

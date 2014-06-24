@@ -478,7 +478,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Sequential measure(final .ceylon.language.Integer from, final long length) {
         throw new .ceylon.language.Exception(null, null);
     }
     

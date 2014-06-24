@@ -502,7 +502,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> measure(final .ceylon.language.Integer from, final long length) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {

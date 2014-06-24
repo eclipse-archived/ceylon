@@ -33,7 +33,7 @@ class Bug1430() satisfies Sequence<Integer> {
     shared actual Integer? getFromFirst(Integer index) {
         return index==0 then 1 else null;
     }
-    shared actual Integer[] segment(Integer from, Integer length) {
+    shared actual Integer[] measure(Integer from, Integer length) {
         return from==0 && length>0 then this else [];
     }
     shared actual Integer[] span(Integer from, Integer to) {

@@ -24,7 +24,7 @@ class ListImplementor<X>() satisfies List<X> {
         throw;
     }
     
-    shared actual ListImplementor<X> segment(Integer from, Integer length) {
+    shared actual ListImplementor<X> measure(Integer from, Integer length) {
         throw;
     }
     
