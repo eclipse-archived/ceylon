@@ -4235,7 +4235,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             final List<JCExpression> args;
             if (range.getLowerBound() != null 
                     && range.getLength() != null) {
-                method = "segment";
+                method = "measure";
                 JCExpression length = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
                 args = List.of(start, length);
             } else if (range.getLowerBound() == null) {
