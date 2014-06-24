@@ -5407,6 +5407,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             sb.append("V").append(decl.getName());
         } else if (decl instanceof Method) {
             sb.append("F").append(decl.getName());
+        } else if (decl instanceof TypeParameter) {
+            sb.append("P").append(decl.getName());
         } else {
             Assert.fail();
         }
