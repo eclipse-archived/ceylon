@@ -182,11 +182,11 @@ shared void testIterables() {
     //Count
     check((1..10).count((Integer x) => x%2==0)==5, "Range.count");
     check({1,2,3,4,5}.count((Integer x) => x%2==0)==2, "Sequence.count");
-    check({for (i in 1..10) i}.count(greaterThan(7))==3, "Iterable.count (greaterThan)");
-    check({for (i in 1..10) i}.count(lessThan(7))==6, "Iterable.count (lessThan)");
+    check({for (i in 1..10) i}.count(7.smallerThan)==3, "Iterable.count (greaterThan)");
+    check({for (i in 1..10) i}.count(7.largerThan)==6, "Iterable.count (lessThan)");
     check(Array{1,2,3,4,5}.count((Integer x) => x%2==1)==3, "Array.count");
     check("AbcdEfghIjklmnOp".count((Character c) => c.uppercase)==4, "String.count");
-    check(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
+    check([1].count(1.equals)==1, "Singleton.count (equalTo)");
 
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
