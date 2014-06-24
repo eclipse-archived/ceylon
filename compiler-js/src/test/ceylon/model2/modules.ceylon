@@ -19,7 +19,7 @@ void modulesTests() {
         check(funmod.annotations<AuthorsAnnotation>().size == 1, "functions/0.1 has 1 annotations");
         if (exists pk = funmod.findPackage("functions")) {
             check(pk.name=="functions", "Package name should be functions");
-            check(pk.annotations<SharedAnnotation>() nonempty, "Package should have annotations");
+            check(pk.annotations<SharedAnnotation>() nonempty, "Package should have shared annotation");
             //This is a FunctionDeclaration
             value helloFun = pk.getFunction("hello");
             if (exists helloFun) {
