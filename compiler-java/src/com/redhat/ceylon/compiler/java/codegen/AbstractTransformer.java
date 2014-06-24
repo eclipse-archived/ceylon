@@ -1001,7 +1001,7 @@ public abstract class AbstractTransformer implements Transformation {
                     && !typeArgument.isExactly(refinedTypeArgument))
                 return true;
             // check if the type arg is a subtype, or if its type args are widening
-            if(isWideningTypeArguments(typeArgument, refinedTypeArgument, false))
+            if(isWideningTypeArguments(typeArgument, refinedTypeArgument, tp.isCovariant()))
                 return true;
         }
         // so far so good
