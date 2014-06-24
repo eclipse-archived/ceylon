@@ -136,9 +136,9 @@ public class FreeTypeParameter
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.meta.declaration.Package == false)
+        if(obj instanceof ceylon.language.meta.declaration.TypeParameter == false)
             return false;
-        ceylon.language.meta.declaration.Package other = (ceylon.language.meta.declaration.Package) obj;
+        ceylon.language.meta.declaration.TypeParameter other = (ceylon.language.meta.declaration.TypeParameter) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());
