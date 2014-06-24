@@ -891,6 +891,7 @@ shared void run() {
 
     testBug378();
     bug409();
+    compilerBug1699();
         
     print("Annotation tests OK");
     results();
