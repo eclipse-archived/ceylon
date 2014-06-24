@@ -375,7 +375,9 @@ public class TypeUtils {
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
             metamodelTypeNameOrList(gen.getCurrentPackage(), p.getType(), gen);
-            new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
+            if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
+                new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
+            }
             gen.out("}");
         }
         gen.out("]");
@@ -524,7 +526,6 @@ public class TypeUtils {
         final boolean include = annotations != null && !(annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null);
         encodeForRuntime(annotations, d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
-                gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
                 outputAnnotationsFunction(annotations, d, gen);
             }
         } : null);
@@ -835,7 +836,29 @@ public class TypeUtils {
      * @param gen The generator to use for output. */
     static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
             final GenerateJsVisitor gen) {
-        if (annotations == null || (annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null)) {
+        List<Tree.Annotation> anns = annotations == null ? null : annotations.getAnnotations();
+        if (d != null) {
+            int mask = MetamodelGenerator.encodeAnnotations(d, null);
+            if (mask > 0) {
+                gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(mask));
+            }
+            if (annotations == null || (anns.isEmpty() && annotations.getAnonymousAnnotation() == null)) {
+                return;
+            }
+            anns = new ArrayList<>(annotations.getAnnotations().size());
+            anns.addAll(annotations.getAnnotations());
+            for (Iterator<Tree.Annotation> iter = anns.iterator(); iter.hasNext();) {
+                final String qn = ((Tree.StaticMemberOrTypeExpression)iter.next().getPrimary()).getDeclaration().getQualifiedNameString();
+                if (qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
+                    iter.remove();
+                }
+            }
+            if (anns.isEmpty() && annotations.getAnonymousAnnotation() == null) {
+                return;
+            }
+            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+        }
+        if (annotations == null || (anns.isEmpty() && annotations.getAnonymousAnnotation()==null)) {
             gen.out("[]");
         } else {
             gen.out("function(){return[");
@@ -853,7 +876,7 @@ public class TypeUtils {
                 }
                 gen.out(")");
             }
-            for (Tree.Annotation a : annotations.getAnnotations()) {
+            for (Tree.Annotation a : anns) {
                 if (first) first=false; else gen.out(",");
                 gen.getInvoker().generateInvocation(a);
             }
@@ -870,26 +893,37 @@ public class TypeUtils {
         private final GenerateJsVisitor gen;
         private final Declaration d;
         private final Node node;
-        private boolean includeAnnotationKey=true;
         ModelAnnotationGenerator(GenerateJsVisitor generator, Declaration decl, Node n) {
             gen = generator;
             d = decl;
             node = n;
         }
-        public ModelAnnotationGenerator omitKey() {
-            includeAnnotationKey=false;
-            return this;
-        }
         @Override public void generateAnnotations() {
-            if (includeAnnotationKey) {
-                gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+            List<Annotation> anns = d.getAnnotations();
+            final int bits = MetamodelGenerator.encodeAnnotations(d, null);
+            if (bits > 0) {
+                gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(bits));
+                //Remove these annotations from the list
+                anns = new ArrayList<Annotation>(d.getAnnotations().size());
+                anns.addAll(d.getAnnotations());
+                for (Iterator<Annotation> iter = anns.iterator(); iter.hasNext();) {
+                    final Annotation a = iter.next();
+                    final Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
+                    final String qn = ad.getQualifiedNameString();
+                    if (qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
+                        iter.remove();
+                    }
+                }
+                if (anns.isEmpty()) {
+                    return;
+                }
             }
-            gen.out("function(){return[");
+            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
             boolean first = true;
-            for (Annotation a : d.getAnnotations()) {
-                if (first) first=false; else gen.out(",");
+            for (Annotation a : anns) {
                 Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
                 if (ad instanceof Method) {
+                    if (first) first=false; else gen.out(",");
                     gen.qualify(node, ad);
                     gen.out(gen.getNames().name(ad), "(");
                     if (a.getPositionalArguments() == null) {
@@ -917,7 +951,7 @@ public class TypeUtils {
                     }
                     gen.out(")");
                 } else {
-                    gen.out("null/*MISSING DECLARATION FOR ANNOTATION ", a.getName(), "*/");
+                    gen.out("/*MISSING DECLARATION FOR ANNOTATION ", a.getName(), "*/");
                 }
             }
             gen.out("];}");
