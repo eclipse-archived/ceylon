@@ -46,18 +46,18 @@ shared void strings() {
     check(hello.span(2,1)=="le", "string span 5");
     check(hello.span(20,10)=="", "string span 6");
     
-    check(hello.segment(1,3)=="ell", "string segment 1");
-    check(hello.segment(1,5)=="ello", "string segment 2");
-    check(hello.segment(1,0)=="", "string segment 3");
-    check(hello.segment(1,10)=="ello", "string segment 4");
-    check(hello.segment(10,20)=="", "string segment 5");
+    check(hello.measure(1,3)=="ell", "string measure 1");
+    check(hello.measure(1,5)=="ello", "string measure 2");
+    check(hello.measure(1,0)=="", "string measure 3");
+    check(hello.measure(1,10)=="ello", "string measure 4");
+    check(hello.measure(10,20)=="", "string measure 5");
     
     check("".span(1,3)=="", "empty string span 1");
     check("".spanFrom(0)=="", "empty string spanFrom 0");
     check("".spanFrom(1)=="", "empty string spanFrom 1");
     check("".spanTo(0)=="", "empty string spanTo 0");
     check("".spanTo(1)=="", "empty string spanTo 1");
-    check("".segment(1,3)=="", "empty string segment");
+    check("".measure(1,3)=="", "empty string measure");
         
     check(hello[0] exists, "string first element exists 1");
     if (exists li = hello.lastIndex) {

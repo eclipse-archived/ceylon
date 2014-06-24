@@ -105,12 +105,12 @@ shared void entriesAndRanges() {
     String->Entry<Boolean,String> ent = "hello"->(true->"hello");
     check(ent.item.item=="hello", "entry item item");
     
-    check((0..10).segment(2, 3).string=="2..4", "range segment was ``(0..10).segment(2, 3)``");
+    check((0..10).measure(2, 3).string=="2..4", "range measure was ``(0..10).measure(2, 3)``");
     check((0..10).span(2, 5).string=="2..5", "range span");
-    check((2..10).segment(1, 3).string=="3..5", "range segment was ``(2..10).segment(1, 3)``");
+    check((2..10).measure(1, 3).string=="3..5", "range measure was ``(2..10).measure(1, 3)``");
     check((2..10).span(2, 7).string=="4..9", "range span");
-    check(!(0..9).segment(11,10) nonempty, "(0..9).segment(11,10) is empty");
-    check(!(0..9).segment(3,0) nonempty, "(0..9).segment(3,0) is empty");
+    check(!(0..9).measure(11,10) nonempty, "(0..9).measure(11,10) is empty");
+    check(!(0..9).measure(3,0) nonempty, "(0..9).measure(3,0) is empty");
     check(!(0..9).span(11,12) nonempty, "(0..9).span(11,12) is NOT empty");
     check((0..9).span(5,3) nonempty, "(0..9).span(5,3) is empty");
     
@@ -152,11 +152,11 @@ shared void entriesAndRanges() {
     check(r2.by(2).sequence().string=="[7, 5]", "range.by 3");
     check(r2.by(3).sequence().string=="[7, 4]", "range.by 4");
     check(r4.by(10).sequence().string=="[123]", "range.by 5");
-    check(r1.segment(2,2).string=="3..4", "range.segment 1");
-    check(!r1.segment(1,0) nonempty, "range.segment 2");
-    check(r1.segment(1,-1).empty, "range.segment 3");
-    check(r1.segment(3,1).string=="4..4", "range.segment 4");
-    check(r1.segment(0,1).string=="1..1", "range.segment 5");
+    check(r1.measure(2,2).string=="3..4", "range.measure 1");
+    check(!r1.measure(1,0) nonempty, "range.measure 2");
+    check(r1.measure(1,-1).empty, "range.measure 3");
+    check(r1.measure(3,1).string=="4..4", "range.measure 4");
+    check(r1.measure(0,1).string=="1..1", "range.measure 5");
     check(r1.span(1, 3).string=="2..4", "range.span 1");
     check(r1.span(3, 1).string=="4..2", "range.span 2");
     check(r1.span(2, 2).string=="3..3", "range.span 3");

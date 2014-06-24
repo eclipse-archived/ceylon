@@ -8,7 +8,7 @@ class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual TestList<Element> span(Integer a, Integer b) => TestList(*elems.span(a, b));
     shared actual TestList<Element> spanFrom(Integer a) => TestList(*elems.spanFrom(a));
     shared actual TestList<Element> spanTo(Integer b) => TestList(*elems.spanTo(b));
-    shared actual TestList<Element> segment(Integer a, Integer b) => TestList(*elems.segment(a, b));
+    shared actual TestList<Element> measure(Integer a, Integer b) => TestList(*elems.measure(a, b));
     shared actual TestList<Element> clone() => TestList(*elems);
 }
 
@@ -65,7 +65,7 @@ shared void lists() {
     check(b.spanFrom(10)=={}, "LazyList.spanFrom(10) & equals");
     check(b.spanTo(4)=={1,2,3,4,5}.sequence(), "LazyList.spanTo(4) & equals");
     check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
-    check(b.segment(2,3)=={3,4,5}.sequence(), "LazyList.segment: `` b.segment(2,3) `` instead of {3,4,5}");
+    check(b.measure(2,3)=={3,4,5}.sequence(), "LazyList.measure: `` b.measure(2,3) `` instead of {3,4,5}");
     if (exists e=b.findLast((Integer x) => true)) {
         check(e==8, "LazyList.findLast");
     } else { fail("LazyList.findLast"); }

@@ -24,8 +24,8 @@ shared void testRange() {
     check(x nonempty, "0:10 nonempty");
     check(x.string == "0:10", "0:1 string == " + x.string);
     
-    check((0..20).segment(0, 10) == 0:10, "segment method & segment op");
-    check((0..20)[0:10] == 0:10, "segment index & segment op");
+    check((0..20).measure(0, 10) == 0:10, "measure method & measure op");
+    check((0..20)[0:10] == 0:10, "measure index & measure op");
     
     variable value az = 'a':26;
     check(az.string == "a:26", "a:26 string == " + az.string);
@@ -54,11 +54,11 @@ shared void testRange() {
     check((1..3)[0..2]==1..3, "range span");
     check((1..3)[...2]==1..3, "range span to");
     check((1..3)[0...]==1..3, "range span from");
-    check((1..3)[0:3]==1..3, "range segment");
+    check((1..3)[0:3]==1..3, "range measure");
     
     check((1..3)[1..1]==2..2, "range span");
     check((1..3)[...1]==1..2, "range span to");
     check((1..3)[1...]==2..3, "range span from");
-    check((1..3)[1:1]==2..2, "range segment");
+    check((1..3)[1:1]==2..2, "range measure");
     
 }

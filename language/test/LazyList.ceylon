@@ -73,7 +73,7 @@ shared class LazyList<out Element>(elements)
             then LazyList(elements.skip(from))
             else this;
     
-    shared actual List<Element> segment
+    shared actual List<Element> measure
             (Integer from, Integer length) {
         if (length > 0) {
             value els = from > 0 

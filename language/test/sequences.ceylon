@@ -52,16 +52,16 @@ void test_singleton() {
     check(!singleton.spanFrom(1) nonempty, "nonempty singleton spanFrom(1)");
     check(singleton.spanTo(0) nonempty, "nonempty singleton spanTo(0)");
     check(singleton.spanTo(1) nonempty, "nonempty singleton spanTo(1)");
-    check(singleton.segment(0, 1) nonempty, "nonempty singleton segment(0,1)");
+    check(singleton.measure(0, 1) nonempty, "nonempty singleton measure(0,1)");
     check(singleton.span(0, 3).string=="[hello]", "singleton span(0,3).string");
-    check(singleton.segment(0, 3).string=="[hello]", "singleton segment(0,3).string");
+    check(singleton.measure(0, 3).string=="[hello]", "singleton measure(0,3).string");
     check(!singleton.span(1, 1) nonempty, "!nonempty singleton span(1,1)");
     check(!singleton.spanFrom(1) nonempty, "!nonempty singleton spanFrom(1)");
-    check(!singleton.segment(1, 1) nonempty, "!nonempty singleton segment(1,1)");
+    check(!singleton.measure(1, 1) nonempty, "!nonempty singleton measure(1,1)");
     check(singleton.span(0, 0) nonempty, "nonempty singleton span(0,0)");
     check(singleton.span(0, 10) nonempty, "nonempty singleton span(0,10)");
-    check(!singleton.segment(0, 0) nonempty, "!nonempty singleton segment(0,0)");
-    check(!singleton.segment(0, -1) nonempty, "!nonempty singleton segment(0,-1)");
+    check(!singleton.measure(0, 0) nonempty, "!nonempty singleton measure(0,0)");
+    check(!singleton.measure(0, -1) nonempty, "!nonempty singleton measure(0,-1)");
 
     check(singleton[0...] nonempty, "nonempty singleton[0...]");
     check(!singleton[1...] nonempty, "nonempty singleton[1...]");
@@ -131,16 +131,16 @@ void test_nullsingleton() {
     check(!singleton.spanFrom(1) nonempty, "nonempty nullsingleton spanFrom(1)");
     check(singleton.spanTo(0) nonempty, "nonempty nullsingleton spanTo(0)");
     check(singleton.spanTo(1) nonempty, "nonempty nullsingleton spanTo(1)");
-    check(singleton.segment(0, 1) nonempty, "nonempty nullsingleton segment(0,1)");
+    check(singleton.measure(0, 1) nonempty, "nonempty nullsingleton measure(0,1)");
     check(singleton.span(0, 3).string=="[<null>]", "nullsingleton span(0,3).string");
-    check(singleton.segment(0, 3).string=="[<null>]", "nullsingleton segment(0,3).string");
+    check(singleton.measure(0, 3).string=="[<null>]", "nullsingleton measure(0,3).string");
     check(!singleton.span(1, 1) nonempty, "!nonempty nullsingleton span(1,1)");
     check(!singleton.spanFrom(1) nonempty, "!nonempty nullsingleton spanFrom(1)");
-    check(!singleton.segment(1, 1) nonempty, "!nonempty nullsingleton segment(1,1)");
+    check(!singleton.measure(1, 1) nonempty, "!nonempty nullsingleton measure(1,1)");
     check(singleton.span(0, 0) nonempty, "nonempty nullsingleton span(0,0)");
     check(singleton.span(0, 10) nonempty, "nonempty nullsingleton span(0,10)");
-    check(!singleton.segment(0, 0) nonempty, "!nonempty nullsingleton segment(0,0)");
-    check(!singleton.segment(0, -1) nonempty, "!nonempty nullsingleton segment(0,-1)");
+    check(!singleton.measure(0, 0) nonempty, "!nonempty nullsingleton measure(0,0)");
+    check(!singleton.measure(0, -1) nonempty, "!nonempty nullsingleton measure(0,-1)");
 
     check(singleton.keys.contains(0), "nullsingleton keys.contains(0)");
     check(!singleton.keys.contains(1), "!nullsingleton keys.contains(1)");
@@ -278,35 +278,35 @@ shared void arraySequence() {
     check(abc.spanTo(3)==abc, "abc.spanTo(3)");
     
     
-    check(abc.segment(-1,-1)=={}, "abc.segment(-1,-1)");
-    check(abc.segment(-1, 0)=={}, "abc.segment(-1,0)");
-    check(abc.segment(-1, 1)=={} , "abc.segment(-1,1)");
-    check(abc.segment(-1, 2)=={"a"}.sequence(), "abc.segment(-1,2)");
-    check(abc.segment(-1, 3)=={"a", "b"}.sequence(), "abc.segment(-1,3)");
+    check(abc.measure(-1,-1)=={}, "abc.measure(-1,-1)");
+    check(abc.measure(-1, 0)=={}, "abc.measure(-1,0)");
+    check(abc.measure(-1, 1)=={} , "abc.measure(-1,1)");
+    check(abc.measure(-1, 2)=={"a"}.sequence(), "abc.measure(-1,2)");
+    check(abc.measure(-1, 3)=={"a", "b"}.sequence(), "abc.measure(-1,3)");
     
-    check(abc.segment(0,-1)=={}, "abc.segment(0,-1)");
-    check(abc.segment(0, 0)=={}, "abc.segment(0,0)");
-    check(abc.segment(0, 1)=={"a"}.sequence() , "abc.segment(0,1)");
-    check(abc.segment(0, 2)=={"a", "b"}.sequence(), "abc.segment(0,2)");
-    check(abc.segment(0, 3)==abc, "abc.segment(0,3)");
+    check(abc.measure(0,-1)=={}, "abc.measure(0,-1)");
+    check(abc.measure(0, 0)=={}, "abc.measure(0,0)");
+    check(abc.measure(0, 1)=={"a"}.sequence() , "abc.measure(0,1)");
+    check(abc.measure(0, 2)=={"a", "b"}.sequence(), "abc.measure(0,2)");
+    check(abc.measure(0, 3)==abc, "abc.measure(0,3)");
     
-    check(abc.segment(1,-1)=={}, "abc.segment(1,-1)");
-    check(abc.segment(1, 0)=={}, "abc.segment(1,0)");
-    check(abc.segment(1, 1)=={"b"}.sequence() , "abc.segment(1,1)");
-    check(abc.segment(1, 2)=={"b", "c"}.sequence(), "abc.segment(1,2)");
-    check(abc.segment(1, 3)=={"b", "c"}.sequence(), "abc.segment(1,3)");
+    check(abc.measure(1,-1)=={}, "abc.measure(1,-1)");
+    check(abc.measure(1, 0)=={}, "abc.measure(1,0)");
+    check(abc.measure(1, 1)=={"b"}.sequence() , "abc.measure(1,1)");
+    check(abc.measure(1, 2)=={"b", "c"}.sequence(), "abc.measure(1,2)");
+    check(abc.measure(1, 3)=={"b", "c"}.sequence(), "abc.measure(1,3)");
     
-    check(abc.segment(2,-1)=={}, "abc.segment(2,-1)");
-    check(abc.segment(2, 0)=={}, "abc.segment(2,0)");
-    check(abc.segment(2, 1)=={"c"}.sequence() , "abc.segment(2,1)");
-    check(abc.segment(2, 2)=={"c"}.sequence(), "abc.segment(2,2)");
-    check(abc.segment(2, 3)=={"c"}.sequence(), "abc.segment(2,3)");
+    check(abc.measure(2,-1)=={}, "abc.measure(2,-1)");
+    check(abc.measure(2, 0)=={}, "abc.measure(2,0)");
+    check(abc.measure(2, 1)=={"c"}.sequence() , "abc.measure(2,1)");
+    check(abc.measure(2, 2)=={"c"}.sequence(), "abc.measure(2,2)");
+    check(abc.measure(2, 3)=={"c"}.sequence(), "abc.measure(2,3)");
     
-    check(abc.segment(3,-1)=={}, "abc.segment(3,-1)");
-    check(abc.segment(3, 0)=={}, "abc.segment(3,0)");
-    check(abc.segment(3, 1)=={} , "abc.segment(3,1)");
-    check(abc.segment(3, 2)=={}, "abc.segment(3,1)");
-    check(abc.segment(3, 3)=={}, "abc.segment(3,3)");
+    check(abc.measure(3,-1)=={}, "abc.measure(3,-1)");
+    check(abc.measure(3, 0)=={}, "abc.measure(3,0)");
+    check(abc.measure(3, 1)=={} , "abc.measure(3,1)");
+    check(abc.measure(3, 2)=={}, "abc.measure(3,1)");
+    check(abc.measure(3, 3)=={}, "abc.measure(3,3)");
 }
 
 @test
@@ -324,7 +324,7 @@ shared void sequences() {
     check(!bare.spanTo(0) nonempty, "bare.spanTo(0)");
     check(!bare.spanFrom(1) nonempty, "bare.spanFrom(1)");
     check(!bare.spanTo(1) nonempty, "bare.spanTo(1)");
-    check(!bare.segment(1, 2) nonempty, "bare sequence segment");
+    check(!bare.measure(1, 2) nonempty, "bare sequence measure");
     check(bare.string=="[]", "bare.string");
     check(bare.reversed==bare, "bare reversed");
     check(bare.sequence()==bare, "bare.sequence()");
@@ -367,12 +367,12 @@ shared void sequences() {
     check(result.span(1,1) nonempty, "nonempty sequence.span(1,1)");
     check(result.span(0,0) nonempty, "nonempty sequence.span(0,0)");
 
-    //segment
-    check(result.segment(1,1).string=="[world]", "sequence.segment(1,1).string");
-    check(result.segment(0,3).string=="[hello, world]", "sequence.segment(0,3).string");
-    check(result.segment(1,1) nonempty, "nonempty sequence.segment(1,1)");
-    check(!result.segment(0,0) nonempty, "!nonempty sequence.segment(0,0)");
-    //check(!result.segment(1,-1) nonempty, "!nonempty sequence.segment(1,-1)");
+    //measure
+    check(result.measure(1,1).string=="[world]", "sequence.measure(1,1).string");
+    check(result.measure(0,3).string=="[hello, world]", "sequence.measure(0,3).string");
+    check(result.measure(1,1) nonempty, "nonempty sequence.measure(1,1)");
+    check(!result.measure(0,0) nonempty, "!nonempty sequence.measure(0,0)");
+    //check(!result.measure(1,-1) nonempty, "!nonempty sequence.measure(1,-1)");
     
     check(result.reversed.sequence()=={"world", "hello"}.sequence(), "sequence.reversed");
 

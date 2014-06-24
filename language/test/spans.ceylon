@@ -1,6 +1,6 @@
 //#20
 @test
-shared void spansegments() {
+shared void spanmeasures() {
   check(6..4==[6,5,4], "range vs sequence");
   value one9 = "123456789";
   check((1..20).span(5,3)==6..4, "Backward span [1] was ``(1..20).span(5,3)``");
@@ -9,12 +9,12 @@ shared void spansegments() {
   check(Array{1,2,3,4,5,6,7,8,9}.span(5,3)=={6,5,4}.sequence(), "Backward span [4] was ``Array{1,2,3,4,5,6,7,8,9}.span(5,3)``");
   check(LazyList({1,2,3,4,5,6,7,8,9}).span(5,3)=={6,5,4}.sequence(), "Backward span [5] was ``LazyList({1,2,3,4,5,6,7,8,9}).span(5,3)``");
 
-  check((1..20).segment(1,-1).sequence()=={}, "Backward segment [1] ``(1..20).segment(1,-1).sequence()``");
-  check([1,2,3,4,5,6,7,8,9].segment(1,-1)=={}, "Backward segment [2] ``[1,2,3,4,5,6,7,8,9].segment(1,-1)``");
-  check(one9.segment(1,-1)=="", "Backward segment [3] ``one9.segment(1,-1)``");
-  check(Array{1,2,3,4,5,6,7,8,9}.segment(1,-1)=={}, "Backward segment [4] ``Array{1,2,3,4,5,6,7,8,9}.segment(1,-1)``");
-  check(LazyList({1,2,3,4,5,6,7,8,9}).segment(1,-1)=={},
-        "Backward segment [5] ``LazyList({1,2,3,4,5,6,7,8,9}).segment(1,-1)``");
+  check((1..20).measure(1,-1).sequence()=={}, "Backward measure [1] ``(1..20).measure(1,-1).sequence()``");
+  check([1,2,3,4,5,6,7,8,9].measure(1,-1)=={}, "Backward measure [2] ``[1,2,3,4,5,6,7,8,9].measure(1,-1)``");
+  check(one9.measure(1,-1)=="", "Backward measure [3] ``one9.measure(1,-1)``");
+  check(Array{1,2,3,4,5,6,7,8,9}.measure(1,-1)=={}, "Backward measure [4] ``Array{1,2,3,4,5,6,7,8,9}.measure(1,-1)``");
+  check(LazyList({1,2,3,4,5,6,7,8,9}).measure(1,-1)=={},
+        "Backward measure [5] ``LazyList({1,2,3,4,5,6,7,8,9}).measure(1,-1)``");
 
   check("hello"[-1..10]=="hello", "string span out of range");
   check("hello".sequence()[-1..10]=={ 'h', 'e', 'l', 'l', 'o' }.sequence(), 

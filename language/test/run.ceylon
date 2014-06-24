@@ -13,10 +13,10 @@ shared void run() {
     print("Characters & strings");
     characters();
     strings();
-    print("Iterators, Entries, Ranges, spans & segments");
+    print("Iterators, Entries, Ranges, spans & measures");
     iterators();
     entriesAndRanges();
-    spansegments();
+    spanmeasures();
     print("Comparables & Clones");
     comparables();
     bug1561();

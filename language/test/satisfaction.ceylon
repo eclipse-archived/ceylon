@@ -90,7 +90,7 @@ class MySequence() satisfies List<Integer> {
     shared actual Integer? getFromFirst(Integer index) {
         return index==0 then 1;
     }
-    shared actual Integer[] segment(Integer from, Integer length) {
+    shared actual Integer[] measure(Integer from, Integer length) {
         return this.sequence();
     }
     shared actual Integer[] span(Integer from, Integer to) {
@@ -114,8 +114,8 @@ class MyRanged(Character[] contents='a'..'z')
     shared actual MyRanged spanTo(Integer to) {
         return MyRanged(contents.spanTo(to));
     }
-    shared actual MyRanged segment(Integer from, Integer length) {
-        return MyRanged(contents.segment(from, length));
+    shared actual MyRanged measure(Integer from, Integer length) {
+        return MyRanged(contents.measure(from, length));
     }
     iterator()=>contents.iterator();
 }
@@ -244,7 +244,7 @@ shared void testSatisfaction() {
     check(MyRanged().spanFrom(23).sequence()=={'x', 'y', 'z'}.sequence(), "Ranged[1]");
     check(MyRanged().spanTo(2).sequence()=={'a','b','c'}.sequence(), "Ranged[2]");
     check(MyRanged().span(1,3).sequence()=={'b','c','d'}.sequence(), "Ranged[3]");
-    check(MyRanged().segment(3,1).sequence()=={'d'}.sequence(), "Ranged[4]");
+    check(MyRanged().measure(3,1).sequence()=={'d'}.sequence(), "Ranged[4]");
 
     variable value ord1 = MyOrdinal(null,null);
     variable value ord2 = MyOrdinal(ord1, null);
