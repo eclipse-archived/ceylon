@@ -1247,7 +1247,7 @@ public class StatementTransformer extends AbstractTransformer {
             transformation = segmentOpIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
-            transformation = rangeOpIteration(stmt);
+            transformation = spanOpIteration(stmt);
         }
         if (transformation == null) {
             transformation = new ForStatementTransformation(stmt);
@@ -1685,9 +1685,9 @@ public class StatementTransformer extends AbstractTransformer {
         return null;
     }
 
-    private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
+    private boolean isSpanOf(Tree.RangeOp range, ProducedType ofType) {
         ProducedType rangeType = range.getTypeModel();
-        return typeFact().getRangeType(ofType).isExactly(rangeType);
+        return typeFact().getSpanType(ofType).isExactly(rangeType);
     }
 
 
@@ -1750,15 +1750,15 @@ public class StatementTransformer extends AbstractTransformer {
      * @param stmt The for statement
      * @return a {@link RangeOpIterationOptimization} or null.
      */
-    private ForStatementTransformation rangeOpIteration(Tree.ForStatement stmt) {
-        if (isOptimizationDisabled(stmt, Optimization.RangeOpIteration)) {
-            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+    private ForStatementTransformation spanOpIteration(Tree.ForStatement stmt) {
+        if (isOptimizationDisabled(stmt, Optimization.SpanOpIteration)) {
+            return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                     "optimization explicitly disabled by @disableOptimization");
         }
         
         Tree.ForIterator iterator = stmt.getForClause().getForIterator();
         if (!(iterator instanceof Tree.ValueIterator)) {
-            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+            return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                     "optimization applies only to ValueIterators");
         }
         Tree.ValueIterator vi = (Tree.ValueIterator)iterator;
@@ -1784,7 +1784,7 @@ public class StatementTransformer extends AbstractTransformer {
                         if(a instanceof Tree.ListedArgument)
                             increment = ((Tree.ListedArgument)a).getExpression().getTerm();
                         else
-                            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+                            return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                                     "Unable to determine expression for argument to by(): appears spread or comprehension");
                     } else if (inv.getNamedArgumentList() != null) {
                         Tree.SpecifiedArgument sarg = null;
@@ -1800,35 +1800,35 @@ public class StatementTransformer extends AbstractTransformer {
                         if (sarg != null) {
                             increment = sarg.getSpecifierExpression().getExpression().getTerm();
                         } else {
-                            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+                            return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                                     "Unable to determine expression for argument to by{}");
                         }
                     } else {
-                        return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+                        return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                                 "Unable to get arguments to by()");
                     }
                 } else {
-                    return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+                    return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                             "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
                 }
             } else {
-                return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+                return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                         "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
             }
         } else {
-            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
+            return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                     "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
         }
         
         Type type;
         ProducedType integerType = typeFact().getIntegerDeclaration().getType();
         ProducedType characterType = typeFact().getCharacterDeclaration().getType();
-        if (isRangeOf(range, integerType)) {
+        if (isSpanOf(range, integerType)) {
             type = syms().longType;
-        } else if (isRangeOf(range, characterType)) {
+        } else if (isSpanOf(range, characterType)) {
             type = syms().intType;
         } else {
-            return optimizationFailed(stmt, Optimization.RangeOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
+            return optimizationFailed(stmt, Optimization.SpanOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
         }
         return new RangeOpIterationOptimization(stmt, 
                 range.getLeftTerm(), range.getRightTerm(), 

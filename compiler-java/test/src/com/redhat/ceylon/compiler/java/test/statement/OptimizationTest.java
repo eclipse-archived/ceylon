@@ -3,17 +3,8 @@ package com.redhat.ceylon.compiler.java.test.statement;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ceylon.language.Finished;
-import ceylon.language.Iterator;
-import ceylon.language.Range;
-import ceylon.language.larger_;
-import ceylon.language.smaller_;
-import ceylon.language.system_;
-
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
-
-import ceylon.language.Integer;
 
 public class OptimizationTest extends CompilerTest {
     

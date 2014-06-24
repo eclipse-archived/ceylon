@@ -1622,7 +1622,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, type);
         return make().Apply(List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)), 
-                naming.makeLanguageFunction("range"), 
+                naming.makeLanguageFunction("span"), 
                 List.<JCExpression>of(makeReifiedTypeArgument(type), lower, upper));
     }
 

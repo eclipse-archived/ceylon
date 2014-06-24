@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.codegen;
  */
 public enum Optimization {
 
-    RangeOpIteration,
+    SpanOpIteration,
     SegmentOpIteration,
     ArrayIterationStatic,
     JavaArrayIterationStatic,
