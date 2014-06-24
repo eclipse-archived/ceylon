@@ -857,6 +857,11 @@ public abstract class AbstractTransformer implements Transformation {
         HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
         // start looking for it, but skip this type, only lookup upwards of it
         TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, visited, true);
+        // only keep the first refined decl if its type can be trusted: if it is not itself widening
+        if(firstRefinedDeclaration != null){
+            if(CodegenUtil.hasUntrustedType(firstRefinedDeclaration))
+                firstRefinedDeclaration = getFirstRefinedDeclaration(firstRefinedDeclaration);
+        }
         return firstRefinedDeclaration != null ? firstRefinedDeclaration : decl;
     }
 
