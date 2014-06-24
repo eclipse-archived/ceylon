@@ -196,7 +196,7 @@ final class bug1507test4_ {
     static void bug1507test4() {
         final boolean found;
         boolean found$36 = false;
-        final .java.lang.Object span = .ceylon.language.sizedRange_.<.ceylon.language.Integer>sizedRange(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 2L);
+        final .java.lang.Object span = .ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 2L);
         boolean doforelse$37 = true;
         .java.lang.Object elem$38;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$39 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)span).iterator();
