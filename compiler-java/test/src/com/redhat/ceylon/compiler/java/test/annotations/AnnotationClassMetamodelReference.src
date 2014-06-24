@@ -322,6 +322,8 @@ public final class TypeAlias {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CClassAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::IInterfaceAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::ATypeAlias"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::CEntry.PKey"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference_callsite.PX"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language:meta"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language:"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::7:javax.xml:.org.w3c.dom"),
@@ -340,19 +342,20 @@ public final class TypeAlias {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation$(mmrs = {
                 "::1.1.0:ceylon.language::Vfalse",
                 "::1.1.0:ceylon.language::Vfalse"})})
-class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassMetamodelReference_callsite<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    AnnotationClassMetamodelReference_callsite() {
+    AnnotationClassMetamodelReference_callsite(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite();
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite.class, $reified$X);
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite.class);
 }

@@ -38,6 +38,8 @@ annotationClassMetamodelReference(`value true`)
 annotationClassMetamodelReference(`class ClassAlias`)
 annotationClassMetamodelReference(`interface InterfaceAlias`)
 annotationClassMetamodelReference(`alias TypeAlias`)
+annotationClassMetamodelReference(`given Entry.Key`)
+annotationClassMetamodelReference(`given X`)
 //illegal annotationClassMetamodelReference(`sort<String>`)
 // annotationClassMetamodelReference(`package`)
 annotationClassMetamodelReference(`package ceylon.language.meta`)
@@ -54,4 +56,4 @@ annotationClassMetamodelReferenceVariadic1(`class Anything`, `value process`)
 // TODO literals for inner classes and interfaces
 annotationClassMetamodelReferenceVariadic2()
 annotationClassMetamodelReferenceVariadic3(`value false`)
-class AnnotationClassMetamodelReference_callsite() {}
+class AnnotationClassMetamodelReference_callsite<X>() {}
