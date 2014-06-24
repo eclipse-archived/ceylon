@@ -966,9 +966,13 @@ public abstract class AbstractTransformer implements Transformation {
             return !tp.getType().isSubtypeOf(refinedTP.getType());
         }
         if(allowSubtypes){
-            // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if((willEraseToObject(refinedDeclType)) && !willEraseToObject(declType))
+            
+            if((willEraseToObject(refinedDeclType))){
+                // if we refine something that erases to object, and:
+                // - we don't erase to object -> we can't possibly be widening, or
+                // - similarly if we both erase to object we're not widening
                 return false;
+            }
 
             // if we have exactly the same type don't bother finding a common ancestor
             if(!declType.isExactly(refinedDeclType)){
