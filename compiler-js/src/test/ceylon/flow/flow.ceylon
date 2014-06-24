@@ -179,7 +179,7 @@ void testIfNonempty() {
     } else {
         fail("if (nonempty x=y) nested");
     }
-    if (nonempty s6 = s4.segment(0, 1)) {
+    if (nonempty s6 = s4.measure(0, 1)) {
         check(s6.first=="hi", "if (nonempty x=expr)");
     } else {
         fail("if (nonempty x=expr)");
