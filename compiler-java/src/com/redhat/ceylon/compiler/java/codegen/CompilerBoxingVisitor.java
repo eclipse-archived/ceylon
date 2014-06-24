@@ -65,4 +65,9 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     protected boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type) {
         return transformer.needsRawCastForMixinSuperCall(declaration, type);
     }
+
+    @Override
+    protected boolean willEraseToObject(ProducedType type) {
+        return transformer.willEraseToObject(type);
+    }
 }

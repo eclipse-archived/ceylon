@@ -23,21 +23,16 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
@@ -121,16 +116,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             if(hasErasure(type)){
                 decl.setTypeErased(true);
             }
-            if(hasTypeParameterWithConstraints(type)){
+            if(decl.isActual()
+                    && decl.getContainer() instanceof ClassOrInterface
+                    // make sure we did not lose type information due to non-widening
+                    && isWideningTypedDeclaration(decl)){
+                // widening means not trusting the type, otherwise we end up thinking that the type is
+                // something it's not and regular erasure rules don't apply there
                 decl.setUntrustedType(true);
                 decl.setTypeErased(true);
-            }
-            if(!BooleanUtil.isTrue(decl.getTypeErased())
-                    && decl.isActual()
-                    && decl.getContainer() instanceof ClassOrInterface){
-                // make sure we did not lose type information due to non-widening
-                if(isWideningTypedDeclaration(decl))
-                    decl.setTypeErased(true);
             }
         }
     }
@@ -381,48 +374,4 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         return;
     }
 
-    private boolean hasTypeParameterWithConstraints(ProducedType type) {
-        return hasTypeParameterWithConstraintsResolved(type.resolveAliases());
-    }
-    
-    private boolean hasTypeParameterWithConstraintsResolved(ProducedType type) {
-        if(type == null)
-            return false;
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
-            return false;
-        if(declaration instanceof UnionType){
-            UnionType ut = (UnionType) declaration;
-            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
-            for(ProducedType pt : caseTypes){
-                if(hasTypeParameterWithConstraintsResolved(pt))
-                    return true;
-            }
-            return false;
-        }
-        if(declaration instanceof IntersectionType){
-            IntersectionType ut = (IntersectionType) declaration;
-            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
-            for(ProducedType pt : satisfiedTypes){
-                if(hasTypeParameterWithConstraintsResolved(pt))
-                    return true;
-            }
-            return false;
-        }
-        if(declaration instanceof TypeParameter){
-            TypeParameter tp = (TypeParameter) declaration;
-            Boolean nonErasedBounds = tp.hasNonErasedBounds();
-            if(nonErasedBounds == null)
-                visitTypeParameter(tp);
-            return nonErasedBounds != null ? nonErasedBounds.booleanValue() : false;
-        }
-        
-        // now check its type parameters
-        for(ProducedType pt : type.getTypeArgumentList()){
-            if(hasTypeParameterWithConstraintsResolved(pt))
-                return true;
-        }
-        // no problem here
-        return false;
-    }
 }

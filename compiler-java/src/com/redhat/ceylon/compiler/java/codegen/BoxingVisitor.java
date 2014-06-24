@@ -25,11 +25,15 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
@@ -73,6 +77,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean isBooleanFalse(Declaration decl);
     protected abstract boolean hasErasure(ProducedType type);
     protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
+    protected abstract boolean willEraseToObject(ProducedType type);
     protected abstract boolean isTypeParameter(ProducedType type);
     protected abstract boolean isRaw(ProducedType type);
     protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type);
@@ -83,16 +88,18 @@ public abstract class BoxingVisitor extends Visitor {
         // handle errors gracefully
         if(that.getDeclaration() == null)
             return;
-        Declaration decl = that.getDeclaration();
-        if(CodegenUtil.isUnBoxed((TypedDeclaration)decl)
+        TypedDeclaration decl = (TypedDeclaration) that.getDeclaration();
+        if(CodegenUtil.isUnBoxed(decl)
                 // special cases for true/false
                 || isBooleanTrue(decl)
                 || isBooleanFalse(decl))
             CodegenUtil.markUnBoxed(that);
-        if(CodegenUtil.isRaw((TypedDeclaration) decl))
+        if(CodegenUtil.isRaw(decl))
             CodegenUtil.markRaw(that);
-        if(CodegenUtil.hasTypeErased((TypedDeclaration) decl))
+        if(CodegenUtil.hasTypeErased(decl))
             CodegenUtil.markTypeErased(that);
+        if(CodegenUtil.hasUntrustedType(decl))
+            CodegenUtil.markUntrustedType(that);
     }
 
     @Override
@@ -409,14 +416,14 @@ public abstract class BoxingVisitor extends Visitor {
         CodegenUtil.markUnBoxed(that);
     }
 
-    private void propagateFromDeclaration(Term that, TypedDeclaration term) {
-        if(CodegenUtil.isUnBoxed(term))
+    private void propagateFromDeclaration(Term that, TypedDeclaration decl) {
+        if(CodegenUtil.isUnBoxed(decl))
             CodegenUtil.markUnBoxed(that);
-        if(CodegenUtil.isRaw(term))
+        if(CodegenUtil.isRaw(decl))
             CodegenUtil.markRaw(that);
-        if(CodegenUtil.hasTypeErased(term))
+        if(CodegenUtil.hasTypeErased(decl))
             CodegenUtil.markTypeErased(that);
-        if(CodegenUtil.hasUntrustedType(term))
+        if(CodegenUtil.hasUntrustedType(decl) || hasTypeParameterWithConstraintsOutsideScope(decl.getType(), that.getScope()))
             CodegenUtil.markUntrustedType(that);
     }
 
@@ -440,4 +447,68 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUntrustedType(that);
     }
 
+    private boolean hasTypeParameterWithConstraintsOutsideScope(ProducedType type, Scope scope) {
+        return hasTypeParameterWithConstraintsOutsideScopeResolved(type.resolveAliases(), scope);
+    }
+    
+    private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(ProducedType type, Scope scope) {
+        if(type == null)
+            return false;
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            UnionType ut = (UnionType) declaration;
+            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+            for(ProducedType pt : caseTypes){
+                if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            IntersectionType ut = (IntersectionType) declaration;
+            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+            for(ProducedType pt : satisfiedTypes){
+                if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof TypeParameter){
+            // only look at it if it is defined outside our scope
+            Scope typeParameterScope = declaration.getContainer();
+            while(scope != null){
+                if(scope == typeParameterScope)
+                    return false;
+                scope = scope.getContainer();
+            }
+            TypeParameter tp = (TypeParameter) declaration;
+            Boolean nonErasedBounds = tp.hasNonErasedBounds();
+            if(nonErasedBounds == null)
+                visitTypeParameter(tp);
+            return nonErasedBounds != null ? nonErasedBounds.booleanValue() : false;
+        }
+        
+        // now check its type parameters
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
+                return true;
+        }
+        // no problem here
+        return false;
+    }
+
+    private void visitTypeParameter(TypeParameter typeParameter) {
+        if(typeParameter.hasNonErasedBounds() != null)
+            return;
+        for(ProducedType pt : typeParameter.getSatisfiedTypes()){
+            if(!willEraseToObject(pt)){
+                typeParameter.setNonErasedBounds(true);
+                return;
+            }
+        }
+        typeParameter.setNonErasedBounds(false);
+        return;
+    }
 }
