@@ -68,7 +68,7 @@ public class MetamodelGenerator {
     public static final String METATYPE_PARAMETER       = "prm";
     //DO NOT REARRANGE, only append
     public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
-            "sealed", "final", "native", "late", "abstract", "annotation");
+            "sealed", "final", "native", "late", "abstract", "annotation", "variable");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
@@ -369,14 +369,6 @@ public class MetamodelGenerator {
         return m;
     }
 
-    /** Create and store the metamodel info for an attribute. */
-    public void encodeAttribute(Value d) {
-        Map<String, Object> m = encodeAttributeOrGetter(d);
-        if (m != null && d.isVariable()) {
-            m.put("var", 1);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public Map<String,Object> encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
         final Map<String, Object> m = new HashMap<>();
@@ -492,7 +484,7 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
+    public Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
         Map<String, Object> m = new HashMap<>();
         Map<String, Object> parent;
         final String mname = TypeUtils.modelName(d);
@@ -598,6 +590,10 @@ public class MetamodelGenerator {
                 }
                 anns.put(name, args);
             }
+        }
+        if (d instanceof Value && ((Value)d).isVariable()) {
+            //Sometimes the value is not annotated, it only has a defined Setter
+            bits |= (1 << annotationBits.indexOf("variable"));
         }
         if (bits > 0 && m != null) {
             m.put(KEY_PACKED_ANNS, bits);

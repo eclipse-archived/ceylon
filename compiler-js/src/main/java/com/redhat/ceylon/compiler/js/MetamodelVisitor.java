@@ -49,7 +49,7 @@ public class MetamodelVisitor extends Visitor {
     /** Create and store the metamodel info for an attribute. */
     @Override public void visit(Tree.AttributeDeclaration that) {
         if (errorFree(that)) {
-            gen.encodeAttribute(that.getDeclarationModel());
+            gen.encodeAttributeOrGetter(that.getDeclarationModel());
             super.visit(that);
         }
     }
@@ -89,7 +89,7 @@ public class MetamodelVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         if (errorFree(that)) {
-            gen.encodeAttribute(that.getDeclarationModel());
+            gen.encodeAttributeOrGetter(that.getDeclarationModel());
             super.visit(that);
         }
     }
@@ -138,7 +138,7 @@ public class MetamodelVisitor extends Visitor {
             if (d instanceof Method) {
                 gen.encodeMethod((Method)d);
             } else if (d instanceof Value) {
-                gen.encodeAttribute((Value)d);
+                gen.encodeAttributeOrGetter((Value)d);
             } else {
                 throw new RuntimeException("JS compiler doesn't know how to encode " +
                         d.getClass().getName() + " into model");

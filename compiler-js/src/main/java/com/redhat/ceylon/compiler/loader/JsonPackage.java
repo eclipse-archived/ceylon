@@ -911,6 +911,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if (hasAnnotationBit(bits, "late")) {
                 ((Value)d).setLate(true);
             }
+            if (hasAnnotationBit(bits, "variable")) {
+                ((Value)d).setVariable(true);
+            }
         }
         if (m == null) return;
         for (Map.Entry<String, List<String>> e : m.entrySet()) {

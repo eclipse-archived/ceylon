@@ -523,12 +523,11 @@ public class TypeUtils {
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        final boolean include = annotations != null && !(annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null);
-        encodeForRuntime(annotations, d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
+        encodeForRuntime(annotations, d, gen, new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 outputAnnotationsFunction(annotations, d, gen);
             }
-        } : null);
+        });
     }
 
     /** Returns the list of keys to get from the package to the declaration, in the model. */
