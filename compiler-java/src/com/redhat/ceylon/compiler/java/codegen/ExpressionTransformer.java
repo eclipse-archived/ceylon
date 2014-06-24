@@ -1612,7 +1612,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
         return make().Apply(List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)), 
-                naming.makeLanguageFunction("sizedRange"), 
+                naming.makeLanguageFunction("measure"), 
                 List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr));
     }
 
