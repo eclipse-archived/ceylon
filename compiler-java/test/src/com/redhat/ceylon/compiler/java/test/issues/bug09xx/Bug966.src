@@ -44,6 +44,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> getReversed() {
+        return $ceylon$language$Sequence$this$.getReversed();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> reverse() {
         return $ceylon$language$Sequence$this$.reverse();
     }
@@ -79,8 +84,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Sequence$this$.toString();
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Sequence$this$.contains(element);
     }
     
     @.java.lang.Override
@@ -111,6 +116,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
         return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequence$this$.toString();
     }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
@@ -163,11 +173,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public Element get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends Element> getReversed() {
-        return $ceylon$language$List$this$.getReversed();
     }
     
     @.java.lang.Override
@@ -318,8 +323,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Iterable$this$.contains(element);
+    public Element getFromFirst(final long index) {
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override

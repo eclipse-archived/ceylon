@@ -127,6 +127,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Sequence$this$.contains(element);
+    }
+    
+    @.java.lang.Override
     public boolean shorterThan(final long length) {
         return $ceylon$language$Sequence$this$.shorterThan(length);
     }
@@ -356,8 +361,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Iterable$this$.contains(element);
+    public Element getFromFirst(final long index) {
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -544,7 +549,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getReversed() {
-        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getReversed().<First>withTrailing($reified$First, (First)getFirst());
+        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).getReversed().<First>withTrailing($reified$First, (First)getFirst());
     }
     
     @.java.lang.Override

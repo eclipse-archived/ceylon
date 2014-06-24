@@ -60,6 +60,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .java.lang.Object> getFromFirst(final long index) {
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
+    }
+    
+    @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
     }

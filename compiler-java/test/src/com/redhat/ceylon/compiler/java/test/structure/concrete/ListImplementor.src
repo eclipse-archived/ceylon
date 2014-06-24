@@ -74,11 +74,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends X> sequence() {
-        return $ceylon$language$List$this$.sequence();
-    }
-    
-    @.java.lang.Override
     public X find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.find(selecting);
     }
@@ -257,6 +252,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public <Other>.ceylon.language.Sequential prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
         return (.ceylon.language.Sequential)$ceylon$language$List$this$.prepend($reified$Other, elements);
     }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$List$this$.collect($reified$Result, collecting);
+    }
     protected final .ceylon.language.Collection$impl<X> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -278,6 +278,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends X, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends X> sequence() {
+        return $ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -313,11 +318,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this$.sort(comparing);
-    }
-    
-    @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override

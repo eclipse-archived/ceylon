@@ -64,11 +64,6 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Sequence$this$.toString();
-    }
-    
-    @.java.lang.Override
     public boolean shorterThan(final long length) {
         return $ceylon$language$Sequence$this$.shorterThan(length);
     }
@@ -96,6 +91,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>> slice(final long index) {
         return (.ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequence$this$.toString();
     }
     protected final .ceylon.language.Sequential$impl<.ceylon.language.Integer> $ceylon$language$Sequential$this$;
     
