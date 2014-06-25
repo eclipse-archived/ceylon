@@ -308,7 +308,19 @@
     </target>
 
 	<target name="ide-quick-internal" depends="test.classes">
-        <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
+        <property name="archivePath" value="${ceylon.compiler.lib}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+
+	    <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/compiler/java/test/**" />
             </fileset>
