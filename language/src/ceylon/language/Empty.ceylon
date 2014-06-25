@@ -158,16 +158,19 @@ shared interface Empty of e
     
     shared actual [] by(Integer step) => this;
     
-    shared actual [Other] withLeading<Other>(Other element) 
+    shared actual [Other] withLeading<Other>(Other element)
             => [element];
     
-    shared actual [Other] withTrailing<Other>(Other element) 
+    shared actual [Other] withTrailing<Other>(Other element)
             => [element];
     
-    shared actual [Other*] append<Other>({Other*} elements) 
+    shared actual [Other*] append<Other>({Other*} elements)
             => [*elements];
     
-    shared actual {Other+} follow<Other>(Other head) 
+    shared actual [Other*] prepend<Other>({Other*} elements)
+            => [*elements];
+    
+    shared actual {Other+} follow<Other>(Other head)
             => { head };
     
     shared actual List<Other> extend<Other>(List<Other> list)

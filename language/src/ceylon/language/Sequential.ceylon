@@ -32,7 +32,7 @@ shared interface Sequential<out Element>
      this sequence the given number of times, or an empty 
      sequence if `times<=0`."
     shared actual default Element[] repeat(Integer times)
-            => [*cycle(times)];
+            => cycle(times).sequence();
     
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
@@ -61,21 +61,21 @@ shared interface Sequential<out Element>
      returning a sequence no longer than this sequence."
     shared actual default Element[] trim(
         Boolean trimming(Element&Object elem))
-            => [*super.trim(trimming)]; //TODO: inefficient?
+            => super.trim(trimming).sequence(); //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the start of this sequence, returning 
      a sequence no longer than this sequence."
     shared actual default Element[] trimLeading(
         Boolean trimming(Element&Object elem))
-            => [*super.trimLeading(trimming)]; //TODO: inefficient?
+            => super.trimLeading(trimming).sequence(); //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the end of this sequence, returning a 
      sequence no longer than this sequence."
     shared actual default Element[] trimTrailing(
         Boolean trimming(Element&Object elem))
-            => [*super.trimTrailing(trimming)]; //TODO: inefficient?
+            => super.trimTrailing(trimming).sequence(); //TODO: inefficient?
     
     "Return two sequences, the first containing the elements
      that occur before the given [[index]], the second with

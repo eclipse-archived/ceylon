@@ -146,7 +146,7 @@ shared interface List<out Element>
     
     see (`value reversed`)
     shared actual default List<Element> reverse() 
-            => [*reversed];
+            => reversed.sequence();
     
     shared actual default List<Element> clone() 
             => Array(this);
@@ -653,7 +653,7 @@ shared interface List<out Element>
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element)
-            => [*(this chain Singleton(element))];
+            => this.chain(Singleton(element)).sequence();
     
     "Return a sequence containing the elements of this list, 
      in the order in which they occur in this list, followed 
@@ -667,7 +667,7 @@ shared interface List<out Element>
         `function concatenate`)
     shared default [Element|Other*] append<Other>
                             ({Other*} elements) 
-            => [*(this chain elements)];
+            => (this chain elements).sequence();
     
     "Return a sequence containing the given [[elements]], in 
      the order in which they occur in the given stream,
@@ -678,7 +678,7 @@ shared interface List<out Element>
     see (`function withLeading`)
     shared default [Element|Other*] prepend<Other>
                             ({Other*} elements) 
-            => [*(elements chain this)];
+            => (elements chain this).sequence();
     
     Element getElement(Integer index) {
         value element = getFromFirst(index);
