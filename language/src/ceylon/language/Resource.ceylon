@@ -35,6 +35,6 @@ shared interface Resource {
      using the specified encoding."
     shared formal String textContent(String encoding="UTF-8");
     
-    string => "``className(this).split('.'.equals).last``[``uri``]";
+    string => "``className(this)``[``uri``]";
 }
 
