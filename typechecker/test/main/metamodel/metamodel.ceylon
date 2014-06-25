@@ -327,6 +327,9 @@ void meta() {
     value cd8 = `Foo<Object>.Bar<List>`;
     
     @type:"Value<Basic,Nothing>" value p = `process`; 
+    
+    @error value tparam = `given Map.Item`;
+    @error see (`given Sequence.Element`);
 }
 
 void testPackagesModules() {
