@@ -2733,7 +2733,22 @@ public class GenerateJsVisitor extends Visitor
        Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
    }
 
+   /** Protect against #374 */
+   private void qualifyOperator(final Node node, final String name) {
+       Scope scope = node.getScope();
+       while (scope != null) {
+           if (scope instanceof Declaration && name.equals(((Declaration)scope).getName())) {
+               out("ex$.");
+               return;
+           }
+           scope = scope.getContainer();
+       }
+   }
+
    @Override public void visit(final Tree.RangeOp that) {
+       if (JsCompiler.isCompilingLanguageModule()) {
+           qualifyOperator(that, "span");
+       }
        out(clAlias, "span(");
        that.getLeftTerm().visit(this);
        out(",");
@@ -2741,6 +2756,24 @@ public class GenerateJsVisitor extends Visitor
        out(",{Element$span:");
        TypeUtils.typeNameOrList(that,
                Util.unionType(that.getLeftTerm().getTypeModel(), that.getRightTerm().getTypeModel(), that.getUnit()),
+               this, false);
+       out("})");
+   }
+
+   @Override
+   public void visit(final Tree.SegmentOp that) {
+       final Tree.Term left  = that.getLeftTerm();
+       final Tree.Term right = that.getRightTerm();
+       if (JsCompiler.isCompilingLanguageModule()) {
+           qualifyOperator(that, "measure");
+       }
+       out(clAlias, "measure(");
+       left.visit(this);
+       out(",");
+       right.visit(this);
+       out(",{Element$measure:");
+       TypeUtils.typeNameOrList(that,
+               Util.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
                this, false);
        out("})");
    }
@@ -3067,21 +3100,6 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.MethodArgument that) {
         if (errVisitor.hasErrors(that))return;
         FunctionHelper.methodArgument(that, this);
-    }
-
-    @Override
-    public void visit(final Tree.SegmentOp that) {
-        final Tree.Term left  = that.getLeftTerm();
-        final Tree.Term right = that.getRightTerm();
-        out(clAlias, "measure(");
-        left.visit(this);
-        out(",");
-        right.visit(this);
-        out(",{Element$measure:");
-        TypeUtils.typeNameOrList(that,
-                Util.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
-                this, false);
-        out("})");
     }
 
     /** Encloses the block in a function, IF NEEDED. */
