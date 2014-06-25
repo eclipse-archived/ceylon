@@ -106,7 +106,7 @@ shared sealed interface Sequence<out Element>
      this sequence, followed by the given [[elements]]."
     shared actual default [Element|Other+]
     prepend<Other>({Other*} elements)
-            => (elements chain this).sequence();
+            => [*(elements chain this)];
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
