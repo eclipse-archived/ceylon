@@ -1,5 +1,6 @@
 "A type capable of representing the values [[true]] and 
  [[false]] of Boolean logic."
+see( `function parseBoolean`) 
 by ("Gavin")
 shared abstract class Boolean()
         of true | false 

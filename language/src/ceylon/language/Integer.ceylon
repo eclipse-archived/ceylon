@@ -36,7 +36,8 @@
      8660
      #21_D4
      $10_0001_1101_0100"
-see (`value runtime`)
+see (`value runtime.integerSize`,
+     `function parseInteger`)
 shared native final class Integer(Integer integer)
         extends Object()
         satisfies Integral<Integer> &

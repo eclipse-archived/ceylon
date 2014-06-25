@@ -38,6 +38,7 @@
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf
  [NaN]: http://en.wikipedia.org/wiki/NaN"
+see (`function parseFloat`)
 shared native final class Float(Float float)
         extends Object()
         satisfies Number<Float> & 
