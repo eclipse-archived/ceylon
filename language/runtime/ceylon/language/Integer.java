@@ -44,7 +44,7 @@ public final class Integer
 
     @Ignore
     @Override
-    public Invertable$impl<Integer> $ceylon$language$Invertable$impl(){
+    public Invertible$impl<Integer> $ceylon$language$Invertible$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
 

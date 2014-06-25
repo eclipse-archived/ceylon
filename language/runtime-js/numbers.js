@@ -93,7 +93,7 @@ JSNum$proto.power = function(exp) {
 }
 atr$(JSNum$proto, 'negated', function() {
     return nflt$(this) ? Float(-this) : -this;
-},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['$','Invertable','$at','negated']};});
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
 atr$(JSNum$proto, 'negative', function(){
   return nflt$(this) ? this < 0.0 : this.valueOf() < 0;
 },undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','negative']};});

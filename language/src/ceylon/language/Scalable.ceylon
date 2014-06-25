@@ -16,7 +16,7 @@
  numeric scaling type.
  
  Concrete classes which implement this interface are
- encouraged to also satisfy [[Invertable]], in which case, 
+ encouraged to also satisfy [[Invertible]], in which case, 
  the following identity should be satisfied:
  
  - `-x == -1**x`

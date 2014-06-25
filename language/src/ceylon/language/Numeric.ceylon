@@ -49,7 +49,7 @@
 see (`interface Number`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
-        satisfies Invertable<Other>
+        satisfies Invertible<Other>
         given Other satisfies Numeric<Other> {
     
     "The product of this number and the given number."

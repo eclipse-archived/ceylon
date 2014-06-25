@@ -1,6 +1,6 @@
 "Abstraction of [[additive|Summable]] numeric types which 
  support a unary operation `-x` producing the additive
- inverse of `x`. Every `Invertable` type supports a binary 
+ inverse of `x`. Every `Invertible` type supports a binary 
  subtraction operation `x-y`.
  
      Integer negativeOne = -1;
@@ -19,9 +19,9 @@
  - `x - y == x + -y`"
 see (`class Integer`, `class Float`)
 by ("Gavin")
-shared interface Invertable<Other> of Other
+shared interface Invertible<Other> of Other
         satisfies Summable<Other>
-    given Other satisfies Invertable<Other> {
+    given Other satisfies Invertible<Other> {
     
     "The additive inverse of this value."
     shared formal Other negated;

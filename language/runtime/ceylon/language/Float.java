@@ -40,7 +40,7 @@ public final class Float
 
     @Ignore
     @Override
-    public Invertable$impl<Float> $ceylon$language$Invertable$impl(){
+    public Invertible$impl<Float> $ceylon$language$Invertible$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
 

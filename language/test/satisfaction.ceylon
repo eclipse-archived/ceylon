@@ -139,7 +139,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
         return false;
     }
 }
-class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
+class MyInvertable(Integer x) satisfies Invertible<MyInvertable> {
     shared actual MyInvertable negated { return MyInvertable(-x); }
     shared actual Boolean equals(Object o) {
         if (is MyInvertable o) {
@@ -263,7 +263,7 @@ shared void testSatisfaction() {
     check(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
     //check(MyNumeric(2)^3==MyNumeric(8), "Numeric[6]");
 
-    check(MyInvertable(-1)==-MyInvertable(1), "Invertable");
+    check(MyInvertable(-1)==-MyInvertable(1), "Invertible");
 
     value corr = MyCorrespondence();
     check(corr[0] exists, "Correspondence[1]");
