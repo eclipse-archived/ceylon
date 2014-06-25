@@ -21,37 +21,37 @@ shared class SpanTest() {
 
     @test
     shared void testFirst() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         assertEquals(range.first, 1);
     }
     
     @test
     shared void testLast() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         assertEquals(range.last, 10);
     }
     
     @test
     shared void testString() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         String name =  range.string;
     }
     
     @test
     shared void testSize() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         assertEquals(range.size, 10);
     }
     
     @test
     shared void testLastIndex() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         assertEquals(range.lastIndex, 9);
     }
     
     @test
     shared void testRest() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         Integer[] rest = range.rest;
         assertEquals(9, rest.size);
         assertEquals(2, rest[0]);
@@ -69,7 +69,7 @@ shared class SpanTest() {
     
     @test
     shared void testItem() {
-        Span<Integer> range = Span(0, 9);
+        Range<Integer> range = span(0, 9);
         Integer? first = range.get(1);
         if (exists first) {
             assertEquals(first,1);
@@ -82,7 +82,7 @@ shared class SpanTest() {
     
     @test
     shared void testContains() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         assertTrue(range.contains(1));
         assertTrue(range.contains(5));
         assertTrue(range.contains(10));
@@ -91,24 +91,24 @@ shared class SpanTest() {
     
     @test
     shared void testDecreasing() {
-        Span<Integer> rangeIncreasing = Span(1, 10);
-        Span<Integer> rangeDecreasing = Span(10, 1);
+        Range<Integer> rangeIncreasing = span(1, 10);
+        Range<Integer> rangeDecreasing = span(10, 1);
         assertFalse(rangeIncreasing.decreasing);
         assertTrue(rangeDecreasing.decreasing);
     }
     
     @test
     shared void testEquals() {
-        Span<Integer> oneToTen = Span(1, 10);
-        Span<Integer> anotherOneToTen = Span(1, 10);
-        Span<Integer> tenToOne = Span(10, 1);
+        Range<Integer> oneToTen = span(1, 10);
+        Range<Integer> anotherOneToTen = span(1, 10);
+        Range<Integer> tenToOne = span(10, 1);
         assertEquals(oneToTen, anotherOneToTen);
         assertFalse(oneToTen == tenToOne);
     }
     
     @test
     shared void testHash() {
-        Span<Integer> range = Span(1, 10);
+        Range<Integer> range = span(1, 10);
         Integer rangeHash = range.hash;
     }
     
