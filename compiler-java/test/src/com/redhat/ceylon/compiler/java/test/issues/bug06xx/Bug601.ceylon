@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
+shared Absent|Value first<Value,Absent>(Iterable<Value,Absent> values)
+        given Absent satisfies Null => nothing;
 @noanno
 void bug601() {
     first{{"hello", "world"}, {""}};

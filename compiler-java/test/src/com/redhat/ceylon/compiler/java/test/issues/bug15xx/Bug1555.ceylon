@@ -24,8 +24,8 @@ class Bug1555<Element>(first, last)
     shared Integer first;
     shared Integer last;
     
-    shared Span<Element> shifted(Integer shift) {
-        assert (is Span<Element> shiftedResult 
+    shared Range<Element> shifted(Integer shift) {
+        assert (is Range<Element> shiftedResult 
                 = first+shift..last+shift);
         return shiftedResult;
     }

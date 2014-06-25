@@ -33,7 +33,7 @@ class Correct() {
     
     function rangeIteration() {
         variable value sum = 0;
-        Span<Integer> range = 1..10;
+        Range<Integer> range = 1..10;
         for (i in range) {
             sum+=i;
         }
@@ -43,7 +43,7 @@ class Correct() {
     
     function rangeIterationReverse() {
         variable value sum = 0;
-        Span<Integer> range = 1..10;
+        Range<Integer> range = 1..10;
         for (i in range) {
             sum+=i;
         }
@@ -62,7 +62,7 @@ class Correct() {
     
     function rangeIteration2() {
         variable value sum = 0;
-        Span<MyOrdinal> range = MyOrdinal(1)..MyOrdinal(10);
+        Range<MyOrdinal> range = MyOrdinal(1)..MyOrdinal(10);
         for (i in range) {
             sum+=i.i;
         }
@@ -72,7 +72,7 @@ class Correct() {
     
     function rangeIterationReverse2() {
         variable value sum = 0;
-        Span<MyOrdinal> range = MyOrdinal(10)..MyOrdinal(1);
+        Range<MyOrdinal> range = MyOrdinal(10)..MyOrdinal(1);
         for (i in range) {
             sum+=i.i;
         }
@@ -123,7 +123,7 @@ class Correct() {
     }
     
     function rangeIterationDynamic() {
-        Span<Integer> iterable = 0..10;
+        Range<Integer> iterable = 0..10;
         return iterationDynamic(iterable);
     }
     assert(expected == rangeIterationDynamic());

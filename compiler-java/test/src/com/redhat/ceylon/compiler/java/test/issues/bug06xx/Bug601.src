@@ -1,5 +1,36 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class first_ {
+    
+    private first_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Absent|Value",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Value",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Absent",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Null"},
+                    caseTypes = {})})
+    public static <Value, Absent>.java.lang.Object first(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, @.com.redhat.ceylon.compiler.java.metadata.Name("values")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<Value,Absent>")
+    final .ceylon.language.Iterable<? extends Value, ? extends Absent> values) {
+        return .ceylon.language.nothing_.get_();
+    }
+}
 final class bug601_ {
     
     private bug601_() {
@@ -58,7 +89,7 @@ final class bug601_ {
                     }
                 };
             }
-            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug06xx.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
         );
         (
             let
@@ -109,7 +140,7 @@ final class bug601_ {
                     }
                 };
             }
-            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$1$reified$0, arg$1$reified$1, arg$1$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug06xx.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$1$reified$0, arg$1$reified$1, arg$1$0);
         );
         (
             let
@@ -190,7 +221,7 @@ final class bug601_ {
                     }
                 };
             }
-            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$2$reified$0, arg$2$reified$1, arg$2$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug06xx.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$2$reified$0, arg$2$reified$1, arg$2$0);
         );
     }
     

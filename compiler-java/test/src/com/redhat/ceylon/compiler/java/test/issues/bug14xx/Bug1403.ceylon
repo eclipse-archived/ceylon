@@ -17,6 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared {Element&Object*} coalesce<Element>(
+        "The values, some of which may be null."
+        {Element*} values) 
+                => nothing;
 @noanno
 class Bug1403(String+ attrs) {}
 

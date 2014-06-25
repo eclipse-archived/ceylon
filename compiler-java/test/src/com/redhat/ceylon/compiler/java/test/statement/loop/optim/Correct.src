@@ -75,7 +75,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIteration$priv$() {
         long sum = 0L;
-        final .ceylon.language.Span<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
         .java.lang.Object elem$15;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$16 = range.iterator();
         loop_3: while (!((elem$15 = i$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
@@ -88,7 +88,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationReverse$priv$() {
         long sum = 0L;
-        final .ceylon.language.Span<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
         .java.lang.Object elem$18;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$19 = range.iterator();
         loop_4: while (!((elem$18 = i$iterator$$19.next()) instanceof .ceylon.language.Finished)) {
@@ -183,7 +183,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIteration2$priv$() {
         long sum = 0L;
-        final .ceylon.language.Span<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L));
+        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L));
         .java.lang.Object elem$21;
         .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$22 = range.iterator();
         loop_5: while (!((elem$21 = i$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
@@ -196,7 +196,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationReverse2$priv$() {
         long sum = 0L;
-        final .ceylon.language.Span<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L));
+        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L));
         .java.lang.Object elem$24;
         .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$25 = range.iterator();
         loop_6: while (!((elem$24 = i$iterator$$25.next()) instanceof .ceylon.language.Finished)) {
@@ -297,7 +297,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationDynamic$priv$() {
-        final .ceylon.language.Span<.ceylon.language.Integer> iterable = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Range<.ceylon.language.Integer> iterable = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L));
         return iterationDynamic$priv$(iterable);
     }
     

@@ -17,6 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared Iterable<<Integer->Element&Object>,Element&Null|Absent> entries<Element,Absent>
+            (Iterable<Element,Absent> elements)
+        given Absent satisfies Null
+                    => nothing;
 class Bug974() {
     value b85 = {for (e in entries {"a"}) e};
     print(b85.sequence);

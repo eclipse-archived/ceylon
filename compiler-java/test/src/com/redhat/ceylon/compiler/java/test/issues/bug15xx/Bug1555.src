@@ -19,13 +19,13 @@ class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .
         return last;
     }
     
-    public final .ceylon.language.Span<Element> shifted(final long shift) {
+    public final .ceylon.language.Range<Element> shifted(final long shift) {
         final .java.lang.Object shiftedResult$2;
         .java.lang.Object shiftedResult$1 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(shiftedResult$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getFirst() + shift), .ceylon.language.Integer.instance(getLast() + shift)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Span.class, $reified$Element))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(shiftedResult$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getFirst() + shift), .ceylon.language.Integer.instance(getLast() + shift)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, $reified$Element))) {
             shiftedResult$2 = shiftedResult$1;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Span<Element> shiftedResult \n                = first+shift..last+shift"));
-        return (.ceylon.language.Span<Element>)(.ceylon.language.Span)shiftedResult$2;
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Range<Element> shiftedResult \n                = first+shift..last+shift"));
+        return (.ceylon.language.Range<Element>)(.ceylon.language.Range)shiftedResult$2;
     }
     
     @.java.lang.Override
