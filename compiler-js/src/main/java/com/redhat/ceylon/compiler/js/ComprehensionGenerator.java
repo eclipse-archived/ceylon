@@ -28,7 +28,7 @@ class ComprehensionGenerator {
     }
 
     void generateComprehension(Tree.Comprehension that) {
-        gen.out(GenerateJsVisitor.getClAlias(), "Comprehension(function()");
+        gen.out(GenerateJsVisitor.getClAlias(), "for$(function()");
         gen.beginBlock();
         if (gen.opts.isComment()) {
             gen.out("//Comprehension"); gen.location(that); gen.endLine();
