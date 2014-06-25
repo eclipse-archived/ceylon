@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /** This component is used by the main JS visitor to generate code for comprehensions.
@@ -131,23 +130,14 @@ class ComprehensionGenerator {
                 loop.forIterator.getSpecifierExpression().visit(gen);
                 gen.out(".iterator()");
             }
-            gen.endLine(true);
 
             // value or key/value variables
             if (loop.keyVarName == null) {
-                gen.out("var ", loop.valueVarName, "=", finished);
+                gen.out(",", loop.valueVarName, "=", finished);
                 gen.endLine(true);
             } else {
-                gen.out("var ", loop.keyVarName, ",", loop.valueVarName);
+                gen.out(",", loop.keyVarName, ",", loop.valueVarName);
                 gen.endLine(true);
-            }
-
-            // variables for is/exists/nonempty conditions
-            for (List<ConditionGenerator.VarHolder> condVarList : loop.conditionVars) {
-                for (ConditionGenerator.VarHolder condVar : condVarList) {
-                    gen.out("var ", condVar.name); gen.endLine(true);
-                    directAccess.add(condVar.var.getDeclarationModel());
-                }
             }
 
             // generate the "next" function for this loop
