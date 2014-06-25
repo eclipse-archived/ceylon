@@ -113,7 +113,7 @@ Some more basic ant tasks:
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="ide-quick-internal"
              dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false">
+             inheritall="true">
         </ant>
     </target>
 
