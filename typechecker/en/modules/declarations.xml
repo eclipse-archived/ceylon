@@ -2333,6 +2333,11 @@ case (hexadecimal) {
             assigned to the reference. If the reference is evaluated before it is initialized,
             or before its value has been completely initialized, an exception is thrown.</para>
             
+            <para>A reference annotated <literal>late</literal> may not be initialized or 
+            assigned a value by the class initializer. A parameter may not be annotated 
+            <literal>late</literal>. A reference not belonging to a class may not be annotated 
+            <literal>late</literal>.</para>
+            
             <para>If a class declares or inherits a <literal>variable</literal> reference, it 
             must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
             <literal>ceylon.language</literal>.</para>
