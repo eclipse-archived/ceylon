@@ -48,19 +48,19 @@ public class InvocationGenerator {
             } else {
                 gen.out("(");
                 Map<String, String> argVarNames = defineNamedArguments(that.getPrimary(), argList);
-                that.getPrimary().visit(gen);
-                final Tree.TypeArguments targs;
-                if (that.getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
-                    targs = ((Tree.BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
-                } else if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
-                    targs = ((Tree.QualifiedMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
+                    BmeGenerator.generateBme((Tree.BaseMemberExpression)that.getPrimary(), gen, true);
                 } else {
-                    targs = null;
+                    that.getPrimary().visit(gen);
                 }
                 if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                     Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                     if (mte.getDeclaration() instanceof Functional) {
                         Functional f = (Functional) mte.getDeclaration();
+                        Tree.TypeArguments targs = null;
+                        if (that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
+                            targs = ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                        }
                         applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
                     }
                 }
