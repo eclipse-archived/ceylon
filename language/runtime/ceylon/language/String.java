@@ -108,7 +108,7 @@ public final class String
     }
 
     @Ignore
-    public static ceylon.language.String instance(java.lang.String... strings) {
+    public static ceylon.language.String instanceJoining(java.lang.String... strings) {
         StringBuffer buf = new StringBuffer();
         for (java.lang.String s: strings)
             buf.append(s);
@@ -116,7 +116,7 @@ public final class String
     }
 
     @Ignore
-    public static ceylon.language.String instance(String... strings) {
+    public static ceylon.language.String instanceJoining(String... strings) {
         StringBuffer buf = new StringBuffer();
         for (String s: strings)
             buf.append(s.value);
