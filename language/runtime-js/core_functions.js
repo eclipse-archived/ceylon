@@ -1,5 +1,6 @@
 //These are operators for handling nulls
-function nonempty(value){
+//nonempty
+function ne$(value){
   return value!==null&&value!==undefined&&is$(value,{t:Sequence});
 }
 
@@ -296,12 +297,13 @@ function throwexc(e,loc,file) {
   if (file !== undefined) e.$file=file;
   throw e;
 }
+//exists
 function nn$(e) {
   return e!==null&&e!==undefined;
 }
 ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
-ex$.nonempty=nonempty;
+ex$.ne$=ne$;
 ex$.is$=is$;
 ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
