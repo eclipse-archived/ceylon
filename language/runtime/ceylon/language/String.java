@@ -360,7 +360,7 @@ public final class String
             return index>=0;
         }
         else {
-            return instance(value).occurs(element);
+            return false;
         }
     }
     
@@ -373,7 +373,7 @@ public final class String
             return index>=0;
         }
         else {
-            return super.occurs(element);
+            return false;
         }
     }
     
@@ -386,7 +386,7 @@ public final class String
             return ch!=null && ch.codePoint==cp;
         }
         else {
-            return instance(value).occursAt(index, element);
+            return false;
         }
     }
     
@@ -401,7 +401,7 @@ public final class String
             return ch!=null && ch.codePoint==cp;
         }
         else {
-            return super.occursAt(index, element);
+            return false;
         }
     }
     

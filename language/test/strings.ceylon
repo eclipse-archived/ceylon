@@ -22,6 +22,26 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
 shared void strings() {
     value hello = "hello";
     
+    check(hello.includes("lo"), "string includes string");
+    //check(hello.includes("lo".sequence()), "string includes list");
+    check(hello.includesAt(3,"lo"), "string includesAt string");
+    //check(hello.includesAt(3,"lo".sequence()), "string includesAt list");
+    check(!hello.includesAt(2,"lo"), "string not includesAt string");
+    //check(!hello.includesAt(2,"lo".sequence()), "string not includesAt list");
+    check(hello.includesAt(0,"hell"), "string includesAt string");
+    //check(hello.includesAt(0,"hell".sequence()), "string includesAt list");
+    
+    check(hello.occurs('l'), "string occurs");
+    check(!hello.occurs('x'), "not string occurs");
+    check(hello.occursAt(3,'l'), "string occursAt");
+    check(hello.occursAt(2,'l'), "string occursAt");
+    check(!hello.occursAt(2,'x'), "string occursAt");
+    
+    print(hello.occurrences('l'));
+    check(hello.occurrences('l').sequence()==[2,3], "string occurrences");
+    check(hello.inclusions("l").sequence()==[2,3], "string inclusions");
+    check(hello.inclusions("hell").sequence()==[0], "string inclusions");
+    
     check(hello.size==5, "string size 1");
     check("".size==0, "empty string size 2");
     check(!"".sequence() nonempty);
