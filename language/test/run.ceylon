@@ -10,6 +10,7 @@ shared void run() {
     sequences();
     print("Range");
     testRange();
+    testRecursiveRange();
     print("Characters & strings");
     characters();
     strings();
