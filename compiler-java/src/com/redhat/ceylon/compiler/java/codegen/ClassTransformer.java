@@ -2041,8 +2041,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Decl.isAnnotationConstructor(def)) {
             AnnotationInvocation ai = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
-            builder.annotations(List.of(makeAtAnnotationInstantiation(ai)));
-            builder.annotations(makeExprAnnotations(def, ai));
+            if (ai != null) {
+                builder.annotations(List.of(makeAtAnnotationInstantiation(ai)));
+                builder.annotations(makeExprAnnotations(def, ai));
+            }
         }
         
         builder.methods(classGen().transform(def, builder));
