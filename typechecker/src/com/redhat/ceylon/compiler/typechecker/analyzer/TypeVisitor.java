@@ -842,7 +842,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        setType(that, that.getType(), that.getDeclarationModel());
+        TypedDeclaration dec = that.getDeclarationModel();
+		setType(that, that.getType(), dec);
+		if (dec instanceof MethodOrValue) {
+			if (dec.isLate() && ((MethodOrValue) dec).isParameter()) {
+				that.addError("parameter may not be annotated late");
+			}
+		}
     }
 
     @Override 

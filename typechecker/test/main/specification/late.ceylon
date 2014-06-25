@@ -49,3 +49,11 @@ void create() {
 }
 
 }
+
+class XxX(x) {
+    @error shared late String x;
+}
+class YyY(@error shared late String y) {}
+class ZzZ() {
+    @error shared late String z = "";
+}
