@@ -155,7 +155,7 @@ shared sealed interface Sequence<out Element>
         size => outer.size;
         first => outer.last;
         last => outer.first;
-        rest => outer[size-2:0]; //TODO!
+        rest => outer[size-2..0]; //TODO!
         
         reverse() => outer;
         reversed => outer;

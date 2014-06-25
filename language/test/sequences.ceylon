@@ -308,6 +308,8 @@ shared void arraySequence() {
     check(abc.measure(3, 2)=={}, "abc.measure(3,1)");
     check(abc.measure(3, 3)=={}, "abc.measure(3,3)");
     
+    check(abc.reverse().rest==["b","a"], "abc.reverse().rest");
+    check(abc.reversed.rest==["b","a"], "abc.reversed.rest");
     check(abc.reverse()==["c","b","a"], "abc.reverse()");
     check(abc.reversed==["c","b","a"], "abc.reversed");
     check(abc.reverse().first=="c", "abc.reverse().first");
