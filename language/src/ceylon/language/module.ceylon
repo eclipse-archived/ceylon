@@ -7,11 +7,12 @@
  - abstractions of [[numeric|Numeric]] types, along with
    basic types representing [[integral|Integer]] and 
    [[floating point|Float]] values, 
--  [[characters|Character]] and [[character strings|String]],
+ - [[characters|Character]] and [[character strings|String]],
  - support for functional programming with 
    [[streams|Iterable]],
  - abstract interfaces for unmodifiable [[lists|List]], 
    [[sets|Set]], and [[maps|Map]],
+ - a low-level abstraction of native [[arrays|Array]],
  - immutable [[sequences|Sequential]], [[ranges|Range]], and
    [[tuples|Tuple]], which provide the foundation for 
    representing [[function types|Callable]] and lists of
