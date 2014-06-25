@@ -75,7 +75,7 @@ public class CeylonTestTool extends RepoUsingTool {
     }
 
     @OptionArgument(argumentName = "version")
-    @Description("Specifies which version of the test module to use, defaults to " + Versions.CEYLON_VERSION_NUMBER + ".")
+    @Description("Specifies version of test module, which will be used, if no value is set, then the latest available version will be used.")
     public void setVersion(String version) {
         this.version = version;
     }
