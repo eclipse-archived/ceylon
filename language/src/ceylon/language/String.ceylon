@@ -175,7 +175,7 @@ shared native final class String(characters)
      start index to last character of the string."
     shared actual native String span(Integer from, Integer to);
 
-	shared actual String spanFrom(Integer from)
+    shared actual String spanFrom(Integer from)
             => span(from, size);
 
     shared actual String spanTo(Integer to)
@@ -347,11 +347,21 @@ shared native final class String(characters)
         "The padding character"
         Character character=' ');
     
+    shared actual native Boolean occurs(Anything element);
+    shared actual native Boolean occursAt(Integer index, Anything element);
+    shared actual native Boolean includes(List<Anything> sublist);
+    shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
+    
+    shared actual native Integer? firstOccurrence(Anything element);
+    shared actual native Integer? lastOccurrence(Anything element);
+    shared actual native Integer? firstInclusion(List<Anything> sublist);
+    shared actual native Integer? lastInclusion(List<Anything> sublist);
+    
+    shared actual native {Integer*} inclusions(List<Anything> sublist);
+	    
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
     shared actual native Boolean notLargerThan(String other);
     
-    shared actual native Integer? firstOccurrence(Anything element);
-    shared actual native Integer? lastOccurrence(Anything element);
 }

@@ -365,8 +365,9 @@ public final class String
     }
     
     @Override
-    @Ignore
-    public boolean occurs(java.lang.Object element) {
+    public boolean occurs(@Name("element") 
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object element) {
         if (element instanceof Character) {
             int index = value.indexOf(((Character) element).codePoint);
             return index>=0;
@@ -381,7 +382,7 @@ public final class String
             long index, java.lang.Object element) {
         if (element instanceof Character) {
             int cp = ((Character) element).codePoint;
-            Character ch = get(value,index);
+            Character ch = getFromFirst(value,index);
             return ch!=null && ch.codePoint==cp;
         }
         else {
@@ -390,11 +391,13 @@ public final class String
     }
     
     @Override
-    @Ignore
-    public boolean occursAt(long index, java.lang.Object element) {
+    public boolean occursAt(@Name("index") long index, 
+            @Name("element") 
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object element) {
         if (element instanceof Character) {
             int cp = ((Character) element).codePoint;
-            Character ch = get(value,index);
+            Character ch = getFromFirst(value,index);
             return ch!=null && ch.codePoint==cp;
         }
         else {
@@ -416,8 +419,9 @@ public final class String
     }
     
     @Override
-    @Ignore
-    public boolean includesAt(long index, List<?> sublist) {
+    public boolean includesAt(@Name("index") long index, 
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
+            @Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
             java.lang.String str = ((String) sublist).value;
             int offset = value.offsetByCodePoints(0, Util.toInt(index));
@@ -428,18 +432,6 @@ public final class String
         }
     }
     
-    @Override
-    @Ignore
-    public Iterable<? extends Integer, ?> 
-    inclusions(List<?> sublist) {
-        if (sublist instanceof String) {
-            return new StringInclusions(value, ((String) sublist).value);
-        }
-        else {
-            return super.inclusions(sublist);
-        }
-    }
-
     @Ignore
     public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, List<?> substring) {
@@ -448,6 +440,19 @@ public final class String
         }
         else {
             return instance(value).occurrences(substring);
+        }
+    }
+
+    @Override
+    public Iterable<? extends Integer, ?> 
+    inclusions(
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
+            @Name("sublist") List<?> sublist) {
+        if (sublist instanceof String) {
+            return new StringInclusions(value, ((String) sublist).value);
+        }
+        else {
+            return super.inclusions(sublist);
         }
     }
 
@@ -464,8 +469,9 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public boolean includes(List<?> sublist) {
+    public boolean includes(
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
+            @Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
             int index = value.indexOf(((String) sublist).value);
             return index >= 0;
@@ -490,8 +496,8 @@ public final class String
     }
 
     @Override
-    @Ignore
-    public Integer firstInclusion(List<?> sublist) {
+    @TypeInfo("ceylon.language::Integer|ceylon.language::Null")
+    public Integer firstInclusion(@Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
             int index = value.indexOf(((String) sublist).value);
             return index >= 0 ? 
@@ -503,9 +509,8 @@ public final class String
         }
     }
     
-    @Ignore
     public static Integer lastInclusion(java.lang.String value, 
-            List<?> sublist) {
+    		List<?> sublist) {
         if (sublist instanceof String) {
             int index = value.lastIndexOf(((String) sublist).value);
             return index >= 0 ? 
@@ -514,6 +519,20 @@ public final class String
         }
         else {
             return instance(value).lastInclusion(sublist);
+        }
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Integer|ceylon.language::Null")
+    public Integer lastInclusion(@Name("sublist") List<?> sublist) {
+        if (sublist instanceof String) {
+            int index = value.lastIndexOf(((String) sublist).value);
+            return index >= 0 ? 
+                    Integer.instance(value.codePointCount(0, index)) : 
+                        null;
+        }
+        else {
+            return super.firstInclusion(sublist);
         }
     }
     
@@ -1182,7 +1201,7 @@ public final class String
             return new Singleton<String>(String.$TypeDescriptor$, this);
         }
         return new StringTokens(value, splitting, 
-        		!discardSeparators, groupSeparators);
+                !discardSeparators, groupSeparators);
     }
 
     @Ignore
@@ -1196,7 +1215,7 @@ public final class String
                     instance(value));
         }
         return new StringTokens(value, splitting, 
-        		!discardSeparators, groupSeparators);
+                !discardSeparators, groupSeparators);
     }
 
     @Ignore
@@ -1543,7 +1562,7 @@ public final class String
     @Ignore
     public static Iterable<? extends Character, ?>
     take(java.lang.String value, long take) {
-    	return instance(value).take(take);
+        return instance(value).take(take);
     }
     
     @Ignore
@@ -1561,7 +1580,7 @@ public final class String
     @Ignore
     public static Iterable<? extends Character, ?> 
     by(java.lang.String value, long step) {
-    	return instance(value).by(step);
+        return instance(value).by(step);
     }
 
     @Ignore
@@ -1739,10 +1758,10 @@ public final class String
     }
     
     public java.lang.String pad(
-    		@Name("size") 
-    		long size, 
+            @Name("size") 
+            long size, 
             @Name("character") 
-    		@TypeInfo("ceylon.language::Character") 
+            @TypeInfo("ceylon.language::Character") 
             @Defaulted 
             int character) {
         return pad(value, size, character);
@@ -1781,10 +1800,10 @@ public final class String
     }
     
     public java.lang.String padLeft(
-    		@Name("size") 
-    		long size, 
+            @Name("size") 
+            long size, 
             @Name("character") 
-    		@TypeInfo("ceylon.language::Character") 
+            @TypeInfo("ceylon.language::Character") 
             @Defaulted 
             int character) {
         return padLeft(value, size, character);
@@ -1819,8 +1838,8 @@ public final class String
     }
     
     public java.lang.String padRight(
-    		@Name("size") 
-    		long size, 
+            @Name("size") 
+            long size, 
             @Name("character") 
             @TypeInfo("ceylon.language::Character") 
             @Defaulted 
