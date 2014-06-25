@@ -164,18 +164,29 @@
         </repoindex>
     </target>
 
-    <!-- Rule to setup a plugins directory with required bundles -->
-    <target name="osgi-p2" depends="osgi">
-        <mkdir dir="${build.dist.features}"/>
-        <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
-        <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+    <target name="generateFeatures">
         <property name="feature.dir" value="${build.dist.features}/${feature.id}_${feature.version}"/>
         <mkdir dir="${feature.dir}"/>
         <property name="featureFile" value="${feature.dir}/feature.xml"/>
-        <xslt style="${p2}/generateFeature.xsl" in="${build.dist}/repository.xml" out="${featureFile}">
+        <xslt style="${p2}/${xslFileName}" in="${build.dist}/repository.xml" out="${featureFile}">
             <param name="featureId" expression="${feature.id}"/>
             <param name="featureVersion" expression="${feature.version}"/>
         </xslt>            
+    </target>
+    
+    <!-- Rule to setup a plugins directory with required bundles -->
+    <target name="osgi-p2" depends="osgi">
+        <mkdir dir="${build.dist.features}"/>
+        <ant target="generateFeatures" inheritall="true">
+            <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="xslFileName" value="generateDistributionFeature.xsl"/>
+        </ant>
+        <ant target="generateFeatures" inheritall="true">
+            <property name="feature.id" value="com.redhat.ceylon.dist.dependencies.feature"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="xslFileName" value="generateFixedDependenciesFeature.xsl"/>
+        </ant>
         <makeurl property="destinationRepository" file="${build.dist}"/>
         <makeurl property="categoryDefinition" file="${p2}/category.xml"/>
         <exec dir="${basedir}" executable="eclipse" failonerror="true">

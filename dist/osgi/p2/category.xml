@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <category-def name="module-bundles" label="Ceylon Distribution Runtime Bundles">
+   <category-def name="module-bundles" label="Ceylon Distribution - All Bundles">
       <description>Ceylon distribution modules available as OSGI bundles</description>
+   </category-def>
+   <category-def name="only-dependencies-bundles" label="Ceylon Distribution - Only Binary Dependencies">
+      <description>Fixed binary dependencies of the Ceylon Distribution -  Only needed to compile the IDE by using the distribution bundle proxy projects</description>
    </category-def>
    <feature id="com.redhat.ceylon.dist.feature" version="0.0.0">
       <category name="module-bundles"/>
    </feature>
-   
+   <feature id="com.redhat.ceylon.dist.dependencies.feature" version="0.0.0">
+      <category name="only-dependencies-bundles"/>
+   </feature>
 </site>
