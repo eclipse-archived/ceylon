@@ -250,6 +250,11 @@ public class Errors {
         return result;
     }
     
+    
+    public boolean hasAnyError(Tree.Declaration node) {
+        return new ErrorVisitor().hasErrors(node);
+    }
+    
     /** Visit the given declaration (but not it's body, specifier or 
      * initializer or defaulted parameter expressions) and return true if 
      * there are any errors

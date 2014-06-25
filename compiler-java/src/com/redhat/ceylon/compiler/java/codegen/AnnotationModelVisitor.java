@@ -87,7 +87,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.MethodDefinition d) {
-        if (errors.hasDeclarationError(d)) {
+        if (errors.hasAnyError(d)) {
             return;
         }
         if (isAnnotationConstructor(d)) {
@@ -105,7 +105,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.MethodDeclaration d) {
-        if (errors.hasDeclarationError(d)) {
+        if (errors.hasAnyError(d)) {
             return;
         }
         if (isAnnotationConstructor(d)
