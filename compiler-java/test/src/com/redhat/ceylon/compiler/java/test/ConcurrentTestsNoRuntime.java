@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
+import com.redhat.ceylon.compiler.java.test.model.ValueTypeTest;
 import com.redhat.ceylon.compiler.java.test.quoting.QuotingTest;
 import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
@@ -78,6 +79,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     AnnotationsTest.class,
     InteropTest.class,
     ModelLoaderTest.class,
+    ValueTypeTest.class,
     PackageIssuesTest.class,
     RecoveryTest.class,
     StatementTest.class,
