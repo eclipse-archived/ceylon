@@ -1,0 +1,143 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug1676_2_A$annotation$ {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B$annotation$ x();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A,ceylon.language.meta.declaration::ClassDeclaration>"})
+final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    Bug1676_2_A(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A$annotation$ anno) {
+        this(new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B(anno.x()));
+    }
+    
+    Bug1676_2_A(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B x) {
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+        return $ceylon$language$ConstrainedAnnotation$this$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.Annotated programElement) {
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+@interface Bug1676_2_B$annotation$ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B,ceylon.language::Annotated>"})
+final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    Bug1676_2_B(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B$annotation$ anno) {
+        this();
+    }
+    
+    Bug1676_2_B() {
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$impl() {
+        return $ceylon$language$ConstrainedAnnotation$this$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.Annotated programElement) {
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1676_2_A_ {
+    
+    private bug1676_2_A_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A")
+    static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A bug1676_2_A() {
+        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1676_2_A_.bug1676_2_A();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.class)
+final class bug1676_2_B_ {
+    
+    private bug1676_2_B_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
+    static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B bug1676_2_B(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B();
+    }
+}
