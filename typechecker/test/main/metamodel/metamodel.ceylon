@@ -222,6 +222,7 @@ void test<T>() {
 
 class NoParams(){}
 class Params(Integer i, String s){}
+see (`given T`)
 class ParameterisedClass<T>(){}
 interface Interface1{}
 interface ParameterisedInterface<T>{}
@@ -330,6 +331,7 @@ void meta() {
     
     @error value tparam = `given Map.Item`;
     @error see (`given Sequence.Element`);
+    @error see (`value Map.key`);
 }
 
 void testPackagesModules() {
