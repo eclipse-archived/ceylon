@@ -29,7 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Log;
 
@@ -102,20 +104,28 @@ public class Errors {
             }
         }
         
-        private Message hasError(Node that) {
+        protected Message hasError(Node that) {
             // skip only usage warnings
             List<Message> errors = that.getErrors();
             for(int i=0,l=errors.size();i<l;i++){
                 Message message = errors.get(i);
-                if(!(message instanceof UsageWarning))
+                if(isError(that, message))
                     return message;
             }
             return null;
+        }
+
+        /** Is the given message on the given node considered an error */
+        protected boolean isError(Node that, Message message) {
+            return !(message instanceof UsageWarning);
         }
     }
     
     class DeclarationErrorVisitor extends ErrorVisitor {
         
+        private boolean expectingError;
+        private String errMessage;
+
         @Override
         public void visit(Tree.Annotation that) {
             // We do care about errors in expressions in annotations: Those are
@@ -138,6 +148,48 @@ public class Errors {
         public void visit(Tree.InitializerParameter that) {
             throwIfError(that);
             // don't visit children
+        }
+        
+        public void visit(Tree.StatementOrArgument that) {
+            boolean b = this.expectingError;
+            initExpectingError(that.getCompilerAnnotations());
+            super.visit(that);
+            expectingError = b;
+        }
+        
+        public void visit(Tree.ParameterDeclaration that) {
+            boolean b = this.expectingError;
+            initExpectingError(that.getTypedDeclaration().getCompilerAnnotations());
+            super.visit(that);
+            expectingError = b;
+        }
+        
+        public void visit(Tree.CompilationUnit that) {
+            boolean b = this.expectingError;
+            initExpectingError(that.getCompilerAnnotations());
+            super.visit(that);
+            expectingError = b;
+        }
+        
+        protected void initExpectingError(List<Tree.CompilerAnnotation> annotations) {
+        for (Tree.CompilerAnnotation c: annotations) {
+            if (c.getIdentifier().getText().equals("error")) {
+                expectingError = true;
+                Tree.StringLiteral sl = c.getStringLiteral();
+                if (sl!=null) {
+                    errMessage = sl.getText();
+                }
+            }
+        }
+    }
+
+        protected boolean isError(Node that, Message message) {
+            if (errMessage != null
+                    && message.getMessage().equals(errMessage)) {
+                return false;
+            } else {
+                return super.isError(that, message);
+            }
         }
         
         public void visit(Tree.ExtendedType that) {
