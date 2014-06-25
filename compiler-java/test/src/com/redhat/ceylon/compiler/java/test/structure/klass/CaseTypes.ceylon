@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 shared abstract class CaseTypes(String name) 
         of foo | bar 
         {}
@@ -39,7 +38,6 @@ shared class Foo() extends CaseTypes2("Foo") {}
 shared class Bar() extends CaseTypes2("Bar") {}
 
 @noanno
-@error
 shared interface ICaseTypes
         of IFoo | IBar 
         {}

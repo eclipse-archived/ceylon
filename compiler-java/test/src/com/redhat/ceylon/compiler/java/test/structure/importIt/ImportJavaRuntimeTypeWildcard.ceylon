@@ -22,7 +22,6 @@ import java.io{...}
 @noanno
 class ImportJavaRuntimeTypeWildcard() {
     void m() {
-        @error
         IOException();
     }
 }

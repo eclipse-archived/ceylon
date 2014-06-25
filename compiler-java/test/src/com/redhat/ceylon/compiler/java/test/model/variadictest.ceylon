@@ -3,7 +3,7 @@ void testVariadic() {
     VariadicStar("");
     VariadicStar("", "");
     
-    @error
+    
     VariadicPlus();
     VariadicPlus("");
     VariadicPlus("", "");

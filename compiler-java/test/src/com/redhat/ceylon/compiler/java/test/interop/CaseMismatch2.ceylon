@@ -20,14 +20,10 @@
 import com.redhat.ceylon.compiler.java.test.interop { JCM=\IjavaCaseMismatch { fld=\iField, mth=\iMethod, Kls=\IsubClass { baz } } }
 
 @noanno
-@error
 void caseMismatch(){
-    @error
     JCM klass = JCM();
     Integer i = klass.fld;
-    @error
     klass.mth();
-    @error
     Kls klass2 = Kls();
     Integer b = baz;
 }

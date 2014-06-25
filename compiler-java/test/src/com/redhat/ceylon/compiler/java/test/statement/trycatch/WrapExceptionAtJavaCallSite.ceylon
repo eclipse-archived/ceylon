@@ -19,8 +19,7 @@
  */
 @noanno
 class ReplaceExceptionAtJavaCallSite() {
-    @error void m() {
-        @error
+    void m() {
         JavaThrower jt = JavaThrower();
         Boolean n = jt.throwException();
         Boolean m = jt.throwThrowable();

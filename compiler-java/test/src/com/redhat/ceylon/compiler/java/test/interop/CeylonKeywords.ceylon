@@ -20,11 +20,8 @@
 import com.redhat.ceylon.compiler.java.test.interop { \Isatisfies }
 
 @noanno
-@error
 void ceylonKeywords(){
-    @error
     \Isatisfies klass = \Isatisfies();
     Integer i = klass.\isatisfies;
-    @error
     klass.\iof();
 }

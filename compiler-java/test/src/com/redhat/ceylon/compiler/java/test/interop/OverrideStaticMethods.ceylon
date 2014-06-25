@@ -19,11 +19,11 @@
  */
 
 // see https://github.com/ceylon/ceylon-spec/issues/211
-@error
 @noanno
 class StaticMethodsOverriding() extends JavaWithStaticMembers() {
-    @error
+    
+    
     shared actual void topMethod(){}
-    @error
+    
     shared actual variable Integer topField = 2;
 }

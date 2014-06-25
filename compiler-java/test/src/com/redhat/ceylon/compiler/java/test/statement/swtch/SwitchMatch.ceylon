@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 abstract class SwitchMatchTop() of switchMatch_foo | switchMatch_bar {}
 
 @noanno

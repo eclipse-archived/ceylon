@@ -18,11 +18,9 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 variable Integer goto = 0;
 
 @noanno
 void keywordInToplevelAssignment() {
-    @error
     goto = 1;
 }

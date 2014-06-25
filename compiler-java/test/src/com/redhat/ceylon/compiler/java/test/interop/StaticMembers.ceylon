@@ -24,82 +24,52 @@ import com.redhat.ceylon.compiler.java.test.interop{
 }
 
 @noanno
-@error
 void staticMethods() {
-    @error
     variable File sync;
     // on Type
-    @error
     sync = createTempFile("", "");
-    @error
     sync = createTempFile("", "", sync);
-    @error
     Object roots1 = listRoots();
     // on instances
-    @error
     sync = sync.createTempFile("", "");
-    @error
     sync = sync.createTempFile("", "", sync);
-    @error
     Object roots2 = sync.listRoots();
 }
 
-@error
 @noanno
 void staticMethodsAndSubClassesOnInstance() {
-    @error
     JavaWithStaticMembersSubClass inst = JavaWithStaticMembersSubClass();
-    @error
     inst.method();
-    @error
     inst.method(1);
-    @error
     inst.method(1, 2);
-    @error
     inst.topMethod();
-    @error
     inst.field = inst.field;
-    @error
     inst.topField = inst.topField;
 }
 
 @noanno
 void staticMethodsAndSubClassesOnType() {
-    @error
     smethod();
-    @error
     smethod(1);
-    @error
     smethod(1, 2);
-    @error
     stopMethod();
-    @error
     sfield = sfield;
-    @error
     stopField = stopField;
 }
 
-@error
 @noanno
 class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
     void test(){
-        @error
         method();
-        @error
         method(1);
-        @error
         method(1, 2);
-        @error
         topMethod();
-        @error
         field = field;
-        @error
         stopField = stopField;
     }
 }
 
 @noanno
-@error
 void staticFields() {
     JBoolean false = bFalse;
 }

@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 abstract class Bug327() of bug327_foo | bug327_bar {}
 
 @noanno

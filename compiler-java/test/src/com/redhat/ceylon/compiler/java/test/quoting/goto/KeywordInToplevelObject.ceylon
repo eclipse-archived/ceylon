@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 shared object transient {}
 
 @noanno

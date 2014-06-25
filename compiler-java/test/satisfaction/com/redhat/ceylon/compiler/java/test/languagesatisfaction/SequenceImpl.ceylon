@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@error:"satisfies a sealed interface in a different module: Sequence in ceylon.language"
 class SequenceImpl<out Element>() satisfies Sequence<Element> {
 
     shared actual Integer lastIndex = nothing;

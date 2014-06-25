@@ -20,12 +20,8 @@
 import java.io{...}
 
 @noanno
-@error
 void constructors() {
-    @error
     File f1 = File("parent");
-    @error
     File f2 = File("parent", "test");
-    @error
     File f3 = File(f1, "test");
 }

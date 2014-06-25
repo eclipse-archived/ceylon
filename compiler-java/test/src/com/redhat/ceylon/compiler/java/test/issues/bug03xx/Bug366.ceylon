@@ -20,6 +20,5 @@
 import java.lang.ref { WeakReference, ReferenceQueue }
 
 @noanno
-@error
-shared class Bug366<T>(T obj, @error ReferenceQueue<T> q)
+shared class Bug366<T>(T obj, ReferenceQueue<T> q)
             extends WeakReference<T>(obj, q) {}

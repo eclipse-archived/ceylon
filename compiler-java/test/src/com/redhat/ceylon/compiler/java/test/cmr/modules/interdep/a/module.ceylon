@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@error
+
 "Bla bla."
 by("Stef FroMage")
 license("http://www.gnu.org/licenses/gpl.html")

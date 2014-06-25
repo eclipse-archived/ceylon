@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 shared Integer goto = 0;
 
 @noanno

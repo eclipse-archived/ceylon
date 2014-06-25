@@ -43,7 +43,6 @@ class JN_IS_InnerInterface_Impl() satisfies JN_IS_InnerInterface<String> {}
 class JN_InnerInterface_Impl() satisfies JN_InnerInterface<String> {}
 
 @noanno
-@error
 void nesting() {
     JavaNestingInterface<String> jni = JNI_Impl();
     

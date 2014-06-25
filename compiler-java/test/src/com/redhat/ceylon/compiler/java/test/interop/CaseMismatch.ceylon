@@ -20,13 +20,9 @@
 import com.redhat.ceylon.compiler.java.test.interop { \IjavaCaseMismatch { SubClass=\IsubClass } }
 
 @noanno
-@error
 void caseMismatch(){
-    @error
     \IjavaCaseMismatch klass = \IjavaCaseMismatch();
     Integer i = klass.\iField;
-    @error
     klass.\iMethod();
-    @error
     \IjavaCaseMismatch.\IsubClass klass2 = SubClass();
 }

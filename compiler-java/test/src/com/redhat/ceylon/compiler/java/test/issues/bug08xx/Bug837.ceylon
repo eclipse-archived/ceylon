@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
+@error:"satisfies a sealed interface in a different module: Sequence in ceylon.language"
 class Bug837<Element>(first, Integer length) 
         extends Object()
         satisfies Sequence<Element> 

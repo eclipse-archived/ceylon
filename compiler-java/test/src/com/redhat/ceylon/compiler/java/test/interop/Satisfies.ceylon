@@ -25,65 +25,43 @@ import java.lang{
 }
 
 @noanno
-@error
 class SatisfiesFileFilter() satisfies FileFilter {
-    @error
-    shared actual Boolean accept(@error File? f) {
+    shared actual Boolean accept(File? f) {
         return true;
     }
 }
 
 @noanno
-@error
 class SatisfiesFilenameFilter() satisfies FilenameFilter {
-    @error
-    shared actual Boolean accept(@error File? dir, String? name) {
+    shared actual Boolean accept(File? dir, String? name) {
         return true;
     }
 }
 
 @noanno
-@error
 void test() {
-    @error
     File f1 = File("file1");
-    @error
     f1.listFiles(SatisfiesFileFilter());
-    @error
     f1.listFiles(SatisfiesFilenameFilter());
 }
 
-@error
 @noanno
 class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
-    @error
     shared actual Boolean booleanMethod(Boolean b){ return true; }
-    @error
     shared actual JBoolean boxedBooleanMethod(JBoolean? b){ return JBoolean(true); }
-    @error
     shared actual Boolean ceylonBooleanMethod(Boolean? b){ return true; }
-    @error
     shared actual Boolean classTypeParamMethodB(Boolean? b){ return true; }
 
-    @error
     shared actual Integer longMethod(Integer i){ return 1; }
-    @error
     shared actual JLong boxedLongMethod(JLong? i){ return JLong(1); }
-    @error
     shared actual Integer ceylonIntegerMethod(Integer? i){ return 1; }
-    @error
     shared actual Integer classTypeParamMethodI(Integer? i){ return 1; }
     
-    @error
     shared actual Integer intMethod(Integer i){ return 1; }
-    @error
     shared actual JInteger boxedIntegerMethod(JInteger? i){ return JInteger(1); }
     
-    @error
     shared actual String stringMethod(String? i){ return ""; }
-    @error
     shared actual String ceylonStringMethod(String? i){ return ""; }
 
-    @error
     shared actual M methodTypeParamMethod<M>(M? b){ return nothing; }
 }

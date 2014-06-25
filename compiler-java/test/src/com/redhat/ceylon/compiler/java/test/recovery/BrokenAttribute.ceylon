@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@error MissingType brokenGetter {
-    @error fuuuuuu()();
+MissingType brokenGetter {
+    fuuuuuu()();
 }
 
-@error MissingType brokenAttribute = fuuuuuu()();
+MissingType brokenAttribute = fuuuuuu()();
 
 assign brokenGetter {
-    @error fuuuuuu()();
+    fuuuuuu()();
 }
 
-@error
 MissingType obj {
     fu=bar;
 }

@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 void m3Features<T>() 
-        @error given T abstracts Integer {
+        given T abstracts Integer {
 }

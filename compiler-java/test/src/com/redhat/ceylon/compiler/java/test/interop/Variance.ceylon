@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 void variance() {
     JavaVariance var = JavaVariance();
     // For M4: tested in Variance2

@@ -22,8 +22,7 @@ import java.util{List}
 
 @noanno
 class ImportJavaRuntimeTypeSingle() {
-    void m(@error List<Integer> l) {
-        @error
+    void m(List<Integer> l) {
         RuntimeException();
     }
 }

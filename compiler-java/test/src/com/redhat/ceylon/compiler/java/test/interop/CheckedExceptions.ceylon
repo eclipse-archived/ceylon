@@ -18,17 +18,12 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 void checkedExceptionsInMethod() {
-    @error
     JavaCheckedExceptions x = JavaCheckedExceptions();
-    @error
     x.m();
 }
 
 @noanno
-@error
 class CheckedExceptions() extends JavaCheckedExceptions() {
-    @error
     shared actual void m(){}
 }
