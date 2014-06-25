@@ -2734,8 +2734,15 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(final Tree.RangeOp that) {
-       out(clAlias, "Range(");
-       Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
+       out(clAlias, "span(");
+       that.getLeftTerm().visit(this);
+       out(",");
+       that.getRightTerm().visit(this);
+       out(",{Element$span:");
+       TypeUtils.typeNameOrList(that,
+               Util.unionType(that.getLeftTerm().getTypeModel(), that.getRightTerm().getTypeModel(), that.getUnit()),
+               this, false);
+       out("})");
    }
 
    @Override public void visit(final Tree.ThenOp that) {
@@ -2944,7 +2951,7 @@ public class GenerateJsVisitor extends Visitor
                     out(".span(");
                 }
             } else {
-                out(".segment(");
+                out(".measure(");
             }
             if (er.getLowerBound() != null) {
                 if (!isNaturalLiteral(er.getLowerBound().getTerm())) {
@@ -3066,12 +3073,14 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.SegmentOp that) {
         final Tree.Term left  = that.getLeftTerm();
         final Tree.Term right = that.getRightTerm();
-        out(clAlias, "sizedRange(");
+        out(clAlias, "measure(");
         left.visit(this);
         out(",");
         right.visit(this);
-        out(",{Element$sizedRange:");
-        TypeUtils.typeNameOrList(left, left.getTypeModel(), this, false);
+        out(",{Element$measure:");
+        TypeUtils.typeNameOrList(that,
+                Util.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
+                this, false);
         out("})");
     }
 
