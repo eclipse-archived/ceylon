@@ -16,10 +16,15 @@ public class SequenceGenerator {
 
     static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final ProducedType seqType,
             final boolean spread, final GenerateJsVisitor gen) {
+        Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
+        if (args.size() == 1 && seqarg instanceof Tree.Comprehension) {
+            //Shortcut: just do the comprehension
+            seqarg.visit(gen);
+            return;
+        }
         final String idxvar = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.getClAlias(), "sarg$(function(", idxvar,"){switch(",idxvar,"){");
         int count=0;
-        Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
         for (Tree.PositionalArgument expr : args) {
             if (expr == seqarg) {
                 gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},function(){return ");
