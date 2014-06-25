@@ -19,7 +19,7 @@ Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
 Comprehension$proto.sequence = function() {
-    return sequential(this,{Element$sequential:this.$$targs$$.Element$Iterable});
+    return Iterable.$$.prototype.sequence.call(this);
 }
 Comprehension$proto.sequence.$crtmm$={an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$m','sequence']}
 ex$.Comprehension=Comprehension;
