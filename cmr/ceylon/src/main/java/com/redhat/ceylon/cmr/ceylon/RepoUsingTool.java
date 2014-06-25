@@ -51,6 +51,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
@@ -559,12 +560,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         args.add(name);
         
         ToolFactory pluginFactory = new ToolFactory();
-        ToolLoader pluginLoader = new ServiceToolLoader(Tool.class) {
-            @Override
-            public String getToolName(String className) {
-                return classNameToToolName(className);
-            }
-        };
+        ToolLoader pluginLoader = new CeylonToolLoader();
         String toolName;
         if (type == ModuleQuery.Type.JVM) {
             toolName = "compile";
