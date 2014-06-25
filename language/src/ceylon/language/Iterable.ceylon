@@ -90,7 +90,7 @@
    - [[filter]] vs [[select]],
    - [[List.reversed]] vs [[reverse]],
    - [[follow]] vs [[List.withLeading]], and
-   - [[List.sublist]] vs [[List.segment]].
+   - [[List.sublist]] vs [[List.measure]].
    
    Lazy operations normally return an instance of `Iterable`, 
    or even a [[List]], [[Map]], or [[Set]]. Eager operations 
