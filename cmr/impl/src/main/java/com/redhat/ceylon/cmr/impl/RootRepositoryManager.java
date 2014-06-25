@@ -176,7 +176,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         // only check for jars or forced checks
         if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
             // transfer descriptor as well, if there is one
-            final Node descriptor = Configuration.getResolvers().descriptor(node);
+            final Node descriptor = Configuration.getResolvers(this).descriptor(node);
             if (descriptor != null && descriptor.hasBinaries()) {
                 try (InputStream is = descriptor.getInputStream()) {
                     fileContentStore.putContent(descriptor, is, context);
@@ -232,7 +232,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 if (origin != null) {
                     fileContentStore.removeFile(origin);
                 }
-                final Node descriptor = Configuration.getResolvers().descriptor(node);
+                final Node descriptor = Configuration.getResolvers(this).descriptor(node);
                 if (descriptor != null) {
                     fileContentStore.removeFile(descriptor);
                 }
