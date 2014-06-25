@@ -191,8 +191,13 @@ shared interface List<out Element>
                     return true;
                 }
             }
+            else {
+                return false;
+            }
         }
-        return false;
+        else {
+            return false;
+        }
     }
     
     shared actual default Integer hash {
@@ -994,6 +999,9 @@ shared interface List<out Element>
             satisfies List<Element> {
         
         lastIndex => outer.lastIndex;
+        size => outer.size;
+        first => outer.last;
+        last => outer.first;
         
         reverse() => outer;
         reversed => outer;
