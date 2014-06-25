@@ -6,7 +6,7 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
         super();
         this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
     }
@@ -37,16 +37,16 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public long getSign() {
         return $ceylon$language$Number$this$.getSign();
     }
-    protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this$;
+    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertible$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$impl() {
-        return $ceylon$language$Invertable$this$;
+    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertible$impl() {
+        return $ceylon$language$Invertible$this$;
     }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Invertable$this$.minus(other);
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Invertible$this$.minus(other);
     }
     protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
     

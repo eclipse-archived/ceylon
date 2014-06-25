@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class InvertableImpl() satisfies Invertable<InvertableImpl> {
+class InvertableImpl() satisfies Invertible<InvertableImpl> {
     shared actual InvertableImpl negated = nothing;
     shared actual InvertableImpl plus(InvertableImpl other) => nothing;
 }

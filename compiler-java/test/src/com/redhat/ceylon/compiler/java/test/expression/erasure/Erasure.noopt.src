@@ -309,7 +309,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         .java.lang.Object n = this.getN$priv$();
         .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric sync = null;
         sync = ((.ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Summable)n).plus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertible)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).times((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Integral)n).remainder((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).divided((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
@@ -354,7 +354,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning $ceylontmp$op$18;
         );
-        sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).getNegated();
+        sync = ((.ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertible)n).getNegated();
         sync = (.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n;
         sync = (
             let

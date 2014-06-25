@@ -1578,7 +1578,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             if(operator == OperatorTranslation.UNARY_POSITIVE) {
                 // +x is essentiall a NOOP, but in this case the expected type
-                // is the self type of Invertable, so use the type of op
+                // is the self type of Invertible, so use the type of op
                 return transformExpression(term, BoxingStrategy.BOXED, op.getTypeModel());
             }
             return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 

@@ -19,7 +19,7 @@
  */
 @noanno
 void twoParamListsTP<T>(String name)(T i) 
-        given T satisfies Enumerable<T>&Invertable<T> { 
+        given T satisfies Enumerable<T>&Invertible<T> { 
     for (x in -i..i) { print("hello " + name); } 
 }
 @noanno
