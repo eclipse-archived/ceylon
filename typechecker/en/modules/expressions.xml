@@ -367,6 +367,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>Expression: ValueExpression | FunctionExpression | OperatorInvocation | OperatorMemberExpression</synopsis>
         
+        <comment><para>Note: the grammar of operator expressions is defined by
+        the table of operator precedence and associativity in 
+        <xref linkend="operatorprecedence"/>. Thus, the rule
+        <literal>OperatorExpression</literal> is not defined in BNF.</para></comment>
+        
         <para>Parentheses are used for grouping:</para>
         
         <synopsis>GroupedExpression: "(" Expression ")"</synopsis>
