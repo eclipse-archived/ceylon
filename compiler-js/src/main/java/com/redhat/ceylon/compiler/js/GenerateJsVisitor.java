@@ -2842,7 +2842,7 @@ public class GenerateJsVisitor extends Visitor
        Operators.unaryOp(that, clAlias+"nn$(", ")", this);
    }
    @Override public void visit(final Tree.Nonempty that) {
-       Operators.unaryOp(that, clAlias+"nonempty(", ")", this);
+       Operators.unaryOp(that, clAlias+"ne$(", ")", this);
    }
 
    //Don't know if we'll ever see this...

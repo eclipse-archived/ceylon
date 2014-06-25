@@ -32,6 +32,7 @@ public class ConditionGenerator {
     /** Generate a list of all the variables from conditions in the list. */
     List<VarHolder> gatherVariables(Tree.ConditionList conditions) {
         ArrayList<VarHolder> vars = new ArrayList<VarHolder>();
+        boolean first = true;
         for (Condition cond : conditions.getConditions()) {
             Tree.Variable variable = null;
             if (cond instanceof ExistsOrNonemptyCondition) {
@@ -45,11 +46,17 @@ public class ConditionGenerator {
             if (variable != null) {
                 Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
                 String varName = names.name(variable.getDeclarationModel());
-                gen.out("var ", varName);
-                gen.endLine(true);
+                if (first) {
+                    first = false;
+                    gen.out("var ");
+                } else {
+                    gen.out(",");
+                }
+                gen.out(varName);
                 vars.add(new VarHolder(variable, variableRHS, varName));
             }
         }
+        gen.endLine(true);
         return vars;
     }
 
@@ -92,15 +99,13 @@ public class ConditionGenerator {
     void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
-                gen.out(GenerateJsVisitor.getClAlias(), "nonempty(");
+                gen.out(GenerateJsVisitor.getClAlias(), "ne$(");
                 specialConditionRHS(variableRHS, varName);
                 gen.out(")");
             } else { //exists
+                gen.out(GenerateJsVisitor.getClAlias(), "nn$(");
                 specialConditionRHS(variableRHS, varName);
-                gen.out("!==null");
-                if (gen.isInDynamicBlock()) {
-                    gen.out("&&", varName, "!==undefined");
-                }
+                gen.out(")");
             }
 
         } else {
