@@ -1,43 +1,43 @@
-function Comprehension(makeNextFunc, $$targs$$, compr) {
-    $init$Comprehension();
-    if (compr===undefined) {compr = new Comprehension.$$;}
+function for$(makeNextFunc, $$targs$$, compr) {
+    $init$for$();
+    if (compr===undefined) {compr = new for$.$$;}
     Basic(compr);
     compr.makeNextFunc = makeNextFunc;
     compr.$$targs$$=$$targs$$;
     return compr;
 }
-Comprehension.$crtmm$={nm:'Comprehension',pa:1,mod:$CCMM$,d:['$','Iterable']};
-function $init$Comprehension() {
-    if (Comprehension.$$===undefined) {
-        initTypeProto(Comprehension, 'ceylon.language::Comprehension', $init$Basic(), $init$Iterable());
+for$.$crtmm$={nm:'Comprehension',pa:1,mod:$CCMM$,d:['$','Iterable']};
+function $init$for$() {
+    if (for$.$$===undefined) {
+        initTypeProto(for$, 'ceylon.language::Comprehension', $init$Basic(), $init$Iterable());
     }
-    return Comprehension;
+    return for$;
 }
-$init$Comprehension();
-var Comprehension$proto = Comprehension.$$.prototype;
-Comprehension$proto.iterator = function() {
-    return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
+$init$for$();
+var for$$proto = for$.$$.prototype;
+for$$proto.iterator = function() {
+    return for$iter(this.makeNextFunc(), this.$$targs$$);
 }
-Comprehension$proto.sequence = function() {
+for$$proto.sequence = function() {
     return Iterable.$$.prototype.sequence.call(this);
 }
-Comprehension$proto.sequence.$crtmm$={an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$m','sequence']}
-ex$.Comprehension=Comprehension;
+for$$proto.sequence.$crtmm$={an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$m','sequence']}
+ex$.for$=for$;
 
-function ComprehensionIterator(nextFunc, $$targs$$, it) {
-    $init$ComprehensionIterator();
-    if (it===undefined) {it = new ComprehensionIterator.$$;}
+function for$iter(nextFunc, $$targs$$, it) {
+    $init$for$iter();
+    if (it===undefined) {it = new for$iter.$$;}
     it.$$targs$$=$$targs$$;
     Basic(it);
     it.next = nextFunc;
     return it;
 }
-ComprehensionIterator.$crtmm$={nm:'ComprehensionIterator',pa:1,mod:$CCMM$,d:['$','Iterator']};
-function $init$ComprehensionIterator() {
-    if (ComprehensionIterator.$$===undefined) {
-        initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',
+for$iter.$crtmm$={nm:'ComprehensionIterator',pa:1,mod:$CCMM$,d:['$','Iterator']};
+function $init$for$iter() {
+    if (for$iter.$$===undefined) {
+        initTypeProto(for$iter, 'ceylon.language::ComprehensionIterator',
                 $init$Basic(), $init$Iterator());
     }
-    return ComprehensionIterator;
+    return for$iter;
 }
-$init$ComprehensionIterator();
+$init$for$iter();
