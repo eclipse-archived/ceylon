@@ -1,6 +1,6 @@
 "The Ceylon language module containing the core types 
- referred to in the language specification, and including 
- the following broad areas of functionality:
+ referred to in the language specification, and covering the 
+ following areas of functionality:
  
  - the foundational types [[Anything]], [[Object]], and 
    [[Null]], and a [[logical boolean|Boolean]] type, 
