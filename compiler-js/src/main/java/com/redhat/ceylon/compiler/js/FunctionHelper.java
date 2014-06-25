@@ -257,10 +257,14 @@ public class FunctionHelper {
         }
     }
 
-    static void methodDefinition(Tree.MethodDefinition that, GenerateJsVisitor gen) {
+    static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen) {
         final Method d = that.getDeclarationModel();
         if (that.getParameterLists().size() == 1) {
-            gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            if (gen.opts.isOptimize() && d.isClassOrInterfaceMember() && d.getMembers().isEmpty()) {
+                gen.out("function");
+            } else {
+                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            }
             Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
             gen.beginBlock();
