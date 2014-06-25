@@ -20,4 +20,8 @@ public class ErroneousException extends Exception {
     public JCExpression makeErroneous(AbstractTransformer gen) {
         return gen.makeErroneous(node, getMessage());
     }
+    
+    public void logError(AbstractTransformer gen) {
+        gen.log.error(gen.position(node), "ceylon", getMessage());
+    }
 }

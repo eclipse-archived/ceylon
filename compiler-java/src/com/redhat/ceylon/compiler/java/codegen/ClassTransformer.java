@@ -541,7 +541,11 @@ public class ClassTransformer extends AbstractTransformer {
             // Allow invocations of annotation constructors, so long as they're
             // themselves being invoked with permitted arguments
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
-            defaultLiteral = AnnotationInvocationVisitor.transform(expressionGen(), invocation);
+            try {
+                defaultLiteral = AnnotationInvocationVisitor.transform(expressionGen(), invocation);
+            } catch (ErroneousException e) {
+                defaultLiteral = e.makeErroneous(this);
+            }
         } else if (term instanceof Tree.MemberLiteral) {
             defaultLiteral = expressionGen().makeMetaLiteralStringLiteralForAnnotation((Tree.MemberLiteral) term);
         } else if (term instanceof Tree.TypeLiteral) {
