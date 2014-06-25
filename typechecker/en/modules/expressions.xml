@@ -2524,7 +2524,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry></entry>
             <entry><literal>rhs</literal></entry>
             <entry></entry>
-            <entry><literal>Invertable &lt;I&gt;</literal></entry>
+            <entry><literal>Invertible &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
         
@@ -2533,7 +2533,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry>negation</entry>
             <entry><literal>rhs.negated</literal></entry>
             <entry></entry>
-            <entry><literal>Invertable &lt;I&gt;</literal></entry>
+            <entry><literal>Invertible &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
         </row>
         
@@ -2551,7 +2551,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
             <entry><literal>lhs.minus(rhs)</literal></entry>
-            <entry><literal>Invertable &lt;X&gt;</literal></entry>
+            <entry><literal>Invertible &lt;X&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
@@ -2602,7 +2602,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs=lhs.minus(rhs)</literal></entry>
-            <entry>variable of type <literal>Invertable &lt;N&gt;</literal></entry>
+            <entry>variable of type <literal>Invertible &lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>

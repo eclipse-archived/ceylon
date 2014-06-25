@@ -13,7 +13,7 @@ shared interface Subtractable<Other> of Other
 
 shared interface Numeric<Other> of Other
         satisfies Subtractable<Other> & 
-                  Invertable<Other> & 
+                  Invertible<Other> & 
                   Scalable<Other,Other>
         given Other satisfies Numeric<Other> {
 

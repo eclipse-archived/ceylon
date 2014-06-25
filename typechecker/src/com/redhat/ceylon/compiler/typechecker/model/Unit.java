@@ -355,7 +355,7 @@ public class Unit {
     }
     
     public Interface getInvertableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Invertable");
+        return (Interface) getLanguageModuleDeclaration("Invertible");
     }
     
     public Interface getExponentiableDeclaration() {
