@@ -144,12 +144,12 @@ class ComprehensionGenerator {
             boolean isLastLoop = (loopIndex == (loops.size()-1));
             if (isLastLoop && loop.conditions.isEmpty() && (loop.keyVarName == null)) {
                 // simple case: innermost loop without conditions, no key/value iterator
-                gen.out("var next", loop.valueVarName, "=function(){return ",
+                gen.out("var n", loop.valueVarName, "=function(){return ",
                         loop.valueVarName, "=", loop.itVarName, ".next();}");
                 gen.endLine();
             }
             else {
-                gen.out("var next", loop.valueVarName, "=function()");
+                gen.out("var n", loop.valueVarName, "=function()");
                 gen.beginBlock();
 
                 // extra entry variable for key/value iterators
@@ -182,7 +182,7 @@ class ComprehensionGenerator {
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
                     gen.out(".iterator()"); gen.endLine(true);
-                    gen.out("next", nextLoop.valueVarName, "()"); gen.endLine(true);
+                    gen.out("n", nextLoop.valueVarName, "()"); gen.endLine(true);
                 }
 
                 gen.out("return ", elemVarName); gen.endLine(true);
@@ -200,7 +200,7 @@ class ComprehensionGenerator {
         }
 
         // get the first element
-        gen.out("next", loops.get(0).valueVarName, "()"); gen.endLine(true);
+        gen.out("n", loops.get(0).valueVarName, "()"); gen.endLine(true);
 
         // generate the "next" function for the comprehension
         gen.out("return function()");
@@ -223,14 +223,14 @@ class ComprehensionGenerator {
         expression.visit(gen);
         gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
-        gen.out("next", lastLoop.valueVarName, "()"); gen.endLine(true);
+        gen.out("n", lastLoop.valueVarName, "()"); gen.endLine(true);
         gen.out("return ", tempVarName, ";");
         gen.endBlockNewLine();
 
         // "while" part of the do-while loops
         for (int i=loops.size()-2; i>=0; i--) {
             gen.endBlock();
-            gen.out("while(next", loops.get(i).valueVarName, "()!==", finished, ")");
+            gen.out("while(n", loops.get(i).valueVarName, "()!==", finished, ")");
             gen.endLine(true);
         }
 
