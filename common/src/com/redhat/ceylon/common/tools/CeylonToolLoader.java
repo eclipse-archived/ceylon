@@ -23,6 +23,11 @@ import com.redhat.ceylon.common.tool.ServiceToolLoader;
 import com.redhat.ceylon.common.tool.Tool;
 
 public class CeylonToolLoader extends ServiceToolLoader {
+
+    public CeylonToolLoader() {
+        super(Tool.class);
+    }
+
     public CeylonToolLoader(ClassLoader loader) {
         super(loader, Tool.class);
     }
