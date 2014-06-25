@@ -578,7 +578,7 @@ public class CeylonEnter extends Enter {
 
     private class JavacAssertionVisitor extends AssertionVisitor {
         private CeylonPhasedUnit cpu;
-        private boolean runAssertions;
+        protected final boolean runAssertions;
         JavacAssertionVisitor(CeylonPhasedUnit cpu, boolean runAssertions){
             this.cpu = cpu;
             this.runAssertions = runAssertions;
@@ -638,7 +638,9 @@ public class CeylonEnter extends Enter {
         }
         @Override
         protected void initExpectingError(java.util.List<CompilerAnnotation> annotations) {
-            // don't act on @error
+            if (runAssertions) {
+                super.initExpectingError(annotations);
+            }
         }
     }
     
