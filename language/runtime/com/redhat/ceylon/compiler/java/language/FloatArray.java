@@ -69,11 +69,27 @@ public final class FloatArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static FloatArray instance(float[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public float get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static float get(float[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") float element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(float[] value, int index, float element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

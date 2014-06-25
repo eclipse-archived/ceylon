@@ -45,9 +45,22 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static <T> ObjectArray<T> instance(T[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     @TypeInfo(value = "T", uncheckedNull = true) //for consistency with other Java methods
     public T get(
             @Name("index")
+            int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static <T> T get(
+            T[] value,
             int index) {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -57,6 +70,14 @@ public final class ObjectArray<T> implements ReifiedType {
             int index,
             @Name("element")
             @TypeInfo("T|ceylon.language::Null") 
+            T element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static <T> void set(
+            T[] value,
+            int index,
             T element) {
         throw Util.makeJavaArrayWrapperException();
     }

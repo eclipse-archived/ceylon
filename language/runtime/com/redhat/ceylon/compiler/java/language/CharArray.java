@@ -69,11 +69,27 @@ public final class CharArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static CharArray instance(char[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public char get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static char get(char[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") char element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(char[] value, int index, char element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

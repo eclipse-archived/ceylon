@@ -69,11 +69,27 @@ public final class ShortArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static ShortArray instance(short[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public short get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static short get(short[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") short element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(short[] value, int index, short element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

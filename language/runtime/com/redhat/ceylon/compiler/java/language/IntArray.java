@@ -69,11 +69,27 @@ public final class IntArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static IntArray instance(int[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public int get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static int get(int[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") int element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(int[] value, int index, int element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

@@ -69,11 +69,27 @@ public final class LongArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static LongArray instance(long[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public long get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static long get(long[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") long element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(long[] value, int index, long element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

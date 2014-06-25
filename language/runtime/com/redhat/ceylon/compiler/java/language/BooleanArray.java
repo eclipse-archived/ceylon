@@ -69,11 +69,27 @@ public final class BooleanArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static BooleanArray instance(boolean[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public boolean get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static boolean get(boolean[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") boolean element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(boolean[] value, int index, boolean element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

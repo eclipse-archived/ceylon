@@ -69,11 +69,27 @@ public final class ByteArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static ByteArray instance(byte[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public byte get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static byte get(byte[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") byte element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(byte[] value, int index, byte element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

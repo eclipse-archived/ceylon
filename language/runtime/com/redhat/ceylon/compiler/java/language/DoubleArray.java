@@ -69,11 +69,27 @@ public final class DoubleArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static DoubleArray instance(double[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public double get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static double get(double[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") double element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(double[] value, int index, double element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
