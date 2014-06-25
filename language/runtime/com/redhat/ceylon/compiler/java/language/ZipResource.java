@@ -93,5 +93,10 @@ public class ZipResource implements Resource {
                     "Reading text content of CAR resource " + getUri()), ex);
         }
     }
+    
+    @Override
+    public String toString() {
+        return $ceylon$language$Resource$this.toString();
+    }
 
 }

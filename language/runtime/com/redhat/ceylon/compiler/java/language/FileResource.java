@@ -76,5 +76,10 @@ public class FileResource implements Resource {
     public java.lang.String textContent$encoding() {
         return $ceylon$language$Resource$this.textContent$encoding();
     }
+    
+    @Override
+    public String toString() {
+        return $ceylon$language$Resource$this.toString();
+    }
 
 }
