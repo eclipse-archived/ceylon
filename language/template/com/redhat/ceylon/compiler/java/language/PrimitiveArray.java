@@ -69,11 +69,27 @@ public final class @Classname@ implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    // For consistency with the rules for ValueTypes
+    public static @Classname@ instance(@PrimitiveType@[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public @PrimitiveType@ get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
+    public static @PrimitiveType@ get(@PrimitiveType@[] value, int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     public void set(@Name("index") int index, @Name("element") @PrimitiveType@ element) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static void set(@PrimitiveType@[] value, int index, @PrimitiveType@ element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
