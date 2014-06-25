@@ -444,6 +444,7 @@ public final class String
     }
 
     @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     public Iterable<? extends Integer, ?> 
     inclusions(
             @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
