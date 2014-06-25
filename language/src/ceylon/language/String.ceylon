@@ -337,13 +337,13 @@ shared native final class String(characters)
     
     "Left pad this string with the given [[character]], 
      producing a string of the given minimum [[size]]."
-    shared native String padLeft(Integer size, 
+    shared native String padLeading(Integer size, 
         "The padding character"
         Character character=' ');
     
     "Right pad this string with the given [[character]], 
      producing a string of the given minimum [[size]]."
-    shared native String padRight(Integer size, 
+    shared native String padTrailing(Integer size, 
         "The padding character"
         Character character=' ');
     

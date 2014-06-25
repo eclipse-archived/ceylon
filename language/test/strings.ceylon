@@ -469,11 +469,11 @@ shared void strings() {
     check(!"helloworld".getFromLast(10) exists, "string getFromLast(9)");
     
     check("hello".pad(10)=="  hello   ", "string pad");
-    check("hello".padLeft(10)=="     hello", "string padLeft");
-    check("hello".padRight(10)=="hello     ", "string padRight");
+    check("hello".padLeading(10)=="     hello", "string padLeading");
+    check("hello".padTrailing(10)=="hello     ", "string padTrailing");
     check("hello".pad(10,'-')=="--hello---", "string pad");
-    check("hello".padLeft(10,'-')=="-----hello", "string padLeft");
-    check("hello".padRight(10,'-')=="hello-----", "string padRight");
+    check("hello".padLeading(10,'-')=="-----hello", "string padLeading");
+    check("hello".padTrailing(10,'-')=="hello-----", "string padTrailing");
     
     check("".every(Character.digit), "empty string every");
     check("123".every(Character.digit), "string every");

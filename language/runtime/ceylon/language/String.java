@@ -1800,33 +1800,33 @@ public final class String
         return builder.toString();
     }
     
-    public java.lang.String padLeft(
+    public java.lang.String padLeading(
             @Name("size") 
             long size, 
             @Name("character") 
             @TypeInfo("ceylon.language::Character") 
             @Defaulted 
             int character) {
-        return padLeft(value, size, character);
+        return padLeading(value, size, character);
     }
     
     @Ignore
-    public java.lang.String padLeft(long size) {
-        return padLeft(value, size, padLeft$character(size));
+    public java.lang.String padLeading(long size) {
+        return padLeading(value, size, padLeading$character(size));
     }
     
     @Ignore
-    public static java.lang.String padLeft(java.lang.String value, long size) {
-        return padLeft(value, size, padLeft$character(size));
+    public static java.lang.String padLeading(java.lang.String value, long size) {
+        return padLeading(value, size, padLeading$character(size));
     }
     
     @Ignore
-    public static int padLeft$character(long size) {
+    public static int padLeading$character(long size) {
         return ' ';
     }
     
     @Ignore
-    public static java.lang.String padLeft(java.lang.String value, long size, int character) {
+    public static java.lang.String padLeading(java.lang.String value, long size, int character) {
         int length = value.length();
         if (size<=length) return value;
         long leftPad = size-length;
@@ -1838,33 +1838,33 @@ public final class String
         return builder.toString();
     }
     
-    public java.lang.String padRight(
+    public java.lang.String padTrailing(
             @Name("size") 
             long size, 
             @Name("character") 
             @TypeInfo("ceylon.language::Character") 
             @Defaulted 
             int character) {
-        return padRight(value, size, character);
+        return padTrailing(value, size, character);
     }
     
     @Ignore
-    public java.lang.String padRight(long size) {
-        return padRight(value, size, padRight$character(size));
+    public java.lang.String padTrailing(long size) {
+        return padTrailing(value, size, padTrailing$character(size));
     }
     
     @Ignore
-    public static java.lang.String padRight(java.lang.String value, long size) {
-        return padRight(value, size, padRight$character(size));
+    public static java.lang.String padTrailing(java.lang.String value, long size) {
+        return padTrailing(value, size, padTrailing$character(size));
     }
     
     @Ignore
-    public static int padRight$character(long size) {
+    public static int padTrailing$character(long size) {
         return ' ';
     }
     
     @Ignore
-    public static java.lang.String padRight(java.lang.String value, long size, int character) {
+    public static java.lang.String padTrailing(java.lang.String value, long size, int character) {
         int length = value.length();
         if (size<=length) return value;
         long rightPad = size-length;
