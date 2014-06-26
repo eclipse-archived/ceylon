@@ -17,8 +17,20 @@
  Operations like `first`, `max()`, `collect()`, and `sort()`, 
  which polymorphically produce a nonempty or non-null output 
  when given a nonempty input are called 
- _emptiness-preserving_."
-see (`interface Empty`)
+ _emptiness-preserving_.
+ 
+ `Sequence` has the following subtypes:
+ 
+ - [[ArraySequence]], a sequence backed by an [[Array]],
+ - [[Range]], an efficient representation of a sequence of 
+   adjacent [[enumerable values|Enumerable]],
+ - [[Tuple]], a typed linked list, and
+ - [[Singleton]], a sequence of just one element."
+see (`interface Empty`, 
+	 `class ArraySequence`, 
+	 `class Range`, 
+	 `class Tuple`, 
+	 `class Singleton`)
 by ("Gavin")
 shared sealed interface Sequence<out Element>
         satisfies Element[] & 
