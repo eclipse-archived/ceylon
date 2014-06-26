@@ -360,8 +360,8 @@ public final class Integer
     }
 
     @Ignore
-    public static Integer neighbour(long value, long offset) {
-        return instance(value+offset);
+    public static long neighbour(long value, long offset) {
+        return value+offset;
     }
 
     @Override
