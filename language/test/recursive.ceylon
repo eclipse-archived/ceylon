@@ -21,7 +21,7 @@ class Recursive(Integer int)
 }
 
 @test
-void testRecursiveRange() {
+shared void testRecursiveRange() {
     function id(Recursive x) => x;
     check((Recursive(2)..Recursive(2)).collect(id).string=="[2]", "recursive range 0");
     check((Recursive(1)..Recursive(4)).collect(id).string=="[1, 2, 3, 4]", "recursive range 1");
