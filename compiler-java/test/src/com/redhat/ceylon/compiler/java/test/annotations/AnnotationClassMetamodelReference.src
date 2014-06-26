@@ -322,7 +322,6 @@ public final class TypeAlias {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CClassAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::IInterfaceAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::ATypeAlias"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::CEntry.PKey"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference_callsite.PX"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language:meta"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language:"),
