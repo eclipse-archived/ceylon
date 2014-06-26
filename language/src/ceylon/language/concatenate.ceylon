@@ -17,7 +17,8 @@ shared Element[] concatenate<Element>(
  the nested streams are empty, return an empty stream.
  
      {Address*} addresses = expand { for (m in members) if (m.active) m.addresses };"
-see (`function concatenate`, 
+see (`function Iterable.flatMap`,
+     `function concatenate`, 
      `function Iterable.chain`)
 shared Iterable<Element,OuterAbsent|InnerAbsent>
         expand<Element,OuterAbsent,InnerAbsent>

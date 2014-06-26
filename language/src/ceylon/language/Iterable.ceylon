@@ -226,7 +226,7 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the results of applying 
-     the [[given mapping|collecting]] to the elements of to 
+     the given [[mapping|collecting]] to the elements of to 
      this stream.
      
      For example, the expression
@@ -240,11 +240,36 @@ shared interface Iterable<out Element, out Absent=Null>
             Result collecting(Element element)) 
             => { for (elem in this) collecting(elem) };
     
-    /*shared default Callable<{Result*},Args> spread<Result,Args>(
-            Callable<Result,Args> method(Element elem)) 
-            given Args satisfies Anything[] =>
-                flatten((Args args) => 
-                    { for (elem in this) unflatten(method(elem))(args) });*/
+    "Given a [[mapping function|collecting]] that accepts an 
+     [[Element]] and returns a stream of [[Result]]s, 
+     produces a new stream containing all elements of every 
+     `Result` stream that results from applying the function 
+     to the elements of this stream.
+     
+         {String*} words = { \"Hello\", \"World\" };
+         {Character*} letters = words.flatMap(String.lowercased); 
+         print(letters); // { h, e, l, l, o, w, o, r, l, d }
+         
+         {<String->String>*} dictionary = { \"hello\"->\"hola\", \"world\"->\"mundo\" };
+         {String*} words = namedValues.flatMap(Entry<String,String>.pair);
+         print(words);  // { hello, hola, world, mundo }
+     
+     The combination of `flatMap()` with [[emptyOrSingleton]] 
+     reproduces the behavior of [[coalesced]]:
+     
+         {String*} strings = { \"1.23\", \"foo\", \"5.67\" };
+         {Float*} floats = strings.map(parseFloat)
+                 .flatMap(emptyOrSingleton<Float?>);
+         print(floats); // { 1.23, 5.67 }"
+    see (`function expand`)
+    shared default Iterable<Result,Absent|OtherAbsent> 
+            flatMap<Result,OtherAbsent>(
+            "The mapping function to apply to the elements 
+             of this stream, that produces a new stream of 
+             [[Result]]s."
+            Iterable<Result,OtherAbsent> collecting(Element element)) 
+            given OtherAbsent satisfies Null
+            => expand(map(collecting));
     
     "Produces a stream containing the elements of this 
      stream that satisfy the [[given predicate 
