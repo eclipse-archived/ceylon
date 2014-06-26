@@ -3602,6 +3602,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
+            DeclarationVisitor.setVisibleScope(param);
             param.setDeclaration((Declaration) scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
             if(scope instanceof LazyContainer)
@@ -3687,6 +3688,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
+            DeclarationVisitor.setVisibleScope(param);
             param.setDeclaration((Declaration) scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
             if(scope instanceof LazyContainer)
