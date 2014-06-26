@@ -35,5 +35,5 @@ Y?(X?) bug1508<X,Y>(Y(X) fun)
     // original test
     return compose(Iterable<Y>.first, 
                    compose(shuffle(Iterable<X>.map<Y>)(fun), 
-                           emptyOrSingleton<X>));
+                           emptyOrSingleton<X?>));
 }

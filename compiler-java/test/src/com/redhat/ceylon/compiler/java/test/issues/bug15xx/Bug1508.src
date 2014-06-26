@@ -89,7 +89,7 @@ final class bug1508_ {
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final X $ceylontmp$element = (X)$param$0;
-                return .ceylon.language.emptyOrSingleton_.<X>emptyOrSingleton($reified$X, $ceylontmp$element);
+                return .ceylon.language.emptyOrSingleton_.<X>emptyOrSingleton(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), $ceylontmp$element);
             }
         }));
     }
