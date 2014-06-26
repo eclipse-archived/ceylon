@@ -576,6 +576,7 @@ public class TypeVisitor extends Visitor {
         Tree.Type elem = that.getElementType();
 		if (elem==null) {
 			that.setTypeModel(unit.getIterableType(unit.getNothingDeclaration().getType()));
+			that.addError("iterable type must have an element type");
 		}
 		else {
         	if (elem instanceof Tree.SequencedType) {

@@ -735,13 +735,14 @@
             <para>Next, abbreviations for <emphasis>iterable types</emphasis> are written
             using braces.</para>
             
-            <synopsis>IterableType: "{" (UnionType ("*"|"+"))? "}"</synopsis>
+            <synopsis>IterableType: "{" UnionType ("*"|"+") "}"</synopsis>
             
             <itemizedlist>
-                <listitem>
+                <!--listitem>
                     <para><literal>{}</literal> means 
                     <literal>Iterable&lt;Nothing,Null&gt;</literal>,</para>
-                </listitem>
+                    //causes ambiguity with syntax for annotation named args
+                </listitem-->
                 <listitem>
                     <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
                     for any type <literal>X</literal>, and</para>
@@ -755,7 +756,7 @@
             <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
             <emphasis>tuple types</emphasis> may be written using brackets.</para>
             
-            <synopsis>EmptyType: "[" "]" </synopsis>
+            <synopsis>EmptyType: "[" "]"</synopsis>
             
             <synopsis>TupleType: "[" TypeList "]"</synopsis>
             
