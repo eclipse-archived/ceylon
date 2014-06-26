@@ -245,8 +245,8 @@ public final class String
     }
 
     @Ignore
-    public static Character getFromLast(java.lang.String value, long key) {
-        return getFromFirst(value, value.length()-1-key);
+    public static Character get(java.lang.String value, long key) {
+        return getFromFirst(value, key);
     }
 
     @Override
@@ -256,8 +256,8 @@ public final class String
     }
 
     @Ignore
-    public static Character get(java.lang.String value, long key) {
-        return getFromFirst(value, key);
+    public static Character getFromLast(java.lang.String value, long key) {
+        return getFromFirst(value, value.length()-1-key);
     }
 
     @Override
