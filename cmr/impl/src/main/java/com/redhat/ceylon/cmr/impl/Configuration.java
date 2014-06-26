@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyResolvers;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 
 /**
  * Simple config holder.
@@ -27,31 +29,47 @@ import com.redhat.ceylon.cmr.api.DependencyResolvers;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Configuration {
-    private static final DependencyResolvers resolvers;
+    private static DependencyResolver mavenResolver;
 
     public static final String MAVEN_RESOLVER_CLASS = "com.redhat.ceylon.cmr.maven.MavenDependencyResolver";
     
-    static {
-        resolvers = new DependencyResolvers();
+    public static DependencyResolvers getResolvers(RepositoryManager manager) {
+        DependencyResolvers resolvers = new DependencyResolvers();
         resolvers.addResolver(BytecodeUtils.INSTANCE);
         resolvers.addResolver(JSUtils.INSTANCE);
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
-        addResolver(MAVEN_RESOLVER_CLASS);
         resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
-    }
-
-    public static DependencyResolvers getResolvers() {
+        if (usesMaven(manager)) {
+            if (mavenResolver == null) {
+                mavenResolver = getResolver(MAVEN_RESOLVER_CLASS);
+            }
+            if (mavenResolver != null) {
+                resolvers.addResolver(mavenResolver);
+            }
+        }
         return resolvers;
     }
 
-    private static void addResolver(String className) {
+    private static boolean usesMaven(RepositoryManager manager) {
+        if (manager != null) {
+            for (Repository repo : manager.getRepositories()) {
+                if (repo instanceof MavenRepository) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static DependencyResolver getResolver(String className) {
         try {
             ClassLoader cl = Configuration.class.getClassLoader();
             DependencyResolver resolver = (DependencyResolver) cl.loadClass(className).newInstance();
-            resolvers.addResolver(resolver);
+            return resolver;
         } catch (Throwable t) {
             Logger.getLogger(Configuration.class.getName()).warning(String.format("Cannot add resolver %s - %s", className, t));
         }
+        return null;
     }
 }

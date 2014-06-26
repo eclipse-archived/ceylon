@@ -48,7 +48,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
 
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        Set<ModuleInfo> infos = Configuration.getResolvers().resolve(this);
+        Set<ModuleInfo> infos = Configuration.getResolvers(manager).resolve(this);
         // TODO -- perhaps null is not valid?
         if (infos == null || infos.isEmpty())
             return Collections.emptyList();
