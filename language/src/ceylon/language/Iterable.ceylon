@@ -21,12 +21,14 @@
    `{Element*}` represents a possibly-empty iterable 
    container. The type `Iterable<Element,Nothing>`, usually 
    abbreviated `{Element+}` represents a nonempty iterable 
-   container.
+   container. The type `Iterable<Nothing,Null>`, usually
+   abbreviated `{}` represents an empy iterable container.
    
    A value list in braces produces a new instance of 
    `Iterable`:
    
        {String+} words = { "hello", "world" };
+       {} noWords = {};
    
    An instance of `Iterable` may be iterated using a `for`
    loop:
