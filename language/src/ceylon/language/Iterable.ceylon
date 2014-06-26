@@ -246,21 +246,22 @@ shared interface Iterable<out Element, out Absent=Null>
      `Result` stream that results from applying the function 
      to the elements of this stream.
      
-         {String*} words = { \"Hello\", \"World\" };
-         {Character*} letters = words.flatMap(String.lowercased); 
-         print(letters); // { h, e, l, l, o, w, o, r, l, d }
+     For example, the expression
+     
+         { \"Hello\", \"World\" }.flatMap(String.lowercased)
+     
+     results in this stream:
+     
+         { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r,' 'l', 'd' }
+     
+     The expression
          
-         {<String->String>*} dictionary = { \"hello\"->\"hola\", \"world\"->\"mundo\" };
-         {String*} words = namedValues.flatMap(Entry<String,String>.pair);
-         print(words);  // { hello, hola, world, mundo }
+         { \"hello\"->\"hola\", \"world\"->\"mundo\" }
+                 .flatMap(Entry<String,String>.pair)
      
-     The combination of `flatMap()` with [[emptyOrSingleton]] 
-     reproduces the behavior of [[coalesced]]:
+     produces this stream:
      
-         {String*} strings = { \"1.23\", \"foo\", \"5.67\" };
-         {Float*} floats = strings.map(parseFloat)
-                 .flatMap(emptyOrSingleton<Float?>);
-         print(floats); // { 1.23, 5.67 }"
+         { \"hello\", \"hola\", \"world\", \"mundo\" }"
     see (`function expand`)
     shared default Iterable<Result,Absent|OtherAbsent> 
             flatMap<Result,OtherAbsent>(
@@ -827,15 +828,6 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
-    /*"Creates a Map that contains this `Iterable`'s
-         elements, grouped in `Sequence`s under the
-         keys provided by the grouping function."
-    shared default native Map<Grouping,[Element+]> group<Grouping>(
-                "A function that must return the key under
-                 which to group the specified element."
-                Grouping grouping(Element elem))
-            given Grouping satisfies Object;*/
-        
     "An infinite stream that produces the elements of this 
      stream, repeatedly.
      
