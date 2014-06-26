@@ -309,6 +309,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public <Result, OtherAbsent>.ceylon.language.Iterable<? extends Result, ? extends OtherAbsent> flatMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+        return (.ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.flatMap($reified$Result, $reified$OtherAbsent, collecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.filter(selecting);
     }

@@ -323,6 +323,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public <Result, OtherAbsent>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> flatMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+        return (.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.flatMap($reified$Result, $reified$OtherAbsent, collecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.filter(selecting);
     }
@@ -822,6 +827,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
+    }
+    
+    @.java.lang.Override
+    public <Result, OtherAbsent>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> flatMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+        return (.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.flatMap($reified$Result, $reified$OtherAbsent, collecting);
     }
     
     @.java.lang.Override
