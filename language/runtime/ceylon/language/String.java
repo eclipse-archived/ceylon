@@ -497,7 +497,7 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Integer|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstInclusion(@Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
             int index = value.indexOf(((String) sublist).value);
@@ -524,7 +524,7 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::Integer|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastInclusion(@Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
             int index = value.lastIndexOf(((String) sublist).value);
