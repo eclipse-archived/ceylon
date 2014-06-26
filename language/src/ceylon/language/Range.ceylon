@@ -23,12 +23,12 @@ import ceylon.language {
  
  Furthermore, certain operations are much more efficient 
  than for other lists, assuming that the enumerable type has 
- efficient [[neighbour|Enumerable.neighbour]] and
- [[offset|Enumerable.offset]] functions.
+ efficient [[neighbour()|Enumerable.neighbour]] and
+ [[offset()|Enumerable.offset]] functions.
  
- The functions [[span|makeSpan]] and [[measure|makeMeasure]],
- and corresponding operators `..` and `:` are used to create
- new instances of `Range`."
+ The functions [[ceylon.language::span]] and 
+ [[ceylon.language::measure]], and corresponding operators 
+ `..` and `:` are used to create new instances of `Range`."
 see (`function makeSpan`, 
      `function makeMeasure`)
 shared sealed abstract class Range<Element>()
