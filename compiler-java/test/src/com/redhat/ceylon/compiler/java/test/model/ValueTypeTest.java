@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.model;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 public class ValueTypeTest {
@@ -48,6 +50,8 @@ public class ValueTypeTest {
         return clazz.getAnnotation(ValueType.class) != null;
     }
     
+    // Check if the given method should have a static companion method
+    // and if so check that it exists and adheres to all the rules
     private void validateVTMethod(Class<?> clazz, Method classMethod) {
         if (classMethod.getAnnotation(Ignore.class) != null
                 || (classMethod.getModifiers() & Modifier.STATIC) != 0
@@ -61,14 +65,23 @@ public class ValueTypeTest {
         String mthName = clazz.getName() + "::" + classMethod.getName() + "()";
         Method staticMethod = findStaticCompanionMethod(clazz, classMethod);
         Assert.assertNotNull("Static companion for " + mthName + " not found", staticMethod);
+        TypeInfo returnTypeInfo = classMethod.getAnnotation(TypeInfo.class);
+        Assert.assertEquals("Returns types for static and class methods " + mthName + " do not coincide", staticMethod.getReturnType(), getUnboxedType(classMethod.getReturnType(), returnTypeInfo));
     }
 
+    // Tries to find the companion method for the given class method
+    // by looking for a static method with the same parameters plus
+    // an extra first parameter. Also the static version will always
+    // have the "unboxed" version of any Value Type that appears as
+    // either parameter or return type
     private Method findStaticCompanionMethod(Class<?> clazz, Method classMethod) {
         Class<?>[] instancePTs = classMethod.getParameterTypes();
+        Annotation[][] instanceAnnos = classMethod.getParameterAnnotations();
         Class<?>[] staticPTs = new Class<?>[instancePTs.length + 1];
-        staticPTs[0] = getUnboxedType(clazz);
+        staticPTs[0] = getUnboxedType(clazz, clazz.getAnnotation(TypeInfo.class));
         for (int i = 0; i < instancePTs.length; i++) {
-            staticPTs[i + 1] = getUnboxedType(instancePTs[i]);
+            TypeInfo typeInfo = findAnnotation(instanceAnnos[i], TypeInfo.class);
+            staticPTs[i + 1] = getUnboxedType(instancePTs[i], typeInfo);
         }
         try {
             return clazz.getMethod(classMethod.getName(), staticPTs);
@@ -77,8 +90,32 @@ public class ValueTypeTest {
         }
     }
 
-    private Class<?> getUnboxedType(Class<?> clazz) {
+    @SuppressWarnings("unchecked")
+    private <T> T findAnnotation(Annotation[] annotations, Class<T> annoClass) {
+        for (Annotation a : annotations) {
+            if (a.annotationType() == annoClass) {
+                return (T)a;
+            }
+        }
+        return null;
+    }
+
+    // Given a type this method returns the unboxed version.
+    // For this the type must be a Ceylon Value Type. It's "unboxed" type
+    // will be taken from the parameter of its instance() method.
+    // Also if the type has associated TypeInfo the type it defines
+    // must be exactly the type of the Value Type itself otherwise
+    // no unboxing will be performed
+    private Class<?> getUnboxedType(Class<?> clazz, TypeInfo typeInfo) {
         if (isCeylonClass(clazz) && isValueType(clazz)) {
+            if (typeInfo != null) {
+                // If we have Ceylon type information available we will only
+                // unbox if it's exactly the same as the Value Type itself
+                String type = typeInfo.value().replace("::", ".");
+                if (!clazz.getName().equals(type)) {
+                    return clazz;
+                }
+            }
             Method instanceMethod = findInstanceMethod(clazz);
             Assert.assertNotNull("Required static method instance() for " + clazz.getName() + " not found", instanceMethod);
             Class<?>[] pts = instanceMethod.getParameterTypes();
@@ -89,6 +126,7 @@ public class ValueTypeTest {
         return clazz;
     }
 
+    // Finds the instance() method of a Value Type
     private Method findInstanceMethod(Class<?> clazz) {
         Method[] methods = clazz.getMethods();
         for (Method m : methods) {
