@@ -31,6 +31,8 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
     
+    "Determines if the given [[value|entry]] is an [[Entry]]
+     belonging to this map."
     shared actual default Boolean contains(Object entry) {
         if (is Key->Object entry, 
             exists item = get(entry.key)) {
@@ -40,6 +42,11 @@ shared interface Map<out Key,out Item>
             return false;
         }
     }
+    
+    "Determines if the given [[value|key]] is a [[Key]] of
+     an entry in this map."
+    shared actual default Boolean defines(Object key) 
+            => super.defines(key);
     
     shared actual formal Map<Key,Item> clone();
     
@@ -190,7 +197,7 @@ shared object emptyMap
     shared actual Collection<Nothing> keys => emptySet;
     shared actual Collection<Nothing> values => [];
     
-    clone() => emptyMap;
+    clone() => this;
     iterator() => emptyIterator;
     size => 0;
     empty => true;
@@ -210,29 +217,13 @@ shared object emptyMap
             (Boolean selecting(Nothing->Nothing element)) 
             => 0;
     
-    shared actual [] map<Result>
-            (Result collecting(Nothing->Nothing element)) 
-            => [];
-    
-    shared actual Map<Nothing,Nothing> filter
-            (Boolean selecting(Nothing->Nothing element)) 
-            => emptyMap;
-    
-    shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing->Nothing element)) 
-            => initial;
-    
     shared actual Null find
             (Boolean selecting(Nothing->Nothing element)) 
             => null;
     
-    shared actual [] collect<Result>
-            (Result collecting(Nothing->Nothing element)) 
-            => [];
-    
-    shared actual [] select
+    shared actual Null findLast
             (Boolean selecting(Nothing->Nothing element)) 
-            => [];
+            => null;
     
     shared actual Boolean any
             (Boolean selecting(Nothing->Nothing element)) 
@@ -242,8 +233,8 @@ shared object emptyMap
             (Boolean selecting(Nothing->Nothing element)) 
             => true;
     
-    skip(Integer skipping) => emptyMap;
-    take(Integer taking) => emptyMap;
-    by(Integer step) => emptyMap;
+    skip(Integer skipping) => this;
+    take(Integer taking) => this;
+    by(Integer step) => this;
     
 }

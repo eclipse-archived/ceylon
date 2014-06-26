@@ -111,18 +111,18 @@ shared object emptySet
             => set;
     shared actual Set<Nothing> intersection<Other>(Set<Other> set)
             given Other satisfies Object
-            => emptySet;
+            => this;
     shared actual Set<Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object
             => set;
     shared actual Set<Nothing> complement<Other>(Set<Other> set)
             given Other satisfies Object
-            => emptySet;
+            => this;
     
     subset(Set<Object> set) => true;
     superset(Set<Object> set) => set.empty;
     
-    clone() => emptySet;
+    clone() => this;
     iterator() => emptyIterator;
     size => 0;
     empty => true;
@@ -135,29 +135,12 @@ shared object emptySet
             (Boolean selecting(Nothing element)) 
             => 0;
     
-    shared actual Set<Nothing> map<Result>
-            (Result collecting(Nothing element)) 
-            => emptySet;
-    
-    shared actual Set<Nothing> filter
-            (Boolean selecting(Nothing element)) 
-            => emptySet;
-    
-    shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing element)) 
-            => initial;
-    
     shared actual Null find
             (Boolean selecting(Nothing element)) 
             => null;
     
-    shared actual [] collect<Result>
-            (Result collecting(Nothing element)) 
-            => [];
-    
-    shared actual [] select
-            (Boolean selecting(Nothing element)) 
-            => [];
+    shared actual Null findLast(Boolean selecting(Nothing element))
+            => null;
     
     shared actual Boolean any
             (Boolean selecting(Nothing element)) 
@@ -165,10 +148,10 @@ shared object emptySet
     
     shared actual Boolean every
             (Boolean selecting(Nothing element)) 
-            => false;
+            => true;
     
-    skip(Integer skipping) => emptySet;
-    take(Integer taking) => emptySet;
-    by(Integer step) => emptySet;
+    skip(Integer skipping) => this;
+    take(Integer taking) => this;
+    by(Integer step) => this;
     
 }

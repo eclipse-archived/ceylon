@@ -26,8 +26,8 @@ shared interface Correspondence<in Key, out Item>
     see (`function Correspondence.items`)
     shared formal Item? get(Key key);
     
-    "Determines if there is a value defined for the 
-     given key."
+    "Determines if there is a value defined for the given 
+     key."
     see (`function Correspondence.definesAny`, 
          `function Correspondence.definesEvery`, 
          `value Correspondence.keys`)

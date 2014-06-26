@@ -188,6 +188,6 @@ shared void testSets() {
     check(emptySet.intersection(s2) == emptySet, "emptySet.intersection");
     check(emptySet.complement(s2) == emptySet, "emptySet.complement");
     check(0 == emptySet.count{function selecting(Nothing nowt) => true;}, "emptySet.selecting");
-    check(emptySet.filter{function selecting(Nothing nowt) => true;} == emptySet, "emptySet.filter");
+    check(emptySet.filter{function selecting(Nothing nowt) => true;}.empty, "emptySet.filter");
 
 }

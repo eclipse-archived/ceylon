@@ -111,6 +111,11 @@ shared interface Empty of e
     shared actual [] map<Result>(
             Result collecting(Nothing element)) => this;
     
+    shared actual [] flatMap<Result, OtherAbsent>
+            (Iterable<Result,OtherAbsent> collecting(Nothing element))
+    		given OtherAbsent satisfies Null 
+            => this;
+    
     shared actual Callable<[],Args> spread<Result,Args>(
         Callable<Result,Args> method(Nothing element))
             given Args satisfies Anything[] 
