@@ -347,13 +347,18 @@ shared interface Iterable<out Element, out Absent=Null>
             "The accumulating function that accepts
              the running total and the next element."
             Result accumulating(Result partial, Element element)) {
-        object results satisfies {Result*} {
+        object iterable satisfies {Result+} {
+            first => initial;
             shared actual Iterator<Result> iterator() {
+                value iter = outer.iterator();
                 object iterator satisfies Iterator<Result> {
+                    variable value returnInitial = true;
                     variable value partial = initial;
-                    value elements = outer.iterator();
                     shared actual Result|Finished next() {
-                        if (!is Finished element = elements.next()) {
+                        if (returnInitial) {
+                            returnInitial = false;
+                            return initial;
+                        } else if (!is Finished element = iter.next()) {
                             partial = accumulating(partial, element);
                             return partial;
                         } else {
@@ -364,7 +369,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 return iterator;
             }
         }
-        return results.following(initial);
+        return iterable;
     }
     
     "The first element of this stream which satisfies the 
