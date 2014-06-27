@@ -1876,4 +1876,11 @@ public final class String
         return builder.toString();
     }
     
+    @Ignore
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
+    public static Iterable<? extends Tuple<Character,? extends Character,? extends Tuple<Character,? extends Character,? extends Sequential<? extends Character>>>, ?>
+    getPaired(java.lang.String value) {
+    	return instance(value).getPaired();
+    }
+    
 }
