@@ -88,7 +88,6 @@
    
    - [[map]] vs [[collect]],
    - [[filter]] vs [[select]],
-   - [[List.reversed]] vs [[reverse]],
    - [[follow]] vs [[List.withLeading]], and
    - [[List.sublist]] vs [[List.measure]].
    
@@ -379,7 +378,7 @@ shared interface Iterable<out Element, out Absent=Null>
             => flatten((Args args) 
                 => { for (elem in this) method(elem)(*args) });
     
-    "Produce a new [[sequence|Sequential]] containing the 
+    /*"Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, in the reverse order to the 
      order in which they occur in this stream.
      
@@ -400,7 +399,7 @@ shared interface Iterable<out Element, out Absent=Null>
             array.reverseInPlace();
             return ArraySequence(array);
         }
-    }
+    }*/
     
     "Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, sorted according to the given 

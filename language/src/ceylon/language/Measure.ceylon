@@ -212,7 +212,7 @@ final class Measure<Element>(first, size)
             else {
                 value len = from < size then from-to+1 
                                         else size-to;
-                return Measure(first.neighbour(to),len).reverse();
+                return Measure(first.neighbour(to),len).reversed;
             }
         }
     }

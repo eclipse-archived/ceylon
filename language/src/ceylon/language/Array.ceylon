@@ -79,10 +79,9 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} take(Integer taking);
     shared actual native {Element*} by(Integer step);
 
-    "Reverses the order of the current elements in the current array.
-     This operation modifies the array."
+    "Reverses the order of the current elements in this 
+     array. This operation modifies the array."
     shared native void reverseInPlace();
-    shared actual native Element[] reverse();
     
     "Sorts the elements in this array according to the 
      order induced by the given 

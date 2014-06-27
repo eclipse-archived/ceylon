@@ -1024,8 +1024,7 @@ public final class String
         int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
-        java.lang.String result = value.substring(start, end);
-        return result;
+        return value.substring(start, end);
     }
     
     @Override
@@ -1049,8 +1048,7 @@ public final class String
         }
         int start = 0;
         int end = value.offsetByCodePoints(start, Util.toInt(toIndex + 1));
-        java.lang.String result = value.substring(start, end);
-        return result;
+        return value.substring(start, end);
     }
     
 
@@ -1080,21 +1078,16 @@ public final class String
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
-        return reverse ? reverse(result) : result;
-    }
-    
-    @Ignore
-    public static List<? extends Character> getReversed(java.lang.String value) {
-        return instance(value).getReversed();
+        return reverse ? getReversed(result) : result;
     }
     
     @Override
-    public String reverse() {
-        return instance(reverse(value));
+    public String getReversed() {
+        return instance(getReversed(value));
     }
     
     @Ignore
-    public static java.lang.String reverse(java.lang.String value) {
+    public static java.lang.String getReversed(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
             return value;

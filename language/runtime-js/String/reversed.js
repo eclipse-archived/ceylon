@@ -1,4 +1,3 @@
-function() {
   var result = "";
   for (var i=this.length; i>0;) {
     var cc = this.charCodeAt(--i);
@@ -9,4 +8,3 @@ function() {
     }
   }
   return result;
-}

@@ -64,9 +64,7 @@ shared sealed interface Sequence<out Element>
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
-    shared default actual [Element+] reversed => reverse();
-    
-    shared default actual [Element+] reverse() => Reverse();
+    shared default actual [Element+] reversed => Reverse();
     
     shared default actual Element[] repeat(Integer times) 
             => times<=0 then [] else Repeat(times);
@@ -179,7 +177,6 @@ shared sealed interface Sequence<out Element>
         last => outer.first;
         rest => outer[size-2..0]; //TODO!
         
-        reverse() => outer;
         reversed => outer;
         
         getFromFirst(Integer index) 

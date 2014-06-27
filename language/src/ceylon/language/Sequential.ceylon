@@ -26,8 +26,6 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] reversed;
     
-    shared actual formal Element[] reverse();
-    
     shared actual formal Element[] repeat(Integer times);
     
     "Select the first elements of this sequence, returning 

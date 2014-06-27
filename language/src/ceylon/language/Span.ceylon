@@ -104,8 +104,8 @@ final class Span<Element>(first, last)
      evaluated and collected into a new sequence."
     //TODO: we should have a way to produce a decreasing
     //      recursive range
-    shared actual [Element+] reverse()
-            => recursive then super.reverse()
+    shared actual [Element+] reversed
+            => recursive then super.reversed
                          else last..first;
     
     "The element of the range that occurs [[index]] values 
@@ -357,7 +357,7 @@ final class Span<Element>(first, last)
             }
             else {
                 value range = (this[to] else first)..(this[from] else last);
-                return range.reverse();
+                return range.reversed;
             }
         }
     }

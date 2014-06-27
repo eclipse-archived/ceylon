@@ -1283,7 +1283,7 @@ public final class Array<Element>
         clone.sortInPlace(comparing);
         return new ArraySequence<Element>($reifiedElement, clone);
     }
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> 
     reverse() {
@@ -1293,7 +1293,7 @@ public final class Array<Element>
         Array<Element> clone = $clone();
         clone.reverseInPlace();
         return new ArraySequence<Element>($reifiedElement, clone);
-    }
+    }*/
     
     @Override
     @Annotations({ @Annotation("actual") })

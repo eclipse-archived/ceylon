@@ -50,9 +50,6 @@ shared interface Empty of e
     shared actual Integer size => 0; 
     
     "Returns an `Empty`."
-    shared actual [] reverse() => this;
-    
-    "Returns an `Empty`."
     shared actual [] reversed => this;
     
     "Returns an `Empty`."

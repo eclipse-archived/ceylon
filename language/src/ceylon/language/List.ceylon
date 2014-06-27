@@ -146,17 +146,13 @@ shared interface List<out Element>
             => Repeat(times);
     
     "A list containing the elements of this list in reverse 
-     order. For every `index` of a reversed `list`:
+     order to the order in which they occur in this list. 
+     For every `index` of a reversed `list`:
      
          list.reversed[index]==list[size-1-index]
      
      This is a lazy operation returning a view of this list."
-    see (`function reverse`)
     shared default List<Element> reversed => Reversed();
-    
-    see (`value reversed`)
-    shared actual default List<Element> reverse() 
-            => reversed.sequence();
     
     shared actual default List<Element> clone() 
             => sequence();
@@ -1042,7 +1038,6 @@ shared interface List<out Element>
         first => outer.last;
         last => outer.first;
         
-        reverse() => outer;
         reversed => outer;
         
         shared actual Element? getFromFirst(Integer index) {
