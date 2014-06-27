@@ -761,7 +761,10 @@ shared interface Iterable<out Element, out Absent=Null>
     
     shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
-             size => (outer.size/2)*2;
+             shared actual Integer size {
+                 value size =  outer.size-1;
+                 return size<0 then 0 else size;
+             }
              shared actual Iterator<[Element, Element]> iterator() {
                  value iter = outer.iterator();
                  object iterator 
