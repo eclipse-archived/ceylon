@@ -41,3 +41,4 @@ shared interface Interface satisfies TopInterface {
     topFormalAttr2 => 1;
     topFormalMethod2(Integer p1) => 1;
 }
+shared dynamic DynamicInterface{}
