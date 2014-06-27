@@ -122,14 +122,14 @@ shared sealed interface Sequence<out Element>
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
     shared actual default [Element,Element|Other*]
-    append<Other>({Other*} elements)
-            => [first, *(rest chain elements)];
+    append<Other>(List<Other> elements)
+            => Append(elements).tuple;
     
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
     shared actual default [Element|Other+]
-    prepend<Other>({Other*} elements)
-            => [*(elements chain this)];
+    prepend<Other>(List<Other> elements)
+            => Prepend(elements);
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
@@ -153,6 +153,18 @@ shared sealed interface Sequence<out Element>
     
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
+    
+    shared actual default Element[] measure(Integer from, Integer length) 
+            => sublist(from, from+length-1).sequence();
+    
+    shared actual default Element[] span(Integer from, Integer to) 
+            => sublist(from, to).sequence();
+    
+    shared actual default Element[] spanFrom(Integer from) 
+            => sublistFrom(from).sequence();
+    
+    shared actual default Element[] spanTo(Integer to) 
+            => sublistTo(to).sequence();
     
     shared actual default String string 
             => (super of Sequential<Element>).string;
@@ -233,7 +245,8 @@ shared sealed interface Sequence<out Element>
         
         assert (times>0);
         
-        last => outer.last;
+        shared actual Element last => outer.last;
+        
         first => outer.first;
         size => outer.size*times;
         rest => sublistFrom(1).sequence(); //TODO!
@@ -250,19 +263,95 @@ shared sealed interface Sequence<out Element>
         
         iterator() => CycledIterator(outer,times);
         
-        measure(Integer from, Integer length) 
-                => sublist(from, from+length-1).sequence();
+    }
+    
+    class Append<Other>(List<Other> list)
+            extends Object()
+            satisfies [Element|Other+] {
         
-        span(Integer from, Integer to) 
-                => sublist(from, to).sequence();
+        size => outer.size+list.size;
         
-        spanFrom(Integer from) 
-                => sublistFrom(from).sequence();
+        shared actual Element first => outer.first;
         
-        spanTo(Integer to) 
-                => sublistTo(to).sequence();
+        shared actual Element|Other last { 
+            if (list.empty) {
+                if (exists last = list.last) {
+                    return last;
+                }
+                else {
+                    assert (is Other null);
+                    return null;
+                }
+            }
+            else {
+                return outer.last;
+            }
+        }
+        
+        rest => outer.rest.append(list);
+        
+        shared [Element,Element|Other*] tuple => [first, *rest];
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index < size) {
+                return outer.getFromFirst(index);
+            }
+            else {
+                return list.getFromFirst(index-size);
+            }
+        }
+        
+        iterator() => ChainedIterator(outer,list);
         
     }
+    
+    class Prepend<Other>(List<Other> list)
+            extends Object()
+            satisfies [Element|Other+] {
+        
+        size => outer.size+list.size;
+        
+        shared actual Element last => outer.last;
+        
+        shared actual Element|Other first { 
+            if (list.empty) {
+                if (exists first = list.first) {
+                    return first;
+                }
+                else {
+                    assert (is Other null);
+                    return null;
+                }
+            }
+            else {
+                return outer.first;
+            }
+        }
+        
+        shared actual [Element|Other*] rest { 
+            if (list.empty) {
+                return outer.rest;
+            }
+            else {
+                return outer.prepend(list.rest);
+            } 
+        }
+                
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            value size = list.size;
+            if (index < size) {
+                return list.getFromFirst(index);
+            }
+            else {
+                return outer.getFromFirst(index-size);
+            }
+        }
+        
+        iterator() => ChainedIterator(list,outer);
+        
+    }
+
     
 }
 

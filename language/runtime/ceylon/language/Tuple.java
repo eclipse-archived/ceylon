@@ -617,13 +617,12 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Tuple<Element|Other,First,ceylon.language::Sequential<Element|Other>>")
     public <Other> Tuple<java.lang.Object,First,Sequential<?>>
     append(@Ignore TypeDescriptor $reifiedOther, 
-           @Name("elements") Iterable<? extends Other, ?> es) {
-        Sequential<?> sequence = es.sequence();
+           @Name("elements") List<? extends Other> es) {
         int length = this.array.length;
-        java.lang.Object[] array = new java.lang.Object[length+Util.toInt(sequence.getSize())];
+        java.lang.Object[] array = new java.lang.Object[length+Util.toInt(es.getSize())];
         arraycopy(this.array, 0, array, 0, length);
         int ii = length;
-        Iterator<?> iter = sequence.iterator();
+        Iterator<?> iter = es.iterator();
         java.lang.Object o;
         while (!((o = iter.next()) instanceof Finished)) {
             array[ii++] = o;

@@ -28,6 +28,12 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] repeat(Integer times);
     
+    shared actual formal [Element|Other*] append<Other>
+            (List<Other> elements);
+    
+    shared actual formal [Element|Other*] prepend<Other>
+            (List<Other> elements);
+    
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
      sequence is shorter than the given length, return this 

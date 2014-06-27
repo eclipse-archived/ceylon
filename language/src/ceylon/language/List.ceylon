@@ -268,17 +268,6 @@ shared interface List<out Element>
     shared default List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
     
-    "Return a list formed by extending this list with the 
-     elements of the given [[list]].
-     
-     This is a lazy operation returning a view over this 
-     list and the given list."
-    see (`function append`,
-         `function chain`,
-         `function patch`)
-    shared default List<Element|Other> extend<Other>(List<Other> list) 
-            => Extend(list);
-    
     "Return a list formed by patching the given [[list]] 
      in place of a segment of this list identified by the
      given [[starting index|from]] and [[length]].
@@ -302,7 +291,6 @@ shared interface List<out Element>
        `{-2,-1,0,1,2}`.'
      
      If `length<0`, return this list."
-    see (`function extend`)
     shared default List<Element|Other> patch<Other>(
         "The list of new elements."
         List<Other> list,
@@ -666,25 +654,29 @@ shared interface List<out Element>
      by the given [[elements]], in the order in which they 
      occur in the given stream.
      
-     This is an eager operation."
-    see (`function extend`, 
-        `function chain`,
-        `function withTrailing`,
-        `function concatenate`)
-    shared default [Element|Other*] append<Other>
-                            ({Other*} elements) 
-            => (this chain elements).sequence();
+     This is a lazy operation returning a view over this 
+     list and the given list."
+    see (`function prepend`,
+         `function withTrailing`,
+         `function chain`,
+         `function concatenate`)
+    shared default List<Element|Other> append<Other>
+                            (List<Other> elements)
+            => Append(elements);
     
     "Return a sequence containing the given [[elements]], in 
      the order in which they occur in the given stream,
      followed by the elements of this list, in the order in 
      which they occur in this list.
      
-     This is an eager operation."
-    see (`function withLeading`)
-    shared default [Element|Other*] prepend<Other>
-                            ({Other*} elements) 
-            => (elements chain this).sequence();
+     This is a lazy operation returning a view over this 
+     list and the given list."
+    see (`function append`,
+         `function withLeading`,
+         `function concatenate`)
+    shared default List<Element|Other> prepend<Other>
+                            (List<Other> elements)
+            => Prepend(elements);
     
     Element getElement(Integer index) {
         value element = getFromFirst(index);
@@ -919,7 +911,7 @@ shared interface List<out Element>
         
     }
     
-    class Extend<Other>(List<Other> list)
+    class Append<Other>(List<Other> list)
             extends Object()
             satisfies List<Element|Other> {
         
@@ -940,9 +932,36 @@ shared interface List<out Element>
             }
         }
         
-        clone() => outer.clone().Extend(list.clone());
+        clone() => outer.clone().Append(list.clone());
         
         iterator() => ChainedIterator(outer,list);
+        
+    }
+    
+    class Prepend<Other>(List<Other> list)
+            extends Object()
+            satisfies List<Element|Other> {
+        
+        size => outer.size+list.size;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual <Element|Other>? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index>size) {
+                return outer.getFromFirst(index-size);
+            }
+            else {
+                return list.getFromFirst(index);
+            }
+        }
+        
+        clone() => outer.clone().Prepend(list.clone());
+        
+        iterator() => ChainedIterator(list,outer);
         
     }
     

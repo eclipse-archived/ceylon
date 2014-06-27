@@ -161,9 +161,7 @@ shared void lists() {
     
     check ((1..5).append(4..1)==[1,2,3,4,5,4,3,2,1], "list append");
     check ("hello ".append("world")=="hello world".sequence(), "string append");
-    check ((1..5).extend(4..1)==[1,2,3,4,5,4,3,2,1], "list extend");
-    check ("hello ".extend("world")=="hello world".sequence(), "string extend");
-    check ((1..5).prepend(5..0)==[5,4,3,2,1,0,1,2,3,4,5], "list prepend");
+    check ((1..5).prepend(5..0).sequence()==[5,4,3,2,1,0,1,2,3,4,5], "list prepend ``(1..5).prepend(5..0)``");
     
     check((0..10).slice(5)==[[0,1,2,3,4],[5,6,7,8,9,10]], "range slice");
     value chars = "foobar" of List<Character>;
