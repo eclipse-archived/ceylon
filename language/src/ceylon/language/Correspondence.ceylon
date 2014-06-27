@@ -16,7 +16,9 @@
  The `get()` operation and item operator result in an
  optional type, to reflect the possibility that there may be
  no item for the given key."
-see (`interface Map`, `interface List`, `interface Category`)
+see (`interface Map`, 
+     `interface List`, 
+     `interface Category`)
 by ("Gavin")
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Object {
