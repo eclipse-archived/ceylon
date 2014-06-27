@@ -533,7 +533,7 @@ public final class String
                         null;
         }
         else {
-            return super.firstInclusion(sublist);
+            return super.lastInclusion(sublist);
         }
     }
     
