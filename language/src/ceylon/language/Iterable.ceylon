@@ -786,36 +786,23 @@ shared interface Iterable<out Element, out Absent=Null>
     }*/
     
     "Produces a stream with a given [[initial element|head]], 
-     followed by the elements of this stream."
-    shared default {Element|Other+} follow<Other>(Other head) {
-        //TODO: should be {leading,*outer} when that is efficient
-        object cons satisfies {Element|Other+} {
-            shared actual Iterator<Element|Other> iterator() {
-                value iter = outer.iterator();
-                object iterator satisfies Iterator<Element|Other> {
-                    variable Boolean first = true;
-                    shared actual Element|Other|Finished next() {
-                        if (first) {
-                            first=false;
-                            return head;
-                        }
-                        else {
-                            return iter.next();
-                        }
-                    }
-                    string => outer.string + ".iterator()";
-                }
-                return iterator;
-            }
-        }
-        return cons;
-    }
+     followed by the elements of this stream, in the order 
+     in which they occur in this stream. 
+     
+     Note that the expression `stream.follow(head)` may be 
+     written as:
+     
+         { head, *stream }"
+    see (`function chain`)
+    shared default {Element|Other+} follow<Other>(Other head) 
+            => { head, *this };
     
     "The elements of this stream, in the order in which they 
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
      in the given stream."
-    see (`function expand`, `function List.append`)
+    see (`function expand`, 
+         `function List.append`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
