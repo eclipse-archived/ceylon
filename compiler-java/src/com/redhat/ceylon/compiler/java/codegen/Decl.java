@@ -558,7 +558,7 @@ public class Decl {
         return false;
     }
 
-    private static boolean isValueTypeDecl(ProducedType type) {
+    public static boolean isValueTypeDecl(ProducedType type) {
         if(type == null)
             return false;
         type = type.resolveAliases();

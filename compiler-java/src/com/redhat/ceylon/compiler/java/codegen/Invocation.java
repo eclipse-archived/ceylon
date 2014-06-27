@@ -46,6 +46,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -145,6 +147,16 @@ abstract class Invocation {
         return onValueType;
     }
     
+    protected ProducedType getParameterTypeForValueType(ProducedReference producedReference, Parameter param) {
+        // we need to find the interface for this method
+        TypedDeclaration method = (TypedDeclaration) param.getModel().getContainer();
+        TypeDeclaration container = (TypeDeclaration) method.getContainer();
+        ProducedType qualifyingType = producedReference.getQualifyingType();
+        ProducedType supertype = qualifyingType.getSupertype(container);
+        return param.getType().substitute(supertype.getTypeArguments());
+    }
+    
+
     protected boolean isParameterRaw(Parameter param){
         ProducedType type = param.getType();
         return type == null ? false : type.isRaw();
@@ -650,7 +662,7 @@ abstract class DirectInvocation extends SimpleInvocation {
     @Override
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
         Parameter param = getParameter(argIndex);
-        if (isOnValueType() && Decl.isValueTypeDecl(param.getModel())) {
+        if (isOnValueType() && Decl.isValueTypeDecl(getParameterTypeForValueType(producedReference, param))) {
             return BoxingStrategy.UNBOXED;
         }
         return CodegenUtil.getBoxingStrategy(param.getModel());
@@ -1420,7 +1432,7 @@ class NamedArgumentInvocation extends Invocation {
     
     private BoxingStrategy getNamedParameterBoxingStrategy(Parameter param) {
         if (param != null) {
-            if (isOnValueType() && Decl.isValueTypeDecl(param.getModel())) {
+            if (isOnValueType() && Decl.isValueTypeDecl(getParameterTypeForValueType(producedReference, param))) {
                 return BoxingStrategy.UNBOXED;
             }
             return CodegenUtil.getBoxingStrategy(param.getModel());
