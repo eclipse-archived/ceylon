@@ -20,11 +20,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
 
 public class MetamodelHelper {
 
-    /** Generate the call to the corresponding open type for the specified literal. */
-    static void generateOpenType(final Tree.MetaLiteral that, final GenerateJsVisitor gen) {
-        final Declaration d = that.getDeclaration();
+    static void generateOpenType(final Node that, Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
-        gen.out(GenerateJsVisitor.getClAlias(), "$init$Open");
+        if (d instanceof TypeParameter == false) {
+            gen.out(GenerateJsVisitor.getClAlias(), "$init$Open");
+        }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             gen.out("Interface");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
@@ -38,7 +38,9 @@ public class MetamodelHelper {
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
             gen.out("Union");
         } else if (d instanceof TypeParameter) {
-            gen.out("TypeParam");
+            generateOpenType(that, ((TypeParameter)d).getDeclaration(),gen);
+            gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
+            return;
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
@@ -58,6 +60,7 @@ public class MetamodelHelper {
             gen.out(gen.getNames().name(d), ")");
             return;
         }
+        //TODO optimize for local declarations
         gen.out("()(", GenerateJsVisitor.getClAlias(), "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),");

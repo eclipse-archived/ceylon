@@ -18,6 +18,7 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.js.TypeUtils.RuntimeMetamodelAnnotationGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -656,17 +657,21 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tree.TypeAliasDeclaration that) {
+    public void visit(final Tree.TypeAliasDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
-        TypeAlias d = that.getDeclarationModel();
+        final TypeAlias d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, false);
         out(";", tname, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(that, d, this);
+        TypeUtils.encodeForRuntime(that, d, this, new RuntimeMetamodelAnnotationGenerator() {
+            @Override public void generateAnnotations() {
+                TypeUtils.outputAnnotationsFunction(that.getAnnotationList(), d, GenerateJsVisitor.this);
+            }
+        });
         out(";return ", tname, ";}");
         endLine();
         share(d);
@@ -3186,9 +3191,9 @@ public class GenerateJsVisitor extends Visitor
                 that.getConditionList().getLocation()).append(")");
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if(!");
         //escape
-        out(") {throw ", clAlias, "wrapexc(", clAlias, "AssertionError(\"",
+        out("){throw ", clAlias, "wrapexc(", clAlias, "AssertionError(\"",
                 escapeStringLiteral(sb.toString()), "\"),'",that.getLocation(), "','",
-                that.getUnit().getFilename(), "'); }");
+                that.getUnit().getFilename(), "');}");
         endLine();
     }
 
@@ -3217,7 +3222,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.TypeLiteral that) {
         //Can be an alias, class, interface or type parameter
         if (that.getWantsDeclaration()) {
-            MetamodelHelper.generateOpenType(that, this);
+            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this);
         } else {
             MetamodelHelper.generateClosedTypeLiteral(that, this);
         }
@@ -3226,7 +3231,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tree.MemberLiteral that) {
         if (that.getWantsDeclaration()) {
-            MetamodelHelper.generateOpenType(that, this);
+            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this);
         } else {
             MetamodelHelper.generateMemberLiteral(that, this);
         }
