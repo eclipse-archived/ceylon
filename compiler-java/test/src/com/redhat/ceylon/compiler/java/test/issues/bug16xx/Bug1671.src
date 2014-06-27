@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1671_ {
+    
+    private bug1671_() {
+    }
+    
+    static void bug1671() {
+        .ceylon.language.Integer.plus(3L, 2L);
+        final boolean a = .ceylon.language.Integer.divides(3L, 100L);
+        final boolean b = (
+            let
+            {
+                long arg$0$callable$ = 3L;
+                long arg$0$0 = 100L;
+            }
+            returning .ceylon.language.Integer.divides(arg$0$callable$, arg$0$0);
+        );
+        new .ceylon.language.Integer(2L);
+        new .ceylon.language.String(.ceylon.language.String.instance("a"));
+        .ceylon.language.String.<.ceylon.language.String>fold(.ceylon.language.String.$TypeDescriptor$, "ab", .ceylon.language.String.instance("+"), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "String(String, Character)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String r = ((.ceylon.language.String)$param$0).toString();
+                final int c = ((.ceylon.language.Character)$param$1).intValue();
+                return .ceylon.language.String.instance(r + .ceylon.language.Character.toString(c));
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1671_.bug1671();
+    }
+}
