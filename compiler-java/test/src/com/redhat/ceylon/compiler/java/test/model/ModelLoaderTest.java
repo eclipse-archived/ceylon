@@ -422,6 +422,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
             Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
             Assert.assertEquals(name+" [sealed]", validDeclaration.isSealed(), modelDeclaration.isSealed());
+            Assert.assertEquals(name+" [dynamic]", validDeclaration.isDynamic(), modelDeclaration.isDynamic());
             // extended type
             if(validDeclaration.getExtendedTypeDeclaration() == null)
                 Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);

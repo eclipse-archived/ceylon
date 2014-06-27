@@ -25,3 +25,4 @@ void nonSharedInterfaceMethod(NonSharedInterface iface){}
 FinalKlass finalKlass = FinalKlass();
 SealedKlass sealedKlass = SealedKlass();
 void sealedInterfaceMethod(SealedInterface iface){}
+void dynamicInterfaceMethod(DynamicInterface iface){}
