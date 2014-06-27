@@ -192,8 +192,6 @@ shared void testIterables() {
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence()=={1,2,3,4,5}.sequence(), "Sequence.coalesced");
     check(String({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence())=="HL", "Iterable.coalesced");
-    print(Array{1,2,3,null,5}.coalesced);
-    print({1,2,3,null,5}.coalesced);
     check(Array{1,2,3,null,5}.coalesced.sequence()=={1,2,3,5}.sequence(), "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
@@ -264,8 +262,6 @@ shared void testIterables() {
 	value ix = mapPairs(plus<Integer>, ia, ia);
 	{Integer+} iy = mapPairs(plus<Integer>, ib, ib);
 	{Integer+} iz = mapPairs(plus<Integer>, ic, ic);
-	print(ix);
-	print(iy);
     check(ix.string=="{}", "Iterable.string [1]");
     check(iy.string=="{ 2, 4, 6, 8, 10 }", "Iterable.string [2]");
     check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
