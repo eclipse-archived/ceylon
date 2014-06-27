@@ -479,4 +479,7 @@ shared void strings() {
     check(!"".any(Character.digit), "empty string any");
     check(!"asd".any(Character.digit), "string any");
     check("asd1".any(Character.digit), "string any");
+    
+    check("hello world".paired.map(([Character, Character] element) => String { element[0], element[1] }).sequence()==
+    ["he", "el", "ll", "lo", "o ", " w", "wo", "or", "rl", "ld"], "string paired");
 }
