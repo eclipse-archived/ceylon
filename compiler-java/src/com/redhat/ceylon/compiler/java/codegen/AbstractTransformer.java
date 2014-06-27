@@ -2433,6 +2433,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtCeylonType, annotationArgs);
     }
 
+    List<JCAnnotation> makeAtDynamic() {
+        return makeModelAnnotation(syms().ceylonAtDynamicType);
+    }
+
     /** Returns a ListBuffer with assignment expressions for the doc, license and by arguments, as well as name,
      * to be used in an annotation which requires them (such as Module and Package) */
     ListBuffer<JCExpression> getLicenseAuthorsDocAnnotationArguments(String name, java.util.List<Annotation> anns) {

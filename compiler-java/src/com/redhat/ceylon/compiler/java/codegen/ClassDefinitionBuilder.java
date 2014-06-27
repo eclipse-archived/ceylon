@@ -715,4 +715,10 @@ public class ClassDefinitionBuilder
         getTopLevelBuilder().isBroken = true;
         return this;
     }
+
+
+    public void isDynamic(boolean dynamic) {
+        if(dynamic)
+            annotations(gen.makeAtDynamic());
+    }
 }

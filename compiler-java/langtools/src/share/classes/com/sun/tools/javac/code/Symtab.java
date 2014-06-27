@@ -211,6 +211,7 @@ public class Symtab {
     public  Type ceylonGetterBooleanType;
     
     public final Type ceylonAtCeylonType;
+    public final Type ceylonAtDynamicType;
     public final Type ceylonAtModuleType;
     public final Type ceylonAtPackageType;
     public final Type ceylonAtImportType;
@@ -612,6 +613,7 @@ public class Symtab {
         }
         
         ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.java.metadata.Ceylon");
+        ceylonAtDynamicType = enterClass("com.redhat.ceylon.compiler.java.metadata.Dynamic");
         ceylonAtImportType = enterClass("com.redhat.ceylon.compiler.java.metadata.Import");
         ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.java.metadata.Module");
         ceylonAtPackageType = enterClass("com.redhat.ceylon.compiler.java.metadata.Package");

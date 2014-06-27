@@ -184,6 +184,7 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
                 classBuilder.isAlias(true);
             }
+            classBuilder.isDynamic(model.isDynamic());
         }
 
         // make sure we set the container in case we move it out
