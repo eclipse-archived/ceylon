@@ -1,10 +1,10 @@
 function (i,e) {
+  if (e.size===0)return true;
   if (is$(e, {t:$_String})) {
-    //TODO: handle codepoints correctly
-    return this.indexOf(e)==i;
+    if (i<0 || i>this.size-e.size)return false;
+    return cmpSubString(this,e,i);
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].includesAt(i,e);
+    return List.$$.prototype.includesAt.call(this,i,e);
   }
 }

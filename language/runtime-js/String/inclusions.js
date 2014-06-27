@@ -1,16 +1,13 @@
 function (e) {
+  if (e.size===0) return measure(0,this.size,{t:Integer});
   if (is$(e, {t:$_String})) {
-    //TODO: handle codepoints
     var indexes = [];
-    var i=0;
-    while ((i=this.indexOf(e,i))>=0) {
-      indexes.push(i);
-      i+=e.length;
+    for (var i=0; i < this.size-e.size; i++) {
+      if (cmpSubString(this, e, i))indexes.push(i);
     }
     return indexes.reifyCeylonType({t:Integer});
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].inclusions(e);
+    return List.$$.prototype.inclusions.call(this,e);
   }
 }

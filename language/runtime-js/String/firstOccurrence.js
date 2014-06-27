@@ -1,4 +1,5 @@
 function(subc) {
+    if (!is$(subc, {t:Character})) return null;
     for (var i=0, count=0; i<this.length; count++) {
         var cp = this.charCodeAt(i++);
         if (((cp&0xfc00) === 0xd800) && i<this.length) {

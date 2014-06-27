@@ -1,11 +1,12 @@
 function (e) {
+  if (e.size===0) return this.size;
   if (is$(e, {t:$_String})) {
-    //TODO: handle codepoints correctly
-    var i = this.lastIndexOf(e);
-    return i<=0 ? null : i;
+    for (var i=this.size-e.size; i>=0; i--) {
+      if (cmpSubString(this,e,i))return i;
+    }
+    return null;
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].lastInclusion(e);
+    return List.$$.prototype.lastInclusion.call(this,e);
   }
 }

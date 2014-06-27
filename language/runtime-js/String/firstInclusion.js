@@ -1,11 +1,12 @@
 function (e) {
+  if (e.size===0)return 0;
   if (is$(e, {t:$_String})) {
-    //TODO: handle codepoints correctly
-    var i = this.indexOf(e);
-    return i<=0 ? null : i;
+    for (var i=0; i < this.size-e.size; i++) {
+      if (cmpSubString(this,e,i))return i;
+    }
+    return null;
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].firstInclusion(e);
+    return List.$$.prototype.firstInclusion.call(this,e);
   }
 }

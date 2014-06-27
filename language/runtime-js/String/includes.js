@@ -1,9 +1,9 @@
 function (e) {
+  if (e.size===0)return true;
   if (is$(e, {t:$_String})) {
-    return this.indexOf(e)>=0;
+    return this.firstInclusion(e) >= 0;
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].includes(e);
+    return List.$$.prototype.includes.call(this,e);
   }
 }
