@@ -3526,7 +3526,10 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
-            return makeErroneous(expr, "compiler bug: " + expr.getDeclaration().getName() + " has a null target");
+            return makeErroneous(expr, "compiler bug: "
+                    // make sure we don't die of a missing declaration too
+                    + (expr.getDeclaration() != null ? expr.getDeclaration().getName() : expr)
+                    + " has a null target");
         // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
         // only useful for the typechecker resolving
         Tree.Primary primary = expr.getPrimary();
