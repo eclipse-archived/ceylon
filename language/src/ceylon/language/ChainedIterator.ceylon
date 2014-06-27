@@ -10,17 +10,14 @@ class ChainedIterator<out Element,out Other>
     variable value more = true;
     
     shared actual Element|Other|Finished next() {
-        variable Element|Other|Finished e = iter.next();
-        if (is Finished f=e) {
-            if (more) {
-                iter = second.iterator();
-                more = false;
-                e = iter.next();
-            }
+        variable value element = iter.next();
+        if (more && element is Finished) {
+            iter = second.iterator();
+            more = false;
+            element = iter.next();
         }
-        return e;
+        return element;
     }
     
-    shared actual String string 
-            => "(``first`` chain ``second``).iterator()";
+    string => "(``first`` chain ``second``).iterator()";
 }
