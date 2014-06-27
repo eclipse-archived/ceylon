@@ -69,4 +69,9 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     protected boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration) {
         return transformer.isWideningTypeDecl(typedDeclaration);
     }
+
+    @Override
+    protected boolean hasSubstitutedBounds(ProducedType type) {
+        return transformer.hasSubstitutedBounds(type);
+    }
 }

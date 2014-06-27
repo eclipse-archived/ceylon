@@ -62,6 +62,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean willEraseToObject(ProducedType type);
     protected abstract boolean isRaw(ProducedType type);
     protected abstract boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration);
+    protected abstract boolean hasSubstitutedBounds(ProducedType type);
 
     /**
      * This is used to keep track of some optimisations we do, such as inlining the following shortcuts:
@@ -113,7 +114,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         ProducedType type = decl.getType();
         if(type != null){
-            if(hasErasure(type)){
+            if(hasErasure(type) || hasSubstitutedBounds(type)){
                 decl.setTypeErased(true);
             }
             if(decl.isActual()

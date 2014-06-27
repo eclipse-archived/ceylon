@@ -2043,6 +2043,32 @@ public abstract class AbstractTransformer implements Transformation {
         return typeArgs;
     }
 
+    boolean hasSubstitutedBounds(ProducedType pt){
+        TypeDeclaration declaration = pt.getDeclaration();
+        java.util.List<TypeParameter> tps = declaration.getTypeParameters();
+        Map<TypeParameter, ProducedType> tas = pt.getTypeArguments();
+        boolean isCallable = isCeylonCallable(pt);
+        for(TypeParameter tp : tps){
+            ProducedType ta = tas.get(tp);
+            // error recovery
+            if(ta == null)
+                continue;
+            if(!tp.getSatisfiedTypes().isEmpty()){
+                for(ProducedType bound : tp.getSatisfiedTypes()){
+                    bound = bound.substitute(tas);
+                    if(expressionGen().needsCast(ta, bound, false, false, false))
+                        return true;
+                }
+            }
+            if(hasSubstitutedBounds(ta))
+                return true;
+            // Callable ignores type parameters after the first
+            if(isCallable)
+                break;
+        }
+        return false;
+    }
+
     protected ProducedType getNonNullType(ProducedType pt) {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
