@@ -343,7 +343,7 @@ shared interface Iterable<out Element, out Absent=Null>
          x.scan(z, f).first == {}.fold(z, f) == z
          (1..4).scan(0, plus<Integer>) == {0, 1, 3, 6, 10}"
     see (`function fold`)
-    {Result+} scan<Result>(Result initial,
+    shared default {Result+} scan<Result>(Result initial,
             "The accumulating function that accepts
              the running total and the next element."
             Result accumulating(Result partial, Element element)) {
