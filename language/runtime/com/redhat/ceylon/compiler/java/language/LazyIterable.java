@@ -48,6 +48,11 @@ extends BaseIterable<Element, Absent>{
 	        	return result;
 	        }
 	    }
+	    
+	    @Override
+	    public String toString() {
+	    	return LazyIterable.this.toString() + ".iterator()";
+	    }
     }
     
 	private final TypeDescriptor $reifiedElement;

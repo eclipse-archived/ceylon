@@ -2,7 +2,8 @@
  [[Iterable]]s, as if they were chained together."
 see (`function Iterable.chain`)
 by ("Enrique Zamudio")
-class ChainedIterator<out Element,out Other>({Element*} first, {Other*} second) 
+class ChainedIterator<out Element,out Other>
+		        ({Element*} first, {Other*} second) 
         satisfies Iterator<Element|Other> {
     
     variable Iterator<Element|Other> iter = first.iterator();
@@ -20,5 +21,6 @@ class ChainedIterator<out Element,out Other>({Element*} first, {Other*} second)
         return e;
     }
     
-    shared actual String string => "ChainedIterator(``first.string``, ``second.string``)";
+    shared actual String string 
+            => "(``first`` chain ``second``).iterator()";
 }
