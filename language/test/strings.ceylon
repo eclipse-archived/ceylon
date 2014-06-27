@@ -23,13 +23,13 @@ shared void strings() {
     value hello = "hello";
     
     check(hello.includes("lo"), "string includes string");
-    //check(hello.includes("lo".sequence()), "string includes list");
-    check(hello.includesAt(3,"lo"), "string includesAt string");
-    //check(hello.includesAt(3,"lo".sequence()), "string includesAt list");
+    check(hello.includes(['l','o']), "string includes list");
+    check(hello.includesAt(3,"lo"), "string includesAt string 1");
+    check(hello.includesAt(3,['l','o']), "string includesAt list 1");
     check(!hello.includesAt(2,"lo"), "string not includesAt string");
-    //check(!hello.includesAt(2,"lo".sequence()), "string not includesAt list");
-    check(hello.includesAt(0,"hell"), "string includesAt string");
-    //check(hello.includesAt(0,"hell".sequence()), "string includesAt list");
+    check(!hello.includesAt(2,['l','o']), "string not includesAt list");
+    check(hello.includesAt(0,"hell"), "string includesAt string 2");
+    check(hello.includesAt(0,['h','e','l','l']), "string includesAt list 2");
     
     check(hello.occurs('l'), "string occurs");
     check(!hello.occurs('x'), "not string occurs");
@@ -164,11 +164,31 @@ shared void strings() {
     if (exists nocc = hello.firstInclusion("x")) {
         fail("string no first occurrence");
     }
+    if (exists occ = hello.firstInclusion(['l', 'l'])) {
+        check(occ==2, "string.firstInclusion{l,l} ``occ`` expected 2");
+    } else {
+        fail("String.firstInclusion{l,l} not found");
+    }
+    if (exists nocc = hello.firstInclusion(['x'])) {
+        fail("string no first occurrence");
+    }
     if (exists locc = "hello hello".lastInclusion("hell")) {
         check(locc==6, "string last inclusion ``locc`` expected 6");
     }
     else {
         fail("string last inclusion not found");
+    }
+    if (exists locc = "hello hello".lastInclusion(['h', 'e', 'l', 'l'])) {
+        check(locc==6, "string last inclusion ``locc`` expected 6");
+    }
+    else {
+        fail("string last inclusion not found");
+    }
+    if (exists nlocc = "hello".lastInclusion("le")) {
+        fail("String.lastInclusion(le) should not be found");
+    }
+    if (exists nlocc = "hello".lastInclusion(['l','e'])) {
+        fail("String.lastInclusion(l,e) should not be found");
     }
         
     if (exists occ = hello.firstOccurrence('l')) {
@@ -482,4 +502,5 @@ shared void strings() {
     
     check("hello world".paired.map(([Character, Character] element) => String { element[0], element[1] }).sequence()==
     ["he", "el", "ll", "lo", "o ", " w", "wo", "or", "rl", "ld"], "string paired");
+    
 }
