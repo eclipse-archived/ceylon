@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+public abstract class Bug1682 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1682() {
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.Formal Formal$new$();
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.Formal.class));
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Self$new$();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Self$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public final class Self {
+        
+        private Self() {
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682 Alias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public final class Alias {
+        
+        private Alias() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.class);
+}
