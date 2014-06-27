@@ -28,9 +28,6 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] reverse();
     
-    "Returns a sequence formed by repeating the elements of 
-     this sequence the given number of times, or an empty 
-     sequence if `times<=0`."
     shared actual formal Element[] repeat(Integer times);
     
     "Select the first elements of this sequence, returning 

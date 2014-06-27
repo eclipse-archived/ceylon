@@ -135,8 +135,18 @@ shared interface List<out Element>
      This is a lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
+    "A list containing the elements of this list repeated 
+     the [[given number of times|times]], or an empty list
+     if `times<=0`. For every `index` of a repeated `list`:
+     
+         list.repeat(n)[index]==list[index%n]
+     
+     This is a lazy operation returning a view of this list."
+    shared actual default List<Element> repeat(Integer times) 
+            => Repeat(times);
+    
     "A list containing the elements of this list in reverse 
-     order. For every `index` of a `list`:
+     order. For every `index` of a reversed `list`:
      
          list.reversed[index]==list[size-1-index]
      
@@ -149,7 +159,7 @@ shared interface List<out Element>
             => reversed.sequence();
     
     shared actual default List<Element> clone() 
-            => Array(this);
+            => sequence();
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
@@ -627,7 +637,7 @@ shared interface List<out Element>
      
      This is an eager operation."
     shared default [List<Element>,List<Element>] slice
-    (Integer index)
+            (Integer index)
             => [this[...index-1], this[index...]];
     
     "Returns a new `List` that starts with the specified
@@ -937,6 +947,35 @@ shared interface List<out Element>
         clone() => outer.clone().Extend(list.clone());
         
         iterator() => ChainedIterator(outer,list);
+        
+    }
+    
+    class Repeat(Integer times)
+            extends Object()
+            satisfies List<Element> {
+        
+        size => outer.size*times;
+        
+        shared actual Integer? lastIndex {
+            value size = this.size;
+            return size>0 then size-1;
+        }
+        
+        shared actual Element? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index<size*times) {
+                return outer.getFromFirst(index%size);
+            }
+            else {
+                return null;
+            }
+        }
+        
+        clone() => outer.clone().Repeat(times);
+        
+        iterator() => CycledIterator(outer,times);
+        
+        string => "(``outer.string``).repeat(``times``)";
         
     }
     

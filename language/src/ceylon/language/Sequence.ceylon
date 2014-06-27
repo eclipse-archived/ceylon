@@ -68,6 +68,19 @@ shared sealed interface Sequence<out Element>
     
     shared default actual [Element+] reverse() => Reverse();
     
+    shared default actual Element[] repeat(Integer times) 
+            => times<=0 then [] else Repeat(times);
+    
+    /*shared actual default Element[] repeat(Integer times) {
+        value resultSize = size*times;
+        value array = arrayOfSize(resultSize, first);
+        variable value i = 1;
+        while (i < resultSize) {
+            array.set(i, getElement(i%size));
+        }
+        return ArraySequence(array); 
+    }*/
+    
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 
      partial order upon the elements."
@@ -139,16 +152,6 @@ shared sealed interface Sequence<out Element>
     shared default actual Element? findLast
                 (Boolean selecting(Element&Object elem))
             => (super of List<Element>).findLast(selecting);
-    
-    shared actual default Element[] repeat(Integer times) {
-        value resultSize = size*times;
-        value array = arrayOfSize(resultSize, first);
-        variable value i = 1;
-        while (i < resultSize) {
-            array.set(i, getElement(i%size));
-        }
-        return ArraySequence(array); 
-    }
     
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
@@ -225,6 +228,43 @@ shared sealed interface Sequence<out Element>
             return iterator;
         }
 
+    }
+    
+    class Repeat(Integer times)
+            extends Object()
+            satisfies [Element+] {
+        
+        assert (times>0);
+        
+        last => outer.last;
+        first => outer.first;
+        size => outer.size*times;
+        rest => sublistFrom(1).sequence(); //TODO!
+        
+        shared actual Element? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index<size*times) {
+                return outer.getFromFirst(index%size);
+            }
+            else {
+                return null;
+            }
+        }
+        
+        iterator() => CycledIterator(outer,times);
+        
+        measure(Integer from, Integer length) 
+                => sublist(from, from+length-1).sequence();
+        
+        span(Integer from, Integer to) 
+                => sublist(from, to).sequence();
+        
+        spanFrom(Integer from) 
+                => sublistFrom(from).sequence();
+        
+        spanTo(Integer to) 
+                => sublistTo(to).sequence();
+        
     }
     
 }

@@ -402,15 +402,6 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces a list formed by repeating the elements of 
-     this stream the [[given number of times|times]], or an 
-     empty list if `times<=0`. 
-     
-     This operation is an eager counterpart to [[cycle]]."
-    see (`function cycle`)
-    shared default List<Element> repeat(Integer times)
-            => cycle(times).sequence();
-    
     "Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, sorted according to the given 
      [[comparator function|comparing]] imposing a partial 
@@ -418,9 +409,9 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For convenience, the functions [[byIncreasing]] and 
      [[byDecreasing]] produce suitable comparator functions:
-     
-         \"Hello World!\".sort(byIncreasing(Character.lowercased))
-     
+    
+        \"Hello World!\".sort(byIncreasing(Character.lowercased))
+    
      This operation is eager by nature."
     see (`function byIncreasing`, 
          `function byDecreasing`)
@@ -655,6 +646,20 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
+    "Produces a stream formed by repeating the elements of 
+     this stream the [[given number of times|times]], or an 
+     empty stream if `times<=0`."
+    see (`value cycled`)
+    shared default {Element*} repeat(Integer times) {
+        object iterable satisfies {Element*} {
+            value orig => outer;
+            size => times * outer.size;
+            string => "(``outer.string``).repeat(``times``)";
+            iterator() => CycledIterator(outer,times);
+        }
+        return iterable;
+    }
+    
     "Produces a stream containing every [[step]]th element 
      of this stream. If the step size is `1`, the resulting
      stream contains the same elements as this stream.
@@ -823,7 +828,7 @@ shared interface Iterable<out Element, out Absent=Null>
          {6, 9}.cycled.taking(5)
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
-    see (`function cycle`)
+    see (`function repeat`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -853,45 +858,7 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produces a stream formed by repeating the elements of 
-     this stream the [[given number of times|times]], or an 
-     empty stream if `times<=0`."
-    see (`value cycled`, 
-         `function repeat`)
-    shared default Iterable<Element,Absent> cycle(Integer times) {
-        object iterable satisfies Iterable<Element,Absent> {
-            value orig => outer;
-            size => times * outer.size;
-            string => "(``outer.string``).cycle(``times``)";
-            shared actual Iterator<Element> iterator() {
-                object iterator satisfies Iterator<Element> {
-                    variable Iterator<Element> iter = emptyIterator;
-                    variable Integer count=0;
-                    shared actual Element|Finished next() {
-                        if (!is Finished next = iter.next()) {
-                            return next;
-                        }
-                        else {
-                            if (count<times) {
-                                count++;
-                                iter = orig.iterator();
-                            }
-                            else {
-                                iter = emptyIterator;
-                            }
-                            return iter.next();
-                        }
-                        
-                    }
-                    string => outer.string + ".iterator()";
-                }
-                return iterator;
-            }
-        }
-        return iterable;
-    }
-    
-    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
+   "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
      stream, or the string `\"{}\"` if this stream is empty. 

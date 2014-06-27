@@ -93,8 +93,6 @@ shared interface Empty of e
             (Default defaultValue) 
             => this;
     
-    shared actual [] cycle(Integer times) => this;
-    
     shared actual [] repeat(Integer times) => this;
     
     shared actual [] cycled => this;

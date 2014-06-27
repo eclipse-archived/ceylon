@@ -1679,12 +1679,6 @@ public final class String
         return instance(value).getCycled();
     }
     
-    @Ignore
-    public static Iterable<? extends Character,?> 
-    cycle(java.lang.String value, long times) {
-        return instance(value).cycle(times);
-    }
-    
     @Override
     @Ignore
     public TypeDescriptor $getType$() {

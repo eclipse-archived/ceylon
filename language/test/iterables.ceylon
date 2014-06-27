@@ -282,7 +282,7 @@ shared void testIterables() {
     check({null, "foo", "bar", null}.defaultNullElements(0).sequence()=={0, "foo", "bar", 0}.sequence(), "defaultNullElements [1]");
     check({"foo", null, "bar"}.defaultNullElements("-").sequence()=={"foo", "-", "bar"}.sequence(), "defaultNullElements [2]");
     
-    check((0..2).cycle(3).fold(0,plus<Integer>)==9, "cycle");
+    check((0..2).repeat(3).fold(0,plus<Integer>)==9, "cycle");
 
     //more tests for fold/reduce
     check("1234".fold(5,(Integer a, Character b)=>a+b.integer-48)==15, "String.fold");
