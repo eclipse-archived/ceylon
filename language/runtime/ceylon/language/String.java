@@ -1121,7 +1121,8 @@ public final class String
         int len = value.length();
         if (times<=0 || len==0) return "";
         if (times==1) return value;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder(Util.toInt(len*times));
+        java.lang.StringBuilder builder = 
+        		new java.lang.StringBuilder(Util.toInt(len*times));
         for (int i=0; i<times; i++) {
             builder.append(value);
         }

@@ -4,21 +4,14 @@ by()
 tagged()
 shared void misc() {
     
-    function stringify(Character* chars) {
-        StringBuilder sb = StringBuilder();
-        for (c in chars) {
-            sb.appendCharacter(c);
-        }
-        return sb.string;
-    }
-    
-    check(stringify(*"hello")=="hello", "args");
-    check(stringify( 'h', 'i' )=="hi", "sequenced args");
-    //unusable check(stringify { chars="hello".characters; }=="hello", "named args");
-    // FIXME: Disabled until we fix the backend
-    //check(stringify { chars=['h', 'i']; }=="hi", "named sequenced args");
-    check(stringify()=="", "no args");
-    check(stringify{}=="", "no named args");
+    check(String("hello")=="hello", "args");
+    check(String { 'h', 'i' }=="hi", "sequenced args");
+    check(String { characters=['h', 'i']; }=="hi", "named sequenced args");
+    check(String({})=="", "empty arg");
+    check(String{}=="", "no named args");
+    check(concatenate()==[], "no args");
+    check(concatenate("hello", " ", "world")=="hello world".sequence(), "no args");
+    check(concatenate(*{"hello", " ", "world"})=="hello world".sequence(), "spread arg");
             
     variable Integer? x = 0;
     while (exists y = x) { 
@@ -41,7 +34,7 @@ shared void misc() {
     by(); tagged();
     concatenate();
     ",".join{};
-    StringBuilder().appendAll{};
+    //StringBuilder().appendAll{};
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();
     [1,2,3].items([]);
     [1,2,3].definesAny([]);

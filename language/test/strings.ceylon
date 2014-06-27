@@ -228,7 +228,7 @@ shared void strings() {
     
     check(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
     
-    value builder = StringBuilder();
+    /*value builder = StringBuilder();
     check(builder.string=="", "StringBuilder 1");
     builder.append("hello");
     check(builder.string=="hello", "StringBuilder 2");
@@ -254,7 +254,7 @@ shared void strings() {
 
     check(builder.append("so|me").size==5);
     check(builder.deleteInitial(2).string == "|me", "StringBuilder.deleteInitial");
-    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");
+    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");*/
 
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
@@ -309,7 +309,6 @@ shared void strings() {
     check("hello world".split('l'.equals, false, true).sequence()=={"he","ll","o wor", "l", "d"}.sequence(), "string split including [6]");
     //With strings
     check("hello world".split("eo".contains).sequence() == "hello world".split({'e','o'}.contains).sequence(), "string split chars [1]");
-    check("hello world".split("eo".contains).sequence() == "hello world".split(StringBuilder().append("o").append("e").string.contains).sequence(), "string split chars");
     variable value count=0;
     for (tok in "hello world goodbye".split()) {
         count++;
@@ -358,15 +357,14 @@ shared void strings() {
     check("sanitize.*me".replace(".*", "$")=="sanitize$me", "string replace regex js: [``"sanitize.*me".replace(".*", "$")``]");
     check("sanitize.*me".replaceFirst(".*", "$")=="sanitize$me", "string replaceFirst regex js: [``"sanitize.*me".replaceFirst(".*", "$")``]");
     
-    value nlb = StringBuilder();
+    iterate(hello);
+    
+    /*value nlb = StringBuilder();
     nlb.appendNewline();
     nlb.append("hello");
     nlb.appendNewline();
-
-    iterate(hello);
-    
     check(nlb.string.size==7, "string builder newline 1");
-    check(nlb.string=="\nhello\n", "string builder newline 2");
+    check(nlb.string=="\nhello\n", "string builder newline 2");*/
 
     value s1 = "as it should";
     value interp = "String part `` 1 `` interpolation `` 2 `` works`` s1 ``";

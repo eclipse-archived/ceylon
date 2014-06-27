@@ -1,7 +1,11 @@
 function(times) {
-    var sb = StringBuilder();
-    for (var i = 0; i < times; i++) {
-        sb.append(this);
-    }
-    return sb.string;
+    var x = this;
+    var s = "";
+    while (true) { 
+        if (times & 1) { s += x; } 
+        times >>= 1;
+        if (times) { x += x; }
+        else { break; }
+    } 
+    return s; 
 }

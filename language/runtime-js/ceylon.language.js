@@ -154,7 +154,7 @@ Nothing.$crtmm$=function(){return{ps:[],pa:1,mod:$CCMM$,d:['$','Nothing']};}
 //#COMPILE core_functions.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
 //#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow,impl/bases
 //#Anything
-//#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty,StringBuilder
+//#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty
 //#native Boolean
 //#native Callable
 //#COMPILE Binary,Destroyable,Obtainable,Comparable,Invertible,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,Entry
