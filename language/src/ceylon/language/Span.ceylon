@@ -416,7 +416,7 @@ final class Span<Element>(first, last)
   `x.offsetSign(last)==-last.offsetSign(first)`.
  
  For a linear enumerable type, a range is either 
- [[increasing]] or [[decreasing]]:
+ [[increasing|Range.increasing]] or [[decreasing|Range.decreasing]]:
  
  - in an increasing range, a value occurs before its 
   [[successor|Ordinal.successor]] and after its 
