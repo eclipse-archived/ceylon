@@ -211,6 +211,9 @@ shared interface Empty of e
             => this;
     
     shared actual [[],[]] slice(Integer index) => [this, this];
+    
+    shared actual [] paired => this;
+    
 }
 
 "A sequence with no elements, abbreviated `[]`. The unique 
