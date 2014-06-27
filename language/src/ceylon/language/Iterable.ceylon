@@ -759,8 +759,7 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    //TODO: add when backend bug is fixed
-    /*shared default {[Element,Element]*} paired {
+    shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
              size => (outer.size/2)*2;
              shared actual Iterator<[Element, Element]> iterator() {
@@ -783,7 +782,7 @@ shared interface Iterable<out Element, out Absent=Null>
              }
          }
          return pairs;
-    }*/
+    }
     
     "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream, in the order 
