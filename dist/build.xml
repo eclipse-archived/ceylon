@@ -509,14 +509,15 @@ Used with another target such as 'package'">
         <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
         <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
         <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
-        <jar destfile="${module.jar}.modified" if:set="module.jar" filesetmanifest="merge">
+        <copy file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
+        <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
             <zipfileset dir="${module.dir}" 
                             includes="module.xml"
                             fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
-            <zipfileset src="${module.jar}" includes="**" excludes="META-INF/MANIFEST.MF"/>
+            <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
             <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF"/>
         </jar>
-        <move file="${module.jar}.modified" tofile="${module.jar}" overwrite="true" force="true"/>
+        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
 
         <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
             <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
@@ -525,7 +526,9 @@ Used with another target such as 'package'">
             <param name="file" value="${module.jar}" />
         </antcall>
 
+        <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
         <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
+        <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
     </target>
 
     <target name="generate-spec">
