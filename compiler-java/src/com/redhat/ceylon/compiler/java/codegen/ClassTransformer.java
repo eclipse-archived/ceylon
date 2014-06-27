@@ -1347,7 +1347,15 @@ public class ClassTransformer extends AbstractTransformer {
                 returnType = typedMember.getType();
             }else if (typedMember instanceof ProducedTypedReference) {
                 ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
-                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), 0);
+                // This is very much like for method refinement: if the supertype is erased -> go raw.
+                // Except for some reason we only need to do it with multiple inheritance with different type
+                // arguments, so let's not go overboard
+                int flags = 0;
+                if(CodegenUtil.hasTypeErased((TypedDeclaration)member)
+                        && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
+                    flags |= AbstractTransformer.JT_RAW;
+                }
+                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
                 // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
                 ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
                 returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
@@ -1422,6 +1430,12 @@ public class ClassTransformer extends AbstractTransformer {
             concreteWrapper.body(gen().make().Return(expr));
         }
         return concreteWrapper;
+    }
+
+    private boolean isInheritedTwiceWithDifferentTypeArguments(ProducedType currentType, Interface iface) {
+        ProducedType firstSatisfiedType = getFirstSatisfiedType(currentType, iface);
+        ProducedType supertype = currentType.getSupertype(iface);
+        return !supertype.isExactly(firstSatisfiedType);
     }
 
     private Boolean hasImpl(Interface iface) {
