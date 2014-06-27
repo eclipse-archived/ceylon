@@ -33,6 +33,7 @@ shared interface Map<out Key,out Item>
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
+    see(`function defines`)
     shared actual default Boolean contains(Object entry) {
         if (is Key->Object entry, 
             exists item = get(entry.key)) {
@@ -45,6 +46,7 @@ shared interface Map<out Key,out Item>
     
     "Determines if the given [[value|key]] is a [[Key]] of
      an entry in this map."
+    see(`function contains`)
     shared actual default Boolean defines(Object key) 
             => super.defines(key);
     
