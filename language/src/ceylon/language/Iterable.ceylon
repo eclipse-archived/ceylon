@@ -896,33 +896,30 @@ shared interface Iterable<out Element, out Absent=Null>
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
     shared actual default String string {
-        value sb = StringBuilder();
-        sb.append("{");
+        value sb = StringBuilder().append("{");
         value it = iterator();
-        variable value current = it.next();
-        if (!is Finished c1 = current) {
+        if (!is Finished first = it.next()) {
             sb.append(" ")
-                    .append(current?.string else "<null>");
+              .append(first?.string else "<null>");
             variable value count = 1;
             while (true) {
-                current = it.next();
-                if (is Finished c2 = current) {
+                if (!is Finished current = it.next()) {
+                    if (count++ >= 30) {
+                        sb.append(", ... ");
+                        break;
+                    }
+                    else {
+                        sb.append(", ")
+                          .append(current?.string else "<null>");
+                    }
+                }
+                else {
                     sb.append(" ");
                     break;
                 }
-                else if (count == 30) {
-                    sb.append(", ... ");
-                    break;
-                }
-                else {
-                    sb.append(", ")
-                            .append(current?.string else "<null>");
-                    count++;
-                }
             }
         }
-        sb.append("}");
-        return sb.string;
+        return sb.append("}").string;
     }
     
 }

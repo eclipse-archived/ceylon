@@ -1,5 +1,5 @@
 "Builder utility for constructing [[strings|String]] by 
- incrementally appending strings or characters"
+ incrementally appending strings or characters."
 shared class StringBuilder() {
     "The storage"
     variable Array<Character> array 
