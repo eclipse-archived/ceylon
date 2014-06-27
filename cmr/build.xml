@@ -118,8 +118,9 @@
         <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
         <delete failonerror="false" dir="${proxy-project}/META-INF"/>
-        <copy toDir="${proxy-project}">
+        <copy toDir="${proxy-project}" overwrite="true">
             <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
         </copy>
         <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
@@ -130,8 +131,9 @@
         <property name="proxy-project2" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName2}"/>
         <mkdir dir="${proxy-project2}"/>
         <delete failonerror="false" dir="${proxy-project2}/META-INF"/>
-        <copy toDir="${proxy-project2}">
+        <copy toDir="${proxy-project2}" overwrite="true">
             <zipfileset src="${archivePath2}" includes="META-INF/**"/>
+            <fileset file="${archivePath2}"/>
         </copy>
         <manifest file="${proxy-project2}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Bundle-Classpath" value="${archiveFileName2}"/>
