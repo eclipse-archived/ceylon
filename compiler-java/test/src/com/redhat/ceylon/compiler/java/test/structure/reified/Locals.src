@@ -2974,6 +2974,12 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>>>>, ? extends .java.lang.Object> getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> follow(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.follow($reified$Other, head);
     }
@@ -3437,6 +3443,12 @@ public final class MyIterable$impl<Element, Absent> {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object> getIndexed() {
                 return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>>>, ? extends .java.lang.Object> getPaired() {
+                return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
             }
             
             @.java.lang.Override

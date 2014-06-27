@@ -467,7 +467,7 @@ final class tupleSpreading_ {
         final .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>> tuple3 = (.ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>).ceylon.language.Tuple.instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Character.instance(99),
                 .ceylon.language.Character.instance(100)});
-        java.takeAllVariadic(true, .com.redhat.ceylon.compiler.java.Util.toByte(1L), .com.redhat.ceylon.compiler.java.Util.toCharArray(tuple3, 97, 98));
+        java.takeAllVariadic(true, .com.redhat.ceylon.compiler.java.Util.toByte(1L), .com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)tuple3, 97, 98));
     }
     
     public static void main(.java.lang.String[] args) {

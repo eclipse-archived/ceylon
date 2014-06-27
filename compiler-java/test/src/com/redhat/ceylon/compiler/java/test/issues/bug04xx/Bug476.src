@@ -480,6 +480,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>>, ? extends .java.lang.Object> getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> follow(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.follow($reified$Other, head);
     }

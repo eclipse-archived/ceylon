@@ -34,7 +34,7 @@ final class add_ {
     }
     
     static double add(final .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> floats) {
-        return ((.ceylon.language.Summable<.ceylon.language.Float>)(.ceylon.language.Summable)floats.getFirst()).plus((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>)(.ceylon.language.Tuple)floats.getRest()).getFirst()).doubleValue();
+        return ((.ceylon.language.Summable<.ceylon.language.Float>)(.ceylon.language.Summable)((.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>)(.ceylon.language.Tuple)floats).getFirst()).plus((.ceylon.language.Float)(.java.lang.Object)((.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>)(.ceylon.language.Tuple)((.ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>)(.ceylon.language.Tuple)floats).getRest()).getFirst()).doubleValue();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -69,13 +69,13 @@ final class tupleTypeTest_ {
             }
             
             .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> fun() {
-                return hibye;
+                return (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)hibye;
             }
         }
         final fun_ fun = new fun_();
-        final .ceylon.language.Sequence<? extends .ceylon.language.String> strings = hibye;
-        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> hibye1 = hibye;
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> hibye2 = hibye;
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> strings = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)hibye;
+        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> hibye1 = (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Tuple)hibye;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> hibye2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)hibye;
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>> trip = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
         final .ceylon.language.Empty emptyTuple = .ceylon.language.empty_.get_();
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> oneTuple = (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")});

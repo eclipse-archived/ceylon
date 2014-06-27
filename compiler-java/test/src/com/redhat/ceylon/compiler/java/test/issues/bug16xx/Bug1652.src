@@ -10,7 +10,7 @@ final class bug1652_ {
                 null,
                 .ceylon.language.String.instance("a")});
         .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$1 = v.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$1 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v).iterator();
         loop_0: while (!((elem$0 = item$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.String item = (.ceylon.language.String)elem$0;
             .ceylon.language.print_.print(item);
@@ -19,7 +19,7 @@ final class bug1652_ {
                 .ceylon.language.String.instance("b"),
                 .ceylon.language.String.instance("a")});
         .java.lang.Object elem$2;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$3 = v2.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$3 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v2).iterator();
         loop_1: while (!((elem$2 = item$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String item = ((.ceylon.language.String)elem$2).toString();
             .ceylon.language.print_.print(.ceylon.language.String.instance(item));

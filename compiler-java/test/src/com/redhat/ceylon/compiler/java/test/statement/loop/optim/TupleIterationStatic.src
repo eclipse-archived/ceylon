@@ -7,7 +7,7 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void tupleOfIntegers$priv$(final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> seq) {
         .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$1 = seq.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$1 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
         loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long element = ((.ceylon.language.Integer)elem$0).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
@@ -17,7 +17,7 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     private final void tupleOfIntegersWithBreak$priv$(final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> array) {
         boolean doforelse$2 = true;
         .java.lang.Object elem$3;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$4 = array.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$4 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)array).iterator();
         loop_1: while (!((elem$3 = element$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final long element = ((.ceylon.language.Integer)elem$3).longValue();
             
@@ -43,7 +43,7 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void keyValue$priv$(final .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Tuple<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>>>>> array) {
         .java.lang.Object elem$6;
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> i$iterator$$7 = array.iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> i$iterator$$7 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)array).iterator();
         loop_2: while (!((elem$6 = i$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$6).getKey().longValue();
             final double f = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$6).getItem().doubleValue();
