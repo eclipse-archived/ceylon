@@ -2730,6 +2730,12 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean defines(final .java.lang.Object key) {
+        return $ceylon$language$Map$this$.defines(key);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean equals(final .java.lang.Object that) {
         return $ceylon$language$Map$this$.equals(that);
     }
@@ -3028,12 +3034,6 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Correspondence$impl<? super .java.lang.Object, ? extends Item> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean defines(final .java.lang.Object key) {
-        return $ceylon$language$Correspondence$this$.defines(key);
     }
     
     @.java.lang.Override

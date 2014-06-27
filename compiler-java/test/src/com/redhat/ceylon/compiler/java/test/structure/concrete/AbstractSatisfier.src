@@ -69,7 +69,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Result, OtherAbsent>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> flatMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+    public <Result, OtherAbsent>.ceylon.language.Iterable flatMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
         return (.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.flatMap($reified$Result, $reified$OtherAbsent, collecting);
     }
     

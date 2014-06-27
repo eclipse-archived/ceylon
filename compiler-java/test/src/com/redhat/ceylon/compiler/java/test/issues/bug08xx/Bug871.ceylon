@@ -26,9 +26,9 @@ shared void bug871(){
 }
 @noanno
 shared String bug871_2(Iterable<Iterable<Iterable<String>>> iterables){
-    StringBuilder b = StringBuilder();
+    variable String b = "";
     for(s in { for (it1 in iterables) for (it2 in it1) for (val in it2) val }){
-        b.append(s);
+        b += s;
     }
-    return b.string;
+    return b;
 }
