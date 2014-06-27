@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,7 +63,27 @@ public class ValueTypeTest {
             // And finally we skip all methods defined on Object
             return;
         }
+        validateVTMethodUnchecked(clazz, classMethod);
+        
+        // See if it has any overloads that need checking
+        Method[] overloads = findVTMethodOverloads(clazz, classMethod);
+        for (Method m : overloads) {
+            if (m.getAnnotation(Ignore.class) == null
+                    || (m.getModifiers() & Modifier.STATIC) != 0
+                    || (m.getModifiers() & Modifier.VOLATILE) != 0) {
+                // We skip static methods and "volatile" methods
+                // and those NOT marked with @Ignore
+                continue;
+            }
+            validateVTMethodUnchecked(clazz, m);
+        }
+    }
+    
+    // Check if the given method should have a static companion method
+    // and if so check that it exists and adheres to all the rules
+    private void validateVTMethodUnchecked(Class<?> clazz, Method classMethod) {
         String mthName = clazz.getName() + "::" + classMethod.getName() + "()";
+        System.err.println(mthName);
         Method staticMethod = findStaticCompanionMethod(clazz, classMethod);
         Assert.assertNotNull("Static companion for " + mthName + " not found", staticMethod);
         TypeInfo returnTypeInfo = classMethod.getAnnotation(TypeInfo.class);
@@ -124,6 +145,21 @@ public class ValueTypeTest {
             }
         }
         return clazz;
+    }
+
+    // Tries to find overloads of the given method
+    private Method[] findVTMethodOverloads(Class<?> clazz, Method classMethod) {
+        ArrayList<Method> overrides = new ArrayList<Method>();
+        Method[] methods = clazz.getMethods();
+        for (Method m : methods) {
+            if (!m.equals(classMethod)
+                    && m.getName().equals(classMethod.getName())
+                    && (m.getModifiers() & Modifier.STATIC) == 0) {
+                overrides.add(m);
+            }
+        }
+        Method[] result = new Method[overrides.size()];
+        return overrides.toArray(result);
     }
 
     // Finds the instance() method of a Value Type
