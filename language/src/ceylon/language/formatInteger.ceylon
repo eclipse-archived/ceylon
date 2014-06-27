@@ -21,21 +21,14 @@ shared String formatInteger(
             "The base, between [[minRadix]] and [[maxRadix]] 
              inclusive."
             Integer radix = 10) {
-    assert (radix >= minRadix, radix <= maxRadix);
+    assert (minRadix <= radix <= maxRadix);
     if (integer == 0) {
         return "0";
     }
-    StringBuilder digits = StringBuilder();
-    Integer insertIndex;
-    variable Integer i;
-    if (integer < 0) {
-        digits.append("-");
-        insertIndex = 1;
-        i = integer;
-    } else {
-        insertIndex = 0;
-        i = -integer;
-    }
+    variable {Character*} digits = {};
+    variable Integer i = integer < 0 
+                         then integer 
+                         else -integer;
     while (i != 0) {
         Integer d = -(i % radix);
         Character c;
@@ -48,8 +41,11 @@ shared String formatInteger(
         else {
             assert (false);
         }
-        digits.insertCharacter(insertIndex, c);
+        digits = digits.follow(c);
         i = (i + d) / radix;
     }
-    return digits.string;
+    if (integer < 0) {
+        digits = digits.follow('-');
+    }
+    return String(digits);
 }
