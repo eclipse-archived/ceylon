@@ -3205,7 +3205,13 @@ public class ClassTransformer extends AbstractTransformer {
         protected long getModifiers() {
             // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
             // not for a method if in an interface
-            return transformClassDeclFlags(klass) & ~FINAL;
+            long modifiers = transformClassDeclFlags(klass) & ~FINAL;
+            // alias classes cannot be abstract since they're placeholders, but it's possible to have formal class aliases
+            // and the instantiator method needs the abstract bit
+            if(klass.isFormal() && klass.isAlias())
+                modifiers |= ABSTRACT;
+            return modifiers;
+            
         }
 
         @Override
