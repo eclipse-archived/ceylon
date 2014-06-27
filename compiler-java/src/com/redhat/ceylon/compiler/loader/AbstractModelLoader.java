@@ -179,6 +179,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_DECLARATION_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationValue";
     private static final String CEYLON_DECLARATION_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationExprs";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
+    private static final String CEYLON_DYNAMIC_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Dynamic";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
     private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.AbstractAnnotation$annotation$";
@@ -1233,6 +1234,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
+        iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
         iface.setStaticallyImportable(!iface.isCeylon());
         return iface;
     }
