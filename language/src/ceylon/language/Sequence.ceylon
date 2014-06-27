@@ -140,8 +140,15 @@ shared sealed interface Sequence<out Element>
                 (Boolean selecting(Element&Object elem))
             => (super of List<Element>).findLast(selecting);
     
-    shared actual default Element[] repeat(Integer times)
-            => (super of Element[]).repeat(times);
+    shared actual default Element[] repeat(Integer times) {
+        value resultSize = size*times;
+        value array = arrayOfSize(resultSize, first);
+        variable value i = 1;
+        while (i < resultSize) {
+            array.set(i, getElement(i%size));
+        }
+        return ArraySequence(array); 
+    }
     
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];

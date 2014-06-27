@@ -31,8 +31,7 @@ shared interface Sequential<out Element>
     "Returns a sequence formed by repeating the elements of 
      this sequence the given number of times, or an empty 
      sequence if `times<=0`."
-    shared actual default Element[] repeat(Integer times)
-            => cycle(times).sequence();
+    shared actual formal Element[] repeat(Integer times);
     
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
