@@ -32,12 +32,13 @@ shared void strings() {
     check(hello.includesAt(0,['h','e','l','l']), "string includesAt list 2");
     
     check(hello.occurs('l'), "string occurs");
-    check(!hello.occurs('x'), "not string occurs");
-    check(hello.occursAt(3,'l'), "string occursAt");
-    check(hello.occursAt(2,'l'), "string occursAt");
-    check(!hello.occursAt(2,'x'), "string occursAt");
+    check(!hello.occurs('x'), "not string occurs 1");
+    check(!hello.occurs("e"), "not string occurs 2");
+    check(hello.occursAt(3,'l'), "string occursAt 1");
+    check(hello.occursAt(2,'l'), "string occursAt 2");
+    check(!hello.occursAt(2,'x'), "string occursAt 3");
+    check(!hello.occursAt(0,"h"), "string occursAt 4");
     
-    print(hello.occurrences('l'));
     check(hello.occurrences('l').sequence()==[2,3], "string occurrences");
     check(hello.inclusions("l").sequence()==[2,3], "string inclusions");
     check(hello.inclusions("hell").sequence()==[0], "string inclusions");
