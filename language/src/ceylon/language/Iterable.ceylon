@@ -911,7 +911,7 @@ shared interface Iterable<out Element, out Absent=Null>
                     break;
                 }
                 else if (count == 30) {
-                    sb.append(", ... "); // TODO use Unicode ellipse '…'?
+                    sb.append(", ... ");
                     break;
                 }
                 else {
