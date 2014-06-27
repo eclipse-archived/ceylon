@@ -10,12 +10,7 @@ String multiDefaulted(String name="A")(String apat)(String amat) {
     return "`` name`` ``apat`` ``amat``";
 }
 String multiSequenced(String* names)(Integer count) {
-    value sb = StringBuilder();
-    for (name in names) {
-        sb.append(name).append(" ");
-    }
-    sb.append("count ").append(count.string);
-    return sb.string;
+    return " ".join(names) + " count ``count``";
 }
 
 void testMultipleParamLists() {
