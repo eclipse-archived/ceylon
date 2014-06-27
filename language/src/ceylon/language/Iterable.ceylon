@@ -333,6 +333,40 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
+    "The stream of results obtained by iteratively applying
+     the given [[accumulating|accumulating]] function to
+     each element of this iterable in turn.
+     
+         x.scan(z, f) == {z, f(z, x[0]), f(f(z, x[0]), x[1]), ...}
+         x.scan(z, f)[i] == x.taking(i).fold(z, f)
+         x.scan(z, f).last == x.fold(z, f)
+         x.scan(z, f).first == {}.fold(z, f) == z
+         (1..4).scan(0, plus<Integer>) == {0, 1, 3, 6, 10}"
+    see (`function fold`)
+    {Result+} scan<Result>(Result initial,
+            "The accumulating function that accepts
+             the running total and the next element."
+            Result accumulating(Result partial, Element element)) {
+        object results satisfies {Result*} {
+            shared actual Iterator<Result> iterator() {
+                object iterator satisfies Iterator<Result> {
+                    variable value partial = initial;
+                    value elements = outer.iterator();
+                    shared actual Result|Finished next() {
+                        if (!is Finished element = elements.next()) {
+                            partial = accumulating(partial, element);
+                            return partial;
+                        } else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
+        return results.following(initial);
+    }
+    
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
      `null` otherwise.  For an infinite stream, this 
