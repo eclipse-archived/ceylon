@@ -17,8 +17,10 @@ shared final class Entry<out Key, out Item>(key, item)
     "The value associated with the key."
     shared Item item;
     
-    "A pair (2 element tuple) with the key and
-     item of this entry."
+    "A pair (2 element tuple) with the key and item of this 
+     entry. For any `entry`:
+     
+         entry.pair == [entry.key,entry.item]"
     shared [Key,Item] pair => [key,item];
     
     "Determines if this entry is equal to the given entry. 
