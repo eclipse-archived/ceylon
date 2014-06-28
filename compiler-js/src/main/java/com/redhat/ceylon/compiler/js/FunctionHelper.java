@@ -53,7 +53,7 @@ public class FunctionHelper {
     static void generateParameterLists(final Node context, final List<Tree.ParameterList> plist, final Scope scope,
                 final ParameterListCallback callback, final GenerateJsVisitor gen) {
         if (plist.size() == 1) {
-            gen.out(GenerateJsVisitor.function);
+            gen.out("function");
             Tree.ParameterList paramList = plist.get(0);
             paramList.visit(gen);
             gen.beginBlock();
@@ -67,7 +67,7 @@ public class FunctionHelper {
                 metas.add(mpl);
                 mpl.n=context;
                 if (metas.size()==1) {
-                    gen.out(GenerateJsVisitor.function);
+                    gen.out("function");
                 } else {
                     mpl.name=gen.getNames().createTempVariable();
                     mpl.params=paramList;
@@ -257,13 +257,13 @@ public class FunctionHelper {
         }
     }
 
-    static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen) {
+    static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName) {
         final Method d = that.getDeclarationModel();
         if (that.getParameterLists().size() == 1) {
-            if (gen.opts.isOptimize() && d.isClassOrInterfaceMember() && d.getMembers().isEmpty()) {
-                gen.out("function");
-            } else {
+            if (needsName) {
                 gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            } else {
+                gen.out("function");
             }
             Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
@@ -281,7 +281,11 @@ public class FunctionHelper {
                 mpl.n=that;
                 metas.add(mpl);
                 if (metas.size()==1) {
-                    gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                    if (needsName) {
+                        gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                    } else {
+                        gen.out("function");
+                    }
                 } else {
                     mpl.name=gen.getNames().createTempVariable();
                     mpl.params=paramList;

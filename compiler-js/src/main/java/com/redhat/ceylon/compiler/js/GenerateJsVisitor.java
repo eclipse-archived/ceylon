@@ -1081,7 +1081,7 @@ public class GenerateJsVisitor extends Visitor
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
-            FunctionHelper.methodDefinition(that, this);
+            FunctionHelper.methodDefinition(that, this, true);
             //Add reference to metamodel
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1203,7 +1203,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), d);
         out(names.self(outer), ".", names.name(d), "=");
-        FunctionHelper.methodDefinition(that, this);
+        FunctionHelper.methodDefinition(that, this, false);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -2236,11 +2236,11 @@ public class GenerateJsVisitor extends Visitor
         return path.length() > 0;
     }
 
-    String qualifiedPath(final Node that, final Declaration d) {
+    private String qualifiedPath(final Node that, final Declaration d) {
         return qualifiedPath(that, d, false);
     }
 
-    private String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
+    String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
         boolean isMember = d.isClassOrInterfaceMember();
         if (!isMember && isImported(that == null ? null : that.getUnit().getPackage(), d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
@@ -2738,22 +2738,7 @@ public class GenerateJsVisitor extends Visitor
        Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
    }
 
-   /** Protect against #374 */
-   private void qualifyOperator(final Node node, final String name) {
-       Scope scope = node.getScope();
-       while (scope != null) {
-           if (scope instanceof Declaration && name.equals(((Declaration)scope).getName())) {
-               out("ex$.");
-               return;
-           }
-           scope = scope.getContainer();
-       }
-   }
-
    @Override public void visit(final Tree.RangeOp that) {
-       if (JsCompiler.isCompilingLanguageModule()) {
-           qualifyOperator(that, "span");
-       }
        out(clAlias, "span(");
        that.getLeftTerm().visit(this);
        out(",");
@@ -2769,9 +2754,6 @@ public class GenerateJsVisitor extends Visitor
    public void visit(final Tree.SegmentOp that) {
        final Tree.Term left  = that.getLeftTerm();
        final Tree.Term right = that.getRightTerm();
-       if (JsCompiler.isCompilingLanguageModule()) {
-           qualifyOperator(that, "measure");
-       }
        out(clAlias, "measure(");
        left.visit(this);
        out(",");

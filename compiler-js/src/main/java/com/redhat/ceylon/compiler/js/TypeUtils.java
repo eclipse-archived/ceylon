@@ -639,6 +639,12 @@ public class TypeUtils {
                 }
                 gen.out("}");
             } else {
+                boolean inProto = gen.opts.isOptimize()
+                        && (_cont.getContainer() instanceof TypeDeclaration);
+                final String path = gen.qualifiedPath(that, _cont, inProto);
+                if (path != null && !path.isEmpty()) {
+                    gen.out(path, ".");
+                }
                 gen.out(gen.getNames().name(_cont));
             }
         }
