@@ -320,20 +320,20 @@ shared interface List<out Element>
                     then Patch(list, from, length)
                     else this;
     
-    "Determine if the given list occurs at the start of this 
-     list."
+    "Determine if the given [[list|sublist]] occurs at the 
+     start of this list."
     see (`function endsWith`)
     shared default Boolean startsWith(List<Anything> sublist)
             => includesAt(0, sublist);
     
-    "Determine if the given list occurs at the end of this 
-     list."
+    "Determine if the given [[list|sublist]] occurs at the 
+     end of this list."
     see (`function startsWith`)
     shared default Boolean endsWith(List<Anything> sublist)
             => includesAt(size-sublist.size, sublist);
     
-    "Determine if the given list occurs at the given index 
-     of this list."
+    "Determine if the given [[list|sublist]] occurs as a 
+     sublist at the given index of this list."
     shared default Boolean includesAt(
             "The index at which the [[sublist]] might occur."
             Integer index, 
@@ -363,8 +363,8 @@ shared interface List<out Element>
         }
     }
     
-    "Determine if the given list occurs at some index in 
-     this list."
+    "Determine if the given [[list|sublist]] occurs as a 
+     sublist at some index in this list."
     shared default Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
@@ -377,14 +377,14 @@ shared interface List<out Element>
         return false;
     }
     
-    "The indexes in this list at which the given list 
-     occurs."
+    "The indexes in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default {Integer*} inclusions(List<Anything> sublist) 
             => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
-    "The first index in this list at which the given list 
-     occurs."
+    "The first index in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default Integer? firstInclusion(List<Anything> sublist) {
         for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
@@ -396,8 +396,8 @@ shared interface List<out Element>
         }
     }
     
-    "The last index in this list at which the given list 
-     occurs."
+    "The last index in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default Integer? lastInclusion(List<Anything> sublist) {
         for (index in (0:size-sublist.size+1).reversed) {
             if (includesAt(index,sublist)) {
@@ -440,14 +440,14 @@ shared interface List<out Element>
         return false;
     }
     
-    "The indexes in this list at which the given element 
+    "The indexes in this list at which the given [[element]] 
      occurs."
     shared default {Integer*} occurrences(Anything element)
             => { for (index in 0:size) 
                     if (occursAt(index,element)) index };
     
-    "The first index in this list at which the given element 
-     occurs."
+    "The first index in this list at which the given 
+     [[element]] occurs."
     shared default Integer? firstOccurrence(Anything element) {
         for (index in 0:size) {
             if (occursAt(index,element)) {
@@ -459,8 +459,8 @@ shared interface List<out Element>
         }
     }
     
-    "The last index in this list at which the given element 
-     occurs."
+    "The last index in this list at which the given 
+     [[element]] occurs."
     shared default Integer? lastOccurrence(Anything element) {
         for (index in (0:size).reversed) {
             if (occursAt(index,element)) {
