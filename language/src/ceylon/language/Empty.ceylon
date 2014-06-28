@@ -164,11 +164,11 @@ shared interface Empty of e
     shared actual [Other] withTrailing<Other>(Other element)
             => [element];
     
-    shared actual [Other*] append<Other>(List<Other> elements)
-            => elements.sequence();
+    shared actual Other[] append<Other>(Other[] elements)
+            => elements;
     
-    shared actual [Other*] prepend<Other>(List<Other> elements)
-            => elements.sequence();
+    shared actual Other[] prepend<Other>(Other[] elements)
+            => elements;
     
     shared actual {Other+} follow<Other>(Other head)
             => { head };

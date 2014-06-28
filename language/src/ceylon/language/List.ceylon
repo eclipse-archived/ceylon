@@ -113,6 +113,17 @@ shared interface List<out Element>
     shared actual default Element? get(Integer index) 
             => getFromFirst(index);
     
+    Element getElement(Integer index) {
+        value element = getFromFirst(index);
+        if (exists element) { 
+            return element;
+        }
+        else {
+            assert (is Element null);
+            return null; 
+        }
+    }
+    
     shared actual default Iterator<Element> iterator() {
         if (size>0) {
             object listIterator
@@ -629,69 +640,6 @@ shared interface List<out Element>
     shared default [List<Element>,List<Element>] slice
             (Integer index)
             => [this[...index-1], this[index...]];
-    
-    "Returns a new sequence that starts with the specified
-     [[element]], followed by the elements of this list,
-     in the order they occur in this list.
-     
-     This is an eager operation."
-    see (`function follow`, 
-         `function prepend`,
-         `function withTrailing`)
-    shared default [Other,Element*] withLeading<Other>(
-            "The first element of the resulting sequence."
-            Other element)
-            => [element, *this];
-    
-    "Returns a new sequence that starts with the elements of 
-     this list, in the order they occur in this list, and 
-     ends with the specified [[element]].
-     
-     This is an eager operation."
-    see (`function append`,
-         `function withLeading`)
-    shared default [Element|Other+] withTrailing<Other>(
-            "The last element of the resulting sequence."
-            Other element)
-            => [*chain(Singleton(element))];
-    
-    "Return a sequence containing the elements of this list, 
-     in the order in which they occur in this list, followed 
-     by the given [[elements]], in the order in which they 
-     occur in the given list.
-     
-     This is an eager operation."
-    see (`function prepend`,
-         `function withTrailing`,
-         `function concatenate`,
-         `function chain`)
-    shared default [Element|Other*] append<Other>
-                            (List<Other> elements)
-            => [*chain(elements)];
-    
-    "Return a sequence containing the given [[elements]], in 
-     the order in which they occur in the given list,
-     followed by the elements of this list, in the order in 
-     which they occur in this list.
-     
-     This is an eager operation."
-    see (`function append`,
-         `function withLeading`,
-         `function concatenate`)
-    shared default [Element|Other*] prepend<Other>
-                            (List<Other> elements)
-            => [*elements.chain(this)];
-    
-    Element getElement(Integer index) {
-        value element = getFromFirst(index);
-        if (exists element) { 
-            return element;
-        }
-        else {
-            assert (is Element null);
-            return null; 
-        }
-    }
     
     shared actual default List<Element> span
                             (Integer from, Integer to) {

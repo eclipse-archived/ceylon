@@ -88,7 +88,6 @@
    
    - [[map]] vs [[collect]],
    - [[filter]] vs [[select]],
-   - [[follow]] vs [[List.withLeading]], and
    - [[List.sublist]] vs [[List.measure]].
    
    Lazy operations normally return an instance of `Iterable`, 
@@ -763,6 +762,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
+    "For a stable stream, this operation is equivalent to
+     `zipPairs(stream,stream.rest)`."
     shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
              shared actual Integer size {
@@ -807,8 +808,7 @@ shared interface Iterable<out Element, out Absent=Null>
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
      in the given stream."
-    see (`function expand`, 
-         `function List.append`)
+    see (`function expand`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {

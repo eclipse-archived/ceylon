@@ -1623,31 +1623,6 @@ public final class String
         return instance(value).follow($reifiedOther, other);    
     }
     
-    @Ignore
-    public static <Other>Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
-    withLeading(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Other e) {
-        return instance(value).withLeading($reifiedOther, e);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Other e) {
-        return instance(value).withTrailing($reifiedOther, e);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, List<? extends Other> es) {
-        return instance(value).append($reifiedOther, es);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequential prepend(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, List<? extends Other> es) {
-        return instance(value).prepend($reifiedOther, es);
-    }
-    
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> list, long from, long length) {

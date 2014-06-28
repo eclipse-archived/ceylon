@@ -159,7 +159,7 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     shared actual native
     [First,Element|Other*] append<Other>(
             "The list of elements to be appended."
-            List<Other> elements)
+            Other[] elements)
             => Tuple(first, rest append elements);
 
 }

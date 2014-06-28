@@ -20,32 +20,32 @@ shared void lists() {
     //withLeading
     check([].withLeading("A")=={"A"}.sequence(), "Empty.withLeading(A)");
     check([].withLeading("foo").size==1, "{}.withLeading.size");
-    check(Array{}.withLeading(1)=={1}.sequence(), "empty array.withLeading(1)");
-    check(Array{1,2}.withLeading("A")=={"A",1,2}.sequence(), "Array.withLeading(a)`` Array{1,2}.withLeading("A") ``");
+    //check(Array{}.withLeading(1)=={1}.sequence(), "empty array.withLeading(1)");
+    //check(Array{1,2}.withLeading("A")=={"A",1,2}.sequence(), "Array.withLeading(a)`` Array{1,2}.withLeading("A") ``");
     check([1,2].withLeading("a")=={"a",1,2}.sequence(), "Sequence.withLeading(a)`` [1,2].withLeading("a") ``");
     check([1,2].withLeading("foo").size==3, "Sequence.withLeading.size`` [1,2].withLeading("foo").size ``");
     check(Singleton(1).withLeading("a")=={"a",1}.sequence(), "Singleton.withLeading(a)`` Singleton(1).withLeading("a") ``");
     check((1..3).withLeading("a")=={"a",1,2,3}.sequence(), "Range.withLeading(a)");
     //check((1..3).withLeading(0).first==0, "Range.withLeading(a).first");
     //check((1..3).withLeading(0).last==3, "Range.withLeading(a).last");
-    check("abc".withLeading(1)=={1,'a','b','c'}.sequence(), "String.withLeading(1)" +"abc".withLeading(1).string);
-    check("".withLeading(1)=={1}.sequence(), "\"\".withLeading(1)");
+    //check("abc".withLeading(1)=={1,'a','b','c'}.sequence(), "String.withLeading(1)" +"abc".withLeading(1).string);
+    //check("".withLeading(1)=={1}.sequence(), "\"\".withLeading(1)");
     check(b[100...]=={}, "LazyList[100...]");
     check(b[1...]==b.rest, "LazyList[1...]");
 
     //withTrailing
     check([].withTrailing("A")=={"A"}.sequence(), "Empty.withTrailing(A)");
     check([].withTrailing("foo").size==1, "{}.withTrailing.size");
-    check(Array{}.withTrailing(1)=={1}.sequence(), "empty array.withTrailing(1)");
-    check(Array{1,2}.withTrailing("A")=={1,2,"A"}.sequence(), "Array.withTrailing(a)");
+    //check(Array{}.withTrailing(1)=={1}.sequence(), "empty array.withTrailing(1)");
+    //check(Array{1,2}.withTrailing("A")=={1,2,"A"}.sequence(), "Array.withTrailing(a)");
     check([1,2].withTrailing("a")=={1,2,"a"}.sequence(), "Sequence.withTrailing(a)");
     check([1,2].withTrailing("foo").size==3, "Sequence.withTrailing.size");
     check(Singleton(1).withTrailing("a")=={1,"a"}.sequence(), "Singleton.withTrailing(a)");
     check((1..3).withTrailing(4)=={1,2,3,4}.sequence(), "Range.withTrailing(a)");
     check((1..3).withTrailing(4).first==1, "Range.withTrailing(a).first");
     check((1..3).withTrailing(4).last==4, "Range.withTrailing(a).last");
-    check("abc".withTrailing(1)=={'a','b','c',1}.sequence(), "String.withTrailing(1)");
-    check("".withTrailing(1)=={1}.sequence(), "\"\".withTrailing(1)");
+    //check("abc".withTrailing(1)=={'a','b','c',1}.sequence(), "String.withTrailing(1)");
+    //check("".withTrailing(1)=={1}.sequence(), "\"\".withTrailing(1)");
 
     //LazyList
     check(b.size == 8, "LazyList.size");
@@ -161,8 +161,8 @@ shared void lists() {
     
     check ((1..5).append(4..1)==[1,2,3,4,5,4,3,2,1], "list append");
     check ((1..5).prepend(5..0)==[5,4,3,2,1,0,1,2,3,4,5], "list prepend ``(1..5).prepend(5..0)``");
-    check (" world".prepend("hello")=="hello world".sequence(), "string prepend ``" world".prepend("hello")``");
-    check ("hello ".append("world")=="hello world".sequence(), "string append");
+    //check (" world".prepend("hello")=="hello world".sequence(), "string prepend ``" world".prepend("hello")``");
+    //check ("hello ".append("world")=="hello world".sequence(), "string append");
     
     check((0..10).slice(5)==[[0,1,2,3,4],[5,6,7,8,9,10]], "range slice");
     value chars = "foobar" of List<Character>;

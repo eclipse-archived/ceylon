@@ -28,12 +28,6 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] repeat(Integer times);
     
-    shared actual formal [Element|Other*] append<Other>
-            (List<Other> elements);
-    
-    shared actual formal [Element|Other*] prepend<Other>
-            (List<Other> elements);
-    
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
      sequence is shorter than the given length, return this 
@@ -84,7 +78,47 @@ shared interface Sequential<out Element>
      list, one of the returned sequences will be empty."
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
-        
+    
+    "Returns a new sequence that starts with the specified
+     [[element]], followed by the elements of this sequence,
+     in the order they occur in this sequence."
+    see (`function prepend`,
+         `function withTrailing`,
+         `function follow`)
+    shared formal [Other,Element*] withLeading<Other>(
+            "The first element of the resulting sequence."
+            Other element);
+    
+    "Returns a new sequence that starts with the elements of 
+     this sequence, in the order they occur in this sequence, 
+     and ends with the specified [[element]]."
+    see (`function append`,
+         `function withLeading`)
+    shared formal [Element|Other+] withTrailing<Other>(
+            "The last element of the resulting sequence."
+            Other element);
+    
+    "Return a sequence containing the elements of this 
+     sequence, in the order in which they occur in this 
+     sequence, followed by the given [[elements]], in the 
+     order in which they occur in the given sequence."
+    see (`function prepend`,
+         `function withTrailing`,
+         `function concatenate`,
+         `function chain`)
+    shared formal 
+    [Element|Other*] append<Other>(Other[] elements);
+    
+    "Return a sequence containing the given [[elements]], in 
+     the order in which they occur in the given sequence,
+     followed by the elements of this sequence, in the order 
+     in which they occur in this sequence."
+    see (`function append`,
+         `function withLeading`,
+         `function concatenate`)
+    shared formal 
+    [Element|Other*] prepend<Other>(Other[] elements);
+    
     "This sequence."
     shared actual default Element[] clone() => this;
     
