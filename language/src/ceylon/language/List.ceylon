@@ -338,6 +338,9 @@ shared interface List<out Element>
             "The index at which the [[sublist]] might occur."
             Integer index, 
             List<Anything> sublist) {
+        if (sublist.size>size-index) {
+            return false;
+        }
         for (i in 0:sublist.size) {
             value x = getFromFirst(index+i);
             value y = sublist.getFromFirst(i);
@@ -366,7 +369,7 @@ shared interface List<out Element>
         if (sublist.empty) {
             return true;
         }
-        for (index in 0:size) {
+        for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return true;
             }
@@ -377,13 +380,13 @@ shared interface List<out Element>
     "The indexes in this list at which the given list 
      occurs."
     shared default {Integer*} inclusions(List<Anything> sublist) 
-            => { for (index in 0:size) 
+            => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
     "The first index in this list at which the given list 
      occurs."
     shared default Integer? firstInclusion(List<Anything> sublist) {
-        for (index in 0:size) {
+        for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -396,7 +399,7 @@ shared interface List<out Element>
     "The last index in this list at which the given list 
      occurs."
     shared default Integer? lastInclusion(List<Anything> sublist) {
-        for (index in (0:size).reversed) {
+        for (index in (0:size-sublist.size+1).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
             }
