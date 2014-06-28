@@ -10,7 +10,7 @@
    However, since `Null` is not a subtype of `Object`, the
    value `null` cannot be compared to any other value using 
    the `==` operator. Thus, value equality is not defined 
-   for optional types. This neatly voids the problem of
+   for optional types. This neatly bypasses the problem of
    deciding the value of the expression `null==null`, which 
    is simply illegal."""
 see (`class Basic`, `class Null`)
