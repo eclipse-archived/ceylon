@@ -521,8 +521,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the start and end of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from 
+     the start and end of this list, returning a list no 
+     longer than this list.
      
      This is an eager operation."
     shared default List<Element> trim(
@@ -561,8 +562,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the start of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from
+     the start of this list, returning a list no longer than 
+     this list.
      
      This is an eager operation."
     shared default List<Element> trimLeading(
@@ -582,8 +584,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the end of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from 
+     the end of this list, returning a list no longer than 
+     this list.
      
      This is an eager operation."
     shared default List<Element> trimTrailing(
