@@ -52,7 +52,7 @@ shared interface Map<out Key,out Item>
     
     shared actual formal Map<Key,Item> clone();
     
-    "Two `Map`s are considered equal iff they have the same 
+    "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
      `Entry`s belonging to the map. Therefore, the maps are 
      equal iff they have same set of `keys`, and for every 
@@ -120,7 +120,7 @@ shared interface Map<out Key,out Item>
         return values;
     }
     
-    "Produces a `Map` with the same [[keys]] as this map. 
+    "Produces a map with the same [[keys]] as this map. 
      For every key, the item is the result of applying the 
      given [[transformation|Map.mapItems.mapping]] function 
      to its associated item in this map. This is a lazy 
@@ -154,7 +154,7 @@ shared interface Map<out Key,out Item>
         return map;
     }
     
-    "Produces a `Map` by applying a [[filtering]] function 
+    "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
     shared default Map<Key,Item> filterKeys(
@@ -189,6 +189,59 @@ shared interface Map<out Key,out Item>
             clone() => outer.clone().filterKeys(filtering); //TODO: not efficient
         }
         return map;
+    }
+    
+    "Produces a map whose keys are the union of the keys
+     of this map, with the keys of the given [[map|other]].
+     For any given key in the resulting map, its associated
+     item if the item associated with the key in the given
+     map, if any, or the item associated with the key in 
+     this map otherwise.
+     
+     That is, for any `key` in the resulting patched map:
+     
+         map.patch(other)[key] == other[key] else map[key]
+     
+     This is a lazy operation producing a view of this map
+     and the given map."
+    shared default
+    Map<Key|OtherKey,Item|OtherItem> patch<OtherKey,OtherItem>
+            (Map<OtherKey,OtherItem> other) 
+            given OtherKey satisfies Object 
+            given OtherItem satisfies Object {
+        object patch 
+                extends Object()
+                satisfies Map<Key|OtherKey,Item|OtherItem> {
+            
+            get(Object key) => other[key] else outer[key];
+            
+            clone() => outer.clone() patch other.clone();
+            
+            defines(Object key) 
+                    => (other defines key) || 
+                       (outer defines key);
+            
+            shared actual Boolean contains(Object entry) {
+                if (is Entry<Object,Object> entry) {
+                    return entry in other || 
+                            !(other defines entry.key) 
+                                && entry in outer;
+                }
+                else {
+                    return false;
+                }
+            }
+            
+            //efficient when map is much smaller than outer,
+            //which is probably the common case 
+            size => outer.size +
+                    (other.keys count not(outer.defines));
+            
+            iterator() => ChainedIterator(other,
+                outer filter not(other.contains));
+            
+        }
+        return patch;
     }
     
 }
