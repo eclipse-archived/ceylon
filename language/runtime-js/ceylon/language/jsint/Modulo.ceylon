@@ -1,7 +1,7 @@
 import ceylon.language.meta.declaration { Package, Import, Module }
 import ceylon.language{AnnotationType = Annotation}
 
-native class Modulo(shared Anything meta) satisfies Module {
+shared native class Modulo(shared Anything meta) satisfies Module {
     shared actual native String name;
     qualifiedName = name;
     shared actual native String version;
