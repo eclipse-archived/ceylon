@@ -79,9 +79,9 @@
    
    - sorting operations, for example [[sort]], which are 
      eager by nature,
-   - operations which preserve emptiness/nonemptiness of
-     the receiving iterable object, for example [[reverse]]
-     and [[collect]].
+   - operations which result in a subset or subrange of the 
+     receiving stream, where structural sharing would or
+     could result in unecessary memory retention.
    
    Certain operations come in both lazy and eager flavors,
    for example:
@@ -92,7 +92,9 @@
    
    Lazy operations normally return an instance of `Iterable`, 
    or even a [[List]], [[Map]], or [[Set]]. Eager operations 
-   usually return a [[sequence|Sequential]]."""
+   usually return a [[sequence|Sequential]]. The method
+   [[sequence]] materializes the current elements of a
+   stream into a sequence."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
@@ -292,6 +294,8 @@ shared interface Iterable<out Element, out Absent=Null>
          (1..100).fold(0, plus<Integer>)
      
      results in the integer `5050`."
+    see (`function reduce`, 
+         `function scan`)
     shared default Result fold<Result>(Result initial,
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -312,6 +316,7 @@ shared interface Iterable<out Element, out Absent=Null>
          (1..100).reduce(plus<Integer>)
      
      results in the integer `5050`." 
+    see (`function fold`)
     shared default Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -335,11 +340,20 @@ shared interface Iterable<out Element, out Absent=Null>
      the given [[accumulating|accumulating]] function to
      each element of this iterable in turn.
      
-         x.scan(z, f) == {z, f(z, x[0]), f(f(z, x[0]), x[1]), ...}
+         x.scan(z, f) == { z, f(z, x[0]), f(f(z, x[0]), x[1]), ... }
+     
+     The following identities explain the relationship 
+     between `scan` and [[fold]]:
+     
          x.scan(z, f)[i] == x.taking(i).fold(z, f)
          x.scan(z, f).last == x.fold(z, f)
          x.scan(z, f).first == {}.fold(z, f) == z
-         (1..4).scan(0, plus<Integer>) == {0, 1, 3, 6, 10}"
+     
+     For example, the expression
+     
+         (1..4).scan(0, plus<Integer>)
+     
+     results in the stream `{ 0, 1, 3, 6, 10 }`."
     see (`function fold`)
     shared default {Result+} scan<Result>(Result initial,
             "The accumulating function that accepts
@@ -356,10 +370,12 @@ shared interface Iterable<out Element, out Absent=Null>
                         if (returnInitial) {
                             returnInitial = false;
                             return initial;
-                        } else if (!is Finished element = iter.next()) {
+                        }
+                        else if (!is Finished element = iter.next()) {
                             partial = accumulating(partial, element);
                             return partial;
-                        } else {
+                        }
+                        else {
                             return finished;
                         }
                     }
