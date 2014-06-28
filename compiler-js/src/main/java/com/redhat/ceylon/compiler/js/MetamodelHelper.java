@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -71,9 +72,15 @@ public class MetamodelHelper {
         if (JsCompiler.isCompilingLanguageModule()) {
             gen.out("()");
         }
-        gen.out("(", GenerateJsVisitor.getClAlias(), "getModules$meta().find('", m.getNameAsString(),
-                "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
-                "'),");
+        gen.out("(", GenerateJsVisitor.getClAlias());
+        if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
+            gen.out("Modulo$jsint(ex$)");
+        } else {
+            gen.out("getModules$meta().find('", m.getNameAsString(),
+                    "','", m.getVersion(), "')");
+        }
+        final String pkgname = d.getUnit().getPackage().getNameAsString();
+        gen.out(".findPackage('", "ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
         if (d.isMember()) {
             outputPathToDeclaration(that, d, gen);
         }
