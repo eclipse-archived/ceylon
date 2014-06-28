@@ -1,5 +1,5 @@
 "The result of a comparison between two [[Comparable]] 
- objects."
+ objects: [[larger]], [[smaller]], or [[equal]]."
 see (`interface Comparable`)
 by ("Gavin")
 shared abstract class Comparison(shared actual String string) 
