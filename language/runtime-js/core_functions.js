@@ -53,7 +53,6 @@ function is$(obj,type){
               if (!extendsType(obj.$$targs$$.l[i],type.l[i]))return false;
             }
             return true;
-            console.log("vamos bien");
           } else {
             return false;
           }
