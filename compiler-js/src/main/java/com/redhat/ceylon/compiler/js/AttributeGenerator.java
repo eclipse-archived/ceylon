@@ -114,7 +114,7 @@ public class AttributeGenerator {
                     }
                     gen.out(",");
                     if (attributeNode == null) {
-                        TypeUtils.encodeForRuntime(attributeNode, decl, gen);
+                        TypeUtils.encodeForRuntime(expr, decl, gen);
                     } else {
                         TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), gen);
                     }
