@@ -13,7 +13,7 @@ function printStackTrace(exc, _write) {
       return;
     }
     var mm = getrtmm$$(f);
-    if (mm) {
+    if (mm && mm.d) {
       var _src = '';
       if (i==0) {
         if (exc.$loc && exc.$file) _src = ' (' + exc.$file + " " + exc.$loc + ')';
