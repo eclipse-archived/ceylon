@@ -204,7 +204,7 @@ shared interface Map<out Key,out Item>
     "Produces a map whose keys are the union of the keys
      of this map, with the keys of the given [[map|other]].
      For any given key in the resulting map, its associated
-     item if the item associated with the key in the given
+     item is the item associated with the key in the given
      map, if any, or the item associated with the key in 
      this map otherwise.
      
