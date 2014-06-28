@@ -38,6 +38,7 @@
    (These possibilities are expressed by the enumerated
    instances [[smaller]], [[larger]], and [[equal]] of
    `Comparison`.)"""
+see (`class Comparison`)
 by ("Gavin")
 shared interface Comparable<in Other> of Other 
         given Other satisfies Comparable<Other> {
