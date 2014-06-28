@@ -950,12 +950,12 @@ shared interface List<out Element>
         }
         
         shared actual <Element|Other>? getFromFirst(Integer index) {
-            value size = outer.size;
-            if (index>size) {
-                return outer.getFromFirst(index-size);
+            value size = list.size;
+            if (index < size) {
+                return list.getFromFirst(index);
             }
             else {
-                return list.getFromFirst(index);
+                return outer.getFromFirst(index-size);
             }
         }
         

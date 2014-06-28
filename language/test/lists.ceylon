@@ -160,8 +160,8 @@ shared void lists() {
     check((1..10).patch([],1,8)==[1,10], "list patch 4");
     
     check ((1..5).append(4..1)==[1,2,3,4,5,4,3,2,1], "list append");
-    check ((1..5).prepend(5..0).sequence()==[5,4,3,2,1,0,1,2,3,4,5], "list prepend ``(1..5).prepend(5..0)``");
-    check (" world".prepend("hello")=="hello world".sequence(), "string prepend");
+    check ((1..5).prepend(5..0)==[5,4,3,2,1,0,1,2,3,4,5], "list prepend ``(1..5).prepend(5..0)``");
+    check (" world".prepend("hello")=="hello world".sequence(), "string prepend ``" world".prepend("hello")``");
     check ("hello ".append("world")=="hello world".sequence(), "string append");
     
     check((0..10).slice(5)==[[0,1,2,3,4],[5,6,7,8,9,10]], "range slice");

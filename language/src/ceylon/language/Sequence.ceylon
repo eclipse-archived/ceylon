@@ -121,12 +121,13 @@ shared sealed interface Sequence<out Element>
     
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
-    shared actual default [Element,Element|Other*]
+    shared actual default [Element|Other+]
     append<Other>(List<Other> elements)
-            => Append(elements).tuple;
+            => Append(elements);
     
-    "Return a nonempty sequence containing the elements of 
-     this sequence, followed by the given [[elements]]."
+    "Return a nonempty sequence containing the given 
+     [[elements]], followed by the elements of this 
+     sequence."
     shared actual default [Element|Other+]
     prepend<Other>(List<Other> elements)
             => Prepend(elements);
@@ -289,8 +290,6 @@ shared sealed interface Sequence<out Element>
         }
         
         rest => outer.rest.append(list);
-        
-        shared [Element,Element|Other*] tuple => [first, *rest];
         
         shared actual <Element|Other>? getFromFirst(Integer index) {
             value size = outer.size;
