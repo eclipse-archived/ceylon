@@ -13,8 +13,8 @@
        Integer piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
        Character pi = #03C0.character; // GREEK SMALL LETTER PI
    
-   Characters are [[Ordinal]], so character ranges may be
-   produced using the [[segment and span operators|Ordinal]].
+   Characters are [[Enumerable]], so character ranges may be
+   produced using the [[measure]] and [[span]] operators.
    
        value lowerLatinLetters = 'a'..'z';
        value upperLatinLetters = 'A':26;
