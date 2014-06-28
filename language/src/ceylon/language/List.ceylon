@@ -275,13 +275,17 @@ shared interface List<out Element>
      This is a lazy operations, returning a view over this 
      list and the given list.
      
-     Two special cases are interesting:
+     Four special cases are interesting:
      
-     - If `length=0`, the patched list has the given values 
+     - If `length==0`, the patched list has the given values 
        \"inserted\" into this list at the given index `from`.
      - If the given `list` is empty, the patched last has 
-       the segment of this list identified by `from:length` 
+       the measure of this list identified by `from:length` 
        \"deleted\".
+     - If `from==size`, the patched list is formed by
+       appending the given list.
+     - If `from==0`, the patched list is formed by 
+       prepending the given list.
      
      For example:
      
@@ -289,17 +293,19 @@ shared interface List<out Element>
        and
      - `[-2, 2].patch(-1..1,1)` produces the list 
        `{-2,-1,0,1,2}`.'
+     - `0:3`.patch(2..0) produces the list `{0,1,2,2,1,0}`.
      
-     If `length<0`, return this list."
+     If `length<0`, or if `from` is outside the range 
+     `0..size`, return this list."
     shared default List<Element|Other> patch<Other>(
         "The list of new elements."
         List<Other> list,
         "The index at which the elements will occur, and
          the start index of the segment to replace."
-        Integer from,
+        Integer from=size,
         "The length of the segment to replace." 
         Integer length=0)
-            => length>=0 && 0<=from<size 
+            => length>=0 && 0<=from<=size 
                     then Patch(list, from, length)
                     else this;
     
@@ -1000,7 +1006,7 @@ shared interface List<out Element>
             satisfies List<Element|Other> {
         
         assert (length>=0);
-        assert (0<=from<outer.size);
+        assert (0<=from<=outer.size);
         
         size => outer.size+list.size-length;
         
