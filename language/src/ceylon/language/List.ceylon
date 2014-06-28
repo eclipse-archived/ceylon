@@ -636,8 +636,8 @@ shared interface List<out Element>
      
      This is an eager operation."
     see (`function follow`, 
-        `function prepend`,
-        `function withTrailing`)
+         `function prepend`,
+         `function withTrailing`)
     shared default [Other,Element*] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element)
@@ -648,8 +648,8 @@ shared interface List<out Element>
      ends with the specified [[element]].
      
      This is an eager operation."
-    see (`function prepend`,
-        `function withLeading`)
+    see (`function append`,
+         `function withLeading`)
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element)
@@ -658,31 +658,29 @@ shared interface List<out Element>
     "Return a sequence containing the elements of this list, 
      in the order in which they occur in this list, followed 
      by the given [[elements]], in the order in which they 
-     occur in the given stream.
+     occur in the given list.
      
-     This is a lazy operation returning a view over this 
-     list and the given list."
+     This is an eager operation."
     see (`function prepend`,
          `function withTrailing`,
-         `function chain`,
-         `function concatenate`)
-    shared default List<Element|Other> append<Other>
+         `function concatenate`,
+         `function chain`)
+    shared default [Element|Other*] append<Other>
                             (List<Other> elements)
-            => Append(elements);
+            => [*chain(elements)];
     
     "Return a sequence containing the given [[elements]], in 
-     the order in which they occur in the given stream,
+     the order in which they occur in the given list,
      followed by the elements of this list, in the order in 
      which they occur in this list.
      
-     This is a lazy operation returning a view over this 
-     list and the given list."
+     This is an eager operation."
     see (`function append`,
          `function withLeading`,
          `function concatenate`)
-    shared default List<Element|Other> prepend<Other>
+    shared default [Element|Other*] prepend<Other>
                             (List<Other> elements)
-            => Prepend(elements);
+            => [*elements.chain(this)];
     
     Element getElement(Integer index) {
         value element = getFromFirst(index);
@@ -914,60 +912,6 @@ shared interface List<out Element>
             }
             return iterator;
         }
-        
-    }
-    
-    class Append<Other>(List<Other> list)
-            extends Object()
-            satisfies List<Element|Other> {
-        
-        size => outer.size+list.size;
-        
-        shared actual Integer? lastIndex {
-            value size = this.size;
-            return size>0 then size-1;
-        }
-        
-        shared actual <Element|Other>? getFromFirst(Integer index) {
-            value size = outer.size;
-            if (index<size) {
-                return outer.getFromFirst(index);
-            }
-            else {
-                return list.getFromFirst(index-size);
-            }
-        }
-        
-        clone() => outer.clone().Append(list.clone());
-        
-        iterator() => ChainedIterator(outer,list);
-        
-    }
-    
-    class Prepend<Other>(List<Other> list)
-            extends Object()
-            satisfies List<Element|Other> {
-        
-        size => outer.size+list.size;
-        
-        shared actual Integer? lastIndex {
-            value size = this.size;
-            return size>0 then size-1;
-        }
-        
-        shared actual <Element|Other>? getFromFirst(Integer index) {
-            value size = list.size;
-            if (index < size) {
-                return list.getFromFirst(index);
-            }
-            else {
-                return outer.getFromFirst(index-size);
-            }
-        }
-        
-        clone() => outer.clone().Prepend(list.clone());
-        
-        iterator() => ChainedIterator(list,outer);
         
     }
     

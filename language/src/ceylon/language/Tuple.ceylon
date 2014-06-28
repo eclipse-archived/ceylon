@@ -149,8 +149,7 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     "Return a new tuple containing the elements of this 
      tuple, followed by the given [[element]]."
     shared actual native
-    Tuple<Element|Other,First,[Element|Other+]> 
-            withTrailing<Other>(
+    [First,Element|Other+] withTrailing<Other>(
             "The last element of the resulting tuple."
             Other element) 
             => Tuple(first, rest withTrailing element);
@@ -158,8 +157,9 @@ shared final native class Tuple<out Element, out First, out Rest=[]>
     "Return a tuple containing the elements of this 
      tuple, followed by the given [[elements]]."
     shared actual native
-    Tuple<Element|Other,First,[Element|Other*]>
-    append<Other>(List<Other> elements)
+    [First,Element|Other*] append<Other>(
+            "The list of elements to be appended."
+            List<Other> elements)
             => Tuple(first, rest append elements);
 
 }

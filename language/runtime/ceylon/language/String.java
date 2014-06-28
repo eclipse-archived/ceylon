@@ -1637,13 +1637,13 @@ public final class String
     }
 
     @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>List append(@Ignore TypeDescriptor $reifiedOther, 
+    public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> es) {
         return instance(value).append($reifiedOther, es);
     }
 
     @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>List prepend(@Ignore TypeDescriptor $reifiedOther, 
+    public static <Other>Sequential prepend(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> es) {
         return instance(value).prepend($reifiedOther, es);
     }
