@@ -624,7 +624,7 @@ shared interface List<out Element>
             (Integer index)
             => [this[...index-1], this[index...]];
     
-    "Returns a new `List` that starts with the specified
+    "Returns a new sequence that starts with the specified
      [[element]], followed by the elements of this list,
      in the order they occur in this list.
      
@@ -637,7 +637,7 @@ shared interface List<out Element>
             Other element)
             => [element, *this];
     
-    "Returns a new `List` that starts with the elements of 
+    "Returns a new sequence that starts with the elements of 
      this list, in the order they occur in this list, and 
      ends with the specified [[element]].
      
