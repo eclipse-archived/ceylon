@@ -7,7 +7,7 @@
  
      mapPairs(fun,xs,ys)[i]==fun(xs[i],ys[i])
  
- for every `0<=i<min({xs.size,ys.size})`."
+ for every `0<=i<smallest(xs.size,ys.size)`."
 shared Iterable<Result,FirstAbsent|SecondAbsent> mapPairs<Result,FirstArgument,SecondArgument,FirstAbsent,SecondAbsent>(
     Result collecting(FirstArgument firstArg, SecondArgument secondArg),
     Iterable<FirstArgument,FirstAbsent> firstArguments,

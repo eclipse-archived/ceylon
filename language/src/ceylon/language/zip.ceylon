@@ -10,7 +10,7 @@
  
      zipEntries(keys,items)[i]==keys[i]->items[i]
  
- for every `0<=i<min({keys.size,items.size})`."
+ for every `0<=i<smallest(keys.size,items.size)`."
 shared Iterable<<Key->Item>,KeyAbsent|ItemAbsent> zipEntries<Key,Item,KeyAbsent,ItemAbsent>
         (Iterable<Key,KeyAbsent> keys, Iterable<Item,ItemAbsent> items)
         given Key satisfies Object
@@ -32,7 +32,7 @@ shared Iterable<<Key->Item>,KeyAbsent|ItemAbsent> zipEntries<Key,Item,KeyAbsent,
  
      zipPairs(xs,ys)[i]==[xs[i],ys[i]]
  
- for every `0<=i<min({xs.size,ys.size})`."
+ for every `0<=i<smallest(xs.size,ys.size)`."
 shared Iterable<[First,Second],FirstAbsent|SecondAbsent> zipPairs<First,Second,FirstAbsent,SecondAbsent>
         (Iterable<First,FirstAbsent> firstElements, Iterable<Second,SecondAbsent> secondElements)
         given FirstAbsent satisfies Null
@@ -50,7 +50,7 @@ shared Iterable<[First,Second],FirstAbsent|SecondAbsent> zipPairs<First,Second,F
  
      zip(heads, tails)[i]==[heads[i],*tails[i]]
  
- for every `0<=i<min({heads.size,tails.size})`."
+ for every `0<=i<smallest(heads.size,tails.size)`."
 shared Iterable<Tuple<Element|Head,Head,Tail>,HeadAbsent|TailAbsent> zip<Element,Head,Tail,HeadAbsent,TailAbsent>
         (Iterable<Head,HeadAbsent> heads, Iterable<Tail,TailAbsent> tails)
         given Tail satisfies Element[]
