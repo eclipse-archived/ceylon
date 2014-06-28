@@ -21,7 +21,7 @@ function members($$$mptypes){
       } else if (mt==='s') {
         r.push(OpenSetter(OpenValue(this, m)));
       } else if (mt==='als') {
-        r.push(OpenAlias(_findTypeFromModel(this,m)));
+        r.push(OpenAlias$jsint(_findTypeFromModel(this,m)));
       }
     }
   }

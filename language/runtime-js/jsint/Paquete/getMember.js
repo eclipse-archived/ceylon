@@ -12,7 +12,7 @@ function getMember(name$3,$$$mptypes){
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
       return OpenInterface(this, m);
     } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){
-      return OpenAlias(_findTypeFromModel(this,m));
+      return OpenAlias$jsint(_findTypeFromModel(this,m));
     } else {
       console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $$$mptypes.Kind$getMember);
     }

@@ -1,2 +1,2 @@
 //TODO
-return 
+throw new Error("Paquete.shared not implemented");
