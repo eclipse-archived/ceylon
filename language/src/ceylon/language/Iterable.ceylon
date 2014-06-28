@@ -18,9 +18,9 @@
    of elements, which must be the [[size]] of the stream.
    
    The type `Iterable<Element,Null>`, usually abbreviated
-   `{Element*}` represents a possibly-empty iterable 
+   `{Element*}`, represents a possibly-empty iterable 
    container. The type `Iterable<Element,Nothing>`, usually 
-   abbreviated `{Element+}` represents a nonempty iterable 
+   abbreviated `{Element+}`, represents a nonempty iterable 
    container.
    
    A value list in braces produces a new instance of 
