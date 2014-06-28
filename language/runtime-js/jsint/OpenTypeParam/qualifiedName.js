@@ -1,1 +1,1 @@
-return $qname(this.container)+"."+this.name;
+return qname$(this.container)+"."+this.name;
