@@ -300,7 +300,8 @@ public class TypeGenerator {
             Tree.PositionalArgumentList argList = extendedType.getInvocationExpression()
                     .getPositionalArgumentList();
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            gen.out(gen.memberAccessBase(extendedType.getType(), typeDecl, false, gen.qualifiedPath(that, typeDecl)),
+            gen.out(gen.memberAccessBase(extendedType.getType(), typeDecl, false,
+                    gen.qualifiedPath(that, typeDecl, false)),
                     (gen.opts.isOptimize() && (gen.getSuperMemberScope(extendedType.getType()) != null))
                     ? ".call(this," : "(");
 
