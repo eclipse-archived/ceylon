@@ -120,11 +120,11 @@ shared interface Map<out Key,out Item>
         return values;
     }
     
-    "Produces a `Map` with the same keys as this map. For
-     every key, the item is the result of applying the given 
-     transformation function to its associated item in this 
-     map. This is a lazy operation, returning a view of this
-     map."
+    "Produces a `Map` with the same [[keys]] as this map. 
+     For every key, the item is the result of applying the 
+     given [[transformation|Map.mapItems.mapping]] function 
+     to its associated item in this map. This is a lazy 
+     operation, returning a view of this map."
     shared default Map<Key,Result> mapItems<Result>(
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
@@ -154,10 +154,13 @@ shared interface Map<out Key,out Item>
         return map;
     }
     
-    "Produces a `Map` by applying a filtering function to 
-     the keys of this map. This is a lazy operation, 
+    "Produces a `Map` by applying a [[filtering]] function 
+     to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
     shared default Map<Key,Item> filterKeys(
+        "The predicate function that filters the keys of 
+         this map, determining if there is a corresponding
+         entry in the resulting map."
         Boolean filtering(Key key)) {
         object map
                 satisfies Map<Key,Item> {
