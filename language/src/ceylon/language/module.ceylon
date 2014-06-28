@@ -1,6 +1,6 @@
 "The Ceylon language module containing the core types 
- referred to in the language specification, and covering the 
- following areas of functionality:
+ referred to by the [language specification][spec], and 
+ covering the following areas of functionality:
  
  - the foundational types [[Anything]], [[Object]], and 
    [[Null]], and a [[logical boolean|Boolean]] type, 
@@ -37,7 +37,9 @@
  implemented on both platforms. This, certain functionality, 
  for example, concurrency, for which there is no common
  virtual machine-agnostic model, is not covered by the
- langauge module."
+ langauge module.
+ 
+ [spec]: http://ceylon-lang.org/documentation/current/spec"
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
    "Stephane Epardaud", "Enrique Zamudio")
 license ("http://www.apache.org/licenses/LICENSE-2.0.html")
