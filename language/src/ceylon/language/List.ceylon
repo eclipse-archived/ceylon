@@ -602,47 +602,50 @@ shared interface List<out Element>
         return [];
     }
     
-    "Select the first elements of this list, returning a 
-     list no longer than the given length. If this list is 
-     shorter than the given length, return this list. 
-     Otherwise return a list of the given length.
-     
-     This is an eager operation."
-    see (`function terminal`, 
-         `function sublistTo`,
-         `function take`)
-    shared default List<Element> initial(Integer length)
-            => this[0:length];
-    
-    "Select the last elements of the list, returning a list 
-     no longer than the given length. If this list is 
-     shorter than the given length, return this list. 
-     Otherwise return a list of the given length.
-     
-     This is an eager operation."
-    see (`function initial`)
-    shared default List<Element> terminal(Integer length) {
-        if (length>=size) {
-            return this;
-        }
-        else if (size>0, length>0) {
-            return this[size-length..size-1];
-        }
-        else {
-            return [];
-        }
-    }
-    
     "Return two lists, the first containing the elements
      that occur before the given [[index]], the second with
      the elements that occur after the given `index`. If the
      given `index` is outside the range of indices of this
      list, one of the returned lists will be empty.
      
+     For any `list`, and for any integer `index`:
+     
+         list.size(index) == [list[...index-1], list[index...]]
+     
      This is an eager operation."
-    shared default [List<Element>,List<Element>] slice
-            (Integer index)
+    shared default 
+    [List<Element>,List<Element>] slice(Integer index)
             => [this[...index-1], this[index...]];
+    
+    "Select the first elements of this list, returning a 
+     list no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length.
+     
+     For any `list`, and for any integer `length`:
+     
+         list.initial(length) == list[...length-1] == list[0:length]
+     
+     This is an eager operation."
+    see (`function terminal`, 
+         `function sublistTo`,
+         `function take`)
+    shared default List<Element> initial(Integer length)
+            => this[...length-1];
+    
+    "Select the last elements of the list, returning a list 
+     no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length.
+     
+     For any `list`, and for any integer `length`:
+     
+         list.terminal(length) == list[size-length...]
+     
+     This is an eager operation."
+    see (`function initial`)
+    shared default List<Element> terminal(Integer length) 
+            => this[size-length...];
     
     shared actual default List<Element> span
                             (Integer from, Integer to) {

@@ -34,21 +34,15 @@ shared interface Sequential<out Element>
      sequence. Otherwise return a sequence of the given 
      length."
     shared actual default Element[] initial(Integer length)
-            => this[0:length];
+            => this[...length-1];
     
     "Select the last elements of the sequence, returning a 
      sequence no longer than the given length. If this 
      sequence is shorter than the given length, return this 
      sequence. Otherwise return a sequence of the given 
      length."
-    shared actual default Element[] terminal(Integer length) {
-        if (exists l = lastIndex, length>0) {
-            return this[l-length+1..l];
-        }
-        else {
-            return [];
-        }
-    }
+    shared actual default Element[] terminal(Integer length) 
+            => this[size-length...]; 
     
     "Trim the elements satisfying the given predicate
      function from the start and end of this sequence, 
