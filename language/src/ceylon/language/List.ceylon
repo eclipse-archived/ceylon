@@ -290,7 +290,7 @@ shared interface List<out Element>
      
      - If `length==0`, the patched list has the given values 
        \"inserted\" into this list at the given index `from`.
-     - If the given `list` is empty, the patched last has 
+     - If the given `list` is empty, the patched list has 
        the measure of this list identified by `from:length` 
        \"deleted\".
      - If `from==size`, the patched list is formed by
