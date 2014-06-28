@@ -92,7 +92,7 @@ shared interface Map<out Key,out Item>
                 satisfies Collection<Key> {
             contains(Object key) => outer.defines(key);
             iterator() => { for (k->v in outer) k }.iterator();
-            clone() => outer.clone().keys; //TODO: not efficient
+            clone() => [*this];
             size => outer.size;
         }
         return keys;
@@ -114,7 +114,7 @@ shared interface Map<out Key,out Item>
                 return false;
             }
             iterator() => { for (k->v in outer) v }.iterator();
-            clone() => outer.clone().values; //TODO: not efficient
+            clone() => [*this];
             size => outer.size;
         }
         return values;
@@ -131,7 +131,9 @@ shared interface Map<out Key,out Item>
         Result mapping(Key key, Item item)) 
             given Result satisfies Object {
         object map
+                extends Object()
                 satisfies Map<Key,Result> {
+            
             shared actual Result? get(Object key) {
                 if (is Key key, 
                     exists item=outer[key]) {
@@ -141,15 +143,19 @@ shared interface Map<out Key,out Item>
                     return null;
                 }
             }
-            defines(Object key) => outer.defines(key);
-            iterator() => outer.map((Key->Item entry) 
-                    => entry.key->mapping(entry.key, entry.item))
-                            .iterator();
+            
+            defines(Object key) => outer defines key;
+            
+            function mapEntry(Key->Item entry) 
+                    => entry.key -> 
+                        mapping(entry.key, entry.item);
+            
+            iterator() => (outer map mapEntry).iterator();
+            
             size => outer.size;
-            equals(Object that) 
-                    => (super of Map<Key,Result>).equals(that);
-            hash => (super of Map<Key,Result>).hash;
-            clone() => outer.clone().mapItems(mapping);
+            
+            clone() => outer.clone() mapItems mapping;
+            
         }
         return map;
     }
@@ -163,7 +169,9 @@ shared interface Map<out Key,out Item>
          entry in the resulting map."
         Boolean filtering(Key key)) {
         object map
+                extends Object()
                 satisfies Map<Key,Item> {
+            
             shared actual Item? get(Object key) {
                 if (is Key key, filtering(key)) {
                     return outer[key];
@@ -172,6 +180,7 @@ shared interface Map<out Key,out Item>
                     return null;
                 }
             }
+            
             shared actual Boolean defines(Object key) {
                 if (is Key key, filtering(key)) {
                     return outer.defines(key);
@@ -180,13 +189,14 @@ shared interface Map<out Key,out Item>
                     return false;
                 }
             }
-            iterator() => outer.filter((Key->Item entry) 
-                    => filtering(entry.key))
-                        .iterator();
-            equals(Object that)
-                    => (super of Map<Key,Item>).equals(that);
-            hash => (super of Map<Key,Item>).hash;
-            clone() => outer.clone().filterKeys(filtering); //TODO: not efficient
+            
+            function filterEntry(Key->Item entry) 
+                    => filtering(entry.key);
+            
+            iterator() => (outer filter filterEntry).iterator();
+            
+            clone() => outer.clone() filterKeys filtering;
+            
         }
         return map;
     }
