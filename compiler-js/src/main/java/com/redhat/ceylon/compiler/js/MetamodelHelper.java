@@ -23,7 +23,11 @@ public class MetamodelHelper {
     static void generateOpenType(final Node that, Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
         if (d instanceof TypeParameter == false) {
-            gen.out(GenerateJsVisitor.getClAlias(), "$init$Open");
+            if (JsCompiler.isCompilingLanguageModule()) {
+                gen.out("$init$Open");
+            } else {
+                gen.out(GenerateJsVisitor.getClAlias(), "Open");
+            }
         }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             gen.out("Interface");
@@ -44,7 +48,10 @@ public class MetamodelHelper {
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
-            gen.out("Alias()(");
+            gen.out("Alias$jsint(");
+            if (JsCompiler.isCompilingLanguageModule()) {
+                gen.out(")(");
+            }
             if (d.isMember()) {
                 //Make the chain to the top-level container
                 ArrayList<Declaration> parents = new ArrayList<Declaration>(2);
@@ -61,7 +68,10 @@ public class MetamodelHelper {
             return;
         }
         //TODO optimize for local declarations
-        gen.out("()(", GenerateJsVisitor.getClAlias(), "getModules$meta().find('", m.getNameAsString(),
+        if (JsCompiler.isCompilingLanguageModule()) {
+            gen.out("()");
+        }
+        gen.out("(", GenerateJsVisitor.getClAlias(), "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),");
         if (d.isMember()) {

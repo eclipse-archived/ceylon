@@ -3168,6 +3168,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.Assertion that) {
         out("//assert");
         location(that);
+        endLine();
         String custom = "Assertion failed";
         //Scan for a "doc" annotation with custom message
         if (that.getAnnotationList() != null && that.getAnnotationList().getAnonymousAnnotation() != null) {
@@ -3181,7 +3182,6 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        endLine();
         StringBuilder sb = new StringBuilder(custom).append(": '");
         for (int i = that.getConditionList().getToken().getTokenIndex()+1;
                 i < that.getConditionList().getEndToken().getTokenIndex(); i++) {
