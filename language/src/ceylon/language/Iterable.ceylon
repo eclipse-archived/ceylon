@@ -81,7 +81,7 @@
      eager by nature,
    - operations which result in a subset or subrange of the 
      receiving stream, where structural sharing would or
-     could result in unecessary memory retention.
+     could result in unnecessary memory retention.
    
    Certain operations come in both lazy and eager flavors,
    for example:
