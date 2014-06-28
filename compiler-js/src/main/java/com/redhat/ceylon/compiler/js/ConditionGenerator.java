@@ -56,7 +56,9 @@ public class ConditionGenerator {
                 vars.add(new VarHolder(variable, variableRHS, varName));
             }
         }
-        gen.endLine(true);
+        if (!first) {
+            gen.endLine(true);
+        }
         return vars;
     }
 
