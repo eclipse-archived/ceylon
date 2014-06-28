@@ -236,7 +236,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 atr$(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     var mm = getrtmm$$(this.tipo);
-    var qn=this.tipo.$$ && this.tipo.$$.prototype && this.tipo.$$.prototype.getT$name ? this.tipo.$$.prototype.getT$name() : $qname(mm);
+    var qn=this.tipo.$$ && this.tipo.$$.prototype && this.tipo.$$.prototype.getT$name ? this.tipo.$$.prototype.getT$name() : qname$(mm);
     if (mm.tp) {
       qn+="<";
       var first=true;
@@ -265,7 +265,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'string',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
 atr$(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   var mm = getrtmm$$(this.tipo);
-  var h=$qname(mm).hash;
+  var h=qname$(mm).hash;
   if (mm.tp) {
     for (var tp in mm.tp) {
       var targ;

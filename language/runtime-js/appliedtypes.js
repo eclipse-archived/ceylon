@@ -205,7 +205,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
   atr$(that,'string',function(){
-    return $qname(mm);
+    return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
@@ -278,7 +278,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
     return eq;
   };
   atr$(that,'string',function(){
-    return $qname(mm);
+    return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -358,7 +358,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
     return eq;
   };
   atr$(that,'string',function(){
-    return $qname(mm);
+    return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -502,7 +502,7 @@ atr$($$appliedValue,'string',function(){
   } else if (mm.$cont) {
     qn = typeLiteral$meta({Type$typeLiteral:{t:mm.$cont}}).string + "." + mm.d[mm.d.length-1];
   } else {
-    qn=$qname(mm);
+    qn=qname$(mm);
   }
   return qn;
 },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
@@ -524,7 +524,7 @@ function $init$AppliedValue(){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model);
     (function($$appliedValue){
 atr$($$appliedValue,'string',function(){
-  return $qname(this.tipo);
+  return qname$(this.tipo);
 },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
       atr$($$appliedValue,'declaration',function(){
         var $$av=this;
@@ -696,9 +696,9 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   atr$($$appliedAttribute,'string',function(){
     var c=getrtmm$$(atr).$cont;
     if (typeof(c.$crtmm$)==='function')c.$crtmm$=c.$crtmm$();
-    if (!c)return $qname(atr);
+    if (!c)return qname$(atr);
     c=c.$crtmm$;
-    var qn=$qname(c);
+    var qn=qname$(c);
     if (c.tp) {
       qn+="<"; var first=true;
       var cnt=$$targs$$&&$$targs$$.Container$Attribute&&$$targs$$.Container$Attribute.a;
@@ -706,8 +706,8 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
         if (_ta) {
-          qn+=$qname(_ta);
-        } else qn+=$qname(Anything);
+          qn+=qname$(_ta);
+        } else qn+=qname$(Anything);
       }
       qn+=">";
     }

@@ -77,7 +77,7 @@ function tupleize$params(ps,aux) {
   }
   return tupa;
 }
-function $qname(mm) {
+function qname$(mm) {
   if (mm.t) {
     mm=mm.t;
   }
@@ -103,7 +103,7 @@ function resolve$typearg(ta,mm) {
       return r.satisfies.length==1?r.satisfies[0]:{t:'i',l:r.satisfies};
     return {t:Anything};
   }
-  console.log("MISSING definition of type argument " + ta + " in " + $qname(mm));
+  console.log("MISSING definition of type argument " + ta + " in " + qname$(mm));
   return {t:Anything};
 }
 

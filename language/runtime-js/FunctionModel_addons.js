@@ -39,7 +39,7 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
   var mm=this.tipo.$crtmm$;
   var qn;
   if (mm.$cont) {
-    qn=$qname(mm.$cont);
+    qn=qname$(mm.$cont);
     if (mm.$cont.$crtmm$.tp) {
       var cnt=this.$$targs$$&&this.$$targs$$.Container$Function&&this.$$targs$$.Container$Function.a;
       if (!cnt)cnt=this.$$targs$$&&this.$$targs$$.Container$Method&&this.$$targs$$.Container$Method.a;
@@ -47,13 +47,13 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
       for (var tp in mm.$cont.$crtmm$.tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
-        qn+=$qname(_ta||Anything);
+        qn+=qname$(_ta||Anything);
       }
       qn+=">";
     }
     qn+="."+mm.d[mm.d.length-1];
   } else {
-    qn=$qname(mm);
+    qn=qname$(mm);
   }
   if (mm.tp) {
     qn+="<";
@@ -63,7 +63,7 @@ atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
       var targ=this.$targs[tp];
       if (targ.t) {
         var _m=getrtmm$$(targ.t);
-        qn+=$qname(_m);
+        qn+=qname$(_m);
       } else {
         qn+=tp;
       }
