@@ -832,20 +832,27 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the stream 
      `{ [1, 2], [2, 3], [3, 4], [4, 5] }`.
      
+     This expression determines if a stream is monotonically
+     increasing:
+     
+         every { for (pair in nums.paired) pair[0]<pair[1] }
+     
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`."
     shared default {[Element,Element]*} paired {
-         object pairs satisfies {[Element,Element]*} {
+         object pairs 
+                 satisfies {[Element,Element]*} {
              shared actual Integer size {
                  value size = outer.size-1;
                  return size<0 then 0 else size;
              }
-             shared actual Iterator<[Element, Element]> iterator() {
+             empty => outer.size<2;
+             shared actual Iterator<[Element,Element]> iterator() {
                  value iter = outer.iterator();
                  object iterator 
-                         satisfies Iterator<[Element, Element]> {
+                         satisfies Iterator<[Element,Element]> {
                      variable value previous = iter.next();
-                     shared actual [Element, Element]|Finished next() {
+                     shared actual [Element,Element]|Finished next() {
                          if (!is Finished head = previous,
                              !is Finished tip = iter.next()) {
                              previous = tip;
