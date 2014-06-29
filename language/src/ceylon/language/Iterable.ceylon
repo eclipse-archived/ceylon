@@ -847,6 +847,57 @@ shared interface Iterable<out Element, out Absent=Null>
          return pairs;
     }
     
+    "Produces a stream of sequences of the given [[length]],
+     containing elements of this stream. Each sequence in 
+     the stream contains the next [[length]] elements of 
+     this sequence that have not yet been assigned to a 
+     previous sequence, in the same order that they occur
+     in this stream. The very last sequence in the stream
+     may be shorter than the given `length`.
+     
+     For any `stream` and for any positive integer 
+     [[length]]:
+     
+         expand { stream.sequences(length) } == stream"
+    throws (`class AssertionError`,
+            "if `length<0`")
+    shared default 
+    Iterable<Element[],Absent> sequences(Integer length) {
+        assert (length>=0);
+        if (length==0) {
+            return {[]}.cycled;
+        }
+        object sequences 
+                satisfies Iterable<Element[],Absent> {
+            //TODO: size => outer.size / length;
+            shared actual Iterator<Element[]> iterator() {
+                value iter = outer.iterator();
+                object iterator satisfies Iterator<Element[]> {
+                    shared actual Element[]|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            value array = arrayOfSize(length, next);
+                            variable value index = 0;
+                            while (++index<length) {
+                                if (!is Finished current = iter.next()) {
+                                    array.set(index, current);
+                                }
+                                else {
+                                    return ArraySequence(array[...index-1]);
+                                }
+                            }
+                            return ArraySequence(array);
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
+        return sequences;
+    }
+    
     "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream, in the order 
      in which they occur in this stream. 
