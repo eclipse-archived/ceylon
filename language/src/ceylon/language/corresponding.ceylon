@@ -1,4 +1,4 @@
-"Compares correspoding elements of the given streams using 
+"Compares corresponding elements of the given streams using 
  the given [[binary predicate function|comparing]]. Return 
  `true` if the two streams have the same number of elements 
  and if the predicate is satisfied for every pair of 
