@@ -182,12 +182,12 @@ public final class Float
     
     @Override
     public Float getWholePart() {		
-        return instance((long)value);
+        return instance(getInteger(value));
     }
     
     @Ignore
     public static double getWholePart(double value) {
-        return (long)value;
+        return getInteger(value);
     }
     
     @Override
@@ -289,11 +289,7 @@ public final class Float
     // Conversions between numeric types
     
     public long getInteger() {
-        if (value >= Long.MIN_VALUE
-                && value <= Long.MAX_VALUE) {
-            return (long)value;
-        } 
-        throw new OverflowException();
+        return getInteger(value);
     }
     
     @Ignore
@@ -301,8 +297,10 @@ public final class Float
         if (value >= Long.MIN_VALUE
                 && value <= Long.MAX_VALUE) {
             return (long)value;
-        } 
-        throw new OverflowException();
+        }
+        else {
+        	throw new OverflowException();
+        }
     }
     
     @Transient

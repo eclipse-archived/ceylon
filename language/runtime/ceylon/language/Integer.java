@@ -387,11 +387,7 @@ public final class Integer
     // Conversions between numeric types
     
     public double getFloat() {
-        if (value >= 9007199254740992L
-                || value <= -9007199254740992L) {
-            throw new OverflowException();
-        }
-        return (double) value;
+        return getFloat(value);
     }
 
     @Ignore
@@ -400,7 +396,9 @@ public final class Integer
                 || value <= -9007199254740992L) {
             throw new OverflowException();
         }
-        return (double) value;
+        else {
+        	return (double) value;
+        }
     }
 
     @TypeInfo("ceylon.language::Character")
