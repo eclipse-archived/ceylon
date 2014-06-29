@@ -5,6 +5,7 @@
  
      [Integer|Float|String*] stuff = concatenate(1..3, [0.0], {\"hello\", \"world\"});"
 see (`function expand`, 
+     `function Iterable.chain`,
      `function Sequential.append`)
 shared Element[] concatenate<Element>(
         "The iterable objects to concatenate."
