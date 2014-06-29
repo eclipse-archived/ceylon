@@ -3,6 +3,7 @@
  `true` if the two streams have the same number of elements 
  and if the predicate is satisfied for every pair of 
  corresponding elements. Return `false` otherwise."
+see (`function everyPair`)
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The predicate function that compares an element of the

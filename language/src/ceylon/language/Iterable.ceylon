@@ -285,7 +285,7 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
-    "The result of applying the [[given accumulating 
+    "The result of applying the given [[accumulating 
      function|accumulating]] to each element of this stream 
      in turn.
      
@@ -529,6 +529,7 @@ shared interface Iterable<out Element, out Absent=Null>
      function|selecting]]. This method returns `false` for 
      empty streams. For an infinite stream, this operation 
      might not terminate."
+    see (`function every`)
     shared default Boolean any(
             "The predicate that at least one element 
              must satisfy."
@@ -545,6 +546,7 @@ shared interface Iterable<out Element, out Absent=Null>
      [[given predicate function|selecting]]. This method 
      returns `true` for empty streams.  For an infinite 
      stream, this operation might not terminate."
+    see (`function any`)
     shared default Boolean every(
             "The predicate that all elements must 
              satisfy."
