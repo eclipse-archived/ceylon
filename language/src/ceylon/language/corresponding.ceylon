@@ -5,9 +5,9 @@
  corresponding elements. Return `false` otherwise."
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
-    "The predicate function that compares an element
-     of the first stream with the corresponding element
-     of the second stream."
+    "The predicate function that compares an element of the
+     [[first stream|firstIterable]] with the corresponding 
+     element of the [[second stream|secondIterable]]."
     Boolean comparing(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
