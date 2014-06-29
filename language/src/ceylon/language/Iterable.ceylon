@@ -360,7 +360,9 @@ shared interface Iterable<out Element, out Absent=Null>
              the running total and the next element."
             Result accumulating(Result partial, Element element)) {
         object iterable satisfies {Result+} {
+            empty => false;
             first => initial;
+            size => 1 + outer.size;
             shared actual Iterator<Result> iterator() {
                 value iter = outer.iterator();
                 object iterator satisfies Iterator<Result> {
@@ -379,6 +381,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
+                    string => outer.string + ".iterator()";
                 }
                 return iterator;
             }
