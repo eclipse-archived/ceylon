@@ -893,7 +893,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 satisfies Iterable<Element[],Absent> {
             shared actual Integer size {
                 value outerSize = outer.size;
-                return length divides outerSize 
+                return length.divides(outerSize) 
                         then outerSize/length 
                         else outerSize/length+1;
             }

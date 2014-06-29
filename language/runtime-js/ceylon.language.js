@@ -161,7 +161,7 @@ Nothing.$crtmm$=function(){return{ps:[],pa:1,mod:$CCMM$,d:['$','Nothing']};}
 //#Number
 //#COMPILE Set,Range,Span,Measure,Singleton,AssertionError,Map,String,strings.js,Character
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,count,emptyOrSingleton,curry,apply
-//#COMPILE every,forItem,forKey,concatenate,largest,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
+//#COMPILE every,forItem,forKey,concatenate,corresponding,largest,max,min,smallest,sum,product,zip,unzip,mapPairs,print,nothing
 //#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,sort,and,or,not,arrayOfSize
 //#metamodel
 //#COMPILE Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
