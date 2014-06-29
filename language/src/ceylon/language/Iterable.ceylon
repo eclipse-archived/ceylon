@@ -891,7 +891,13 @@ shared interface Iterable<out Element, out Absent=Null>
         }
         object sequences 
                 satisfies Iterable<Element[],Absent> {
-            //TODO: size => outer.size / length;
+            shared actual Integer size {
+                value outerSize = outer.size;
+                return length divides outerSize 
+                        then outerSize/length 
+                        else outerSize/length+1;
+            }
+            empty => outer.empty;
             shared actual Iterator<Element[]> iterator() {
                 value iter = outer.iterator();
                 object iterator satisfies Iterator<Element[]> {
