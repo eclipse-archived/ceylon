@@ -271,7 +271,7 @@ shared interface Iterable<out Element, out Absent=Null>
             => expand(map(collecting));
     
     "Produces a stream containing the elements of this 
-     stream that satisfy the [[given predicate 
+     stream that satisfy the given [[predicate 
      function|selecting]].
      
      For example, the expression
@@ -307,7 +307,7 @@ shared interface Iterable<out Element, out Absent=Null>
         return partial;
     }
     
-    "The result of applying the [[given accumulating 
+    "The result of applying the given [[accumulating 
      function|accumulating]] to each element of this stream 
      in turn.
      
@@ -525,10 +525,10 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Determines if there is at least one element of this 
-     stream that satisfies the [[given predicate 
-     function|selecting]]. This method returns `false` for 
-     empty streams. For an infinite stream, this operation 
-     might not terminate."
+     stream that satisfies the given [[predicate 
+     function|selecting]]. If the stream is empty, returns 
+     `false`. For an infinite stream, this operation might 
+     not terminate."
     see (`function every`)
     shared default Boolean any(
             "The predicate that at least one element 
@@ -543,9 +543,9 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Determines if all elements of this stream satisfy the 
-     [[given predicate function|selecting]]. This method 
-     returns `true` for empty streams.  For an infinite 
-     stream, this operation might not terminate."
+     given [[predicate function|selecting]]. If the stream
+     is empty, return `true`. For an infinite stream, this 
+     operation might not terminate."
     see (`function any`)
     shared default Boolean every(
             "The predicate that all elements must 

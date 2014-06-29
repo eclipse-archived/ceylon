@@ -46,7 +46,7 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
 "Given two stream, return the first pair of elements in the 
  given streams that satisfies the given binary [[predicate
  function|selecting]], or null if no pair of elements 
- satisfies the predicate.  If one of the streams is longer 
+ satisfies the predicate. If one of the streams is longer 
  than the other, simply ignore additional elements of the 
  longer stream with no pair in the other stream."
 shared [First,Second]? findPair<First,Second>(
@@ -70,7 +70,7 @@ shared [First,Second]? findPair<First,Second>(
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
  elements of the longer stream with no pair in the other 
- stream."
+ stream. If either stream is empty, return `true`."
 see (`function corresponding`,
      `function anyPair`)
 shared Boolean everyPair<First,Second>(
@@ -94,7 +94,7 @@ shared Boolean everyPair<First,Second>(
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
  elements of the longer stream with no pair in the other 
- stream."
+ stream. If either stream is empty, return `false`."
 see (`function everyPair`)
 shared Boolean anyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
