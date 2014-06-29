@@ -43,7 +43,7 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
     return iterable;
 }
 
-"Given two stream, return the first pair of elements in the 
+"Given two streams, return the first pair of elements in the 
  given streams that satisfies the given binary [[predicate
  function|selecting]], or null if no pair of elements 
  satisfies the predicate. If one of the streams is longer 
@@ -65,7 +65,7 @@ shared [First,Second]? findPair<First,Second>(
     return null;
 }
 
-"Given two stream, return `true` if every pair of elements 
+"Given two streams, return `true` if every pair of elements 
  in the given streams satisfies the given binary [[predicate
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
@@ -89,7 +89,7 @@ shared Boolean everyPair<First,Second>(
     return true;
 }
 
-"Given two stream, return `true` if some pair of elements 
+"Given two streams, return `true` if some pair of elements 
  in the given streams satisfies the given binary [[predicate
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
@@ -112,7 +112,7 @@ shared Boolean anyPair<First,Second>(
     return false;
 }
 
-"Given two stream, return the result of applying the given 
+"Given two streams, return the result of applying the given 
  [[accumulating function|accumulating]] to each pair of 
  elements of the given streams in turn. If one of the 
  streams is longer than the other, simply ignore additional 
