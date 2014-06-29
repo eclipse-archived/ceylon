@@ -5,13 +5,17 @@
  
  Thus:
  
-     tuples[i]==[unzip(tuples)[0][i],*unzip(tuples)[1][i]]"
-shared [Iterable<Head,Absent>, Iterable<Tail,Absent>] unzip<Element,Head,Tail,Absent>
+     tuples[i] == [unzip(tuples)[0][i], 
+                  *unzip(tuples)[1][i]]"
+shared [Iterable<Head,Absent>, Iterable<Tail,Absent>] 
+unzip<Element,Head,Tail,Absent>
         (Iterable<Tuple<Element|Head,Head,Tail>,Absent> tuples)
         given Tail satisfies Element[]
         given Absent satisfies Null
-        => [tuples.map((Tuple<Element|Head,Head,Tail> tuple) => tuple.first),
-            tuples.map((Tuple<Element|Head,Head,Tail> tuple) => tuple.rest)];
+        => [tuples.map((Tuple<Element|Head,Head,Tail> tuple) 
+                        => tuple.first),
+            tuples.map((Tuple<Element|Head,Head,Tail> tuple) 
+                        => tuple.rest)];
 
 "Given a stream of pairs, return two streams. The
  first stream produces the first elements of the
@@ -20,8 +24,10 @@ shared [Iterable<Head,Absent>, Iterable<Tail,Absent>] unzip<Element,Head,Tail,Ab
  
  Thus:
  
-     pairs[i]==[unzipPairs(pairs)[0][i],unzipPairs(pairs)[1][i]]"
-shared [Iterable<First,Absent>, Iterable<Second,Absent>] unzipPairs<First,Second,Absent>
+     pairs[i] == [unzipPairs(pairs)[0][i], 
+                  unzipPairs(pairs)[1][i]]"
+shared [Iterable<First,Absent>, Iterable<Second,Absent>] 
+unzipPairs<First,Second,Absent>
         (Iterable<[First,Second],Absent> pairs)
         given Absent satisfies Null
         => [pairs.map(([First,Second] pair) => pair[0]),
@@ -34,8 +40,10 @@ shared [Iterable<First,Absent>, Iterable<Second,Absent>] unzipPairs<First,Second
  
  Thus:
  
-     entries[i]==unzipEntries(entries)[0][i]->unzipEntries(entries)[1][i]"
-shared [Iterable<Key,Absent>, Iterable<Item,Absent>] unzipEntries<Key,Item,Absent>
+     entries[i] == unzipEntries(entries)[0][i] 
+                -> unzipEntries(entries)[1][i]"
+shared [Iterable<Key,Absent>, Iterable<Item,Absent>] 
+unzipEntries<Key,Item,Absent>
         (Iterable<<Key->Item>,Absent> entries)
         given Key satisfies Object
         given Item satisfies Object
