@@ -820,12 +820,24 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "For a stable stream, this operation is equivalent to
-     `zipPairs(stream,stream.rest)`."
+    "A stream containing whose elements are pairs (2-tuples)
+     comprising an element of this stream paired with the 
+     next element in the stream. The resulting stream has
+     one fewer elements than this stream.
+     
+     For example, the expression
+     
+         (1..5).paired
+     
+     results in the stream 
+     `{ [1, 2], [2, 3], [3, 4], [4, 5] }`.
+     
+     For any stable `stream`, this operation is equivalent 
+     to `zipPairs(stream,stream.rest)`."
     shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
              shared actual Integer size {
-                 value size =  outer.size-1;
+                 value size = outer.size-1;
                  return size<0 then 0 else size;
              }
              shared actual Iterator<[Element, Element]> iterator() {
