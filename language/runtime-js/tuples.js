@@ -73,7 +73,7 @@ function tpl$(elems,types,spread){
     var t2=_t.l.slice(0);t2.push(b.Other$withTrailing);
     return tpl$(e2,{t:'T',l:t2});
   }
-  that.withTrailing.$crtmm$=List.$$.prototype.withTrailing.$crtmm$;
+  that.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
   that.chain=function(a,b){return elems.chain(a,b);}
   that.chain.$crtmm$=Iterable.$$.prototype.chain.$crtmm$;
   that.longerThan=function(i){return elems.longerThan(i);}
