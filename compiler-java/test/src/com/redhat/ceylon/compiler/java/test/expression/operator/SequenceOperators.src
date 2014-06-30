@@ -98,7 +98,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
         spreadInvoke = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$2$iterable$ = sequence;
+                final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$2$iterable$ = sequence;
                 final .ceylon.language.Integer spread$2$arg$0 = .ceylon.language.Integer.instance(0L);
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
@@ -106,13 +106,13 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$2$iterator$ = spread$2$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
                             .java.lang.Object spread$2$element$;
                             if (!((spread$2$element$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$2$element$ = ((.ceylon.language.String)spread$2$element$).get(spread$2$arg$0);
+                                spread$2$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$2$element$).get(spread$2$arg$0);
                             }
                             return spread$2$element$;
                         }
