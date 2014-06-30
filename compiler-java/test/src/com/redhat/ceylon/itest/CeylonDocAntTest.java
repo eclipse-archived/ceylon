@@ -48,6 +48,13 @@ public class CeylonDocAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
     }
+    
+    @Test
+    public void testDocumentModuleDefault() throws Exception {
+        AntResult result = ant("default-module");
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "default/module-doc/index.html").exists());
+    }
 
     @Test
     public void testDocumentModuleLinks() throws Exception {

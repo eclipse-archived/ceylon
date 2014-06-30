@@ -67,6 +67,27 @@ public class CeylonRunScriptTest extends AntBasedTest {
     }
     
     @Test
+    public void testExecDefaultCompiled() throws Exception {
+        AntResult result = ant("exec-default-compiled");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "Hello, world");
+    }
+    
+    @Test
+    public void testExecDefaultCompiledFunc() throws Exception {
+        AntResult result = ant("exec-default-compiled-func");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "Hello, world");
+    }
+    
+    @Test
+    public void testExecDefaultCompiledArg() throws Exception {
+        AntResult result = ant("exec-default-compiled-arg");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "Hello, Tako");
+    }
+    
+    @Test
     public void testExecGoodbyeClassCompiled() throws Exception {
         AntResult result = ant("exec-goodbye-compiled");
         Assert.assertEquals(0, result.getStatusCode());

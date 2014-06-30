@@ -52,5 +52,14 @@
       <arg value="com.example.foo"/>
     </exec>
   </target>
+	  
+  <target name="default-module" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="compile"/>
+      <arg value="--src=${arg.src}/def"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="default"/>
+    </exec>
+  </target>
 
 </project>

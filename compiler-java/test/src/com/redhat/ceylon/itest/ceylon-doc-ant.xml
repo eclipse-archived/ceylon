@@ -19,6 +19,15 @@
     </ceylon-doc>
   </target>
 
+  <target name="default-module" depends="ant-tasks">
+    <ceylon-doc
+      executable="${script.ceylon}"
+      src="${arg.src}/def"
+      out="${arg.out}">
+        <module name="default"/>
+    </ceylon-doc>
+  </target>
+
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <echo message="Hello, world"/>
     <ceylon-doc

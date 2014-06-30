@@ -76,4 +76,11 @@ public class CeylonDocScriptTest extends AntBasedTest {
         assertExecutedOk(result);
     }
     
+    @Test
+    public void testDefault() throws Exception {
+        AntResult result = ant("default-module");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertExecutedOk(result);
+    }
+    
 }

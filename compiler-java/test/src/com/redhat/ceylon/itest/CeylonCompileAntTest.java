@@ -53,6 +53,16 @@ public class CeylonCompileAntTest extends AntBasedTest {
     }
 
     @Test
+    public void testCompileModuleDefault() throws Exception {
+        AntResult result = ant("default-module");
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "default/default.car").exists());
+        Assert.assertTrue(new File(result.getOut(), "default/default.car.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "default/default.src").exists());
+        Assert.assertTrue(new File(result.getOut(), "default/default.src.sha1").exists());
+    }
+
+    @Test
     public void testCompileModuleDoesNotExist() throws Exception {
         AntResult result = ant("non-existant-module");
         Assert.assertEquals(1, result.getStatusCode());

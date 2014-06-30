@@ -81,4 +81,12 @@ public class CeylonCompileScriptTest extends AntBasedTest {
         assertContains(result.getStdout(), "[exec] Model tree for");
     }
     
+    @Test
+    public void testDefault() throws Exception {
+        AntResult result = ant("default-module");
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
+        assertExecutedOk(result);
+        assertNotContains(result.getStdout(), "[exec] Model tree for");
+    }
+    
 }
