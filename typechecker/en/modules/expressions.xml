@@ -1386,7 +1386,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     <programlisting>Vector scaled = scale ** vector;</programlisting>
     
-    <programlisting>map.define(person.name->person);</programlisting>
+    <programlisting>map.contains(person.name->person);</programlisting>
     
     <programlisting>if (!document.internal || user is Employee) { ... }</programlisting>
     
