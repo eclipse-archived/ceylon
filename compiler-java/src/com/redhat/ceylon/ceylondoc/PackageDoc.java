@@ -70,7 +70,7 @@ public class PackageDoc extends ClassOrPackageDoc {
                 Class c = (Class) m;
                 if( c.isAnnotation() ) {
                     annotationTypes.add(c);
-                } else  if (Util.isException(c)) {
+                } else  if (Util.isThrowable(c)) {
                     exceptions.add(c);
                 } else {
                     classes.add(c);

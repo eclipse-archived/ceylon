@@ -109,7 +109,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                     innerInterfaces.add((Interface) m);
                 } else if (m instanceof Class) {
                     Class c = (Class) m;
-                    if (Util.isException(c)) {
+                    if (Util.isThrowable(c)) {
                         innerExceptions.add(c);
                     } else {
                         innerClasses.add(c);

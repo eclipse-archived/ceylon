@@ -317,12 +317,12 @@ public class Util {
         return c == null || c.isEmpty();
     }
     
-    public static boolean isException(Class c) {
+    public static boolean isThrowable(Class c) {
         if (c != null) {
-            if ("ceylon.language::Exception".equals(c.getQualifiedNameString())) {
+            if ("ceylon.language::Throwable".equals(c.getQualifiedNameString())) {
                 return true;
             } else {
-                return isException(c.getExtendedTypeDeclaration());
+                return isThrowable(c.getExtendedTypeDeclaration());
             }
         }
         return false;
