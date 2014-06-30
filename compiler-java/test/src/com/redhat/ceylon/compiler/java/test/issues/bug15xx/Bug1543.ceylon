@@ -24,10 +24,18 @@ void bug1543(){
         chain = chain.withLeading(i);
     }
 }
+shared interface My1543Iterable<out Element, out Absent=Null>
+        satisfies Category
+        given Absent satisfies Null {
+
+    shared formal {Element|Other+} withLeading<Other>(
+        "The first element of the resulting sequence."
+        Other element);
+}
+
 
 shared interface My1543Sequential<out Element>
-        satisfies List<Element> {
-    // defined as shared default {Element|Other+} withLeading<Other>(Other head)
+        satisfies My1543Iterable<Element> {
     // works with [Other|Element+] -> Sequence
     // fails with [Other,Element*] -> Tuple<Object,Other,Sequential<Element>>
     shared actual formal [Other,Element*] withLeading<Other>(Other head);

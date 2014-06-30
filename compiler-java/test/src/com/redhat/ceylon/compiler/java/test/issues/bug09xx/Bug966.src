@@ -49,8 +49,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> reverse() {
-        return $ceylon$language$Sequence$this$.reverse();
+    public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
+        return $ceylon$language$Sequence$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -69,12 +69,17 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Element, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends Element, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.append($reified$Other, elements);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.withTrailing($reified$Other, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
+    public <Other>.ceylon.language.Sequence append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequential<? extends Other> elements) {
+        return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.append($reified$Other, elements);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Sequence prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequential<? extends Other> elements) {
         return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.prepend($reified$Other, elements);
     }
     
@@ -109,13 +114,28 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
-        return $ceylon$language$Sequence$this$.repeat(times);
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
-        return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    public .ceylon.language.Sequential<? extends Element> measure(final .ceylon.language.Integer from, final long length) {
+        return $ceylon$language$Sequence$this$.measure(from, length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+        return $ceylon$language$Sequence$this$.span(from, to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
+        return $ceylon$language$Sequence$this$.spanFrom(from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
+        return $ceylon$language$Sequence$this$.spanTo(to);
     }
     
     @.java.lang.Override
@@ -201,8 +221,20 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.List extend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
-        return (.ceylon.language.List)$ceylon$language$List$this$.extend($reified$Other, list);
+    public final <Other>long patch$from(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return $ceylon$language$List$this$.patch$from($reified$Other, list);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.List patch(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return (
+            let
+            {
+                long $ceylontmp$from$0 = patch$from($reified$Other, list);
+                long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
+            }
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$0, $ceylontmp$length$1);
+        );
     }
     
     @.java.lang.Override
@@ -215,9 +247,9 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$length$0 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$0);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$2);
         );
     }
     
@@ -304,11 +336,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.lastIndexWhere(selecting);
     }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
-        return (.ceylon.language.Sequence)$ceylon$language$List$this$.withTrailing($reified$Other, element);
-    }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -350,6 +377,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public <Result>.java.lang.Object reduce(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this$.reduce($reified$Result, accumulating);
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -423,6 +455,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends Element>, ? extends .java.lang.Object> sequences(final long length) {
+        return $ceylon$language$Iterable$this$.sequences(length);
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Iterable follow(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.follow($reified$Other, head);
     }
@@ -435,11 +472,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> cycle(final long times) {
-        return $ceylon$language$Iterable$this$.cycle(times);
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     

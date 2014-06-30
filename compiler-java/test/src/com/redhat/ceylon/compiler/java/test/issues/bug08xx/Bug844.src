@@ -97,8 +97,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> reverse() {
-        return $ceylon$language$Sequence$this$.reverse();
+    public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
+        return $ceylon$language$Sequence$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -117,12 +117,17 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Element, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends Element, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.append($reified$Other, elements);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.withTrailing($reified$Other, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
+    public <Other>.ceylon.language.Sequence append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequential<? extends Other> elements) {
+        return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.append($reified$Other, elements);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Sequence prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Sequential<? extends Other> elements) {
         return (.ceylon.language.Sequence)$ceylon$language$Sequence$this$.prepend($reified$Other, elements);
     }
     
@@ -149,11 +154,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Sequence$this$.findLast(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> repeat(final long times) {
-        return $ceylon$language$Sequence$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -239,8 +239,20 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.List extend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
-        return (.ceylon.language.List)$ceylon$language$List$this$.extend($reified$Other, list);
+    public final <Other>long patch$from(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return $ceylon$language$List$this$.patch$from($reified$Other, list);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.List patch(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return (
+            let
+            {
+                long $ceylontmp$from$0 = patch$from($reified$Other, list);
+                long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
+            }
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$0, $ceylontmp$length$1);
+        );
     }
     
     @.java.lang.Override
@@ -253,9 +265,9 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return (
             let
             {
-                long $ceylontmp$length$0 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$0);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$2);
         );
     }
     
@@ -342,11 +354,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.lastIndexWhere(selecting);
     }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
-        return (.ceylon.language.Sequence)$ceylon$language$List$this$.withTrailing($reified$Other, element);
-    }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -388,6 +395,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public <Result>.java.lang.Object reduce(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this$.reduce($reified$Result, accumulating);
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -461,6 +473,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends Element>, ? extends .java.lang.Object> sequences(final long length) {
+        return $ceylon$language$Iterable$this$.sequences(length);
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Iterable follow(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.follow($reified$Other, head);
     }
@@ -473,11 +490,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> cycle(final long times) {
-        return $ceylon$language$Iterable$this$.cycle(times);
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
@@ -534,24 +546,24 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return new .java.lang.StringBuilder().append("(").append((
             let
             {
-                .ceylon.language.String $ceylontmp$2 = (
+                .ceylon.language.String $ceylontmp$4 = (
                     let
                     {
-                        .java.lang.Object safe$1 = getFirst();
+                        .java.lang.Object safe$3 = getFirst();
                     }
-                    returning safe$1 != null ? .ceylon.language.String.instance(safe$1.toString()) : null;
+                    returning safe$3 != null ? .ceylon.language.String.instance(safe$3.toString()) : null;
                 );
             }
-            returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.String.instance("null");
+            returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("null");
         ).toString()).append(", ").append(((.ceylon.language.String)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).toString())).spanFrom(.ceylon.language.Integer.instance(1L))).toString()).toString();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Integer getLastIndex() {
-        .ceylon.language.Integer restLastIndex$4;
-        if ((restLastIndex$4 = ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
-            final long restLastIndex$5 = restLastIndex$4.longValue();
-            return .ceylon.language.Integer.instance(restLastIndex$5 + 1L);
+        .ceylon.language.Integer restLastIndex$6;
+        if ((restLastIndex$6 = ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
+            final long restLastIndex$7 = restLastIndex$6.longValue();
+            return .ceylon.language.Integer.instance(restLastIndex$7 + 1L);
         } else {
             return .ceylon.language.Integer.instance(0L);
         }
@@ -567,9 +579,9 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$6 = from.compare(.ceylon.language.Integer.instance(0L)) != .ceylon.language.larger_.get_() ? (.ceylon.language.Tuple<Element, ? extends First, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Tuple)((.ceylon.language.List<? extends Element>)(.ceylon.language.List)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).measure(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue())).<First>withLeading($reified$First, (First)(.java.lang.Object)getFirst()) : null;
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$8 = from.compare(.ceylon.language.Integer.instance(0L)) != .ceylon.language.larger_.get_() ? (.ceylon.language.Tuple<Element, ? extends First, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Tuple)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).measure(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue())).<First>withLeading($reified$First, (First)(.java.lang.Object)getFirst()) : null;
             }
-            returning $ceylontmp$6 != null ? $ceylontmp$6 : (.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).measure(from.minus(.ceylon.language.Integer.instance(1L)), length);
+            returning $ceylontmp$8 != null ? $ceylontmp$8 : (.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).measure(from.minus(.ceylon.language.Integer.instance(1L)), length);
         );
     }
     
@@ -578,9 +590,9 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$7 = from.compare(end) != .ceylon.language.larger_.get_() ? ((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).measure(from, end.minus(from).plus(.ceylon.language.Integer.instance(1L)).longValue()) : null;
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$9 = from.compare(end) != .ceylon.language.larger_.get_() ? ((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).measure(from, end.minus(from).plus(.ceylon.language.Integer.instance(1L)).longValue()) : null;
             }
-            returning $ceylontmp$7 != null ? $ceylontmp$7 : ((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).measure(end, from.minus(end).plus(.ceylon.language.Integer.instance(1L)).longValue()).getReversed().sequence();
+            returning $ceylontmp$9 != null ? $ceylontmp$9 : ((.ceylon.language.Ranged<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)this).measure(end, from.minus(end).plus(.ceylon.language.Integer.instance(1L)).longValue()).getReversed().sequence();
         );
     }
     

@@ -169,7 +169,7 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
 
     // getFirst returns an erased type that we need to unbox
     // make sure we're calling the value type static decl, which must be marked as not raw
-    value unboxedInteger = "abc".withLeading('d').first;
+    value unboxedInteger = "abc".sequence().withLeading('d').first;
 
     // nonempty comprehension must be cast from Sequential to Sequence
     value nonEmptySequence = [ for (c in 1..2) c ];

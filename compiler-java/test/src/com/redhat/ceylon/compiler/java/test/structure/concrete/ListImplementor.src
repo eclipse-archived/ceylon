@@ -69,8 +69,8 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends X> reverse() {
-        return $ceylon$language$List$this$.reverse();
+    public .ceylon.language.List<? extends X> repeat(final long times) {
+        return $ceylon$language$List$this$.repeat(times);
     }
     
     @.java.lang.Override
@@ -99,8 +99,20 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.List extend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
-        return (.ceylon.language.List)$ceylon$language$List$this$.extend($reified$Other, list);
+    public final <Other>long patch$from(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return $ceylon$language$List$this$.patch$from($reified$Other, list);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.List patch(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
+        return (
+            let
+            {
+                long $ceylontmp$from$0 = patch$from($reified$Other, list);
+                long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
+            }
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$0, $ceylontmp$length$1);
+        );
     }
     
     @.java.lang.Override
@@ -113,9 +125,9 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (
             let
             {
-                long $ceylontmp$length$0 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$0);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$2);
         );
     }
     
@@ -219,6 +231,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>> slice(final long index) {
+        return (.ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.List<? extends X> initial(final long length) {
         return $ceylon$language$List$this$.initial(length);
     }
@@ -226,31 +243,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.List<? extends X> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>> slice(final long index) {
-        return (.ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends X>> withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends X>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.withLeading($reified$Other, element);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
-        return (.ceylon.language.Sequence)$ceylon$language$List$this$.withTrailing($reified$Other, element);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequential append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
-        return (.ceylon.language.Sequential)$ceylon$language$List$this$.append($reified$Other, elements);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequential prepend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> elements) {
-        return (.ceylon.language.Sequential)$ceylon$language$List$this$.prepend($reified$Other, elements);
     }
     
     @.java.lang.Override
@@ -311,13 +303,13 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
-        return $ceylon$language$Iterable$this$.spread($reified$Result, $reified$Args, method);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends X> repeat(final long times) {
-        return $ceylon$language$Iterable$this$.repeat(times);
+    public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
+        return $ceylon$language$Iterable$this$.spread($reified$Result, $reified$Args, method);
     }
     
     @.java.lang.Override
@@ -391,6 +383,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends X>, ? extends .java.lang.Object> sequences(final long length) {
+        return $ceylon$language$Iterable$this$.sequences(length);
+    }
+    
+    @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> follow(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.follow($reified$Other, head);
     }
@@ -403,11 +400,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> cycle(final long times) {
-        return $ceylon$language$Iterable$this$.cycle(times);
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     

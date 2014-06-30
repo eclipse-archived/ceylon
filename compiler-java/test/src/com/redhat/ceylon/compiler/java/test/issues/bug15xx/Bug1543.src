@@ -23,13 +23,53 @@ final class bug1543_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::List<Element>"})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Category<ceylon.language::Object>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Element",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Absent",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {"ceylon.language::Null"},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Null")})
+public interface My1543Iterable<Element, Absent> extends .ceylon.language.Category<.java.lang.Object> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Iterable<Element|Other,ceylon.language::Nothing>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("element")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    @.ceylon.language.DocAnnotation$annotation$(description = "The first element of the resulting sequence.")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
+            value = "doc",
+            arguments = {"The first element of the resulting sequence."})})
+    final Other element);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug15xx::My1543Iterable<Element,ceylon.language::Null>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Element",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
         satisfies = {},
         caseTypes = {})})
-public interface My1543Sequential<Element> extends .ceylon.language.List<Element> {
+public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Iterable<Element, .java.lang.Object> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
