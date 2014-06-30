@@ -25,17 +25,32 @@
  */
 package com.redhat.ceylon.ant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
-
 
 public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
     
+    public static class Arg {
+        String value;
+        
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public void addText(String value) {
+            this.value = value;
+        }
+    }
+
     private String run;
     private String module;
     private String compileFlags;
+    private List<Arg> args = new ArrayList<Arg>(0);
     
     public CeylonRunAntTask() {
         super("run");
@@ -69,6 +84,11 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
         this.compileFlags = compileFlags;
     }
 
+    /** Adds an argument to be passed to the tool */
+    public void addConfiguredArg(Arg arg) {
+        this.args.add(arg);
+    }
+
     /**
      * Check that all required attributes have been set and nothing silly has
      * been entered.
@@ -97,7 +117,11 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
         
         cmd.createArgument().setValue(module);
 
-        
+        if (!args.isEmpty()) {
+            for (Arg arg : args) {
+                appendOption(cmd, arg.value);
+            }
+        }
     }
 
     @Override
