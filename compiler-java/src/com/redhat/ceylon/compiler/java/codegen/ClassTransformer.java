@@ -1352,7 +1352,8 @@ public class ClassTransformer extends AbstractTransformer {
                 // Except for some reason we only need to do it with multiple inheritance with different type
                 // arguments, so let's not go overboard
                 int flags = 0;
-                if(CodegenUtil.hasTypeErased((TypedDeclaration)member)
+                if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
+                        CodegenUtil.hasTypeErased((TypedDeclaration)member)
                         && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
                     flags |= AbstractTransformer.JT_RAW;
                 }
