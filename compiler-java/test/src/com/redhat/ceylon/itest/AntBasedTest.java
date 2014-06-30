@@ -247,6 +247,7 @@ public abstract class AntBasedTest {
         savedProperties = new Properties(System.getProperties());
         String scriptExt = OSUtil.isWindows() ? ".bat" : "";
         System.setProperty(EXEC_CEYLON, "../ceylon-dist/dist/bin/ceylon" + scriptExt);
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
         System.setProperty(ARG_VERBOSE, "false");
         System.setProperty(ARG_SRC, "test/src/com/redhat/ceylon/itest");
         out = File.createTempFile("ceylon-ant-test.", ".out.d");
