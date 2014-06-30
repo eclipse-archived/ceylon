@@ -37,6 +37,13 @@ public class CeylonRunAntTest extends AntBasedTest {
     }
     
     @Test
+    public void testExecHelloMethodCompiledWithArgs() throws Exception {
+        AntResult result = ant("exec-hello-compiled-args");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContains(result.getStdout(), "Hello, Tako");
+    }
+    
+    @Test
     public void testExecGoodbyeClassCompiled() throws Exception {
         AntResult result = ant("exec-goodbye-compiled");
         Assert.assertEquals(0, result.getStatusCode());
@@ -71,7 +78,7 @@ public class CeylonRunAntTest extends AntBasedTest {
     @Ignore("ceylon doesn't support compilation yet")
     // and... @Ignore("Module descriptor doesn't support 'run' yet")
     public void testExecFooModuleFromSource() throws Exception {
-        AntResult result = ant("exec-foo-compiled");
+        AntResult result = ant("exec-foo-source");
         Assert.assertEquals(0, result.getStatusCode());
         assertContains(result.getStdout(), "Hello, world");
     }

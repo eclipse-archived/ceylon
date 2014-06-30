@@ -20,7 +20,7 @@
 shared interface I {
 }
 shared void hello() {
-    print("Hello, world");
+    print("Hello, `` process.arguments.first else "world" ``");
 }
 shared class Goodbye() {
     print("Goodbye cruel world");
