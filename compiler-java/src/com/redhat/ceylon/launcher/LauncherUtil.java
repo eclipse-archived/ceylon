@@ -1,11 +1,19 @@
 package com.redhat.ceylon.launcher;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.ToolError;
 
 public class LauncherUtil {
     private LauncherUtil() {}
@@ -95,8 +103,9 @@ public class LauncherUtil {
             String[] elems = path.split(File.pathSeparator);
             for (String elem : elems) {
                 File script = new File(elem, ceylonScriptName);
-                if (script.isFile()) {
+                if (script.isFile() && script.canExecute() && isSameScriptVersion(script)) {
                     try {
+                        // only if the version is compatible with this version!
                         return script.getCanonicalFile();
                     } catch (IOException e) {
                         // Ignore errors and keep on trying
@@ -107,6 +116,35 @@ public class LauncherUtil {
         return null;
     }
     
+    private static boolean isSameScriptVersion(File script) {
+        List<String> args = new ArrayList<String>(4);
+        if (IS_WINDOWS) {
+            args.add("cmd.exe");
+            args.add("/C");
+        }
+        args.add(script.getAbsolutePath());
+        args.add("--version");
+        ProcessBuilder processBuilder = new ProcessBuilder(args);
+        try{
+            Process process = processBuilder.start();
+            InputStream in = process.getInputStream();
+            InputStreamReader inread = new InputStreamReader(in);
+            BufferedReader bufferedreader = new BufferedReader(inread);
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = bufferedreader.readLine()) != null) {
+                sb.append(line);
+            }
+            int exit = process.waitFor();
+            bufferedreader.close();
+            if(exit != 0)
+                return false;
+            return sb.toString().startsWith("ceylon version "+Versions.CEYLON_VERSION_MAJOR+"."+Versions.CEYLON_VERSION_MINOR);
+        }catch(Throwable t){
+            return false;
+        }
+    }
+
     private static boolean checkHome(File ceylonHome) {
         return (new File(ceylonHome, CEYLON_REPO)).isDirectory() && (new File(ceylonHome, CEYLON_LIBS)).isDirectory();
     }
