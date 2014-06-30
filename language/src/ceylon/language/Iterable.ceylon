@@ -956,7 +956,6 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
-    //TODO: uncomment when backend bug is fixed
     shared default Iterable<[Element,Other],Absent|OtherAbsent>
     product<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null
