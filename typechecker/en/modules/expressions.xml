@@ -1138,7 +1138,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>An <emphasis>inline declaration argument</emphasis> defines a getter,
             function, or anonymous class, and assigns it to a parameter.</para>
             
-            <synopsis>ValueArgument | FunctionArgument | ObjectArgument</synopsis>
+            <synopsis>InlineDeclarationArgument: ValueArgument | FunctionArgument | ObjectArgument</synopsis>
             
             <para>An inline getter argument is a streamlined getter declaration, as defined
             in <xref linkend="getters"/>. The type of the argument is the declared or inferred 
