@@ -12,7 +12,7 @@
   
   <target name="no-module-or-files" depends="ant-tasks">
     <ceylon-compile
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
@@ -21,7 +21,7 @@
   
   <target name="foo-alone" depends="ant-tasks">
     <ceylon-compile
-    	executable="${script.cey}"
+    	executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
@@ -29,9 +29,19 @@
     </ceylon-compile>
   </target>
 
+  <target name="non-existant-module" depends="ant-tasks">
+    <ceylon-compile
+        executable="${script.ceylon}"
+      src="${arg.src}"
+      out="${arg.out}"
+      verbose="${arg.verbose}">
+        <module name="does not exist"/>
+    </ceylon-compile>
+  </target>
+
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <ceylon-compile
-    	executable="${script.cey}"
+    	executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}"
       nomtimecheck="true"
@@ -44,7 +54,7 @@
   
   <target name="foo-file-mtime" depends="ant-tasks,foo-alone">
       <ceylon-compile
-      	executable="${script.cey}"
+      	executable="${script.ceylon}"
         src="${arg.src}"
         out="${arg.out}"
         verbose="${arg.verbose}">
@@ -56,7 +66,7 @@
 
   <target name="bar-alone" depends="ant-tasks">
     <ceylon-compile
-    	executable="${script.cey}"
+    	executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
@@ -65,7 +75,7 @@
   
   <target name="foo-and-file-from-bar" depends="ant-tasks">
       <ceylon-compile
-      	executable="${script.cey}"
+      	executable="${script.ceylon}"
         src="${arg.src}"
         out="${arg.out}"
         nomtimecheck="true"
@@ -79,7 +89,7 @@
 
   <target name="foo-and-bar" depends="ant-tasks">
     <ceylon-compile
-    	executable="${script.cey}"
+    	executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>
@@ -89,7 +99,7 @@
   
   <target name="bad-fail-on-error" depends="ant-tasks">
     <ceylon-compile
-    	executable="${script.cey}"
+    	executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}"

@@ -11,7 +11,7 @@
   </target>
       
   <target name="compile-foo" depends="ant-tasks">
-    <ceylon-compile executable="${script.cey}"
+    <ceylon-compile executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
       <module name="com.example.foo"/>
@@ -19,7 +19,7 @@
   </target>
   
   <target name="exec-hello-compiled" depends="compile-foo">
-    <ceylon-run executable="${script.cey}" 
+    <ceylon-run executable="${script.ceylon}" 
       run="com.example.foo.a.hello"
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
@@ -27,7 +27,7 @@
   </target>
   
   <target name="exec-goodbye-compiled" depends="compile-foo">
-    <ceylon-run executable="${script.cey}"
+    <ceylon-run executable="${script.ceylon}"
       run="com.example.foo.a.Goodbye"
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
@@ -35,14 +35,14 @@
   </target>
   
   <target name="exec-foo-compiled" depends="compile-foo">
-    <ceylon-run executable="${script.cey}" 
+    <ceylon-run executable="${script.ceylon}" 
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
     </ceylon-run>
   </target>
   
   <target name="exec-hello-source" depends="ant-tasks">
-    <ceylon-run executable="${script.cey}" 
+    <ceylon-run executable="${script.ceylon}" 
       src="${arg.src}"
       run="com.example.foo.a.hello"
       module="com.example.foo/1.0">
@@ -50,7 +50,7 @@
   </target>
   
   <target name="exec-goodbye-source" depends="ant-tasks">
-    <ceylon-run executable="${script.cey}" 
+    <ceylon-run executable="${script.ceylon}" 
       src="${arg.src}"
       run="com.example.foo.a.Goodbye"
       module="com.example.foo/1.0">
@@ -58,7 +58,7 @@
   </target>
   
   <target name="exec-foo-source" depends="ant-tasks">
-    <ceylon-run executable="${script.cey}"
+    <ceylon-run executable="${script.ceylon}"
       src="${arg.src}"
       module="com.example.foo/1.0">
     </ceylon-run>

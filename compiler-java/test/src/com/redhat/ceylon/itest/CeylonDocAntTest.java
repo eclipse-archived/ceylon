@@ -35,7 +35,7 @@ public class CeylonDocAntTest extends AntBasedTest {
     
     @Test
     public void testDocumentModuleFooBadExecutable() throws Exception {
-        System.setProperty("script.cey", "some/nonsense/path");
+        System.setProperty(EXEC_CEYLON, "some/nonsense/path");
         AntResult result = ant("foo-alone");
         Assert.assertEquals(1, result.getStatusCode());
         assertContains(result.getStdout(), "Failed to find 'ceylon' executable in some/nonsense/path");

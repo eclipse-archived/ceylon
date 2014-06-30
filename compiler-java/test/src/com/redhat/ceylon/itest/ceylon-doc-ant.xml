@@ -12,7 +12,7 @@
       
   <target name="foo-alone" depends="ant-tasks">
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
         <module name="com.example.foo"/>
@@ -22,7 +22,7 @@
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <echo message="Hello, world"/>
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
         <include name="com/example/foo/a/foo.ceylon"/>
@@ -31,7 +31,7 @@
 
   <target name="bar-alone" depends="ant-tasks">
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
@@ -40,7 +40,7 @@
 
   <target name="foo-and-bar" depends="ant-tasks">
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>
@@ -50,7 +50,7 @@
 
   <target name="links" depends="ant-tasks">
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <link url="file://${arg.out}"/>
@@ -64,7 +64,7 @@
       <link url="file://${arg.out}"/>
     </linkset>
     <ceylon-doc
-      executable="${script.cey}"
+      executable="${script.ceylon}"
       src="${arg.src}"
       out="${arg.out}">
        <linkset refid="links"/>

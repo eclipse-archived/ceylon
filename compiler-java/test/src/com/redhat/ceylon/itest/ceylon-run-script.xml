@@ -7,28 +7,28 @@
   </target>
   
   <target name="version" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--version"/>
     </exec>
   </target>    
     
   <target name="help" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--help"/>
     </exec>
   </target>
         
   <target name="h" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="-h"/>
     </exec>
   </target>
   
   <target name="compile-foo" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="compile"/>
       <arg value="--src=${arg.src}"/>
       <arg value="--out=${arg.out}"/>
@@ -37,7 +37,7 @@
   </target>
   
   <target name="exec-hello-compiled" depends="compile-foo">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--rep=${arg.out}"/>
       <arg value="--run=com.example.foo.a.hello"/>
@@ -46,7 +46,7 @@
   </target>
   
   <target name="exec-goodbye-compiled" depends="compile-foo">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--rep=${arg.out}"/>
       <arg value="--run=com.example.foo.a.Goodbye"/>
@@ -55,7 +55,7 @@
   </target>
   
   <target name="exec-foo-compiled" depends="compile-foo">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--rep=${arg.out}"/>
       <arg value="com.example.foo/1.0"/>
@@ -63,7 +63,7 @@
   </target>
   
   <target name="exec-hello-source" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--src=${arg.src}"/>
       <arg value="--run=com.example.foo.a.hello"/>
@@ -72,7 +72,7 @@
   </target>
   
   <target name="exec-goodbye-source" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--src=${arg.src}"/>
       <arg value="--run=com.example.foo.a.Goodbye"/>
@@ -81,7 +81,7 @@
   </target>
   
   <target name="exec-foo-source" depends="-init">
-    <exec executable="${script.cey}" failonerror="true">
+    <exec executable="${script.ceylon}" failonerror="true">
       <arg value="run"/>
       <arg value="--src=${arg.src}"/>
       <arg value="com.example.foo/1.0"/>
