@@ -256,6 +256,7 @@ public class CeylonDocToolTest {
         assertAbstractClassModifier(destDir);
         assertFinalClassModifier(destDir);
         assertHeaderAndFooter(destDir);
+        assertExceptions(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -1201,6 +1202,14 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "index.html", footerPattern);
         assertMatchInFile(destDir, "search.html", footerPattern);
         assertMatchInFile(destDir, "StubClass.type.html", footerPattern);
+    }
+
+    private void assertExceptions(File destDir) throws Exception {
+        String sectionHeader = "<table id='section-exceptions'";
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile(sectionHeader+".*"+"<td id='StubError'"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile(sectionHeader+".*\n.*"+"<td id='StubException'"));
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {

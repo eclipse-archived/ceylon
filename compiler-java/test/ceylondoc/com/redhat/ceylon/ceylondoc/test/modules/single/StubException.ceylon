@@ -21,3 +21,8 @@
 shared class StubException()
         extends Exception("stub exception", null) {
 }
+
+"This is `StubError`"
+shared class StubError()
+        extends Error("stub error", null) {
+}
