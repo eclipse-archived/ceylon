@@ -46,6 +46,30 @@ void testIssue326() {
   check(fi(5)==5, "Issue 326 #4");
 }
 
+variable Integer count376=0;
+
+[Integer,Integer,Integer] ints376() {
+  count376++;
+  return [1,2,3];
+}
+String bug376_1(Object a, Object b, Object c) => "``a``, ``b``, ``c``";
+Integer bug376_2(Object a, Object b, Object c, Integer d=1) => d+1;
+Integer bug376_3(Object a, Object b, Integer c=1) => c+1;
+Integer bug376_4(Integer a=2, Integer b=4, Integer c=6) => a+b+c;
+
+void testIssue376() {
+  check(bug376_1(*ints376())=="1, 2, 3", "#376 invoke simple");
+  check(count376 == 1, "#376 params");
+  check(bug376_2(*ints376())==2, "#376 invoke defaulted 1");
+  check(bug376_3(*ints376())==4, "#376 invoke defaulted 2");
+  check(bug376_4(*ints376())==6, "#376 invoke defaulted 3");
+  value zeroes = [0,0,0];
+  check(bug376_1(*zeroes)=="0, 0, 0", "#376 0's simple");
+  check(bug376_2(*zeroes)==2, "#376 0's defaulted 1");
+  check(bug376_3(*zeroes)==1, "#376 0's defaulted 2");
+  check(bug376_4(*zeroes)==0, "#376 0's defaulted 3");
+}
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -53,4 +77,5 @@ void testIssues() {
   value t=[1,"2"];
   methodBug314<Object>(*t);
   testIssue326();
+  testIssue376();
 }
