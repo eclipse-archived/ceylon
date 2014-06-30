@@ -38,6 +38,8 @@ public class ModuleDescriptorReader {
     private Method moduleLicense;
     private Method moduleAuthors;
 
+    // WARNING: this exception class name is used in com.redhat.ceylon.ant.ModuleDescriptorReader because of FUCKED UP
+    // classpath issues in the ant task. If you ever manage to untangle this mess: BE MY GUEST. 
     @SuppressWarnings("serial")
     public static class NoSuchModuleException extends Exception {
 
