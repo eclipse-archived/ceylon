@@ -51,7 +51,15 @@ public class CeylonCompileAntTest extends AntBasedTest {
         
         assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylon-compile\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
     }
-    
+
+    @Test
+    public void testCompileModuleDoesNotExist() throws Exception {
+        AntResult result = ant("non-existant-module");
+        Assert.assertEquals(1, result.getStatusCode());
+        
+        assertContainsMatch(result.getStdout(), Pattern.compile("^\\[ceylon-compile\\] ceylon compile: Invalid module name or source file: does not exist$", Pattern.MULTILINE));
+    }
+
     @Test
     public void testCompileModuleFooTwice() throws Exception {
         AntResult result = ant("foo-alone");
