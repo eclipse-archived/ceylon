@@ -53,9 +53,8 @@ public class CeylonDocScriptTest extends AntBasedTest {
     @Test
     public void testH() throws Exception {
         AntResult result = ant("h");
-        Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] ceylon doc: ");
-        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] DESCRIPTION");
     }
     
     @Test
