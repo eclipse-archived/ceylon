@@ -2997,7 +2997,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of identifiers identifying a class or interface declaration or 
             an anonymous class declaration:</para>
             
-            <synopsis>MemberDecQualifier: (TypeName ".")+ | MemberName</synopsis>
+            <synopsis>MemberDecQualifier: (TypeName ".")+ | MemberName "."</synopsis>
             
             <para>Each identifier in the member declaration qualifier is 
             the name of a class, interface, or anonymous class.</para>
