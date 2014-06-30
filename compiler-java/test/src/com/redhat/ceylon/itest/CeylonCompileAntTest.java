@@ -178,6 +178,9 @@ public class CeylonCompileAntTest extends AntBasedTest {
         AntResult result = ant("foo-and-bar");
         Assert.assertEquals(0, result.getStatusCode());
         
+        // make sure some time passes for this test :(
+        Thread.sleep(1000);
+        
         // Now compile foo and a single file (bar.ceylon containing class C)
         // from bar
         result = ant("foo-and-file-from-bar");
