@@ -393,8 +393,17 @@ public class InvocationGenerator {
                         } else if (pd.isSequenced()) {
                             arg.visit(gen);
                         } else {
-                            arg.visit(gen);
-                            gen.out(".$_get(0)");
+                            final String specialSpreadVar = gen.getNames().createTempVariable();
+                            gen.out("(", specialSpreadVar, "=");
+                            args.get(args.size()-1).visit(gen);
+                            gen.out(".sequence(),");
+                            if (pd.isDefaulted()) {
+                                gen.out(GenerateJsVisitor.getClAlias(), "nn$(",
+                                        specialSpreadVar, ".$_get(0))?", specialSpreadVar,
+                                        ".$_get(0):undefined)");
+                            } else {
+                                gen.out(specialSpreadVar, ".$_get(0))");
+                            }
                             //Find out if there are more params
                             final List<Parameter> moreParams;
                             final Declaration pdd = pd.getDeclaration();
@@ -415,9 +424,13 @@ public class InvocationGenerator {
                                 int c = 1;
                                 for (Parameter restp : moreParams) {
                                     if (found) {
-                                        gen.out(",");
-                                        arg.visit(gen);
-                                        gen.out(".$_get(", Integer.toString(c++), ")||undefined");
+                                        final String cs=Integer.toString(c++);
+                                        if (restp.isDefaulted()) {
+                                            gen.out(",", GenerateJsVisitor.getClAlias(), "nn$(", specialSpreadVar,
+                                                    ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
+                                        } else {
+                                            gen.out(",", specialSpreadVar, ".$_get(", cs, ")");
+                                        }
                                     } else {
                                         found = restp.equals(pd);
                                     }
