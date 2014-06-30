@@ -411,6 +411,11 @@ public class IssuesTest_1500_1999 extends CompilerTest {
 //        System.in.read();
 //        System.err.println("Done");
     }
+    
+    @Test
+    public void testBug1647Sum() throws IOException {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1647Sum", "bug16xx/Bug1647Sum.ceylon");
+    }
 
     @Test
     public void testBug1648() {
