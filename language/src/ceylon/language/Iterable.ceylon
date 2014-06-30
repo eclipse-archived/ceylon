@@ -210,7 +210,8 @@ shared interface Iterable<out Element, out Absent=Null>
      stream, or `null` if there are fewer than `index+1`
      elements in the stream. For a stream with an unstable 
      iteration order, a different value might be produced 
-     each time `getFromFirst()` is called."
+     each time `getFromFirst(index)` is called for a given
+     integer `index`."
     shared default Element? getFromFirst(Integer index) {
         variable value current = 0;
         for (element in this) {
