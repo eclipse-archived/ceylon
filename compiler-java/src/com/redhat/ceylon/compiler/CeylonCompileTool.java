@@ -431,7 +431,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
                 }
-            } else {
+            } else if (!"default".equals(moduleOrFile)) {
                 boolean hasDescriptor = false;
                 File modDir = ModuleUtil.moduleToPath(moduleOrFile);
                 for (File src : srcs) {
