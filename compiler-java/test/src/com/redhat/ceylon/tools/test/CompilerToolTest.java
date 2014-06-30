@@ -118,6 +118,15 @@ public class CompilerToolTest extends CompilerTest {
     }
     
     @Test
+    public void testCompileDefault()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                options("--src=test/src/com/redhat/ceylon/tools/test/deflt", "default"));
+        tool.run();
+    }
+    
+    @Test
     public void testCompileMultiple()  throws Exception {
         File carFile1 = getModuleArchive("com.redhat.ceylon.tools.test.multiple.sub1", "1.0");
         carFile1.delete();
