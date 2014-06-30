@@ -27,7 +27,7 @@
   </target>
   
   <target name="exec-hello-compiled-args" depends="compile-foo">
-    <ceylon-run executable="${script.cey}" 
+    <ceylon-run executable="${script.ceylon}" 
       run="com.example.foo.a.hello"
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
