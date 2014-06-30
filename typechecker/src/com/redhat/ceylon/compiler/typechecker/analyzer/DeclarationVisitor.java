@@ -1816,7 +1816,7 @@ public class DeclarationVisitor extends Visitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        if (!(that instanceof Tree.DefaultTypeArgument)) {
+        if (!(that instanceof Tree.DefaultTypeArgument) && that.getType()!=null) {
             TypeDeclaration td = (TypeDeclaration) that.getScope();
             ProducedType type = that.getType().getTypeModel();
             if (type!=null) {
