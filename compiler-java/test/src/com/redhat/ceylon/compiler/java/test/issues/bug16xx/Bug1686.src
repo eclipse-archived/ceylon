@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> {
+    
+    Bug1686() {
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$, this);
+    }
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> $ceylon$language$Enumerable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    }
+    
+    private final void f$priv$(final .ceylon.language.Range<.ceylon.language.Integer> x, final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> x2) {
+        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>> y = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)x.<.ceylon.language.Integer>withLeading(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686, ? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>> y2 = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686, ? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>>)x2.<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>withLeading(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686());
+        .ceylon.language.print_.print(((.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(3L)).<.ceylon.language.Integer>withLeading(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L))).getFirst());
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 neighbour(final long off) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final long offset(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.class);
+}
