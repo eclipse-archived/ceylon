@@ -957,10 +957,10 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     //TODO: uncomment when backend bug is fixed
-    /*shared default Iterable<[Element,Other],Absent|OtherAbsent>
+    shared default Iterable<[Element,Other],Absent|OtherAbsent>
     product<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null
-            => { for (x in this) for (y in other) [x,y] };*/
+            => { for (x in this) for (y in other) [x,y] };
     
     "An infinite stream that produces the elements of this 
      stream, repeatedly.
