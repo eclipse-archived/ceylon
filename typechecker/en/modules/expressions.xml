@@ -2230,7 +2230,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry>spread attribute</entry>
             <entry><literal>[ for (X x in lhs) x.member ]</literal></entry>
             <entry><literal>{X*}</literal></entry>
-            <entry>attribite of <literal>X</literal> of
+            <entry>attribute of <literal>X</literal> of
             type <literal>T</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
