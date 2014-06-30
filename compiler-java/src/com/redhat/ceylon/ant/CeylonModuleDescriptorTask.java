@@ -25,6 +25,7 @@ import java.io.File;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
+import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
 
 
@@ -70,7 +71,12 @@ public class CeylonModuleDescriptorTask extends Task {
     @Override
     public void execute() throws BuildException {
         Java7Checker.check();
-        final ModuleDescriptorReader reader = new ModuleDescriptorReader(module.getName(), getSrc());
+        ModuleDescriptorReader reader;
+        try {
+            reader = new ModuleDescriptorReader(module.getName(), getSrc());
+        } catch (NoSuchModuleException e) {
+            throw new BuildException("Failed to load module", e);
+        }
         if (versionProperty != null) {
             setProjectProperty(versionProperty, reader.getModuleVersion());
         }

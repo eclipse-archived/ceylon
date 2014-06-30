@@ -26,11 +26,14 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
+
 
 public class ModuleDescriptorReaderTest {
 
     @Test
-    public void testReadDescriptorA() {
+    public void testReadDescriptorA() throws NoSuchModuleException {
         // We need this property because the ModuleDescriptorReader uses the Ceylon
         // Launcher+CeylonClassLoader that dynamically find and load the necessary
         // jar and car files. But when running from within Eclipse it doesn't know

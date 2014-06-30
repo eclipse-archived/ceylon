@@ -31,6 +31,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectComponent;
 import org.apache.tools.ant.types.FileSet;
 
+import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
 
 /**
@@ -70,7 +71,14 @@ public class SourceModules extends ProjectComponent {
             log("<sourcemodules> file " + file + "=> moduleName " + moduleName, Project.MSG_VERBOSE);
             Module mav = new Module();
             mav.setName(moduleName);
-            String version = new ModuleDescriptorReader(mav.getName(), dir).getModuleVersion();
+            String version;
+            try {
+                version = new ModuleDescriptorReader(mav.getName(), dir).getModuleVersion();
+            } catch (NoSuchModuleException e) {
+                log("<sourcemodules> file " + file + "=> module cannot be read: " + moduleName, Project.MSG_VERBOSE);
+                // skip it
+                continue;
+            }
             log("<sourcemodules> file " + file + "=> module " + moduleName+"/"+version, Project.MSG_VERBOSE);
             mav.setVersion(version);
             result.add(mav);

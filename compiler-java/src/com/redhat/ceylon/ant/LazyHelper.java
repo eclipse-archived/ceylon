@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.apache.tools.ant.Project;
 
+import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
 
 /**
@@ -177,9 +178,13 @@ abstract class LazyHelper {
 
     private Module findModule(String moduleName) {
         for (File src : task.getSrc()) {
-            ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
-            if (mdr.getModuleVersion() != null) {
-                return new Module(mdr.getModuleName(), mdr.getModuleVersion());
+            try{
+                ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+                if (mdr.getModuleVersion() != null) {
+                    return new Module(mdr.getModuleName(), mdr.getModuleVersion());
+                }
+            }catch(ModuleDescriptorReader.NoSuchModuleException x){
+                return null;
             }
         }
         return null;
@@ -194,8 +199,12 @@ abstract class LazyHelper {
                         if (moduleDescriptor.exists()
                                 && moduleDescriptor.getName().equals(Constants.MODULE_DESCRIPTOR)) {
                             String moduleName = moduleDescriptor.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
-                            ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
-                            return new Module(mdr.getModuleName(), mdr.getModuleVersion());
+                            try {
+                                ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+                                return new Module(mdr.getModuleName(), mdr.getModuleVersion());
+                            } catch (NoSuchModuleException e) {
+                                continue;
+                            }
                         }
                         file = file.getParentFile();
                     }

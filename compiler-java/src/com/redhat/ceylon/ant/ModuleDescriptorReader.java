@@ -22,9 +22,11 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.launcher.Launcher;
 
 /*
@@ -39,7 +41,15 @@ class ModuleDescriptorReader {
     private Method moduleLicense;
     private Method moduleAuthors;
 
-    public ModuleDescriptorReader(String moduleName, File srcDir) {
+    @SuppressWarnings("serial")
+    public static class NoSuchModuleException extends Exception {
+
+        public NoSuchModuleException(String string) {
+            super(string);
+        }
+    }
+
+    public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
         try {
             Class<?> mdr = Launcher.getClassLoader().loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
             this.moduleVersion = mdr.getMethod("getModuleVersion");
@@ -53,6 +63,11 @@ class ModuleDescriptorReader {
             Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
             constructor.setAccessible(true);
             this.instance = constructor.newInstance(moduleName, srcDir);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if(cause != null && cause.getClass().getName().equals("com.redhat.ceylon.common.ModuleDescriptorReader$NoSuchModuleException"))
+                throw new NoSuchModuleException(cause.getMessage());
+            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
