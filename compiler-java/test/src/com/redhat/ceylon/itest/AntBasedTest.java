@@ -78,18 +78,22 @@ public abstract class AntBasedTest {
     private File out;
     private final URL[] antJarUrls;
 
+    private final static String errorMessage = "ant.home not set, nor ANT_HOME, cannot find it in PATH,\n"
+            +"or cannot find lib/ant.jar in it: cannot run ant integration tests\n"
+            +"Find the path to you ant binary: `which ant` (mine is /usr/bin/ant)\n"
+            +"Check that it's not a symlink: `ls -lsa /usr/bin/ant` (mine points to /usr/share/ant/bin/ant)\n"
+            +"Remove 'bin/ant' from the end (mine is /usr/share/ant)\n"
+            +"Set it in Eclipse's Ant run configuration for these tests: \n"
+            +" Right-click on AntBasedTest.java > Run as > Run configurations...\n"
+            +" Arguments > VM Arguments: -Dant.home=/usr/share/ant";
+    
     public AntBasedTest(String buildfileResource) throws Exception {
         originalBuildfile = new File(buildfileResource);
         String antHome = System.getProperty("ant.home");
+        if(antHome == null)
+            antHome = detectAnt();
         if (antHome == null) {
-            throw new Exception("ant.home not set, cannot run ant integration tests\n"
-                    +"Find the path to you ant binary: `which ant` (mine is /usr/bin/ant)\n"
-                    +"Check that it's not a symlink: `ls -lsa /usr/bin/ant` (mine points to /usr/share/ant/bin/ant)\n"
-                    +"Remove 'bin/ant' from the end (mine is /usr/share/ant)\n"
-                    +"Set it in Eclipse's Ant run configuration for these tests: \n"
-                    +" Right-click on AntBasedTest.java > Run as > Run configurations...\n"
-                    +" Arguments > VM Arguments: -Dant.home=/usr/share/ant");
-
+            throw new Exception(errorMessage);
         }
         File[] antJars = new File(antHome, "lib").listFiles(new FileFilter() {
             
@@ -98,6 +102,11 @@ public abstract class AntBasedTest {
                 return pathname.getName().matches("ant(-launcher)?\\.jar");
             }
         });
+        
+        if(antJars.length == 0) {
+            throw new Exception(errorMessage);
+        }
+
         /*
          * Create a class loader with just the jars we need to run ant
          * make the parent the bootstrap class loader, because ant is on
@@ -115,6 +124,48 @@ public abstract class AntBasedTest {
         antJarUrls[antJarUrls.length-1] = getCeylonAntJar().toURI().toURL();
     }
     
+    private String detectAnt() {
+        String home = System.getenv("ANT_HOME");
+        if(home != null && !home.isEmpty() && new File(home).isDirectory())
+            return home;
+        String path = System.getenv("PATH");
+        if(path == null)
+            return null;
+        for(String pathPart : path.split(Pattern.quote(File.pathSeparator))){
+            File pathDir = new File(pathPart);
+            if(!pathDir.isDirectory())
+                continue;
+            for(File exec : pathDir.listFiles()){
+                // first filter on name: cheaper than fstat
+                if(!exec.getName().equalsIgnoreCase("ant"))
+                    continue;
+                if(!exec.isFile() || !exec.canExecute())
+                    continue;
+                // got it
+                return detectAntHome(exec);
+            }
+        }
+        return null;
+    }
+
+    private String detectAntHome(File antExec) {
+        try {
+            File expandedFile = antExec.getCanonicalFile();
+            System.err.println("Found ant at "+antExec.getAbsolutePath()+" => "+expandedFile);
+            File binFile = expandedFile.getParentFile();
+            if(!binFile.getName().equalsIgnoreCase("bin"))
+                return null;
+            File antHome = binFile.getParentFile();
+            if(antHome == null)
+                return null;
+            return antHome.getAbsolutePath();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void initMain() throws Exception {
         ClassLoader antClassloader = new URLClassLoader(antJarUrls, ClassLoader.getSystemClassLoader().getParent());
         
