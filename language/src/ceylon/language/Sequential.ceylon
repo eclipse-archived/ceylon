@@ -4,11 +4,11 @@
  
  `Sequential` has two enumerated subtypes:
  
- - [[Empty]], abbreviated `[]`, represents an empty sequence, 
-   and
- - [[Sequence]]`<Element>`, abbreviated `[Element+]` represents 
-   a non-empty sequence, and has the very important 
-   subclass [[Tuple]]."
+ - [[Empty]], abbreviated `[]`, represents an empty 
+   sequence, and
+ - [[Sequence]]`<Element>`, abbreviated `[Element+]` 
+   represents a non-empty sequence, and has the very 
+   important subclass [[Tuple]]."
 see (`class Tuple`)
 shared interface Sequential<out Element>
         of []|[Element+]
