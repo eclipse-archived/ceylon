@@ -18,8 +18,8 @@ shared interface Empty of e
     shared actual Iterator<Nothing> iterator() 
             => emptyIterator;
     
-    "Returns `null` for any given index."
-    shared actual Null get(Integer index) => null;
+    //"Returns `null` for any given index."
+    //shared actual Null get(Integer index) => null;
     
     "Returns `null` for any given index."
     shared actual Null getFromLast(Integer index) => null;

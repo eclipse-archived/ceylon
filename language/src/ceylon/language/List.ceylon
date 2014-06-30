@@ -110,7 +110,7 @@ shared interface List<out Element>
      list, that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index `0`,
      and the last element has index [[lastIndex]]."
-    shared actual default Element? get(Integer index) 
+    shared actual Element? get(Integer index) 
             => getFromFirst(index);
     
     Element getElement(Integer index) {

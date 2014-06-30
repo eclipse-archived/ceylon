@@ -238,11 +238,11 @@ public final class String
         return value.isEmpty();
     }
 
-    @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
-    public Character get(@Name("index") Integer key) {
-        return getFromFirst(value, key.longValue());
-    }
+//    @Override
+//    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
+//    public Character get(@Name("index") Integer key) {
+//        return getFromFirst(value, key.longValue());
+//    }
 
     @Ignore
     public static Character get(java.lang.String value, long key) {

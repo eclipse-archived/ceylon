@@ -98,9 +98,9 @@ shared native final class String(characters)
     "The rest of the string, without the first element."
     shared actual native String rest;
     
-    "Get the character at the specified index, or `null` if
-     the index falls outside the bounds of this string."
-    shared actual native Character? get(Integer index);
+    //"Get the character at the specified index, or `null` if
+    // the index falls outside the bounds of this string."
+    //shared actual native Character? get(Integer index);
     
     "Get the character at the specified index, where the 
      string is indexed from the _end_ of the string, or 

@@ -985,11 +985,11 @@ public final class Array<Element>
         return new ArrayIterator($reifiedElement);
     }
     
-    @Override
-    @TypeInfo("ceylon.language::Null|Element")
-    public Element get(@Name("index") Integer key) {
-        return getFromFirst(key.longValue());
-    }
+//    @Override
+//    @TypeInfo("ceylon.language::Null|Element")
+//    public Element get(@Name("index") Integer key) {
+//        return getFromFirst(key.longValue());
+//    }
 
     @Override
     @TypeInfo("ceylon.language::Null|Element")

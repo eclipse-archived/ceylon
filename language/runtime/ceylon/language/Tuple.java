@@ -293,11 +293,11 @@ public final class Tuple<Element, First extends Element,
         return (Element)array[array.length-1-toInt(index)];
     }
 
-    @Ignore
-    @Override
-    public final Element get(Integer index) {
-        return getFromFirst(index.value);
-    }
+//    @Ignore
+//    @Override
+//    public final Element get(Integer index) {
+//        return getFromFirst(index.value);
+//    }
     
     @Annotations({
             @Annotation("shared"),
