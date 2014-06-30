@@ -47,7 +47,7 @@ class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty> getPaired() {
+    public .ceylon.language.Tuple getPaired() {
         return (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
     }
     

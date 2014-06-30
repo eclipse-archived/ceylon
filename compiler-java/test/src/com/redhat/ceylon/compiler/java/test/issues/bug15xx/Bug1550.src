@@ -118,12 +118,12 @@ class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> m2() {
+    public .ceylon.language.Tuple m2() {
         return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m2();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> getA2() {
+    public .ceylon.language.Tuple getA2() {
         return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA2();
     }
     

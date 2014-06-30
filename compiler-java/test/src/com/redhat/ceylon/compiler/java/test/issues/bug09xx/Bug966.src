@@ -64,7 +64,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends Element>> withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+    public <Other>.ceylon.language.Tuple withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
         return (.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.withLeading($reified$Other, element);
     }
     
@@ -114,27 +114,27 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>> slice(final long index) {
+    public .ceylon.language.Tuple slice(final long index) {
         return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> measure(final .ceylon.language.Integer from, final long length) {
+    public .ceylon.language.Sequential measure(final .ceylon.language.Integer from, final long length) {
         return $ceylon$language$Sequence$this$.measure(from, length);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         return $ceylon$language$Sequence$this$.span(from, to);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
+    public .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
         return $ceylon$language$Sequence$this$.spanFrom(from);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
+    public .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
         return $ceylon$language$Sequence$this$.spanTo(to);
     }
     

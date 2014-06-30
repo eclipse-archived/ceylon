@@ -49,7 +49,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+    public <Other>.ceylon.language.Tuple withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
         return (.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.withLeading($reified$Other, element);
     }
     
@@ -89,7 +89,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>> slice(final long index) {
+    public .ceylon.language.Tuple slice(final long index) {
         return (.ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.List<? extends .ceylon.language.Integer>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends .ceylon.language.Integer>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
     }
     
