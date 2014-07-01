@@ -5,16 +5,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.jar.JarFile;
 
 /**
  * Ceylon-specific class loader that knows how to find and add
@@ -213,4 +216,30 @@ public class CeylonClassLoader extends URLClassLoader {
         return null;
     }
 
+    public void clearCache() {
+        try {
+            Class<?> klass = java.net.URLClassLoader.class;
+            Field ucp = klass.getDeclaredField("ucp");
+            ucp.setAccessible(true);
+            Object sunMiscURLClassPath = ucp.get(this);
+            Field loaders = sunMiscURLClassPath.getClass().getDeclaredField("loaders");
+            loaders.setAccessible(true);
+            Object collection = loaders.get(sunMiscURLClassPath);
+            for (Object sunMiscURLClassPathJarLoader : ((Collection<?>) collection).toArray()) {
+                try {
+                    Field loader = sunMiscURLClassPathJarLoader.getClass().getDeclaredField("jar");
+                    loader.setAccessible(true);
+                    Object jarFile = loader.get(sunMiscURLClassPathJarLoader);
+                    ((JarFile) jarFile).close();
+                } catch (Throwable t) {
+                    // not a JAR loader?
+                    t.printStackTrace();
+                }
+            }
+        } catch (Throwable t) {
+            // Something's wrong
+            t.printStackTrace();
+        }
+        return;
+    }
 }
