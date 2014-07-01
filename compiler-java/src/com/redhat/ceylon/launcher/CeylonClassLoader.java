@@ -30,16 +30,35 @@ import java.util.jar.JarFile;
  */
 public class CeylonClassLoader extends URLClassLoader {
 
-    public CeylonClassLoader() throws URISyntaxException, MalformedURLException, FileNotFoundException {
-        super(getClassPathUrls());
+    public static CeylonClassLoader newInstance() throws URISyntaxException, MalformedURLException, FileNotFoundException {
+        return new CeylonClassLoader(getClassPath());
     }
 
-    public CeylonClassLoader(ClassLoader parentLoader) throws URISyntaxException, MalformedURLException, FileNotFoundException {
-        super(getClassPathUrls(), parentLoader);
+    public static CeylonClassLoader newInstance(List<File> classPath) throws URISyntaxException, MalformedURLException, FileNotFoundException {
+        return new CeylonClassLoader(classPath);
     }
 
-    private static URL[] getClassPathUrls() throws URISyntaxException, MalformedURLException, FileNotFoundException {
-        List<File> cp = getClassPath();
+    private String signature;
+    
+    private CeylonClassLoader(List<File> classPath) throws URISyntaxException, MalformedURLException, FileNotFoundException {
+        super(toUrls(classPath));
+        this.signature = toString(classPath);
+    }
+
+    private CeylonClassLoader(List<File> classPath, ClassLoader parentLoader) throws URISyntaxException, MalformedURLException, FileNotFoundException {
+        super(toUrls(classPath), parentLoader);
+        this.signature = toString(classPath);
+    }
+
+    public String getSignature(){
+        return signature;
+    }
+    
+    public boolean hasSignature(String signature){
+        return signature != null && this.signature.equals(signature);
+    }
+    
+    private static URL[] toUrls(List<File> cp) throws MalformedURLException {
         URL[] urls = new URL[cp.size()];
         int i = 0;
         for (File f : cp) {
@@ -48,8 +67,7 @@ public class CeylonClassLoader extends URLClassLoader {
         return urls;
     }
 
-    public static String getClassPathAsString() throws URISyntaxException, FileNotFoundException {
-        List<File> cp = getClassPath();
+    private static String toString(List<File> cp) {
         StringBuilder classPath = new StringBuilder();
         for (File f : cp) {
             if (classPath.length() > 0) {
@@ -59,7 +77,15 @@ public class CeylonClassLoader extends URLClassLoader {
         }
         return classPath.toString();
     }
-    
+
+    public static String getClassPathAsString() throws URISyntaxException, FileNotFoundException {
+        return toString(getClassPath());
+    }
+
+    public static String getClassPathSignature(List<File> cp) {
+        return toString(cp);
+    }
+
     public static List<File> getClassPath() throws URISyntaxException, FileNotFoundException {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();

@@ -105,12 +105,13 @@ public class Launcher {
     public static CeylonClassLoader getClassLoader() throws ClassLoaderSetupException {
         try{
             // Create the class loader that knows where to find all the Ceylon dependencies
-            CeylonClassLoader ceylonClassLoader = new CeylonClassLoader();
+            CeylonClassLoader ceylonClassLoader = CeylonClassLoader.newInstance();
 
             // Set some important system properties
             System.setProperty(Constants.PROP_CEYLON_HOME_DIR, LauncherUtil.determineHome().getAbsolutePath());
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo().getAbsolutePath());
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
+
             return ceylonClassLoader;
         }catch(URISyntaxException e){
             throw new ClassLoaderSetupException(e);
