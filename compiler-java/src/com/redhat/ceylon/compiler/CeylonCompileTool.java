@@ -44,6 +44,7 @@ import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -431,7 +432,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
                 }
-            } else if (!"default".equals(moduleOrFile)) {
+            } else if(!moduleOrFile.equals(Module.DEFAULT_MODULE_NAME)) {
                 boolean hasDescriptor = false;
                 File modDir = ModuleUtil.moduleToPath(moduleOrFile);
                 for (File src : srcs) {
