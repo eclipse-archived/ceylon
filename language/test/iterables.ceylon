@@ -301,8 +301,17 @@ shared void testIterables() {
     
     value itfun = iterable(1, (Integer i) => i<5 then i*2 else finished);
     check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
-    
-    //check([*(0:5).paired]==[[0,1],[1,2],[2,3],[3,4],[4,5]], "range paired");
+    check(interleave(1..5,"-+".cycled).sequence()==[1,'-',2,'+',3,'-',4,'+',5, '-'], "interleave 1");
+    check(interleave(1..5,"-+").sequence()==[1,'-',2,'+',3], "interleave 2");
+
+    check({for (i in 1..10) i*2}.sequences(3).sequence()==[[2,4,6],[8,10,12],[14,16,18],[20]], "Iterable.sequences 1");
+    check({for (i in 1..6) i*2}.sequences(3).sequence()==[[2,4,6],[8,10,12]], "Iterable.sequences 1");
+    check((1..10).sequences(4).sequence()==[[1,2,3,4],[5,6,7,8],[9,10]], "Iterable.sequences 2");
+    check(String(expand("hello".sequences(3))) == "hello", "Iterable.sequences 3");
+
+    check({1,2,3}.paired.sequence()==[[1,2],[2,3]], "Iterable.paired");
+    check([*(0:5).paired]==[[0,1],[1,2],[2,3],[3,4]], "0:5 paired");
+    check([*(0..5).paired]==[[0,1],[1,2],[2,3],[3,4],[4,5]], "0..5 paired");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"
