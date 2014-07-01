@@ -22,10 +22,7 @@ package com.redhat.ceylon.ant;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,16 +79,10 @@ public abstract class CeylonAntTask extends Task {
     }
     
     protected CeylonClassLoader getLoader() throws ClassLoaderSetupException {
-        if(loader == null)
-            loader = Launcher.getClassLoader();
-        return loader;
-    }
-    
-    protected void resetLoader(){
-        if(loader != null){
-            loader.clearCache();
-            loader = null;
+        if(loader == null){
+            loader = Util.getCeylonClassLoaderCachedInProject(getProject());
         }
+        return loader;
     }
     
     public void setVerbose(String verbose){
@@ -151,14 +142,10 @@ public abstract class CeylonAntTask extends Task {
     public void execute() {
         Java7Checker.check();
         
-        try{
-            checkParameters();
-            Commandline cmd = buildCommandline();
-            if (cmd != null) {
-                executeCommandline(cmd);
-            }
-        }finally{
-            resetLoader();
+        checkParameters();
+        Commandline cmd = buildCommandline();
+        if (cmd != null) {
+            executeCommandline(cmd);
         }
     }
 

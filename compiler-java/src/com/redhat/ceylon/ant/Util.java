@@ -20,15 +20,28 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.List;
 
+import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 
+import com.redhat.ceylon.launcher.CeylonClassLoader;
+import com.redhat.ceylon.launcher.ClassLoaderSetupException;
+import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.launcher.LauncherUtil;
 
 public class Util {
+    /**
+     * Name of the project reference in which we cache the class loader
+     */
+    private static final String CEYLON_CLASSLOADER_REFERENCE = "ceylon.classloader";
+    
     private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
 
     public static String getScriptName(String name) {
@@ -89,5 +102,72 @@ public class Util {
             return false;
         }
         
+    }
+    
+    public static CeylonClassLoader getCeylonClassLoaderCachedInProject(final Project project) throws ClassLoaderSetupException {
+        Object classLoader = project.getReference(CEYLON_CLASSLOADER_REFERENCE);
+        if(classLoader != null){
+            CeylonClassLoader oldLoader = (CeylonClassLoader) classLoader;
+            // make sure it's still valid
+            try{
+                List<File> classPath = CeylonClassLoader.getClassPath();
+                if(oldLoader.hasSignature(CeylonClassLoader.getClassPathSignature(classPath))){
+                    // compatible
+                    return oldLoader;
+                }else{
+                    project.log("Needs a new class loader: cp changed!", Project.MSG_VERBOSE);
+                    CeylonClassLoader loader = CeylonClassLoader.newInstance(classPath);
+                    project.addReference(CEYLON_CLASSLOADER_REFERENCE, loader);
+                    return loader;
+                }
+            }catch(FileNotFoundException x){
+                throw new ClassLoaderSetupException(x);
+            } catch (URISyntaxException x) {
+                throw new ClassLoaderSetupException(x);
+            } catch (MalformedURLException x) {
+                throw new ClassLoaderSetupException(x);
+            }
+        }
+        CeylonClassLoader loader = Launcher.getClassLoader();
+        project.addReference(CEYLON_CLASSLOADER_REFERENCE, loader);
+        // only add the build listed once, even if we change the class loader later
+        project.addBuildListener(new BuildListener(){
+
+            @Override
+            public void buildFinished(BuildEvent arg0) {
+                project.log("Build done, cleaning up Ceylon class loader", Project.MSG_VERBOSE);
+                // make sure we get the latest one
+                Object reference = project.getReference(CEYLON_CLASSLOADER_REFERENCE);
+                project.getReferences().remove(CEYLON_CLASSLOADER_REFERENCE);
+                if(reference instanceof CeylonClassLoader){
+                    ((CeylonClassLoader) reference).clearCache();
+                }
+            }
+
+            @Override
+            public void buildStarted(BuildEvent arg0) {
+            }
+
+            @Override
+            public void messageLogged(BuildEvent arg0) {
+            }
+
+            @Override
+            public void targetFinished(BuildEvent arg0) {
+            }
+
+            @Override
+            public void targetStarted(BuildEvent arg0) {
+            }
+
+            @Override
+            public void taskFinished(BuildEvent arg0) {
+            }
+
+            @Override
+            public void taskStarted(BuildEvent arg0) {
+            }
+        });
+        return loader;
     }
 }

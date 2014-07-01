@@ -35,7 +35,6 @@ import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.redhat.ceylon.launcher.ClassLoaderSetupException;
-import com.redhat.ceylon.launcher.Launcher;
 
 /**
  * Generates a set of modules by scanning a source directory for ceylon modules.
@@ -65,32 +64,28 @@ public class SourceModules extends ProjectComponent {
         URI base = dir.toURI();
         LinkedHashSet<Module> result = new LinkedHashSet<Module>();
         try{
-            CeylonClassLoader loader = Launcher.getClassLoader();
-            try{
-                for (String file : files) {
-                    URI uri = new File(this.dir, file).getParentFile().toURI();
-                    log("<sourcemodules> file " + file + "=> uri " + uri, Project.MSG_VERBOSE);
-                    String moduleName = base.relativize(uri).getPath().replace('/', '.');
-                    if (moduleName.endsWith(".")) {
-                        moduleName = moduleName.substring(0, moduleName.length()-1);
-                    }
-                    log("<sourcemodules> file " + file + "=> moduleName " + moduleName, Project.MSG_VERBOSE);
-                    Module mav = new Module();
-                    mav.setName(moduleName);
-                    String version;
-                    try {
-                        version = new ModuleDescriptorReader(loader, mav.getName(), dir).getModuleVersion();
-                    } catch (NoSuchModuleException e) {
-                        log("<sourcemodules> file " + file + "=> module cannot be read: " + moduleName, Project.MSG_VERBOSE);
-                        // skip it
-                        continue;
-                    }
-                    log("<sourcemodules> file " + file + "=> module " + moduleName+"/"+version, Project.MSG_VERBOSE);
-                    mav.setVersion(version);
-                    result.add(mav);
+            CeylonClassLoader loader = Util.getCeylonClassLoaderCachedInProject(getProject());
+            for (String file : files) {
+                URI uri = new File(this.dir, file).getParentFile().toURI();
+                log("<sourcemodules> file " + file + "=> uri " + uri, Project.MSG_VERBOSE);
+                String moduleName = base.relativize(uri).getPath().replace('/', '.');
+                if (moduleName.endsWith(".")) {
+                    moduleName = moduleName.substring(0, moduleName.length()-1);
                 }
-            }finally{
-                loader.clearCache();
+                log("<sourcemodules> file " + file + "=> moduleName " + moduleName, Project.MSG_VERBOSE);
+                Module mav = new Module();
+                mav.setName(moduleName);
+                String version;
+                try {
+                    version = new ModuleDescriptorReader(loader, mav.getName(), dir).getModuleVersion();
+                } catch (NoSuchModuleException e) {
+                    log("<sourcemodules> file " + file + "=> module cannot be read: " + moduleName, Project.MSG_VERBOSE);
+                    // skip it
+                    continue;
+                }
+                log("<sourcemodules> file " + file + "=> module " + moduleName+"/"+version, Project.MSG_VERBOSE);
+                mav.setVersion(version);
+                result.add(mav);
             }
         }catch(ClassLoaderSetupException x){
             log("failed to set up Ceylon classloader: could not load module set", Project.MSG_VERBOSE);
