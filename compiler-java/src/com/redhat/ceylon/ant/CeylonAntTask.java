@@ -22,7 +22,10 @@ package com.redhat.ceylon.ant;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +38,8 @@ import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.util.FileUtils;
 
+import com.redhat.ceylon.launcher.CeylonClassLoader;
+import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 import com.redhat.ceylon.launcher.Launcher;
 
 /**
@@ -67,12 +72,26 @@ public abstract class CeylonAntTask extends Task {
     private String verbose;
     private List<Define> defines = new ArrayList<Define>(0);
     private Boolean fork;
+    private CeylonClassLoader loader;
     
     /**
      * @param toolName The name of the ceylon tool which this task executes.
      */
     protected CeylonAntTask(String toolName) {
         this.toolName = toolName;
+    }
+    
+    protected CeylonClassLoader getLoader() throws ClassLoaderSetupException {
+        if(loader == null)
+            loader = Launcher.getClassLoader();
+        return loader;
+    }
+    
+    protected void resetLoader(){
+        if(loader != null){
+            loader.clearCache();
+            loader = null;
+        }
     }
     
     public void setVerbose(String verbose){
@@ -132,10 +151,14 @@ public abstract class CeylonAntTask extends Task {
     public void execute() {
         Java7Checker.check();
         
-        checkParameters();
-        Commandline cmd = buildCommandline();
-        if (cmd != null) {
-            executeCommandline(cmd);
+        try{
+            checkParameters();
+            Commandline cmd = buildCommandline();
+            if (cmd != null) {
+                executeCommandline(cmd);
+            }
+        }finally{
+            resetLoader();
         }
     }
 
@@ -178,7 +201,7 @@ public abstract class CeylonAntTask extends Task {
                 exitValue = exe.getExitValue();
             }else{
                 log("Launching Launcher in this JVM: " + Arrays.toString(cmd.getArguments()), Project.MSG_VERBOSE);
-                exitValue = Launcher.run(cmd.getArguments());
+                exitValue = Launcher.runInJava7Checked(getLoader(), cmd.getArguments());
             }
             if (exitValue != 0) {
                 String message = formatFailureMessage(cmd);

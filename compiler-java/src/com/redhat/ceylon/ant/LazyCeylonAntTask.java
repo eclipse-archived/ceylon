@@ -30,6 +30,7 @@ import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 
 
 /**
@@ -51,6 +52,11 @@ abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy 
         super(toolName);
     }
     
+    @Override
+    public ClassLoader getClassLoader() throws ClassLoaderSetupException {
+        return getLoader();
+    }
+
     /**
      * Set the source directories to find the source Java and Ceylon files.
      * @param src the source directories as a path

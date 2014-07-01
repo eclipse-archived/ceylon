@@ -32,6 +32,7 @@ import org.apache.tools.ant.Project;
 
 import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 
 /**
  * Encapsulates file modification time logic for figuring out whether a tool 
@@ -179,11 +180,14 @@ abstract class LazyHelper {
     private Module findModule(String moduleName) {
         for (File src : task.getSrc()) {
             try{
-                ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+                ModuleDescriptorReader mdr = new ModuleDescriptorReader(task.getClassLoader(), moduleName, src);
                 if (mdr.getModuleVersion() != null) {
                     return new Module(mdr.getModuleName(), mdr.getModuleVersion());
                 }
             }catch(ModuleDescriptorReader.NoSuchModuleException x){
+                continue;
+            }catch(ClassLoaderSetupException x){
+                // not like we can try again
                 return null;
             }
         }
@@ -200,10 +204,13 @@ abstract class LazyHelper {
                                 && moduleDescriptor.getName().equals(Constants.MODULE_DESCRIPTOR)) {
                             String moduleName = moduleDescriptor.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
                             try {
-                                ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+                                ModuleDescriptorReader mdr = new ModuleDescriptorReader(task.getClassLoader(), moduleName, src);
                                 return new Module(mdr.getModuleName(), mdr.getModuleVersion());
                             } catch (NoSuchModuleException e) {
                                 continue;
+                            } catch (ClassLoaderSetupException e) {
+                                // not like we can try again
+                                return null;
                             }
                         }
                         file = file.getParentFile();

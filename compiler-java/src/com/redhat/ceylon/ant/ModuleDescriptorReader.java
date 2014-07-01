@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
+import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.redhat.ceylon.launcher.Launcher;
 
 /*
@@ -49,9 +50,9 @@ class ModuleDescriptorReader {
         }
     }
 
-    public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
-        try {
-            Class<?> mdr = Launcher.getClassLoader().loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
+    public ModuleDescriptorReader(ClassLoader cl, String moduleName, File srcDir) throws NoSuchModuleException {
+        try{
+            Class<?> mdr = cl.loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
             this.moduleVersion = mdr.getMethod("getModuleVersion");
             this.moduleVersion.setAccessible(true);
             this.moduleName = mdr.getMethod("getModuleName");

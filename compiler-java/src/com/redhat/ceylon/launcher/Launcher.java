@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import com.redhat.ceylon.common.Constants;
 
 public class Launcher {
-    private static volatile CeylonClassLoader ceylonClassLoader;
 
     public static void main(String[] args) throws Throwable {
         int exit = run(args);
@@ -26,6 +25,17 @@ public class Launcher {
 
     public static int run(String... args) throws Throwable {
         Java7Checker.check();
+        CeylonClassLoader loader = getClassLoader();
+        try{
+            return runInJava7Checked(loader, args);
+        }finally{
+            loader.clearCache();
+        }
+    }
+    
+    // FIXME: perhaps we should clear all the properties we set in there on exit?
+    // this may not work for run, if they leave threads running 
+    public static int runInJava7Checked(CeylonClassLoader loader, String... args) throws Throwable {
 
         // If the --sysrep option was set on the command line we set the corresponding system property
         String ceylonSystemRepo = getArgument(args, "--sysrep", false);
@@ -39,70 +49,76 @@ public class Launcher {
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, ceylonSystemVersion);
         }
 
-        CeylonClassLoader loader = getClassLoader();
-
-        // We actually need to construct and set a new class path for the compiler
-        // which doesn't use the actual class path used by the JVM but it constructs
-        // it's own list looking at the arguments passed on the command line or
-        // at the system property "env.class.path" which we will be using here.
-        String cp = CeylonClassLoader.getClassPathAsString();
-        System.setProperty("env.class.path", cp);
-
-        // Find the main tool class
-        String verbose = null;
-        Class<?> mainClass = loader.loadClass("com.redhat.ceylon.common.tools.CeylonTool");
-        
-        // Set up the arguments for the tool
-        Object mainTool = mainClass.newInstance();
-        Method setupMethod = mainClass.getMethod("setup", args.getClass());
-        Integer result = (Integer)setupMethod.invoke(mainTool, (Object)args);
-        if (result == 0 /* SC_OK */) {
-            try {
-                Method toolGetter = mainClass.getMethod("getTool");
-                Object tool = toolGetter.invoke(mainTool);
-                Method verboseGetter = tool.getClass().getMethod("getVerbose");
-                verbose = (String)verboseGetter.invoke(tool);
-            } catch (Exception ex) {
-                // Probably doesn't have a --verbose option
-            }
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        try{
+            // This is mostly required by CeylonTool.getPluginLoader(), and perhaps by jboss modules
+            Thread.currentThread().setContextClassLoader(loader);
             
-            //boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
-            initGlobalLogger(verbose);
+            // We actually need to construct and set a new class path for the compiler
+            // which doesn't use the actual class path used by the JVM but it constructs
+            // it's own list looking at the arguments passed on the command line or
+            // at the system property "env.class.path" which we will be using here.
+            String cp = CeylonClassLoader.getClassPathAsString();
+            System.setProperty("env.class.path", cp);
 
-            if (hasVerboseFlag(verbose, "loader")) {
-                Logger log = Logger.getLogger("");
-                log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
-                for (File f : CeylonClassLoader.getClassPath()) {
-                    log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
+            // Find the main tool class
+            String verbose = null;
+            Class<?> mainClass = loader.loadClass("com.redhat.ceylon.common.tools.CeylonTool");
+
+            // Set up the arguments for the tool
+            Object mainTool = mainClass.newInstance();
+            Method setupMethod = mainClass.getMethod("setup", args.getClass());
+            Integer result = (Integer)setupMethod.invoke(mainTool, (Object)args);
+            if (result == 0 /* SC_OK */) {
+                try {
+                    Method toolGetter = mainClass.getMethod("getTool");
+                    Object tool = toolGetter.invoke(mainTool);
+                    Method verboseGetter = tool.getClass().getMethod("getVerbose");
+                    verbose = (String)verboseGetter.invoke(tool);
+                } catch (Exception ex) {
+                    // Probably doesn't have a --verbose option
                 }
+
+                //boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
+                initGlobalLogger(verbose);
+
+                if (hasVerboseFlag(verbose, "loader")) {
+                    Logger log = Logger.getLogger("");
+                    log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
+                    for (File f : CeylonClassLoader.getClassPath()) {
+                        log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
+                    }
+                }
+
+                // And finally execute the tool
+                Method execMethod = mainClass.getMethod("execute");
+                result = (Integer)execMethod.invoke(mainTool);
             }
 
-            // And finally execute the tool
-            Method execMethod = mainClass.getMethod("execute");
-            result = (Integer)execMethod.invoke(mainTool);
+            return result.intValue();
+        }finally{
+            // be sure to restore it to avoid memory leaks
+            Thread.currentThread().setContextClassLoader(ccl);
         }
-        
-        return result.intValue();
     }
 
-    public static CeylonClassLoader getClassLoader() throws MalformedURLException, FileNotFoundException, URISyntaxException {
-        // Check if we need to create a CeylonClassLoader or if we can use the existing one
-        synchronized (CeylonClassLoader.class) {
-            if (ceylonClassLoader == null) {
-                // Create the class loader that knows where to find all the Ceylon dependencies
-                ceylonClassLoader = new CeylonClassLoader();
-            }
+    public static CeylonClassLoader getClassLoader() throws ClassLoaderSetupException {
+        try{
+            // Create the class loader that knows where to find all the Ceylon dependencies
+            CeylonClassLoader ceylonClassLoader = new CeylonClassLoader();
+
+            // Set some important system properties
+            System.setProperty(Constants.PROP_CEYLON_HOME_DIR, LauncherUtil.determineHome().getAbsolutePath());
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo().getAbsolutePath());
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
+            return ceylonClassLoader;
+        }catch(URISyntaxException e){
+            throw new ClassLoaderSetupException(e);
+        }catch(MalformedURLException e){
+            throw new ClassLoaderSetupException(e);
+        }catch(FileNotFoundException e){
+            throw new ClassLoaderSetupException(e);
         }
-
-        // Set context class loader for current thread
-        Thread.currentThread().setContextClassLoader(ceylonClassLoader);
-
-        // Set some important system properties
-        System.setProperty("ceylon.home", LauncherUtil.determineHome().getAbsolutePath());
-        System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo().getAbsolutePath());
-        System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
-
-        return ceylonClassLoader;
     }
 
     private static boolean hasArgument(final String[] args, final String test) {

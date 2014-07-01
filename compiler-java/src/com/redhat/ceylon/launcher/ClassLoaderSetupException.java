@@ -18,30 +18,12 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.ant;
+package com.redhat.ceylon.launcher;
 
-import java.io.File;
-import java.util.List;
+public class ClassLoaderSetupException extends Exception {
+    private static final long serialVersionUID = -260387041605744118L;
 
-import com.redhat.ceylon.launcher.ClassLoaderSetupException;
-
-/**
- * Contract for things using {@link LazyHelper}. 
- * @author tom
- */
-public interface Lazy {
-
-    void log(String string, int msgDebug);
-
-    boolean getNoMtimeCheck();
-
-    List<File> getSrc();
-
-    List<File> getResource();
-
-    void log(String string);
-
-    String getOut();
-
-    ClassLoader getClassLoader() throws ClassLoaderSetupException;
+    public ClassLoaderSetupException(Throwable cause){
+        super(cause);
+    }
 }
