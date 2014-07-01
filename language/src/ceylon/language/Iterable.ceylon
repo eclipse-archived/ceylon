@@ -195,14 +195,43 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "A stream containing all but the first element of this 
      stream. For a stream with an unstable iteration order, 
-     a different value might be produced each time `rest` is
-     evaluated.
+     a different stream might be produced each time `rest` 
+     is evaluated.
      
      Therefore, if the stream `i` has an unstable iteration
      order, the stream `{ i.first, *i.rest }` might not have
      the same elements as `i`."
     see (`value first`)
     shared default {Element*} rest => skip(1);
+    
+    "A stream containing all but the last element of this 
+     stream. For a stream with an unstable iteration order, 
+     a different stream might be produced each time 
+     `exceptLast` is evaluated."
+    shared default {Element*} exceptLast {
+        object exceptLast
+                satisfies {Element*} {
+            shared actual Iterator<Element> iterator() {
+                value iter = outer.iterator();
+                object iterator 
+                        satisfies Iterator<Element> {
+                    variable value current = iter.next();
+                    shared actual Element|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            value result = current;
+                            current = next;
+                            return result;
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
+        return exceptLast;
+    }
     
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this

@@ -1403,6 +1403,12 @@ public final class String
         return value.isEmpty() ? "" :
             value.substring(value.offsetByCodePoints(0, 1));
     }
+    
+    @Ignore
+    public static Iterable<? extends Character,?> 
+    getExceptLast(java.lang.String value) {
+    	return instance(value).getExceptLast();
+    }
 
     @Override
     @Ignore
