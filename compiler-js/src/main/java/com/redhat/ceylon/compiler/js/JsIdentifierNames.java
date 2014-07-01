@@ -226,7 +226,7 @@ public class JsIdentifierNames {
                 || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias));
         }
         if (nonLocal && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class
-                && ((com.redhat.ceylon.compiler.typechecker.model.Class)decl).isAnonymous()) {
+                && ((com.redhat.ceylon.compiler.typechecker.model.Class)decl).isAnonymous() && !forGetterSetter) {
             // A lower-case class name belongs to an object and is not public.
             nonLocal = false;
         }

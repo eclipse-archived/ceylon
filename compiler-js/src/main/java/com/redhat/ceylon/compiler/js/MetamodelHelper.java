@@ -225,18 +225,16 @@ public class MetamodelHelper {
                     gen.out("undefined");
                 } else {
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().name(anonClass);
-                    final int dolpos = ancname.lastIndexOf('$');
-                    gen.out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
+                    final String ancname = gen.getNames().getter(anonClass);
+                    gen.out(ancname, "()");
                 }
                 gen.out(",");
             }
             if (ltype == null) {
                 if (anonClass != null) {
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().name(anonClass);
-                    final int dolpos = ancname.lastIndexOf('$');
-                    gen.out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
+                    final String ancname = gen.getNames().getter(anonClass);
+                    gen.out(ancname, "().");
                 } else {
                     gen.qualify(that, d);
                 }

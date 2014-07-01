@@ -3217,7 +3217,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tree.MemberLiteral that) {
+    public void visit(final Tree.MemberLiteral that) {
         if (that.getWantsDeclaration()) {
             MetamodelHelper.generateOpenType(that, that.getDeclaration(), this);
         } else {
