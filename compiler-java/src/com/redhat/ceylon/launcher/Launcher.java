@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.redhat.ceylon.common.Constants;
@@ -82,17 +83,22 @@ public class Launcher {
                 //boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
                 initGlobalLogger(verbose);
 
-                if (hasVerboseFlag(verbose, "loader")) {
-                    Logger log = Logger.getLogger("");
-                    log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
-                    for (File f : CeylonClassLoader.getClassPath()) {
-                        log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
+                try{
+                    if (hasVerboseFlag(verbose, "loader")) {
+                        Logger log = Logger.getLogger("");
+                        log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
+                        for (File f : CeylonClassLoader.getClassPath()) {
+                            log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
+                        }
                     }
-                }
 
-                // And finally execute the tool
-                Method execMethod = mainClass.getMethod("execute");
-                result = (Integer)execMethod.invoke(mainTool);
+                    // And finally execute the tool
+                    Method execMethod = mainClass.getMethod("execute");
+                    result = (Integer)execMethod.invoke(mainTool);
+                }finally{
+                    // make sure we reset it, otherwise it will keep a reference to the CeylonClassLoader
+                    LogManager.getLogManager().reset();
+                }
             }
 
             return result.intValue();
