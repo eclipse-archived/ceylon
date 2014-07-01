@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
+
 import net.minidev.json.JSONValue;
 
 /**
@@ -257,12 +259,20 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         // IMPORTANT
         // This method NEEDS to be able to return the meta model of any previous file formats!!!
         // It MUST stay backward compatible
+        List<String> docs = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 if ((line.startsWith("var $CCMM$=") || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
-                    return  (Map<String,Object>) JSONValue.parse(line);
+                    Map<String, Object> rv = (Map<String,Object>) JSONValue.parse(line);
+                    if (docs != null) {
+                        rv.put("$mod-DOC$", docs);
+                    }
+                    return rv;
+                } else if (line.startsWith("var $CDOC$=[") && line.endsWith("];")) {
+                    line = line.substring(line.indexOf('['), line.length()-1);
+                    docs = (List<String>)JSONValue.parse(line);
                 }
             }
             return null;
