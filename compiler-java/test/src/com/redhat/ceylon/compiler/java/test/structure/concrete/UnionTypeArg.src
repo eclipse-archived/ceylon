@@ -54,6 +54,11 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }
@@ -301,6 +306,11 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getRest() {
         return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

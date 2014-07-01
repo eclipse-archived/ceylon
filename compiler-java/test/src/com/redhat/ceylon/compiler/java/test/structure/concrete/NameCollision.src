@@ -38,6 +38,11 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }

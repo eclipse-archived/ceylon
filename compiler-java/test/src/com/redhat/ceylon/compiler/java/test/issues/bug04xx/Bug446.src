@@ -310,6 +310,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }

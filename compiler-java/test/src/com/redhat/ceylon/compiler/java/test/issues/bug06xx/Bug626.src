@@ -55,6 +55,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }

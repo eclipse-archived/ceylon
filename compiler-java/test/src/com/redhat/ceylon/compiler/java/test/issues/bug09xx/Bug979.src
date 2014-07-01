@@ -60,6 +60,11 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }
@@ -348,6 +353,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRest() {
         return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

@@ -350,6 +350,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public Element getFromFirst(final long index) {
         return $ceylon$language$Iterable$this$.getFromFirst(index);
     }

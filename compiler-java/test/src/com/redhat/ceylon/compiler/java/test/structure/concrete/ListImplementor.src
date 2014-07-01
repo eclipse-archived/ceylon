@@ -273,6 +273,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }

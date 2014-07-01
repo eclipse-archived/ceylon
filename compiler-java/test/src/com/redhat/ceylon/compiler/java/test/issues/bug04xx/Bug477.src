@@ -305,6 +305,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }
@@ -811,6 +816,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends T, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
