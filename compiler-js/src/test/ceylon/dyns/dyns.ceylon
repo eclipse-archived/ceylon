@@ -7,6 +7,9 @@ Object leakTest(Boolean flag) {
   }
 }
 
+Iterable<Element&Object> testCoalesce<Element>({Element+} elems) =>
+    { for (e in elems) if (exists e) e };
+
 //Test the dynamic annotation
 shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);
@@ -94,13 +97,8 @@ shared void test() {
         } catch (Exception e) {
             check(true);
         }*/
-        try {
-            value iter = coalesce<Anything>{n,null,n2,null,n3};
-            print(iter.first);
-            fail("cannot create sequenced args with dynamic types");
-        } catch (AssertionError e) {
-            check(true);
-        }
+        value iter = testCoalesce<Anything>{n,null,n2,null,n3};
+        check(iter.first exists, "sequenced args w/dynamic types");
         n = value{5};
         check(n.length==1, "reassign n");
         n = Singleton(1);
