@@ -751,6 +751,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                     // strip any escaping or private suffix
                     name = Util.strip(name, true, method.isPublic() || method.isProtected() || method.isDefaultAccess());
+                    if (name.endsWith(Naming.Suffix.$canonical$.toString())) {
+                        name = name.substring(0, name.length()-11);
+                    }
 
                     methodDecl = (LocalDeclarationContainer) containerDecl.getDirectMember(name, null, false);
 
