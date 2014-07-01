@@ -1730,6 +1730,12 @@ public class GenerateJsVisitor extends Visitor
             out(";}");
             return;
         }
+        final Declaration d = that.getDeclaration();
+        if (d.isToplevel() && d instanceof Method) {
+            //Just output the name
+            out(names.name(d));
+            return;
+        }
         String primaryVar = createRetainedTempVar();
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
@@ -3220,7 +3226,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tree.PackageLiteral that) {
+    public void visit(final Tree.PackageLiteral that) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg =
                 (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
         MetamodelHelper.findModule(pkg.getModule(), this);
@@ -3266,5 +3272,4 @@ public class GenerateJsVisitor extends Visitor
         }
         return false;
     }
-
 }
