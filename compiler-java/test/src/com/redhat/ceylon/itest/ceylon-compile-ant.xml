@@ -29,6 +29,251 @@
     </ceylon-compile>
   </target>
 
+  <!-- Only useful for debugging memory leaks -->
+  <target name="foo-oom" depends="ant-tasks">
+  	<!-- Yes this is an unrolled loop :( -->
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+    <ceylon-compile
+      executable="${script.ceylon}"
+      src="../ceylon.language/test"
+      out="${arg.out}"
+      nomtimecheck="true"
+      verbose="${arg.verbose}">
+        <module name="default"/>
+        <module name="jvm"/>
+        <module name="annotations"/>
+        <module name="modules.optional"/>
+        <module name="modules.imported"/>
+        <module name="modules.required"/>
+        <module name="check"/>
+        <module name="metamodel"/>
+    </ceylon-compile>
+  </target>
+
   <target name="non-existant-module" depends="ant-tasks">
     <ceylon-compile
         executable="${script.ceylon}"

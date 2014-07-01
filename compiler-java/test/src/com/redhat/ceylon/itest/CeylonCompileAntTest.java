@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CeylonCompileAntTest extends AntBasedTest {
@@ -180,6 +181,13 @@ public class CeylonCompileAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car.sha1").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src.sha1").exists());
+    }
+    
+    @Ignore("This is only useful when debugging memory leaks")
+    @Test
+    public void testCompileModuleManyTimes() throws Exception {
+        AntResult result = ant("foo-oom");
+        Assert.assertEquals(0, result.getStatusCode());
     }
     
     @Test
