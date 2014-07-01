@@ -1839,4 +1839,9 @@ public final class String
     	return instance(value).getPaired();
     }
     
+    @Ignore
+    public static Iterable<? extends Sequential<? extends Character>,?> sequences(java.lang.String value, long length) {
+    	return instance(value).sequences(length);
+    }
+    
 }
