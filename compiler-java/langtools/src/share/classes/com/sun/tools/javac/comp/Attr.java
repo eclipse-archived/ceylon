@@ -177,6 +177,7 @@ import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
+import com.sun.tools.javac.util.SourceLanguage;
 import com.sun.tools.javac.util.Warner;
 
 /** This is the main context-dependent analysis phase in GJC. It
@@ -211,6 +212,7 @@ public class Attr extends JCTree.Visitor {
     final JCDiagnostic.Factory diags;
     final Annotate annotate;
     final DeferredLintHandler deferredLintHandler;
+    final SourceLanguage sourceLanguage;
 
     public static Attr instance(Context context) {
         Attr instance = context.get(attrKey);
@@ -223,6 +225,7 @@ public class Attr extends JCTree.Visitor {
         context.put(attrKey, this);
 
         names = Names.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
         log = Log.instance(context);
         syms = Symtab.instance(context);
         rs = Resolve.instance(context);
@@ -811,7 +814,7 @@ public class Attr extends JCTree.Visitor {
             // Ceylon(Stef): Java needs to enter local classes, but Ceylon does not unless they are anonymous
             // because we pre-enter local non-anonymous classes in visitBlock to allow mutual-visibility
             // see https://github.com/ceylon/ceylon-compiler/issues/1165
-            if(!Context.isCeylon()
+            if(!sourceLanguage.isCeylon()
                     || tree.name.isEmpty()){
                 enter.classEnter(tree, env);
             }
@@ -827,7 +830,7 @@ public class Attr extends JCTree.Visitor {
 
             // Ceylon: For Ceylon, this code moved to Enter.visitClassDef so that it is available to it,
             // because that method is called before we set it here.
-            if(!Context.isCeylon()){
+            if(!sourceLanguage.isCeylon()){
                 // If this class appears as an anonymous class
                 // in a superclass constructor call where
                 // no explicit outer instance is given,
@@ -1048,7 +1051,7 @@ public class Attr extends JCTree.Visitor {
             if ((tree.flags & STATIC) != 0) localEnv.info.staticLevel++;
             // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
             // see https://github.com/ceylon/ceylon-compiler/issues/1165
-            if(Context.isCeylon())
+            if(sourceLanguage.isCeylon())
                 completeLocalTypes(tree.stats, localEnv);
             attribStats(tree.stats, localEnv);
         } else {
@@ -1057,7 +1060,7 @@ public class Attr extends JCTree.Visitor {
                 env.dup(tree, env.info.dup(env.info.scope.dup()));
             // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
             // see https://github.com/ceylon/ceylon-compiler/issues/1165
-            if(Context.isCeylon())
+            if(sourceLanguage.isCeylon())
                 completeLocalTypes(tree.stats, localEnv);
             attribStats(tree.stats, localEnv);
             localEnv.info.scope.leave();
@@ -2659,7 +2662,7 @@ public class Attr extends JCTree.Visitor {
                     // Ceylon: relax the rules for private methods in wildcards, damnit, we want the private
                     // method to be called, not any subtype's method we can't possibly know about, this is really
                     // a lame Java decision.
-                    Symbol sym2 = (!Context.isCeylon() && (sym.flags() & Flags.PRIVATE) != 0) ?
+                    Symbol sym2 = (!sourceLanguage.isCeylon() && (sym.flags() & Flags.PRIVATE) != 0) ?
                         rs.new AccessError(env, site, sym) :
                                 sym;
                     rs.access(sym2, pos, location, site, name, true);
@@ -3044,7 +3047,7 @@ public class Attr extends JCTree.Visitor {
                 // Don't erase the return type of the instantiated method type 
                 // for Ceylon #1095
                 owntype = new MethodType(owntype.getParameterTypes(),
-                                         Context.isCeylon() 
+                                         sourceLanguage.isCeylon() 
                                              && typeargtypes != null 
                                              && !typeargtypes.isEmpty() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
                                          types.erasure(owntype.getThrownTypes()),
@@ -3334,7 +3337,7 @@ public class Attr extends JCTree.Visitor {
             // new variable should see the ones defined previously)
             // do statements if we have any
             if(tree.stats != null){
-                if(Context.isCeylon())
+                if(sourceLanguage.isCeylon())
                     completeLocalTypes(tree.stats, localEnv);
                 attribStats(tree.stats, localEnv);
             }
@@ -3526,7 +3529,7 @@ public class Attr extends JCTree.Visitor {
         }
 
         // Check that a generic class doesn't extend Throwable
-        if (!Context.isCeylon() && !c.type.allparams().isEmpty() && types.isSubtype(c.type, syms.throwableType))
+        if (!sourceLanguage.isCeylon() && !c.type.allparams().isEmpty() && types.isSubtype(c.type, syms.throwableType))
             log.error(tree.extending.pos(), "generic.throwable");
 
         // Check that all methods which implement some

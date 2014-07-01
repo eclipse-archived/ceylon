@@ -26,7 +26,6 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
-import java.util.Set;
 
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
@@ -70,6 +69,7 @@ public class Check {
     private boolean suppressAbortOnBadClassFile;
     private boolean enableSunApiLintControl;
     private final TreeInfo treeinfo;
+    private final SourceLanguage sourceLanguage;
 
     // The set of lint options currently in effect. It is initialized
     // from the context, and then is set/reset as needed by Attr as it
@@ -91,6 +91,7 @@ public class Check {
         context.put(checkKey, this);
 
         names = Names.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
         log = Log.instance(context);
         syms = Symtab.instance(context);
         enter = Enter.instance(context);
@@ -351,7 +352,7 @@ public class Check {
      */
     void checkTransparentClass(DiagnosticPosition pos, ClassSymbol c, Scope s) {
         // Ceylon allows inner classes to have the same name as outer classes
-        if(Context.isCeylon())
+        if(sourceLanguage.isCeylon())
             return;
 
         if (s.next != null) {
@@ -383,7 +384,7 @@ public class Check {
             }
         }
         // Ceylon allows inner classes to have the same name as outer classes
-        if(!Context.isCeylon()){
+        if(!sourceLanguage.isCeylon()){
             for (Symbol sym = s.owner; sym != null; sym = sym.owner) {
                 if (sym.kind == TYP && sym.name == name && sym.name != names.error) {
                     duplicateError(pos, sym);
@@ -1074,7 +1075,7 @@ public class Check {
                     for (JCTree arg : tree.arguments) {
                         if (arg.type == incompatibleArg) {
                             // Unwanted check for Ceylon, see compiler issue #441
-                            if (!Context.isCeylon()) {
+                            if (!sourceLanguage.isCeylon()) {
                                 log.error(arg, "not.within.bounds", incompatibleArg, forms.head);
                             }
                         }
@@ -1502,7 +1503,7 @@ public class Check {
         if (!isDeprecatedOverrideIgnorable(other, origin)) {
             checkDeprecated(TreeInfo.diagnosticPositionFor(m, tree), m, other);
         }
-        if(Context.isCeylon())
+        if(sourceLanguage.isCeylon())
             m.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
     }
     // where
@@ -1817,7 +1818,7 @@ public class Check {
                         MethodSymbol implmeth = absmeth.implementation(impl, types, true);
                         if (implmeth == null || implmeth == absmeth)
                             undef = absmeth;
-                        else if(Context.isCeylon())
+                        else if(sourceLanguage.isCeylon())
                             implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
                     }
                 }
@@ -2222,7 +2223,7 @@ public class Check {
                 if (oldit != null) {
                     List<Type> oldparams = oldit.allparams();
                     List<Type> newparams = it.allparams();
-                    if (!Context.isCeylon()
+                    if (!sourceLanguage.isCeylon()
                             && !types.containsTypeEquivalent(oldparams, newparams))
                         log.error(pos, "cant.inherit.diff.arg",
                                   it.tsym, Type.toString(oldparams),

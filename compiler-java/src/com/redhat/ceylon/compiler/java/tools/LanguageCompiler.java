@@ -95,7 +95,6 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.TreeInfo;
 import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
@@ -103,6 +102,8 @@ import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
+import com.sun.tools.javac.util.SourceLanguage;
+import com.sun.tools.javac.util.SourceLanguage.Language;
 
 public class LanguageCompiler extends JavaCompiler {
 
@@ -132,6 +133,7 @@ public class LanguageCompiler extends JavaCompiler {
     private Set<Module> modulesLoadedFromSource = new HashSet<Module>();
     private List<JavaFileObject> resourceFileObjects;
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
+    private SourceLanguage sourceLanguage;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -200,6 +202,7 @@ public class LanguageCompiler extends JavaCompiler {
         options = Options.instance(context);
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         timer = Timer.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
     }
 
     @Override
@@ -687,10 +690,10 @@ public class LanguageCompiler extends JavaCompiler {
     public Env<AttrContext> attribute(Env<AttrContext> env) {
         if (env.toplevel.sourcefile instanceof CeylonFileObject || isBootstrap) {
             try {
-                Context.SourceLanguage.push(Language.CEYLON);
+                sourceLanguage.push(Language.CEYLON);
                 return super.attribute(env);
             } finally {
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
         }
         return super.attribute(env);
@@ -700,11 +703,11 @@ public class LanguageCompiler extends JavaCompiler {
     protected JavaFileObject genCode(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
-                Context.SourceLanguage.push(Language.CEYLON);
+                sourceLanguage.push(Language.CEYLON);
                 // call our own genCode
                 return genCodeUnlessError(env, cdef);
             } finally {
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
         }
         return super.genCode(env, cdef);
@@ -770,11 +773,11 @@ public class LanguageCompiler extends JavaCompiler {
     protected void desugar(final Env<AttrContext> env, Queue<Pair<Env<AttrContext>, JCClassDecl>> results) {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
-                Context.SourceLanguage.push(Language.CEYLON);
+                sourceLanguage.push(Language.CEYLON);
                 super.desugar(env, results);
                 return;
             } finally {
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
         }
         super.desugar(env, results);
@@ -783,11 +786,11 @@ public class LanguageCompiler extends JavaCompiler {
     protected void flow(Env<AttrContext> env, Queue<Env<AttrContext>> results) {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
-                Context.SourceLanguage.push(Language.CEYLON);
+                sourceLanguage.push(Language.CEYLON);
                 super.flow(env, results);
                 return;
             } finally {
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
         }
         super.flow(env, results);   
@@ -801,10 +804,10 @@ public class LanguageCompiler extends JavaCompiler {
     @Override
     public void complete(ClassSymbol c) throws CompletionFailure {
         try {
-            Context.SourceLanguage.push(Language.JAVA);
+            sourceLanguage.push(Language.JAVA);
             super.complete(c);
         } finally {
-            Context.SourceLanguage.pop();
+            sourceLanguage.pop();
         }
     }
     

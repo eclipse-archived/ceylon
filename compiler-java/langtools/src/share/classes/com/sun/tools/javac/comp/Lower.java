@@ -82,11 +82,13 @@ public class Lower extends TreeTranslator {
     private final Name dollarAssertionsDisabled;
     private final Name classDollar;
     private Types types;
+    private SourceLanguage sourceLanguage;
     private boolean debugLower;
     private PkgInfo pkginfoOpt;
 
     protected Lower(Context context) {
         context.put(lowerKey, this);
+        sourceLanguage = SourceLanguage.instance(context);
         names = Names.instance(context);
         log = Log.instance(context);
         syms = Symtab.instance(context);
@@ -2881,7 +2883,7 @@ public class Lower extends TreeTranslator {
         boolean havePrimitive = tree.type.isPrimitive();
         if (havePrimitive == type.isPrimitive())
             return tree;
-        if (Context.isCeylon()) {
+        if (sourceLanguage.isCeylon()) {
             log.error(make_pos, "ceylon", "Java primitive boxing/unboxing in Ceylon-generated code!");
         }
         if (havePrimitive) {

@@ -97,10 +97,11 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.SourceLanguage;
+import com.sun.tools.javac.util.SourceLanguage.Language;
 
 public class CeylonEnter extends Enter {
 
@@ -133,6 +134,7 @@ public class CeylonEnter extends Enter {
     private Annotate annotate;
     private Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private TaskListener taskListener;
+    private SourceLanguage sourceLanguage;
 
     
     protected CeylonEnter(Context context) {
@@ -162,6 +164,7 @@ public class CeylonEnter extends Enter {
         todo = Todo.instance(context);
         annotate = Annotate.instance(context);
         taskListener = context.get(TaskListener.class);
+        sourceLanguage = SourceLanguage.instance(context);
 
         // now superclass init
         init(context);
@@ -198,10 +201,10 @@ public class CeylonEnter extends Enter {
             timer.startTask("Enter on Ceylon trees");
             // and complete their new trees
             try {
-                Context.SourceLanguage.push(Language.CEYLON);
+                sourceLanguage.push(Language.CEYLON);
                 super.main(ceylonTrees);                    
             } finally {
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
             timer.endTask();
         }
@@ -272,11 +275,11 @@ public class CeylonEnter extends Enter {
     @Override
     protected Type classEnter(JCTree tree, Env<AttrContext> env) {
         if(tree instanceof CeylonCompilationUnit){
-            Context.SourceLanguage.push(Language.CEYLON);
+            sourceLanguage.push(Language.CEYLON);
             try{
                 return super.classEnter(tree, env);
             }finally{
-                Context.SourceLanguage.pop();
+                sourceLanguage.pop();
             }
         }else
             return super.classEnter(tree, env);

@@ -98,6 +98,7 @@ public class Enter extends JCTree.Visitor {
     Check chk;
     TreeMaker make;
     ClassReader reader;
+    SourceLanguage sourceLanguage;
     Annotate annotate;
     MemberEnter memberEnter;
     Types types;
@@ -123,6 +124,7 @@ public class Enter extends JCTree.Visitor {
 
     protected void init(Context context){
         log = Log.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
         reader = ClassReader.instance(context);
         make = TreeMaker.instance(context);
         syms = Symtab.instance(context);
@@ -354,7 +356,7 @@ public class Enter extends JCTree.Visitor {
             c = reader.enterClass(tree.name, packge);
             packge.members().enterIfAbsent(c);
             if ((tree.mods.flags & PUBLIC) != 0 && !classNameMatchesFileName(c, env)
-                    && !Context.isCeylon()) {
+                    && !sourceLanguage.isCeylon()) {
                 log.error(tree.pos(),
                           "class.public.should.be.in.file", tree.name);
             }
@@ -406,7 +408,7 @@ public class Enter extends JCTree.Visitor {
         // Ceylon: this is code that used to sit in Attr.visitClassDef() but it would be set
         // after this method is called, and this method needs this flag further down to
         // determine the enclosing type
-        if(Context.isCeylon()){
+        if(sourceLanguage.isCeylon()){
             // If this class appears as an anonymous class
             // in a superclass constructor call where
             // no explicit outer instance is given,

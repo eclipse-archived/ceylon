@@ -81,6 +81,7 @@ public class Resolve {
     public final boolean allowMethodHandles;
     private final boolean debugResolve;
     private final AbstractModelLoader modelLoader;
+    private final SourceLanguage sourceLanguage;
 
     Scope polymorphicSignatureScope;
 
@@ -94,6 +95,7 @@ public class Resolve {
     protected Resolve(Context context) {
         context.put(resolveKey, this);
         syms = Symtab.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
 
         varNotFound = new
             SymbolNotFoundError(ABSENT_VAR);
@@ -1056,7 +1058,7 @@ public class Resolve {
         try {
             ClassSymbol c = reader.loadClass(name);
             if (!isAccessible(env, c)) return new AccessError(c);
-            if (modelLoader != null && !Context.isCeylon()) {
+            if (modelLoader != null && !sourceLanguage.isCeylon()) {
                 // Check if the class is accessible according to Ceylon's access rules
                 String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
                 Module scopeModule = modelLoader.lookupModuleByPackageName(scopePackageName);

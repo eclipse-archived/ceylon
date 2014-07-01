@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JCDiagnostic;
 import com.sun.tools.javac.util.DiagnosticSource;
+import com.sun.tools.javac.util.SourceLanguage;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 import com.sun.tools.javac.util.Log;
 
@@ -40,6 +41,8 @@ public class CeylonLog extends Log {
     private int numCeylonCodegenErrors;
     /** The number of errors reported by the javac (=> bugs in codegen) */
     private int numNonCeylonErrors;
+
+    private SourceLanguage sourceLanguage;
     
     /** Get the Log instance for this context. */
     public static Log instance(Context context) {
@@ -65,6 +68,7 @@ public class CeylonLog extends Log {
 
     protected CeylonLog(Context context) {
         super(context);
+        sourceLanguage = SourceLanguage.instance(context);
     }
 
     @Override
@@ -79,12 +83,12 @@ public class CeylonLog extends Log {
                 numCeylonCodegenErrors++;
             } else if (messageKey.startsWith("compiler.err.ceylon")) {
                 numCeylonAnalysisErrors++;
-            } else if (Context.isCeylon()) {
+            } else if (sourceLanguage.isCeylon()) {
                 numCeylonCodegenErrors++;
             } else {
                 numNonCeylonErrors++;
             }
-        } else if (Context.isCeylon()) {
+        } else if (sourceLanguage.isCeylon()) {
             numCeylonCodegenErrors++;
         } else {
             numNonCeylonErrors++;

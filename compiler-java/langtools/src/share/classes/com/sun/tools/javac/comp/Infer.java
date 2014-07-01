@@ -31,7 +31,6 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.TreeInfo;
 import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.code.Type.ForAll.ConstraintKind;
@@ -59,6 +58,7 @@ public class Infer {
     Check chk;
     Resolve rs;
     JCDiagnostic.Factory diags;
+    SourceLanguage sourceLanguage;
 
     public static Infer instance(Context context) {
         Infer instance = context.get(inferKey);
@@ -69,6 +69,7 @@ public class Infer {
 
     protected Infer(Context context) {
         context.put(inferKey, this);
+        sourceLanguage = SourceLanguage.instance(context);
         syms = Symtab.instance(context);
         types = Types.instance(context);
         rs = Resolve.instance(context);
@@ -613,7 +614,7 @@ public class Infer {
              * for raw types anyways.
              * See https://github.com/ceylon/ceylon-compiler/issues/193
              */
-            if(Context.isCeylon() && bounds.size() > 1)
+            if(sourceLanguage.isCeylon() && bounds.size() > 1)
                 bounds = List.of(bounds.head);
             if (!types.isSubtypeUnchecked(args.head, bounds, warn))
                 throw invalidInstanceException

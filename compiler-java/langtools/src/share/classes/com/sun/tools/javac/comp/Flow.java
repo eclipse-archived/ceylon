@@ -192,6 +192,7 @@ public class Flow extends TreeScanner {
     private       Lint lint;
     private final boolean allowImprovedRethrowAnalysis;
     private final boolean allowImprovedCatchAnalysis;
+    private final SourceLanguage sourceLanguage;
 
     public static Flow instance(Context context) {
         Flow instance = context.get(flowKey);
@@ -202,6 +203,7 @@ public class Flow extends TreeScanner {
 
     protected Flow(Context context) {
         context.put(flowKey, this);
+        sourceLanguage = SourceLanguage.instance(context);
         names = Names.instance(context);
         log = Log.instance(context);
         syms = Symtab.instance(context);
@@ -339,7 +341,7 @@ public class Flow extends TreeScanner {
      *  is caught.
      */
     void markThrown(JCTree tree, Type exc) {
-        if (Context.isCeylon()) {
+        if (sourceLanguage.isCeylon()) {
             return;
         }
         if (!chk.isUnchecked(tree.pos(), exc)) {
@@ -393,7 +395,7 @@ public class Flow extends TreeScanner {
                               sym);
                     }
                 } else if (!uninits.isMember(sym.adr)) {
-                    if (!Context.isCeylon()) {
+                    if (!sourceLanguage.isCeylon()) {
                         log.error(pos,
                                   loopPassTwo
                                   ? "var.might.be.assigned.in.loop"
@@ -1160,10 +1162,10 @@ public class Flow extends TreeScanner {
         } else if (!chk.isUnchecked(pos, exc) &&
                 !isExceptionOrThrowable(exc) &&
                 !chk.intersects(exc, thrownInTry) &&
-                !Context.isCeylon()) {
+                !sourceLanguage.isCeylon()) {
             log.error(pos, "except.never.thrown.in.try", exc);
         } else if (allowImprovedCatchAnalysis &&
-                !Context.isCeylon()) {
+                !sourceLanguage.isCeylon()) {
             List<Type> catchableThrownTypes = chk.intersect(List.of(exc), thrownInTry);
             // 'catchableThrownTypes' cannnot possibly be empty - if 'exc' was an
             // unchecked exception, the result list would not be empty, as the augmented
