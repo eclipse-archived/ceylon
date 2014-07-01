@@ -29,6 +29,7 @@ import org.jboss.ceylon.test.modules.repo.test.RepositoryTestCase;
 import org.jboss.ceylon.test.modules.services.test.ServicesTestCase;
 import org.jboss.ceylon.test.modules.smoke.test.SmokeTestCase;
 import org.jboss.ceylon.test.modules.sources.test.SourcesTestCase;
+import org.jboss.ceylon.test.modules.tool.test.RunToolTestCase;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -44,7 +45,8 @@ import org.junit.runners.Suite.SuiteClasses;
     RepositoryTestCase.class,
     SourcesTestCase.class,
     ServicesTestCase.class,
-    LoggingDependencyTestCase.class
+    LoggingDependencyTestCase.class,
+    RunToolTestCase.class,
 })
 public class AllRuntimeTests {
 }
