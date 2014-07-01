@@ -45,8 +45,11 @@ public class JsOutput {
     }
     Set<String> getSources() { return s; }
 
+    public void encodeDocs() throws IOException {
+        ModelEncoder.encodeDocs(mmg.getDocs(), writer);
+    }
     public void encodeModel() throws IOException {
-        new ModelEncoder(mmg.getModel()).encode(writer);
+        ModelEncoder.encodeModel(mmg.getModel(), writer);
     }
 
     public void outputFile(File f) {

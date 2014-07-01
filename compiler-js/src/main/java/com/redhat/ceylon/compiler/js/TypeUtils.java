@@ -818,7 +818,7 @@ public class TypeUtils {
         final StringBuilder sb = new StringBuilder();
         for (String p : generateModelPath(d)) {
             if (sb.length()==0) {
-                sb.append("$CCMM$");
+                sb.append("$CDOC$[$CCMM$");
                 if ("$".equals(p)) {
                     p = Module.LANGUAGE_MODULE_NAME;
                 }
@@ -831,7 +831,7 @@ public class TypeUtils {
                 sb.append(".").append(p);
             }
         }
-        sb.append(".").append(MetamodelGenerator.KEY_ANNOTATIONS).append(".doc[0]");
+        sb.append(".").append(MetamodelGenerator.KEY_ANNOTATIONS).append(".doc]");
         return sb.toString();
     }
 
@@ -843,7 +843,7 @@ public class TypeUtils {
             final GenerateJsVisitor gen) {
         List<Tree.Annotation> anns = annotations == null ? null : annotations.getAnnotations();
         if (d != null) {
-            int mask = MetamodelGenerator.encodeAnnotations(d, null);
+            int mask = MetamodelGenerator.encodeAnnotations(d, null, null);
             if (mask > 0) {
                 gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(mask));
             }
@@ -905,7 +905,7 @@ public class TypeUtils {
         }
         @Override public void generateAnnotations() {
             List<Annotation> anns = d.getAnnotations();
-            final int bits = MetamodelGenerator.encodeAnnotations(d, null);
+            final int bits = MetamodelGenerator.encodeAnnotations(d, null, null);
             if (bits > 0) {
                 gen.out(",", MetamodelGenerator.KEY_PACKED_ANNS, ":", Integer.toString(bits));
                 //Remove these annotations from the list

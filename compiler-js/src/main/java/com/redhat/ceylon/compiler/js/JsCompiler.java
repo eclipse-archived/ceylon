@@ -231,7 +231,9 @@ public class JsCompiler {
             //Then write it out
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                    e.getValue().getWriter().write("var $CCMM$=");
+                    e.getValue().getWriter().write("var $CDOC$=");
+                    e.getValue().encodeDocs();
+                    e.getValue().getWriter().write(";\nvar $CCMM$=");
                     e.getValue().encodeModel();
                     e.getValue().getWriter().write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                 }

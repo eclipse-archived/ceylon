@@ -152,8 +152,10 @@ public class Stitcher {
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }
-                        writer.write("var $CCMM$=");
-                        new ModelEncoder(mmg.getModel()).encode(writer);
+                        writer.write("var $CDOC$=");
+                        ModelEncoder.encodeDocs(mmg.getDocs(), writer);
+                        writer.write(";\nvar $CCMM$=");
+                        ModelEncoder.encodeModel(mmg.getModel(), writer);
                         writer.write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                         writer.flush();
                     } else if (line.startsWith("//#COMPILE ")) {
