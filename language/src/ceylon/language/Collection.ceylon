@@ -1,5 +1,6 @@
 "Represents an iterable collection of elements of finite 
- size. `Collection` is the abstract supertype of [[List]],
+ size, with a well-defined notion of value equality. 
+ `Collection` is the abstract supertype of [[List]], 
  [[Map]], and [[Set]].
  
  A `Collection` forms a [[Category]] of its elements, and 
@@ -12,7 +13,13 @@
  mutable, `clone()` should produce a collection containing 
  references to the same elements, with the same structure as 
  the original collection&mdash;that is, it should produce a 
- shallow copy of the collection."
+ shallow copy of the collection.
+ 
+ All `Collection`s are required to support a well-defined
+ notion of [[value equality|Object.equals]], but the
+ definition of equality depends upon the kind of collection.
+ Equality for `Map`s and `Set`s has a quite different
+ definition to equality for `List`s."
 see (`interface List`, `interface Map`, `interface Set`)
 shared interface Collection<out Element>
         satisfies {Element*} {

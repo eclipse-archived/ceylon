@@ -17,6 +17,12 @@
    stream should eventually return exactly the same number 
    of elements, which must be the [[size]] of the stream.
    
+   A given stream may not be _finite_, in which case an 
+   iterator for the stream is never exhaustible, and certain
+   operations of this interface either never terminate or
+   result in an [[AssertionError]]. It may not, in general,
+   be possible to even determine if an `Iterable` is finite.
+   
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}`, represents a possibly-empty iterable 
    container. The type `Iterable<Element,Nothing>`, usually 
@@ -94,7 +100,13 @@
    or even a [[List]], [[Map]], or [[Set]]. Eager operations 
    usually return a [[sequence|Sequential]]. The method
    [[sequence]] materializes the current elements of a
-   stream into a sequence."""
+   stream into a sequence.
+   
+   Unlike [[Collection]], `Iterable` does not define or 
+   require any form of [[value equality|Object.equals]], and 
+   some streams do not support value equality. Therefore, 
+   the use of the `==` operator to compare generic iterables 
+   is extremely fragile and strongly discouraged."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>

@@ -27,13 +27,25 @@ shared abstract class Object()
      
      Furthermore it is recommended that implementations
      ensure that if `x==y` then `x` and `y` have the same 
-     concrete class."
+     concrete class.
+     
+     A class which explicitly refines `equals()` is said to 
+     support _value equality_, and the equality operator 
+     `==` is considered much more meaningful for such 
+     classes than for a class which simply inherits the
+     default implementation of _identity equality_ from
+     [[Identifiable]]."
     shared formal Boolean equals(Object that);
     
     "The hash value of the value, which allows the value to 
      be an element of a hash-based set or key of a
      hash-based map. Implementations must respect the
-     constraint that if `x==y` then `x.hash==y.hash`."
+     constraint that:
+     
+     - if `x==y` then `x.hash==y.hash`.
+     
+     Therefore, a class which refines [[equals]] must also
+     refine `hash`."
     shared formal Integer hash;
     
     "A developer-friendly string representing the instance. 
