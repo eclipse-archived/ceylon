@@ -133,7 +133,7 @@ public class Launcher {
         return null;
     }
 
-    private static void initGlobalLogger(String verbose) {
+    public static void initGlobalLogger(String verbose) {
         try {
             //if no log Manager specified use JBoss LogManager
             String logManager = System.getProperty("java.util.logging.manager");
