@@ -167,7 +167,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
 
         contextUseOptimizedZip = options.getBoolean("useOptimizedZip", true);
         if (contextUseOptimizedZip)
-            zipFileIndexCache = ZipFileIndexCache.getSharedInstance();
+            zipFileIndexCache = ZipFileIndexCache.instance(context);
 
         mmappedIO = options.isSet("mmappedIO");
         ignoreSymbolFile = options.isSet("ignore.symbol.file");

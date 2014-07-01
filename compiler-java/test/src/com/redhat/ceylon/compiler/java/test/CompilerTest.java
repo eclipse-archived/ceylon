@@ -76,7 +76,6 @@ import com.redhat.ceylon.launcher.Launcher;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.file.ZipFileIndexCache;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 
 public abstract class CompilerTest {
@@ -740,9 +739,6 @@ public abstract class CompilerTest {
     
     protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
             List<String> modules, String... sourcePaths){
-        // make sure we get a fresh jar cache for each compiler run
-        // FIXME: make this only get rid of the jars we produce, to win 2s out of 17s
-        ZipFileIndexCache.getSharedInstance().clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
         for(String file : sourcePaths){
             sourceFiles.add(new File(getPackagePath(), file));

@@ -43,12 +43,16 @@ public class ZipFileIndexCache {
             new HashMap<File, ZipFileIndex>();
 
     /** Get a shared instance of the cache. */
-    private static ZipFileIndexCache sharedInstance;
-    public synchronized static ZipFileIndexCache getSharedInstance() {
-        if (sharedInstance == null)
-            sharedInstance = new ZipFileIndexCache();
-        return sharedInstance;
-    }
+    
+    // Ceylon: disabled because it makes memory leak and does not detect jars that change
+    // between invocations
+    
+//    private static ZipFileIndexCache sharedInstance;
+//    public synchronized static ZipFileIndexCache getSharedInstance() {
+//        if (sharedInstance == null)
+//            sharedInstance = new ZipFileIndexCache();
+//        return sharedInstance;
+//    }
 
     /** Get a context-specific instance of a cache. */
     public static ZipFileIndexCache instance(Context context) {
