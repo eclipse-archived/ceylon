@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,6 +30,10 @@ public class JsonModule extends Module {
     }
     public Map<String, Object> getModel() {
         return model;
+    }
+    @SuppressWarnings("unchecked")
+    public List<String> getDocs() {
+        return (List<String>)model.get("$mod-DOC$");
     }
 
     void loadDeclarations() {
