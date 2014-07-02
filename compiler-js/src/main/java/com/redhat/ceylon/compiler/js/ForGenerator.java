@@ -96,9 +96,11 @@ public class ForGenerator {
         right.visit(gen);
         final String cmpvar = gen.getNames().createTempVariable();
         final String nxtvar = gen.getNames().createTempVariable();
+        final String cfvar = gen.getNames().createTempVariable();
         gen.out(",", cmpvar, "=", itemVar, ".compare(", iterVar, "),", nxtvar, "=", cmpvar, "===",
-                GenerateJsVisitor.getClAlias(), "getSmaller()?'successor':'predecessor';for(;");
-        gen.out(iterVar, ".compare(", itemVar, ")!==", cmpvar, ";");
+                GenerateJsVisitor.getClAlias(), "getSmaller()?'successor':'predecessor';for(var ",
+                cfvar, "=", GenerateJsVisitor.getClAlias(), "eorl$(", cmpvar, ");", cfvar,
+                "(", iterVar, ",", itemVar, ");");
         gen.out(itemVar, "=", itemVar, "[", nxtvar, "])");
         return true;
     }
