@@ -151,8 +151,8 @@ JSNum$proto.distanceFrom = function(other) {
 atr$(JSNum$proto, 'not', function(){ return ~this; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
-JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
-JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
+JSNum$proto.rightLogicalShift = function(i) { return this >>> i; }
+JSNum$proto.rightArithmeticShift = function(i) { return this >> i; }
 JSNum$proto.and = function(x) { return this & x; }
 JSNum$proto.or = function(x) { return this | x; }
 JSNum$proto.xor = function(x) { return this ^ x; }
