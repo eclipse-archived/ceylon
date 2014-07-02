@@ -19,7 +19,7 @@
  */
 "This is `StubInterface`"
 tagged("stubTag1a", "stubTag1b", "stubTagWithVeryLongName ... !!!")
-shared interface StubInterface {
+shared interface StubInterface of StubInterfaceA | StubClass | stubInterfaceB {
 
   "Description of StubInterface.formalMethodFromStubInterface"
   shared formal void formalMethodFromStubInterface();
@@ -31,4 +31,14 @@ shared interface StubInterface {
   "bug #927 in loading inherited members"
   shared actual default String string { return ""; }
     
+}
+
+shared abstract class Foo() of bar | gee {}
+shared object bar extends Foo(){}
+shared object gee extends Foo(){}
+
+shared interface StubInterfaceA satisfies StubInterface {}
+
+shared object stubInterfaceB satisfies StubInterface {
+    shared actual void formalMethodFromStubInterface() {}
 }

@@ -777,11 +777,11 @@ public class CeylonDocToolTest {
     }
     
     private void assertIcons(File destDir) throws Exception {
-        assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<i class='icon-interface'></i><span class='sub-navbar-name'>StubInterface</span>"));
+        assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><span class='sub-navbar-name'>StubInterface</span>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='formalMethodFromStubInterface' nowrap><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='defaultDeprecatedMethodFromStubInterface' nowrap><i class='icon-decoration-deprecated'><i class='icon-shared-member'></i></i>"));
 
-        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<td id='StubInnerClass' nowrap><i class='icon-class'></i>"));
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<i class='icon-class'></i><span class='sub-navbar-name'>StubClass</span>"));
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<td id='formalMethodFromStubInterface' nowrap><i class='icon-shared-member'><i class='icon-decoration-impl'></i></i>"));
@@ -1225,7 +1225,7 @@ public class CeylonDocToolTest {
     	assertMatchInFile(destDir, "StubClass.type.html",
     			Pattern.compile(Pattern.quote("Inherited Methods")));
     	assertMatchInFile(destDir, "StubClass.type.html",
-    			Pattern.compile(Pattern.quote("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a>")));
+    			Pattern.compile(Pattern.quote("<td>Methods inherited from: <i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a>")));
     }
 
     private void assertBug691AbbreviatedOptionalType(File destDir) throws Exception {
@@ -1253,7 +1253,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i><span title='ceylon.language::Object'>Object</span><div class='inherited-members'>hash, string</div></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>")));
+                Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>")));
     }
     
     private void assertBug1619BrokenLinkFromInheritedDoc(File destDir) throws Exception {
