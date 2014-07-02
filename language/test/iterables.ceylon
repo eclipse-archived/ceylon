@@ -327,7 +327,7 @@ shared void testIterables() {
         (1..5).withTrailing(0), 
         (Integer x, Integer y)=>x==y),"corresponding");
     
-    check(foldPairs(1, flatten(sum<Integer>), 1..3, 3..1)==13, "foldPairs");
+    check(foldPairs(1, (Integer r, Integer f, Integer s)=>r+f+s, 1..3, 3..1)==13, "foldPairs");
     check((findPair((Integer f, Integer s) => f==s, 1..3, 3..1) else -1) == [2,2], "findPair");
     check(mapPairs((Integer f, Integer s) => f+s, 1..3, 3..1).sequence()==[4,4,4], "mapPairs");
     check(anyPair((Integer f, Integer s) => f==s, 1..3, 3..1), "anyPair");
