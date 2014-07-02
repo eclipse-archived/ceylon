@@ -1846,8 +1846,18 @@ public final class String
     }
     
     @Ignore
-    public static Iterable<? extends Sequential<? extends Character>,?> sequences(java.lang.String value, long length) {
-    	return instance(value).sequences(length);
+    public static Iterable<? extends Sequence<? extends Character>,?> accumulations(java.lang.String value, Integer length) {
+    	return instance(value).accumulations(length);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Sequence<? extends Character>,?> accumulations(java.lang.String value) {
+    	return instance(value).accumulations((Integer) null);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Sequential<? extends Character>,?> partition(java.lang.String value, long length) {
+    	return instance(value).partition(length);
     }
     
 }

@@ -924,16 +924,16 @@ shared interface Iterable<out Element, out Absent=Null>
      For any `stream` and for any positive integer 
      [[length]]:
      
-         expand { stream.sequences(length) } == stream"
+         expand { stream.partition(length) } == stream"
     throws (`class AssertionError`,
             "if `length<0`")
     shared default 
-    Iterable<Element[],Absent> sequences(Integer length) {
+    Iterable<Element[],Absent> partition(Integer length) {
         assert (length>=0);
         if (length==0) {
             return {[]}.cycled;
         }
-        object sequences 
+        object chunks 
                 satisfies Iterable<Element[],Absent> {
             shared actual Integer size {
                 value outerSize = outer.size;
@@ -967,7 +967,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 return iterator;
             }
         }
-        return sequences;
+        return chunks;
     }
     
     "Produces a stream with a given [[initial element|head]], 
