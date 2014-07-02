@@ -69,6 +69,8 @@ public abstract class CeylonAntTask extends Task {
     private String verbose;
     private List<Define> defines = new ArrayList<Define>(0);
     private Boolean fork;
+    private boolean stacktraces;
+    
     private CeylonClassLoader loader;
     
     /**
@@ -110,6 +112,15 @@ public abstract class CeylonAntTask extends Task {
     /** Sets whether the task should be run in a separate VM */
     public void setFork(boolean fork) {
         this.fork = fork;
+    }
+    
+    public boolean getStacktraces() {
+        return stacktraces;
+    }
+
+    /** Sets whether the task should show any stacktraces that are generated during execution */
+    public void setStacktraces(boolean stacktraces) {
+        this.stacktraces = stacktraces;
     }
     
     public boolean getFailOnError() {
@@ -241,6 +252,9 @@ public abstract class CeylonAntTask extends Task {
     protected Commandline buildCommandline() {
         Commandline cmd = new Commandline();
         cmd.setExecutable(findExecutable());
+        if (stacktraces) {
+            appendOption(cmd, "--stacktraces");
+        }
         cmd.createArgument().setValue(toolName);
         completeCommandline(cmd);
         return cmd;
