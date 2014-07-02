@@ -237,11 +237,6 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         writeDescription();
         
-        writeInnerTypes(innerAliases, "section-nested-aliases", "Nested Aliases");
-        writeInnerTypes(innerInterfaces, "section-nested-interfaces", "Nested Interfaces");
-        writeInnerTypes(innerClasses, "section-nested-classes", "Nested Classes");
-        writeInnerTypes(innerExceptions, "section-nested-exceptions", "Nested Exceptions");
-        
         if (hasInitializer()) {
             writeInitializer((Class) klass);
         }
@@ -259,7 +254,13 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeInheritedMembers(methodSpecification, "Inherited Methods", "Methods inherited from: ");
             close("div");
         }
-        
+
+        // Nested types at the end
+        writeInnerTypes(innerAliases, "section-nested-aliases", "Nested Aliases");
+        writeInnerTypes(innerInterfaces, "section-nested-interfaces", "Nested Interfaces");
+        writeInnerTypes(innerClasses, "section-nested-classes", "Nested Classes");
+        writeInnerTypes(innerExceptions, "section-nested-exceptions", "Nested Exceptions");
+
         close("div");
         
         writeFooter();
