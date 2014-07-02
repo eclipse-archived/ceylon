@@ -44,7 +44,6 @@ import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.ServiceToolLoader;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolFactory;
@@ -226,12 +225,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
         // try that first
         if (version == null && !ModuleUtil.isDefaultModule(name)) {
-            ModuleVersionDetails compiledVersion = findCompiledVersion(repoMgr, name, version, type, binaryMajor, binaryMinor);
-            if (compiledVersion != null && compiledVersion.getVersion() != null) {
-                if (forceCompilation || checkCompilation) {
-                    versions = Collections.singleton(compiledVersion);
-                } else {
-                    return compiledVersion.getVersion();
+            versions = findCompiledVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
+            if (versions != null && versions.size() == 1) {
+                ModuleVersionDetails compiledVersion = versions.iterator().next();
+                if (compiledVersion != null && compiledVersion.getVersion() != null) {
+                    if (forceCompilation || checkCompilation) {
+                        versions = Collections.singleton(compiledVersion);
+                    } else {
+                        return compiledVersion.getVersion();
+                    }
                 }
             }
         }
@@ -239,11 +241,26 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // if we did not find any version in the output repo, see if we have a single one in the source repo, that's
         // a lot cheaper than looking the version up
         ModuleVersionDetails srcVersion = null;
-        if (allowCompilation) {
+        if (allowCompilation || (versions != null && versions.size() > 1)) {
             srcVersion = getVersionFromSource(name);
-            if (srcVersion != null && versions == null && version == null) {
-                // we found some source, let's compile it and not even look up anything else
-                versions = Collections.emptyList();
+            if (srcVersion != null && version == null) {
+                if (versions == null) {
+                    // we found some source and no local compiled versions exist,
+                    // let's compile it and not even look up anything else
+                    versions = Collections.emptyList();
+                } else {
+                    // we found some source and several local compiled versions exist,
+                    // let's if one of them matches and use that one
+                    for (ModuleVersionDetails mvd : versions) {
+                        if (mvd.getVersion().equals(srcVersion.getVersion())) {
+                            if (forceCompilation || checkCompilation) {
+                                versions = Collections.singleton(mvd);
+                            } else {
+                                return mvd.getVersion();
+                            }
+                        }
+                    }
+                }
             }
         }
         
@@ -290,9 +307,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                         if (!runCompiler(repoMgr, name, type)) {
                             throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }
-                        // All okay it seems, let's use this version
-                        versions = Arrays.asList(srcVersion);
                     }
+                    // All okay it seems, let's use this version
+                    versions = Arrays.asList(srcVersion);
                 }
             }
         }
@@ -330,7 +347,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
     }
     
-    private ModuleVersionDetails findCompiledVersion(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
+    private Collection<ModuleVersionDetails> findCompiledVersions(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
         File outDir = DefaultToolOptions.getCompilerOutDir();
         if(outDir != null){
             Repository outDirRepository = null;
@@ -358,8 +375,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 ModuleVersionResult result = new ModuleVersionResult(query.getName());
                 outDirRepository.completeVersions(query, result);
                 NavigableMap<String, ModuleVersionDetails> outRepoVersions = result.getVersions();
-                if(outRepoVersions.size() == 1){
-                    return outRepoVersions.get(outRepoVersions.firstKey());
+                if (!outRepoVersions.isEmpty()) {
+                    return outRepoVersions.values();
                 }
             }
         }
@@ -444,7 +461,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
             for (File srcDir : srcDirs) {
                 try{
-                    ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
+                    ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, applyCwd(srcDir));
                     String version = mdr.getModuleVersion();
                     // PS In case the module descriptor was found but could not be parsed
                     // we'll create an invalid details object
