@@ -41,5 +41,6 @@ shared void test() {
     testLate();
     testReifiedRuntime();
     testStackTrace();
+    testOptimisations();
     results();
 }
