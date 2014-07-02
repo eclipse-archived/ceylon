@@ -3,8 +3,9 @@ this.argv = getEmpty();
 this.namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     // parse command line arguments
-    if (process.argv.length > 1) {
-        var args = process.argv.slice(1);
+    if (process.argv.length > 2) {
+        // Ignore the first two arguments (see https://github.com/ceylon/ceylon.language/issues/503)
+        var args = process.argv.slice(2);
         for (var i=0; i<args.length; ++i) {
             var arg = args[i];
             if (arg.charAt(0) == '-') {
