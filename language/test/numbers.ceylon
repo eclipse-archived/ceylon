@@ -381,7 +381,7 @@ shared void numbers() {
         check(box($1010101010101010101010101010101010101010101010101010101010101010).rightArithmeticShift(1) 
                 == $1101010101010101010101010101010101010101010101010101010101010101, 
                 "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101 boxed");
-        check(-1.rightLogicalShift(1) == runtime.maxIntegerValue, "-1.rightLogicalShift(1) == MAXINT");
+        check((-1).rightLogicalShift(1) == runtime.maxIntegerValue, "-1.rightLogicalShift(1) == MAXINT");
         check(box(-1).rightLogicalShift(1) == runtime.maxIntegerValue, "-1.rightLogicalShift(1) == MAXINT");
     } else if (runtime.integerSize == 53) {
         check(#ff.not == -256, "~xff == -256");
@@ -398,7 +398,7 @@ shared void numbers() {
         check(box($10101010101010101010101010101010101010101010101010101).rightArithmeticShift(1) 
                 == $00101010101010101010101010101010,
                 "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010 boxed");
-        check(-1.rightLogicalShift(1) == 2147483647, "-1.rightLogicalShift(1) == MAXBININT");
+        check((-1).rightLogicalShift(1) == 2147483647, "-1.rightLogicalShift(1) == MAXBININT");
         check(box(-1).rightLogicalShift(1) == 2147483647, "-1.rightLogicalShift(1) == MAXBININT");
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number tests for this platform");
@@ -406,7 +406,7 @@ shared void numbers() {
     check(1.leftLogicalShift(2) == $100, "1<<2 == b100");
     check(box(1).leftLogicalShift(2) == $100, "1<<2 == b100 boxed");
 
-    check(-1.rightArithmeticShift(1) == -1, "-1.rightArithmeticShift(1) == -1");
+    check((-1).rightArithmeticShift(1) == -1, "-1.rightArithmeticShift(1) == -1");
     check(box(-1).rightArithmeticShift(1) == -1, "-1.rightArithmeticShift(1) == -1");
 
     check($1100.rightLogicalShift(2) == $11, "b1100>>2 == b11");
