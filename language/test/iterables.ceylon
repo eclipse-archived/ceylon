@@ -326,6 +326,18 @@ shared void testIterables() {
     check(!corresponding((1..5).withTrailing(1),
         (1..5).withTrailing(0), 
         (Integer x, Integer y)=>x==y),"corresponding");
+    
+    check(foldPairs(1, flatten(sum<Integer>), 1..3, 3..1)==13, "foldPairs");
+    check((findPair((Integer f, Integer s) => f==s, 1..3, 3..1) else -1) == [2,2], "findPair");
+    check(mapPairs((Integer f, Integer s) => f+s, 1..3, 3..1).sequence()==[4,4,4], "mapPairs");
+    check(anyPair((Integer f, Integer s) => f==s, 1..3, 3..1), "anyPair");
+    check(!anyPair((Integer f, Integer s) => f==s, 1..2, 3..4), "not anyPair");
+    check(!everyPair((Integer f, Integer s) => f==s, 1..3, 3..1), "not everyPair");
+    check(everyPair((Integer f, Integer s) => f==s, 1..3, 1..3), "everyPair");
+    check(zipPairs(1..3, 3..1).sequence()==[[1,3],[2,2],[3,1]], "zipPairs");
+    check(unzipPairs(zipPairs(1..3, 3..1)).spread(Iterable<Integer>.sequence)().sequence()==[[1,2,3],[3,2,1]], "unzipPairs");
+    check(zipEntries(1..3, 3..1).sequence()==[1->3,2->2,3->1], "zipEntries");
+    check(unzipEntries(zipEntries(1..3, 3..1)).spread(Iterable<Integer>.sequence)().sequence()==[[1,2,3],[3,2,1]], "unzipEntries");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"
