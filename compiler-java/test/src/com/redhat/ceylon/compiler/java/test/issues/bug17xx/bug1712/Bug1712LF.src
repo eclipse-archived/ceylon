@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1712;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug1712LF_ {
+    
+    private bug1712LF_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug1712LF() {
+        final .ceylon.file.Path fileDir = .ceylon.file.parsePath_.parsePath("");
+        if (fileDir instanceof .ceylon.file.Directory) {
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Directory fileDir"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1712.bug1712LF_.bug1712LF();
+    }
+}
