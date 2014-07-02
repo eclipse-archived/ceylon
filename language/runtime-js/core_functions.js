@@ -300,6 +300,13 @@ function throwexc(e,loc,file) {
 function nn$(e) {
   return e!==null&&e!==undefined;
 }
+//for optimized ranges
+//"exit optimized range loop"
+function eorl$(comp) {
+  if (comp===getEqual())return function(a,b){return a.compare(b)===getEqual();}
+  return function(a,b){return a.compare(b)!==comp;}
+}
+
 ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
 ex$.ne$=ne$;
@@ -307,3 +314,4 @@ ex$.is$=is$;
 ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
 ex$.nn$=nn$;
+ex$.eorl$=eorl$;
