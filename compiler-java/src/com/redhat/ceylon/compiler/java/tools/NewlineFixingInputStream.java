@@ -34,10 +34,9 @@ public class NewlineFixingInputStream extends
                 line++;
                 charPositionInLine=0;
             } else if (data[p]=='\r') {
-                line++;
-                charPositionInLine=0;
-                if (p+1 < n && data[p+1]=='\n') {
-                    p++;
+                if (p+1 == n || data[p+1]!='\n') {
+                    line++;
+                    charPositionInLine=0;
                 }
             }
             p++;
