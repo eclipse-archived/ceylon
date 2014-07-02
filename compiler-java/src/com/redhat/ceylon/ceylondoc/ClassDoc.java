@@ -331,43 +331,39 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='class-description'");
         
         writeTagged(klass);
-        writeTypeHierarchyTabs();
-        writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
-        writeEnclosingType();
-        writeAnnotationConstructors();
-    
-        around("div class='doc'", getDoc(klass, linkRenderer()));
-        writeBy(klass);
-        writeSee(klass);
+        writeTabs();
         
         close("div"); // class-description
     }
 
-    private void writeTypeHierarchyTabs() throws IOException {
+    private void writeTabs() throws IOException {
         boolean hasTypeHierarchy = klass instanceof Class;
         boolean hasSupertypeHierarchy = klass instanceof Class || !isEmpty(klass.getSatisfiedTypeDeclarations());
         boolean hasSubtypeHierarchy = !isEmpty(tool.getSubclasses(klass)) || !isEmpty(tool.getSatisfyingClassesOrInterfaces(klass));
 
-        if (!hasTypeHierarchy && !hasSupertypeHierarchy && !hasSubtypeHierarchy) {
-            return;
-        }
-        
-        boolean isTypeHierarchyActive = hasTypeHierarchy;
-        boolean isSupertypeHierarchyActive = hasSupertypeHierarchy && !hasTypeHierarchy;
-        boolean isSubtypeHierarchyActive = hasSubtypeHierarchy && !hasSupertypeHierarchy && !hasTypeHierarchy;
-
-        open("div class='type-hierarchy section'");
+        open("div class='type-tabs section'");
         open("div class='tabbable'");
 
         open("ul class='nav nav-tabs'");
+        writeTabNav("tabDocumentation", "Documentation", "icon-documentation", true, true, false);
         writeTabNav("tabTypeHierarchy", "Type Hierarchy", "icon-type-hierarchy", false, hasTypeHierarchy, false);
         writeTabNav("tabSupertypeHierarchy", "Supertype Hierarchy", "icon-supertype-hierarchy", false, hasSupertypeHierarchy, false);
         writeTabNav("tabSubtypeHierarchy", "Subtype Hierarchy", "icon-subtype-hierarchy", false, hasSubtypeHierarchy, Util.isEnumerated(klass));
         close("ul"); // nav-tabs
 
         open("div class='tab-content'");
-        
-        open("div class='tab-pane "+ (isTypeHierarchyActive ? "active" : "") +"' id='tabTypeHierarchy'");
+
+        open("div class='tab-pane active' id='tabDocumentation'");
+        writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
+        writeEnclosingType();
+        writeAnnotationConstructors();
+
+        around("div class='doc'", getDoc(klass, linkRenderer()));
+        writeBy(klass);
+        writeSee(klass);
+        close("div");
+
+        open("div class='tab-pane' id='tabTypeHierarchy'");
         if( hasTypeHierarchy ) {
             writeTypeHierarchy();
         } else {
@@ -375,7 +371,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         close("div");
         
-        open("div class='tab-pane "+ (isSupertypeHierarchyActive ? "active" : "") +"' id='tabSupertypeHierarchy'");
+        open("div class='tab-pane' id='tabSupertypeHierarchy'");
         if( hasSupertypeHierarchy ) {
             writeSuperTypeHierarchy(Collections.singletonList(klass), 0);
         } else {
@@ -383,7 +379,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         close("div");
 
-        open("div class='tab-pane "+ (isSubtypeHierarchyActive ? "active" : "") +"' id='tabSubtypeHierarchy'");
+        open("div class='tab-pane' id='tabSubtypeHierarchy'");
         if( hasSubtypeHierarchy ) {
             writeSubtypesHierarchy(Collections.singletonList(klass), 0);
         } else {

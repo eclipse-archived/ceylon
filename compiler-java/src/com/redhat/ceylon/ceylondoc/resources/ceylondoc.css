@@ -279,35 +279,35 @@ div .type-alias-specifier {
 	padding-left: 30px;
 }
 
-.type-hierarchy {
+.type-tabs {
     margin-bottom: 10px;
 }
 
-.type-hierarchy .nav-tabs {
+.type-tabs .nav-tabs {
     margin-bottom: 4px;    
 }
 
-.type-hierarchy [class^='icon-'] {
+.type-tabs [class^='icon-'] {
     vertical-align: text-bottom;
 } 
 
-.type-hierarchy li>a {
+.type-tabs li>a {
     color: #555;
     font-size: 13px;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-.type-hierarchy .nav-tabs>.active>a {
+.type-tabs .nav-tabs>.active>a {
     font-weight: bold;
 }
 
-.type-hierarchy .nav-tabs a>.disabled,
-.type-hierarchy .nav-tabs>.active>a>.disabled {
+.type-tabs .nav-tabs a>.disabled,
+.type-tabs .nav-tabs>.active>a>.disabled {
     color: rgb(180,180,180);
 }
 
-.type-hierarchy li>a.hint {
+.type-tabs li>a.hint {
     color: rgb(180,180,180);
     cursor: pointer;
     font-style: italic;
@@ -711,6 +711,10 @@ td [class^='icon-'] {
     position: relative;
     top: -3px;
     left: -7px;
+}
+
+.icon-documentation {
+    background-position: -769px 0px;
 }
 
 a:HOVER .icon-expand-all,
