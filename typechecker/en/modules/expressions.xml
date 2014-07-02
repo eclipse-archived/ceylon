@@ -3007,8 +3007,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <emphasis>alias reference expression</emphasis>, or
             <emphasis>type parameter reference expression</emphasis> is an
             optional member declaration qualifier, followed by the name of
-            a class, interface, alias, or anonymous class, with the keyword 
-            <literal>class</literal>, <literal>interface</literal>, 
+            a class or anonymous class, interface, alias, or type parameter,
+            with the keyword <literal>class</literal>, <literal>interface</literal>, 
             <literal>alias</literal>, or <literal>given</literal>, respectively, 
             surrounded by backticks.</para>
             
