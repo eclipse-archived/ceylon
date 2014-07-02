@@ -366,6 +366,9 @@ public abstract class CeylonDoc extends Markup {
             if( decl instanceof ClassOrInterface ) {
                 if (decl instanceof Interface) {
                     icons.add("icon-interface");
+                    if (Util.isEnumerated((ClassOrInterface) decl)) {
+                        icons.add("icon-decoration-enumerated");
+                    }
                 }
                 if (decl instanceof Class) {
                     Class klass = (Class) decl;
@@ -379,6 +382,9 @@ public abstract class CeylonDoc extends Markup {
                     }
                     if (klass.isFinal() && !klass.isAnonymous() && !klass.isAnnotation()) {
                         icons.add("icon-decoration-final");
+                    }
+                    if (Util.isEnumerated(klass)) {
+                        icons.add("icon-decoration-enumerated");
                     }
                 }
                 if (!decl.isShared() ) {

@@ -360,9 +360,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='tabbable'");
 
         open("ul class='nav nav-tabs'");
-        writeTabNav("tabTypeHierarchy", "Type Hierarchy", "icon-type-hierarchy", isTypeHierarchyActive, hasTypeHierarchy);
-        writeTabNav("tabSupertypeHierarchy", "Supertype Hierarchy", "icon-supertype-hierarchy", isSupertypeHierarchyActive, hasSupertypeHierarchy);
-        writeTabNav("tabSubtypeHierarchy", "Subtype Hierarchy", "icon-subtype-hierarchy", isSubtypeHierarchyActive, hasSubtypeHierarchy);
+        writeTabNav("tabTypeHierarchy", "Type Hierarchy", "icon-type-hierarchy", false, hasTypeHierarchy, false);
+        writeTabNav("tabSupertypeHierarchy", "Supertype Hierarchy", "icon-supertype-hierarchy", false, hasSupertypeHierarchy, false);
+        writeTabNav("tabSubtypeHierarchy", "Subtype Hierarchy", "icon-subtype-hierarchy", false, hasSubtypeHierarchy, Util.isEnumerated(klass));
         close("ul"); // nav-tabs
 
         open("div class='tab-content'");
@@ -396,10 +396,14 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div"); // typeHierarchy
     }
     
-    private void writeTabNav(String id, String name, String icon, boolean isActive, boolean isEnabled) throws IOException {
+    private void writeTabNav(String id, String name, String icon, boolean isActive, boolean isEnabled, boolean isEnumerated) throws IOException {
         write("<li" + (isActive ? " class='active'" : "") + ">");
         write("<a id='" + id + "Nav' href='#" + id + "' data-toggle='tab'>");
         write("<i class='" + icon + (isEnabled ? "" : "-disabled") + "'></i>");
+        if(isEnumerated){
+            around("span class='label label-info' title='Enumerated type with an &quot;of&quot; clause'", "Enumerated");
+            write(" ");
+        }
         write("<span" + (isEnabled ? "" : " class='disabled'") + ">" + name + "</span>");
         write("</a>");
         write("</li>");
@@ -443,6 +447,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         for (TypeDeclaration type : types) {
             writeTypeHierarchyLevel(type, level, true);
+            if(level == 0 && Util.isEnumerated(type)){
+                around("span class='keyword'", " of");
+            }
             writeSubtypesHierarchy(collectSubtypes(type), level + 1);
             close("li", "ul");
         }

@@ -706,6 +706,13 @@ td [class^='icon-'] {
     background-position: -736px 0px;
 }
 
+.icon-decoration-enumerated {
+    background-position: -752px 0px;
+    position: relative;
+    top: -3px;
+    left: -7px;
+}
+
 a:HOVER .icon-expand-all,
 a:FOCUS .icon-expand-all {
 	background-position: -464px 0px;

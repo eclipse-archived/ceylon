@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -482,6 +483,10 @@ public class Util {
         public int compare(ModuleImport a, ModuleImport b) {
             return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
         }
-    };
+    }
+
+    public static boolean isEnumerated(TypeDeclaration klass) {
+        return klass.getCaseTypes() != null && !klass.getCaseTypes().isEmpty();
+    }
    
 }
