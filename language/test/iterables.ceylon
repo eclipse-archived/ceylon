@@ -300,7 +300,9 @@ shared void testIterables() {
     //check({for (i in 1..4) i*i}.reversed==[16,9,4,1], "iterable reverse");
     
     value itfun = loop(1, (Integer i) => i<10, (Integer i) => i*2);
-    check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
+    check([*itfun]==[1,2,4,8], "loop function 1``itfun``");
+    check(loop(0, 10.largerThan, 3.plus).sequence()==[0,3,6,9], "loop function 2");
+    
     check(interleave(1..5,"-+".cycled).sequence()==[1,'-',2,'+',3,'-',4,'+',5, '-'], "interleave 1");
     check(interleave(1..5,"-+").sequence()==[1,'-',2,'+',3], "interleave 2");
 
@@ -308,10 +310,22 @@ shared void testIterables() {
     check({for (i in 1..6) i*2}.partition(3).sequence()==[[2,4,6],[8,10,12]], "Iterable.sequences 1");
     check((1..10).partition(4).sequence()==[[1,2,3,4],[5,6,7,8],[9,10]], "Iterable.sequences 2");
     check(String(expand("hello".partition(3))) == "hello", "Iterable.sequences 3");
-
+    check({}.partition(1).empty, "empty partition");
+    
     check({1,2,3}.paired.sequence()==[[1,2],[2,3]], "Iterable.paired");
     check([*(0:5).paired]==[[0,1],[1,2],[2,3],[3,4]], "0:5 paired");
     check([*(0..5).paired]==[[0,1],[1,2],[2,3],[3,4],[4,5]], "0..5 paired");
+    check([1].paired.empty, "singleton paired");
+    
+    check((1..5).exceptLast.sequence()==[1,2,3,4], "range exceptLast");
+    check({}.exceptLast.empty, "empty exceptLast");
+    
+    check(corresponding(1..5,
+        loop(0, 5.largerThan, Integer.successor), 
+        (Integer x, Integer y)=>x==y+1),"corresponding");
+    check(!corresponding((1..5).withTrailing(1),
+        (1..5).withTrailing(0), 
+        (Integer x, Integer y)=>x==y),"corresponding");
 
     // tests for the laziness-protecting string implementation
     //"simple, laziness-breaking implementation of [[Iterable.string]]"

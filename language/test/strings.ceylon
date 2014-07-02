@@ -499,4 +499,10 @@ shared void strings() {
     check("hello world".paired.map(([Character, Character] element) => String { element[0], element[1] }).sequence()==
     ["he", "el", "ll", "lo", "o ", " w", "wo", "or", "rl", "ld"], "string paired");
     
+    check(String(interleave("hello", "-".cycled))=="h-e-l-l-o-", "interleave string");
+    
+    check("abcd".partition(2).sequence()==["ab".sequence(), "cd".sequence()], "string partition");
+    check("".partition(1).empty, "empty string partition");
+    check(String("hello".exceptLast)=="hell", "string exceptLast");
+    
 }
