@@ -299,7 +299,7 @@ shared void testIterables() {
     
     //check({for (i in 1..4) i*i}.reversed==[16,9,4,1], "iterable reverse");
     
-    value itfun = iterable(1, (Integer i) => i<5 then i*2 else finished);
+    value itfun = loop(1, (Integer i) => i<10, (Integer i) => i*2);
     check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
     check(interleave(1..5,"-+".cycled).sequence()==[1,'-',2,'+',3,'-',4,'+',5, '-'], "interleave 1");
     check(interleave(1..5,"-+").sequence()==[1,'-',2,'+',3], "interleave 2");
