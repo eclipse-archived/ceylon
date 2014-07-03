@@ -26,6 +26,13 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
         x.prop1 = x;
         x.prop1 = null;
         
+        // should not have a null check
+        x.prop1 = x.prop1;
+        x.method(x.prop1);
+
+        // should have a null check
+        method(x.prop1);
+        
         return x.prop1.prop1;
     }
     shared actual JavaOptionalInterface? method2(JavaOptionalInterface? x){
