@@ -324,6 +324,10 @@ shared void testIterables() {
     
     check((1..3).scan(0, (Integer p, Integer e) => p+e).sequence()==[0,1,3,6], "range scan");
     
+    //TODO: reenable once js backend bug is fixed
+    //check((1..3).spread((Integer i)(Float f) => i*f)(1.0).sequence()==[1.0,2.0,3.0], "range spread");
+    check((1..3).spread(Integer.times)(2).sequence()==[2,4,6], "range spread");
+    
     check(corresponding(1..5,
         loop(0, Integer.successor).takeWhile(5.largerThan), 
         (Integer x, Integer y)=>x==y+1),"corresponding");
