@@ -36,6 +36,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
 });
 ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptypes) {
   if (!extendsType($$$mptypes.Container$getMethod,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+  if (types===undefined)types=getEmpty();
   var fun = this.tipo[name];
   if (!fun) fun = this.tipo.$$.prototype[name];
   if (!fun) return null;
@@ -316,6 +317,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'caseValues',function(){
 //This is the new shit May 2014
 ClassOrInterface$meta$model.$$.prototype.getClasses=function getClasses(anntypes,$$$mptypes,noInherit){
   var mems=[];
+  if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
   for (m in this.tipo.$$.prototype) {
     var mem=this.tipo.$$.prototype[m];
@@ -351,6 +353,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredClasses=function getDeclared
 ClassOrInterface$meta$model.$$.prototype.getDeclaredClasses.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$getDeclaredClasses',Container$MemberClass:'Container$getDeclaredClasses',Type$MemberClass:'Type$getDeclaredClasses'}}}},ps:[{nm:'annotationTypes',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container$getDeclaredClasses:{'def':{t:Nothing}},Type$getDeclaredClasses:{'def':{t:Anything}},Arguments$getDeclaredClasses:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredClasses']};};
 ClassOrInterface$meta$model.$$.prototype.getInterfaces=function getInterfaces(anntypes,$$$mptypes,noInherit){
   var mems=[];
+  if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
   for (m in this.tipo.$$.prototype) {
     var mem=this.tipo.$$.prototype[m];
@@ -386,6 +389,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces=function getDecla
 ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberInterface$meta$model,a:{Container$MemberInterface:'Container$getDeclaredInterfaces',Type$MemberInterface:'Type$getDeclaredInterfaces'}}}},ps:[{nm:'annotationTypes',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container$getDeclaredInterfaces:{'def':{t:Nothing}},Type$getDeclaredInterfaces:{'def':{t:Anything}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredInterfaces']};};
 ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(anntypes,$$$mptypes,noInherit){
   var mems=[];
+  if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
   for (m in this.tipo.$$.prototype) {
     if (m.substring(0,6)==='$prop$') {
@@ -424,6 +428,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes=function getDecla
 ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getDeclaredAttributes',Container$Attribute:'Container$getDeclaredAttributes',Get$Attribute:'Get$getDeclaredAttributes'}}}},ps:[{nm:'annotationTypes',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container$getDeclaredAttributes:{'def':{t:Nothing}},Get$getDeclaredAttributes:{'def':{t:Anything}},Set$getDeclaredAttributes:{'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttributes']};};
 ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes,$$$mptypes,noInherit) {
   var mems=[];
+  if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
   for (m in this.tipo.$$.prototype) {
     var mem=this.tipo.$$.prototype[m];
@@ -463,6 +468,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods.$crtmm$=function(){r
 
 function coi$get$anns(anntypes) {
   var ats=[];
+  if (!anntypes)return ats;
   var iter=anntypes.iterator();
   var a;while((a=iter.next())!==getFinished()){
     ats.push({t:a.tipo});
