@@ -500,7 +500,6 @@ class AnnotationInvocationVisitor extends Visitor {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
         } else if (Decl.isAnonCaseOfEnumeratedType(term)
                 && !exprGen.isJavaEnumType(term.getTypeModel())) {
-            exprGen.isJavaEnumType(term.getTypeModel());
             append(exprGen.makeClassLiteral(term.getTypeModel()));
         } else if (anno.isInterop()) {
             if (exprGen.isJavaEnumType(term.getTypeModel())) {
