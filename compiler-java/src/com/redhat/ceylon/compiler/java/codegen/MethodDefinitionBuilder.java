@@ -448,11 +448,9 @@ public class MethodDefinitionBuilder
                 return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));
             } else {
                 Parameter parameter = method.getInitializerParameter();
-                ProducedType resultType;
-                if (Decl.isMpl(method)) {
-                    resultType = parameter.getType().getFullType();
-                } else {
-                    resultType = parameter.getType();
+                ProducedType resultType = parameter.getType();
+                for (int ii = 1; ii < method.getParameterLists().size(); ii++) {
+                    resultType = gen.typeFact().getCallableType(resultType);
                 }
                 return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), method);
             }
