@@ -1275,15 +1275,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression makeTypeLiteralCall(Tree.MetaLiteral expr, ProducedType type, boolean addCast) {
         // construct a call to typeLiteral<T>() and cast if required
         JCExpression call = makeTypeLiteralCall(type);
-        // if we have a type that is not nothingType and not Type, we need to cast
-        ProducedType exprType = expr.getTypeModel().resolveAliases();
-        TypeDeclaration typeDeclaration = exprType.getDeclaration();
-        if(addCast
-                && typeDeclaration instanceof UnionType == false
-                && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
-                && !exprType.isExactly(typeFact().getMetamodelTypeDeclaration().getType())){
-            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
-            return make().TypeCast(typeClass, call);
+        if(addCast){
+            // if we have a type that is not nothingType and not Type, we need to cast
+            ProducedType exprType = expr.getTypeModel().resolveAliases();
+            TypeDeclaration typeDeclaration = exprType.getDeclaration();
+            if(typeDeclaration instanceof UnionType == false
+                    && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
+                    && !exprType.isExactly(typeFact().getMetamodelTypeDeclaration().getType())){
+                JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
+                return make().TypeCast(typeClass, call);
+            }
         }
         return call;
     }
