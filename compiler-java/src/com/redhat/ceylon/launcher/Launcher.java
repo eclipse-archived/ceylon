@@ -114,8 +114,9 @@ public class Launcher {
             CeylonClassLoader ceylonClassLoader = CeylonClassLoader.newInstance();
 
             // Set some important system properties
-            System.setProperty(Constants.PROP_CEYLON_HOME_DIR, LauncherUtil.determineHome().getAbsolutePath());
-            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo().getAbsolutePath());
+            File ceylonHome = LauncherUtil.determineHome();
+            System.setProperty(Constants.PROP_CEYLON_HOME_DIR, ceylonHome.getAbsolutePath());
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo(ceylonHome).getAbsolutePath());
             System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
 
             return ceylonClassLoader;

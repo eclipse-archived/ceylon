@@ -53,26 +53,26 @@ public class LauncherUtil {
         return ceylonHome;
     }
 
-    public static File determineRepo() throws URISyntaxException {
+    public static File determineRepo(File ceylonHome) throws URISyntaxException {
         // Determine the Ceylon system repository folder
         File ceylonRepo;
         String ceylonSystemRepo = System.getProperty(Constants.PROP_CEYLON_SYSTEM_REPO);
         if (ceylonSystemRepo != null) {
             ceylonRepo = new File(ceylonSystemRepo);
         } else {
-            ceylonRepo = new File(determineHome(), CEYLON_REPO);
+            ceylonRepo = new File(ceylonHome, CEYLON_REPO);
         }
         return ceylonRepo;
     }
     
-    public static File determineLibs() throws URISyntaxException {
+    public static File determineLibs(File ceylonHome) throws URISyntaxException {
         // Determine the Ceylon system library folder
         File ceylonLib;
         String ceylonSystemRepo = System.getProperty(Constants.PROP_CEYLON_SYSLIBS_DIR);
         if (ceylonSystemRepo != null) {
             ceylonLib = new File(ceylonSystemRepo);
         } else {
-            ceylonLib = new File(determineHome(), CEYLON_LIBS);
+            ceylonLib = new File(ceylonHome, CEYLON_LIBS);
         }
         return ceylonLib;
     }

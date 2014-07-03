@@ -89,8 +89,8 @@ public class CeylonClassLoader extends URLClassLoader {
     public static List<File> getClassPath() throws URISyntaxException, FileNotFoundException {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();
-        File ceylonRepo = LauncherUtil.determineRepo();
-        File ceylonLib = LauncherUtil.determineLibs();
+        File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
+        File ceylonLib = LauncherUtil.determineLibs(ceylonHome);
 
         // Perform some sanity checks
         if (!ceylonHome.isDirectory()) {
