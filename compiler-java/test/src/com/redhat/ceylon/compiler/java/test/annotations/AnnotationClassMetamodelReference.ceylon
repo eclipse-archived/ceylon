@@ -24,15 +24,22 @@ annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelRef
 shared abstract class ClassAlias() => Object();
 shared interface InterfaceAlias => Declaration;
 shared alias TypeAlias => Declaration;
+shared object obj {
+    shared Integer attribute = 2;
+    shared Integer method() => 2;
+}
 
 @nomodel
 annotationClassMetamodelReference(`class Anything`)
 annotationClassMetamodelReference(`value process`)
+annotationClassMetamodelReference(`class process`)
 //illegal annotationClassMetamodelReference(`List<String>`)
 annotationClassMetamodelReference(`interface Declaration`)
 annotationClassMetamodelReference(`interface List`)
 annotationClassMetamodelReference(`value List.size`)
+annotationClassMetamodelReference(`value obj.attribute`)
 annotationClassMetamodelReference(`function List.get`)
+annotationClassMetamodelReference(`function obj.method`)
 annotationClassMetamodelReference(`function sort`)
 annotationClassMetamodelReference(`value true`)
 annotationClassMetamodelReference(`class ClassAlias`)

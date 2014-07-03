@@ -310,13 +310,72 @@ public final class TypeAlias {
     private TypeAlias() {
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Name("obj")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private obj_() {
+        this.attribute = 2L;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long attribute;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getAttribute() {
+        return attribute;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long method() {
+        return 2L;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.obj_[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.annotations.obj_[]{new .com.redhat.ceylon.compiler.java.test.annotations.obj_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::obj")
+    public static .com.redhat.ceylon.compiler.java.test.annotations.obj_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.obj_.class);
+    }
+}
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations$({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::Vprocess"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::Cprocess"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language:meta.declaration:IDeclaration"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::IList"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::IList.Vsize"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::Cobj.Vattribute"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::IList.Fget"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::Cobj.Fmethod"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::Fsort"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.1.0:ceylon.language::Vtrue"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CClassAlias"),
