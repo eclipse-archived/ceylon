@@ -858,6 +858,18 @@ shared void checkMetamodelRefs() {
     assert(exists d31 = decls[31],
         d31.decl is AliasDeclaration,
         `alias AAbstractClass.Alias` == d31.decl);
+
+    assert(exists d32 = decls[32],
+        d32.decl is ClassDeclaration,
+        `class aToplevelObject` == d32.decl);
+
+    assert(exists d33 = decls[33],
+        d33.decl is ValueDeclaration,
+        `value aToplevelObject.attribute` == d33.decl);
+
+    assert(exists d34 = decls[34],
+        d34.decl is FunctionDeclaration,
+        `function aToplevelObject.method` == d34.decl);
 }
 
 @test

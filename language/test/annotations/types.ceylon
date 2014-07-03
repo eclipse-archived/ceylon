@@ -46,6 +46,8 @@ shared void aToplevelFunction(
 "aToplevelObject"
 seq("aToplevelObject 1")
 shared object aToplevelObject {
+    shared Integer attribute = 2;
+    shared Integer method() => 2;
 }
 
 "AInterface"
@@ -254,6 +256,9 @@ decl(`value MetamodelRefs.parameter`)
 decl(`class AClassAlias`)
 decl(`alias Alias`)
 decl(`alias AAbstractClass.Alias`)
+decl(`class aToplevelObject`)
+decl(`value aToplevelObject.attribute`)
+decl(`function aToplevelObject.method`)
 class MetamodelRefs(
     shared String parameter) {
 }

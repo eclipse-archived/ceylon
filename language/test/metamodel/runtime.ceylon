@@ -1631,6 +1631,28 @@ shared void checkTypeArgumentChecks(){
     }
 }
 
+@test
+shared void checkObjectMemberReferences(){
+    assert(`value obj.attribute`.name == "attribute");
+    assert(`value obj.attribute`.container == `class obj`);
+    
+    assert(`obj.attribute`.declaration == `value obj.attribute`);
+    assert(`obj.attribute`.get() == 2);
+    assert(is Class<Basic,Nothing> objectClass = `obj`.type);
+    assert(is Class<Basic,Nothing> objectContainer = `obj.attribute`.container);
+    assert(objectClass == objectContainer);
+    
+    assert(`function obj.method`.name == "method");
+    assert(`function obj.method`.container == `class obj`);
+    
+    assert(`obj.method<Integer>`.declaration == `function obj.method`);
+    assert(`obj.method<Integer>`(3) == 3);
+    assert(is Class<Basic,Nothing> objectContainer2 = `obj.method<Integer>`.container);
+    assert(objectClass == objectContainer2);
+
+    MemberObjectContainer<Integer>().test();
+}
+
 shared void run() {
     print("Running Metamodel tests");
     variable value total=0;
@@ -1774,6 +1796,11 @@ shared void run() {
         checkTypeArgumentChecks();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed type arguments"); e.printStackTrace(); }
+    try {
+        total++;
+        checkObjectMemberReferences();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed object member references"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 

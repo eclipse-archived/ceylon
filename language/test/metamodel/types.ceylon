@@ -1,3 +1,5 @@
+import ceylon.language.meta.declaration { ClassDeclaration }
+import ceylon.language.meta.model { Class, MemberClass }
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;
 shared Float toplevelFloat = 1.2;
@@ -370,4 +372,42 @@ shared abstract class BottomClass() extends MiddleClass<Object>() satisfies Midd
     shared class DeclaredClass(){}
     shared interface DeclaredInterface{}
     shared void myOwnBottomMethod(){}
+}
+
+class MemberObjectContainer<T>(){
+    shared object memberObject {
+        shared Integer attribute = 2;
+        shared T method<T>(T t) => t;
+    }
+    shared void test(){
+        assert(`value memberObject.attribute`.name == "attribute");
+        assert(is ClassDeclaration memberObjectDecl = `value memberObject.attribute`.container);
+        assert(memberObjectDecl == `class memberObject`);
+        assert(is ClassDeclaration fooDecl = memberObjectDecl.container);
+        assert(fooDecl == `class MemberObjectContainer`);
+        
+        assert(`memberObject.attribute`.declaration == `value memberObject.attribute`);
+        assert(`memberObject.attribute`.get() == 2);
+        assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass = `memberObject.attribute`.container);
+        assert(is Class<MemberObjectContainer<T>,[]> fooClass = memberObjectClass.container);
+        assert(fooClass == `MemberObjectContainer<T>`);
+        
+        assert(`function memberObject.method`.name == "method");
+        assert(is ClassDeclaration memberObjectDecl2 = `function memberObject.method`.container);
+        assert(memberObjectDecl2 == `class memberObject`);
+        assert(is ClassDeclaration fooDecl2 = memberObjectDecl2.container);
+        assert(fooDecl2 == `class MemberObjectContainer`);
+        
+        assert(`memberObject.method<Integer>`.declaration == `function memberObject.method`);
+        assert(`memberObject.method<Integer>`(3) == 3);
+        assert(is MemberClass<MemberObjectContainer<T>,Basic,Nothing> memberObjectClass2 = `memberObject.method<Integer>`.container);
+        assert(is Class<MemberObjectContainer<T>,[]> fooClass2 = memberObjectClass2.container);
+        assert(fooClass2 == `MemberObjectContainer<T>`);
+        
+    }
+}
+
+shared object obj {
+    shared Integer attribute = 2;
+    shared T method<T>(T t) => t;
 }
