@@ -3982,7 +3982,10 @@ public class ExpressionVisitor extends Visitor {
         boolean packageQualified = p instanceof Tree.Package;
         boolean check = packageQualified ||
                 that.getStaticMethodReference() ||
-                pt!=null && !pt.getType().isUnknown(); //account for dynamic blocks
+                pt!=null &&
+                //account for dynamic blocks
+                (!pt.getType().isUnknown() || 
+                        that.getMemberOperator() instanceof Tree.SpreadOp);
         boolean nameNonempty = that.getIdentifier()!=null && 
                         !that.getIdentifier().getText().equals("");
         if (nameNonempty && check) {
@@ -4299,7 +4302,10 @@ public class ExpressionVisitor extends Visitor {
         boolean packageQualified = p instanceof Tree.Package;
         boolean check = packageQualified || 
                 that.getStaticMethodReference() || 
-                pt!=null && !pt.isUnknown();
+                pt!=null && 
+                //account for dynamic blocks
+                (!pt.isUnknown() || 
+                        that.getMemberOperator() instanceof Tree.SpreadOp);
         if (check) {
             TypeDeclaration type;
             String name = name(that.getIdentifier());

@@ -1,3 +1,12 @@
+void members() {
+    dynamic {
+        dynamic it = blahblah;
+        dynamic member = it.foos;
+        dynamic safe = it?.foos;
+        @error dynamic spread = it*.foos;
+    }
+}
+
 void test() {
     class Foo() {
         dynamic bar() { 
