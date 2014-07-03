@@ -322,6 +322,8 @@ shared void testIterables() {
     
     check((0..1).product(1..2).sequence()==[[0,1],[0,2],[1,1],[1,2]], "range product");
     
+    check((1..3).scan(0, (Integer p, Integer e) => p+e).sequence()==[0,1,3,6], "range scan");
+    
     check(corresponding(1..5,
         loop(0, Integer.successor).takeWhile(5.largerThan), 
         (Integer x, Integer y)=>x==y+1),"corresponding");
