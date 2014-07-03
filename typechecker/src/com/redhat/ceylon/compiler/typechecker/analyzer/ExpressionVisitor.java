@@ -3114,54 +3114,39 @@ public class ExpressionVisitor extends Visitor {
     private void visitSpanOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            ProducedType ot = checkOperandTypes(lhst, rhst, 
-                    unit.getEnumerableDeclaration(), that,
-                    "operand expressions must be of compatible ordinal type");
-            if (ot!=null) {
-                that.setTypeModel(unit.getSpanType(ot));
-            }
-        }
-        else {
-            that.addError("type of span could not be inferred");
+        ProducedType ot = checkOperandTypes(lhst, rhst, 
+                unit.getEnumerableDeclaration(), that,
+                "operand expressions must be of compatible enumerable type");
+        if (ot!=null) {
+            that.setTypeModel(unit.getSpanType(ot));
         }
     }
     
     private void visitMeasureOperator(Tree.SegmentOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if (!isTypeUnknown(lhst)) {
-            ProducedType ot = checkSupertype(lhst, unit.getEnumerableDeclaration(), 
-                    that.getLeftTerm(), "left operand must be of ordinal type");
-            if (!isTypeUnknown(rhst)) {
-                checkAssignable(rhst, unit.getType(unit.getIntegerDeclaration()), 
-                        that.getRightTerm(), "right operand must be an integer");
-            }
-            if (ot!=null) {
-                ProducedType ta = ot.getTypeArgumentList().get(0);
-                that.setTypeModel(unit.getMeasureType(ta));
-            }
+        ProducedType ot = checkSupertype(lhst, unit.getEnumerableDeclaration(), 
+                that.getLeftTerm(), "left operand must be of enumerable type");
+        if (!isTypeUnknown(rhst)) {
+            checkAssignable(rhst, unit.getType(unit.getIntegerDeclaration()), 
+                    that.getRightTerm(), "right operand must be an integer");
         }
-        else {
-            that.addError("type of measure could not be inferred");
+        if (ot!=null) {
+            ProducedType ta = ot.getTypeArgumentList().get(0);
+            that.setTypeModel(unit.getMeasureType(ta));
         }
     }
     
     private void visitEntryOperator(Tree.EntryOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            ProducedType ot = unit.getType(unit.getObjectDeclaration());
-            checkAssignable(lhst, ot, that.getLeftTerm(), 
-                    "operand expression must not be an optional type");
-            checkAssignable(rhst, ot, that.getRightTerm(), 
-                    "operand expression must not be an optional type");
-            that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
-            		unit.denotableType(rhst)) );
-        }
-        else {
-            that.addError("type of entry could not be inferred");
-        }
+        ProducedType ot = unit.getType(unit.getObjectDeclaration());
+        checkAssignable(lhst, ot, that.getLeftTerm(), 
+                "operand expression must not be an optional type");
+        checkAssignable(rhst, ot, that.getRightTerm(), 
+                "operand expression must not be an optional type");
+        that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
+                unit.denotableType(rhst)) );
     }
     
     private void visitIdentityOperator(Tree.BinaryOperatorExpression that) {
