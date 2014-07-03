@@ -21,11 +21,11 @@ public class FunctionHelper {
     }
 
     static void multiStmtFunction(final List<Tree.ParameterList> paramLists,
-            final Tree.Block block, final Scope scope, final GenerateJsVisitor gen) {
+            final Tree.Block block, final Scope scope, final boolean initSelf, final GenerateJsVisitor gen) {
         generateParameterLists(block, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                if (paramLists.size() == 1 && scope!=null) { gen.initSelf(block); }
+                if (paramLists.size() == 1 && scope!=null && initSelf) { gen.initSelf(block); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
@@ -33,11 +33,12 @@ public class FunctionHelper {
         }, gen);
     }
     static void singleExprFunction(final List<Tree.ParameterList> paramLists,
-                                    final Tree.Expression expr, final Scope scope, final GenerateJsVisitor gen) {
+                                    final Tree.Expression expr, final Scope scope,
+                                    final boolean initSelf, final GenerateJsVisitor gen) {
         generateParameterLists(expr, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                if (paramLists.size() == 1 && scope != null) { gen.initSelf(expr); }
+                if (paramLists.size() == 1 && scope != null && initSelf) { gen.initSelf(expr); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
                 gen.out("return ");
@@ -180,9 +181,9 @@ public class FunctionHelper {
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), null, gen);
+            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope(), false, gen);
         } else {
-            multiStmtFunction(that.getParameterLists(), that.getBlock(), null, gen);
+            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
         }
         gen.out(")");
     }
@@ -207,7 +208,7 @@ public class FunctionHelper {
             }
             gen.out(gen.getNames().name(m), "=");            
             singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), that.getDeclarationModel(), gen);
+                    that.getSpecifierExpression().getExpression(), that.getDeclarationModel(), true, gen);
             gen.endLine(true);
             if (outer != null) {
                 gen.out(gen.getNames().self(outer), ".");
