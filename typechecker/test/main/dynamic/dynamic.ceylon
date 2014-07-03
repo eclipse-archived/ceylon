@@ -4,6 +4,17 @@ void members() {
         dynamic member = it.foos;
         dynamic safe = it?.foos;
         @error dynamic spread = it*.foos;
+        dynamic element = it[1];
+        dynamic subspan = it[1..2];
+        dynamic sum = it+it;
+        dynamic product = it*2;
+        dynamic eq = it==1;
+        dynamic compare = it>it;
+        @error dynamic measure = it:3;
+        @error dynamic span = it..it;
+        @error dynamic entry = it->it;
+        @error dynamic iter = { it, it };
+        @error dynamic tuple = [it, it];
     }
 }
 

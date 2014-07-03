@@ -3122,20 +3122,28 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(unit.getSpanType(ot));
             }
         }
+        else {
+            that.addError("type of span could not be inferred");
+        }
     }
     
     private void visitMeasureOperator(Tree.SegmentOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
+        if (!isTypeUnknown(lhst)) {
             ProducedType ot = checkSupertype(lhst, unit.getEnumerableDeclaration(), 
                     that.getLeftTerm(), "left operand must be of ordinal type");
-            checkAssignable(rhst, unit.getType(unit.getIntegerDeclaration()), 
-                    that.getRightTerm(), "right operand must be an integer");
+            if (!isTypeUnknown(rhst)) {
+                checkAssignable(rhst, unit.getType(unit.getIntegerDeclaration()), 
+                        that.getRightTerm(), "right operand must be an integer");
+            }
             if (ot!=null) {
                 ProducedType ta = ot.getTypeArgumentList().get(0);
                 that.setTypeModel(unit.getMeasureType(ta));
             }
+        }
+        else {
+            that.addError("type of measure could not be inferred");
         }
     }
     
@@ -3150,6 +3158,9 @@ public class ExpressionVisitor extends Visitor {
                     "operand expression must not be an optional type");
             that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
             		unit.denotableType(rhst)) );
+        }
+        else {
+            that.addError("type of entry could not be inferred");
         }
     }
     
