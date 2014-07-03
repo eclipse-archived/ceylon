@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+class Bug1717<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1717(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> t, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> s, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>>>> x) {
+        this.$reified$T = $reified$T;
+        this.t = t;
+        this.s = s;
+        this.x = x;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> t;
+    
+    public final .ceylon.language.Callable<? extends T> t() {
+        return t.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> s;
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> s() {
+        return s.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>>>> x;
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>>> x() {
+        return x.$call$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1717.class, $reified$T);
+    }
+}
