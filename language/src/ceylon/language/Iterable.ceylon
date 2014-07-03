@@ -752,7 +752,6 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`value cycled`)
     shared default {Element*} repeat(Integer times) {
         object iterable satisfies {Element*} {
-            value orig => outer;
             size => times * outer.size;
             string => "(``outer.string``).repeat(``times``)";
             iterator() => CycledIterator(outer,times);
