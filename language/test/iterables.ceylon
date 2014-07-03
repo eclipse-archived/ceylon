@@ -320,6 +320,8 @@ shared void testIterables() {
     check((1..5).exceptLast.sequence()==[1,2,3,4], "range exceptLast");
     check({}.exceptLast.empty, "empty exceptLast");
     
+    check((0..1).product(1..2).sequence()==[[0,1],[0,2],[1,1],[1,2]], "range product");
+    
     check(corresponding(1..5,
         loop(0, Integer.successor).takeWhile(5.largerThan), 
         (Integer x, Integer y)=>x==y+1),"corresponding");
