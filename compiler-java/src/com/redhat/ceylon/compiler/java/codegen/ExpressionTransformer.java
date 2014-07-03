@@ -146,6 +146,11 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     public static final int EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK = 1 << 7;
 
+    /** 
+     * Use this when the expression is to be passed to a Java field/setter/parameter which does not require null-safety
+     */
+    public static final int EXPR_TARGET_ACCEPTS_NULL = 1 << 8;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -301,7 +306,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        if (expectedType != null && hasUncheckedNulls(expr)
+        if ((flags & EXPR_TARGET_ACCEPTS_NULL) == 0
+                && expectedType != null 
+                && hasUncheckedNulls(expr)
                 && expectedType.isSubtypeOf(typeFact().getObjectDeclaration().getType())) {
             result = utilInvocation().checkNull(result);
             flags |= EXPR_HAS_NULL_CHECK_FENCE;
@@ -4305,7 +4312,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (leftTerm instanceof Tree.MemberOrTypeExpression) {
             TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
             boxing = CodegenUtil.getBoxingStrategy(decl);
-            rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel());
+            rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel(), 
+                                      decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0);
         } else {
             // instanceof Tree.ParameterizedExpression
             boxing = CodegenUtil.getBoxingStrategy(leftTerm);
