@@ -361,7 +361,7 @@ public class Util {
         }
     }
 
-    private static boolean hasError(Node node) {
+    static boolean hasError(Node node) {
         // we use an exception to get out of the visitor 
         // as fast as possible when an error is found
         // TODO: wtf?! because it's the common case that

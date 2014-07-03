@@ -1107,14 +1107,11 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
-        if (sie==null && that.getType() instanceof Tree.FunctionModifier) {
-            that.getType().addError("function must specify an explicit return type or definition");
-        }
         Method dec = that.getDeclarationModel();
         if (dec!=null && dec.isParameter() && 
                 dec.getInitializerParameter().isHidden()) {
             if (sie!=null) {
-                sie.addError("value is an initializer parameter and may not have an initial value: " + 
+                sie.addError("function is an initializer parameter and may not have an initial value: " + 
                         dec.getName());
             }
         }

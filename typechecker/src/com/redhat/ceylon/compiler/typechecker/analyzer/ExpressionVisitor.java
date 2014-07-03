@@ -12,6 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclar
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
@@ -581,7 +582,9 @@ public class ExpressionVisitor extends Visitor {
         				type.addError("value must specify an explicit type or definition", 200);
         			}
         			else if (isTypeUnknown(t)) {
-        				type.addError("value type could not be inferred");
+        			    if (!hasError(sie)) {
+        			        type.addError("value type could not be inferred");
+        			    }
         			}
         		}
         	}
@@ -1008,8 +1011,10 @@ public class ExpressionVisitor extends Visitor {
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
-                Node node = type.getToken()==null ? that : type;
-                node.addError("argument type could not be inferred");
+                if (se==null || !hasError(se)) {
+                    Node node = type.getToken()==null ? that : type;
+                    node.addError("argument type could not be inferred");
+                }
             }
         }
     }
@@ -1055,7 +1060,12 @@ public class ExpressionVisitor extends Visitor {
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
-                type.addError("function type could not be inferred");
+                if (se==null) {
+                    type.addError("function must specify an explicit return type or definition", 200);
+                }
+                else if (!hasError(se)) {
+                    type.addError("function type could not be inferred");
+                }
             }
         }
     }
@@ -1103,8 +1113,10 @@ public class ExpressionVisitor extends Visitor {
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
-                Node node = type.getToken()==null ? that : type;
-                node.addError("argument type could not be inferred");
+                if (se==null || hasError(type)) {
+                    Node node = type.getToken()==null ? that : type;
+                    node.addError("argument type could not be inferred");
+                }
             }
         }
     }
