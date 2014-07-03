@@ -1070,15 +1070,30 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedReference producedReference = expr.getTarget();
             // it's a member we get from its container type
             ProducedType containerType = producedReference.getQualifyingType();
+            // if we have no container type it means we have an object member
+            boolean objectMember = containerType == null;
+            
+            JCExpression memberCall;
+
+            if(objectMember){
+                // We don't care about the type args for the cast, nor for the reified container expr, because
+                // we take the real reified container type from the container instance, and that one has the type
+                // arguments
+                containerType = ((Class)declaration.getContainer()).getType();
+            }
             JCExpression typeCall = makeTypeLiteralCall(expr, containerType, false);
             // make sure we cast it to ClassOrInterface
-            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleModelDeclaration("ClassOrInterface")
-                        .getProducedReference(null, Arrays.asList(containerType)).getType());
+            TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration("ClassOrInterface");
+            JCExpression classOrInterfaceTypeExpr = makeJavaType(
+                    classOrInterfaceDeclaration.getProducedReference(null, Arrays.asList(containerType)).getType());
+
             typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
             // we will need a TD for the container
+            // Note that we don't use Basic for the container for object members, because that's not how we represent
+            // anonymous types.
             JCExpression reifiedContainerExpr = makeReifiedTypeArgument(containerType);
+            
             // make a raw call and cast
-            JCExpression memberCall;
             if(declaration instanceof Method){
                 // we need to get types for each type argument
                 JCExpression closedTypesExpr;
@@ -1093,7 +1108,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List<JCExpression> arguments;
                 if(closedTypesExpr != null)
                     arguments = List.of(reifiedContainerExpr, reifiedReturnTypeExpr, reifiedArgumentsExpr, 
-                                        ceylonLiteral(declaration.getName()), closedTypesExpr);
+                            ceylonLiteral(declaration.getName()), closedTypesExpr);
                 else
                     arguments = List.of(reifiedContainerExpr, reifiedReturnTypeExpr, reifiedArgumentsExpr, 
                             ceylonLiteral(declaration.getName()));
@@ -1106,12 +1121,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ptype = typeFact().getNothingDeclaration().getType();
                 else
                     ptype = producedReference.getType();
-                
+
                 JCExpression reifiedSetExpr = makeReifiedTypeArgument(ptype);
                 memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedGetExpr, reifiedSetExpr, 
-                                                                                          ceylonLiteral(declaration.getName())));
+                        ceylonLiteral(declaration.getName())));
             }else{
                 return makeErroneous(expr, "Unsupported member type: "+declaration);
+            }
+            if(objectMember){
+                // now get the instance and bind it
+                // I don't think we need any expected type since objects can't be erased
+                JCExpression object = transformExpression(expr.getObjectExpression());
+                // reset the location after we transformed the expression
+                memberCall = at(expr).Apply(null, makeSelect(memberCall, "bind"), List.of(object));
             }
             // cast the member call because we invoke it with no Java generics
             memberCall = make().TypeCast(makeJavaType(expr.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES), memberCall);
