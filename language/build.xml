@@ -516,7 +516,10 @@
         <mkdir dir="${build.test}"/>
     </target>
 
-    <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup">
+    <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup,compile.tests.java.quick">
+    </target>
+
+    <target name="compile.tests.java.quick">
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
             fork="true"
@@ -542,7 +545,10 @@
         <delete dir="${build.test}/modules/optional"/>
     </target>
     
-    <target name="test.java" depends="compile.tests.java"
+    <target name="test.java" depends="compile.tests.java,test.java.quick">
+    </target>
+
+    <target name="test.java.quick"
         description="compile and run the JVM tests">
         <ceylon-run
             executable="${ceylon.compiler.loc}"
@@ -618,7 +624,10 @@
         
     </target>
 
-    <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup">
+    <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup,compile.tests.js.quick">
+    </target>
+
+    <target name="compile.tests.js.quick">
         <ceylon-compile-js
             executable="${ceylon.compiler.loc}"
             fork="true"
@@ -633,7 +642,10 @@
         </ceylon-compile-js>
     </target>
 
-    <target name="test.js" depends="compile.tests.js"
+    <target name="test.js" depends="compile.tests.js,test.js.quick">
+    </target>
+
+    <target name="test.js.quick"
         description="compile and run the Node.js tests (requires node)">
         <ceylon-run-js
             executable="${ceylon.compiler.loc}"
