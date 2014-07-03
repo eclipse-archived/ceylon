@@ -177,6 +177,17 @@ void literals<T>(){
     
     TypeParameter tp = `given T`;
     Type<Anything> tptype = `T`;
+    
+    ValueDeclaration objectAttribute = `value obj.attribute`;
+    Value<Integer> objectValue = `obj.attribute`;
+
+    FunctionDeclaration objectMethod = `function obj.method`;
+    Function<Integer,[Integer]> objectFunction = `obj.method<Integer>`;
+}
+
+shared object obj {
+    shared Integer attribute = 2;
+    shared T method<T>(T t) => t;
 }
 
 alias Alias => LitClass;

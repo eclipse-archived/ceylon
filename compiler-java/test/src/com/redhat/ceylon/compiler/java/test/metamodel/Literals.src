@@ -505,11 +505,79 @@ final class literals_ {
         final .ceylon.language.meta.declaration.Package p = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel");
         final .ceylon.language.meta.declaration.TypeParameter tp = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("literals").getTypeParameterDeclaration("T");
         final .ceylon.language.meta.model.Type<? extends .java.lang.Object> tptype = (.ceylon.language.meta.model.Type<? extends T>).ceylon.language.meta.typeLiteral_.typeLiteral($reified$T);
+        final .ceylon.language.meta.declaration.ValueDeclaration objectAttribute = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "attribute");
+        final .ceylon.language.meta.model.Value objectValue = (.ceylon.language.meta.model.Value)(.ceylon.language.meta.model.Value)((.ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.obj_>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class))).getAttribute(.ceylon.language.Basic.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "attribute").bind(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.get_());
+        final .ceylon.language.meta.declaration.FunctionDeclaration objectMethod = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "method");
+        final .ceylon.language.meta.model.Function<? extends .ceylon.language.Integer, ? super .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> objectFunction = (.ceylon.language.meta.model.Function<? extends .ceylon.language.Integer, ? super .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>)(.ceylon.language.meta.model.Function)((.ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.obj_>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class))).getMethod(.ceylon.language.Basic.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "method", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.Type.class, .ceylon.language.Anything.$TypeDescriptor$), .ceylon.language.empty_.get_(), .ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Integer.$TypeDescriptor$))).bind(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.get_());
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.metamodel.literals_.literals(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Name("obj")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private obj_() {
+        this.attribute = 2L;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long attribute;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getAttribute() {
+        return attribute;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final <T>T method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        return t;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_[]{new .com.redhat.ceylon.compiler.java.test.metamodel.obj_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
+    public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
