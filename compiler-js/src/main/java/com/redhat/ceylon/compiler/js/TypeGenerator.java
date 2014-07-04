@@ -78,9 +78,16 @@ public class TypeGenerator {
         final boolean isInterface = d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
         String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
 
-        gen.out("function $init$", gen.getNames().name(d), "()");
+        final String typename = gen.getNames().name(d);
+        final String initname;
+        if (d.isAnonymous() && !d.isToplevel()) {
+            initname = "$init$" + gen.getNames().objectName(d);
+        } else {
+            initname = "$init$" + typename;
+        }
+        gen.out("function ", initname, "()");
         gen.beginBlock();
-        gen.out("if(", gen.getNames().name(d), ".$$===undefined)");
+        gen.out("if(", typename, ".$$===undefined)");
         gen.beginBlock();
         boolean genIniter = true;
         if (d.isNative()) {
@@ -89,7 +96,7 @@ public class TypeGenerator {
         }
         if (genIniter) {
             final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-            gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", gen.getNames().name(d), ",'", qns, "'");
+            gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size());
 
@@ -122,7 +129,7 @@ public class TypeGenerator {
                 _d2 = _d2.getContainer();
             }
             gen.endLine();
-            gen.out(containers.toString(), "=", gen.getNames().name(d), ";");
+            gen.out(containers.toString(), "=", typename, ";");
         }
 
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
@@ -131,14 +138,14 @@ public class TypeGenerator {
             callback.addToPrototypeCallback();
         }
         gen.endBlockNewLine();
-        gen.out("return ", gen.getNames().name(d), ";");
+        gen.out("return ", typename, ";");
         gen.endBlockNewLine();
         //If it's nested, share the init function
         if (gen.outerSelf(d)) {
-            gen.out(".$init$", gen.getNames().name(d), "=$init$", gen.getNames().name(d));
+            gen.out(".", initname, "=", initname);
             gen.endLine(true);
         }
-        gen.out("$init$", gen.getNames().name(d), "()");
+        gen.out(initname, "()");
         gen.endLine(true);
     }
 
