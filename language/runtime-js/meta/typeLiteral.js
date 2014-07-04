@@ -23,7 +23,7 @@ function typeLiteral$meta($$targs$$) {
     } else {
       var mm = getrtmm$$(t);
       var mdl = get_model(mm);
-      if (mdl['mt'] === 'c') {
+      if (mdl.mt==='c' || mdl.mt==='o') {
         //TODO tupleize Arguments
         var r=AppliedClass(t,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
@@ -34,7 +34,7 @@ function typeLiteral$meta($$targs$$) {
         return r;
       } else if (mdl['mt'] === 'm') {
         return AppliedFunction(t,{Type$Function:$$targs$$.Type$typeLiteral,Arguments$Function:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
-      } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g' || mdl['mt'] === 'o'||mdl.mt==='s') {
+      } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g' || mdl.mt==='s') {
         return AppliedValue(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
       } else {
         console.log("WTF is a metatype " + mdl['mt'] + " on a closed type???????");

@@ -439,6 +439,13 @@ atr$(f,'declaration',function(){
   f._decl = OpenFunction(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
 },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
+  atr$(f,'container',function(){
+    if (o===undefined)return f.containingPackage;
+    if (f.$parent===undefined) {
+      f.$parent=type$meta(o,{Type$type:mm.$cont});
+    }
+    return f.$parent;
+  },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedFunction,d:['ceylon.language.meta.model','Model','$at','container']};});
   f.$_apply=function(a){
     a=convert$params(mm,a);
     if (ttargs) {
@@ -555,7 +562,7 @@ $$appliedValue.setIfAssignable=function(v) {
 
       atr$($$appliedValue,'type',function(){
           var $$atr=this;
-          var t = $$atr.tipo.$crtmm$;
+          var t = getrtmm$$($$atr.tipo);
           return typeLiteral$meta({Type$typeLiteral:t.$t});
       },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Value'}},$cont:AppliedValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
@@ -646,6 +653,11 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   atr$($$appliedMethod,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedMethod};});
+  atr$($$appliedMethod,'container',function(){
+    if (this.toplevel)return this.containingPackage;
+    if (this.$parent===undefined)this.$parent=typeLiteral$meta({Type$typeLiteral:getrtmm$$(this.tipo).$cont});
+    return this.$parent;
+  },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedMethod,d:['ceylon.language.meta.model','Model','$at','container']};});
   return $$appliedMethod;
 }
 AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],pa:1,d:['ceylon.language.meta.model','Method']};};
