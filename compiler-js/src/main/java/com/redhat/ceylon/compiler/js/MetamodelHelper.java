@@ -161,9 +161,7 @@ public class MetamodelHelper {
             if (ltype == null) {
                 if (anonClass != null) {
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().name(anonClass);
-                    final int dolpos = ancname.lastIndexOf('$');
-                    gen.out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
+                    gen.out(gen.getNames().objectName(anonClass), ".");
                 } else {
                     gen.qualify(that, d);
                 }
@@ -200,10 +198,9 @@ public class MetamodelHelper {
             } else {
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
                 if (anonClass != null) {
+                    gen.out(",");
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().name(anonClass);
-                    final int dolpos = ancname.lastIndexOf('$');
-                    gen.out(",get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
+                    gen.out(gen.getNames().objectName(anonClass));
                 }
                 if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
                     if (anonClass == null) {
@@ -225,16 +222,14 @@ public class MetamodelHelper {
                     gen.out("undefined");
                 } else {
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().getter(anonClass);
-                    gen.out(ancname, "()");
+                    gen.out(gen.getNames().objectName(anonClass));
                 }
                 gen.out(",");
             }
             if (ltype == null) {
                 if (anonClass != null) {
                     gen.qualify(that, anonClass);
-                    final String ancname = gen.getNames().getter(anonClass);
-                    gen.out(ancname, "().");
+                    gen.out(gen.getNames().objectName(anonClass), ".");
                 } else {
                     gen.qualify(that, d);
                 }
@@ -297,12 +292,12 @@ public class MetamodelHelper {
                     first=false;
                 }
                 if (_d.isAnonymous()) {
-                    final boolean wasShared=_d.isShared();
-                    _d.setShared(true);
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(false);
-                    gen.out(gen.getNames().getter(_d), "().");
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(true);
-                    _d.setShared(wasShared);
+                    final String oname = gen.getNames().objectName(_d);
+                    if (_d.isToplevel()) {
+                        gen.out(oname, ".");
+                    } else {
+                        gen.out("$init$", oname, "().$$.prototype.");
+                    }
                 } else {
                     if (!imported)gen.out("$init$");
                     gen.out(gen.getNames().name(_d), imported?".$$.prototype.":"().$$.prototype.");
