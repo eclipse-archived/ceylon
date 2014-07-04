@@ -3,9 +3,9 @@
  
  `Correspondence` does not satisfy [[Category]], since in 
  some cases&mdash;`List`, for example&mdash;it is convenient 
- to consider the subtype a `Category` of its values, and in 
- other cases&mdash;`Map`, for example&mdash;it is convenient 
- to treat the subtype as a `Category` of its 
+ to consider the subtype a `Category` of its indexed items, 
+ and in other cases&mdash;`Map`, for example&mdash;it is 
+ convenient to treat the subtype as a `Category` of its 
  [[entries|Entry]].
  
  The item corresponding to a given key may be obtained from 
