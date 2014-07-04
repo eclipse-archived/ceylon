@@ -911,6 +911,8 @@ shared void checkObjectDeclaration(){
     assert(is ClassDeclaration topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration);
     assert(topLevelObjectClassDeclaration.name == "topLevelObjectDeclaration");
     assert(topLevelObjectClassDeclaration.anonymous);
+    assert(eq(topLevelObjectClassDeclaration.objectValue, topLevelObjectDeclarationAttribute));
+    assert(eq(topLevelObjectClassDeclaration, topLevelObjectDeclarationAttribute.objectClass));
     
     // get it via its type
     value topLevelObjectClass = type(topLevelObjectDeclaration);
@@ -1651,6 +1653,16 @@ shared void checkObjectMemberReferences(){
     assert(objectClass == objectContainer2);
 
     MemberObjectContainer<Integer>().test();
+}
+
+Boolean eq(Anything a, Anything b){
+    if(exists a){
+        if(exists b){
+            return a == b;
+        }
+        return false;
+    }
+    return !b exists;
 }
 
 shared void run() {
