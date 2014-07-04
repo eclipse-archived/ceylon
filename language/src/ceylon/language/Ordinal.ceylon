@@ -1,5 +1,6 @@
-"Abstraction of _ordinal types_, that is, types where each
- values has a [[successor]] and [[predecessor]], such as:
+"Abstraction of _ordinal types_, that is, of types where 
+ each instance has a [[successor]] and [[predecessor]], such 
+ as:
   
  - types which represent or are isomorphic to the 
    mathematical integers, for example, [[Integer]] and other 
