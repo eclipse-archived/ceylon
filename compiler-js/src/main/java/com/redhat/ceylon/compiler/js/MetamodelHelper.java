@@ -89,14 +89,14 @@ public class MetamodelHelper {
             gen.out("$prop$", gen.getNames().getter(d), ")");
         } else {
             if (d.isAnonymous()) {
-                final boolean wasShared=d.isShared();
-                d.setShared(true);
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(false);
-                gen.out(GenerateJsVisitor.getClAlias(), "getrtmm$$(");
-                if (!d.isMember()) gen.qualify(that, d);
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
-                d.setShared(wasShared);
-                gen.out(gen.getNames().getter(d), ").$t.t");
+                final String oname = gen.getNames().objectName(d);
+                if (d.isToplevel()) {
+                    gen.qualify(that, d);
+                }
+                gen.out("$init$", oname);
+                if (!d.isToplevel()) {
+                    gen.out("()");
+                }
             } else {
                 if (!d.isMember()) gen.qualify(that, d);
                 gen.out(gen.getNames().name(d));
