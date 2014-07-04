@@ -106,11 +106,24 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute=function getDeclar
 };ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container:{},Type:{}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttribute']};};
 atr$(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
-  var cont = this.tipo.$crtmm$.$cont;
+  var cont = getrtmm$$(this.tipo).$cont;
   if (cont === undefined)return null;
-  if (get_model(cont.$crtmm$).mt === 'i')
-    return AppliedInterface(cont,{Type$Interface:{t:cont}});
-  return AppliedClass(cont,{Type$Class:{t:cont},Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  var cmm=getrtmm$$(cont);
+  var _t={t:cont};
+  var _out=undefined;
+  if (this.src$ && this.src$.outer$) {
+    _out=this.src$.outer$;
+    if (_out.$$targs$$) {
+      _t.a=_out.$$targs$$;
+    }
+  }
+  var rv;
+  if (get_model(cmm).mt === 'i')
+    rv=AppliedInterface(cont,{Type$Interface:_t});
+  //TODO tipos de parametros
+  rv=AppliedClass(cont,{Type$Class:_t,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  if (_out)rv.src$=_out;
+  return rv;
 },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");

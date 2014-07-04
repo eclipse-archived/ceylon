@@ -22,7 +22,9 @@ function type$meta(x,$$targs$$) {
       }
       return AppliedFunction(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }
-    return AppliedClass(mm.$t.t, {Type$Class:mm.$t,Arguments$Class:{t:Nothing}});
+    var rv=(mm.$cont?AppliedMemberClass:AppliedClass)(mm.$t.t, {Type$Class:mm.$t,Arguments$Class:{t:Nothing}});
+    rv.src$=x;
+    return rv;
   }
   var c;
   if ($$targs$$.Type$type.t==='T') {

@@ -207,6 +207,9 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   atr$(that,'string',function(){
     return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
+  atr$(that,'container',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
   that.tipo=tipo;
@@ -567,14 +570,14 @@ $$appliedValue.setIfAssignable=function(v) {
       },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Value'}},$cont:AppliedValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
       atr$($$appliedValue,'container',function(){
+          if (this.obj) {
+            var mm=getrtmm$$(this.tipo);
+            if (mm.$cont)return type$meta(this.obj,{Type$type:{t:mm.$cont}});
+          }
           if (this.$$targs$$.Container$Value) {
             return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$Value});
           } else if (this.$$targs$$.Container$Attribute) {
             return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$Attribute});
-          }
-          var mm=this.tipo.$crtmm$;
-          if (mm.$cont) {
-            return typeLiteral$meta({Type$typeLiteral:{t:mm.$cont}});
           }
           return null;
       },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','container']};});
