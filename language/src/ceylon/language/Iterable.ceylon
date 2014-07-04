@@ -433,8 +433,14 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise.  For an infinite stream, this 
-     operation might not terminate."
+     `null` otherwise. For an infinite stream, this 
+     method might not terminate.
+     
+     For example, the expression
+     
+         (-10..10).find(Integer.positive)
+     
+     evaluates to `1`."
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
@@ -448,8 +454,14 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The last element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise. For an infinite stream, this operation 
-     might not terminate."
+     `null` otherwise. For an infinite stream, this method 
+     might not terminate.
+     
+     For example, the expression
+     
+         (-10..10).findLast(3.divides)
+     
+     evaluates to `9`."
     shared default Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element&Object element)) {
