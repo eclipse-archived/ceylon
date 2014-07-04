@@ -806,10 +806,16 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces a stream containing the elements of this 
      stream, replacing every `null` element with the [[given 
      default value|defaultValue]]. The resulting stream does 
-     not have the value `null`."
+     not have the value `null`.
+     
+     For example, the expression
+     
+         { \"123\", \"abc\", \"456\" }.map(parseInteger).defaultNullElements(0)
+     
+     results in the stream `{ 123, 0, 456 }`."
     see (`value coalesced`)
     shared default Iterable<Element&Object|Default,Absent>
-            defaultNullElements<Default>(
+    defaultNullElements<Default>(
         "A default value that replaces `null` elements."
         Default defaultValue)
             => { for (elem in this) elem else defaultValue };
@@ -817,7 +823,13 @@ shared interface Iterable<out Element, out Absent=Null>
     "The non-null elements of this stream, in the order in
      which they occur in this stream. For null elements of 
      the original stream, there is no entry in the resulting 
-     stream."
+     stream.
+     
+     For example, the expression
+     
+         { \"123\", \"abc\", \"456\"}.map(parseInteger).coalesced
+     
+     results in the stream `{ 123, 456 }`."
     shared default {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
@@ -920,6 +932,12 @@ shared interface Iterable<out Element, out Absent=Null>
      in this stream. The very last sequence in the stream
      may be shorter than the given `length`.
      
+     For example, the expression
+     
+         \"hello\".partition(2)
+     
+     results in the stream `{ ['h','e'], ['l','l'], ['o'] }.`
+     
      For any `stream` and for any positive integer 
      [[length]]:
      
@@ -971,7 +989,13 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream with a given [[initial element|head]], 
      followed by the elements of this stream, in the order 
-     in which they occur in this stream. 
+     in which they occur in this stream.
+     
+     For example, the expression
+     
+         (1..3).follow(0)
+     
+     evaluates to the stream `{ 0, 1, 2, 3 }`.
      
      Note that the expression `stream.follow(head)` may be 
      written as:
@@ -984,7 +1008,13 @@ shared interface Iterable<out Element, out Absent=Null>
     "The elements of this stream, in the order in which they 
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
-     in the given stream."
+     in the given stream.
+     
+     For example, the expression
+     
+         (1..3).chain(\"abc\")
+     
+     evaluates to the stream { 1, 2, 3, 'a', 'b', 'c' }."
     see (`function expand`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
@@ -996,6 +1026,19 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
+    "A stream of pairs of elements of this stream and the 
+     the given stream, where for each element `x` of this
+     stream, and element `y` of the given stream, the
+     pair `[x,y]` belongs to the resulting stream. The pairs
+     are sorted first by the position of `x` in this stream,
+     and then by the position of `y` in the given stream.
+     
+     For example, this expression
+     
+         (1..3).product(\"ab\")
+     
+     evaluates to the stream 
+     `{ [1,'a'], [1,'b'], [2,'a'], [2,'b'], [3,'a'], [3,'b'] }`."
     shared default Iterable<[Element,Other],Absent|OtherAbsent>
     product<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
             given OtherAbsent satisfies Null
