@@ -518,9 +518,14 @@ shared interface Iterable<out Element, out Absent=Null>
      order upon the elements of the stream.
      
      For convenience, the functions [[byIncreasing]] and 
-     [[byDecreasing]] produce suitable comparator functions:
+     [[byDecreasing]] produce suitable comparator functions.
+     
+     For example, this expression
      
          \"Hello World!\".sort(byIncreasing(Character.lowercased))
+     
+     evaluates to the sequence 
+     `[ , !, d, e, H, l, l, l, o, o, r, W].`
      
      This operation is eager by nature."
     see (`function byIncreasing`, 
@@ -759,7 +764,13 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream formed by repeating the elements of 
      this stream the [[given number of times|times]], or an 
-     empty stream if `times<=0`."
+     empty stream if `times<=0`.
+     
+     For example, the expression
+     
+         { 1, 2 }.repeat(3)
+     
+     evaluates to the stream `{ 1, 2, 1, 2, 1, 2 }`."
     see (`value cycled`)
     shared default {Element*} repeat(Integer times) {
         object iterable satisfies {Element*} {
