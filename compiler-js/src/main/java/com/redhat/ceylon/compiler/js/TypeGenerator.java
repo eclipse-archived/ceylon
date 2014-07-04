@@ -80,8 +80,13 @@ public class TypeGenerator {
 
         final String typename = gen.getNames().name(d);
         final String initname;
-        if (d.isAnonymous() && !d.isToplevel()) {
-            initname = "$init$" + gen.getNames().objectName(d);
+        if (d.isAnonymous()) {
+            final String _initname = gen.getNames().objectName(d);
+            if (d.isToplevel()) {
+                initname = "$init$" + _initname.substring(0, _initname.length()-2);
+            } else {
+                initname = "$init$" + gen.getNames().objectName(d);
+            }
         } else {
             initname = "$init$" + typename;
         }
