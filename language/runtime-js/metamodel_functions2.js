@@ -60,6 +60,7 @@ function validate$typeparams(t,tparms,types) {
     }
   }
 }
+//Convert an array of parameters (value of ps:[]) into a Tuple
 function tupleize$params(ps,aux) {
   if (!ps || ps.length==0)return {t:Empty};
   var tupa={t:'T',l:[]};
