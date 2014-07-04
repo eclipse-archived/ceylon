@@ -54,8 +54,11 @@ shared interface ClassDeclaration
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
 
-    "True if the class is an object class."
+    "True if the class is an anonymous class, as is the case for the class of object value declarations."
     shared formal Boolean anonymous;
+
+    "This anonymous class' object value declaration if this class is an anonymous class. `null` otherwise."
+    shared formal ValueDeclaration? objectValue;
 
     "True if the class has a [[final|ceylon.language::final]] annotation."
     shared formal Boolean final;

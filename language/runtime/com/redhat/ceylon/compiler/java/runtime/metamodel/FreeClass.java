@@ -9,6 +9,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -80,6 +81,22 @@ public class FreeClass
         return declaration.isAnonymous();
     }
 
+    @TypeInfo("ceylon.language.meta.declaration::ValueDeclaration|ceylon.language::Null")
+    @Override
+    public ceylon.language.meta.declaration.ValueDeclaration getObjectValue(){
+        if(getAnonymous()){
+            Object container = getContainer();
+            if(container instanceof ceylon.language.meta.declaration.ClassOrInterfaceDeclaration){
+                return ((ceylon.language.meta.declaration.ClassOrInterfaceDeclaration) container).getDeclaredMemberDeclaration(ValueDeclaration.$TypeDescriptor$, getName());
+            }else if(container instanceof ceylon.language.meta.declaration.Package){
+                return ((ceylon.language.meta.declaration.Package) container).getMember(ValueDeclaration.$TypeDescriptor$, getName());
+            }
+            // don't know how to find the object value decl
+        }
+        return null;
+    }
+
+    
     @Override
     public boolean getAnnotation(){
         return declaration.isAnnotation();
