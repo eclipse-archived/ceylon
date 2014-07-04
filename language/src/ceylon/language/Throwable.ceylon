@@ -1,23 +1,48 @@
 import ceylon.language { printTrace=printStackTrace }
 
-"The supertype of instances that can be thrown using the `throw` statement
- and caught using the `catch` clause of the `try` statement. 
- Such instances are used to represent 
- problems, typically _unexpected failures_, with the running program 
- and can be classified as either
- [[errors|Error]] which are non-transient and generally unrecoverable 
- or [[exceptions|Exception]] which are transient problems which 
- may be recovered from.
+"The abstract supertype of values indicating exceptional 
+ conditions. An exception may be raised using the `throw` 
+ statement, and handled using the `catch` clause of the `try` 
+ statement. An instance of `Throwable` may be passed from
+ `throw` to `catch`.
+     
+     void tryToDoIt() {
+         if (canDoIt()) {
+             doIt();
+         }
+         else {
+             throw CantDoIt(); //the Throwable
+         }
+     }
+     
+     try {
+         tryToDoIt();
+     }
+     catch (CantDoIt e) {
+         e.printStackTrace();
+     }
  
- The use of throwables to indicate _expected failures_, that 
- is, failures that are usually handled by the immediate 
- caller of an operation, is discouraged. (For example,
- nonexistence of a file should not result in an exception.) 
+ An instance of `Throwable` represents a problem, typically 
+ an _unexpected failure_. Either:
+ 
+ - an unrecoverable [[Error]], or
+ - a transient, and possibly-recoverable [[Exception]].
+ 
+ The use of the exceptions facility to manage _expected 
+ failures_, that is, failures that are usually handled by 
+ the immediate caller of an operation, is discouraged. 
  Instead, the failure should be respresented as a return 
- value of the operation being called."
+ value of the operation being called.
+ 
+ For example, nonexistence of a file should not result in an 
+ exception. Instead, an `openFile()` operation should return 
+ the type `File?`, where a `null` return value indicates 
+ nonexistence. On the other hand, failure to read from an
+ already open file could result in an `Exception`."
 by ("Gavin", "Tom")
 shared native abstract class Throwable(description=null, cause=null) 
         of Exception | Error {
+    
     "The underlying cause of this exception."
     shared Throwable? cause;
     
