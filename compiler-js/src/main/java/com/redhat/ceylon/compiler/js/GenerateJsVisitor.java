@@ -940,7 +940,10 @@ public class GenerateJsVisitor extends Visitor
             out(function, names.getter(d), "()");
             beginBlock();
             //Create the object lazily
-            out("if(", objvar, "===undefined){", objvar, "=$init$", names.name(c), "()(");
+            final String oname = names.objectName(c);
+            out("if(", objvar, "===undefined){", objvar, "=$init$", oname);
+            if (!oname.endsWith("()"))out("()");
+            out("(");
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, this, false);
             }
