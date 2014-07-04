@@ -1014,7 +1014,7 @@ shared interface Iterable<out Element, out Absent=Null>
      
          (1..3).chain(\"abc\")
      
-     evaluates to the stream { 1, 2, 3, 'a', 'b', 'c' }."
+     evaluates to the stream `{ 1, 2, 3, 'a', 'b', 'c' }`."
     see (`function expand`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
