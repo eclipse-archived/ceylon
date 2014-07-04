@@ -194,8 +194,8 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> sequences(final long length) {
-        return $ceylon$language$Iterable$this$.sequences(length);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> partition(final long length) {
+        return $ceylon$language$Iterable$this$.partition(length);
     }
     
     @.java.lang.Override
@@ -439,8 +439,8 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> sequences(final long length) {
-        return $ceylon$language$Iterable$this$.sequences(length);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> partition(final long length) {
+        return $ceylon$language$Iterable$this$.partition(length);
     }
     
     @.java.lang.Override

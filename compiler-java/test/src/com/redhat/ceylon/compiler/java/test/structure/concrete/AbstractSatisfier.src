@@ -194,8 +194,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends T>, ? extends .java.lang.Object> sequences(final long length) {
-        return $ceylon$language$Iterable$this$.sequences(length);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends T>, ? extends .java.lang.Object> partition(final long length) {
+        return $ceylon$language$Iterable$this$.partition(length);
     }
     
     @.java.lang.Override

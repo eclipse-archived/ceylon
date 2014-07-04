@@ -200,8 +200,8 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .java.lang.Object> sequences(final long length) {
-        return $ceylon$language$Iterable$this$.sequences(length);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .java.lang.Object> partition(final long length) {
+        return $ceylon$language$Iterable$this$.partition(length);
     }
     
     @.java.lang.Override
@@ -496,8 +496,8 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .java.lang.Object> sequences(final long length) {
-        return $ceylon$language$Iterable$this$.sequences(length);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .java.lang.Object> partition(final long length) {
+        return $ceylon$language$Iterable$this$.partition(length);
     }
     
     @.java.lang.Override
