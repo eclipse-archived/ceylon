@@ -563,11 +563,10 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces the number of elements in this stream that 
      satisfy the [[given predicate function|selecting]].
-     For an infinite stream, this operation never 
-     terminates."
+     For an infinite stream, this method never terminates."
     shared default Integer count(
-        "The predicate satisfied by the elements to
-         be counted."
+        "The predicate satisfied by the elements to be 
+         counted."
         Boolean selecting(Element element)) {
         variable value count=0;
         for (elem in this) {
