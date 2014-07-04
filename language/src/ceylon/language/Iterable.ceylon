@@ -507,9 +507,9 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For convenience, the functions [[byIncreasing]] and 
      [[byDecreasing]] produce suitable comparator functions:
-    
-        \"Hello World!\".sort(byIncreasing(Character.lowercased))
-    
+     
+         \"Hello World!\".sort(byIncreasing(Character.lowercased))
+     
      This operation is eager by nature."
     see (`function byIncreasing`, 
          `function byDecreasing`)
