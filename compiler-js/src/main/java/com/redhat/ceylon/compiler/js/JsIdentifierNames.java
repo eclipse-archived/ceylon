@@ -91,7 +91,7 @@ public class JsIdentifierNames {
             // be reliably reproducible. In most cases simply using the original
             // name is ok because otherwise it would result in a name collision in
             // Ceylon too. We just have to take care of a few exceptions:
-            String suffix = nestingSuffix(decl);
+            String suffix = nestingSuffix(decl, false);
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
@@ -173,7 +173,7 @@ public class JsIdentifierNames {
     public String self(TypeDeclaration decl) {
         String name = decl.getName();
         if (decl.isShared() || decl.isToplevel()) {
-            name += nestingSuffix(decl);
+            name += nestingSuffix(decl, true);
         } else {
             // The identifier will not be used outside the generated .js file,
             // so we can simply disambiguate it with a numeric ID.
@@ -197,9 +197,9 @@ public class JsIdentifierNames {
      * Currently this is required only for types which are nested inside other
      * types.
      */
-    private String nestingSuffix(Declaration decl) {
+    private String nestingSuffix(Declaration decl, final boolean forSelf) {
         String suffix = "";
-        if (decl instanceof TypeDeclaration && !decl.isAnonymous()) {
+        if (decl instanceof TypeDeclaration && (forSelf || !decl.isAnonymous())) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
@@ -244,7 +244,7 @@ public class JsIdentifierNames {
             // be reliably reproducible. In most cases simply using the original
             // name is ok because otherwise it would result in a name collision in
             // Ceylon too. We just have to take care of a few exceptions:
-            String suffix = nestingSuffix(decl);
+            String suffix = nestingSuffix(decl, false);
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
