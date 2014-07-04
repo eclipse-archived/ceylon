@@ -789,10 +789,8 @@ public class RecoveryTest extends CompilerTest {
                 new CompilerError(30, "function or value does not exist: newServer_bogus"),
                 new CompilerError(30, "named arguments not supported for indirect invocations"),
                 new CompilerError(135, "function or value does not exist: array"),
-                new CompilerError(135, "value type could not be inferred"),
                 new CompilerError(135, "named arguments not supported for indirect invocations"),
                 new CompilerError(138, "could not determine type of function or value reference: cells"),
-                new CompilerError(138, "value type could not be inferred"),
                 new CompilerError(139, "could not determine type of function or value reference: c"),
                 new CompilerError(140, "could not determine type of function or value reference: c")
         );
