@@ -118,6 +118,15 @@ public class JsIdentifierNames {
         return getName(decl, false, true);
     }
 
+    public String objectName(Declaration decl) {
+        String name = getName(decl, true, false);
+        if (decl.isToplevel()) {
+            return String.format("get%c%s()", Character.toUpperCase(name.charAt(0)),
+                    name.substring(1));
+        }
+        return name;
+    }
+
     /**
      * Determine the function name to be used in the generated JavaScript code
      * for the getter of the given declaration.
@@ -190,7 +199,7 @@ public class JsIdentifierNames {
      */
     private String nestingSuffix(Declaration decl) {
         String suffix = "";
-        if (decl instanceof TypeDeclaration) {
+        if (decl instanceof TypeDeclaration && !decl.isAnonymous()) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
