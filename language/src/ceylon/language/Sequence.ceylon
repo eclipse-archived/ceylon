@@ -291,7 +291,7 @@ shared sealed interface Sequence<out Element>
  possibly empty, [[sequence|Sequential]] may be obtained 
  using the `else` operator:
  
-     [Element*] sequenceOfElements = sequence(elements) else []"
+     [Element*] sequenceOfElements = sequence(elements) else [];"
 by ("Gavin")
 see (`function Iterable.sequence`)
 shared [Element+]|Absent sequence<Element,Absent=Null>
