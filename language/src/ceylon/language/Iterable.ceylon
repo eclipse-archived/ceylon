@@ -403,7 +403,7 @@ shared interface Iterable<out Element, out Absent=Null>
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         it.scan(z, f).getFromFirst(i) == it.taking(i).fold(z, f)
+         it.scan(z, f).getFromFirst(n) == it.taking(n).fold(z, f)
          it.scan(z, f).last == it.fold(z, f)
          it.scan(z, f).first == {}.fold(z, f) == z
      
