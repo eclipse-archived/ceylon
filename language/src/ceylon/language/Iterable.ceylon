@@ -386,13 +386,13 @@ shared interface Iterable<out Element, out Absent=Null>
      [[combining function|accumulating]] to each element of 
      this stream in turn.
      
-     For a given stream `it`, initial value `z`, combining
-     function `f`, the first value of the resulting stream
-     is `z`:
+     For a given stream `it`, initial value `z`, and 
+     combining function `f`, the first value of the 
+     resulting stream is `z`:
      
          it.scan(z, f).first == z
      
-     subsequent values are obtained according to the 
+     Subsequent values are obtained according to the 
      following recursive definition:
      
          it.scan(z, f).getFromFirst(n+1) 
