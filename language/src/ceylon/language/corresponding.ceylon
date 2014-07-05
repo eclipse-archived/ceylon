@@ -1,9 +1,15 @@
 "Compares corresponding elements of the given streams using 
- the given [[binary predicate function|comparing]]. Return 
- `true` if the two streams have the same number of elements 
- and if the predicate is satisfied for every pair of 
- corresponding elements. Return `false` otherwise. If both
- streams are empty, return `true`."
+ the given [[binary predicate function|comparing]]. Two 
+ elements are considered _corresponding_ if they occupy the
+ same position in their respective streams. Returns `true` 
+ if and only if:
+ 
+ - the two streams have the same number of elements, and 
+ - if the predicate is satisfied for every pair of 
+   corresponding elements.
+ 
+ Returns `false` otherwise. If both streams are empty, 
+ return `true`."
 see (`function everyPair`)
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
