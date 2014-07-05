@@ -332,6 +332,18 @@ shared interface Iterable<out Element, out Absent=Null>
      element of this stream in turn, progressively 
      accumulating a single result.
      
+     For an empty stream, `fold()` returns the given initial 
+     value `z`:
+     
+         {}.fold(z, f) == z
+     
+     For a given nonempty stream `it`, initial value `z`, 
+     and combining function `f`, the result of `fold()` is 
+     obtained according to the following recursive 
+     definition:
+     
+         it.fold(z, f) == f(it.exceptLast.fold(z, f), it.last)
+     
      For example, the expression
      
          (1..100).fold(0, plus<Integer>)
@@ -354,6 +366,20 @@ shared interface Iterable<out Element, out Absent=Null>
      apply the given [[combining function|accumulating]] to 
      each element of this stream in turn, progressively
      accumulating a single result.
+     
+     For an empty stream, `reduce()` always returns `null`.
+     
+     For a stream with one element, `reduce()` returns that
+     element:
+     
+         { first }.reduce(f) == first
+     
+     For a given stream `it` with more than one element, 
+     and combining function `f`, the result of `reduce()` is 
+     obtained according to the following recursive 
+     definition:
+     
+         it.reduce(f) == f(it.exceptLast.reduce(f), it.last)
      
      For example, the expression
      
@@ -386,19 +412,18 @@ shared interface Iterable<out Element, out Absent=Null>
      [[combining function|accumulating]] to each element of 
      this stream in turn.
      
-     For a given stream `it`, initial value `z`, and 
-     combining function `f`, the first value of the 
-     resulting stream is `z`:
+     For an empty stream, `scan()` returns a stream 
+     containing just the given initial value `z`:
      
-         it.scan(z, f).first == z
+         {}.scan(z, f) == { z }
      
-     Subsequent values are obtained according to the 
-     following recursive definition:
+     For a given nonempty stream `it`, initial value `z`, 
+     and combining function `f`, the result of `scan()` is 
+     obtained according to the following recursive 
+     definition:
      
-         it.scan(z, f).getFromFirst(n+1) 
-             == f(it.scan(z, f).getFromFirst(n), it.getFromFirst(n))
-     
-     for any integer `n>0`.
+         it.scan(z, f).last == f(it.exceptLast.scan(z, f).last, it.last)
+         it.scan(z, f).exceptLast == it.exceptLast.scan(z, f)
      
      The following identities explain the relationship 
      between `scan` and [[fold]]:
@@ -449,8 +474,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
-     `null` otherwise. For an infinite stream, this 
-     method might not terminate.
+     `null` otherwise. For an infinite stream, this method 
+     might not terminate.
      
      For example, the expression
      
@@ -492,9 +517,9 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Given a [[method]] of the element type [[Element]], 
      return a function that, when supplied with a list of 
-     method arguments, produces a new iterable object
-     that applies the `method` to each element of this 
-     iterable object in turn.
+     method arguments, produces a new iterable object that 
+     applies the `method` to each element of this iterable 
+     object in turn.
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
