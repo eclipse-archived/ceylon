@@ -6,11 +6,11 @@
  resulting stream is the length of the shorter of the two 
  given streams.
  
- Thus:
+ For any given streams `xs` and `ys`, and mapping function 
+ `f`, `mapPairs()` may be defined in terms of 
+ [[Iterable.map]], [[zipPairs]], and [[unflatten]]:
  
-     mapPairs(fun, xs, ys)[i] == fun(xs[i], ys[i])
- 
- for every `0<=i<smallest(xs.size,ys.size)`.
+     mapPairs(f, xs, ys) == zipPairs(xs, ys).map(unflatten(f))
  
  For example the expression
  
@@ -55,7 +55,13 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
  function|selecting]], or null if no pair of elements 
  satisfies the predicate. If one of the streams is longer 
  than the other, simply ignore additional elements of the 
- longer stream with no pair in the other stream."
+ longer stream with no pair in the other stream.
+ 
+ For any given streams `xs` and `ys`, and predicate function 
+ `p`, `findPair()` may be defined in terms of 
+ [[Iterable.find]], [[zipPairs]], and [[unflatten]]:
+ 
+     findPair(p, xs, ys) == zipPairs(xs, ys).find(unflatten(p))"
 shared [First,Second]? findPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -77,7 +83,13 @@ shared [First,Second]? findPair<First,Second>(
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
  elements of the longer stream with no pair in the other 
- stream. If either stream is empty, return `true`."
+ stream. If either stream is empty, return `true`.
+ 
+ For any given streams `xs` and `ys`, and predicate function 
+ `p`, `everyPair()` may be defined in terms of 
+ [[Iterable.every]], [[zipPairs]], and [[unflatten]]:
+ 
+     everyPair(p, xs, ys) == zipPairs(xs, ys).every(unflatten(p))"
 see (`function corresponding`,
      `function anyPair`)
 shared Boolean everyPair<First,Second>(
@@ -101,7 +113,13 @@ shared Boolean everyPair<First,Second>(
  function|selecting]], or `false` otherwise. If one of the
  streams is longer than the other, simply ignore additional 
  elements of the longer stream with no pair in the other 
- stream. If either stream is empty, return `false`."
+ stream. If either stream is empty, return `false`.
+ 
+ For any given streams `xs` and `ys`, and predicate function 
+ `p`, `anyPair()` may be defined in terms of 
+ [[Iterable.any]], [[zipPairs]], and [[unflatten]]:
+ 
+     anyPair(p, xs, ys) == zipPairs(xs, ys).any(unflatten(p))"
 see (`function everyPair`)
 shared Boolean anyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
@@ -124,7 +142,13 @@ shared Boolean anyPair<First,Second>(
  elements of the given streams in turn. If one of the 
  streams is longer than the other, simply ignore additional 
  elements of the longer stream with no pair in the other 
- stream."
+ stream.
+ 
+ For any given streams `xs` and `ys`, initial value `z`, and
+ combining function `f`, `foldPairs()` may be defined in 
+ terms of [[Iterable.fold]], [[zipPairs]], and [[unflatten]]:
+ 
+     foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z, unflatten(f))"
 shared Result foldPairs<Result,First,Second>(
     Result initial,
     "The accumulating function to apply to each pair of 

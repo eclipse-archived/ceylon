@@ -266,8 +266,24 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the results of applying 
-     the given [[mapping|collecting]] to the elements of to 
+     the given [[mapping|collecting]] to the elements of 
      this stream.
+     
+     For any empty stream, `map()` returns an empty stream:
+     
+         {}.map(f) == {}
+     
+     For any nonempty stream `it`, and mapping function `f`,
+     the result of `map()` may be obtained according to this
+     recursive definition:
+     
+         it.map(f).first == f(it.first)
+         it.map(f).rest == it.rest.map(f)
+     
+     Alternatively, and in practice, `map()` may be defined 
+     by this comprehension:
+     
+         it.map(f) == { for (e in it) f(e) }
      
      For example, the expression
      
@@ -315,6 +331,22 @@ shared interface Iterable<out Element, out Absent=Null>
     "Produces a stream containing the elements of this 
      stream that satisfy the given [[predicate 
      function|selecting]].
+     
+     For any empty stream, `filter()` returns an empty 
+     stream:
+     
+         {}.filter(p) == {}
+     
+     For any nonempty stream `it`, and predicate `p`, the 
+     result of `filter()` may be obtained according to this
+     recursive definition:
+     
+         it.filter(p) == { if (p(it.first)) it.first }.chain(it.rest.filter(f))
+     
+     Alternatively, and in practice, `filter()` may be 
+     defined by this comprehension:
+     
+         it.filter(p) == { for (e in it) if (p(e)) e };
      
      For example, the expression
      
@@ -585,10 +617,13 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produce a new [[sequence|Sequential]] containing the 
-     results of applying the [[given mapping|collecting]] to
+     results of applying the given [[mapping|collecting]] to
      the elements of this stream.
      
-     This operation is an eager counterpart to [[map]]."
+     This operation is an eager counterpart to [[map]]. For
+     any stream `it`, and mapping `f`:
+     
+         it.collect(f) == [*it.map(f)]"
     see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
@@ -600,7 +635,10 @@ shared interface Iterable<out Element, out Absent=Null>
      [[predicate function|selecting]], in the order in 
      which they occur in this stream.
      
-     This operation is an eager counterpart to [[filter]]."
+     This operation is an eager counterpart to [[filter]]. 
+     For any stream `it`, and predicate `p`:
+     
+         it.select(p) == [*it.filter(p)]"
     see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
