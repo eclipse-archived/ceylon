@@ -1104,16 +1104,26 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "For example, the expression
+    "A stream that contains the given [[element]] interposed
+     between blocks of [[step]] elements of this stream. The
+     resulting stream starts with the [[first]] element of 
+     this stream and ends with the [[last]] element of this
+     stream. Elements of this stream occur in the resulting
+     stream in the same order they occur in this stream.
+     
+     For example, the expression
      
          String(\"hello\".interpose(' '))
      
      evaluates to the string `\"h e l l o\"`."
+    throws (`class AssertionError`, "if `step<1`")
+    see (`function interleave`)
     shared default {Element|Other*} interpose<Other>(Other element,
         "The step size that determines how often the given
-         [[element]] occurs in the resulting stream. If
-         `step==1`, the `element` occurs at every second
-         position."
+         [[element]] occurs in the resulting stream. The 
+         `element` occurs after each block of size `step` of 
+         elements of this stream. If `step==1`, the `element` 
+         occurs at every second position."
         Integer step=1) {
         "step must be strictly positive"
         assert (step>=1);
@@ -1128,6 +1138,8 @@ shared interface Iterable<out Element, out Absent=Null>
                 }
             }
             empty => outer.empty;
+            first => outer.first;
+            last => outer.last;
             shared actual Iterator<Element|Other> iterator() {
                 value iter = outer.iterator();
                 object iterator satisfies Iterator<Element|Other> {
