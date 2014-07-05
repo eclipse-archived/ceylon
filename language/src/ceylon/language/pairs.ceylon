@@ -10,7 +10,14 @@
  
      mapPairs(fun, xs, ys)[i] == fun(xs[i], ys[i])
  
- for every `0<=i<smallest(xs.size,ys.size)`."
+ for every `0<=i<smallest(xs.size,ys.size)`.
+ 
+ For example the expression
+ 
+     mapPairs((Float x, Float y) => (x^2+y^2)^0.5, 
+             {1.0, 2.0, 1.0}, {1.0, 1.0, 2.0})
+     
+ evaluates to the stream `{ 1.0, 3.0, 3.0 }`."
 shared Iterable<Result,FirstAbsent|SecondAbsent> 
 mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
     "The mapping function to apply to the pair of elements."

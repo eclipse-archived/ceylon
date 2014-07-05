@@ -327,9 +327,10 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
-    "The result of applying the given [[accumulating 
-     function|accumulating]] to each element of this stream 
-     in turn.
+    "Beginning with a given [[initial value|initial]], apply 
+     the given [[combining function|accumulating]] to each 
+     element of this stream in turn, progressively 
+     accumulating a single result.
      
      For example, the expression
      
@@ -349,9 +350,10 @@ shared interface Iterable<out Element, out Absent=Null>
         return partial;
     }
     
-    "The result of applying the given [[accumulating 
-     function|accumulating]] to each element of this stream 
-     in turn.
+    "Beginning with the [[first]] element of this stream,
+     apply the given [[combining function|accumulating]] to 
+     each element of this stream in turn, progressively
+     accumulating a single result.
      
      For example, the expression
      
@@ -378,18 +380,32 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "The stream of results obtained by iteratively applying
-     the given [[accumulating|accumulating]] function to
-     each element of this iterable in turn.
+    "The stream of intermediate results obtained by 
+     beginning with a given [[initial value|initial]] and
+     iteratively applying the given 
+     [[combining function|accumulating]] to each element of 
+     this stream in turn.
      
-         x.scan(z, f) == { z, f(z, x[0]), f(f(z, x[0]), x[1]), ... }
+     For a given stream `it`, initial value `z`, combining
+     function `f`, the first value of the resulting stream
+     is `z`:
+     
+         it.scan(z, f).first == z
+     
+     subsequent values are obtained according to the 
+     following recursive definition:
+     
+         it.scan(z, f).getFromFirst(n+1) 
+             == f(it.scan(z, f).getFromFirst(n), it.getFromFirst(n))
+     
+     for any integer `n>0`.
      
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         x.scan(z, f)[i] == x.taking(i).fold(z, f)
-         x.scan(z, f).last == x.fold(z, f)
-         x.scan(z, f).first == {}.fold(z, f) == z
+         it.scan(z, f).getFromFirst(i) == it.taking(i).fold(z, f)
+         it.scan(z, f).last == it.fold(z, f)
+         it.scan(z, f).first == {}.fold(z, f) == z
      
      For example, the expression
      
