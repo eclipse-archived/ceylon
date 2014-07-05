@@ -1104,7 +1104,57 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-   "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
+    "For example, the expression
+     
+         String(\"hello\".interpose(' '))
+     
+     evaluates to the string `\"h e l l o\"`."
+    shared default {Element|Other*} interpose<Other>(Other element,
+        "The step size that determines how often the given
+         [[element]] occurs in the resulting stream. If
+         `step==1`, the `element` occurs at every second
+         position."
+        Integer step=1) {
+        "step must be strictly positive"
+        assert (step>=1);
+        object interposed satisfies Iterable<Element|Other,Absent> {
+            shared actual Integer size {
+                value outerSize = outer.size;
+                if (outerSize>0) {
+                    return outerSize + (outerSize-1)/step;
+                }
+                else {
+                    return 0;
+                }
+            }
+            empty => outer.empty;
+            shared actual Iterator<Element|Other> iterator() {
+                value iter = outer.iterator();
+                object iterator satisfies Iterator<Element|Other> {
+                    variable value current = iter.next();
+                    variable value count = 0;
+                    shared actual Element|Other|Finished next() {
+                        if (!is Finished curr=current) {
+                            if ((step+1).divides(++count)) {
+                                return element;
+                            }
+                            else {
+                                current = iter.next();
+                                return curr;
+                            }
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
+        return interposed;
+    }
+    
+    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
      stream, or the string `\"{}\"` if this stream is empty. 

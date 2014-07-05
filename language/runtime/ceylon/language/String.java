@@ -1629,6 +1629,22 @@ public final class String
         return instance(value).follow($reifiedOther, other);    
     }
     
+    @Ignore
+    @SuppressWarnings("rawtypes")
+    public static <Other> Iterable 
+    interpose(@Ignore TypeDescriptor $reifiedOther, 
+            java.lang.String value, Other other) {
+        return instance(value).interpose($reifiedOther, other);    
+    }
+    
+    @Ignore
+    @SuppressWarnings("rawtypes")
+    public static <Other> Iterable 
+    interpose(@Ignore TypeDescriptor $reifiedOther, 
+            java.lang.String value, Other other, long step) {
+        return instance(value).interpose($reifiedOther, other, step);    
+    }
+    
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> list, long from, long length) {
