@@ -2,7 +2,10 @@
  according to the `Comparable` value returned by the given 
  [[comparable]] function.
  
-      \"Hello World!\".sort(byIncreasing(Character.lowercased))"
+      \"Hello World!\".sort(byIncreasing(Character.lowercased))
+ 
+ This function is intended for use with [[Iterable.sort]]
+ and [[Iterable.max]]."
 see (`function byDecreasing`)
 shared Comparison byIncreasing<Element,Value>
             (Value comparable(Element e))
