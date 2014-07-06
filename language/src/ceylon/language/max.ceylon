@@ -1,17 +1,27 @@
 "Given a stream of [[Comparable]] values, return the largest 
- value in the stream, or `null` if the stream is empty."
+ value in the stream, or `null` if the stream is empty.
+ 
+ For any nonempty stream `it`, `max(it)` evaluates to the 
+ first element of `it` such that for every element `e` of 
+ `it`, `max(it) >= e`.
+ 
+ Note that [[Iterable.max]] may be used to find the largest 
+ value in any stream, as determined by a given comparator 
+ function."
 see (`interface Comparable`, 
      `function min`, 
-     `function largest`)
-shared Absent|Value max<Value,Absent>(Iterable<Value,Absent> values) 
+     `function largest`,
+     `function Iterable.max`)
+shared Absent|Value max<Value,Absent>
+        (Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>
         given Absent satisfies Null {
     value it = values.iterator();
     if (!is Finished first = it.next()) {
-        variable value max=first;
+        variable value max = first;
         while (!is Finished val = it.next()) {
             if (val>max) {
-                max=val;
+                max = val;
             }
         }
         return max;

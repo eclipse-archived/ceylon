@@ -37,7 +37,18 @@
    
    (These possibilities are expressed by the enumerated
    instances [[smaller]], [[larger]], and [[equal]] of
-   `Comparison`.)"""
+   `Comparison`.)
+   
+   The order imposed by `Comparable` is sometimes called the
+   _natural order_ of a type, to reflect the fact that any
+   function of type `Comparison(T,T)` might determine a 
+   different order. Thus, some order-related operations come 
+   in two flavors: a flavor that depends upon the natural 
+   order, and a flavor which accepts an arbitrary comparator 
+   function. Examples are:
+   
+   - [[sort]] vs [[Iterable.sort]] and
+   - [[max]] vs [[Iterable.max]]."""
 see (`class Comparison`)
 by ("Gavin")
 shared interface Comparable<in Other> of Other 

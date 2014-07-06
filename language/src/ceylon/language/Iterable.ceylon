@@ -547,6 +547,40 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
+    "Return the largest value in the stream, as measured by
+     the given [[comparator function|comparing]] imposing a 
+     partial order upon the elements of the stream, or `null`
+     if this stream is empty.
+     
+     For any nonempty stream `it`, and comparator function 
+     `c`, `it.max(c)` evaluates to the first element of `it` 
+     such that for every element `e` of `it`, 
+     `c(e, it.max(c)) != larger`.
+     
+     Note that the toplevel functions [[ceylon.language::max]]
+     and [[ceylon.language::min]] may be used to find the  
+     largest and smallest values in a stream of [[Comparable]] 
+     values, according to the natural order of its elements."
+    shared default Element|Absent max(
+            "The function comparing pairs of elements."
+            Comparison comparing(Element x, Element y)) {
+        value it = iterator();
+        if (!is Finished first = it.next()) {
+            variable value max = first;
+            while (!is Finished val = it.next()) {
+                if (comparing(val,max)==larger) {
+                    max = val;
+                }
+            }
+            return max;
+        }
+        else {
+            "iterable must be empty"
+            assert (is Absent null);
+            return null;
+        }
+    }
+    
     "Given a [[method]] of the element type [[Element]], 
      return a function that, when supplied with a list of 
      method arguments, produces a new iterable object that 
@@ -600,7 +634,11 @@ shared interface Iterable<out Element, out Absent=Null>
      evaluates to the sequence 
      `[ , !, d, e, H, l, l, l, o, o, r, W].`
      
-     This operation is eager by nature."
+     This operation is eager by nature.
+     
+     Note that the toplevel function [[ceylon.language::sort]] 
+     may be used to sort a stream of [[Comparable]] values 
+     according to the natural order of its elements."
     see (`function byIncreasing`, 
          `function byDecreasing`)
     shared default Element[] sort(

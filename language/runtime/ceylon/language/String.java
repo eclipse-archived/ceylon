@@ -1481,6 +1481,12 @@ public final class String
             return instance(value).sort(f);
         }
     }
+    
+    @Ignore
+    public static Character max(java.lang.String value, 
+            Callable<? extends Comparison> comparing) {
+        return instance(value).max(comparing);
+    }
 
     @Ignore
     public static Iterable<? extends Integer, ?> 
