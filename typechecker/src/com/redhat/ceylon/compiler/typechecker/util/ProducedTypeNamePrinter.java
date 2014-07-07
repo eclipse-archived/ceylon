@@ -66,6 +66,18 @@ public class ProducedTypeNamePrinter {
     protected boolean printFullyQualified() {
         return printFullyQualified;
     }
+    
+    protected String lt() {
+        return "<";
+    }
+
+    protected String gt() {
+        return ">";
+    }
+    
+    protected String amp() {
+        return "&";
+    }
 
     public String getProducedTypeName(ProducedType pt, Unit unit) {
         if (pt.getDeclaration()==null) {
@@ -77,7 +89,7 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateOptional(pt)) {
                     ProducedType dt = pt.eliminateNull();
                     if (!isPrimitiveAbbreviatedType(dt)) {
-                        return "<" + getProducedTypeName(dt, unit) + ">?";
+                        return lt() + getProducedTypeName(dt, unit) + gt() + "?";
                     }
                     else {
                         return getProducedTypeName(dt, unit) + "?";
@@ -89,7 +101,7 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateSequential(pt)) {
                     ProducedType it = u.getIteratedType(pt);
                     if (!isPrimitiveAbbreviatedType(it)) {
-                        return "<" + getProducedTypeName(it, unit) + ">[]";
+                        return lt() + getProducedTypeName(it, unit) + gt() + "[]";
                     }
                     else {
                         return getProducedTypeName(it, unit) + "[]";
@@ -98,7 +110,7 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateSequence(pt)) {
                     ProducedType it = u.getIteratedType(pt);
                     if (!isPrimitiveAbbreviatedType(it)) {
-                        return "[<" + getProducedTypeName(it, unit) + ">+]";
+                        return "[" + lt() + getProducedTypeName(it, unit) + gt() + "+]";
                     }
                     else {
                         return "[" + getProducedTypeName(it, unit) + "+]";
@@ -111,16 +123,17 @@ public class ProducedTypeNamePrinter {
                     	return "{}";
                     }
                     String etn = getProducedTypeName(it, unit);
-                    String many = nt.isNothing() ? "+":"*";
+                    String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it)) {
                         return "{" + etn + many + "}";
                     }
                     else {
-                        return "{<" + etn + ">" + many + "}";
+                        return "{" + lt() + etn + gt() + many + "}";
                     }
                 }
                 if (abbreviateEntry(pt)) {
-                    return getProducedTypeName(u.getKeyType(pt), unit) + "->"
+                    return getProducedTypeName(u.getKeyType(pt), unit) + 
+                            "-" + gt()
                             + getProducedTypeName(u.getValueType(pt), unit);
                 }
                 if (abbreviateCallable(pt)) {
@@ -129,7 +142,7 @@ public class ProducedTypeNamePrinter {
                     String argtypes = argtypes(tal.get(1), unit);
                     if (rt!=null && argtypes!=null) {
                         if (!isPrimitiveAbbreviatedType(rt)) {
-                            return "<" + getProducedTypeName(rt, unit) + ">" + 
+                            return lt() + getProducedTypeName(rt, unit) + gt() + 
                                     "(" + argtypes + ")";
                         }
                         else {
@@ -147,36 +160,48 @@ public class ProducedTypeNamePrinter {
             }
             if (pt.getDeclaration() instanceof UnionType) {
                 StringBuilder name = new StringBuilder();
+                boolean first = true;
                 for (ProducedType caseType: pt.getCaseTypes()) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        name.append("|");
+                    }
                     if (caseType==null) {
                         name.append("unknown");
                     }
                     else if (printAbbreviated() && abbreviateEntry(caseType)) {
-                        name.append("<").append(getProducedTypeName(caseType, unit)).append(">");
+                        name.append(lt()).append(getProducedTypeName(caseType, unit)).append(gt());
                     }
                     else {
                         name.append(getProducedTypeName(caseType, unit));
                     }
-                    name.append("|");
                 }
-                return name.substring(0,name.length()>0?name.length()-1:0);
+                return name.toString();
             }
             else if (pt.getDeclaration() instanceof IntersectionType) {
                 StringBuilder name = new StringBuilder();
+                boolean first = true;
                 for (ProducedType satisfiedType: pt.getSatisfiedTypes()) {
+                    if (first) {
+                        first = false;
+                    }
+                    else {
+                        name.append(amp());
+                    }
                     if (satisfiedType==null) {
                         name.append("unknown");
                     }
                     else if (printAbbreviated() && abbreviateEntry(satisfiedType) || 
                             satisfiedType.getDeclaration() instanceof UnionType) {
-                        name.append("<").append(getProducedTypeName(satisfiedType, unit)).append(">");
+                        name.append(lt()).append(getProducedTypeName(satisfiedType, unit)).append(gt());
                     }
                     else {
                         name.append(getProducedTypeName(satisfiedType, unit));
                     }
-                    name.append("&");
                 }
-                return name.substring(0,name.length()>0?name.length()-1:0);
+                return name.toString();
             }
             else if (pt.getDeclaration() instanceof TypeParameter) {
                 StringBuilder name = new StringBuilder();
@@ -354,7 +379,7 @@ public class ProducedTypeNamePrinter {
                             return etn + "*";
                         }
                         else {
-                            return "<" + etn + ">*";
+                            return lt() + etn + gt() + "*";
                         }
                     }
                 }
@@ -366,7 +391,7 @@ public class ProducedTypeNamePrinter {
                             return etn + "+";
                         }
                         else {
-                            return "<" + etn + ">+";
+                            return lt() + etn + gt() + "+";
                         }
                     }
                 }
@@ -397,12 +422,12 @@ public class ProducedTypeNamePrinter {
 	            TypeDeclaration qtd = qt.getDeclaration();
 				if (qtd instanceof IntersectionType ||
 					qtd instanceof UnionType) {
-					ptn.append("<");
+					ptn.append(lt());
 	            }
                 ptn.append(getProducedTypeName(qt, unit));
     			if (qtd instanceof IntersectionType ||
 					qtd instanceof UnionType) {
-					ptn.append(">");
+					ptn.append(gt());
 	            }
     			ptn.append(".");
     			fullyQualified = false;
@@ -412,7 +437,7 @@ public class ProducedTypeNamePrinter {
         printDeclaration(ptn, pt.getDeclaration(), fullyQualified, unit);
 
         if (printTypeParameters() && !pt.getTypeArgumentList().isEmpty()) {
-            ptn.append("<");
+            ptn.append(lt());
             boolean first = true;
             for (ProducedType t: pt.getTypeArgumentList()) {
                 if (first) {
@@ -428,7 +453,7 @@ public class ProducedTypeNamePrinter {
                     ptn.append(getProducedTypeName(t, unit));
                 }
             }
-            ptn.append(">");
+            ptn.append(gt());
         }
         return ptn.toString();
     }
