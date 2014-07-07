@@ -1125,12 +1125,6 @@ public abstract class AbstractTransformer implements Transformation {
         return type != null && type.isExactly(typeFact.getExceptionDeclaration().getType());
     }
     
-    boolean willEraseToError(ProducedType type) {
-        type = simplifyType(type);
-        TypeDeclaration decl = type.getDeclaration();
-        return decl == typeFact.getErrorDeclaration();
-    }
-    
     boolean willEraseToThrowable(ProducedType type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
@@ -1471,19 +1465,10 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().exceptionType);
             }
-        } else if (willEraseToError(type)) {
-            if ((flags & JT_CLASS_NEW) != 0
-                    || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().ceylonErrorType);
-            } else if ((flags & JT_CATCH) != 0) {
-                return make().Type(syms().errorType);
-            } else {
-                return make().Type(syms().errorType);
-            }
         } else if (willEraseToThrowable(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().throwableType);
+                return makeIdent(syms().ceylonThrowableType);
             } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().throwableType);
             } else {
