@@ -208,7 +208,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
     private static final TypeMirror EXCEPTION_TYPE = simpleCeylonObjectType("java.lang.Exception");
     private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
-    private static final TypeMirror CEYLON_ERROR_TYPE = simpleCeylonObjectType("ceylon.language.Error");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
@@ -1278,9 +1277,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else if ("java.lang.Throwable".equals(typeName)) {
                     // FIXME: this being here is highly dubious
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Throwable", declarationType);
-                } else if ("java.lang.Error".equals(typeName)) {
-                    // FIXME: this being here is highly dubious
-                    return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Error", declarationType);
                 } else if ("java.lang.Exception".equals(typeName)) {
                     // FIXME: this being here is highly dubious
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
@@ -3933,8 +3929,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if (sameType(type, OBJECT_TYPE)) {
             return CEYLON_OBJECT_TYPE;
             
-        } else if (sameType(type, ERROR_TYPE)) {
-            return CEYLON_ERROR_TYPE;
+        } else if (sameType(type, THROWABLE_TYPE)) {
+            return CEYLON_THROWABLE_TYPE;
             
         } else if (sameType(type, EXCEPTION_TYPE)) {
             return CEYLON_EXCEPTION_TYPE;
