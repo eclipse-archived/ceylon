@@ -139,14 +139,14 @@ public class CeylonTestJsTool extends RepoUsingTool {
                 if (moduleAndVersion == null) {
                     return;
                 }
-                args.add("__module");
+                args.add("--module");
                 args.add(moduleAndVersion);
                 moduleAndVersionList.add(moduleAndVersion);
             }
         }
         if (testList != null) {
             for (String test : testList) {
-                args.add("__test");
+                args.add("--test");
                 args.add(test);
             }
         }
@@ -164,17 +164,17 @@ public class CeylonTestJsTool extends RepoUsingTool {
         }
         
         if (tap) {
-            args.add("__tap");
+            args.add("--tap");
         }
         
         if (System.getProperties().containsKey(COLOR_WHITE)
                 && System.getProperties().containsKey(COLOR_GREEN)
                 && System.getProperties().containsKey(COLOR_RED)) {
-            args.add("__" + COLOR_WHITE);
+            args.add("--" + COLOR_WHITE);
             args.add(System.getProperty(COLOR_WHITE));
-            args.add("__" + COLOR_GREEN);
+            args.add("--" + COLOR_GREEN);
             args.add(System.getProperty(COLOR_GREEN));
-            args.add("__" + COLOR_RED);
+            args.add("--" + COLOR_RED);
             args.add(System.getProperty(COLOR_RED));
         }
 
