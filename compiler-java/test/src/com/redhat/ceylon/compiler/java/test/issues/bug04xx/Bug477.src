@@ -345,6 +345,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public T max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (T)$ceylon$language$Iterable$this$.max(comparing);
+    }
+    
+    @.java.lang.Override
     public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
         return $ceylon$language$Iterable$this$.spread($reified$Result, $reified$Args, method);
     }
@@ -443,6 +448,31 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
     }
+    
+    @.java.lang.Override
+    public final <Other>long interpose$step(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return $ceylon$language$Iterable$this$.interpose$step($reified$Other, element);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> interpose(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return (
+            let
+            {
+                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+            }
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
+        );
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable interpose(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
+    }
+    
+    private <Other>.ceylon.language.Iterable interpose$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
+    }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
@@ -498,9 +528,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$3 = hash;
+                long $ceylontmp$hash$4 = hash;
             }
-            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
+            returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
         );
     }
     
@@ -639,10 +669,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$4 = patch$from($reified$Other, list);
-                long $ceylontmp$length$5 = patch$length($reified$Other, list, $ceylontmp$from$4);
+                long $ceylontmp$from$5 = patch$from($reified$Other, list);
+                long $ceylontmp$length$6 = patch$length($reified$Other, list, $ceylontmp$from$5);
             }
-            returning patch$canonical$($reified$Other, list, $ceylontmp$from$4, $ceylontmp$length$5);
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$5, $ceylontmp$length$6);
         );
     }
     
@@ -656,9 +686,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$6 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$7 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$6);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$7);
         );
     }
     
@@ -859,6 +889,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public T max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (T)$ceylon$language$Iterable$this$.max(comparing);
+    }
+    
+    @.java.lang.Override
     public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method) {
         return $ceylon$language$Iterable$this$.spread($reified$Result, $reified$Args, method);
     }
@@ -957,6 +992,31 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this$.getCycled();
     }
+    
+    @.java.lang.Override
+    public final <Other>long interpose$step(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return $ceylon$language$Iterable$this$.interpose$step($reified$Other, element);
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> interpose(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return (
+            let
+            {
+                long $ceylontmp$step$8 = interpose$step($reified$Other, element);
+            }
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$8);
+        );
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable interpose(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
+    }
+    
+    private <Other>.ceylon.language.Iterable interpose$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
+    }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
@@ -1012,9 +1072,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$7 = hash;
+                long $ceylontmp$hash$9 = hash;
             }
-            returning $ceylontmp$hash$7 ^ $ceylontmp$hash$7 >>> 32;
+            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
         );
     }
     
