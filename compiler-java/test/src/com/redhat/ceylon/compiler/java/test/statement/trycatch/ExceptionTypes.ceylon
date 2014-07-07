@@ -23,8 +23,8 @@ class ExceptionTypesException(String? description=null, Throwable? cause=null)
     
 }
 
-class ExceptionTypesError(String? description=null, Throwable? cause=null) 
-        extends Error(description, cause) {
+class ExceptionTypesAssertionError() 
+        extends AssertionError("") {
     
 }
 void exceptionTypesUsage(Integer i, Throwable f()) {
@@ -37,13 +37,13 @@ void exceptionTypesUsage(Integer i, Throwable f()) {
         throw Exception();
     }
     case (2) {
-        throw Error();
+        throw AssertionError("");
     }
     case (3) {
         throw ExceptionTypesException();
     }
     case (4) {
-        throw ExceptionTypesError();
+        throw ExceptionTypesAssertionError();
     }
     else {}
     
@@ -63,13 +63,6 @@ void exceptionTypesUsage(Integer i, Throwable f()) {
             
         }
     }
-    case (12) {
-        try {
-            f();
-        } catch (Error t) {
-            
-        }
-    }
     case (13) {
         try {
             f();
@@ -80,17 +73,17 @@ void exceptionTypesUsage(Integer i, Throwable f()) {
     case (14) {
         try {
             f();
-        } catch (ExceptionTypesError t) {
+        } catch (ExceptionTypesAssertionError t) {
             
         }
     }
     else {
     }
-    // Because Error is erased to j.l.Error we need to check we're accessing its type descriptor OK
-    value errors = [Error(), Error()];
+    
+    value throwables = [f(), f()];
     value exceptions = [Exception(), Exception()];
-    value errorsAndExceptions = [Error(), Exception()];
-    value subclasses = [ExceptionTypesException(), ExceptionTypesError()];
+    value throwablesAndExceptions = [f(), Exception()];
+    value subclasses = [ExceptionTypesException(), ExceptionTypesAssertionError()];
     
     
 }
@@ -105,23 +98,15 @@ void exceptionTypeAssignment() {
     t = jt.giveRuntimeException;
     t = jt.giveNpe;
     
-    variable Error er;
-    er = jt.giveError;
-    er = jt.giveOome;
-    
     variable Exception ex;
     ex = jt.giveException;
     ex = jt.giveIoException;
     ex = jt.giveRuntimeException;
     ex = jt.giveNpe;
     
-    jt.takeThrowable(Error());
-    jt.takeThrowable(ExceptionTypesError());
+    jt.takeThrowable(ExceptionTypesAssertionError());
     jt.takeThrowable(Exception());
     jt.takeThrowable(ExceptionTypesException());
-    
-    jt.takeError(Error());
-    jt.takeError(ExceptionTypesError());
     
     jt.takeException(Exception());
     jt.takeException(ExceptionTypesException());

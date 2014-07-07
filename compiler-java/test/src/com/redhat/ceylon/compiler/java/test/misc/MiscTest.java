@@ -93,7 +93,7 @@ public class MiscTest extends CompilerTest {
                 String filename = pathname.getName();
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
                 for (String s : new String[]{"Boolean", "Integer", "Float", "Character", "String", 
-                        "Array", "Tuple", "Exception", "Error", "Callable", 
+                        "Array", "Tuple", "Exception", "AssertionError", "Callable", 
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "language", "metamodel", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 

@@ -22,7 +22,8 @@ void exceptionStrings() {
     Exception ex = Exception("abc");
     assert("ceylon.language.Exception \"abc\"" == ex.string);
     assert("abc" == ex.message);
-    Error er = Error("abc");
+    AssertionError er = AssertionError("abc");
     assert("abc" == er.message);
-    assert("ceylon.language.Error \"abc\"" == er.string);
+    print(er.string);
+    assert("ceylon.language.AssertionError \"abc\"" == er.string);
 }

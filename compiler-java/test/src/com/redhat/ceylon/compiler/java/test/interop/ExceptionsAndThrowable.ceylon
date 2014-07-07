@@ -17,11 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { RuntimeException }
+import java.lang { RuntimeException, Error }
 import java.io { IOException }
 
 @noanno
 shared class MyException() extends Exception(){}
+@noanno
+shared class MyError() extends Error(){}
 
 @noanno
 shared void testExceptions(Exception param){

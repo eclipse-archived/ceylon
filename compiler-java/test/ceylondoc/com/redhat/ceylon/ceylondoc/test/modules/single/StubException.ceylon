@@ -24,5 +24,5 @@ shared class StubException()
 
 "This is `StubError`"
 shared class StubError()
-        extends Error("stub error", null) {
+        extends AssertionError("stub error") {
 }

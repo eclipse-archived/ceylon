@@ -28,18 +28,19 @@ class ExceptionAttributes() {
         String message = e.message;
         
         variable Throwable[] s = e.suppressed;
-        e.addSuppressed(Error());
-        MyError me = MyError();
-        me.addSuppressed(Error());
+        e.addSuppressed(Exception());
+        e.addSuppressed((Exception() of Throwable));
+        MyThrowable me = MyThrowable();
+        me.addSuppressed(me);
         s = me.suppressed;
     }
     
-    class MyError() extends Error() {
-        class MyInnerError() extends Error() {
+    class MyThrowable() extends Exception() {
+        class MyInnerThrowable() extends Exception() {
             void m() {
                 value x = this.suppressed;
                 value y = super.suppressed;
-                value y2 = (super of Error).suppressed;
+                value y2 = (super of Throwable).suppressed;
                 value z = outer.suppressed;
             }
         }

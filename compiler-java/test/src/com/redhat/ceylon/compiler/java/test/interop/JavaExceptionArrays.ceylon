@@ -20,17 +20,17 @@
 import java.io{ IOException }
 import java.lang{
     //JException=Exception,
-    //JError = Error,
+    JError = Error,
     JAssertionError = AssertionError
 }
 
-void javaExceptionArrays() {
+void javaExceptionArrays(Throwable t(String m)=>Exception(m)) {
     value factory = JavaExceptionsAndThrowable();
     value cex = Exception("");
     value jex = factory.newException("");
     value ioex = IOException("");
-    value cerr = Error("");
-    value jerr = factory.newError("");
+    value cthrow = t("");
+    value jerr = JError("");
     value aerr = JAssertionError("");
     
     
@@ -39,8 +39,8 @@ void javaExceptionArrays() {
     assert(exists t1=throwables[0], t1 == jex);
     throwables.set(0, ioex);
     assert(exists t2=throwables[0], t2 == ioex);
-    throwables.set(0, cerr);
-    assert(exists t3=throwables[0], t3 == cerr);
+    throwables.set(0, cthrow);
+    assert(exists t3=throwables[0], t3 == cthrow);
     throwables.set(0, jerr);
     assert(exists t4=throwables[0], t4 == jerr);
     throwables.set(0, aerr);
@@ -54,14 +54,12 @@ void javaExceptionArrays() {
     
     Array<Exception> jexceptions = arrayOfSize<Exception>(1, jex);
     
-    Array<Error> errors = arrayOfSize<Error>(1, cerr);
-    errors.set(0, cerr);
-    assert(exists t23=errors[0], t23 == cerr);
+    Array<JError> errors = arrayOfSize<JError>(1, jerr);
     errors.set(0, jerr);
     assert(exists t24=errors[0], t24 == jerr);
     errors.set(0, aerr);
     assert(exists t25=errors[0], t25 == aerr);
     
-    Array<Error> jerrors = arrayOfSize<Error>(1, jerr);
+    Array<JError> jerrors = arrayOfSize<JError>(1, jerr);
     
 }

@@ -15,21 +15,22 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
         }
         final .java.lang.String message = .com.redhat.ceylon.compiler.java.Util.throwableMessage(e);
         .ceylon.language.Sequential<? extends .java.lang.Throwable> s = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(e);
-        e.addSuppressed(new .ceylon.language.Error());
-        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError me = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError();
-        me.addSuppressed(new .ceylon.language.Error());
+        e.addSuppressed(new .ceylon.language.Exception());
+        e.addSuppressed(new .ceylon.language.Exception());
+        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable me = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable();
+        me.addSuppressed(me);
         s = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(me);
     }
     
-    class MyError extends .ceylon.language.Error {
+    class MyThrowable extends .ceylon.language.Exception {
         
-        MyError() {
+        MyThrowable() {
             super();
         }
         
-        class MyInnerError extends .ceylon.language.Error {
+        class MyInnerThrowable extends .ceylon.language.Exception {
             
-            MyInnerError() {
+            MyInnerThrowable() {
                 super();
             }
             
@@ -37,18 +38,18 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> x = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(this);
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> y = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(super);
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> y2 = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(super);
-                final .ceylon.language.Sequential<? extends .java.lang.Throwable> z = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError.this);
+                final .ceylon.language.Sequential<? extends .java.lang.Throwable> z = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.this);
             }
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError.MyInnerError.class));
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.MyInnerThrowable.class));
             }
         }
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyError.class));
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.class));
         }
     }
     

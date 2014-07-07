@@ -37,10 +37,10 @@ shared class IsOperatorTest() {
     Anything io = io1;
     Anything nowt = null;
     
-    Throwable error = Error();
+    Throwable throwable = AssertionError("");
     Throwable exception = Exception();
-    Throwable myError {
-        object e extends Error(){}
+    Throwable myThrowable {
+        object e extends AssertionError(""){}
         return e;
     }
     Throwable myException {
@@ -118,16 +118,6 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        if (is Error error) {
-            
-        } else {
-            throw;
-        }
-        if (is Error x=myError) {
-            
-        } else {
-            throw;
-        }
         if (is Exception exception) {
             
         } else {
@@ -139,17 +129,10 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        if (is Error exception) {
+        if (is Exception throwable) {
             throw;
         }
-        if (is Error x=myException) {
-            throw;
-        }
-        
-        if (is Exception error) {
-            throw;
-        }
-        if (is Exception x=myError) {
+        if (is Exception x=myThrowable) {
             throw;
         }
     }
@@ -239,18 +222,6 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        b =  error is Error;
-        if (b) {
-            
-        } else {
-            throw;
-        }
-        b = myError is Error;
-        if (b) {
-            
-        } else {
-            throw;
-        }
         b = exception is Exception;
         if (b) {
             
@@ -264,25 +235,13 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        b = exception is Error;
+        b = throwable is Exception;
         if (b) {
             throw;
         }
-        b = myException is Error;
-        if (b) {
-            throw;
-        }
-        
-        b = error is Exception;
-        if (b) {
-            throw;
-        }
-        b = myError is Exception;
+        b = myThrowable is Exception;
         if (b) {
             throw;
         }
     }
- 
- 
-    
 }
