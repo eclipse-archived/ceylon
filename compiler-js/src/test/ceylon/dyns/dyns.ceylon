@@ -177,7 +177,6 @@ void nogo() {
         d.count++;
         d.count--;
         Boolean b = d.adult && d.male;
-        dynamic range = d.start..d.end;
         Boolean lt = d.age<10 || d.age>5 || d.age<=100 || d.age>=500;
         if (d.something == 5 || d.other != 10) {}
         d.name = null;
