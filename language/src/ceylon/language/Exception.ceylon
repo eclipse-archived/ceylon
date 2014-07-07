@@ -8,7 +8,7 @@
  conditions aren't completely unrecoverable from the point 
  of view of the program's generic exception handling 
  infrastructure. Therefore, they are best treated as 
- `Exception`s rather than [[Error]]s.
+ `Exception`s.
  
  A subclass of `Exception` represents a more specific kind 
  of problem, and may define additional attributes which 

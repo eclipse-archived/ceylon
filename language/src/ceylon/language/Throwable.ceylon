@@ -25,7 +25,7 @@ import ceylon.language { printTrace=printStackTrace }
  An instance of `Throwable` represents a problem, typically 
  an _unexpected failure_. Either:
  
- - an unrecoverable [[Error]], or
+ - a unrecoverable error in the program [[AssertionError]], or
  - a transient, and possibly-recoverable [[Exception]].
  
  The use of the exceptions facility to manage _expected 
@@ -40,7 +40,7 @@ import ceylon.language { printTrace=printStackTrace }
  nonexistence. On the other hand, failure to read from an
  already open file could result in an `Exception`."
 by ("Gavin", "Tom")
-shared native abstract class Throwable(description=null, cause=null) {
+shared abstract sealed native class Throwable(description=null, cause=null) {
     
     "The underlying cause of this exception."
     shared Throwable? cause;
