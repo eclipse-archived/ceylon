@@ -1,7 +1,7 @@
 class MyException() extends Exception("my exception", null) {}
 class OtherException() extends Exception("other exception", null) {}
-class MyError() extends Error("my error", null) {}
-class OtherError() extends Error("other error", null) {}
+class MyThrowable() extends Throwable("my throwable", null) {}
+class OtherThrowable() extends Throwable("other throwable", null) {}
 
 variable Integer sharedState = -1;
 
@@ -83,11 +83,11 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
-    catch (OtherError oe) {
-        fail("other error");
+    catch (OtherThrowable oe) {
+        fail("other throwable");
     }
-    catch (MyError oe) {
-        fail("my error");
+    catch (MyThrowable oe) {
+        fail("my throwable");
     }
     catch (MyException me) {
         caught=true;
@@ -98,7 +98,7 @@ shared void exceptions() {
     
     caught=false;
     try {
-        throw MyError();
+        throw MyThrowable();
     }
     catch (MyException oe) {
         fail("my exception");
@@ -106,12 +106,12 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
-    catch (OtherError oe) {
-        fail("other error");
+    catch (OtherThrowable oe) {
+        fail("other throwable");
     }
-    catch (MyError me) {
+    catch (MyThrowable me) {
         caught=true;
-        check(me.message=="my error", "exception message");
+        check(me.message=="my throwable", "exception message");
         check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
@@ -122,9 +122,6 @@ shared void exceptions() {
     }
     catch (OtherException oe) {
         fail("other exception");
-    }
-    catch (Error oe) {
-        fail("error");
     }
     catch (Exception me) {
         caught=true;
@@ -137,8 +134,8 @@ shared void exceptions() {
     try {
         throw MyException();
     }
-    catch (OtherError|MyError e) {
-        fail("error");
+    catch (OtherThrowable|MyThrowable e) {
+        fail("throwable");
     }
     catch (OtherException|MyException e) {
         caught=true;
@@ -157,8 +154,8 @@ shared void exceptions() {
     catch (OtherException|MyException e) {
         fail("any exception");
     }
-    catch (OtherError|MyError e) {
-        fail("any error");
+    catch (OtherThrowable|MyThrowable e) {
+        fail("any throwable");
     }
     catch (Exception me) {
         caught=true;

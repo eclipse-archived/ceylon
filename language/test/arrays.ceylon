@@ -123,8 +123,8 @@ shared void testArrays() {
     check("{ 3 }"==Array{1,2,3,4,5,6}.by(2).take(2).skip(1).string, "Array by 2 take 2 skip 1");
     
     value ae = AssertionError("");
-    value assertionErrors = arrayOfSize<Error>(2, ae);
-    value assertionErrors2 = Array<Error>([ae, ae]);
+    value assertionErrors = arrayOfSize<AssertionError>(2, ae);
+    value assertionErrors2 = Array<AssertionError>([ae, ae]);
     value throwables = arrayOfSize<Throwable>(2, ae);
     value throwables2 = Array<Throwable>([ae, ae]);
     check(assertionErrors == assertionErrors2, "assertionErrors == assertionErrors2");
