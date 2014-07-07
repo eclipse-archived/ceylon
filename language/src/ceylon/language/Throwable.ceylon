@@ -40,8 +40,7 @@ import ceylon.language { printTrace=printStackTrace }
  nonexistence. On the other hand, failure to read from an
  already open file could result in an `Exception`."
 by ("Gavin", "Tom")
-shared native abstract class Throwable(description=null, cause=null) 
-        of Exception | Error {
+shared native abstract class Throwable(description=null, cause=null) {
     
     "The underlying cause of this exception."
     shared Throwable? cause;

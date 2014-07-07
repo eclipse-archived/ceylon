@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Basic")
-@CaseTypes({"ceylon.language::Exception", "ceylon.language::Error"})
 public abstract class Throwable extends java.lang.Object {
 
     @Ignore

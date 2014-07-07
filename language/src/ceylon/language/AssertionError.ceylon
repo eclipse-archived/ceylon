@@ -2,5 +2,5 @@
  An instance is thrown when an assertion fails, that is, 
  when a condition in an `assert` statement evaluates to 
  false at runtime."
-shared class AssertionError(String message)
-        extends Error(message) {}
+shared native class AssertionError(String message)
+        extends Throwable(message) {}
