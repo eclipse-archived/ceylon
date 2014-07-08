@@ -1953,6 +1953,9 @@ public class GenerateJsVisitor extends Visitor
                 return 2;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                 Term _t = fromTerm;
+                if (_t instanceof Tree.InvocationExpression) {
+                    _t = ((Tree.InvocationExpression)_t).getPrimary();
+                }
                 //Don't box callables if they're not members or anonymous
                 if (_t instanceof Tree.MemberOrTypeExpression) {
                     final Declaration d = ((Tree.MemberOrTypeExpression)_t).getDeclaration();
