@@ -8,7 +8,7 @@ function getMember(name$3,$$$mptypes){
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
       return OpenFunction(this, m);
     } else if (mt==='c'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
-      return OpenClass(this, m);
+      return OpenClass$jsint(this, m);
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
       return OpenInterface(this, m);
     } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){

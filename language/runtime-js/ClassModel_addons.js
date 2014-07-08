@@ -19,7 +19,7 @@ atr$(ClassModel$meta$model.$$.prototype,'declaration',function(){
   var $$clase=this;
   if ($$clase._decl)return $$clase._decl;
   var mm = getrtmm$$($$clase.tipo);
-  $$clase._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
+  $$clase._decl = OpenClass$jsint(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
   return $$clase._decl;
 },undefined,function(){return{mod:$CCMM$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});
 ClassModel$meta$model.$$.prototype.equals=function(o){

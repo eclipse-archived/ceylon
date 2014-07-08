@@ -13,7 +13,7 @@ function members($$$mptypes){
       if (mt === 'm') {
         r.push(OpenFunction(this, m));
       } else if (mt==='c') {
-        r.push(OpenClass(this, m));
+        r.push(OpenClass$jsint(this, m));
       } else if (mt==='i') {
         r.push(OpenInterface(this, m));
       } else if (mt==='a'||mt==='g'||mt==='o') {

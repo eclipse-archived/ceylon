@@ -50,7 +50,7 @@ function typeLiteral$meta($$targs$$) {
     var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl.mt==='c' || mdl.mt==='o') {
-      return OpenClass(_pkg, t);
+      return OpenClass$jsint(_pkg, t);
     } else if (mdl['mt'] === 'i') {
       return OpenInterface(_pkg, t);
     } else if (mdl['mt'] === 'm') {
