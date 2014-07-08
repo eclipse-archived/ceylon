@@ -44,11 +44,5 @@
  
  This interface may not be implemented by user code."
 see (`class Tuple`)
-shared interface Callable<out Return, in Arguments> 
+shared native interface Callable<out Return, in Arguments> 
         given Arguments satisfies Anything[] {}
-
-"The identity function that always returns its argument."
-shared Value identity<Value>(Value argument) => argument;
-
-"A `void` function that does nothing."
-shared void noop(Anything* arguments) {}
