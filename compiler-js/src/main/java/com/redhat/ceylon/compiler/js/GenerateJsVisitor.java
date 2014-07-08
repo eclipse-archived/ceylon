@@ -1952,9 +1952,11 @@ public class GenerateJsVisitor extends Visitor
                 // conversion from Ceylon Float to native value
                 return 2;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
-                if (fromTerm instanceof Tree.MemberOrTypeExpression) {
-                    Declaration d = ((Tree.MemberOrTypeExpression)fromTerm).getDeclaration();
-                    if (!(d.isMember() || d.isAnonymous())) {
+                Term _t = fromTerm;
+                //Don't box callables if they're not members or anonymous
+                if (_t instanceof Tree.MemberOrTypeExpression) {
+                    final Declaration d = ((Tree.MemberOrTypeExpression)_t).getDeclaration();
+                    if (d != null && !(d.isClassOrInterfaceMember() || d.isAnonymous())) {
                         return 0;
                     }
                 }
