@@ -325,7 +325,7 @@ atr$($$openValue,'toplevel',function(){return this.toplevel_;},undefined,functio
     atr$($$openValue,'objectClass',function(){
       if (this.objectValue) {
         var _m=getrtmm$$(this.tipo);
-        if (_m && _m.$t && typeof(_m.$t.t)==='function')return OpenClass(this._pkg,_m.$t.t);
+        if (_m && _m.$t && typeof(_m.$t.t)==='function')return OpenClass$jsint(this._pkg,_m.$t.t);
       }
       return null;
     },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:ClassDeclaration$meta$declaration},{t:Null}]},$cont:OpenValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectClass']};});
@@ -370,132 +370,6 @@ atr$($$openSetter,'name',function(){return this.variable.name;},undefined,functi
 }
 ex$.OpenSetter=OpenSetter;
 $init$OpenSetter();
-
-//ClassDefinition OpenClass at X (47:0-70:0)
-function OpenClass(pkg, meta, that){
-    if (meta===undefined)throw Exception("Class reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-    $init$OpenClass();
-    if (that===undefined)that=new OpenClass.$$;
-    that._pkg = pkg;
-    var _mm=getrtmm$$(meta);
-    if (_mm === undefined) {
-      //it's a metamodel
-      that.meta=meta;
-      that.tipo=_findTypeFromModel(pkg,meta);
-      _mm = getrtmm$$(that.tipo);
-    } else {
-      //it's a type
-      that.tipo = meta;
-      that.meta = get_model(_mm);
-    }
-    that.name_=(that.meta&&that.meta.nm)||_mm.d[_mm.d.length-1];
-    that.toplevel_=_mm.$cont===undefined;
-    ClassDeclaration$meta$declaration(that);
-    return that;
-}
-OpenClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:ClassDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ClassDeclaration']};};
-function $init$OpenClass(){
-  if (OpenClass.$$===undefined){
-    initTypeProto(OpenClass,'ceylon.language.meta.declaration::OpenClass',Basic,ClassDeclaration$meta$declaration);
-    (function($$openClass){
-
-$$openClass.classApply=function(targs,$mptypes) {
-  var mm=this.tipo.$crtmm$;
-  if (mm.tp) {
-    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
-    //TODO generate targs
-  }
-  validate$params(mm.ps,$mptypes.Arguments$classApply,"Wrong number of Arguments for classApply");
-  return this.$_apply(targs,$mptypes);
-}
-$$openClass.memberClassApply=function(cont,targs,$mptypes){
-  var mm=this.tipo.$crtmm$;
-  if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
-    throw IncompatibleTypeException$meta$model("Incompatible Container specified");
-  if (!extendsType({t:this.tipo},$mptypes.Type$memberClassApply))
-    throw IncompatibleTypeException$meta$model("Incompatible Type specified");
-  var _t={t:this.tipo};
-  validate$typeparams(_t,mm.tp,targs);
-  validate$params(mm.ps,$mptypes.Arguments$memberClassApply,"Wrong number of Arguments for classApply");
-  var rv=AppliedMemberClass(this.tipo,{Container$MemberClass:{t:mm.$cont},Type$MemberClass:_t,Arguments$MemberClass:tupleize$params(mm.ps)});
-  if (_t.a)rv.$targs=_t.a;
-  return rv;
-}
-
-      atr$($$openClass,'string',function(){
-        return "class " + this.qualifiedName;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['$','Object']};}); 
-      atr$($$openClass,'anonymous',function(){
-        return this.meta.mt==='o';
-      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
-      atr$($$openClass,'abstract',function(){
-        return (getrtmm$$(this.tipo).pa & 256) > 0;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
-      atr$($$openClass,'$_final',function(){
-        return (getrtmm$$(this.tipo).pa & 32) > 0;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
-      atr$($$openClass,'annotation',function(){
-        return (getrtmm$$(this.tipo).pa & 512) > 0;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
-
-      //AttributeGetterDefinition openType at X (61:2-61:43)
-      atr$($$openClass,'openType',function(){
-        return FreeClass(this);
-      },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','openType']};});
-
-            $$openClass.getParameterDeclaration=function (name$15){
-      var pd=this.parameterDeclarations;
-      for (var i=0; i < pd.size; i++) {
-        if (name$6.equals(pd[i].name))return pd[i];
-      }
-      return null;
-            };
-            $$openClass.getParameterDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:FunctionOrValueDeclaration$meta$declaration}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String}}],$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','getParameterDeclaration']};};
-            
-            //AttributeDeclaration superclassDeclaration at X (68:2-68:86)
-            atr$($$openClass,'extendedType',function(){
-              var sc = this.tipo.$crtmm$['super'];
-              if (sc === undefined)return null;
-              var mm = getrtmm$$(sc.t);
-              var fc=FreeClass(OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
-              if (sc.a)fc.declaration._targs=sc.a;
-              return fc;
-            },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:OpenClassType$meta$declaration}]},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','extendedType']};});
-            
-            //AttributeDeclaration interfaceDeclarations at X (69:2-69:89)
-            atr$($$openClass,'satisfiedTypes',function(){
-              var ints = this.tipo.$crtmm$['satisfies'];
-              if (ints && ints.length) {
-                var rv = [];
-                for (var i=0; i < ints.length; i++) {
-                  var ifc = ints[i];
-                  var mm = getrtmm$$(ifc.t);
-                  var fi=FreeInterface(OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), ifc.t));
-                  if (ifc.a)fi.declaration._targs=ifc.a;
-                  rv.push(fi);
-                }
-                return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:OpenInterfaceType$meta$declaration}});
-              }
-              return getEmpty();
-            },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','satisfiedTypes']};});
-            atr$($$openClass,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','name']};});
-            atr$($$openClass,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','containingPackage']};});
-            atr$($$openClass,'containingModule',function(){return this._pkg.container;},undefined,function(){return{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','containingModule']};});
-            atr$($$openClass,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','toplevel']};});
-
-    atr$($$openClass,'qualifiedName',function(){
-      return qname$(this.tipo);
-    },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:OpenClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
-
-      $$openClass.equals=function(other) {
-        return is$(other, {t:OpenClass}) && other.tipo===this.tipo;
-      }
-    })(OpenClass.$$.prototype);
-  }
-  return OpenClass;
-}
-ex$.OpenClass=OpenClass;
-$init$OpenClass();
 
 //ClassDefinition OpenInterface at X (72:0-92:0)
 function OpenInterface(pkg, meta, that) {
@@ -552,7 +426,7 @@ atr$($$openInterface,'string',function(){
               var sc = this.tipo.$crtmm$['super'];
               if (sc === undefined)return null;
               var mm = getrtmm$$(sc.t);
-              return FreeClass(OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
+              return FreeClass(OpenClass$jsint(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
             },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:OpenClasType$meta$declaration}]},$cont:OpenInterface,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','extendedType']};});
             
             //AttributeDeclaration interfaceDeclarations at X (91:2-91:89)

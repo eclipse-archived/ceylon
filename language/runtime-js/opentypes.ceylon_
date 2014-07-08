@@ -77,50 +77,7 @@ class OpenVariable(shared actual String name, shared actual Package containingPa
 }
 class OpenSetter(shared actual VariableDeclaration variable) satisfies SetterDeclaration {}
 
-class OpenClass(shared actual String name, shared actual Package containingPackage) satisfies ClassDeclaration {
-  shared actual Boolean abstract { throw Exception("Unimplemented"); }
-  shared actual Boolean anonymous { throw Exception("Unimplemented"); }
-  shared actual Boolean final { throw Exception("unimplemented"); }
-  shared actual Boolean annotation { throw Exception("Unimplemented"); }
-  shared actual AppliedClass<Type, Arguments> classApply<Type=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
-        given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
 
-  shared actual MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
-        given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
-  shared actual AppliedClass<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments) { throw Exception("Unimplemented"); }
-  shared actual AppliedMember<Container, AppliedClassOrInterface<Type>> & AppliedClassOrInterface<Type> 
-    memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments) { throw Exception("Unimplemented"); }
-  shared actual Kind[] memberDeclarations<Kind>() 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
-  shared actual Kind? getMemberDeclaration<Kind>(String name) 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual OpenType openType { throw Exception("Unimplemented"); }
-  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("Unimplemented"); }
-  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("Unimplemented"); }
-
-  shared actual FunctionOrValueDeclaration[] parameterDeclarations { throw Exception("Unimplemented"); }
-  shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("Unimplemented"); }
-
-  shared actual OpenClassType? extendedType { throw Exception("Unimplemented"); }
-  shared actual OpenInterfaceType[] satisfiedTypes { throw Exception("Unimplemented"); }
-
-  shared actual Boolean actual { throw Exception("Unimplemented"); }
-  shared actual Boolean formal { throw Exception("Unimplemented"); }
-  shared actual Boolean default { throw Exception("Unimplemented"); }
-  shared actual Boolean shared { throw Exception("Unimplemented"); }
-  shared actual Boolean toplevel  { throw Exception("Unimplemented"); }
-  shared actual String qualifiedName { return "``containingPackage.name``::``name``"; }
-  shared actual Package|NestableDeclaration container { throw Exception("unimplemented"); }
-  shared actual Module containingModule => containingPackage.container;
-
-  shared actual OpenType[] caseTypes { throw Exception("Unimplemented"); }
-
-  shared actual Boolean isAlias { throw Exception("Unimplemented"); }
-}
 
 class OpenInterface(shared actual String name, shared actual Package containingPackage) satisfies InterfaceDeclaration {
   shared actual AppliedInterface<Type> interfaceApply<Type=Anything>(AppliedType<Anything>* typeArguments) { throw Exception("unimplemented"); }
