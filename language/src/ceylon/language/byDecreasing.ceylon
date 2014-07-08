@@ -6,7 +6,9 @@
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
-see (`function byIncreasing`)
+see (`function byIncreasing`,
+     `function Iterable.max`,
+     `function Iterable.sort`)
 shared Comparison byDecreasing<Element,Value>
             (Value comparable(Element e))
             (Element x, Element y)
