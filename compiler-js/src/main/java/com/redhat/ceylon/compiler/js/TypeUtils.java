@@ -465,8 +465,9 @@ public class TypeUtils {
                     gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
                 }
             } else if (tdecl.inherits(gen.getTypeUtils().sequential)) {
+                ProducedType _t2 = _tuple.getSupertype(gen.getTypeUtils().sequential);
                 //Handle Sequence, for nonempty variadic parameters
-                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
+                metamodelTypeNameOrList(gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
                 _tuple = gen.getTypeUtils().empty.getType();
             } else if (tdecl instanceof UnionType) {
