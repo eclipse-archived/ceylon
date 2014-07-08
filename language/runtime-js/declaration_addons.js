@@ -75,7 +75,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
       if ((wantsClass && _mdl.mt!=='c') || (wantsIface && _mdl.mt!=='i'))return null;
-      _m=(_mdl.mt==='c'?OpenClass:OpenInterface)(this.containingPackage, _d);
+      _m=(_mdl.mt==='c'?OpenClass$jsint:OpenInterface)(this.containingPackage, _d);
     }
   }
   if (_m) {
@@ -84,11 +84,11 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   }
   return null;
 };
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},ps:[{nm:'name',mt:'prm',$t:{t:$_String}}],$cont:OpenClass,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getMemberDeclaration']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},ps:[{nm:'name',mt:'prm',$t:{t:$_String}}],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getMemberDeclaration']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration=function(nm,$mptypes){
   return this.getMemberDeclaration(nm,{Kind$getMemberDeclaration:$mptypes.Kind$getDeclaredMemberDeclaration},1);
 }
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},ps:[{nm:'name',mt:'prm',$t:{t:$_String}}],$cont:OpenClass,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getDeclaredMemberDeclaration']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},ps:[{nm:'name',mt:'prm',$t:{t:$_String}}],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getDeclaredMemberDeclaration']};};
 atr$(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
   var that=this;
   var parms = that.tipo.$crtmm$.ps;
@@ -179,7 +179,11 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
   }
   return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations});
 };
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:OpenInterface,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.declaredMemberDeclarations=function(m) {
+  return this.memberDeclarations({Kind$memberDeclarations:m.Kind$declaredMemberDeclarations},1);
+}
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.declaredMemberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','declaredMemberDeclarations']};};
 atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
   var casos = this.tipo.$crtmm$.of;
   if (casos && casos.length > 0) {
