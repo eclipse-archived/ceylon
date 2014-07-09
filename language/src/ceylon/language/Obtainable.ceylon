@@ -28,7 +28,7 @@ shared interface Obtainable {
     "Obtain this resource. Called before the body of a `try` 
      statement is executed.
      
-     If an exception is thown by `obtain()`, then `release()` 
+     If an exception is thrown by `obtain()`, then `release()` 
      will not be called."
     throws (`class AssertionError`, 
             "if an illegal state is detected")

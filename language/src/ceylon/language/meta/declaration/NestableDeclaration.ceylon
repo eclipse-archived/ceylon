@@ -1,6 +1,6 @@
 "A declaration which can be contained in a [[Package]] or in another [[NestableDeclaration]].
  
- Functions, values, classes, interfaes and aliases are such declarations."
+ Functions, values, classes, interfaces and aliases are such declarations."
 shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                         ClassOrInterfaceDeclaration |
                                         SetterDeclaration |
