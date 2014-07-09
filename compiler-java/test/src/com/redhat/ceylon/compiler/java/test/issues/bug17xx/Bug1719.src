@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+interface Bug1719Sup {
+    
+    public abstract .ceylon.language.Callable<? extends .java.lang.Object> fun();
+    
+    public abstract .ceylon.language.Callable<? extends .java.lang.Object> moreFun();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sup.class);
+}
+class Bug1719Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sup {
+    
+    Bug1719Sub() {
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> fun() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object a = $param$0;
+                (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(""));
+                    }
+                    returning null;
+                );
+                return null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> moreFun() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything())", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)$param$0;
+                (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(""));
+                    }
+                    returning null;
+                );
+                return null;
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sub.class);
+}
