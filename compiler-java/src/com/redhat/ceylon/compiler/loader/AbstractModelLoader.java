@@ -994,7 +994,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decl = makeTypeAlias(classMirror);
                     setDeclarationVisibility(decl, classMirror, classMirror, true);
                 }else{
-                    List<MethodMirror> constructors = getClassConstructors(classMirror);
+                    final List<MethodMirror> constructors = getClassConstructors(classMirror);
                     if (!constructors.isEmpty()) {
                         if (constructors.size() > 1) {
                             decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
@@ -1028,6 +1028,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // private class does not need a constructor
                         decl = makeLazyClass(classMirror, null, null);
                     }
+                    if (!isCeylon) {
+                        setSealedFromConstructorMods(decl, constructors);
+                    }
                 }
                 break;
             case INTERFACE:
@@ -1052,6 +1055,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         return decl;
+    }
+    private void setSealedFromConstructorMods(Declaration decl,
+            final List<MethodMirror> constructors) {
+        boolean effectivelySealed = true;
+        for (MethodMirror ctor : constructors) {
+            if (ctor.isPublic() || ctor.isProtected()) {
+                effectivelySealed = false;
+                break;
+            }
+        }
+        if (effectivelySealed && decl instanceof Class) {
+            Class type = (Class)decl;
+            type.setSealed(effectivelySealed);
+            if (type.getOverloads() != null) {
+                for (Declaration oload : type.getOverloads()) {
+                    ((Class)oload).setSealed(effectivelySealed);
+                }
+            }
+        }
     }
 
     private Declaration makeOverloadedConstructor(List<MethodMirror> constructors, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon) {
