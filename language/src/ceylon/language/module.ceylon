@@ -1,43 +1,29 @@
-"The Ceylon language module containing the core types 
- referred to by the [language specification][spec], and 
- covering the following areas of functionality:
+"The Ceylon language module containing the core definitions 
+ referred to by the [language specification][spec], along 
+ with some basic functionality of use to most programs:
  
- - the foundational types [[Anything]], [[Object]], and 
-   [[Null]], and a [[logical boolean|Boolean]] type, 
- - abstractions of [[numeric|Numeric]] types, along with
-   basic types representing [[integral|Integer]] and 
-   [[floating point|Float]] values, 
- - [[characters|Character]] and [[character strings|String]],
- - support for functional programming with 
-   [[streams|Iterable]],
- - abstract interfaces for unmodifiable [[lists|List]], 
-   [[sets|Set]], and [[maps|Map]],
- - a low-level abstraction of native [[arrays|Array]],
- - immutable [[sequences|Sequential]], [[ranges|Range]], and
-   [[tuples|Tuple]], which provide the foundation for 
-   representing [[function types|Callable]] and lists of
-   function arguments,
- - generic higher-order functions, including for function 
-   [[composition|compose]] and [[partial application|curry]],
- - [[exceptions|Throwable]] and support for management of
-   heavyweight [[destroyable|Destroyable]] and 
-   [[obtainable|Obtainable]] objects,
- - access to information about the current 
-   [[virtual machine|runtime]], [[system|system]], 
-   [[process]], and [[operating system|system]], and
- - support for [[annotations|Annotation]] and the metamodel 
-   API.
- 
- Finally, this module defines the [[most useful and
- interesting void function of all time ever|print]].
+ - The [[root package|package ceylon.language]] defines 
+   general-purpose functionality including support for 
+   [[numbers|Numeric]] and [[character strings|String]], 
+   [[streams|Iterable]] and [[sequences|Sequential]], 
+   [[exceptions|Throwable]], and [[null values|Null]].
+ - The Ceylon _metamodel_ is defined in 
+   [[package ceylon.language.meta]] and its subpackages 
+   [[package ceylon.language.meta.model]] and 
+   [[package ceylon.language.meta.declaration]], which
+   define interfaces for interacting with applied types and 
+   unapplied type declarations respectively.
  
  This module defines an abstraction over the basic 
  facilities of the Java or JavaScript virtual machine, 
  containing only functionality that can be easily 
- implemented on both platforms. This, certain functionality, 
+ implemented on both platforms. Thus, certain functionality, 
  for example, concurrency, for which there is no common
  virtual machine-agnostic model, is not covered by the
  langauge module.
+ 
+ The language module is an implicit dependency of every
+ other Ceylon module, and may not be explicitly imported.
  
  [spec]: http://ceylon-lang.org/documentation/current/spec"
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
