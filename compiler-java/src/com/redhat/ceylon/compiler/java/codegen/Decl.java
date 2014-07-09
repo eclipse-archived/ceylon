@@ -697,9 +697,15 @@ public class Decl {
         if (parameter instanceof Tree.InitializerParameter) {
             return ((Tree.InitializerParameter)parameter).getSpecifierExpression();
         } else if (parameter instanceof Tree.ValueParameterDeclaration) {
-            return ((Tree.AttributeDeclaration)((Tree.ValueParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierOrInitializerExpression();
+            Tree.TypedDeclaration typedDeclaration = ((Tree.ValueParameterDeclaration)parameter).getTypedDeclaration();
+            if (typedDeclaration != null) {
+                return ((Tree.AttributeDeclaration)typedDeclaration).getSpecifierOrInitializerExpression();
+            }
         } else if (parameter instanceof Tree.FunctionalParameterDeclaration) {
-            return ((Tree.MethodDeclaration)((Tree.FunctionalParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierExpression();
+            Tree.TypedDeclaration typedDeclaration = ((Tree.FunctionalParameterDeclaration)parameter).getTypedDeclaration();
+            if (typedDeclaration != null) {
+                return ((Tree.MethodDeclaration)typedDeclaration).getSpecifierExpression();
+            }
         }
         return null;
     }
