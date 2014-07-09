@@ -67,7 +67,8 @@ shared interface Numeric<Other> of Other
        division by `0` results in an exception.
      - For others, including [[Float]], it results in a 
        special value of the type, for example, [[infinity]]."
-    see (`interface Integral`)
+    see (`function Integral.remainder`, 
+         `value infinity`)
     shared formal Other divided(Other other);
     
 }

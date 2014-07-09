@@ -17,9 +17,9 @@
    
    for any instance `y` other than `0`.
    
-   `Integral` numeric types are also [[Ordinal]], so ranges 
-   of integral values may be produced using the 
-   [[segment and span operators|Ordinal]].
+   All `Integral` numeric types are also [[Enumerable]], so 
+   ranges of integral values may be produced using the 
+   [[measure]] and [[span]] operators.
        
        // Iterate from 0 to 100 inclusive
        for (i in 0..100) {
