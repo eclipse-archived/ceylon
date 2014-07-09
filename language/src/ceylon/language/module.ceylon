@@ -20,7 +20,7 @@
  implemented on both platforms. Thus, certain functionality, 
  for example, concurrency, for which there is no common
  virtual machine-agnostic model, is not covered by the
- langauge module.
+ language module.
  
  The language module is an implicit dependency of every
  other Ceylon module, and may not be explicitly imported.
