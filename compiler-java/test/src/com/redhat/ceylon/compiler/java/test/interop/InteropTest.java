@@ -432,4 +432,14 @@ public class InteropTest extends CompilerTest {
               new CompilerError(16, "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated"),
               new CompilerError(17, "inappropiate java annotation: interoperation with @Override is not supported: use actual"));
     }
+    
+    @Test
+    public void testSealedInterop(){
+        compile("access/JavaSealed.java");
+        assertErrors("Sealed",
+                new CompilerError(27, "package private constructor is not visible: JavaSealed"),
+                new CompilerError(29, "invokes or references a sealed class in a different module: Runtime in java.base"),
+                new CompilerError(29, "type constructor is not visible: Runtime"),
+                new CompilerError(30, "type constructor is not visible: JavaSealed"));
+    }
 }
