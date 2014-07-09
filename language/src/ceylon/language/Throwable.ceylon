@@ -31,7 +31,7 @@ import ceylon.language { printTrace=printStackTrace }
  The use of the exceptions facility to manage _expected 
  failures_, that is, failures that are usually handled by 
  the immediate caller of an operation, is discouraged. 
- Instead, the failure should be respresented as a return 
+ Instead, the failure should be represented as a return 
  value of the operation being called.
  
  For example, nonexistence of a file should not result in an 

@@ -10,7 +10,7 @@
  
      concatenate(1..3, [0.0], {\"hello\", \"world\"})
  
- resuts in the sequence `[1, 2, 3, 0.0, \"hello\", \"world\"]`
+ results in the sequence `[1, 2, 3, 0.0, \"hello\", \"world\"]`
  which has the type `[Integer|Float|String*]`."
 see (`function expand`, 
      `function Iterable.chain`,

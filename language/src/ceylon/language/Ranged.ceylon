@@ -27,7 +27,7 @@
      print(\"hello world\"[-5..-1]); //prints \"\"
      print(\"hello world\"[11..11]); //prints \"\"
  
- The first index may be ommitted, implying that the subrange
+ The first index may be omitted, implying that the subrange
  extends forward from the smallest possible index (in this
  case `runtime.minIntegerValue-1`) to the given index.
  
@@ -39,7 +39,7 @@
  
      print(\"hello world\"[-5...]); //prints \"\"
  
- The last index may be ommitted, implying that the subrange 
+ The last index may be omitted, implying that the subrange 
  extends forward from the given index to the largest 
  possible index (in this case `runtime.maxIntegerValue+1`).
  
