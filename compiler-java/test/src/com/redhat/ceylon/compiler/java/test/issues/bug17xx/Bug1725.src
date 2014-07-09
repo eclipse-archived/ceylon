@@ -1,0 +1,111 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+public class Bug1725Transformer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1725Transformer() {
+    }
+    
+    public final .java.lang.String transformBaseExpression() {
+        return ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> twoPl(final .java.lang.String s) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (.ceylon.language.String).ceylon.language.nothing_.get_();
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.class);
+}
+public interface Bug1725Test {
+    
+    public abstract .ceylon.language.Callable<? extends .ceylon.language.String> fromCeylon(final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer transformer);
+    
+    public abstract .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> threePl(final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer transformer);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Test.class);
+}
+public final class bug1725baseExpression_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Test {
+    
+    private bug1725baseExpression_() {
+        this.fromCeylon$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String()(Bug1725Transformer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance($instance$.transformBaseExpression());
+                    }
+                };
+            }
+        };
+        this.threePl$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)(String)(Bug1725Transformer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)(String)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                        return $instance$.twoPl(s);
+                    }
+                };
+            }
+        };
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> fromCeylon$specifier$;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> fromCeylon(final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer transformer) {
+        return fromCeylon$specifier$.$call$(transformer);
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>>> threePl$specifier$;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> threePl(final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1725Transformer transformer) {
+        return threePl$specifier$.$call$(transformer);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1725baseExpression\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_.class);
+    }
+}
