@@ -518,8 +518,7 @@ public class TypeVisitor extends Visitor {
         return pkg.getQualifiedNameString().equals("java.lang") &&
         		("Object".equals(name) ||
                  "Throwable".equals(name) ||
-                 "Exception".equals(name) ||
-                 "Error".equals(name));
+                 "Exception".equals(name));
     }
     
     public void visit(Tree.GroupedType that) {
