@@ -1468,7 +1468,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (willEraseToThrowable(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().ceylonThrowableType);
+                return makeIdent(syms().throwableType);
             } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().throwableType);
             } else {
