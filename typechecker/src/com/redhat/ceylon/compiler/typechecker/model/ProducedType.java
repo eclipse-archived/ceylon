@@ -1018,7 +1018,6 @@ public class ProducedType extends ProducedReference {
         else{
             ProducedType pt = new ProducedType();
             pt.setDeclaration(getDeclaration());
-            pt.setTypeArguments(getTypeArguments());
             //replace the qualifying type with
             //the supertype of the qualifying 
             //type that declares this nested
@@ -1028,6 +1027,7 @@ public class ProducedType extends ProducedReference {
             ProducedType declaringType = 
                     qt.getSupertypeInternal(dtd);
             pt.setQualifyingType(declaringType);
+            pt.setTypeArguments(getTypeArgumentMap(getDeclaration(), declaringType, getTypeArgumentList()));
             return pt;
         }
     }
