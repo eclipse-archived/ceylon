@@ -937,7 +937,8 @@ class CallableInvocation extends DirectInvocation {
     }
     @Override
     protected ProducedType getArgumentType(int argIndex) {
-        return callableParameters.get(argIndex).getModel().getReference().getFullType().getType();
+        Parameter param = callableParameters.get(argIndex);
+        return getParameterTypeForValueType(getProducedReference(), param);
     }
     
     @Override
