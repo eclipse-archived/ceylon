@@ -364,7 +364,7 @@ public class Util {
 		//from the whole qualified type!
         int count = countTypeParameters(receivingType, typeParameters);
 		if (count==0) {
-		    return Collections.emptyMap();
+		    return EMPTY_TYPE_ARG_MAP;
 		}
 		else {
 			return aggregateTypeArguments(receivingType, typeArguments,
@@ -507,30 +507,30 @@ public class Util {
             //(the intersection of disjoint types is empty)
             
             // cheaper c-for than foreach
-            List<ProducedType> supertypes = pt.getSupertypes();
-            for ( int i=0,l=supertypes.size();i<l;i++ ) {
-                ProducedType supertype = supertypes.get(i);
-                List<TypeDeclaration> ctds = supertype.getDeclaration()
-                        .getCaseTypeDeclarations();
+            List<TypeDeclaration> supertypes = pt.getDeclaration()
+                    .getSupertypeDeclarations();
+            for ( int i=0, l=supertypes.size(); i<l; i++ ) {
+                TypeDeclaration supertype = supertypes.get(i);
+                List<TypeDeclaration> ctds = supertype.getCaseTypeDeclarations();
                 if (ctds!=null) {
                     TypeDeclaration ctd=null;
                     // cheaper c-for than foreach
-                    for (int cti=0,ctl=ctds.size();cti<ctl;cti++) {
+                    for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
                         TypeDeclaration ct = ctds.get(cti);
-                        if (pt.getSupertype(ct)!=null) {
+                        if (pt.getDeclaration().inherits(ct)) {
                             ctd = ct;
                             break;
                         }
                     }
                     if (ctd!=null) {
                         // cheaper c-for than foreach
-                        for (int cti=0,ctl=ctds.size();cti<ctl;cti++) {
+                        for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
                             TypeDeclaration ct = ctds.get(cti);
                             if (ct!=ctd) {
                                 // cheaper c-for than foreach
-                                for (int ti=0,tl=list.size();ti<tl;ti++) {
+                                for (int ti=0, tl=list.size(); ti<tl; ti++) {
                                     ProducedType t = list.get(ti);
-                                    if (t.getSupertype(ct)!=null) {
+                                    if (t.getDeclaration().inherits(ct)) {
                                         list.clear();
                                         list.add(new NothingType(unit).getType());
                                         return;
@@ -652,8 +652,8 @@ public class Util {
                     qd.equals(nd) ||
             qd instanceof Interface && pd instanceof Class &&
                     pd.equals(nd)) {
-            if (q.getSupertype(pd)==null &&
-                p.getSupertype(qd)==null) {
+            if (!q.getDeclaration().inherits(pd) &&
+                !p.getDeclaration().inherits(qd)) {
                 return true;
             }
         }
@@ -665,7 +665,7 @@ public class Util {
                 return true;
             }
             if (qd instanceof ClassOrInterface &&
-                    p.getSupertype(qd)==null) {
+                    !p.getDeclaration().inherits(qd)) {
                 return true;
             }
         }
@@ -677,7 +677,7 @@ public class Util {
                 return true;
             }
             if (pd instanceof ClassOrInterface &&
-                    q.getSupertype(pd)==null) {
+                    !q.getDeclaration().inherits(pd)) {
                 return true;
             }
         }
@@ -721,8 +721,8 @@ public class Util {
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
             ProducedType p, ProducedType q) {
 //        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
-            List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
-            stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
+            List<TypeDeclaration> stds = p.getDeclaration().getSupertypeDeclarations();
+            stds.retainAll(q.getDeclaration().getSupertypeDeclarations());
             for (TypeDeclaration std: stds) {
                 ProducedType pst = null;
                 ProducedType qst = null;
@@ -1226,4 +1226,7 @@ public class Util {
             module.clearCache(decl);
         }
     }
+
+    static final Map<TypeParameter, ProducedType> EMPTY_TYPE_ARG_MAP = 
+            Collections.<TypeParameter,ProducedType>emptyMap();
 }

@@ -1,7 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
@@ -21,9 +22,10 @@ public abstract class TypeDeclaration extends Declaration
         implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
-    private List<ProducedType> satisfiedTypes = needsSatisfiedTypes() ? 
-            new ArrayList<ProducedType>(3) : 
-                Collections.<ProducedType>emptyList();
+    private List<ProducedType> satisfiedTypes = 
+            needsSatisfiedTypes() ? 
+                    new ArrayList<ProducedType>(3) : 
+                    Collections.<ProducedType>emptyList();
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
@@ -114,11 +116,12 @@ public abstract class TypeDeclaration extends Declaration
 
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         List<ProducedType> sts = getSatisfiedTypes();
-        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>(sts.size());
+        List<TypeDeclaration> list = 
+                new ArrayList<TypeDeclaration>(sts.size());
         // cheaper iteration
-        for (int i=0,l=sts.size();i<l;i++) {
+        for (int i=0, l=sts.size(); i<l; i++) {
             ProducedType pt = sts.get(i);
-            list.add(pt==null?null:pt.getDeclaration());
+            list.add(pt==null ? null : pt.getDeclaration());
         }
         return list;
     }
@@ -132,14 +135,16 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public List<TypeDeclaration> getCaseTypeDeclarations() {
-        List<ProducedType> caseTypes = getCaseTypes();
-        if (caseTypes==null) {
+        List<ProducedType> cts = getCaseTypes();
+        if (cts==null) {
             return null;
         }
         else {
-            List<TypeDeclaration> list = new ArrayList<TypeDeclaration>(caseTypes.size());
-            for (ProducedType pt: caseTypes) {
-                list.add(pt==null?null:pt.getDeclaration());
+            List<TypeDeclaration> list = 
+                    new ArrayList<TypeDeclaration>(cts.size());
+            for (int i=0, l=cts.size(); i<l; i++) {
+                ProducedType pt = cts.get(i);
+                list.add(pt==null ? null : pt.getDeclaration());
             }
             return list;
         }
@@ -154,7 +159,9 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     public List<ProducedType> getBrokenSupertypes() {
-        return brokenSupertypes == null ? Collections.<ProducedType>emptyList() : brokenSupertypes;
+        return brokenSupertypes == null ? 
+                Collections.<ProducedType>emptyList() : 
+                brokenSupertypes;
     }
     
     public void addBrokenSupertype(ProducedType type){
@@ -197,13 +204,15 @@ public abstract class TypeDeclaration extends Declaration
      */
     public ProducedType getProducedType(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
-    	if (qualifyingType!=null && qualifyingType.isNothing()) {
+    	if (qualifyingType!=null && 
+    	        qualifyingType.isNothing()) {
     		return qualifyingType;
     	}
         ProducedType pt = new ProducedType();
         pt.setDeclaration(this);
         pt.setQualifyingType(qualifyingType);
-        pt.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
+        pt.setTypeArguments(getTypeArgumentMap(this, 
+                qualifyingType, typeArguments));
         return pt;
     }
     
@@ -227,7 +236,7 @@ public abstract class TypeDeclaration extends Declaration
         //each type parameter is its own argument
         List<TypeParameter> typeParameters = getTypeParameters();
         if (typeParameters.isEmpty()) {
-            type.setTypeArguments(Collections.<TypeParameter,ProducedType>emptyMap());
+            type.setTypeArguments(EMPTY_TYPE_ARG_MAP);
         }
         else {
             Map<TypeParameter, ProducedType> map = 
@@ -249,9 +258,11 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             visited.add(this);
-            List<Declaration> members = new ArrayList<Declaration>();
+            List<Declaration> members = 
+                    new ArrayList<Declaration>();
             for (Declaration d: getMembers()) {
-                if (d.getName()!=null && d.getName().equals(name)) {
+                if (d.getName()!=null && 
+                        d.getName().equals(name)) {
                     members.add(d);
                 }
             }
@@ -269,7 +280,8 @@ public abstract class TypeDeclaration extends Declaration
      * refined by a supertype.
      */
     public List<Declaration> getInheritedMembers(String name) {
-        return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
+        return getInheritedMembers(name, 
+                new ArrayList<TypeDeclaration>());
     }
     
     private static <T> boolean contains(Iterable<T> iter, T object) {
@@ -346,11 +358,16 @@ public abstract class TypeDeclaration extends Declaration
         return inherits(dec, new ArrayList<TypeDeclaration>());
     }
     
-    private boolean inherits(TypeDeclaration dec, List<TypeDeclaration> visited) {
+    private boolean inherits(TypeDeclaration dec, 
+            List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return false;
         }
         visited.add(this);
+        if (this instanceof UnionType) {
+            ProducedType st = getType().getSupertype(dec);
+            return st!=null && !st.isNothing();
+        }
         if (this instanceof ClassOrInterface && 
         	dec instanceof ClassOrInterface && 
         		equals(dec)) {
@@ -382,20 +399,25 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     private Declaration getRefinedMember(String name, 
-            List<ProducedType> signature, boolean ellipsis, Set<TypeDeclaration> visited) {
+            List<ProducedType> signature, boolean ellipsis, 
+            Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
             return null;
         }
         else {
             TypeDeclaration et = getExtendedTypeDeclaration();
             if (et!=null) {
-                Declaration ed = et.getRefinedMember(name, signature, ellipsis, visited);
+                Declaration ed = 
+                        et.getRefinedMember(name, signature, 
+                                ellipsis, visited);
                 if (ed!=null) {
                     return ed;
                 }
             }
             for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-                Declaration sd = st.getRefinedMember(name, signature, ellipsis, visited);
+                Declaration sd = 
+                        st.getRefinedMember(name, signature, 
+                                ellipsis, visited);
                 if (sd!=null) {
                     return sd;
                 }
@@ -413,9 +435,12 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getMember(String name, Unit unit, 
             List<ProducedType> signature, boolean variadic) {
         //TODO: does not handle aliased members of supertypes
-        Declaration d = unit.getImportedDeclaration(this, name, signature, variadic);
+        Declaration d = 
+                unit.getImportedDeclaration(this, name, 
+                        signature, variadic);
         if (d==null) {
-            return getMemberInternal(name, signature, variadic).getMember();
+            return getMemberInternal(name, signature, variadic)
+                    .getMember();
         }
         else {
             return d;
@@ -436,9 +461,12 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isMemberAmbiguous(String name, Unit unit, 
             List<ProducedType> signature, boolean variadic) {
         //TODO: does not handle aliased members of supertypes
-        Declaration d = unit.getImportedDeclaration(this, name, signature, variadic);
+        Declaration d = 
+                unit.getImportedDeclaration(this, name, 
+                        signature, variadic);
         if (d==null) {
-            return getMemberInternal(name, signature, variadic).isAmbiguous();
+            return getMemberInternal(name, signature, variadic)
+                    .isAmbiguous();
         }
         else {
             return false;
@@ -453,7 +481,8 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     public Declaration getMember(String name, 
             List<ProducedType> signature, boolean variadic) {
-        return getMemberInternal(name, signature, variadic).getMember();
+        return getMemberInternal(name, signature, variadic)
+                .getMember();
     }
 
     private SupertypeDeclaration getMemberInternal(String name,
@@ -467,8 +496,10 @@ public abstract class TypeDeclaration extends Declaration
             //TODO: should also return it if we're 
             //      calling from local scope!
             if (signature!=null && isAbstraction(d)){
-                //look for a supertype decl that matches the signature better
-                SupertypeDeclaration sd = getSupertypeDeclaration(name, signature, variadic);
+                //look for a supertype declaration that matches 
+                //the given signature better
+                SupertypeDeclaration sd = 
+                        getSupertypeDeclaration(name, signature, variadic);
                 Declaration sm = sd.getMember();
                 if (sm!=null && !isAbstraction(sm)) {
                     return sd;
@@ -478,7 +509,8 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            SupertypeDeclaration sd = getSupertypeDeclaration(name, signature, variadic);
+            SupertypeDeclaration sd = 
+                    getSupertypeDeclaration(name, signature, variadic);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -504,8 +536,11 @@ public abstract class TypeDeclaration extends Declaration
         Declaration d = getDirectMember(name, signature, variadic);
         if (d!=null) {
             if (signature!=null && isAbstraction(d)){
-                // look for a supertype decl that matches the signature better
-                Declaration s = getSupertypeDeclaration(name, signature, variadic).getMember();
+                // look for a supertype declaration that matches 
+                // the given signature better
+                Declaration s = 
+                        getSupertypeDeclaration(name, signature, variadic)
+                                .getMember();
                 if (s!=null && !isAbstraction(s)) {
                     return s;
                 }
@@ -514,7 +549,8 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            return getSupertypeDeclaration(name, signature, variadic).getMember();
+            return getSupertypeDeclaration(name, signature, variadic)
+                    .getMember();
         }
     }
 
@@ -568,7 +604,9 @@ public abstract class TypeDeclaration extends Declaration
                     return false;
                 }
                 else {
-                    Declaration dm = type.getDirectMember(member.getName(), signature, false);
+                    Declaration dm = 
+                            type.getDirectMember(member.getName(), 
+                                    signature, false);
                     return dm!=null && dm.equals(member);
                 }
             }
@@ -583,7 +621,8 @@ public abstract class TypeDeclaration extends Declaration
     private static class SupertypeDeclaration {
         private Declaration member;
         private boolean ambiguous;
-        private SupertypeDeclaration(Declaration declaration, boolean ambiguous) {
+        private SupertypeDeclaration(Declaration declaration, 
+                boolean ambiguous) {
             this.member = declaration;
             this.ambiguous = ambiguous;
         }
@@ -600,7 +639,8 @@ public abstract class TypeDeclaration extends Declaration
      * member with the given name.
      * @param signature 
      */
-    private SupertypeDeclaration getSupertypeDeclaration(final String name, final List<ProducedType> signature, final boolean variadic) {
+    private SupertypeDeclaration getSupertypeDeclaration(final String name, 
+            final List<ProducedType> signature, final boolean variadic) {
         class ExactCriteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -608,7 +648,8 @@ public abstract class TypeDeclaration extends Declaration
                 if (type == TypeDeclaration.this) {
                     return false;
                 }
-                Declaration d = type.getDirectMember(name, signature, variadic);
+                Declaration d = 
+                        type.getDirectMember(name, signature, variadic);
                 if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions if we don't have a signature
                     return !isAbstraction(d) || signature == null;
@@ -629,7 +670,8 @@ public abstract class TypeDeclaration extends Declaration
                 if (type == TypeDeclaration.this) {
                     return false;
                 }
-                Declaration d = type.getDirectMember(name, null, false);
+                Declaration d = 
+                        type.getDirectMember(name, null, false);
                 if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions
                     return isAbstraction(d);
@@ -686,9 +728,12 @@ public abstract class TypeDeclaration extends Declaration
         return selfType;
     }
     
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> 
+    getImportableDeclarations(Unit unit, String startingWith, 
+            List<Import> imports, int proximity) {
         //TODO: fix copy/paste from below!
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		!isOverloadedVersion(d) &&
@@ -701,7 +746,8 @@ public abstract class TypeDeclaration extends Declaration
                     }
                 }
                 if (!already) {
-                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                    result.put(d.getName(), 
+                            new DeclarationWithProximity(d, proximity));
                 }
             }
         }
@@ -709,8 +755,11 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
+    public Map<String, DeclarationWithProximity> 
+    getMatchingDeclarations(Unit unit, String startingWith, 
+            int proximity) {
+        Map<String, DeclarationWithProximity> result = 
+                super.getMatchingDeclarations(unit, startingWith, proximity);
         //Inherited declarations hide outer and imported declarations
         result.putAll(getMatchingMemberDeclarations(null, startingWith, proximity));
         //Local declarations always hide inherited declarations, even if non-shared
@@ -724,21 +773,29 @@ public abstract class TypeDeclaration extends Declaration
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<String, DeclarationWithProximity> 
+    getMatchingMemberDeclarations(Scope scope, String startingWith, 
+            int proximity) {
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
         for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-            mergeMembers(result, st.getMatchingMemberDeclarations(scope, startingWith, proximity+1));
+            mergeMembers(result, 
+                    st.getMatchingMemberDeclarations(scope, 
+                            startingWith, proximity+1));
         }
         TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            mergeMembers(result, et.getMatchingMemberDeclarations(scope, startingWith, proximity+1));
+            mergeMembers(result, 
+                    et.getMatchingMemberDeclarations(scope, 
+                            startingWith, proximity+1));
         }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && 
                     !isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {
                 if( d.isShared() || Util.contains(d.getScope(), scope) ) {
-                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                    result.put(d.getName(), 
+                            new DeclarationWithProximity(d, proximity));
                 }
             }
         }
@@ -750,41 +807,52 @@ public abstract class TypeDeclaration extends Declaration
             Map<String, DeclarationWithProximity> etm) {
         for (Map.Entry<String, DeclarationWithProximity> e: etm.entrySet()) {
             DeclarationWithProximity dwp = result.get(e.getKey());
-            if (dwp==null || !dwp.getDeclaration().refines(e.getValue().getDeclaration())) {
+            if (dwp==null || 
+                    !dwp.getDeclaration()
+                            .refines(e.getValue().getDeclaration())) {
                 result.put(e.getKey(), e.getValue());
             }
         }
     }
     
-    /**
-     * Be very careful with this operation. It does NOT return
-     * the right result for union types! It's really only for
-     * use by Util.haveUninhabitableIntersection().
-     */
-    public List<TypeDeclaration> getSuperTypeDeclarations() {
-    	//TODO: do we need to handle union types here?
-    	List<TypeDeclaration> result;
-    	ClassOrInterface etd = getExtendedTypeDeclaration();
-    	List<TypeDeclaration> stds = getSatisfiedTypeDeclarations();
-    	boolean addThis = this instanceof ClassOrInterface;
-		if (etd==null) {
-		    // predict the right size to avoid reallocating the buffer
-    		result = new ArrayList<TypeDeclaration>(stds.size() + (addThis ? 1 : 0));
-    	}
-		else {
-			result = etd.getSuperTypeDeclarations();
-		}
-		// cheaper c-for than foreach
-    	for (int i=0,l=stds.size();i<l;i++) {
-    	    TypeDeclaration std = stds.get(i);
-    		result.addAll(std.getSuperTypeDeclarations());
-    	}
-    	if (addThis) {
-    		result.add(this);
-    	}
-    	return result;
+    public List<TypeDeclaration> getSupertypeDeclarations() {
+        if (this instanceof UnionType) {
+            List<TypeDeclaration> ctds = getCaseTypeDeclarations();
+            List<TypeDeclaration> result =
+                    new ArrayList<TypeDeclaration>(ctds.size());
+            for (int i=0, l=ctds.size(); i<l; i++) {
+                TypeDeclaration ctd = ctds.get(i);
+                ProducedType st = getType().getSupertype(ctd);
+                if (st!=null && !st.isNothing()) {
+                    result.add(ctd);
+                }
+            }
+            return result;
+        }
+        else {
+            ClassOrInterface etd = getExtendedTypeDeclaration();
+            List<TypeDeclaration> stds = getSatisfiedTypeDeclarations();
+            List<TypeDeclaration> result;
+            if (etd!=null) {
+                List<TypeDeclaration> etsts = etd.getSupertypeDeclarations();
+                result = new ArrayList<TypeDeclaration>(etsts.size() + stds.size()*2);
+                result.addAll(etsts);
+            }
+            else {
+                result = new ArrayList<TypeDeclaration>(stds.size()*2);
+            }
+            // cheaper c-for than foreach
+            for (int i=0, l=stds.size(); i<l; i++) {
+                TypeDeclaration std = stds.get(i);
+                result.addAll(std.getSupertypeDeclarations());
+            }
+            if (this instanceof ClassOrInterface) {
+                result.add(this);
+            }
+            return result;
+        }
     }
-
+    
     /**
      * Clears the ProducedType supertype caches for that declaration. Does nothing
      * for Union/Intersection types since they are not cached. Only does something

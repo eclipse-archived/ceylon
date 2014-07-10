@@ -713,23 +713,23 @@ public class Unit {
     }
     
     public boolean isEntryType(ProducedType pt) {
-        return pt.getSupertype(getEntryDeclaration())!=null;
+        return pt.getDeclaration().inherits(getEntryDeclaration());
     }
     
     public boolean isIterableType(ProducedType pt) {
-        return pt.getSupertype(getIterableDeclaration())!=null;
+        return pt.getDeclaration().inherits(getIterableDeclaration());
     }
     
     public boolean isSequentialType(ProducedType pt) {
-        return pt.getSupertype(getSequentialDeclaration())!=null;
+        return pt.getDeclaration().inherits(getSequentialDeclaration());
     }
     
     public boolean isSequenceType(ProducedType pt) {
-        return pt.getSupertype(getSequenceDeclaration())!=null;
+        return pt.getDeclaration().inherits(getSequenceDeclaration());
     }
     
     public boolean isEmptyType(ProducedType pt) {
-        return pt.getSupertype(getEmptyDeclaration())!=null;
+        return pt.getDeclaration().inherits(getEmptyDeclaration());
     }
     
     public boolean isOptionalType(ProducedType pt) {
@@ -753,7 +753,7 @@ public class Unit {
     }
     
     public boolean isCallableType(ProducedType pt) {
-    	return pt!=null && pt.getSupertype(getCallableDeclaration())!=null;
+    	return pt!=null && pt.getDeclaration().inherits(getCallableDeclaration());
     }
     
     public NothingType getNothingDeclaration() {

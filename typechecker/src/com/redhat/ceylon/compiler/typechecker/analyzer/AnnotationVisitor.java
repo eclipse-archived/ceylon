@@ -603,7 +603,7 @@ public class AnnotationVisitor extends Visitor {
         }
         for (int i=0; i<anns.size(); i++) {
             ProducedType t = anns.get(i).getTypeModel();
-            if (t!=null && t.getSupertype(unit.getOptionalAnnotationDeclaration())!=null) {
+            if (t!=null && t.getDeclaration().inherits(unit.getOptionalAnnotationDeclaration())) {
                 for (int j=0; j<i; j++) {
                     ProducedType ot = anns.get(j).getTypeModel();
                     if (ot!=null && ot.getDeclaration().equals(t.getDeclaration())) {

@@ -444,13 +444,12 @@ public class TypeHierarchyVisitor extends Visitor {
     private void validateMemberRefinement(Tree.StatementOrArgument that, 
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
-            List<ProducedType> supertypes = td.getType().getSupertypes();
             Set<String> errors = new HashSet<String>();
-            for (ProducedType st: supertypes) {
+            for (TypeDeclaration std: td.getSupertypeDeclarations()) {
                 if (td instanceof ClassOrInterface && 
                         !((ClassOrInterface) td).isAbstract() &&
                         !((ClassOrInterface) td).isAlias()) {
-                    for (Declaration d: st.getDeclaration().getMembers()) {
+                    for (Declaration d: std.getMembers()) {
                         if (d.isShared() && !isOverloadedVersion(d) && isResolvable(d) && 
                                 !errors.contains(d.getName())) {
                             Declaration r = td.getMember(d.getName(), null, false);
@@ -465,7 +464,7 @@ public class TypeHierarchyVisitor extends Visitor {
                                 if (r==null) {
                                     that.addError("member " + d.getName() +
                                             " is inherited ambiguously by " + td.getName() +
-                                            " from " + st.getDeclaration().getName() +  
+                                            " from " + std.getName() +  
                                             " and another unrelated supertype");
                                 }
                                 else {
@@ -479,9 +478,11 @@ public class TypeHierarchyVisitor extends Visitor {
                                             d.isClassMember())) {
                                         that.addError("member " + d.getName() + 
                                                 " is inherited ambiguously by " + td.getName() +
-                                                " from " + st.getDeclaration().getName() +  
-                                                " and another subtype of " + ((TypeDeclaration) r.getContainer()).getName() + 
-                                                " and so must be refined by " + td.getName(), 350);
+                                                " from " + std.getName() +  
+                                                " and another subtype of " + 
+                                                ((TypeDeclaration) r.getContainer()).getName() + 
+                                                " and so must be refined by " + td.getName(), 
+                                                350);
                                     }
                                 }
                                 errors.add(d.getName());

@@ -316,33 +316,50 @@ public class RefinementVisitor extends Visitor {
 
     private void validateSupertypes(Tree.StatementOrArgument that, 
     		TypeDeclaration td) {
-        List<ProducedType> supertypes = td.getType().getSupertypes();
-        if (td instanceof TypeAlias && 
-                td.getExtendedType()!=null) {
-            supertypes.add(td.getExtendedType());
-        }
-        for (int i=0; i<supertypes.size(); i++) {
-            ProducedType st1 = supertypes.get(i);
-            for (int j=i+1; j<supertypes.size(); j++) {
-                ProducedType st2 = supertypes.get(j);
-                checkSupertypeIntersection(that, td, st1, st2); //note: sets td.inconsistentType by side-effect
+        if (td instanceof TypeAlias) {
+            ProducedType at = td.getExtendedType();
+            if (!isCompletelyVisible(td, at)) {
+                that.addError("aliased type is not visible everywhere type alias " + 
+                        td.getName() + " is visible: " + 
+                        at.getProducedTypeName(that.getUnit()) +
+                        " involves an unshared type declaration", 
+                        713);
+            }
+            if (!checkModuleVisibility(td, at)) {
+                that.addError("aliased type of type alias " + td.getName() + 
+                        " that is visible outside this module comes from an imported module that is not re-exported: " +
+                        at.getProducedTypeName(that.getUnit()) +
+                        " involves an unexported type declaration", 
+                        714);
             }
         }
-        if (!td.isInconsistentType()) {
-            for (ProducedType st: supertypes) {
-                // don't do this check for ObjectArguments
-                if (that instanceof Tree.Declaration) {
-                    if (!isCompletelyVisible(td, st)) {
-                        that.addError("supertype of type " + td.getName() + 
-                                " is not visible everywhere type is visible: " + 
-                                st.getProducedTypeName(that.getUnit()) +
-                                " involves an unshared type declaration", 713);
-                    }
-                    if (!checkModuleVisibility(td, st)) {
-                        that.addError("supertype of type " + td.getName() + 
-                                " that is visible outside this module comes from an imported module that is not re-exported: " +
-                                st.getProducedTypeName(that.getUnit()) +
-                                " involves an unexported type declaration", 714);
+        else {
+            List<ProducedType> supertypes = td.getType().getSupertypes();
+            for (int i=0; i<supertypes.size(); i++) {
+                ProducedType st1 = supertypes.get(i);
+                for (int j=i+1; j<supertypes.size(); j++) {
+                    ProducedType st2 = supertypes.get(j);
+                    checkSupertypeIntersection(that, td, st1, st2); //note: sets td.inconsistentType by side-effect
+                }
+            }
+            if (!td.isInconsistentType()) {
+                for (ProducedType st: supertypes) {
+                    // don't do this check for ObjectArguments
+                    if (that instanceof Tree.Declaration) {
+                        if (!isCompletelyVisible(td, st)) {
+                            that.addError("supertype is not visible everywhere type " + 
+                                    td.getName() + " is visible: " + 
+                                    st.getProducedTypeName(that.getUnit()) +
+                                    " involves an unshared type declaration", 
+                                    713);
+                        }
+                        if (!checkModuleVisibility(td, st)) {
+                            that.addError("supertype of type " + td.getName() + 
+                                    " that is visible outside this module comes from an imported module that is not re-exported: " +
+                                    st.getProducedTypeName(that.getUnit()) +
+                                    " involves an unexported type declaration", 
+                                    714);
+                        }
                     }
                 }
             }

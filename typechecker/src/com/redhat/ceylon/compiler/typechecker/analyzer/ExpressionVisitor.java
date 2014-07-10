@@ -3079,8 +3079,8 @@ public class ExpressionVisitor extends Visitor {
                 //hardcoded implicit type conversion Integer->Float 
                 TypeDeclaration fd = unit.getFloatDeclaration();
                 TypeDeclaration id = unit.getIntegerDeclaration();
-                if (lhst.getSupertype(id)!=null &&
-                        ta.getSupertype(fd)!=null) {
+                if (lhst.getDeclaration().inherits(id) &&
+                        ta.getDeclaration().inherits(fd)) {
                     lhst = fd.getType();
                 }
                 checkAssignable(lhst, ta, that, 
@@ -3245,12 +3245,12 @@ public class ExpressionVisitor extends Visitor {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
-            if (rhst.getSupertype(fd)!=null &&
-                    lhst.getSupertype(id)!=null) {
+            if (rhst.getDeclaration().inherits(fd) &&
+                lhst.getDeclaration().inherits(id)) {
                 lhst = fd.getType();
             }
-            else if (rhst.getSupertype(id)!=null &&
-                    lhst.getSupertype(fd)!=null) {
+            else if (rhst.getDeclaration().inherits(id) &&
+                     lhst.getDeclaration().inherits(fd)) {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
@@ -3286,8 +3286,8 @@ public class ExpressionVisitor extends Visitor {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
-            if (rhst.getSupertype(id)!=null &&
-                    lhst.getSupertype(fd)!=null) {
+            if (rhst.getDeclaration().inherits(id) &&
+                lhst.getDeclaration().inherits(fd)) {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(),
@@ -5378,7 +5378,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
 //                if (td.isParameterized() &&
-//                        type.getSupertype(unit.getExceptionDeclaration())!=null) {
+//                        type.getDeclaration().inherits(unit.getExceptionDeclaration())) {
 //                    et.addUnsupportedError("generic exception types not yet supported");
 //                }
             }
