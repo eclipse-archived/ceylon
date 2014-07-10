@@ -26,4 +26,6 @@ void bug1671() {
     String("a");
     // should not be unboxed
     "ab".fold("+", (String r, Character c) => r + c.string);
+    value f = 2.divides;
+    value t = "".split;
 }
