@@ -704,7 +704,7 @@ public class TypeUtils {
             List<ProducedType> typelist = tp.getSatisfiedTypes();
             if (typelist != null && !typelist.isEmpty()) {
                 if (comma)gen.out(",");
-                gen.out("'satisfies':[");
+                gen.out("satisfies:[");
                 boolean first2 = true;
                 for (ProducedType st : typelist) {
                     if (!first2)gen.out(",");
@@ -729,7 +729,7 @@ public class TypeUtils {
             }
             if (tp.getDefaultTypeArgument() != null) {
                 if (comma)gen.out(",");
-                gen.out("'def':");
+                gen.out("def:");
                 metamodelTypeNameOrList(d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
             }
             gen.out("}");
