@@ -128,7 +128,7 @@ public class FreeValue
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
         Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2,$3>", 
-                Variance.IN, qualifyingType, $reifiedContainer,
+                Variance.IN, memberQualifyingType, $reifiedContainer,
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
         return new AppliedAttribute<Container,Get,Set>(reifiedContainer, reifiedGet, reifiedSet, this, typedReference, containerType);

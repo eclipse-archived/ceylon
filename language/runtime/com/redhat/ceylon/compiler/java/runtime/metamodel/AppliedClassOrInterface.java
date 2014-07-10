@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -156,8 +157,11 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, method);
-        return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, appliedContainer, types);
+        MemberLookup<FreeFunction, Container> lookup = lookupMember(FreeFunction.$TypeDescriptor$, $reifiedContainer, method);
+        if(lookup == null)
+            return null;
+        
+        return lookup.declaration.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, lookup.containerMetamodel, types);
     }
 
     @SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
@@ -192,6 +196,10 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findDeclaredMethod(name);
         if(method == null)
             return null;
+        // do not return the attribute if the container is not a subtype of this type
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            return null;
         return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                 (ceylon.language.meta.model.Type<Container>)this, types);
     }
@@ -222,7 +230,12 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
-        return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
+        if(type == null)
+            return null;
+        MemberLookup<FreeClassOrInterface, Container> lookup = lookupMember(FreeClassOrInterface.$TypeDescriptor$, $reifiedContainer, type);
+        if(lookup == null)
+            return null;
+        return applyClassOrInterface($reifiedContainer, $reifiedKind, lookup.declaration, types);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -251,6 +264,12 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type == null)
+            return null;
+        // do not return the attribute if the container is not a subtype of this type
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            return null;
         return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
     
@@ -322,9 +341,11 @@ public abstract class AppliedClassOrInterface<Type>
             return null;
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
-        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
-        return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
-                                                  appliedContainer, types);
+        MemberLookup<FreeClass, Container> lookup = lookupMember(FreeClass.$TypeDescriptor$, $reifiedContainer, (FreeClass)type);
+        if(lookup == null)
+            return null;
+        return lookup.declaration.memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
+                                                   lookup.containerMetamodel, types);
     }
     
     @SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
@@ -361,6 +382,10 @@ public abstract class AppliedClassOrInterface<Type>
             return null;
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
+        // do not return the attribute if the container is not a subtype of this type
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            return null;
         return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                                                   (ceylon.language.meta.model.Type<Container>)this, types);
     }
@@ -396,9 +421,12 @@ public abstract class AppliedClassOrInterface<Type>
             return null;
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
-        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
+        MemberLookup<FreeInterface, Container> lookup = lookupMember(FreeInterface.$TypeDescriptor$, $reifiedContainer, (FreeInterface)type);
+        if(lookup == null)
+            return null;
+        
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
-                type.memberApply($reifiedContainer, $reifiedType, appliedContainer, types);
+                lookup.declaration.memberApply($reifiedContainer, $reifiedType, lookup.containerMetamodel, types);
     }
 
     @SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
@@ -432,6 +460,10 @@ public abstract class AppliedClassOrInterface<Type>
             return null;
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
+        // do not return the attribute if the container is not a subtype of this type
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            return null;
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
                 type.memberApply($reifiedContainer, $reifiedType, 
                                  (ceylon.language.meta.model.Type<Container>)this, types);
@@ -451,22 +483,26 @@ public abstract class AppliedClassOrInterface<Type>
                                                                         String name) {
         
         checkInit();
-        final FreeValue value = declaration.findValue(name);
+        FreeValue value = declaration.findValue(name);
         if(value == null)
             return null;
-        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, value);
-        return value.<Container, Get, Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, appliedContainer);
+        
+        MemberLookup<FreeValue, Container> lookup = lookupMember(FreeValue.$TypeDescriptor$, $reifiedContainer, value);
+        if(lookup == null)
+            return null;
+        
+        return lookup.declaration.<Container, Get, Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, lookup.containerMetamodel);
     }
 
     @SuppressWarnings("unchecked")
-    private <Container> ceylon.language.meta.model.Type<Container> getAppliedContainer(@Ignore TypeDescriptor $reifiedContainer, 
+    private <Container> AppliedClassOrInterface<Container> getAppliedContainer(@Ignore TypeDescriptor $reifiedContainer, 
             FreeNestableDeclaration decl) {
         FreeClassOrInterface valueContainer = (FreeClassOrInterface) decl.getContainer();
         if(valueContainer != declaration){
             ProducedType valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration)valueContainer.declaration);
-            return Metamodel.getAppliedMetamodel(valueContainerType);
+            return (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel(valueContainerType);
         }else{
-            return (ceylon.language.meta.model.Type<Container>) this;
+            return (AppliedClassOrInterface<Container>) this;
         }
     }
 
@@ -487,6 +523,10 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         final FreeValue value = declaration.findDeclaredValue(name);
         if(value == null)
+            return null;
+        // do not return the attribute if the container is not a subtype of this type
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return value.memberApply($reifiedContainer, $reifiedGet, $reifiedSet, 
                 (ceylon.language.meta.model.Type<Container>)this);
@@ -546,7 +586,8 @@ public abstract class AppliedClassOrInterface<Type>
             if(!hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
 
-            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, reifiedGet, reifiedSet);
+            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, 
+                    (ceylon.language.meta.model.Type<Container>)this, reifiedGet, reifiedSet);
         }
         Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
 		ObjectArrayIterable<Attribute> iterable = 
@@ -554,12 +595,11 @@ public abstract class AppliedClassOrInterface<Type>
 		return (ceylon.language.Sequential) iterable.sequence();
     }
     
-    @SuppressWarnings("unchecked")
     private <Container,Get,Set> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedGet,
             @Ignore TypeDescriptor $reifiedSet,
             ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members,
-            FreeValue decl, ProducedType qualifyingType, 
+            FreeValue decl, ProducedType qualifyingType, ceylon.language.meta.model.Type<Container> qualifyingMetamodel,
             ProducedType reifiedGet, ProducedType reifiedSet){
         // now the types
         ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
@@ -570,7 +610,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedSet.isSubtypeOf(setType))
             return;
         // it's compatible!
-        members.add(decl.<Container,Get,Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Get,Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, qualifyingMetamodel));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -619,18 +659,18 @@ public abstract class AppliedClassOrInterface<Type>
         while((it = iterator.next()) != finished_.get_()){
             FreeValue decl = (FreeValue) it;
 
-            // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
-                continue;
-            
-            // check the container type first
-            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
-            if(qualifyingType == null)
+            MemberLookup<FreeValue, Container> lookup = lookupMember(FreeValue.$TypeDescriptor$, $reifiedContainer, reifiedContainer, decl);
+            if(lookup == null)
                 continue;
 
-            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, qualifyingType, reifiedGet, reifiedSet);
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, lookup.declaration, 
+                            lookup.qualifyingType, lookup.containerMetamodel, reifiedGet, reifiedSet);
         }
-        Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[0]);
+        Attribute[] array = members.toArray(new ceylon.language.meta.model.Attribute[members.size()]);
 		ObjectArrayIterable<Attribute> iterable = 
 				new ObjectArrayIterable<ceylon.language.meta.model.Attribute>(reifiedKind, array);
 		return (ceylon.language.Sequential) iterable.sequence();
@@ -694,7 +734,8 @@ public abstract class AppliedClassOrInterface<Type>
             if(!hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
-            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, 
+                    (AppliedClassOrInterface<Container>)this, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
@@ -748,20 +789,20 @@ public abstract class AppliedClassOrInterface<Type>
         while((it = iterator.next()) != finished_.get_()){
             FreeFunction decl = (FreeFunction) it;
 
+            MemberLookup<FreeFunction, Container> lookup = lookupMember(FreeFunction.$TypeDescriptor$, $reifiedContainer, reifiedContainer, decl);
+            if(lookup == null)
+                continue;
+
             // skip generic functions
-            if(!decl.getTypeParameterDeclarations().getEmpty())
+            if(!lookup.declaration.getTypeParameterDeclarations().getEmpty())
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
-            // check the container type first
-            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
-            if(qualifyingType == null)
-                continue;
-
-            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, lookup.declaration, lookup.qualifyingType, 
+                            lookup.containerMetamodel, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.Method[] array = members.toArray(new ceylon.language.meta.model.Method[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.Method> iterable = 
@@ -769,12 +810,13 @@ public abstract class AppliedClassOrInterface<Type>
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
-    @SuppressWarnings({ "unchecked", "hiding" })
+    @SuppressWarnings({ "hiding" })
     private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
             FreeFunction decl, ProducedType qualifyingType, 
+            AppliedClassOrInterface<Container> containerMetamodel,
             ProducedType reifiedType, ProducedType reifiedArguments){
         // now the types
         ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
@@ -785,7 +827,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
-        members.add(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, containerMetamodel));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -846,7 +888,8 @@ public abstract class AppliedClassOrInterface<Type>
             if(!hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
-            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, 
+                            producedType, (AppliedClassOrInterface<Container>)this, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
@@ -900,20 +943,20 @@ public abstract class AppliedClassOrInterface<Type>
         while((it = iterator.next()) != finished_.get_()){
             FreeClass decl = (FreeClass) it;
 
+            MemberLookup<FreeClass, Container> lookup = lookupMember(FreeClass.$TypeDescriptor$, $reifiedContainer, reifiedContainer, decl);
+            if(lookup == null)
+                continue;
+
             // skip generic classes
-            if(!decl.getTypeParameterDeclarations().getEmpty())
+            if(!lookup.declaration.getTypeParameterDeclarations().getEmpty())
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
-            // check the container type first
-            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
-            if(qualifyingType == null)
-                continue;
-
-            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, lookup.declaration, 
+                            lookup.qualifyingType, lookup.containerMetamodel, reifiedType, reifiedArguments);
         }
         ceylon.language.meta.model.MemberClass[] array = members.toArray(new ceylon.language.meta.model.MemberClass[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberClass> iterable = 
@@ -921,12 +964,13 @@ public abstract class AppliedClassOrInterface<Type>
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
-    @SuppressWarnings({ "unchecked", "hiding" })
+    @SuppressWarnings({ "hiding" })
     private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members,
             FreeClass decl, ProducedType qualifyingType, 
+            AppliedClassOrInterface<Container> containerMetamodel,
             ProducedType reifiedType, ProducedType reifiedArguments){
         // now the types
         ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
@@ -937,7 +981,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
-        members.add(decl.<Container,Type,Arguments>memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type,Arguments>memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, containerMetamodel));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
@@ -994,7 +1038,8 @@ public abstract class AppliedClassOrInterface<Type>
             if(!hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
-            addIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, reifiedType);
+            addIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, 
+                            (AppliedClassOrInterface<Container>)this, reifiedType);
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
@@ -1044,20 +1089,20 @@ public abstract class AppliedClassOrInterface<Type>
         while((it = iterator.next()) != finished_.get_()){
             FreeInterface decl = (FreeInterface) it;
 
+            MemberLookup<FreeInterface, Container> lookup = lookupMember(FreeInterface.$TypeDescriptor$, $reifiedContainer, reifiedContainer, decl);
+            if(lookup == null)
+                continue;
+
             // skip generic classes
-            if(!decl.getTypeParameterDeclarations().getEmpty())
+            if(!lookup.declaration.getTypeParameterDeclarations().getEmpty())
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
-            // check the container type first
-            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
-            if(qualifyingType == null)
-                continue;
-
-            addIfCompatible($reifiedContainer, $reifiedType, members, decl, qualifyingType, reifiedType);
+            addIfCompatible($reifiedContainer, $reifiedType, members, lookup.declaration, lookup.qualifyingType, 
+                            lookup.containerMetamodel, reifiedType);
         }
         ceylon.language.meta.model.MemberInterface[] array = members.toArray(new ceylon.language.meta.model.MemberInterface[0]);
 		ObjectArrayIterable<ceylon.language.meta.model.MemberInterface> iterable = 
@@ -1065,11 +1110,11 @@ public abstract class AppliedClassOrInterface<Type>
 		return (ceylon.language.Sequential) iterable.sequence();
     }
 
-    @SuppressWarnings({ "unchecked", "hiding" })
+    @SuppressWarnings({ "hiding" })
     private <Container,Type> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members,
-            FreeInterface decl, ProducedType qualifyingType, 
+            FreeInterface decl, ProducedType qualifyingType, AppliedClassOrInterface<Container> containerMetamodel,
             ProducedType reifiedType){
         // now the types
         ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
@@ -1077,7 +1122,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(!type.isSubtypeOf(reifiedType))
             return;
         // it's compatible!
-        members.add(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type<Container>)this));
+        members.add(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, containerMetamodel));
     }
 
     private boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
@@ -1138,7 +1183,83 @@ public abstract class AppliedClassOrInterface<Type>
         }
         return ret.take(count).sequence();
     }
+
+    //
+    // Used for member lookup
     
+    @Ignore
+    static class MemberLookup<T, Container>{
+        public final T declaration;
+        public final ProducedType qualifyingType;
+        public final AppliedClassOrInterface<Container> containerMetamodel;
+        
+        MemberLookup(@Ignore TypeDescriptor $reifiedT,
+                @Ignore TypeDescriptor $reifiedContainer,
+                T declaration,
+                ProducedType qualifyingType,
+                AppliedClassOrInterface<Container> containerMetamodel){
+            this.declaration = declaration;
+            this.qualifyingType = qualifyingType;
+            this.containerMetamodel = containerMetamodel;
+        }
+    }
+
+    private <T extends FreeNestableDeclaration, Container> MemberLookup<T, Container> lookupMember(@Ignore TypeDescriptor $reifiedT,
+            @Ignore TypeDescriptor $reifiedContainer,
+            T value) {
+        return lookupMember($reifiedT, $reifiedContainer, Metamodel.getProducedType($reifiedContainer), value);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <T extends FreeNestableDeclaration, Container> MemberLookup<T, Container> lookupMember(@Ignore TypeDescriptor $reifiedT,
+            @Ignore TypeDescriptor $reifiedContainer,
+            ProducedType reifiedContainer,
+            T value) {
+        AppliedClassOrInterface<Container> containerMetamodel;
+        ProducedType qualifyingType;
+        if($reifiedContainer == TypeDescriptor.NothingType){
+            // wildcard: everything goes
+            qualifyingType = this.producedType.getSupertype((TypeDeclaration) value.declaration.getContainer());
+        }else{
+            // get the declaration as seen from the container
+            Declaration memberInContainer = reifiedContainer.getDeclaration().getMember(value.getName(), null, false);
+            // cheaper this way than through reflection type checks
+            if($reifiedT == FreeValue.$TypeDescriptor$){
+                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
+                    return null;
+            }else if($reifiedT == FreeFunction.$TypeDescriptor$){
+                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
+                    return null;
+            }else if($reifiedT == FreeInterface.$TypeDescriptor$){
+                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Interface == false)
+                    return null;
+            }else if($reifiedT == FreeClass.$TypeDescriptor$){
+                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.Class == false)
+                    return null;
+            }else if($reifiedT == FreeClassOrInterface.$TypeDescriptor$){
+                if(memberInContainer instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
+                    return null;
+            }else{
+                throw new AssertionError("Member type not supported: "+$reifiedT);
+            }
+            // get the right container type
+            qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) memberInContainer.getContainer());
+        }
+        if(qualifyingType == null)
+            throw new AssertionError("Could not find qualifying type for reifiedContainer: "+$reifiedContainer);
+        // now get the right metamodel for the qualifying type
+        containerMetamodel = (AppliedClassOrInterface<Container>)Metamodel.getAppliedMetamodel(qualifyingType);
+        if(containerMetamodel == null)
+            throw new AssertionError("Could not find metamodel for qualifying type: "+qualifyingType);
+        
+        // we already have the right member for the wildcard
+        if($reifiedContainer != TypeDescriptor.NothingType){
+            // now get the right member
+            value = ((FreeClassOrInterface)containerMetamodel.getDeclaration()).findDeclaredDeclaration($reifiedT, value.getName());
+        }
+        return new MemberLookup<T, Container>($reifiedT, $reifiedContainer, value, qualifyingType, containerMetamodel);
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType$() {

@@ -942,7 +942,6 @@ public class Metamodel {
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.compiler.typechecker.model.Unit unit, 
             com.redhat.ceylon.compiler.typechecker.model.Functional decl, 
             ProducedReference producedReference) {
-        
         if(!decl.getParameterLists().isEmpty()){
             List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
             com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
