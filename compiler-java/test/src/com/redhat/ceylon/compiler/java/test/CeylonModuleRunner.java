@@ -203,6 +203,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
         List<String> args = new ArrayList<>();
 //            args.add("-verbose:code");
+        args.add("-g");
         args.add("-src"); 
         args.add(srcDir.getCanonicalPath());
         args.add("-out");
