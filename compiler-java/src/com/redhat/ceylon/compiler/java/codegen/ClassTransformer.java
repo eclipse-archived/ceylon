@@ -2165,7 +2165,7 @@ public class ClassTransformer extends AbstractTransformer {
                     true,
                     true,
                     true,
-                    transformMplBody(def.getParameterLists(), model, body),
+                    transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
                     && !Decl.withinInterface(model.getRefinedDeclaration())? daoSuper : daoThis,
                     !Strategy.defaultParameterMethodOnSelf(model));
@@ -2190,7 +2190,7 @@ public class ClassTransformer extends AbstractTransformer {
                             true,
                             false,
                             !model.isShared(),
-                            transformMplBody(def.getParameterLists(), model, body),
+                            transformMplBodyUnlessSpecifier(def, model, body),
                             daoCompanion,
                             false);
                 }
@@ -2369,6 +2369,21 @@ public class ClassTransformer extends AbstractTransformer {
         return lb.toList();
     }
 
+    List<JCStatement> transformMplBodyUnlessSpecifier(Tree.AnyMethod def,
+            Method model,
+            List<JCStatement> body) {
+        if (def instanceof Tree.MethodDeclaration) {
+            Tree.SpecifierExpression specifier = ((Tree.MethodDeclaration)def).getSpecifierExpression();
+            if (specifier != null 
+                    && !(specifier instanceof Tree.LazySpecifierExpression)) {
+                if (!CodegenUtil.canOptimiseMethodSpecifier(specifier.getExpression().getTerm(), model)) {
+                    return body;
+                }
+            }
+        }
+        return transformMplBody(def.getParameterLists(), model, body);
+    }
+    
     /**
      * Constructs all but the outer-most method of a {@code Method} with 
      * multiple parameter lists 
