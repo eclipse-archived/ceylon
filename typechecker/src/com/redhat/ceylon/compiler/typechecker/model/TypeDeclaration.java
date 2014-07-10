@@ -355,15 +355,6 @@ public abstract class TypeDeclaration extends Declaration
      * Does the given declaration inherit the given type?
      */
     public boolean inherits(TypeDeclaration dec) {
-        return inherits(dec, new ArrayList<TypeDeclaration>());
-    }
-    
-    private boolean inherits(TypeDeclaration dec, 
-            List<TypeDeclaration> visited) {
-        if (visited.contains(this)) {
-            return false;
-        }
-        visited.add(this);
         if (this instanceof UnionType) {
             ProducedType st = getType().getSupertype(dec);
             return st!=null && !st.isNothing();
@@ -374,13 +365,13 @@ public abstract class TypeDeclaration extends Declaration
         	return true;
         }
         for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
-            if (t.inherits(dec, visited)) {
+            if (t.inherits(dec)) {
                 return true;
             }
         }
         TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            if (et.inherits(dec, visited)) {
+            if (et.inherits(dec)) {
                 return true;
             }
         }
