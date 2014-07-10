@@ -915,13 +915,10 @@ class CallableInvocation extends DirectInvocation {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        
-        JCExpression result = tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
-        if (isOnValueType() 
-                && CodegenUtil.getBoxingStrategy(getParameter(argIndex).getModel()) == BoxingStrategy.BOXED) {
-            result = gen.expressionGen().applyErasureAndBoxing(result, getArgumentType(argIndex), true, BoxingStrategy.UNBOXED, getArgumentType(argIndex));
-        }
-        return result;
+
+        // note: we don't deal with unboxing here, as that is taken care of already by CallableBuilder by unboxing the
+        // Callable arguments into unboxed local vars if required and if it's a value type
+        return tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
     }
     @Override
     protected Parameter getParameter(int index) {

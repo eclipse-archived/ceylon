@@ -1211,12 +1211,17 @@ public class CallableBuilder {
                     gen.make().Literal(argIndex));
         }
         int ebFlags = ExpressionTransformer.EXPR_DOWN_CAST; // we're effectively downcasting it from Object
+        BoxingStrategy boxingStrategy;
+        if(target != null && target.isValueTypeCall(param, paramType))
+            boxingStrategy = BoxingStrategy.UNBOXED;
+        else
+            boxingStrategy = CodegenUtil.getBoxingStrategy(param.getModel());
         argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
                 paramType, // it came in as Object, but we need to pretend its type
                 // is the parameter type because that's how unboxing determines how it has to unbox
                 true, // it's completely erased
                 true, // it came in boxed
-                CodegenUtil.getBoxingStrategy(param.getModel()), // see if we need to box 
+                boxingStrategy, // see if we need to box 
                 paramType, // see what type we need
                 ebFlags);
         if (this.companionAccess) {
@@ -1408,7 +1413,7 @@ public class CallableBuilder {
                 Naming.SyntheticName name, JCExpression expr) {
             // store it in a local var
             int flags = 0;
-            if(!CodegenUtil.isUnBoxed(param.getModel())){
+            if(!CodegenUtil.isUnBoxed(param.getModel()) && !isValueTypeCall(param, parameterType)){
                 flags |= AbstractTransformer.JT_NO_PRIMITIVES;
             }
             if (companionAccess) {
@@ -1430,6 +1435,16 @@ public class CallableBuilder {
             if (ParameterDefinitionBuilder.isBoxedVariableParameter(param)) {
                 stmts.append(gen.makeVariableBoxDecl(name.makeIdent(), param.getModel()));
             }
+        }
+
+        private boolean isValueTypeCall(Parameter param, ProducedType parameterType) {
+            if(!param.isSequenced()
+                    && forwardCallTo instanceof Tree.QualifiedMemberExpression){
+                ProducedReference target = ((Tree.QualifiedMemberExpression) forwardCallTo).getTarget();
+                return Decl.isValueTypeDecl(target.getType())
+                        && Decl.isValueTypeDecl(parameterType);
+            }
+            return false;
         }
     }
     
