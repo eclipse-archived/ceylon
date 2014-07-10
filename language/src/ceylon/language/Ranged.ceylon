@@ -1,9 +1,10 @@
-"Abstract supertype of _ranged objects_ mapping a range of 
- discrete indices to elements, and supporting operations 
- that produce a subrange of indexed elements. The type 
- parameter [[Subrange]] abstracts the type of the resulting 
- subrange. A subrange may be obtained from an instance of 
- `Ranged` using the _span_ and _measure_ operators.
+"Abstract supertype of _ranged streams_ mapping a range of 
+ discrete indices to elements of the stream, and supporting 
+ operations that produce a subrange of indexed elements. The 
+ type parameter [[Subrange]] abstracts the type of the 
+ resulting subrange. A subrange may be obtained from an 
+ instance of `Ranged` using the _span_ and _measure_ 
+ operators.
  
  Often, in a [[List]] or sorted map for example, an index
  and its element are distinct values. Sometimes, in a sorted 
@@ -84,16 +85,16 @@ shared interface Ranged<in Index, out Element, out Subrange>
     "Obtain a span containing the elements between the two 
      given indices. 
      
-     The span should contain elements of this iterable 
-     object, starting from the element at the given 
-     [[starting index|from]], and ending with the element at 
-     the given [[ending index|to]], in the same order as 
-     they are produced by the [[iterator]], except when the 
-     ending index occurs earlier than the starting index, in 
-     which case they occur in the opposite order.
+     The span should contain elements of this stream, 
+     starting from the element at the given [[starting 
+     index|from]], and ending with the element at the given 
+     [[ending index|to]], in the same order as they are 
+     produced by the [[iterator]] of the stream, except when 
+     the ending index occurs earlier than the starting index, 
+     in which case they occur in the opposite order.
      
      When one or both of the given indices does not belong 
-     to this ranged object, the behavior is implementation 
+     to this ranged stream, the behavior is implementation 
      dependent."
     shared formal Subrange span(Index from, Index to);
    
@@ -101,25 +102,25 @@ shared interface Ranged<in Index, out Element, out Subrange>
      [[starting index|from]] and the last index of this 
      ranged object.
      
-     The span should contain elements of this iterable 
-     object, starting from the element at the given 
-     [[starting index|from]], in the same order as they are 
-     produced by the [[iterator]].
+     The span should contain elements of this stream, 
+     starting from the element at the given [[starting 
+     index|from]], in the same order as they are produced by 
+     the [[iterator]] of the stream.
      
      When the given index does not belong to this ranged 
-     object, the behavior is implementation dependent."
+     stream, the behavior is implementation dependent."
     shared formal Subrange spanFrom(Index from);
 
     "Obtain a span containing the elements between the first 
-     index of this ranged object and given [[end index|to]].
+     index of this ranged stream and given [[end index|to]].
      
-     The span should contain elements of this iterable 
-     object, up to the element at the given 
-     [[ending index|to]], in the same order as they are 
-     produced by the [[iterator]].
+     The span should contain elements of this stream, up to 
+     the element at the given [[ending index|to]], in the 
+     same order as they are produced by the [[iterator]] of
+     the stream.
      
      When the given index does not belong to this ranged 
-     object, the behavior is implementation dependent."
+     stream, the behavior is implementation dependent."
     shared formal Subrange spanTo(Index to);
  
     "Obtain a measure containing the mapped values starting 
@@ -128,14 +129,14 @@ shared interface Ranged<in Index, out Element, out Subrange>
      empty.
      
      The measure should contain the given [[number|length]] 
-     of elements of this iterable object, starting from the
-     element at the given [[starting index|from]], in the 
-     same order as they are produced by the [[iterator]]. In
-     the case where the iterator would be exhausted before
-     [[length]] elements are produced, the resulting segment
-     contains only those elements which were produced before
-     the iterator was exhausted, and the length of the 
-     segment is less then the given `length`.
+     of elements of this stream, starting from the element 
+     at the given [[starting index|from]], in the same order 
+     as they are produced by the [[iterator]] of the stream. 
+     In the case where the iterator would be exhausted 
+     before [[length]] elements are produced, the resulting 
+     measure contains only those elements which were 
+     produced before the iterator was exhausted, and the 
+     length of the measure is less then the given `length`.
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."

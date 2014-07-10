@@ -160,11 +160,11 @@ shared native final class String(characters)
     
     shared native actual Boolean defines(Integer index);
     
-    "Select the characters between the given indexes. If the 
-     [[start index|from]] is the same as the 
-     [[end index|to]], return a string with a single 
-     character. If the start index is larger than the end 
-     index, return the characters in the 
+    "A string containing the characters of this string 
+     between the given indexes. If the [[start index|from]] 
+     is the same as the [[end index|to]], return a string 
+     with a single character. If the start index is larger 
+     than the end index, return the characters in the 
      reverse order from the order in which they appear in 
      this string. If both the start index and the end index 
      are larger than the last index in the string, or if 
@@ -174,21 +174,31 @@ shared native final class String(characters)
      index in the string, return all characters from the 
      start index to last character of the string."
     shared actual native String span(Integer from, Integer to);
-
-    shared actual String spanFrom(Integer from)
-            => span(from, size);
-
-    shared actual String spanTo(Integer to)
+    
+    "A string containing the characters of this string from 
+     the given [[start index|from]] inclusive to the end of 
+     the string. If the start index is larger than the last 
+     index of the string, return the empty string. If the
+     start index is negative, return this string."
+    shared actual native String spanFrom(Integer from)
+            => from<size then span(from, size) else "";
+    
+    "A string containing the characters of this string from 
+     the start of the string up to and including the given 
+     [[end index|to]]. If the end index is negative, return 
+     the empty string. If the end index is larger than the
+     last index in this string, return this string."
+    shared actual native String spanTo(Integer to)
             => to>=0 then span(0, to) else "";
     
-    "Select the characters of this string beginning at the 
-     given [[start index|from]], returning a string no 
-     longer than the given [[length]]. If the portion of 
-     this string starting at the given index is shorter than 
-     the given length, return the portion of this string 
-     from the given index until the end of this string. 
-     Otherwise, return a string of the given length. If the 
-     start index is larger than the last index of the 
+    "A string containing the characters of this string 
+     beginning at the given [[start index|from]], returning 
+     a string no longer than the given [[length]]. If the 
+     portion of this string starting at the given index is 
+     shorter than the given length, return the portion of 
+     this string from the given index until the end of this 
+     string. Otherwise, return a string of the given length. 
+     If the start index is larger than the last index of the 
      string, return the empty string."
     shared native actual String measure(Integer from, 
                                         Integer length);
