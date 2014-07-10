@@ -525,10 +525,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
         return isOverloadingMethod(method);
     }
     
-    /*
-     * Copied from getOverriddenMethod and adapted for overloading
+    /**
+     * Returns true if the given method is overloading an inherited method (from super class or interfaces).
      */
-    private boolean isOverloadingMethod(MethodSymbol method) {
+    private boolean isOverloadingMethod(final MethodSymbol method) {
+        /*
+         * Copied from getOverriddenMethod and adapted for overloading
+         */
         try{
             // interfaces have a different way to work
             if(method.owner.isInterface())
@@ -552,11 +555,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // ignore some methods
                         if(isIgnored(e.sym))
                             continue;
-                        if (!(method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
-                                // FIXME: I suspect the following requires a
-                                // subst() for a parametric return type.
-                                types.isSameType(method.type.getReturnType(),
-                                        types.memberType(method.owner.type, e.sym).getReturnType()))) {
+                        if (!method.overrides(e.sym, (TypeSymbol)method.owner, types, false)) {
                             return true;
                         }
                     }
