@@ -149,11 +149,18 @@ abstract class Invocation {
     
     protected ProducedType getParameterTypeForValueType(ProducedReference producedReference, Parameter param) {
         // we need to find the interface for this method
-        TypedDeclaration method = (TypedDeclaration) param.getModel().getContainer();
-        TypeDeclaration container = (TypeDeclaration) method.getContainer();
-        ProducedType qualifyingType = producedReference.getQualifyingType();
-        ProducedType supertype = qualifyingType.getSupertype(container);
-        return param.getType().substitute(supertype.getTypeArguments());
+        ProducedType paramType = param.getModel().getReference().getFullType().getType();
+        Scope paramContainer = param.getModel().getContainer();
+        if(paramContainer instanceof TypedDeclaration){
+            TypedDeclaration method = (TypedDeclaration) paramContainer;
+            if(method.getContainer() instanceof TypeDeclaration){
+                TypeDeclaration container = (TypeDeclaration) method.getContainer();
+                ProducedType qualifyingType = producedReference.getQualifyingType();
+                ProducedType supertype = qualifyingType.getSupertype(container);
+                return paramType.substitute(supertype.getTypeArguments());
+            }
+        }
+        return paramType;
     }
     
 
