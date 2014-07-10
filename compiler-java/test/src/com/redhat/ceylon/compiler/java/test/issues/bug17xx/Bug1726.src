@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private bug1726_() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> s1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.ceylon.language.String.$clone(""));
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.String> s2;
+        s2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.ceylon.language.String.$clone(""));
+            }
+        };
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1726\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.class);
+    }
+}
