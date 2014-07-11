@@ -43,4 +43,21 @@ public class JavaWithOverloadedMembers<T> {
     
     public void bug1575(String i){}
     public void bug1575(T t, Double d){}
+    
+    public void overloadedPrimitive(byte a, long b){}
+    public void overloadedPrimitive(short a, long b){}
+    public void overloadedPrimitive(int a, long b){}
+    public void overloadedPrimitive(long a, long b){}
+    public void overloadedPrimitiveVariadic(short... a){}
+    public void overloadedPrimitiveVariadic(int... a){}
+    public void overloadedPrimitiveVariadic(long... a){}
+    
+    public void ambiguousOverload(Object a, String b){}
+    public void ambiguousOverload(String a, Object b){}
+
+    public void ambiguousOverload2(int a, long b){}
+    public void ambiguousOverload2(long a, int b){}
+    
+    public int overloadedPrimitive2(int index){ return 1; }
+    public boolean overloadedPrimitive2(Object element){ return true; }
 }

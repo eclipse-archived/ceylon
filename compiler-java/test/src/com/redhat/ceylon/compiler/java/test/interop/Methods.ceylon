@@ -190,3 +190,27 @@ void moreOverloads(){
             *{StandardCopyOption.\iREPLACE_EXISTING, StandardCopyOption.\iCOPY_ATTRIBUTES});
 
 }
+
+@noanno
+void overloadsWithPrimitives(){
+    TypesJava java = TypesJava();
+    value overload = JavaWithOverloadedMembers<Object>();
+    
+    overload.overloadedPrimitive(1, 2);
+    overload.overloadedPrimitive(java.return_short(), 2);
+    overload.overloadedPrimitive(java.return_int(), 2);
+    overload.overloadedPrimitive(java.return_long(), 2);
+
+    overload.overloadedPrimitiveVariadic(1, 2);
+    // call long...
+    overload.overloadedPrimitiveVariadic(java.return_short(), 2);
+    // call short...
+    overload.overloadedPrimitiveVariadic(java.return_short());
+    overload.overloadedPrimitiveVariadic(java.return_int(), 2);
+    overload.overloadedPrimitiveVariadic(java.return_int());
+    overload.overloadedPrimitiveVariadic(java.return_long(), 2);
+    overload.overloadedPrimitiveVariadic(java.return_long());
+
+    Integer a = overload.overloadedPrimitive2(1);
+    Boolean b = overload.overloadedPrimitive2(true);
+}

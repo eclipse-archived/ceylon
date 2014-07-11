@@ -678,3 +678,39 @@ final class moreOverloads_ {
         .com.redhat.ceylon.compiler.java.test.interop.moreOverloads_.moreOverloads();
     }
 }
+final class overloadsWithPrimitives_ {
+    
+    private overloadsWithPrimitives_() {
+    }
+    
+    static void overloadsWithPrimitives() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.java.lang.Object> overload = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.java.lang.Object>();
+        overload.overloadedPrimitive(1L, 2L);
+        overload.overloadedPrimitive(java.return_short(), 2L);
+        overload.overloadedPrimitive(java.return_int(), 2L);
+        overload.overloadedPrimitive(java.return_long(), 2L);
+        overload.overloadedPrimitiveVariadic(new long[]{
+                1L,
+                2L});
+        overload.overloadedPrimitiveVariadic(new long[]{
+                java.return_short(),
+                2L});
+        overload.overloadedPrimitiveVariadic(new short[]{java.return_short()});
+        overload.overloadedPrimitiveVariadic(new long[]{
+                java.return_int(),
+                2L});
+        overload.overloadedPrimitiveVariadic(new int[]{java.return_int()});
+        overload.overloadedPrimitiveVariadic(new long[]{
+                java.return_long(),
+                2L});
+        overload.overloadedPrimitiveVariadic(new long[]{java.return_long()});
+        final long a = overload.overloadedPrimitive2(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+        final boolean b = overload.overloadedPrimitive2(.ceylon.language.Boolean.instance(true));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.overloadsWithPrimitives_.overloadsWithPrimitives();
+    }
+}

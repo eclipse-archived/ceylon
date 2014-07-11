@@ -61,6 +61,15 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopAmbiguousOverloading(){
+        compile("JavaWithOverloadedMembers.java");
+        assertErrors("AmbiguousOverloading",
+                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload' that accepts the given argument types 'String, String'"),
+                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload2' that accepts the given argument types 'Integer, Integer'")
+                );
+    }
+
+    @Test
     public void testIopVariadicOverloadedMethods(){
         compile("JavaWithOverloadedMembers.java");
         compareWithJavaSource("VariadicOverloadedMethods");
