@@ -24,7 +24,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;

@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.tools;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;

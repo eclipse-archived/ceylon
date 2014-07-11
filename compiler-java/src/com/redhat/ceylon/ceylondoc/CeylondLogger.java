@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 
 public class CeylondLogger implements Logger {
 

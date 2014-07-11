@@ -40,7 +40,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;

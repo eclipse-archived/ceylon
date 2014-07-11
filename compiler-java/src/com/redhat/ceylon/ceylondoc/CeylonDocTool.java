@@ -43,7 +43,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;

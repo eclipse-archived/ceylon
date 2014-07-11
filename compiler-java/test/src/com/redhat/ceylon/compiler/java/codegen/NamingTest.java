@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
