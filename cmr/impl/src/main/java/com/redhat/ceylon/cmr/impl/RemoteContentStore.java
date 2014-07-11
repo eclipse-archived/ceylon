@@ -26,7 +26,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;

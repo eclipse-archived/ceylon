@@ -18,7 +18,7 @@ import java.util.jar.Pack200.Unpacker;
 import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.FileUtil;

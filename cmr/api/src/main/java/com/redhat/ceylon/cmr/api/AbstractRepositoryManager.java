@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.log.Logger;
+
 /**
  * Abstract repository manager.
  *

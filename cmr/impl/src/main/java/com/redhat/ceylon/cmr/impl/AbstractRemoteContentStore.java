@@ -17,7 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ContentFinder;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;

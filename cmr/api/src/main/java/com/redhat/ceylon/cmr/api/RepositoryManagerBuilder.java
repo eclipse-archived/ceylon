@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * RepositoryManager builder API.

@@ -39,7 +39,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -51,19 +54,17 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.JULLogger;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class AbstractTest {
 
-    protected Logger log = new JULLogger();
+    protected Logger log = new CMRJULLogger();
 
     private Path temp;
 

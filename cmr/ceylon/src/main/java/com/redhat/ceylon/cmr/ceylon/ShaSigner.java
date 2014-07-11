@@ -29,7 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 
 /*
  * More or less copied from the compiler's ShaSigner :(

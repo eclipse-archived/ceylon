@@ -20,7 +20,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;

@@ -31,7 +31,7 @@ import java.util.TreeSet;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;

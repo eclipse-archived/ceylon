@@ -21,23 +21,24 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.IOUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class MavenDependencyResolver extends AbstractDependencyResolver {
-    private static final Logger logger = new JULLogger();
+    private static final Logger logger = new CMRJULLogger();
 
     public Set<ModuleInfo> resolve(DependencyContext context) {
         if (context.ignoreInner() == false) {

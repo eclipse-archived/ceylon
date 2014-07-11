@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
+import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
@@ -22,6 +21,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.log.Logger;
 
 public class CeylonUtils {
 
@@ -262,7 +262,7 @@ public class CeylonUtils {
          */
         public RepositoryManagerBuilder buildManagerBuilder() {
             if (log == null) {
-                log = new JULLogger();
+                log = new CMRJULLogger();
             }
 
             // Make sure we have a configuration
@@ -388,7 +388,7 @@ public class CeylonUtils {
          */
         public RepositoryManager buildOutputManager() {
             if (log == null) {
-                log = new JULLogger();
+                log = new CMRJULLogger();
             }
 
             // Make sure we have a configuration
@@ -514,7 +514,7 @@ public class CeylonUtils {
             if (throwawayRB == null) {
                 Logger logger = log;
                 if (logger == null) {
-                    logger = new JULLogger();
+                    logger = new CMRJULLogger();
                 }
                 throwawayRB = new RepositoryManagerBuilder(logger).repositoryBuilder();
             }

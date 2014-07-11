@@ -16,7 +16,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;

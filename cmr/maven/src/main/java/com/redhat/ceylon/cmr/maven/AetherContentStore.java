@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.Collections;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.impl.AbstractContentStore;
 import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.RootNode;

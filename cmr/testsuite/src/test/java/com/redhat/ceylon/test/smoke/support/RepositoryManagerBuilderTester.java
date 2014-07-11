@@ -2,7 +2,7 @@ package com.redhat.ceylon.test.smoke.support;
 
 import java.io.File;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 

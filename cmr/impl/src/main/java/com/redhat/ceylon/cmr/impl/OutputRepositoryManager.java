@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.*;
+import com.redhat.ceylon.common.log.Logger;
 
 import java.io.File;
 import java.io.InputStream;

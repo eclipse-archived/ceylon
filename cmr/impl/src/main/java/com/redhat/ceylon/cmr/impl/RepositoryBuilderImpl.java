@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;

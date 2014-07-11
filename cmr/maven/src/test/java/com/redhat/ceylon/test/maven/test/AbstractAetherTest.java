@@ -19,10 +19,10 @@ package com.redhat.ceylon.test.maven.test;
 import java.io.File;
 import java.net.URL;
 
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Abstract Aether tests.
@@ -30,7 +30,7 @@ import com.redhat.ceylon.cmr.maven.AetherRepository;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractAetherTest {
-    protected static final Logger log = new JULLogger();
+    protected static final Logger log = new CMRJULLogger();
 
     protected Repository createAetherRepository() throws Exception {
         return createAetherRepository(false);
