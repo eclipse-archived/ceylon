@@ -19,7 +19,6 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -361,7 +360,7 @@ public class JsCompiler {
                 artifact.setForceOperation(true);
                 ArtifactContext sha1Context = artifact.getSha1Context();
                 sha1Context.setForceOperation(true);
-                File sha1File = ShaSigner.sign(jsart, new JULLogger(), opts.isVerbose());
+                File sha1File = ShaSigner.sign(jsart, new JsJULLogger(), opts.isVerbose());
                 outRepo.putArtifact(sha1Context, sha1File);
                 //Create the src archive
                 if (opts.isGenerateSourceArchive()) {
@@ -370,7 +369,7 @@ public class JsCompiler {
                         sourcePaths.add(new File(sp));
                     }
                     SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
-                            moduleName, moduleVersion, opts.isVerbose(), new JULLogger());
+                            moduleName, moduleVersion, opts.isVerbose(), new JsJULLogger());
                     sac.copySourceFiles(jsout.getSources());
                 }
                 sha1File.deleteOnExit();
