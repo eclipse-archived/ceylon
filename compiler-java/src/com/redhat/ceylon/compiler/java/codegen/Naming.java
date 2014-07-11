@@ -1350,15 +1350,9 @@ public class Naming implements LocalId {
     }
 
     static String quoteClassName(String name) {
-        return Util.isInitialLowerCase(name) ? quoteIfModuleOrPackageName(name) + "_" : name;
+        return Util.isInitialLowerCase(name) ? name + "_" : name;
     }
     
-    public static String quoteIfModuleOrPackageName(String name) {
-        if(name.equals("module") || name.equals("package"))
-            return "$"+name;
-        return name;
-    }
-
     /** 
      * Gets the class name of the given declaration, with the given options
      * @param decl The declaration
@@ -1431,6 +1425,9 @@ public class Naming implements LocalId {
 
     private static final int __NA_IDENT_PARAMETER_ALIASED = 1<<12;
     static final int NA_IDENT_PARAMETER_ALIASED = NA_IDENT | __NA_IDENT_PARAMETER_ALIASED;
+    
+    public static final String MODULE_DESCRIPTOR_CLASS_NAME = "$module_";
+    public static final String PACKAGE_DESCRIPTOR_CLASS_NAME = "$package_";
     
     
     /**

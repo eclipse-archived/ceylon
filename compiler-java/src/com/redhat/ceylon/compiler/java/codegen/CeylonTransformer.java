@@ -453,7 +453,7 @@ public class CeylonTransformer extends AbstractTransformer {
     public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
         at(module);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
-                .klass(this, "module_", null)
+                .klass(this, Naming.MODULE_DESCRIPTOR_CLASS_NAME, null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
                 .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
@@ -487,7 +487,7 @@ public class CeylonTransformer extends AbstractTransformer {
     public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
         at(pack);
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
-                .klass(this, "package_", null)
+                .klass(this, Naming.PACKAGE_DESCRIPTOR_CLASS_NAME, null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
                 .annotations(makeAtPackage(pack.getUnit().getPackage()));

@@ -1466,7 +1466,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         String quotedQualifiedName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
         // FIXME: not sure the toplevel package can have a package declaration
-        String className = quotedQualifiedName.isEmpty() ? "package_" : quotedQualifiedName + ".package_";
+        String className = quotedQualifiedName.isEmpty() 
+                ? Naming.PACKAGE_DESCRIPTOR_CLASS_NAME 
+                : quotedQualifiedName + "." + Naming.PACKAGE_DESCRIPTOR_CLASS_NAME;
         logVerbose("[Trying to look up package from "+className+"]");
         Module module = pkg.getModule();
         if(module == null)
@@ -1587,7 +1589,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String pkgName = module.getNameAsString();
             if(pkgName.isEmpty())
                 return false;
-            String moduleClassName = pkgName + ".module_";
+            String moduleClassName = pkgName + "." + Naming.MODULE_DESCRIPTOR_CLASS_NAME;
             logVerbose("[Trying to look up module from "+moduleClassName+"]");
             ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
             if(moduleClass != null){
@@ -4469,7 +4471,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected boolean isModuleOrPackageDescriptorName(String name) {
-        return name.equals("module_") || name.equals("package_");
+        return name.equals(Naming.MODULE_DESCRIPTOR_CLASS_NAME) || name.equals(Naming.PACKAGE_DESCRIPTOR_CLASS_NAME);
     }
     
     protected void loadJavaBaseArrays(){
