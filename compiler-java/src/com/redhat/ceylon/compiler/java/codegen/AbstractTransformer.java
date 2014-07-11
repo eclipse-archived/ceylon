@@ -3844,7 +3844,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if (message != null) {
             if (node != null) {
-                log.error(getPosition(node), key, message);
+                node.addError(new CodeGenError(node, message, null));
             } else {
                 log.error(key, message);
             }
