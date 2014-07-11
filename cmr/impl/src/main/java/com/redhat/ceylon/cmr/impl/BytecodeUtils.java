@@ -136,8 +136,14 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
 
     private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
-        final DotName moduleClassName = DotName.createSimple(moduleName + ".module_");
-        return index.getClassByName(moduleClassName);
+        DotName moduleClassName = DotName.createSimple(moduleName + ".$module_");
+        ClassInfo ret = index.getClassByName(moduleClassName);
+        if(ret == null){
+            // read previous module descriptor name
+            moduleClassName = DotName.createSimple(moduleName + ".module_");
+            ret = index.getClassByName(moduleClassName);
+        }
+        return ret;
     }
 
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
