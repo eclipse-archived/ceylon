@@ -88,7 +88,7 @@ public class Launcher {
 
                 try{
                     if (hasVerboseFlag(verbose, "loader")) {
-                        Logger log = Logger.getLogger("");
+                        Logger log = Logger.getLogger("com.redhat.ceylon.log.loader");
                         log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
                         for (File f : CeylonClassLoader.getClassPath()) {
                             log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
@@ -168,36 +168,51 @@ public class Launcher {
                 System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
             }
 
-            boolean handlersExists = false;
-            for (Handler handler : Logger.getLogger("").getHandlers()) {
-                handlersExists = true;
-
-                //TODO Should we remove this hack? If handler are configured then levels should be too.
-                // This is a hack, but at least it works. With a property file our log
-                // formatter has to be in the boot class path. This way it doesn't.
-                if (handler instanceof ConsoleHandler) {
-                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
-                    if (verbose != null) {
-                        handler.setLevel(Level.ALL);
+            if (verbose != null) {
+                String[] flags = verbose.split(",");
+                for (String flag : flags) {
+                    flag = flag.trim();
+                    if ("all".equals(flag) || flag.isEmpty()) {
+                        initLogger(Logger.getLogger(""), true);
+                    } else if (flag.matches("^[a-z]+$")) {
+                        initLogger(Logger.getLogger("com.redhat.ceylon.log." + flag), true);
                     }
                 }
-            }
-            if (verbose != null) {
-                //TODO do not configure root logger, make it flags aware
-                Logger logger = Logger.getLogger("");
-                logger.setLevel(Level.ALL);
-                if (handlersExists == false) {
-                    ConsoleHandler handler = new ConsoleHandler();
-                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
-                    handler.setLevel(Level.ALL);
-                    logger.addHandler(handler);
-                }
+            } else {
+                initLogger(Logger.getLogger(""), false);
             }
         } catch (Throwable ex) {
             System.err.println("Warning: log configuration failed: " + ex.getMessage());
         }
     }
 
+    private static void initLogger(Logger logger, boolean verbose) {
+        boolean handlersExists = false;
+        for (Handler handler : logger.getHandlers()) {
+            handlersExists = true;
+
+            //TODO Should we remove this hack? If handler are configured then levels should be too.
+            // This is a hack, but at least it works. With a property file our log
+            // formatter has to be in the boot class path. This way it doesn't.
+            if (handler instanceof ConsoleHandler) {
+                handler.setFormatter(CeylonLogFormatter.INSTANCE);
+                if (verbose) {
+                    handler.setLevel(Level.ALL);
+                }
+            }
+        }
+        if (verbose) {
+            //TODO do not configure root logger, make it flags aware
+            logger.setLevel(Level.ALL);
+            if (handlersExists == false) {
+                ConsoleHandler handler = new ConsoleHandler();
+                handler.setFormatter(CeylonLogFormatter.INSTANCE);
+                handler.setLevel(Level.ALL);
+                logger.addHandler(handler);
+            }
+        }
+    }
+    
     // Returns true if one of the argument passed matches one of the flags given to
     // --verbose=... on the command line or if one of the flags is "all"
     private static boolean hasVerboseFlag(String verbose, String flag) {
