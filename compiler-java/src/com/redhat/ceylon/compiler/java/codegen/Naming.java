@@ -625,13 +625,15 @@ public class Naming implements LocalId {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         
-        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl), decl.getName());
-        Assert.that(!flags.contains(DeclNameFlag.ANNOTATIONS) 
-                || Decl.isAnnotationClass(decl) 
-                    && decl instanceof Class 
-                    && gen().isSequencedAnnotation((Class)decl), decl.getName());
-        
-        
+        if (flags.contains(DeclNameFlag.ANNOTATION) && !Decl.isAnnotationClass(decl)) { 
+            throw new BugException(decl.getName());
+        }
+        if (flags.contains(DeclNameFlag.ANNOTATIONS) 
+                && !(Decl.isAnnotationClass(decl) 
+                    || decl instanceof Class 
+                    || gen().isSequencedAnnotation((Class)decl))) { 
+            throw new BugException(decl.getName());
+        }
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
         Scope s = decl;
         do {
@@ -938,7 +940,9 @@ public class Naming implements LocalId {
     }
     
     private static String getAliasedParameterName(MethodOrValue parameter) {
-        Assert.that(parameter.isParameter());
+        if (!parameter.isParameter()) {
+            throw new BugException();
+        }
         MethodOrValue mov = parameter;
         if ((mov instanceof Method && ((Method)mov).isDeferred())
                 || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
@@ -1138,7 +1142,9 @@ public class Naming implements LocalId {
 
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
         // TODO Can we merge this into makeName(..., NA_DPM) ?
-        Assert.that(Strategy.hasDefaultParameterValueMethod(param));
+        if (!Strategy.hasDefaultParameterValueMethod(param)) {
+            throw new BugException();
+        }
         Declaration decl = param.getDeclaration();
         String methodName = getDefaultedParamMethodName(decl, param);
         if (Strategy.defaultParameterMethodOnSelf(param.getModel())) {
@@ -1153,7 +1159,9 @@ public class Naming implements LocalId {
             return makeQuotedQualIdent(qualifier, methodName);
         } else if (Strategy.defaultParameterMethodStatic(param.getModel())) {
             // top level method or class
-            Assert.that(qualifier == null);
+            if (qualifier != null) {
+                throw new BugException();
+            }
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
@@ -1219,10 +1227,15 @@ public class Naming implements LocalId {
     
     JCExpression makeQualifiedName(JCExpression qualifyingExpr, TypedDeclaration decl, int namingOptions) {
         // TODO Don't build a list but rather construct a JCExpression directly
-        Assert.that(namingOptions != 0);
-        Assert.that(qualifyingExpr == null || ((namingOptions & NA_FQ) == 0 
-                && (namingOptions & NA_WRAPPER) == 0
-                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0));
+        if (namingOptions == 0) {
+            throw new BugException();
+        }
+        if (qualifyingExpr != null 
+                && ((namingOptions & NA_FQ) != 0 
+                    || (namingOptions & NA_WRAPPER) != 0
+                    || (namingOptions & NA_WRAPPER_UNQUOTED) != 0)) {
+            throw new BugException();
+        }
         
         JCExpression expr = qualifyingExpr;
         expr = addNamesForWrapperClass(expr, decl, namingOptions);
@@ -1242,7 +1255,9 @@ public class Naming implements LocalId {
      * @see #makeQualIdent(JCExpression, String...)
      */
     JCExpression makeQualIdent(JCExpression expr, String name) {
-        Assert.that(expr != null || name != null);
+        if (expr == null && name == null) {
+            throw new BugException();
+        }
         if (expr == null) {
             return makeUnquotedIdent(name);
         } else if (name == null) {
@@ -1257,7 +1272,9 @@ public class Naming implements LocalId {
             String name = ((FieldValue)decl).getRealName();
             expr = makeQualIdent(expr, name);
         } else if ((namingOptions & NA_IDENT) != 0) {
-            Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
+            if ((namingOptions & NA_GETTER | NA_SETTER) == 0) {
+                throw new BugException();
+            }
             String name;
             if ((namingOptions & __NA_IDENT_PARAMETER_ALIASED) != 0) {
                 name = Naming.getAliasedParameterName((MethodOrValue)decl);
@@ -1267,10 +1284,14 @@ public class Naming implements LocalId {
             }
             expr = makeQualIdent(expr, name);
         } else if ((namingOptions & NA_SETTER) != 0) {
-            Assert.not(decl instanceof Method, "A method has no setter");
+            if (decl instanceof Method) {
+                throw new BugException("A method has no setter");
+            }
             expr = makeQualIdent(expr, getSetterName(decl));
         } else if ((namingOptions & NA_GETTER) != 0) {
-            Assert.not(decl instanceof Method, "A method has no getter");
+            if (decl instanceof Method) {
+                throw new BugException("A method has no getter");
+            }
             expr = makeQualIdent(expr, getGetterName(decl));
         } else if (decl instanceof Value
                 && !((Value)decl).isParameter()) {
@@ -1297,9 +1318,10 @@ public class Naming implements LocalId {
     
     private JCExpression addNamesForWrapperClass(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_FQ) != 0) {
-            Assert.that(((namingOptions & NA_WRAPPER) != 0)
-                    || ((namingOptions & NA_WRAPPER_UNQUOTED) != 0), 
-                    "If you pass FQ you must pass WRAPPER or WRAPPER_UNQUOTED too, or there's no class name to qualify!");
+            if ((namingOptions & NA_WRAPPER) == 0
+                    && (namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
+                throw new BugException("If you pass FQ you must pass WRAPPER or WRAPPER_UNQUOTED too, or there's no class name to qualify!");
+            }
             List<String> outerNames = null;
             Scope s = decl.getContainer();
             while (s != null) {
@@ -1458,8 +1480,7 @@ public class Naming implements LocalId {
                 && ((MethodOrValue)decl).isParameter()) {
             return getMethodName(decl, namingOptions);
         }
-        Assert.fail();
-        return null;
+        throw new BugException();
     }
     
     /**
@@ -1467,8 +1488,9 @@ public class Naming implements LocalId {
      * will be quoted unless namingOptions includes NA_WRAPPER_UNQUOTED
      */
     static String getAttrClassName(TypedDeclaration decl, int namingOptions) {
-        Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) == 0, 
-                "Unsupported namingOption");
+        if ((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) != 0) {
+            throw new BugException("unsupported namingOption");
+        }
         String name = decl.getName();
         if (Decl.isLocal(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
@@ -1532,14 +1554,18 @@ public class Naming implements LocalId {
     /** Generates an ident for the getter method of a Value */
     JCExpression makeLanguageValue(String string) {
         Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);
-        Assert.that(Decl.isValue(decl));
+        if (!Decl.isValue(decl)) {
+            throw new BugException();
+        }
         return makeSelect(makeName((Value)decl, NA_FQ | NA_WRAPPER), getGetterName(decl));
     }
     
     /** Generates an ident for the getter method of a Value */
     JCExpression makeLanguageFunction(String string) {
         Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);
-        Assert.that(Decl.isMethod(decl));
+        if (!Decl.isMethod(decl)) {
+            throw new BugException();
+        }
         return makeSelect(makeName((TypedDeclaration)decl, NA_FQ | NA_WRAPPER), getMethodNameInternal((TypedDeclaration)decl));
     }
     

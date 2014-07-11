@@ -222,7 +222,7 @@ public class ParameterDefinitionBuilder {
     
     public JCVariableDecl build() {
         if (built) {
-            throw new IllegalStateException();
+            throw new BugException("already built");
         }
         built = true;
         ListBuffer<JCAnnotation> annots = ListBuffer.lb();

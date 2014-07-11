@@ -157,7 +157,7 @@ public class ClassDefinitionBuilder
     
     public List<JCTree> build() {
         if (built) {
-            throw new IllegalStateException();
+            throw new BugException("already built");
         }
         built = true;
         ListBuffer<JCTree> defs = ListBuffer.lb();

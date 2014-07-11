@@ -49,12 +49,12 @@ import com.sun.tools.javac.util.ListBuffer;
 
 class AnnotationInvocationVisitor extends Visitor {
 
-    public static Class annoClass(Tree.InvocationExpression invocation) throws ErroneousException {
+    public static Class annoClass(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         Set<Declaration> ctors = new HashSet<Declaration>();
         while (declaration instanceof Method) {
             if (!ctors.add(declaration)) {
-                throw Assert.fail("Recursive annotation constructor", invocation);
+                throw new BugException(invocation, "Recursive annotation constructor");
             }
             declaration = ((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
         } 
@@ -62,22 +62,22 @@ class AnnotationInvocationVisitor extends Visitor {
         if (declaration instanceof Class) {
             return (Class)declaration;
         } else {
-            throw new ErroneousException(invocation, "compiler bug: invocation primary has unexpected declaration: " + declaration);
+            throw new BugException(invocation, "invocation primary has unexpected declaration: " + declaration);
         }
     }
     
-    public static Method annoCtor(Tree.InvocationExpression invocation) throws ErroneousException {
+    public static Method annoCtor(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof Method) {
             return (Method)declaration;
         } else if (declaration instanceof Class) {
             return null;
         } else {
-            throw new ErroneousException(invocation, "compiler bug: invocation primary has unexpected declaration: " + declaration);
+            throw new BugException(invocation, "compiler bug: invocation primary has unexpected declaration: " + declaration);
         }
     }
     
-    public static AnnotationInvocation annoCtorModel(Tree.InvocationExpression invocation) throws ErroneousException {
+    public static AnnotationInvocation annoCtorModel(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof Method) {
             return (AnnotationInvocation)((Method)declaration).getAnnotationConstructor();
@@ -102,7 +102,7 @@ class AnnotationInvocationVisitor extends Visitor {
             in.setConstructorDeclaration(null);
             return in;
         } else {
-            throw new ErroneousException(invocation, "compiler bug: invocation primary has unexpected declaration: " + declaration);
+            throw new BugException(invocation, "invocation primary has unexpected declaration: " + declaration);
         }
     }
     
@@ -138,7 +138,7 @@ class AnnotationInvocationVisitor extends Visitor {
         
     }
     
-    public static JCAnnotation transform(ExpressionTransformer expressionTransformer, Tree.InvocationExpression invocation) throws ErroneousException {
+    public static JCAnnotation transform(ExpressionTransformer expressionTransformer, Tree.InvocationExpression invocation) {
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(expressionTransformer, invocation, annoCtorModel(invocation));
         visitor.visit(invocation);
         return (JCAnnotation) visitor.getExpression();
@@ -147,33 +147,28 @@ class AnnotationInvocationVisitor extends Visitor {
     public void visit(Tree.InvocationExpression invocation) {
         // Is it a class instantiation or a constructor invocation?
         Tree.Primary primary = invocation.getPrimary();
-        if (primary instanceof Tree.BaseMemberExpression) {
-            Tree.BaseMemberExpression ctor = (Tree.BaseMemberExpression)primary;
-            if (!Decl.isAnnotationConstructor(ctor.getDeclaration())) {
-                append(exprGen.makeErroneous(primary, "compiler bug: " + ctor.getDeclaration().getName() + " is not an annotation constructor"));
-            }
-            try {
+        try {
+            if (primary instanceof Tree.BaseMemberExpression) {
+                Tree.BaseMemberExpression ctor = (Tree.BaseMemberExpression)primary;
+                if (!Decl.isAnnotationConstructor(ctor.getDeclaration())) {
+                    append(exprGen.makeErroneous(primary, "compiler bug: " + ctor.getDeclaration().getName() + " is not an annotation constructor"));
+                }
                 append(transformConstructor(exprGen, invocation));
-            } catch (ErroneousException e) {
-                e.logError(exprGen);
-            }
-            
-        } else if (primary instanceof Tree.BaseTypeExpression) {
-            Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)primary;
-            if (!Decl.isAnnotationClass(bte.getDeclaration())) {
-                append(exprGen.makeErroneous(primary, "compiler bug: " + bte.getDeclaration().getName() + " is not an annotation class"));
-            }
-            try {
+            } else if (primary instanceof Tree.BaseTypeExpression) {
+                Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)primary;
+                if (!Decl.isAnnotationClass(bte.getDeclaration())) {
+                    append(exprGen.makeErroneous(primary, "compiler bug: " + bte.getDeclaration().getName() + " is not an annotation class"));
+                }
                 append(transformInstantiation(exprGen, invocation));
-            } catch (ErroneousException e) {
-                e.logError(exprGen);
+            } else {
+                append(exprGen.makeErroneous(primary, "compiler bug: primary is not an annotation constructor or annotation class"));
             }
-        } else {
-            append(exprGen.makeErroneous(primary, "compiler bug: primary is not an annotation constructor or annotation class"));
-        }        
+        } catch (BugException e) {
+            e.addError(invocation);
+        }
     }
     
-    private static JCAnnotation transformInstantiation(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) throws ErroneousException {
+    private static JCAnnotation transformInstantiation(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation, annoCtorModel(invocation));
         ListBuffer<JCExpression> annotationArguments = ListBuffer.<JCExpression>lb();
@@ -196,7 +191,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 annotationArguments.toList());
     }
     
-    public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) throws ErroneousException {
+    public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
         return transformConstructor(exprGen, invocation, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>nil());
     }
@@ -221,7 +216,7 @@ class AnnotationInvocationVisitor extends Visitor {
     private static JCAnnotation transformConstructor(
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation, AnnotationInvocation ai, 
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) throws ErroneousException {
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         Map<Parameter, ListBuffer<JCExpression>> args = new LinkedHashMap<Parameter, ListBuffer<JCExpression>>();
         
         List<Parameter> classParameters = ai.getClassParameters();
@@ -304,7 +299,7 @@ class AnnotationInvocationVisitor extends Visitor {
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation,
             Parameter classParameter, AnnotationArgument argument, 
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) throws ErroneousException {
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         AnnotationInvocation anno = annoCtorModel(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation, anno);
         visitor.parameter = classParameter;
@@ -368,7 +363,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     
     private void makeDefaultExpr(Tree.InvocationExpression invocation,
-            ParameterAnnotationTerm parameterArgument, Parameter sp) throws ErroneousException {
+            ParameterAnnotationTerm parameterArgument, Parameter sp) {
         AnnotationConstructorParameter defaultedCtorParam = null;
         for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
             if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
@@ -426,7 +421,7 @@ class AnnotationInvocationVisitor extends Visitor {
             arrayExprs.append(expr);
         } else {
             if (this.argumentExpr != null) {
-                Assert.fail();
+                throw new BugException(errorNode, "assertion failed");
             }
             this.argumentExpr = expr;
         }

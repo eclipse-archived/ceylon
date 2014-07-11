@@ -250,7 +250,7 @@ public class ClassTransformer extends AbstractTransformer {
             cbInstantiator = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
             break;
         default:
-            Assert.fail("", def);
+            throw BugException.unhandledEnumCase(Strategy.defaultParameterMethodOwner(model));
         }
         
         cbInstantiator.method(instantiator);
@@ -544,8 +544,8 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
             try {
                 defaultLiteral = AnnotationInvocationVisitor.transform(expressionGen(), invocation);
-            } catch (ErroneousException e) {
-                defaultLiteral = e.makeErroneous(this);
+            } catch (BugException e) {
+                defaultLiteral = e.makeErroneous(this, invocation);
             }
         } else if (term instanceof Tree.MemberLiteral) {
             defaultLiteral = expressionGen().makeMetaLiteralStringLiteralForAnnotation((Tree.MemberLiteral) term);
@@ -848,7 +848,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
-        satisfaction(model, classBuilder);
+        satisfaction(def.getSatisfiedTypes(), model, classBuilder);
         at(def);
         
         // Generate the inner members list for model loading
@@ -910,7 +910,9 @@ public class ClassTransformer extends AbstractTransformer {
      */
     JCExpression transformClassParameterType(Parameter parameter) {
         MethodOrValue decl = parameter.getModel();
-        Assert.that(decl.getContainer() instanceof Class);
+        if (!(decl.getContainer() instanceof Class)) {
+            throw new BugException("expected parameter of Class");
+        }
         JCExpression type;
         MethodOrValue attr = decl;
         if (!Decl.isTransient(attr)) {
@@ -977,7 +979,7 @@ public class ClassTransformer extends AbstractTransformer {
         
     }
 
-    private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {
+    private void satisfaction(Tree.SatisfiedTypes satisfied, final Class model, ClassDefinitionBuilder classBuilder) {
         final java.util.List<ProducedType> satisfiedTypes = model.getSatisfiedTypes();
         Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
         // start by saying that we already satisfied each interface from superclasses
@@ -989,14 +991,21 @@ public class ClassTransformer extends AbstractTransformer {
             superClass = superClass.getExtendedTypeDeclaration();
         }
         // now satisfy each new interface
-        for (ProducedType satisfiedType : satisfiedTypes) {
-            TypeDeclaration decl = satisfiedType.getDeclaration();
-            if (!(decl instanceof Interface)) {
-                continue;
+        if (satisfied != null) {
+            for (Tree.StaticType type : satisfied.getTypes()) {
+                try {
+                    ProducedType satisfiedType = type.getTypeModel();
+                    TypeDeclaration decl = satisfiedType.getDeclaration();
+                    if (!(decl instanceof Interface)) {
+                        continue;
+                    }
+                    // make sure we get the right instantiation of the interface
+                    satisfiedType = model.getType().getSupertype(decl);
+                    concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, satisfiedInterfaces);
+                } catch (BugException e) {
+                    e.addError(type);
+                }
             }
-            // make sure we get the right instantiation of the interface
-            satisfiedType = model.getType().getSupertype(decl);
-            concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
         }
         // now find the set of interfaces we implemented twice with more refined type parameters
         if(model.getExtendedTypeDeclaration() != null){
@@ -1207,11 +1216,11 @@ public class ClassTransformer extends AbstractTransformer {
                         // will need to we refined as a Getter+Setter on a 
                         // subinterface in order for there to be a method in a 
                         // $impl to delegate to
-                        throw new RuntimeException();
+                        throw new BugException("assertion failed: " + member.getQualifiedNameString() + " was unexpectedly a variable value");
                     }
                 }
             } else if (needsCompanionDelegate(model, member)) {
-                log.error("ceylon", "Unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
+                throw new BugException("unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
             }
         }
         
@@ -1482,9 +1491,11 @@ public class ClassTransformer extends AbstractTransformer {
                         && modelContainer.getType().getSupertype(interfaceContainer) == null){
                     // keep searching
                 }
-                Assert.that(modelContainer != null, "Could not find container that satisfies interface "
+                if (modelContainer == null) {
+                    throw new BugException("Could not find container that satisfies interface "
                         + iface.getQualifiedNameString() + " to find qualifying instance for companion instance for "
                         + model.getQualifiedNameString());
+                }
                 // if it's an interface we just qualify it properly
                 if(modelContainer instanceof Interface){
                     JCExpression containerType = makeJavaType(modelContainer.getType(), JT_COMPANION | JT_SATISFIES | JT_RAW);
@@ -1669,7 +1680,7 @@ public class ClassTransformer extends AbstractTransformer {
                             tfpd.setParameterModel(p);
                             tp = tfpd;
                         } else {
-                            throw Assert.fail();
+                            throw BugException.unhandledDeclarationCase(p.getModel());
                         }
                         tp.setScope(p.getDeclaration().getContainer());
                         //tp.setIdentifier(makeIdentifier(p.getName()));
@@ -2203,7 +2214,7 @@ public class ClassTransformer extends AbstractTransformer {
                         daoCompanion,
                         false);
             } else {
-                throw new RuntimeException();
+                throw BugException.unhandledNodeCase(def);
             }
             if(!companionDefs.isEmpty())
                 classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
@@ -2562,7 +2573,7 @@ public class ClassTransformer extends AbstractTransformer {
                         term,
                         term);
             } else {
-                throw Assert.fail("Unhandled primary " + term);
+                throw new BugException(term, "unhandled primary: " + term == null ? "null" : term.getNodeType());
             }
             invocation.handleBoxing(true);
             bodyExpr = expressionGen().transformInvocation(invocation);
@@ -2592,7 +2603,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Consider classes void since ctors don't require a return statement
             return true;
         }
-        throw new RuntimeException();
+        throw BugException.unhandledNodeCase(def);
     }
     
     private boolean isVoid(Declaration def) {
@@ -2602,7 +2613,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Consider classes void since ctors don't require a return statement
             return true;
         }
-        throw new RuntimeException();
+        throw BugException.unhandledDeclarationCase(def);
     }
 
     /** 
@@ -3297,7 +3308,9 @@ public class ClassTransformer extends AbstractTransformer {
      * of the outer class so that they can be captured.
      */
     private java.util.List<TypeParameter> typeParametersForInstantiator(final Class model) {
-        Assert.that(Strategy.generateInstantiator(model));
+        if (!Strategy.generateInstantiator(model)) {
+            throw new BugException();
+        }
         java.util.List<TypeParameter> filtered = new ArrayList<TypeParameter>();
         java.util.List<TypeParameter> tps = model.getTypeParameters();
         if (tps != null) {
@@ -3358,7 +3371,9 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.ParameterList params, Tree.Parameter currentParam, TypeParameterList typeParameterList) {
         at(currentParam);
         Parameter parameter = currentParam.getParameterModel();
-        Assert.that(Strategy.hasDefaultParameterValueMethod(parameter));
+        if (!Strategy.hasDefaultParameterValueMethod(parameter)) {
+            throw new BugException();
+        }
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, Naming.getDefaultedParamMethodName(container, parameter));
         methodBuilder.ignoreModelAnnotations();
         if (container != null && Decl.isAnnotationConstructor(container)) {
@@ -3431,16 +3446,18 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
-        return transformObject(def, def.getDeclarationModel(), 
+        return transformObject(def, def.getSatisfiedTypes(), def.getDeclarationModel(), 
                 def.getAnonymousClass(), containingClassBuilder, Decl.isLocalNotInitializer(def));
     }
     
     public List<JCTree> transformObjectArgument(Tree.ObjectArgument def) {
-        return transformObject(def, def.getDeclarationModel(), 
+        return transformObject(def, def.getSatisfiedTypes(), def.getDeclarationModel(), 
                 def.getAnonymousClass(), null, false);
     }
     
-    private List<JCTree> transformObject(Tree.StatementOrArgument def, Value model, 
+    private List<JCTree> transformObject(Tree.StatementOrArgument def,
+            Tree.SatisfiedTypes satisfiesTypes,
+            Value model, 
             Class klass,
             ClassDefinitionBuilder containingClassBuilder,
             boolean makeLocalInstance) {
@@ -3468,7 +3485,7 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.defs = prevDefs;
         }
 
-        satisfaction(klass, objectClassBuilder);
+        satisfaction(satisfiesTypes, klass, objectClassBuilder);
         
         TypeDeclaration decl = model.getType().getDeclaration();
 

@@ -724,7 +724,7 @@ class PositionalInvocation extends DirectInvocation {
             return ((Tree.ListedArgument) arg).getExpression();
         if(arg instanceof Tree.SpreadArgument)
             return ((Tree.SpreadArgument) arg).getExpression();
-        throw new RuntimeException("Trying to get an argument expression which is a Comprehension: " + arg);
+        throw new BugException("argument expression is " + arg.getNodeType());
     }
     
     @Override
@@ -917,7 +917,7 @@ class CallableInvocation extends DirectInvocation {
     }
     @Override
     protected boolean isArgumentComprehension(int argIndex){
-        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
@@ -933,7 +933,7 @@ class CallableInvocation extends DirectInvocation {
     }
     @Override
     protected Expression getArgumentExpression(int argIndex) {
-        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
     }
     @Override
     protected ProducedType getArgumentType(int argIndex) {
@@ -1005,11 +1005,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     }
     @Override
     protected Expression getArgumentExpression(int argIndex) {
-        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
     }
     @Override
     protected boolean isArgumentComprehension(int argIndex){
-        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
     }
     @Override
     public void location(CallBuilder callBuilder) {
@@ -1225,10 +1225,10 @@ class NamedArgumentInvocation extends Invocation {
         //}
         final Naming.SyntheticName argName = varBaseName.suffixedBy(paramIndex);
         if (this.argsNamesByIndex.containsValue(argName)) {
-            throw new RuntimeException();
+            throw new BugException();
         }
         //if (!this.argNames.add(argName)) {
-        //    throw new RuntimeException();
+        //    throw new BugException();
         //}
         return argName;
     }
@@ -1271,7 +1271,7 @@ class NamedArgumentInvocation extends Invocation {
             } else if (namedArg instanceof Tree.AttributeArgument) {
                 bindAttributeArgument((Tree.AttributeArgument)namedArg, declaredParam, argName);
             } else {
-                throw new RuntimeException("" + namedArg);
+                throw BugException.unhandledNodeCase(namedArg);
             }
             
         }

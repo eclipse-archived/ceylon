@@ -13,8 +13,7 @@ public class ErroneousException extends Exception {
     }
     
     public ErroneousException(Node node, String message) {
-        super(message);
-        this.node = node;
+        this(node, message, null);
     }
     
     public JCExpression makeErroneous(AbstractTransformer gen) {

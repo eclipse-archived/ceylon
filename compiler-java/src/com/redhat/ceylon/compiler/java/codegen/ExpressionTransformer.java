@@ -1038,7 +1038,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (literal instanceof Tree.QuotedLiteral) {
             return transform((Tree.QuotedLiteral)literal);
         }
-        throw Assert.fail();
+        throw BugException.unhandledNodeCase(literal);
     }
 
     public JCTree transform(Tree.PackageLiteral expr) {
@@ -1492,7 +1492,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.Super expr) {
-        throw Assert.fail("Unreachable");
+        throw new BugException(expr, "unreachable");
     }
 
     public JCTree transform(Tree.Outer expr) {
@@ -1522,7 +1522,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.OfOp op) {
         if (op.getTerm() instanceof Tree.Super) {
             // This should be unreachable
-            Assert.fail("Unreachable");
+            throw new BugException(op, "unreachable");
         } 
         ProducedType expectedType = op.getType().getTypeModel();
         return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_DOWN_CAST);
@@ -2450,7 +2450,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             else
                 result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
         } else {
-            throw Assert.fail();
+            throw BugException.unhandledCase(invocation);
         }
         withinInvocation(true);
         return result.toList();
@@ -3278,7 +3278,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     producedReference,
                     ce);
         } else {
-            throw new RuntimeException("Illegal State");
+            return makeErroneous(ce, "no arguments");
         }
         return transformInvocation(invocation);
     }
@@ -3684,9 +3684,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transformSuperOf(Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr) {
         Tree.Term superOf = eliminateParens(superOfQualifiedExpr.getPrimary());
-        Assert.that(superOf instanceof Tree.OfOp);
+        if (!(superOf instanceof Tree.OfOp)) {
+            throw new BugException();
+        }
         Tree.Type superType = ((Tree.OfOp)superOf).getType();
-        Assert.that(eliminateParens(((Tree.OfOp)superOf).getTerm()) instanceof Tree.Super);
+        if (!(eliminateParens(((Tree.OfOp)superOf).getTerm()) instanceof Tree.Super)) {
+            throw new BugException();
+        }
         Declaration member = superOfQualifiedExpr.getDeclaration();
         TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
         if (inheritedFrom instanceof Interface) {
@@ -4066,7 +4070,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             } else if (decl.isMember()) {
-                Assert.fail();
+                throw new BugException(expr, decl.getQualifiedNameString() + " was unexepctecly a member");
             }
         }
         return qualExpr;
@@ -4103,7 +4107,9 @@ public class ExpressionTransformer extends AbstractTransformer {
      * a method reference to a method that's declared as a FunctionalParameter
      */
     private boolean functionalParameterRequiresCallable(Method functionalParameter, Tree.StaticMemberOrTypeExpression expr) {
-        Assert.that(functionalParameter.isParameter());
+        if (!functionalParameter.isParameter()) {
+            throw new BugException();
+        }
         boolean hasMethod = Strategy.createMethod(functionalParameter);
         if (!hasMethod) {
             // A functional parameter that's not method wrapped will already be Callable-wrapped
@@ -5266,8 +5272,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
                 putAnnotation(annotationSet, annotation, annotationClass);
             }
-        } catch (ErroneousException e) {
-            e.logError(this);
+        } catch (BugException e) {
+            e.addError(invocation);
         }
     }
 
@@ -5448,7 +5454,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (decl instanceof TypeParameter) {
             sb.append("P").append(decl.getName());
         } else {
-            Assert.fail();
+            throw BugException.unhandledDeclarationCase(decl);
         }
     }
     

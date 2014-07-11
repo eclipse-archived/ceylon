@@ -526,8 +526,19 @@ public class CeylonEnter extends Enter {
                 protected void out(UnexpectedError err) {
                     if(err instanceof CodeGenError){
                         CodeGenError error = ((CodeGenError)err);
-                        logError(getPosition(err.getTreeNode()), "ceylon.codegen.exception", "Uncaught exception during code generation: "+error.getCause());
-                        logStackTrace("ceylon.codegen.exception", error.getCause());
+                        String location = locationInfo(error);
+                        logError(getPosition(err.getTreeNode()), 
+                                "ceylon.codegen.exception", 
+                                "compiler bug: "+error.getMessage()+" at " + location);
+                    }
+                }
+                private String locationInfo(CodeGenError error) {
+                    if (error.getCause() != null
+                            && error.getCause().getStackTrace() != null
+                            && error.getCause().getStackTrace().length > 0) {
+                        return error.getCause().getStackTrace()[0].toString();
+                    } else {
+                        return "unknown";
                     }
                 }
                 // Ignore those

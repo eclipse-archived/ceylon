@@ -387,14 +387,16 @@ public class CodegenUtil {
     }
     
     public static Declaration getParameterized(MethodOrValue methodOrValue) {
-        Assert.that(methodOrValue.isParameter());
+        if (!methodOrValue.isParameter()) {
+            throw new BugException("required method or value to be a parameter");
+        }
         Scope scope = methodOrValue.getContainer();
         if (scope instanceof Specification) {
             return ((Specification)scope).getDeclaration();
         } else if (scope instanceof Declaration) {
             return (Declaration)scope;
         } 
-        throw Assert.fail();
+        throw new BugException();
     }
     
     public static boolean isContainerFunctionalParameter(Declaration declaration) {
@@ -405,7 +407,7 @@ public class CodegenUtil {
         } else if (containerScope instanceof Declaration) {
             containerDeclaration = (Declaration)containerScope;
         } else {
-            throw Assert.fail();
+            throw BugException.unhandledCase(containerScope);
         }
         return containerDeclaration instanceof Method
                 && ((Method)containerDeclaration).isParameter();

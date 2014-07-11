@@ -1061,14 +1061,14 @@ public abstract class AbstractTransformer implements Transformation {
                     i++;
                 }
                 if(i >= refinedMethod.getTypeParameters().size()){
-                    throw new RuntimeException("Can't find type parameter "+refinedTypeParameter.getName()+" in its container "+refinedMethod.getName());
+                    throw new BugException("can't find type parameter "+refinedTypeParameter.getName()+" in its container "+refinedMethod.getName());
                 }
                 // the refining method type parameter should be at the same index
                 if(declaration.getDeclaration() instanceof Method == false)
-                    throw new RuntimeException("Refining declaration is not a method: "+declaration);
+                    throw new BugException("refining declaration is not a method: "+declaration);
                 Method refiningMethod = (Method) declaration.getDeclaration();
                 if(i >= refiningMethod.getTypeParameters().size()){
-                    throw new RuntimeException("Refining method does not have enough type parameters to refine "+refinedMethod.getName());
+                    throw new BugException("refining method does not have enough type parameters to refine "+refinedMethod.getName());
                 }
                 pr = refiningMethod.getTypeParameters().get(i).getType();
             } else {
@@ -2122,13 +2122,17 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        Assert.that(isCeylonCallableSubtype(typeModel), "Expected Callable<...>, but was " + typeModel);
+        if (!isCeylonCallableSubtype(typeModel)) {
+            throw new BugException("expected Callable<...>, but was " + typeModel);
+        }
         ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
         return ct.getTypeArgumentList().get(0);
     }
     
     ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
-        Assert.that(isCeylonCallableSubtype(callableType));
+        if (!isCeylonCallableSubtype(callableType)) {
+            throw new BugException("expected Callable<...>, but was " + callableType);
+        }
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         if(tuple != null){
             java.util.List<ProducedType> elementTypes = typeFact().getTupleElementTypes(tuple);
@@ -3818,6 +3822,8 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
      * and (eventually) treated as a compiler bug
+     * 
+     * @see BugException
      */
     JCExpression makeErroneous(Node node, String message) {
         return makeErroneous(node, message, List.<JCTree>nil());
@@ -3825,7 +3831,9 @@ public abstract class AbstractTransformer implements Transformation {
     
     /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
-     * and (eventually) treated as a compiler bug
+     * and (eventually) treated as a compiler bug.
+     * 
+     * @see BugException
      */
     JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
         return makeErr(node, "ceylon.codegen.erroneous", message, errs);
@@ -4174,7 +4182,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return true;
             return supportsReified(container);
         }else{
-            throw new RuntimeException("Unhandled declaration type: " + declaration);
+            throw BugException.unhandledDeclarationCase(declaration);
         }
     }
     
@@ -4255,8 +4263,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
                                                      List.of(containerType, classDescriptor));
             }
-        }
-        if(declaration instanceof TypeParameter){
+        } else if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
             String name = naming.getTypeArgumentDescriptorName(tp);
             if(!qualified)
@@ -4271,31 +4278,29 @@ public abstract class AbstractTransformer implements Transformation {
                 // name must be a unique name, as returned by getTypeArgumentDescriptorName
                 return makeUnquotedIdent(name);
             }else{
-                throw new RuntimeException("Type parameter container not supported yet: " + container);
+                throw BugException.unhandledCase(container);
             }
             return makeSelect(qualifier, name);
-        }
-        // FIXME: refactor this shite
-        if(declaration instanceof UnionType){
+        } else if(declaration instanceof UnionType){
+            // FIXME: refactor this shite
             List<JCExpression> typeTestArguments = List.nil();
             java.util.List<ProducedType> typeParameters = ((UnionType)declaration).getCaseTypes();
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
             return make().Apply(null, makeSelect(makeTypeDescriptorType(), "union"), typeTestArguments);
-        }
-        if(declaration instanceof IntersectionType){
+        } else if(declaration instanceof IntersectionType){
             List<JCExpression> typeTestArguments = List.nil();
             java.util.List<ProducedType> typeParameters = ((IntersectionType)declaration).getSatisfiedTypes();
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
             return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
-        }
-        if(declaration instanceof NothingType){
+        } else  if(declaration instanceof NothingType){
             return makeNothingTypeDescriptor();
+        } else {
+            throw BugException.unhandledDeclarationCase(declaration);
         }
-        throw new RuntimeException("Unsupported type: " + declaration);
     }
     
     private JCExpression makeTypedDeclarationTypeDescriptor(TypedDeclaration declaration) {

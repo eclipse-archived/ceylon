@@ -240,7 +240,7 @@ public class CallableBuilder {
                 }
             }
         } else {
-            Assert.fail("Unhandled functional type " + methodOrClass.getClass().getSimpleName());
+            throw BugException.unhandledDeclarationCase((Declaration)methodOrClass, qmte);
         }
         ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
         
@@ -599,7 +599,9 @@ public class CallableBuilder {
             MethodDefinitionBuilder callTypedMethod = makeCallTypedMethod();
             if (callTypedMethod != null) {
                 JCMethodDecl callTyped = callTypedMethod.build();
-                Assert.that(callTyped.params.size() == numParams);
+                if (callTyped.params.size() != numParams) {
+                    throw new BugException();
+                }
                 classBody.append(callTyped);
             }
         }
@@ -1468,6 +1470,6 @@ public class CallableBuilder {
         } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
             return gen.makeEmptyAsSequential(true);
         }
-        throw Assert.fail("compiler bug: " + defaultedParam.getName() + " is not a defaulted parameter");
+        throw new BugException(defaultedParam.getName() + " is not a defaulted parameter");
     }
 }

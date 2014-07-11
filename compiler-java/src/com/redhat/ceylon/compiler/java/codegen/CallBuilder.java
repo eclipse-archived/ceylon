@@ -168,7 +168,7 @@ public class CallBuilder {
      */
     public CallBuilder argumentHandling(int cbOpts, Naming.SyntheticName basename) {
         if (built) {
-            throw new RuntimeException();
+            throw new BugException("already built");
         }
         this.cbOpts = cbOpts;
         this.basename = basename;
@@ -186,14 +186,14 @@ public class CallBuilder {
 
     public List<JCStatement> getStatements() {
         if (!built) {
-            throw new RuntimeException();
+            throw new BugException("not yet built");
         }
         return statements.toList();
     }
     
     public JCExpression build() {
         if (built) {
-            throw new RuntimeException();
+            throw new BugException("already built");
         }
         built = true;
         JCExpression result;
@@ -204,7 +204,7 @@ public class CallBuilder {
             if (instantiateQualfier != null 
                     && instantiateQualfier.expression != null) {
                 if (instantiateQualfier.type == null) {
-                    throw Assert.fail(MISSING_TYPE);
+                    throw new BugException(MISSING_TYPE);
                 }
                 SyntheticName qualName = getQualifierName(basename);
                 appendStatement(gen.makeVar(Flags.FINAL, qualName, 
@@ -219,7 +219,7 @@ public class CallBuilder {
             for (ExpressionAndType argumentAndType : argumentsAndTypes) {
                 SyntheticName name = getArgumentName(basename, argumentNum);
                 if (argumentAndType.type == null) {
-                    throw Assert.fail(MISSING_TYPE);
+                    throw new BugException(MISSING_TYPE);
                 }
                 if ((cbOpts & CB_ALIAS_ARGS) != 0) {
                     appendStatement(gen.makeVar(Flags.FINAL, name, 
@@ -279,7 +279,7 @@ public class CallBuilder {
             break;
         
         default:
-            throw Assert.fail();
+            throw BugException.unhandledEnumCase(kind);
         }
         if ((cbOpts & CB_LET) != 0) {
             if (voidMethod) {

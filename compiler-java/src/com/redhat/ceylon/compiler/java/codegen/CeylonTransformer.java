@@ -471,7 +471,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 quotedName = quotedName.substring(1, quotedName.length()-1);
                 quotedName = quotedName.replace('.', '$');
             } else {
-                throw Assert.fail();
+                throw new BugException(imported, "unhandled module import");
             }
             if (quotedName.equals("ceylon$language")) {
                 continue;

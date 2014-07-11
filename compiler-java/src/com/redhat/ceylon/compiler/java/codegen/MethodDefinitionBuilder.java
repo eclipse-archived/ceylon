@@ -173,7 +173,7 @@ public class MethodDefinitionBuilder
     
     public JCTree.JCMethodDecl build() {
         if (built) {
-            throw new IllegalStateException();
+            throw new BugException("already built");
         }
         built = true;
         if (haveLocation) {

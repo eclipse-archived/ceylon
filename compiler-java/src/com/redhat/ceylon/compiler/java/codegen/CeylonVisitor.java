@@ -55,7 +55,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
 
     public void handleException(Exception e, Node that) {
-        that.addError(new CodeGenError(that, e.getMessage(), e)); 
+        if (e instanceof BugException) {
+            ((BugException)e).addError(that);
+        } else {
+            that.addError(new CodeGenError(that, e.getMessage(), e));
+        }
     }
 
     /*

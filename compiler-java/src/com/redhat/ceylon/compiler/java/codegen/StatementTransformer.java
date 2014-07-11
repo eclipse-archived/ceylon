@@ -1136,7 +1136,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (cond instanceof Tree.BooleanCondition) {
             return new BooleanCond((Tree.BooleanCondition)cond);
         }
-        throw new RuntimeException();
+        throw BugException.unhandledNodeCase(cond);
     }
 
     private String getDocAnnotationText(Tree.Assertion ass) {
@@ -1149,7 +1149,7 @@ public class StatementTransformer extends AbstractTransformer {
                 if(arg instanceof Tree.ListedArgument)
                     expression = ((Tree.ListedArgument) arg).getExpression();
                 else
-                    throw new RuntimeException("Argument to doc annotation cannot be a spread argument or comprehension: " + arg);
+                    throw new BugException(arg, "argument to doc annotation cannot be a spread argument or comprehension: " + arg);
             } else if (doc.getNamedArgumentList() != null) {
                 Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)doc.getNamedArgumentList().getNamedArguments().get(0);
                 expression = arg.getSpecifierExpression().getExpression();
@@ -1831,7 +1831,7 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.SpanOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
         }
         return new RangeOpIterationOptimization(stmt, 
-                range.getLeftTerm(), range.getRightTerm(), 
+                range, 
                 increment, type);
     }
     
@@ -2043,7 +2043,7 @@ public class StatementTransformer extends AbstractTransformer {
                 variable = ((Tree.KeyValueIterator) iterDecl).getKeyVariable();
                 valueVariable = ((Tree.KeyValueIterator) iterDecl).getValueVariable();
             } else {
-                throw new RuntimeException("Unknown ForIterator");
+                throw BugException.unhandledNodeCase(iterDecl);
             }
             
             final Naming.SyntheticName loopVarName = naming.synthetic(variable.getDeclarationModel());
@@ -2375,6 +2375,7 @@ public class StatementTransformer extends AbstractTransformer {
      */
     class RangeOpIterationOptimization extends ForStatementTransformation {
         public static final String OPT_NAME = "RangeOpIteration";
+        private final Tree.RangeOp range;
         private final Tree.Term lhs;
         private final Tree.Term rhs;
         private final Tree.Term increment;// if null then increment is +/-1
@@ -2382,12 +2383,13 @@ public class StatementTransformer extends AbstractTransformer {
         private final ProducedType pt;
         public RangeOpIterationOptimization(
                 Tree.ForStatement stmt,
-                Tree.Term lhs, Tree.Term rhs,
+                Tree.RangeOp range,
                 Tree.Term increment,
                 Type type) {
             super(stmt);
-            this.lhs = lhs;
-            this.rhs = rhs;
+            this.range = range;
+            this.lhs = range.getLeftTerm();
+            this.rhs = range.getRightTerm();
             this.increment = increment;
             this.type = type;
             if (type.tag == syms().intType.tag) {
@@ -2395,7 +2397,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (type.tag == syms().longType.tag) {
                 this.pt = typeFact().getIntegerDeclaration().getType();
             } else {
-                throw new RuntimeException();
+                throw new BugException(range, "unhandled Range type: " + type.tag); 
             }
         }
         private Tree.Variable getVariable() {
@@ -2486,7 +2488,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (type.tag == syms().longType.tag) {
                 return make().Literal(1L);
             } else {
-                return make().Erroneous();
+                return makeErroneous(range, "unhandled Range type: " + type.tag);
             }
         }
         private JCExpression makeDecreasingIncrement(SyntheticName by) {
@@ -2499,7 +2501,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (type.tag == syms().longType.tag) {
                 return make().Literal(-1L);
             } else {
-                return make().Erroneous();
+                return makeErroneous(range, "unhandled Range type: " + type.tag);
             }
         }
         private JCExpression makeZero() {
@@ -2508,7 +2510,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (type.tag == syms().longType.tag) {
                 return make().Literal(0L);
             } else {
-                return make().Erroneous();
+                return makeErroneous(range, "unhandled Range type: " + type.tag);
             }
         }
     }
@@ -2569,7 +2571,7 @@ public class StatementTransformer extends AbstractTransformer {
          */
         public JCStatement openOuterSubstitution() {
             if (outerSubst != null || outerAlias != null) {
-                throw new IllegalStateException("An Outer substitution (" + outerSubst + ") is already open");
+                throw new BugException("An Outer substitution (" + outerSubst + ") is already open");
             }
             this.outerAlias = naming.alias(value.getName());
             // TODO Annots
@@ -2604,7 +2606,7 @@ public class StatementTransformer extends AbstractTransformer {
          */
         public JCStatement openInnerSubstitution() {
             if (innerSubst != null || innerAlias != null) {
-                throw new IllegalStateException("An inner substitution (" + innerSubst + ") is already open");
+                throw new BugException("An inner substitution (" + innerSubst + ") is already open");
             }
             try (SavedPosition pos = noPosition()) {
                 innerAlias = naming.alias(value.getName());
@@ -2623,7 +2625,7 @@ public class StatementTransformer extends AbstractTransformer {
          */
         public void closeInnerSubstitution() {
             if (innerSubst == null || innerAlias == null) {
-                throw new IllegalStateException("No inner substitution to close");
+                throw new BugException("No inner substitution to close");
             }
             innerSubst.close();
             innerSubst = null;
@@ -2639,7 +2641,7 @@ public class StatementTransformer extends AbstractTransformer {
          */
         public JCStatement closeOuterSubstitution() {
             if (outerSubst == null) {
-                throw new IllegalStateException("No outer substitution to close");
+                throw new BugException("No outer substitution to close");
             }
             try (SavedPosition pos = noPosition()) {
                 JCExpression alias = naming.makeName(value, Naming.NA_IDENT);
@@ -2822,7 +2824,7 @@ public class StatementTransformer extends AbstractTransformer {
                     resExpr = var.getSpecifierExpression().getExpression();
                     resVarName = var.getIdentifier().getText();
                 } else {
-                    throw new RuntimeException("Missing resource expression");
+                    throw new BugException(res, "missing resource expression");
                 }
                 boolean isInstantiation = com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression(resExpr);
                 ProducedType resVarType;
@@ -3541,7 +3543,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             scope = scope.getContainer();
         }
-        throw Assert.fail();
+        throw new BugException(dir, "failed to find label");
     }
     
     public Name getLabel(Tree.Break brk) {
