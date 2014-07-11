@@ -35,7 +35,8 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
  */
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
 
-    public static final String MODULE_INFO_CLASS = ".module_";
+    public static final String MODULE_INFO_CLASS = ".$module_";
+    public static final String OLD_MODULE_INFO_CLASS = ".module_";
     public static final String RUN_INFO_CLASS = "run";
 
     /**
@@ -48,12 +49,20 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
      */
     public static Module loadModuleMetaData(ClassLoader cl, String moduleName) throws Exception {
         final String moduleClassName = moduleName + MODULE_INFO_CLASS;
+        // try the new name first
         try {
             Class<?> klass = cl.loadClass(moduleClassName);
             return klass.getAnnotation(Module.class);
         } catch (ClassNotFoundException ignored) {
-            return null; // looks like no such module class is available
         }
+        // then the old name
+        final String oldModuleClassName = moduleName + OLD_MODULE_INFO_CLASS;
+        try {
+            Class<?> klass = cl.loadClass(oldModuleClassName);
+            return klass.getAnnotation(Module.class);
+        } catch (ClassNotFoundException ignored) {
+        }
+        return null; // looks like no such module class is available
 
     }
 
