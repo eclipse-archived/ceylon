@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.compiler.loader.LoaderJULLogger;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
@@ -46,7 +46,7 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
 
     public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules){
-        super(moduleManager, modules, new JULLogger());
+        super(moduleManager, modules, new LoaderJULLogger());
     }
 
     @Override
