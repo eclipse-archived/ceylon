@@ -18,19 +18,22 @@ import com.redhat.ceylon.common.Constants;
 public class Launcher {
 
     public static void main(String[] args) throws Throwable {
-        int exit = run(args);
+        // we don't need to clean up the class loader when run from main because the JVM will either exit, or
+        // keep running with daemon threads in which case it will keep needing this classloader open 
+        int exit = run(false, args);
         // WARNING: NEVER CALL EXIT IF WE STILL HAVE DAEMON THREADS RUNNING AND WE'VE NO REASON TO EXIT WITH A NON-ZERO CODE
         if(exit != 0)
             System.exit(exit);
     }
 
-    public static int run(String... args) throws Throwable {
+    public static int run(boolean cleanupClassLoader, String... args) throws Throwable {
         Java7Checker.check();
         CeylonClassLoader loader = getClassLoader();
         try{
             return runInJava7Checked(loader, args);
         }finally{
-            loader.clearCache();
+            if(cleanupClassLoader)
+                loader.clearCache();
         }
     }
     
