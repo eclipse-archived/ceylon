@@ -85,7 +85,7 @@ public class Configuration {
     /**
      * Verbose debug output
      */
-    public boolean verbose;
+    public String verbose;
 
     /**
      * Offline mode
@@ -153,7 +153,7 @@ public class Configuration {
                 repositories.add(values[arg]);
                 break;
             case VERBOSE:
-                verbose = true;
+                verbose = values[arg];
                 break;
             case OFFLINE:
                 offline = true;
@@ -181,7 +181,7 @@ public class Configuration {
                 + "                      (default: use the module descriptor)\n"
                 + " -rep path:           Module repository path (can be specified more than once)\n");
         System.err.print(" -src path:           Source path (default: source)\n"
-                + " -verbose:            Output messages about what the runtime is doing\n"
+                + " -verbose flags:      Output messages about what the runtime is doing\n"
                 + " -help:               Prints help usage\n"
                 + " -version:            Prints version number\n"
                 + " moduleName/version:  Module name and version to run (required)\n"

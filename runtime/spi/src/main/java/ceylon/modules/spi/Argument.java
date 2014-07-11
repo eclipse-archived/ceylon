@@ -32,7 +32,7 @@ public enum Argument {
     MAVEN_OVERRIDES("maven-overrides", ArgumentType.CEYLON, 1),
     NO_DEFAULT_REPOSITORIES("nodefreps", ArgumentType.CEYLON, 0),
     SOURCE("src", ArgumentType.CEYLON, 1),
-    VERBOSE("verbose", ArgumentType.CEYLON, 0),
+    VERBOSE("verbose", ArgumentType.CEYLON, 1),
     OFFLINE("offline", ArgumentType.CEYLON, 0),
     HELP("help", ArgumentType.CEYLON, 0, "h", "-help"),
     VERSION("version", ArgumentType.CEYLON, 0, "v", "-version");

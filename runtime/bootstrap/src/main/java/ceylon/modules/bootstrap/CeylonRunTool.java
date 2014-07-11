@@ -140,10 +140,11 @@ public class CeylonRunTool extends RepoUsingTool {
         }
 
         if (verbose != null) {
+            argList.add("-verbose");
             if (verbose.isEmpty()) {
-                argList.add("-verbose");
+                argList.add("all");
             } else {
-                argList.add("-verbose:" + verbose);
+                argList.add(verbose);
             }
         }
 
