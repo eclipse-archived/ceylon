@@ -24,7 +24,7 @@ void loadModuleInClassPath(String modName, String modVersion) {
     value modIdentifier = createModuleIdentifier(modName, modVersion);
     value mod = ceylonModuleLoader.loadModule(modIdentifier);
     value modClassLoader = mod.classLoader;
-    value classToLoad = "``modName``.module_";
+    value classToLoad = "``modName``.$module_";
     modClassLoader.loadClass(classToLoad);
 }
 

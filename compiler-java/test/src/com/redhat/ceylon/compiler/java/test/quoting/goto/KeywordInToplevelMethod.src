@@ -2,9 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-public final class $package_ {
+public final class package_ {
     
-    private $package_() {
+    private package_() {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -17,14 +17,14 @@ public final class $package_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_.$package();
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.$package();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-public final class $module_ {
+public final class module_ {
     
-    private $module_() {
+    private module_() {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -37,7 +37,7 @@ public final class $module_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_.module();
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.module();
     }
 }
 final class user_ {
@@ -46,8 +46,8 @@ final class user_ {
     }
     
     static void user() {
-        final long a = .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_.$package();
-        final long b = .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_.module();
+        final long a = .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.$package();
+        final long b = .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.module();
     }
     
     public static void main(.java.lang.String[] args) {

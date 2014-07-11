@@ -7,8 +7,8 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.b;
         version = "0.1",
         dependencies = {})
 @.ceylon.language.DocAnnotation$annotation$(description = "Module B doc")
-final class module_ {
+final class $module_ {
     
-    private module_() {
+    private $module_() {
     }
 }

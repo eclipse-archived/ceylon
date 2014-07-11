@@ -112,7 +112,7 @@ public class CMRTest extends CompilerTest {
 
         car = new JarFile(carFile);
 
-        moduleClass = car.getEntry("mod/module_.class");
+        moduleClass = car.getEntry("mod/$module_.class");
         assertNotNull(moduleClass);
         moduleClassDir = car.getEntry("mod/");
         assertNotNull(moduleClassDir);
@@ -320,7 +320,7 @@ public class CMRTest extends CompilerTest {
         ZipEntry bogusEntry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/BOGUS");
         assertNull(bogusEntry);
 
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/module_.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/$module_.class");
         assertNotNull(moduleClass);
         car.close();
 
@@ -344,7 +344,7 @@ public class CMRTest extends CompilerTest {
 
         JarFile car = new JarFile(carFile);
         // just to be sure
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/module_.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/$module_.class");
         assertNotNull(moduleClass);
         car.close();
 
@@ -375,7 +375,7 @@ public class CMRTest extends CompilerTest {
 
         JarFile car = new JarFile(carFile);
 
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/module_.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/$module_.class");
         assertNotNull(moduleClass);
 
         ZipEntry correctClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/Correct.class");

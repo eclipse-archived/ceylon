@@ -25,9 +25,9 @@ public final class goto_ {
         }
     }
 }
-public final class $module_ {
+public final class module_ {
     
-    private $module_() {
+    private module_() {
     }
     private static final long[] value;
     private static final .java.lang.Throwable $initException$;
@@ -50,9 +50,9 @@ public final class $module_ {
         }
     }
 }
-public final class $package_ {
+public final class package_ {
     
-    private $package_() {
+    private package_() {
     }
     private static final long[] value;
     private static final .java.lang.Throwable $initException$;

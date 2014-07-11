@@ -7,8 +7,8 @@ package com.redhat.ceylon.compiler.java.test.structure.pkg;
         shared = true)
 @.ceylon.language.DocAnnotation$annotation$(description = "Great documentation")
 @.ceylon.language.SharedAnnotation$annotation$
-final class package_ {
+final class $package_ {
     
-    private package_() {
+    private $package_() {
     }
 }

@@ -616,7 +616,7 @@ public class RecoveryTest extends CompilerTest {
 
         car = new JarFile(carFile);
 
-        moduleClass = car.getEntry("okmodule/module_.class");
+        moduleClass = car.getEntry("okmodule/$module_.class");
         assertNotNull(moduleClass);
         car.close();
     }

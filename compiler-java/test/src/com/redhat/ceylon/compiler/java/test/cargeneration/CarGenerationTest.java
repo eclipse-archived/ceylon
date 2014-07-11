@@ -64,7 +64,7 @@ public class CarGenerationTest extends CompilerTest {
         moduleClass = car.getEntry("test/simple/subdir/SUBDIR.txt");
         assertNotNull(moduleClass);
 
-        moduleClass = car.getEntry("test/simple/module_.class");
+        moduleClass = car.getEntry("test/simple/$module_.class");
         assertNotNull(moduleClass);
         car.close();
     }
@@ -110,7 +110,7 @@ public class CarGenerationTest extends CompilerTest {
             assertNull(moduleClass);
         }
 
-        moduleClass = car.getEntry("test/files/module_.class");
+        moduleClass = car.getEntry("test/files/$module_.class");
         assertNotNull(moduleClass);
         car.close();
     }
@@ -155,7 +155,7 @@ public class CarGenerationTest extends CompilerTest {
         moduleClass = car.getEntry("test/multiple/README2.txt");
         assertNotNull(moduleClass);
 
-        moduleClass = car.getEntry("test/multiple/module_.class");
+        moduleClass = car.getEntry("test/multiple/$module_.class");
         assertNotNull(moduleClass);
         car.close();
         
@@ -217,7 +217,7 @@ public class CarGenerationTest extends CompilerTest {
         carEntry = car.getEntry("rootdir/rootsubdirfile");
         assertNotNull(carEntry);
 
-        carEntry = car.getEntry("test/rootdir/module_.class");
+        carEntry = car.getEntry("test/rootdir/$module_.class");
         assertNotNull(carEntry);
         car.close();
     }
@@ -249,7 +249,7 @@ public class CarGenerationTest extends CompilerTest {
         carEntry = car.getEntry("rootfile");
         assertNotNull(carEntry);
 
-        carEntry = car.getEntry("test/altrootdir/module_.class");
+        carEntry = car.getEntry("test/altrootdir/$module_.class");
         assertNotNull(carEntry);
         car.close();
     }

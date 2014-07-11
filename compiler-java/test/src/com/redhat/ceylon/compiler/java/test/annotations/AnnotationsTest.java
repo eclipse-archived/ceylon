@@ -195,7 +195,7 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("modules/a/package");
         compareWithJavaSource("modules/b/module");
         compareWithJavaSource("modules/c/module");
-        Class<?> klass = loadClass("com.redhat.ceylon.compiler.java.test.annotations.modules.c.module_",
+        Class<?> klass = loadClass("com.redhat.ceylon.compiler.java.test.annotations.modules.c.$module_",
                 new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.annotations.modules.c", "0.1"));
         System.out.println(Arrays.toString(klass.getField("com$redhat$ceylon$module-resolver").getAnnotations()));
     }

@@ -17,5 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared object \ipackage {}
-shared object \imodule {}
+module com.redhat.ceylon.compiler.java.test.bc.binaryVersion2 "1" {
+    import com.redhat.ceylon.compiler.java.test.bc.binaryVersionOld2 "1";
+}

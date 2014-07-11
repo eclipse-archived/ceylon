@@ -137,8 +137,9 @@ public class BcTests extends CompilerTest {
                 new CompilerError(-1, "Ceylon class com.redhat.ceylon.compiler.java.test.bc.JavaOldVersion was compiled by an incompatible version of the Ceylon compiler\n  The class was compiled using 0.0.\n  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.2."));
     }
     
+    // tests before we renamed module_.class to $module_.class
     @Test
-    public void testBinaryVersionIncompatibleModule() throws IOException {
+    public void testBinaryVersionIncompatibleModule1() throws IOException {
         CompilationTask compiler = compileJava("binaryVersionOld/module_.java");
         Assert.assertTrue(compiler.call());
         
@@ -158,6 +159,33 @@ public class BcTests extends CompilerTest {
         outputStream.close();
         
         assertErrors("binaryVersion/module", new CompilerError(21, "This module was compiled for an incompatible version of the Ceylon compiler (0.0).\n"
+                +"  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n"
+                +"  Please try to recompile your module using a compatible compiler.\n"
+                +"  Binary compatibility will only be supported after Ceylon 1.2."));
+    }
+
+    // tests after we renamed module_.class to $module_.class
+    @Test
+    public void testBinaryVersionIncompatibleModule2() throws IOException {
+        CompilationTask compiler = compileJava("binaryVersionOld2/$module_.java");
+        Assert.assertTrue(compiler.call());
+        
+        // so now make a jar containing the java module
+        File jarFolder = new File(destDir, "com/redhat/ceylon/compiler/java/test/bc/binaryVersionOld2/1/");
+        jarFolder.mkdirs();
+        File jarFile = new File(jarFolder, "com.redhat.ceylon.compiler.java.test.bc.binaryVersionOld2-1.jar");
+        // now jar it up
+        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
+        ZipEntry entry = new ZipEntry("com/redhat/ceylon/compiler/java/test/bc/binaryVersionOld2/$module_.class");
+        outputStream.putNextEntry(entry);
+        
+        File javaClass = new File(destDir, "com/redhat/ceylon/compiler/java/test/bc/binaryVersionOld2/$module_.class");
+        FileInputStream inputStream = new FileInputStream(javaClass);
+        Util.copy(inputStream, outputStream);
+        inputStream.close();
+        outputStream.close();
+        
+        assertErrors("binaryVersion2/module", new CompilerError(21, "This module was compiled for an incompatible version of the Ceylon compiler (0.0).\n"
                 +"  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n"
                 +"  Please try to recompile your module using a compatible compiler.\n"
                 +"  Binary compatibility will only be supported after Ceylon 1.2."));

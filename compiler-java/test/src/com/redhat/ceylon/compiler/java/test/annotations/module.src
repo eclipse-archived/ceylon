@@ -17,9 +17,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         "Stef FroMage",
         "Tomas Hradec"})
 @.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.gnu.org/licenses/gpl.html")
-final class module_ {
+final class $module_ {
     
-    private module_() {
+    private $module_() {
     }
     public static final .java.lang.String javax$xml = null;
 }

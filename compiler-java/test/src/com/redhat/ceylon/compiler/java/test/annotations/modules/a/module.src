@@ -16,8 +16,8 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
         "annotations"})
 @.ceylon.language.DeprecationAnnotation$annotation$(description = "doesn\'t _do_ anything")
 @.java.lang.Deprecated
-final class module_ {
+final class $module_ {
     
-    private module_() {
+    private $module_() {
     }
 }
