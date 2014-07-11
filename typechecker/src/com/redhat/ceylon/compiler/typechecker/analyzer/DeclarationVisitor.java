@@ -1200,10 +1200,11 @@ public class DeclarationVisitor extends Visitor {
         
         if (d.isFormal()) {
             if (d.getContainer() instanceof ClassOrInterface) {
-                ClassOrInterface ci = (ClassOrInterface) d.getContainer();
-                if (!ci.isAbstract() && !ci.isFormal()) {
-                    that.addError("formal member belongs to a concrete class", 900);
-                }
+                //handled in RefinementVisitor
+//                ClassOrInterface ci = (ClassOrInterface) d.getContainer();
+//                if (!ci.isAbstract() && !ci.isFormal()) {
+//                    that.addError("formal member belongs to a concrete class", 900);
+//                }
             } 
             else {
                 that.addError("formal member does not belong to an interface or abstract class", 1100);
