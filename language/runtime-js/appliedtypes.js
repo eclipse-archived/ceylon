@@ -62,9 +62,6 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   atr$(that,'parameterTypes',function(){
     return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-  atr$(that,'declaration',function(){
-    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-  },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   atr$(that,'caseValues',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
@@ -266,7 +263,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
   that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
   that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
-  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.equals=InterfaceModel$meta$model.$$.prototype.equals;
   that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
@@ -345,7 +342,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
   that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
   that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
-  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.equals=InterfaceModel$meta$model.$$.prototype.equals;
   that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
