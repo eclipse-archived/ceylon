@@ -21,7 +21,6 @@ class Refinement() {
     interface Bad {
 
         //formal member not implemented in concrete class
-        @error
         class X() {
             @error shared formal String hello;
         }
@@ -36,7 +35,6 @@ class Refinement() {
         }
 
         //formal member not implemented in concrete class
-        @error
         class W() extends X() {
             @error actual String hello = "Hello";
             @error default String goodbye = "Goodbye";

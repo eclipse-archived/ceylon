@@ -65,7 +65,7 @@ public class TypeHierarchyVisitor extends Visitor {
         super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
-        checkForFormalsNotImplemented(that, orderedTypes);
+        checkForFormalsNotImplemented(that, orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, anonymousClass);
     }
@@ -78,7 +78,7 @@ public class TypeHierarchyVisitor extends Visitor {
         super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
-        checkForFormalsNotImplemented(that, orderedTypes);
+        checkForFormalsNotImplemented(that, orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, anonymousClass);
     }
@@ -92,7 +92,7 @@ public class TypeHierarchyVisitor extends Visitor {
             boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
             List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
             if (concrete) {
-                checkForFormalsNotImplemented(that, orderedTypes);
+                checkForFormalsNotImplemented(that, orderedTypes, classOrInterface);
             }
             checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, classOrInterface);
             checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, classOrInterface);
@@ -282,14 +282,18 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
-    private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, List<Type> orderedTypes) {
+    private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, 
+            List<Type> orderedTypes, Declaration declaration) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
             if (!members.formals.isEmpty() && members.actualsNonFormals.isEmpty()) {
-                Declaration declaringType = (Declaration) members.formals.iterator().next().getContainer();
-				that.addError("formal member " + members.name + 
-                		" of " + declaringType.getName() +
-                        " not implemented in class hierarchy", 300);
+                Declaration declaringType = 
+                        (Declaration) members.formals.iterator().next().getContainer();
+                if (!declaration.equals(declaringType)) {
+                    that.addError("formal member " + members.name + 
+                            " of " + declaringType.getName() +
+                            " not implemented in class hierarchy", 300);
+                }
             }
             /*if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
                 Declaration declaringType = (Declaration) members.concretesOnInterfaces.iterator().next().getContainer();
