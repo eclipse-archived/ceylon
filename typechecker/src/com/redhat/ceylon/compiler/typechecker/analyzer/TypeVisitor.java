@@ -1376,18 +1376,18 @@ public class TypeVisitor extends Visitor {
         if (a==null) {
             that.addError("parameter declaration does not exist: " + p.getName());
         }
-        else if (!(a instanceof Value && !((Value)a).isTransient()) && 
+        else if (!(a instanceof Value && !((Value) a).isTransient()) && 
                 !(a instanceof Method)) {
             that.addError("parameter is not a reference value or function: " + p.getName());
         }
-        else if (a.isFormal()) {
-            that.addError("parameter is a formal attribute: " + p.getName());
-        }
-        /*else if (a.isDefault()) {
-            that.addError("initializer parameter refers to a default attribute: " + 
-                    d.getName());
-        }*/
         else {
+            if (a.isFormal()) {
+                that.addError("parameter is a formal attribute: " + p.getName(), 320);
+            }
+            /*else if (a.isDefault()) {
+                that.addError("initializer parameter refers to a default attribute: " + 
+                        d.getName());
+            }*/
             MethodOrValue mov = (MethodOrValue) a;
             mov.setInitializerParameter(p);
             p.setModel(mov);
@@ -1400,7 +1400,7 @@ public class TypeVisitor extends Visitor {
                 that.addWarning("initializer parameters for variables of methods not yet supported");
             }
         }*/
-        if (a instanceof Generic && !((Generic)a).getTypeParameters().isEmpty()) {
+        if (a instanceof Generic && !((Generic) a).getTypeParameters().isEmpty()) {
             that.addError("parameter declaration has type parameters: " + 
                     p.getName());
         }
