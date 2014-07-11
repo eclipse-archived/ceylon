@@ -19,11 +19,11 @@ function $JsCallable(callable,parms,targs) {
 }
 initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
 
-function noop() { return null; }
+function nop$() { return null; }
 
 //This is used for plain method references
 function JsCallable(o,f) {
-  if (o===null || o===undefined) return noop;
+  if (o===null || o===undefined) return nop$;
   var f2 = function() {
     var arg=[].slice.call(arguments,0);
     if (arg.length==1 && is$(arg[0],{t:Tuple})) {
