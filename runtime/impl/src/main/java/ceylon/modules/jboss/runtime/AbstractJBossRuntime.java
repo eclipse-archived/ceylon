@@ -25,7 +25,8 @@ import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
 import ceylon.modules.spi.runtime.ClassLoaderHolder;
-import com.redhat.ceylon.cmr.api.Logger;
+
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -33,10 +34,11 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.common.Versions;
+
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
@@ -103,7 +105,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     }
 
     private RepositoryManager createRepository(Configuration conf, boolean offline) {
-        Logger log = new JULLogger();
+        Logger log = new CMRJULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
             .cwd(conf.cwd)
             .systemRepo(conf.systemRepository)
