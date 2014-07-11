@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-package org.jboss.filtered;
+package net.something.xyz;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
-
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "org.jboss.filtered",
-        version = "1.0.0.Alpha1",
+@Module(name = "net.something.xyz",
+        version = "1.0.0.Final",
         dependencies = {
-                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA")
+                @Import(name = "org.jboss.acme",
+                        version = "1.0.0.CR1",
+                        optional = true),
+                @Import(name = "si.alesj.ceylon",
+                        version = "1.0.0.GA",
+                        optional = true)
         })
-public class module_ {
+public class $module_ {
 }

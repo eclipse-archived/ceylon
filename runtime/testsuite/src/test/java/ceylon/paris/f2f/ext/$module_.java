@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Red Hat inc. and third party contributors as noted
+ * Copyright 2014 Red Hat inc. and third party contributors as noted
  * by the author tags.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cz.brno.as8;
+package ceylon.paris.f2f.ext;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
@@ -22,10 +22,11 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "cz.brno.as8",
-        version = "8.0.0.Alpha1",
-        dependencies = {
-                @Import(name = "com.foobar.qwert", version = "1.0.0.GA")
-        })
-public class module_ {
+@Module(name = "ceylon.paris.f2f.ext", version = "1.0.0.Final",
+    dependencies = {
+        @Import(name = "ceylon.paris.f2f.iface", version = "1.0.0.Final"),
+        @Import(name = "ceylon.paris.f2f.impl", version = "1.0.0.Final")
+    }
+)
+public class $module_ {
 }

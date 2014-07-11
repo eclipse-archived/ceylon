@@ -28,5 +28,5 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
                 @Import(name = "org.jboss.modules.jboss-modules",
                         version = "1.3.3.Final")
         })
-public class module_ {
+public class $module_ {
 }

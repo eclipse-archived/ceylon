@@ -21,7 +21,7 @@ package cz.brno.as8;
  */
 public class run_ {
     public static void main(String[] args) {
-        org.jboss.acme.module_.run(); // should be able to run this
+        org.jboss.acme.$module_.run(); // should be able to run this
         ping("eu.cloud.clazz.run_");
         ping("org.jboss.filtered.api.SomeAPI");
     }

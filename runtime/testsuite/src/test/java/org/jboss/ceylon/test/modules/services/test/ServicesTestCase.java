@@ -35,14 +35,14 @@ public class ServicesTestCase extends ModulesTest {
     @Test
     public void testLoadServices() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "ceylon.paris.f2f.ext-1.0.0.Final.car");
-        module.addClasses(ceylon.paris.f2f.ext.module_.class, ceylon.paris.f2f.ext.run_.class);
+        module.addClasses(ceylon.paris.f2f.ext.$module_.class, ceylon.paris.f2f.ext.run_.class);
 
         JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "ceylon.paris.f2f.iface-1.0.0.Final.car");
-        lib1.addClass(ceylon.paris.f2f.iface.module_.class);
+        lib1.addClass(ceylon.paris.f2f.iface.$module_.class);
         lib1.addClass(IService.class);
 
         JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "ceylon.paris.f2f.impl-1.0.0.Final.car");
-        lib2.addClass(ceylon.paris.f2f.impl.module_.class);
+        lib2.addClass(ceylon.paris.f2f.impl.$module_.class);
         lib2.addClass(ServiceImpl.class);
         lib2.addAsServiceProvider(IService.class, ServiceImpl.class);
         lib2.addAsResource(new StringAsset("some.prop=some_value"), "META-INF/services/org/apache/camel/config.properties");
@@ -66,7 +66,7 @@ public class ServicesTestCase extends ModulesTest {
         System.setProperty("ceylon.runtime.test.services.audiotest.filetypes", String.valueOf(plainFileTypeCount));
         
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "ceylon.audiotest-1.0.0.car");
-        module.addClasses(ceylon.audiotest.module_.class, ceylon.audiotest.run_.class);
+        module.addClasses(ceylon.audiotest.$module_.class, ceylon.audiotest.run_.class);
 
         testArchive(module);
     }

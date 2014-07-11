@@ -15,19 +15,15 @@
  * limitations under the License.
  */
 
-package eu.cloud.clazz;
+package si.alesj.ceylon;
 
-import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
+
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "eu.cloud.clazz",
-        version = "1.0.0.GA",
-        dependencies = {
-                @Import(name = "org.jboss.filtered", version = "1.0.0.Alpha1"),
-                @Import(name = "ceylon.io", version = "0.5")
-        })
-public class module_ {
+@Module(name = "si.alesj.ceylon",
+        version = "1.0.0.GA")
+public class $module_ {
 }

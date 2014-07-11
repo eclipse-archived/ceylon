@@ -21,7 +21,7 @@ import java.util.List;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
-import io.xov.yalp.module_;
+import io.xov.yalp.$module_;
 import io.xov.yalp.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -40,7 +40,7 @@ public class AetherInteropTestCase extends ModulesTest {
     @Test
     public void testMultiJarUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "io.xov.yalp-11.0.2.Final.car");
-        module.addClasses(module_.class, run_.class);
+        module.addClasses($module_.class, run_.class);
         testArchive(module);
     }
 

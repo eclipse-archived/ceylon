@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 
-package si.alesj.ceylon;
+package biz.wiz.quiz;
 
+import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
-
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "si.alesj.ceylon",
-        version = "1.0.0.GA")
-public class module_ {
+@Module(name = "biz.wiz.quiz",
+        version = "1.0.0.GA",
+        dependencies = {@Import(name = "default", version = "**NO_VERSION**")})
+public class $module_ {
 }

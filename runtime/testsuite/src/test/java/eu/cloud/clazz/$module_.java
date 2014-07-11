@@ -1,6 +1,7 @@
 /*
- * Copyright 2012 Red Hat inc. and third party contributors as noted
+ * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.xov.yalp;
+package eu.cloud.clazz;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
@@ -22,11 +23,11 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "io.xov.yalp",
-        version = "11.0.2.Final",
+@Module(name = "eu.cloud.clazz",
+        version = "1.0.0.GA",
         dependencies = {
-                @Import(name = "org.jboss.jboss-vfs", version = "3.1.0.Final"),
-                @Import(name = "java.tls", version = "7")
+                @Import(name = "org.jboss.filtered", version = "1.0.0.Alpha1"),
+                @Import(name = "ceylon.io", version = "0.5")
         })
-public class module_ {
+public class $module_ {
 }

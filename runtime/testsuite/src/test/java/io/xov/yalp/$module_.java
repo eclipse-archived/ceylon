@@ -1,7 +1,6 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2012 Red Hat inc. and third party contributors as noted
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,20 +14,19 @@
  * limitations under the License.
  */
 
-package org.jogl.ceylon;
+package io.xov.yalp;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
-
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(
-    name = "org.jogl.ceylon", version = "1.0.0",
-    dependencies = {@Import(name = "org.jogamp.jogl:jogl-all", version = "2.1.2")})
-public class module_ {
-    public static void run() throws Throwable {
-        run_.main(new String[0]);
-    }
+@Module(name = "io.xov.yalp",
+        version = "11.0.2.Final",
+        dependencies = {
+                @Import(name = "org.jboss.jboss-vfs", version = "3.1.0.Final"),
+                @Import(name = "java.tls", version = "7")
+        })
+public class $module_ {
 }

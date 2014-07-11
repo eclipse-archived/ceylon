@@ -21,7 +21,7 @@ import java.util.List;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
-import org.gae.ceylon.module_;
+import org.gae.ceylon.$module_;
 import org.gae.ceylon.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -47,7 +47,7 @@ public class FiltersTestCase extends ModulesTest {
     @Test
     public void testUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.gae.ceylon-1.0.0.car");
-        module.addClasses(module_.class);
+        module.addClasses($module_.class);
         module.addClasses(run_.class);
 
         testArchive(module);

@@ -13,5 +13,5 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
         @Import(name = "java.logging", version = "7"),
     }
 )
-public class module_ {
+public class $module_ {
 }

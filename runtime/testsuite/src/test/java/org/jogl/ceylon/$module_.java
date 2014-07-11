@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 
-package org.jboss.acme;
+package org.jogl.ceylon;
 
+import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "org.jboss.acme",
-        version = "1.0.0.CR1")
-public class module_ {
-    public static void run() {
-        System.out.println("run ...");
+@Module(
+    name = "org.jogl.ceylon", version = "1.0.0",
+    dependencies = {@Import(name = "org.jogamp.jogl:jogl-all", version = "2.1.2")})
+public class $module_ {
+    public static void run() throws Throwable {
+        run_.main(new String[0]);
     }
 }

@@ -1,6 +1,7 @@
 /*
- * Copyright 2014 Red Hat inc. and third party contributors as noted
+ * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,20 +15,18 @@
  * limitations under the License.
  */
 
-package org.gae.ceylon;
+package org.jboss.acme;
 
-import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(
-    name = "org.gae.ceylon", version = "1.0.0",
-    dependencies = {@Import(name = "com.google.appengine:appengine-api-1.0-sdk", version = "1.9.6")})
-public class module_ {
-    public static void run() throws Throwable {
-        run_.main(new String[0]);
+@Module(name = "org.jboss.acme",
+        version = "1.0.0.CR1")
+public class $module_ {
+    public static void run() {
+        System.out.println("run ...");
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
-import edu.fri.summer.module_;
+import edu.fri.summer.$module_;
 import edu.fri.summer.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,7 +36,7 @@ public class InteropTestCase extends ModulesTest {
     @Test
     public void testJarUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "edu.fri.summer-1.0.0.Beta23.car");
-        module.addClasses(module_.class, run_.class);
+        module.addClasses($module_.class, run_.class);
         // Note: if this test fails, you might be missing JBoss Modules in your Maven repository
         // See: edu.fri.summer.module_.java for more details
         testArchive(module);

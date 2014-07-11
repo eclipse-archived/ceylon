@@ -19,7 +19,7 @@ package org.jboss.ceylon.test.modules.defaultx.test;
 
 import java.io.File;
 
-import biz.wiz.quiz.module_;
+import biz.wiz.quiz.$module_;
 import biz.wiz.quiz.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,7 +36,7 @@ public class DefaultTestCase extends ModulesTest {
     @Test
     public void testVisibility() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "biz.wiz.quiz-1.0.0.GA.car");
-        module.addClasses(module_.class, run_.class);
+        module.addClasses($module_.class, run_.class);
 
         File defaultFile = new File(getRepo(), "default/default.car");
         Assert.assertTrue(defaultFile.exists());
@@ -51,7 +51,7 @@ public class DefaultTestCase extends ModulesTest {
     @Test
     public void testDefaultRun() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "default.car");
-        module.addClasses(org.jboss.acme.module_.class);
+        module.addClasses(org.jboss.acme.$module_.class);
         module.addClasses(org.jboss.acme.run_.class);
 
         testArchive(module, "org.jboss.acme.run");

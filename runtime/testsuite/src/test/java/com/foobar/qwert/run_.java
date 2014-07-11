@@ -22,6 +22,6 @@ package com.foobar.qwert;
  */
 public class run_ {
     public static void main(String[] args) {
-        org.jboss.acme.module_.run();
+        org.jboss.acme.$module_.run();
     }
 }

@@ -1,6 +1,7 @@
 /*
- * Copyright 2014 Red Hat inc. and third party contributors as noted
+ * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +15,19 @@
  * limitations under the License.
  */
 
-package ceylon.paris.f2f.iface;
+package com.foobar.qwert;
 
+import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "ceylon.paris.f2f.iface", version = "1.0.0.Final")
-public class module_ {
+@Module(name = "com.foobar.qwert",
+        version = "1.0.0.GA",
+        dependencies = {
+                @Import(name = "org.jboss.acme", version = "1.0.0.CR1", export = true),
+                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA")
+        })
+public class $module_ {
 }

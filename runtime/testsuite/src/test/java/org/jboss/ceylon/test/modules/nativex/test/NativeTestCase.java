@@ -24,7 +24,7 @@ import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jogl.ceylon.module_;
+import org.jogl.ceylon.$module_;
 import org.jogl.ceylon.run_;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class NativeTestCase extends ModulesTest {
     @Test
     public void testUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jogl.ceylon-1.0.0.car");
-        module.addClasses(module_.class);
+        module.addClasses($module_.class);
         module.addClasses(run_.class);
 
         testArchive(module);
