@@ -278,7 +278,7 @@ public class CeylonTransformer extends AbstractTransformer {
         if (expression != null) {
             expressionError = errors().getFirstExpressionError(expression.getExpression());
             if (expressionError != null) {
-                initialValue = makeErroneous(expression, expressionError.getErrorMessage().getMessage());
+                initialValue = make().Erroneous();
             } else {
                 initialValue = transformValueInit(
                         declarationModel, attrName, expression);
