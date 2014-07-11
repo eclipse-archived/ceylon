@@ -294,11 +294,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (v.hasResult()) {
                     result = v.getSingleResult();
                     if (result == null) {
-                        result = makeErroneous(term, "compiler bug: visitor yielded multiple results");
+                        throw new BugException(term, "visitor yielded multiple results");
                     }
                 } else {
-                    result = makeErroneous(term, "compiler bug: visitor didn't yield a result");
+                    throw new BugException(term, "visitor didn't yield any result");
                 }
+            } catch (BugException e) {
+                result = e.makeErroneous(this, expr);
             } finally {
                 v.classBuilder = prevClassBuilder;
                 v.inInitializer = prevInInitializer;
