@@ -38,6 +38,7 @@ import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 
@@ -312,7 +313,7 @@ public class Main {
                 
                 // Try Ceylon module first
                 String ceylonPath = name.replace('.', '/');
-                ZipEntry moduleDescriptor = zipFile.getEntry(ceylonPath+"/module_.class");
+                ZipEntry moduleDescriptor = zipFile.getEntry(ceylonPath+"/"+Naming.MODULE_DESCRIPTOR_CLASS_NAME+".class");
                 if(moduleDescriptor != null)
                     return loadCeylonModuleCar(file, zipFile, moduleDescriptor, name, version);
                 

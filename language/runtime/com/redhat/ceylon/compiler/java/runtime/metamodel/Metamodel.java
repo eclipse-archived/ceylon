@@ -502,15 +502,14 @@ public class Metamodel {
     }
 
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Module module) {
-        
-        String className = module.getNameAsString() + ".module_";
+        String className = module.getNameAsString() + "." + Naming.MODULE_DESCRIPTOR_CLASS_NAME;
         ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(module, className);
         return classMirror.klass;
         
     }
     
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Package pkg) {
-        String className = ((LazyPackage) pkg).getNameAsString()+ ".package_";
+        String className = ((LazyPackage) pkg).getNameAsString()+ "." + Naming.PACKAGE_DESCRIPTOR_CLASS_NAME;
         ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(pkg.getModule(), className);
         return classMirror != null ? classMirror.klass : null;
     }
