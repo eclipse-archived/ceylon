@@ -99,6 +99,8 @@ shared class StubClass(
                                                            
     shared void methodWithDefaultedParameter4(Boolean(Character) separator = (Character ch) => ch.whitespace) {}
     
+    shared void methodWithLinksToParametersOfParameterMethod("[[fce2]], [[fce2.s]]" void fce1(void fce2(String s))) {}
+    
     shared Anything methodWithAnything() { throw; }
     
     "Test fenced code block delimited by backticks \` with syntax highlighter.

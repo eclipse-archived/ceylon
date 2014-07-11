@@ -384,23 +384,36 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
         }
     }
-
+    
     protected final void writeParameterLinksIfRequired(Functional f) throws IOException {
-        // check if any parameter has documentation
-        boolean hasDoc = false;
-        for (ParameterList lists : f.getParameterLists()) {
-            for (Parameter param : lists.getParameters()) {
-                if(!hasDoc){
-                    String doc = getDoc(param.getModel(), linkRenderer());
-                    hasDoc = !doc.isEmpty();
-                }
-            }
+        writeParameterLinksIfRequired(f, true, "");
+    }
+
+    private final void writeParameterLinksIfRequired(Functional f, boolean onlyIfNoDoc, String idPrefix) throws IOException {
+        Map<Parameter, Map<Tree.Assertion, List<Tree.Condition>>> parametersAssertions = null;
+        if (onlyIfNoDoc) {
+            parametersAssertions = getParametersAssertions((Declaration) f);
         }
-        // if no parameter has any documentation, we need to produce url anchors for them
-        // because writeParameters() will not produce a parameter list with url anchors
-        for (ParameterList lists : f.getParameterLists()) {
-            for (Parameter param : lists.getParameters()) {
-                around("a id='" + f.getName() + "-" + param.getName() + "'", "");
+        
+        for (ParameterList parameterList : f.getParameterLists()) {
+            for (Parameter parameter : parameterList.getParameters()) {
+                boolean isRequired = true;
+
+                if (onlyIfNoDoc) {
+                    ParameterDocData parameterDocData = getParameterDocData(parameter, parametersAssertions);
+                    if (!parameterDocData.isEmpty()) {
+                        isRequired = false;
+                    }
+                }
+
+                if (isRequired) {
+                    around("a id='" + idPrefix + f.getName() + "-" + parameter.getName() + "'", "");
+                    
+                    // if parameter is function, we need to produce links to its parameters
+                    if (parameter.getModel() instanceof Method) {
+                        writeParameterLinksIfRequired((Method) parameter.getModel(), false, idPrefix + f.getName() + "-");
+                    }
+                }
             }
         }
     }
@@ -489,12 +502,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
             for (ParameterList parameterList : parameterLists) {
                 for (Parameter parameter : parameterList.getParameters()) {
-
-                    String doc = getDoc(parameter.getModel(), linkRenderer());
-                    String defaultValue = getParameterDefaultValue(parameter);
-                    Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions = parametersAssertions.get(parameter);
-                    
-                    if( !doc.isEmpty() || defaultValue != null || parameterAssertions != null) {
+                    ParameterDocData parameterDocData = getParameterDocData(parameter, parametersAssertions);
+                    if( !parameterDocData.isEmpty()) {
                         if( first ) {
                             first = false;
                             open("div class='parameters section'");
@@ -504,13 +513,18 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         open("li");
                         around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
                         
-                        if (!isEmpty(defaultValue)) {
-                            around("span class='parameter-default-value' title='Parameter default value'", " = " + defaultValue);
+                        // if parameter is function, we need to produce links to its parameters
+                        if (parameter.getModel() instanceof Method) {
+                            writeParameterLinksIfRequired((Method) parameter.getModel(), false, decl.getName() + "-");
                         }
-                        if (!isEmpty(doc)) {
-                            around("div class='doc section'", doc);
+                        
+                        if (!isEmpty(parameterDocData.defaultValue)) {
+                            around("span class='parameter-default-value' title='Parameter default value'", " = " + parameterDocData.defaultValue);
                         }
-                        writeParameterAssertions(decl, parameterAssertions);
+                        if (!isEmpty(parameterDocData.doc)) {
+                            around("div class='doc section'", parameterDocData.doc);
+                        }
+                        writeParameterAssertions(decl, parameterDocData.parameterAssertions);
                         
                         close("li");
                     }
@@ -766,6 +780,31 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         });
 
         return parametersAssertions;
+    }
+    
+    private ParameterDocData getParameterDocData(Parameter parameter, Map<Parameter, Map<Tree.Assertion, List<Tree.Condition>>> parametersAssertions) throws IOException {
+        String doc = getDoc(parameter.getModel(), linkRenderer());
+        String defaultValue = getParameterDefaultValue(parameter);
+        Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions = parametersAssertions.get(parameter);
+        return new ParameterDocData(doc, defaultValue, parameterAssertions);
+    }
+    
+    private static class ParameterDocData {
+        
+        final String doc;
+        final String defaultValue;
+        final Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions;
+        
+        public ParameterDocData(String doc, String defaultValue, Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions) {
+            this.doc = doc;
+            this.defaultValue = defaultValue;
+            this.parameterAssertions = parameterAssertions;
+        }
+        
+        boolean isEmpty() {
+            return doc.isEmpty() && defaultValue == null && parameterAssertions == null;
+        }
+        
     }
 
 }

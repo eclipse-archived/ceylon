@@ -37,6 +37,7 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
@@ -521,9 +522,10 @@ public class LinkRenderer {
     private String getUrl(Object to, Declaration anchor) {
         String url;
         
-        Method method = null;
+        List<Method> methods = new ArrayList<Method>();
         while(to instanceof Method){
-            method = (Method) to;
+            Method method = (Method) to;
+            methods.add(method);
             to = method.getContainer();
         }
         
@@ -538,11 +540,15 @@ public class LinkRenderer {
             if (url.endsWith(sectionPackageAnchor)) {
                 url = url.substring(0, url.length() - sectionPackageAnchor.length());
             }
-            String fragment;
-            if(method == null)
-                fragment = anchor.getName();
-            else
-                fragment = method.getName() + "-" + anchor.getName();
+            StringBuilder fragment = new StringBuilder();
+            if(!methods.isEmpty()) {
+                Collections.reverse(methods);
+                for(Method method : methods) {
+                    fragment.append(method.getName());
+                    fragment.append("-");
+                }
+            }
+            fragment.append(anchor.getName());
             url = url + "#" + fragment;
         }            
             

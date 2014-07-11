@@ -230,6 +230,7 @@ public class CeylonDocToolTest {
         assertLicense(destDir);
         assertParametersDocumentation(destDir);
         assertParametersAssertions(destDir);
+        assertParametersLinks(destDir);
         assertThrows(destDir);
         assertSee(destDir);
         assertIcons(destDir);
@@ -755,6 +756,17 @@ public class CeylonDocToolTest {
                         "<ul>" +
                         "<li><i class='icon-assertion'></i><code>exists s</code></li>" +
                         "<li><i class='icon-assertion'></i><code>s.any\\(\\(Character c\\) =\\&gt; c.digit\\)</code></li></ul>"));
+    }
+    
+    private void assertParametersLinks(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("<span class='parameter' id='methodWithLinksToParametersOfParameterMethod-fce1'>fce1</span>" +
+                		"<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2'></a>" +
+                		"<a id='methodWithLinksToParametersOfParameterMethod-fce1-fce2-s'></a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("<div class='doc section'><p>" +
+                		"<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2'>fce2</a>, " +
+                		"<a class='link' href='StubClass.type.html#methodWithLinksToParametersOfParameterMethod-fce1-fce2-s' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksToParametersOfParameterMethod.fce1.fce2.s'>fce2.s</a></p>"));
     }
 
 	private void assertThrows(File destDir) throws Exception {
