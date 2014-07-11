@@ -1448,6 +1448,7 @@ public class Naming implements LocalId {
     private static final int __NA_IDENT_PARAMETER_ALIASED = 1<<12;
     static final int NA_IDENT_PARAMETER_ALIASED = NA_IDENT | __NA_IDENT_PARAMETER_ALIASED;
     
+    public static final String OLD_MODULE_DESCRIPTOR_CLASS_NAME = "module_";
     public static final String MODULE_DESCRIPTOR_CLASS_NAME = "$module_";
     public static final String PACKAGE_DESCRIPTOR_CLASS_NAME = "$package_";
     

@@ -1592,6 +1592,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String moduleClassName = pkgName + "." + Naming.MODULE_DESCRIPTOR_CLASS_NAME;
             logVerbose("[Trying to look up module from "+moduleClassName+"]");
             ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
+            if(moduleClass == null){
+                // perhaps we have an old module?
+                String oldModuleClassName = pkgName + "." + Naming.OLD_MODULE_DESCRIPTOR_CLASS_NAME;
+                logVerbose("[Trying to look up older module descriptor from "+oldModuleClassName+"]");
+                ClassMirror oldModuleClass = loadClass(module, pkgName, oldModuleClassName);
+                // keep it only if it has a module annotation, otherwise it could be a normal value
+                if(oldModuleClass != null && oldModuleClass.getAnnotation(CEYLON_MODULE_ANNOTATION) != null)
+                    moduleClass = oldModuleClass;
+            }
             if(moduleClass != null){
                 // load its module annotation
                 return loadCompiledModule(module, moduleClass, moduleClassName);
