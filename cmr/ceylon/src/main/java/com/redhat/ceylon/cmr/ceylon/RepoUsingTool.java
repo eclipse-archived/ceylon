@@ -574,6 +574,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (offline) {
             args.add("--offline");
         }
+        if (verbose != null) {
+            args.add("--verbose=" + verbose);
+        }
         args.add(name);
         
         ToolFactory pluginFactory = new ToolFactory();
