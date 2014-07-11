@@ -123,9 +123,10 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     public ClassMirror lookupNewClassMirror(Module module, String name) {
         Class<?> klass = null;
         // first try with the same name, for Java interop with classes with lowercase name
-        klass = loadClass(module, name);
+        String quotedName = Util.quoteJavaKeywords(name);
+        klass = loadClass(module, quotedName);
         if (klass == null && lastPartHasLowerInitial(name) && !name.endsWith("_")) {
-            klass = loadClass(module, name+"_");
+            klass = loadClass(module, quotedName+"_");
         }
         return klass != null ? new ReflectionClass(klass) : null;
     }
