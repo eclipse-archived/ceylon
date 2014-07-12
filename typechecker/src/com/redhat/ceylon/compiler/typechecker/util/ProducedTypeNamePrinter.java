@@ -20,7 +20,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class ProducedTypeNamePrinter {
 
-    public static final ProducedTypeNamePrinter DEFAULT = new ProducedTypeNamePrinter(true, true, false, true);
+    public static final ProducedTypeNamePrinter DEFAULT = 
+            new ProducedTypeNamePrinter(true, true, false, true);
 
     private boolean printAbbreviated;
     private boolean printTypeParameters;
@@ -36,7 +37,10 @@ public class ProducedTypeNamePrinter {
         this(printAbbreviated, true, false, true);
     }
 
-    public ProducedTypeNamePrinter(boolean printAbbreviated, boolean printTypeParameters, boolean printTypeParameterDetail, boolean printQualifyingType) {
+    public ProducedTypeNamePrinter(boolean printAbbreviated, 
+            boolean printTypeParameters, 
+            boolean printTypeParameterDetail,
+            boolean printQualifyingType) {
         this.printAbbreviated = printAbbreviated;
         this.printTypeParameters = printTypeParameters;
         this.printTypeParameterDetail = printTypeParameterDetail;
@@ -171,8 +175,11 @@ public class ProducedTypeNamePrinter {
                     if (caseType==null) {
                         name.append("unknown");
                     }
-                    else if (printAbbreviated() && abbreviateEntry(caseType)) {
-                        name.append(lt()).append(getProducedTypeName(caseType, unit)).append(gt());
+                    else if (printAbbreviated() && 
+                            abbreviateEntry(caseType)) {
+                        name.append(lt())
+                            .append(getProducedTypeName(caseType, unit))
+                            .append(gt());
                     }
                     else {
                         name.append(getProducedTypeName(caseType, unit));
@@ -193,9 +200,12 @@ public class ProducedTypeNamePrinter {
                     if (satisfiedType==null) {
                         name.append("unknown");
                     }
-                    else if (printAbbreviated() && abbreviateEntry(satisfiedType) || 
+                    else if (printAbbreviated() && 
+                            abbreviateEntry(satisfiedType) || 
                             satisfiedType.getDeclaration() instanceof UnionType) {
-                        name.append(lt()).append(getProducedTypeName(satisfiedType, unit)).append(gt());
+                        name.append(lt())
+                            .append(getProducedTypeName(satisfiedType, unit))
+                            .append(gt());
                     }
                     else {
                         name.append(getProducedTypeName(satisfiedType, unit));
@@ -222,7 +232,8 @@ public class ProducedTypeNamePrinter {
                         name.append("=");
                     }
                     else {
-                        name.append(" = ").append(getProducedTypeName(dta, unit));
+                        name.append(" = ")
+                            .append(getProducedTypeName(dta, unit));
                     }
                 }
 
@@ -371,7 +382,8 @@ public class ProducedTypeNamePrinter {
                 else if (args.getDeclaration().equals(u.getEmptyDeclaration())) {
                     return defaulted ? "=" : "";
                 }
-                else if (!defaulted && args.getDeclaration().equals(u.getSequentialDeclaration())) {
+                else if (!defaulted && 
+                        args.getDeclaration().equals(u.getSequentialDeclaration())) {
                     ProducedType elementType = u.getIteratedType(args);
                     if (elementType!=null) {
                         String etn = getProducedTypeName(elementType, unit);
@@ -383,7 +395,8 @@ public class ProducedTypeNamePrinter {
                         }
                     }
                 }
-                else if (!defaulted && args.getDeclaration().equals(u.getSequenceDeclaration())) {
+                else if (!defaulted && 
+                        args.getDeclaration().equals(u.getSequenceDeclaration())) {
                     ProducedType elementType = u.getIteratedType(args);
                     if (elementType!=null) {
                         String etn = getProducedTypeName(elementType, unit);
@@ -412,7 +425,8 @@ public class ProducedTypeNamePrinter {
         }
     }
 
-    protected String getSimpleProducedTypeName(ProducedType pt, Unit unit) {
+    protected String getSimpleProducedTypeName(ProducedType pt, 
+            Unit unit) {
         StringBuilder ptn = new StringBuilder();
 
         boolean fullyQualified = printFullyQualified();
@@ -434,12 +448,18 @@ public class ProducedTypeNamePrinter {
             }
         }
 
-        printDeclaration(ptn, pt.getDeclaration(), fullyQualified, unit);
+        printDeclaration(ptn, pt.getDeclaration(), 
+                fullyQualified, unit);
 
-        if (printTypeParameters() && !pt.getTypeArgumentList().isEmpty()) {
+        List<ProducedType> args = pt.getTypeArgumentList();
+        List<TypeParameter> params = pt.getDeclaration().getTypeParameters();
+        if (printTypeParameters() && 
+                !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;
-            for (ProducedType t: pt.getTypeArgumentList()) {
+            for (int i=0; i<args.size()&&i<params.size(); i++) {
+                ProducedType t = args.get(i);
+                TypeParameter p = params.get(i);
                 if (first) {
                     first = false;
                 }
@@ -450,6 +470,12 @@ public class ProducedTypeNamePrinter {
                     ptn.append("unknown");
                 }
                 else {
+                    if (!p.isCovariant() && pt.isCovariant(p)) {
+                        ptn.append("out ");
+                    }
+                    if (!p.isContravariant() && pt.isContravariant(p)) {
+                        ptn.append("in ");
+                    }
                     ptn.append(getProducedTypeName(t, unit));
                 }
             }
@@ -458,9 +484,11 @@ public class ProducedTypeNamePrinter {
         return ptn.toString();
     }
 
-    private void printDeclaration(StringBuilder ptn, Declaration declaration, boolean fullyQualified, Unit unit) {
+    private void printDeclaration(StringBuilder ptn, 
+            Declaration declaration, boolean fullyQualified, 
+            Unit unit) {
         // type parameters are not fully qualified
-        if(fullyQualified && declaration instanceof TypeParameter == false){
+        if (fullyQualified && !(declaration instanceof TypeParameter)) {
             Scope container = declaration.getContainer();
             while(container != null
                     && container instanceof Package == false
@@ -473,7 +501,8 @@ public class ProducedTypeNamePrinter {
                     if(!q.isEmpty())
                         ptn.append(q).append("::");
                 }else{
-                    printDeclaration(ptn, (Declaration) container, fullyQualified, unit);
+                    printDeclaration(ptn, (Declaration) container, 
+                            fullyQualified, unit);
                     ptn.append(".");
                 }
             }
@@ -486,7 +515,8 @@ public class ProducedTypeNamePrinter {
         ptn.append(getSimpleDeclarationName(declaration, unit));
     }
 
-    protected String getSimpleDeclarationName(Declaration declaration, Unit unit) {
+    protected String getSimpleDeclarationName(Declaration declaration, 
+            Unit unit) {
         return declaration.getName(unit);
     }
 

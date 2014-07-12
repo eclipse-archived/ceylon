@@ -724,7 +724,7 @@ public class TypeVisitor extends Visitor {
             visitSimpleType(that, outerType, type);
         }
     }
-
+    
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());

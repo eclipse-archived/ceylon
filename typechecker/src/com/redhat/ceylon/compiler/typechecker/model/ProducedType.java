@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
@@ -38,6 +40,50 @@ public class ProducedType extends ProducedReference {
     // cache
     private int hashCode;
     private List<ProducedType> typeArgumentList;
+    
+    private Map<TypeParameter,SiteVariance> varianceOverrides = 
+            Collections.emptyMap();
+    
+    public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+        return varianceOverrides;
+    }
+    
+    public boolean isCovariant(TypeParameter param) {
+        SiteVariance override = varianceOverrides.get(param);
+        if (override==null) {
+            return param.isCovariant();
+        }
+        else {
+            return override==OUT;
+        }
+    }
+    
+    public boolean isContravariant(TypeParameter param) {
+        SiteVariance override = varianceOverrides.get(param);
+        if (override==null) {
+            return param.isContravariant();
+        }
+        else {
+            return override==IN;
+        }
+    }
+    
+    public boolean isInvariant(TypeParameter param) {
+        SiteVariance override = varianceOverrides.get(param);
+        if (override==null) {
+            return param.isInvariant();
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public void setVariance(TypeParameter param, SiteVariance variance) {
+        if (varianceOverrides.isEmpty()) {
+            varianceOverrides = new HashMap<TypeParameter,SiteVariance>();
+        }
+        varianceOverrides.put(param, variance);
+    }
     
     ProducedType() {}
 
@@ -198,6 +244,10 @@ public class ProducedType extends ProducedReference {
                                         p.getName() + " of " +
                                         getDeclaration().getName());*/
                     }
+                    else if (isContravariant(p)!=type.isContravariant(p) ||
+                            isCovariant(p)!=type.isCovariant(p)) {
+                        return false;
+                    }
                     else if (!arg.isExactlyInternal(otherArg)) {
                         return false;
                     }
@@ -332,12 +382,12 @@ public class ProducedType extends ProducedReference {
                                       type.getDeclaration().getName());*/
                             return false;
                         }
-                        else if (p.isCovariant()) {
+                        else if (type.isCovariant(p)) {
                             if (!arg.isSubtypeOfInternal(otherArg)) {
                                 return false;
                             }
                         }
-                        else if (p.isContravariant()) {
+                        else if (type.isContravariant(p)) {
                             if (!otherArg.isSubtypeOfInternal(arg)) {
                                 return false;
                             }
@@ -468,10 +518,12 @@ public class ProducedType extends ProducedReference {
     public ProducedReference getTypedReference(Declaration member, 
             List<ProducedType> typeArguments) {
         if (member instanceof TypeDeclaration) {
-            return getTypeMember((TypeDeclaration) member, typeArguments);
+            return getTypeMember((TypeDeclaration) member, 
+                    typeArguments);
         }
         else {
-            return getTypedMember((TypedDeclaration) member, typeArguments);
+            return getTypedMember((TypedDeclaration) member, 
+                    typeArguments);
         }
     }
 
@@ -496,7 +548,8 @@ public class ProducedType extends ProducedReference {
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = 
-                getTypeArgumentMap(member, declaringType, typeArguments);
+                getTypeArgumentMap(member, declaringType, 
+                        typeArguments);
         //map.putAll(sub(map));
         ptr.setTypeArguments(map);
         return ptr;
@@ -649,8 +702,10 @@ public class ProducedType extends ProducedReference {
         YES, NO, MAYBE;
     }
     
-    private static SupertypeCheck checkSupertype(TypeDeclaration declaration, TypeDeclaration supertype) {
-        // fail-fast: there are only two classes that can be supertypes of an interface
+    private static SupertypeCheck checkSupertype(TypeDeclaration declaration, 
+            TypeDeclaration supertype) {
+        // fail-fast: there are only two classes that can 
+        // be supertypes of an interface
         if(declaration instanceof Interface && 
                 supertype instanceof Class) {
             String supertypeName = supertype.getQualifiedNameString();
@@ -701,7 +756,8 @@ public class ProducedType extends ProducedReference {
             for (ProducedType caseType: 
                     declaration.getCaseTypes()) {
                 SupertypeCheck satisfied = 
-                        checkSupertype(caseType.getDeclaration(), supertype);
+                        checkSupertype(caseType.getDeclaration(), 
+                                supertype);
                 if (satisfied != SupertypeCheck.YES) {
                     return satisfied;
                 }
@@ -719,7 +775,8 @@ public class ProducedType extends ProducedReference {
             for (ProducedType satisfiedType: 
                     declaration.getSatisfiedTypes()) {
                 SupertypeCheck satisfied = 
-                        checkSupertype(satisfiedType.getDeclaration(), supertype);
+                        checkSupertype(satisfiedType.getDeclaration(), 
+                                supertype);
                 if (satisfied == SupertypeCheck.YES) {
                     return satisfied;
                 }
@@ -891,7 +948,7 @@ public class ProducedType extends ProducedReference {
                     //      empty of Iterable<String>&Sized
                     TypeDeclaration rd = result.getDeclaration();
                     TypeDeclaration prd = possibleResult.getDeclaration();
-
+                    
                     //Resolve ambiguities in favor of
                     //the most-refined declaration
                     /*if (rd.equals(prd)) {
@@ -925,8 +982,8 @@ public class ProducedType extends ProducedReference {
                     
                     Unit unit = getDeclaration().getUnit();
 					if (d!=null) {
-						result = principalInstantiation(d, possibleResult, 
-						        result, unit);
+						result = principalInstantiation(d, 
+						        possibleResult, result, unit);
                     }
                     else {
                         //ambiguous! we can't decide between the two 
@@ -983,11 +1040,12 @@ public class ProducedType extends ProducedReference {
             pt.setQualifyingType(declaringType);
             pt.setTypeArguments(getTypeArgumentMap(getDeclaration(), 
                     declaringType, getTypeArgumentList()));
+            pt.varianceOverrides=varianceOverrides;
             return pt;
         }
     }
 
-    private ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
+    private ProducedType getCommonSupertype(List<ProducedType> caseTypes,
             TypeDeclaration dec) {
         //now try to construct a common produced
         //type that is a common supertype by taking
@@ -1177,7 +1235,8 @@ public class ProducedType extends ProducedReference {
                                     !contravariant, errors); 
                         }
                         else {
-                            //else if we are in a nonvariant position, it stays nonvariant
+                            //else if we are in an invariant 
+                            //position, it stays invariant
                             pt.checkDecidability(covariant, 
                                     contravariant, errors);
                         }
@@ -1218,8 +1277,9 @@ public class ProducedType extends ProducedReference {
                     ((covariant || !tp.isCovariant()) && 
                     (contravariant || !tp.isContravariant()));
             if (!ok) {
-                //a covariant type parameter appears in a contravariant location, or
-                //a contravariant type parameter appears in a covariant location.
+                //a covariant type parameter appears in a 
+                //contravariant location, or a contravariant 
+                //type parameter appears in a covariant location.
                 errors.add(tp);
             }
         }
@@ -1243,17 +1303,19 @@ public class ProducedType extends ProducedReference {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
                 ProducedType pt = getTypeArguments().get(tp);
                 if (pt!=null) {
-                    if (tp.isCovariant()) {
+                    if (isCovariant(tp)) {
                         pt.checkVariance(covariant, contravariant, 
                                 declaration, errors);
                     }
-                    else if (tp.isContravariant()) {
-                        if (covariant|contravariant) { 
+                    else if (isContravariant(tp)) {
+                        if (covariant|contravariant) {
+                            //flip the variance
                             pt.checkVariance(!covariant, !contravariant, 
                                     declaration, errors); 
                         }
                         else {
-                            //else if we are in a nonvariant position, it stays nonvariant
+                            //unless we are in an invariant 
+                            //position, then it stays invariant
                             pt.checkVariance(covariant, contravariant, 
                                     declaration, errors);
                         }
@@ -1569,6 +1631,7 @@ public class ProducedType extends ProducedReference {
                 type.setQualifyingType(substitute(qt, substitutions));
             }
             type.setTypeArguments(substitutedTypeArguments(pt, substitutions));
+            type.varianceOverrides=pt.varianceOverrides;
             return type;
         }
             
@@ -1857,6 +1920,7 @@ public class ProducedType extends ProducedReference {
         pt.setDeclaration(getDeclaration());
         pt.setQualifyingType(getQualifyingType());
         pt.setTypeArguments(getTypeArguments());
+        pt.varianceOverrides=varianceOverrides;
         return pt;
     }
 
@@ -1873,7 +1937,7 @@ public class ProducedType extends ProducedReference {
     
     public ProducedType resolveAliases() {
         // cache the resolved version
-        if (resolvedAliases == null){
+        if (resolvedAliases == null) {
             // really compute it
             if (depth.get()>50) {
                 throw new RuntimeException("undecidable canonicalization");
@@ -1887,7 +1951,7 @@ public class ProducedType extends ProducedReference {
             }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
-            if (resolvedAliases != this){
+            if (resolvedAliases != this) {
                 // inherit whatever underlying type we had
                 resolvedAliases.underlyingType = underlyingType;
                 resolvedAliases.isRaw = isRaw;
@@ -1941,7 +2005,10 @@ public class ProducedType extends ProducedReference {
     				        aliasedQualifyingType, aliasedArgs));
     	}
     	else {
-    		return d.getProducedType(aliasedQualifyingType, aliasedArgs);
+    		ProducedType result = 
+    		        d.getProducedType(aliasedQualifyingType, aliasedArgs);
+    		result.varianceOverrides=varianceOverrides;
+            return result;
     	}
     }
     
@@ -1976,6 +2043,7 @@ public class ProducedType extends ProducedReference {
                 d.getProducedType(simpleQualifyingType, simpleArgs);
         ret.setUnderlyingType(underlyingType);
         ret.setRaw(isRaw);
+        ret.varianceOverrides=varianceOverrides;
         return ret;
     }
     

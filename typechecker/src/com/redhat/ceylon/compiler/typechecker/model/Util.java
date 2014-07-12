@@ -1137,10 +1137,10 @@ public class Util {
             ProducedType arg;
             ProducedType rta = first.getTypeArguments().get(tp);
             ProducedType prta = second.getTypeArguments().get(tp);
-            if (tp.isContravariant()) {
+            if (first.isContravariant(tp) && second.isContravariant(tp)) {
                 arg = unionType(rta, prta, unit);
             }
-            else if (tp.isCovariant()) {
+            else if (first.isCovariant(tp) && second.isCovariant(tp)) {
                 arg = intersectionType(rta, prta, unit);
             }
             else {

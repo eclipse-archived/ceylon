@@ -2378,16 +2378,22 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
       (
+        (v1=variance)?
         ta1=type
         { if ($ta1.type!=null)
-              $typeArgumentList.addType($ta1.type); }
+              $typeArgumentList.addType($ta1.type); 
+          if ($v1.typeVariance!=null) 
+              $ta1.type.setTypeVariance($v1.typeVariance); }
         (
           c=COMMA
           { $typeArgumentList.setEndToken($c); }
           (
+            (v2=variance)?
             ta2=type
             { if ($ta2.type!=null) {
-                  $typeArgumentList.addType($ta2.type); 
+                  $typeArgumentList.addType($ta2.type);
+                  if ($v2.typeVariance!=null) 
+                      $ta1.type.setTypeVariance($v2.typeVariance);
                   $typeArgumentList.setEndToken(null); } }
             | { displayRecognitionError(getTokenNames(), 
                   new MismatchedTokenException(UIDENTIFIER, input)); }

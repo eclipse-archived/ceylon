@@ -17,6 +17,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageMod
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
@@ -70,6 +72,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -4437,11 +4441,29 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
             if (type!=null) {
+                List<TypeParameter> params = type.getTypeParameters();
                 List<ProducedType> ta = getTypeArguments(tal, 
-                        type.getTypeParameters(), 
-                        pt.getQualifyingType());
+                        params, pt.getQualifyingType());
                 acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
                 //the type has already been set by TypeVisitor
+                if (tal!=null) {
+                    List<Type> args = tal.getTypes();
+                    for (int i = 0; i<args.size(); i++) {
+                        Type t = args.get(i);
+                        if (t instanceof Tree.StaticType) {
+                            TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
+                            if (variance!=null) {
+                                TypeParameter p = params.get(i);
+                                if (variance.getText().equals("out")) {
+                                    pt.setVariance(p, OUT);
+                                }
+                                else if (variance.getText().equals("in")) {
+                                    pt.setVariance(p, IN);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
