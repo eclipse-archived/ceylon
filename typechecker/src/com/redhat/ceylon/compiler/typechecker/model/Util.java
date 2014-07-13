@@ -1164,7 +1164,8 @@ public class Util {
             }
             args.add(arg);
         }
-        return dec.getProducedType(principalQualifyingType(first, second, dec, unit), args);
+        ProducedType pqt = principalQualifyingType(first, second, dec, unit);
+        return dec.getProducedType(pqt, args);
     }
     
     public static boolean areConsistentSupertypes(ProducedType st1, 

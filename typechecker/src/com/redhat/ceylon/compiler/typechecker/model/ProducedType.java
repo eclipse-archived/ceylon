@@ -543,7 +543,8 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {*/
-        ProducedTypedReference ptr = new ProducedTypedReference(true, false);
+        ProducedTypedReference ptr = 
+                new ProducedTypedReference(true, false);
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = 
@@ -551,7 +552,6 @@ public class ProducedType extends ProducedReference {
                         typeArguments);
         //map.putAll(sub(map));
         ptr.setTypeArguments(map);
-        declaringType.varianceOverrides=varianceOverrides; //TODO:quite wrong!!!!
         return ptr;
         //}
     }
@@ -652,6 +652,7 @@ public class ProducedType extends ProducedReference {
                 dec instanceof IntersectionType;
         boolean canCache = !complexType && 
                 !hasUnderlyingType() && 
+                varianceOverrides.isEmpty() &&
                 ProducedTypeCache.isEnabled();
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache && 
@@ -931,8 +932,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         
-        List<ProducedType> satisfiedTypes = 
-                getInternalSatisfiedTypes();
+        List<ProducedType> satisfiedTypes = getInternalSatisfiedTypes();
         // cheaper iteration
         for (int i=0, l=satisfiedTypes.size(); i<l; i++) {
             ProducedType dst = satisfiedTypes.get(i);
@@ -1427,7 +1427,34 @@ public class ProducedType extends ProducedReference {
         }
         return false;
     }
-
+    
+    private ProducedType withVarianceOverrides(Map<TypeParameter,SiteVariance> varianceOverrides) {
+        if (getDeclaration().isParameterized()) {
+            ProducedType result = new ProducedType();
+            result.setDeclaration(getDeclaration());
+            result.setTypeArguments(getTypeArguments());
+            result.setQualifyingType(getQualifyingType());
+            Map<TypeParameter,SiteVariance> map = 
+                    new HashMap<TypeParameter,SiteVariance>(varianceOverrides.size());
+            for (Map.Entry<TypeParameter,ProducedType> entry: getTypeArguments().entrySet()) {
+                TypeDeclaration d = entry.getValue().getDeclaration();
+                if (d instanceof TypeParameter) {
+                    SiteVariance var = varianceOverrides.get(d);
+                    if (var!=null) {
+                        map.put(entry.getKey(), var);
+                    }
+                }
+            }
+            result.varianceOverrides = map;
+            result.isRaw = isRaw;
+            result.underlyingType = underlyingType;
+            return result;
+        }
+        else {
+            return this;
+        }
+    }
+    
     private List<ProducedType> getInternalSatisfiedTypes() {
         List<ProducedType> sts = 
                 getDeclaration().getSatisfiedTypes();
@@ -1439,7 +1466,10 @@ public class ProducedType extends ProducedReference {
         List<ProducedType> satisfiedTypes = 
                 new ArrayList<ProducedType>(sts.size());
         for (ProducedType st: sts) {
-            satisfiedTypes.add(st.substituteInternal(args));
+            ProducedType t = 
+                    st.withVarianceOverrides(varianceOverrides)
+                            .substituteInternal(args);
+            satisfiedTypes.add(t);
         }
         return satisfiedTypes;
     }
@@ -1452,8 +1482,13 @@ public class ProducedType extends ProducedReference {
         if (args.isEmpty()) {
             return extendedType;
         }
-        return extendedType==null ? 
-                null:extendedType.substituteInternal(args);
+        if (extendedType==null) {
+            return null;
+        }
+        else {
+            return extendedType.withVarianceOverrides(varianceOverrides)
+                    .substituteInternal(args);
+        }
     }
 
     private List<ProducedType> getInternalCaseTypes() {
@@ -1471,7 +1506,10 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> caseTypes = 
                     new ArrayList<ProducedType>(cts.size());
             for (ProducedType ct: cts) {
-                caseTypes.add(ct.substituteInternal(args));
+                ProducedType t = 
+                        ct.withVarianceOverrides(varianceOverrides)
+                                .substituteInternal(args);
+                caseTypes.add(t);
             }
             return caseTypes;
         }
@@ -1892,7 +1930,9 @@ public class ProducedType extends ProducedReference {
             //X covers Y if Y has the cases A|B|C and 
             //X covers all of A, B, and C
             for (ProducedType ct: uoc.getCaseTypes()) {
-                if (!coversInternal(ct.substituteInternal(args))) {
+                ProducedType sct = ct.withVarianceOverrides(varianceOverrides)
+                        .substituteInternal(args);
+                if (!coversInternal(sct)) {
                     return false;
                 }
             }
@@ -1901,13 +1941,18 @@ public class ProducedType extends ProducedReference {
         else {
             //X covers Y if Y extends Z and X covers Z
             ProducedType et = dec.getExtendedType();
-            if (et!=null && 
-                    coversInternal(et.substituteInternal(args))) {
-                return true;
+            if (et!=null) {
+                ProducedType set = et.withVarianceOverrides(varianceOverrides)
+                        .substituteInternal(args);
+                if (coversInternal(set)) {
+                    return true;
+                }
             }
             //X covers Y if Y satisfies Z and X covers Z
             for (ProducedType st: dec.getSatisfiedTypes()) {
-                if (coversInternal(st.substituteInternal(args))) {
+                ProducedType sst = st.withVarianceOverrides(varianceOverrides)
+                        .substituteInternal(args);
+                if (coversInternal(sst)) {
                     return true;
                 }
             }

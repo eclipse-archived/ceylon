@@ -267,7 +267,7 @@ public abstract class TypeDeclaration extends Declaration
                 }
             }
             if (members.isEmpty()) {
-                members.addAll(getInheritedMembers(name));
+                members.addAll(getInheritedMembers(name, visited));
             }
             return members;
         }
