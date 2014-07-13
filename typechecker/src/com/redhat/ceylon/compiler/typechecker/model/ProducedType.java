@@ -328,16 +328,16 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-                ProducedType st = 
+                ProducedType supertype = 
                         getSupertypeInternal(type.getDeclaration());
-                if (st==null) {
+                if (supertype==null) {
                     return false;
                 }
                 else {
-                    st = st.resolveAliases();
+                    supertype = supertype.resolveAliases();
                     ProducedType stqt = 
-                            st.getDeclaration().isStaticallyImportable() ?
-                                    null : st.getQualifyingType();
+                            supertype.getDeclaration().isStaticallyImportable() ?
+                                    null : supertype.getQualifyingType();
                     ProducedType tqt = 
                             type.getDeclaration().isStaticallyImportable() ? 
                                     null : type.getQualifyingType();
@@ -374,34 +374,34 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
-                        ProducedType arg = st.getTypeArguments().get(p);
+                        ProducedType arg = supertype.getTypeArguments().get(p);
                         ProducedType otherArg = type.getTypeArguments().get(p);
                         if (arg==null || otherArg==null) {
-                            /*throw new RuntimeException("Missing type argument for type parameter: " +
-                                      p.getName() + " of " +
-                                      type.getDeclaration().getName());*/
                             return false;
                         }
                         else if (type.isCovariant(p)) {
-                            if (st.isContravariant(p)) {
-                                //TODO: I<in X> is a suptype of I<out Anything>
-                                return false;
+                            if (supertype.isContravariant(p)) {
+                                if (!p.getType().isSubtypeOf(otherArg)) {
+                                    return false;
+                                }
                             }
                             else if (!arg.isSubtypeOfInternal(otherArg)) {
                                 return false;
                             }
                         }
                         else if (type.isContravariant(p)) {
-                            if (st.isCovariant(p)) {
-                                //TODO: I<out X> is a suptype of I<in Nothing>
-                                return false;
+                            if (supertype.isCovariant(p)) {
+                                if (!otherArg.isNothing()) {
+                                    return false;
+                                }
                             }
                             else if (!otherArg.isSubtypeOfInternal(arg)) {
                                 return false;
                             }
                         }
                         else {
-                            if (st.isCovariant(p) || st.isContravariant(p)) {
+                            if (supertype.isCovariant(p) || 
+                                supertype.isContravariant(p)) {
                                 return false;
                             }
                             else if (!arg.isExactlyInternal(otherArg)) {
@@ -1450,20 +1450,42 @@ public class ProducedType extends ProducedReference {
         if (getDeclaration().isParameterized()) {
             ProducedType result = new ProducedType();
             result.setDeclaration(getDeclaration());
-            result.setTypeArguments(getTypeArguments());
             result.setQualifyingType(getQualifyingType());
-            Map<TypeParameter,SiteVariance> map = 
+            Map<TypeParameter, ProducedType> typeArguments = getTypeArguments();
+            Map<TypeParameter,SiteVariance> variances = 
                     new HashMap<TypeParameter,SiteVariance>(varianceOverrides.size());
-            for (Map.Entry<TypeParameter,ProducedType> entry: getTypeArguments().entrySet()) {
-                TypeDeclaration d = entry.getValue().getDeclaration();
+            Map<TypeParameter,ProducedType> args = 
+                    new HashMap<TypeParameter,ProducedType>(typeArguments.size());
+            for (Map.Entry<TypeParameter,ProducedType> entry: typeArguments.entrySet()) {
+                TypeParameter param = entry.getKey();
+                ProducedType arg = entry.getValue();
+                TypeDeclaration d = arg.getDeclaration();
                 if (d instanceof TypeParameter) {
-                    SiteVariance var = varianceOverrides.get(d);
+                    TypeParameter p = (TypeParameter) d;
+                    SiteVariance var = varianceOverrides.get(p);
                     if (var!=null) {
-                        map.put(entry.getKey(), var);
+                        if (p.isInvariant()) {
+                            variances.put(param, var);
+                        }
+                        else if (p.isCovariant() && var==IN) {
+                            //simplify Co<in T> to Co<Anything> 
+                            // TODO: should it be getUpperBoundIntersection(p)
+                            args.put(param, getUpperBoundIntersection(param));
+                            continue;
+                        }
+                        else if (p.isContravariant() && var==OUT) {
+                            //simplify Contra<out T> to Contra<Nothing>
+                            ProducedType nothing = getDeclaration().getUnit()
+                                    .getNothingDeclaration().getType();
+                            args.put(param, nothing);
+                            continue;
+                        }
                     }
                 }
+                args.put(param, arg);
             }
-            result.varianceOverrides = map;
+            result.setTypeArguments(args);
+            result.varianceOverrides = variances;
             result.isRaw = isRaw;
             result.underlyingType = underlyingType;
             return result;
@@ -2385,16 +2407,7 @@ public class ProducedType extends ProducedReference {
                 return dec.getUnit().getNothingDeclaration().getType();
             }
             else if (!contravariant && siteVariance==IN) {
-                List<ProducedType> sts = dec.getSatisfiedTypes();
-                List<ProducedType> list = 
-                        new ArrayList<ProducedType>(sts.size());
-                for (ProducedType st: sts) {
-                    addToIntersection(list, st, dec.getUnit());
-                }
-                IntersectionType it = 
-                        new IntersectionType(dec.getUnit());
-                it.setSatisfiedTypes(list);
-                return it.getType();
+                return getUpperBoundIntersection((TypeParameter) dec);
             }
             else {
                 return this;
@@ -2456,6 +2469,19 @@ public class ProducedType extends ProducedReference {
             }
             return dec.getProducedType(getQualifyingType(), result);
         }
+    }
+
+    private ProducedType getUpperBoundIntersection(TypeParameter tp) {
+        List<ProducedType> sts = tp.getSatisfiedTypes();
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>(sts.size());
+        for (ProducedType st: sts) {
+            addToIntersection(list, st, tp.getUnit());
+        }
+        IntersectionType it = 
+                new IntersectionType(tp.getUnit());
+        it.setSatisfiedTypes(list);
+        return it.getType();
     }
     
     @Override
