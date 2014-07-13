@@ -1187,13 +1187,14 @@ public class Util {
         return !intersectionType(st1, st2, unit).isNothing();
     }
 
-    public static ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
-        List<ProducedType> list = new ArrayList<ProducedType>(ci.getSatisfiedTypes().size()+1);
-        if (ci.getExtendedType()!=null) {
-            list.add(ci.getExtendedType());
+    public static ProducedType intersectionOfSupertypes(TypeDeclaration td) {
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>(td.getSatisfiedTypes().size()+1);
+        if (td.getExtendedType()!=null) {
+            list.add(td.getExtendedType());
         }
-        list.addAll(ci.getSatisfiedTypes());
-        IntersectionType it = new IntersectionType(ci.getUnit());
+        list.addAll(td.getSatisfiedTypes());
+        IntersectionType it = new IntersectionType(td.getUnit());
         it.setSatisfiedTypes(list);
         return it.getType();
     }

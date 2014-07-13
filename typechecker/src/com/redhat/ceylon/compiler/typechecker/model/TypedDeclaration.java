@@ -77,8 +77,7 @@ public abstract class TypedDeclaration extends Declaration {
      */
     public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
-    	//TODO: take into account sequenced type arguments
-        ProducedTypedReference ptr = new ProducedTypedReference();
+        ProducedTypedReference ptr = new ProducedTypedReference(true, false);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
         ptr.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
@@ -90,7 +89,7 @@ public abstract class TypedDeclaration extends Declaration {
      * itself.
      */
     public ProducedTypedReference getTypedReference() {
-    	ProducedTypedReference ptr = new ProducedTypedReference();
+    	ProducedTypedReference ptr = new ProducedTypedReference(true, false);
         if (isMember()) {
             ptr.setQualifyingType(((ClassOrInterface) getContainer()).getType());
         }
