@@ -383,17 +383,28 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                         else if (type.isCovariant(p)) {
-                            if (!arg.isSubtypeOfInternal(otherArg)) {
+                            if (isContravariant(p)) {
+                                //TODO: I<in X> is a suptype of I<out Anything>
+                                return false;
+                            }
+                            else if (!arg.isSubtypeOfInternal(otherArg)) {
                                 return false;
                             }
                         }
                         else if (type.isContravariant(p)) {
-                            if (!otherArg.isSubtypeOfInternal(arg)) {
+                            if (isCovariant(p)) {
+                                //TODO: I<out X> is a suptype of I<in Nothing>
+                                return false;
+                            }
+                            else if (!otherArg.isSubtypeOfInternal(arg)) {
                                 return false;
                             }
                         }
                         else {
-                            if (!arg.isExactlyInternal(otherArg)) {
+                            if (isCovariant(p) || isContravariant(p)) {
+                                return false;
+                            }
+                            else if (!arg.isExactlyInternal(otherArg)) {
                                 return false;
                             }
                         }
@@ -1820,8 +1831,10 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> list = 
                     new ArrayList<ProducedType>(sts.size());
             for (ProducedType st: sts) {
-                addToIntersection(list, st.getUnionOfCases()
-                        .substitute(getTypeArguments()), 
+                addToIntersection(list, 
+                        st.getUnionOfCases()
+                            .withVarianceOverrides(varianceOverrides)
+                            .substitute(getTypeArguments()), 
                         unit); //argument substitution is unnecessary
             }
             IntersectionType it = new IntersectionType(unit);
@@ -1842,8 +1855,10 @@ public class ProducedType extends ProducedReference {
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>(cts.size());
                 for (ProducedType ct: cts) {
-                    addToUnion(list, ct.substitute(getTypeArguments())
-                            .getUnionOfCases()); //note recursion
+                    addToUnion(list, 
+                            ct.withVarianceOverrides(varianceOverrides)
+                                .substitute(getTypeArguments())
+                                .getUnionOfCases()); //note recursion
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(list);
