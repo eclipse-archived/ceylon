@@ -383,7 +383,7 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                         else if (type.isCovariant(p)) {
-                            if (isContravariant(p)) {
+                            if (st.isContravariant(p)) {
                                 //TODO: I<in X> is a suptype of I<out Anything>
                                 return false;
                             }
@@ -392,7 +392,7 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                         else if (type.isContravariant(p)) {
-                            if (isCovariant(p)) {
+                            if (st.isCovariant(p)) {
                                 //TODO: I<out X> is a suptype of I<in Nothing>
                                 return false;
                             }
@@ -401,7 +401,7 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                         else {
-                            if (isCovariant(p) || isContravariant(p)) {
+                            if (st.isCovariant(p) || st.isContravariant(p)) {
                                 return false;
                             }
                             else if (!arg.isExactlyInternal(otherArg)) {
@@ -851,7 +851,12 @@ public class ProducedType extends ProducedReference {
                 //in the whole code base:
                 ProducedType result = getPrincipalInstantiation(c);
                 result = getPrincipalInstantiationFromCases(c, result);
-                return result;
+                if (result==null || result.isNothing()) {
+                    return null;
+                }
+                else {
+                    return result;
+                }
             }
             else {
                 return null;
