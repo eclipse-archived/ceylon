@@ -5418,8 +5418,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.TypeArgumentList tal = et.getTypeArgumentList();
         if (tal!=null) {
             for (Tree.Type t: tal.getTypes()) {
-                if (t instanceof Tree.SimpleType) {
-                    TypeVariance variance = ((Tree.SimpleType) t).getTypeVariance();
+                if (t instanceof Tree.StaticType) {
+                    TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
                     if (variance!=null) {
                         variance.addError("supertype expression may not specify variance");
                     }
