@@ -95,9 +95,6 @@ function tpl$(elems,types,spread){
   atr$(that,'last',function(){
     return elems[elems.size-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
-  atr$(that,'reversed',function(){
-    return ArraySequence(elems.reversed,{Element$ArraySequence:_t});
-  },undefined,Tuple.$$.prototype.$prop$getReversed.$crtmm$);
   that.nativeArray=function() { return elems; }
   return that;
 }
