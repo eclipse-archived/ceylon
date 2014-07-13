@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentM
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1155,7 +1156,7 @@ public class ProducedType extends ProducedReference {
             List<TypeParameter> tps = 
                     getDeclaration().getTypeParameters();
             if (tps.isEmpty()) {
-                return Collections.emptyList();
+                return emptyList();
             }
             else {
                 List<ProducedType> argList = 
@@ -1167,6 +1168,7 @@ public class ProducedType extends ProducedReference {
                     TypeParameter tp = tps.get(i);
                     argList.add(args.get(tp));
                 }
+                argList = unmodifiableList(argList);
                 typeArgumentList = argList;
                 return argList;
             }
@@ -2369,7 +2371,8 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType st: sts) {
                     addToIntersection(list, st, dec.getUnit());
                 }
-                IntersectionType it = new IntersectionType(dec.getUnit());
+                IntersectionType it = 
+                        new IntersectionType(dec.getUnit());
                 it.setSatisfiedTypes(list);
                 return it.getType();
             }
@@ -2377,26 +2380,58 @@ public class ProducedType extends ProducedReference {
                 return this;
             }
         }
+        else if (dec instanceof UnionType) {
+            List<ProducedType> list = 
+                    new ArrayList<ProducedType>();
+            for (ProducedType type: getCaseTypes()) {
+                addToUnion(list, 
+                        type.applyVarianceOverrides(varianceOverrides, 
+                                covariant, contravariant));
+            }
+            UnionType unionType = 
+                    new UnionType(dec.getUnit());
+            unionType.setCaseTypes(list);
+            return unionType.getType();
+        }
+        else if (dec instanceof IntersectionType) {
+            List<ProducedType> list = 
+                    new ArrayList<ProducedType>();
+            for (ProducedType type: getSatisfiedTypes()) {
+                addToIntersection(list, 
+                        type.applyVarianceOverrides(varianceOverrides, 
+                                covariant, contravariant),
+                        dec.getUnit());
+            }
+            IntersectionType intersectionType = 
+                    new IntersectionType(dec.getUnit());
+            intersectionType.setSatisfiedTypes(list);
+            return intersectionType.canonicalize().getType();
+        }
         else {
             List<ProducedType> args = getTypeArgumentList();
             List<TypeParameter> params = dec.getTypeParameters();
-            List<ProducedType> result = new ArrayList<ProducedType>(args.size());
+            List<ProducedType> result = 
+                    new ArrayList<ProducedType>(args.size());
             for (int i = 0; i<args.size(); i++) {
                 ProducedType arg = args.get(i);
                 TypeParameter param = params.get(i);
                 if (isCovariant(param)) {
-                    args.add(arg.applyVarianceOverrides(varianceOverrides, covariant, contravariant));
+                    result.add(arg.applyVarianceOverrides(varianceOverrides, 
+                            covariant, contravariant));
                 }
                 else if (isContravariant(param)) {
                     if (covariant||contravariant) {
-                        args.add(arg.applyVarianceOverrides(varianceOverrides, !covariant, !contravariant));
+                        result.add(arg.applyVarianceOverrides(varianceOverrides, 
+                                !covariant, !contravariant));
                     }
                     else {
-                        args.add(arg.applyVarianceOverrides(varianceOverrides, covariant, contravariant));
+                        result.add(arg.applyVarianceOverrides(varianceOverrides, 
+                                covariant, contravariant));
                     }
                 }
                 else {
-                    args.add(arg.applyVarianceOverrides(varianceOverrides, false, false));
+                    result.add(arg.applyVarianceOverrides(varianceOverrides, 
+                            false, false));
                 }
             }
             return dec.getProducedType(getQualifyingType(), result);
