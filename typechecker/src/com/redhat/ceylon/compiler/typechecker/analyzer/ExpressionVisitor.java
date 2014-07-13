@@ -5379,7 +5379,7 @@ public class ExpressionVisitor extends Visitor {
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
-        
+                
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         Tree.SimpleType et = that.getType();
         if (et!=null) {
@@ -5409,6 +5409,21 @@ public class ExpressionVisitor extends Visitor {
 //                        type.getDeclaration().inherits(unit.getExceptionDeclaration())) {
 //                    et.addUnsupportedError("generic exception types not yet supported");
 //                }
+            }
+            checkSupertypeVarianceAnnotations(et);
+        }
+    }
+
+    private void checkSupertypeVarianceAnnotations(Tree.SimpleType et) {
+        Tree.TypeArgumentList tal = et.getTypeArgumentList();
+        if (tal!=null) {
+            for (Tree.Type t: tal.getTypes()) {
+                if (t instanceof Tree.SimpleType) {
+                    TypeVariance variance = ((Tree.SimpleType) t).getTypeVariance();
+                    if (variance!=null) {
+                        variance.addError("supertype expression may not specify variance");
+                    }
+                }
             }
         }
     }
@@ -5457,6 +5472,9 @@ public class ExpressionVisitor extends Visitor {
                 /*if (!(td instanceof TypeParameter)) {
                     checkCaseOfSupertype(t, td, type);
                 }*/
+            }
+            if (t instanceof Tree.SimpleType) {
+                checkSupertypeVarianceAnnotations((Tree.SimpleType) t);
             }
         }
         //Moved to RefinementVisitor, which 
