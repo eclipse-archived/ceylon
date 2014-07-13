@@ -239,14 +239,18 @@ public class ProducedType extends ProducedReference {
                     ProducedType otherArg = type.getTypeArguments().get(p);
                     if (arg==null || otherArg==null) {
                         return false;
-                        /*throw new RuntimeException(
-                                "Missing type argument for: " +
-                                        p.getName() + " of " +
-                                        getDeclaration().getName());*/
                     }
-                    else if (isContravariant(p)!=type.isContravariant(p) ||
-                            isCovariant(p)!=type.isCovariant(p)) {
-                        return false;
+                    else if (isContravariant(p) && !type.isContravariant(p)) {
+                        //Inv<in Nothing> == Inv<out Anything> 
+                        return type.isCovariant(p) &&
+                                arg.isNothing() &&
+                                (otherArg.isExactly(getUpperBoundIntersection(p)));
+                    }
+                    else if (isCovariant(p) && !type.isCovariant(p)) {
+                        //Inv<out Anything> == Inv<in Nothing>
+                        return type.isContravariant(p) &&
+                                otherArg.isNothing() &&
+                                (arg.isExactly(getUpperBoundIntersection(p)));
                     }
                     else if (!arg.isExactlyInternal(otherArg)) {
                         return false;
