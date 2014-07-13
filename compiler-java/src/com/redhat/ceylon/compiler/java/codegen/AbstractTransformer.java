@@ -75,7 +75,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
@@ -1005,7 +1004,7 @@ public abstract class AbstractTransformer implements Transformation {
             if(isWidening(typeArgument, refinedTypeArgument))
                 return true;
             // check if we are refining a covariant param which we must "fix" because it is dependend on, like Tuple's first TP
-            if(tp.isCovariant()
+            if(declType.isCovariant(tp)
                     && hasDependentTypeParameters(typeParameters, tp)
                     && !typeArgument.isExactly(refinedTypeArgument))
                 return true;
@@ -1246,7 +1245,7 @@ public abstract class AbstractTransformer implements Transformation {
                     return false;
 
                 // see makeTypeArgs: Nothing in contravariant position causes a raw type
-                if(tp.isContravariant() && ta.getDeclaration() instanceof NothingType)
+                if(singleType.isContravariant(tp) && ta.getDeclaration() instanceof NothingType)
                     return true;
                 
                 everyTypeArgumentIsErasedUnionIntersection &= isErasedUnionOrIntersection(ta);
@@ -1609,7 +1608,7 @@ public abstract class AbstractTransformer implements Transformation {
                 
                 ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
                         flags, 
-                        qualifyingTypeArguments, qualifyingTypeParameters);
+                        qualifyingTypeArguments, qualifyingTypeParameters, simpleType);
                 if (isCeylonCallable(type) && 
                         (flags & JT_CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
@@ -1864,12 +1863,12 @@ public abstract class AbstractTransformer implements Transformation {
         java.util.List<TypeParameter> tps = simpleType.getDeclaration().getTypeParameters();
         
 
-        return makeTypeArgs(isCeylonCallable(simpleType), flags, tas, tps);
+        return makeTypeArgs(isCeylonCallable(simpleType), flags, tas, tps, simpleType);
     }
 
     private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
             int flags, Map<TypeParameter, ProducedType> tas,
-            java.util.List<TypeParameter> tps) {
+            java.util.List<TypeParameter> tps, ProducedType simpleType) {
         boolean onlyErasedUnions = true;
         ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         
@@ -1928,7 +1927,7 @@ public abstract class AbstractTransformer implements Transformation {
                             || isBoundsSelfDependant(tp)
                             || willEraseToObject(ta)
                             // we should reject it for all non-covariant types, unless we're in satisfies/extends
-                            || ((flags & (JT_SATISFIES | JT_EXTENDS)) == 0 && !tp.isCovariant())){
+                            || ((flags & (JT_SATISFIES | JT_EXTENDS)) == 0 && !simpleType.isCovariant(tp))){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -1947,9 +1946,9 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<Object> if Foo<T> is invariant in T
                     // - Foo<?> if Foo<T> is covariant in T, or
                     // - Foo<Object> if Foo<T> is contravariant in T
-                    if (tp.isContravariant()) {
+                    if (simpleType.isContravariant(tp)) {
                         jta = make().Type(syms().objectType);
-                    } else if (tp.isCovariant()) {
+                    } else if (simpleType.isCovariant(tp)) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags | JT_TYPE_ARGUMENT));
                     } else {
                         jta = make().Type(syms().objectType);
@@ -1988,10 +1987,10 @@ public abstract class AbstractTransformer implements Transformation {
                         // - Foo<Object> otherwise
                         // this is more correct than Foo<?> because a method returning Foo<?> could never override a method returning Foo<Object>
                         // see https://github.com/ceylon/ceylon-compiler/issues/1003
-                        if (tp.isContravariant()) {
+                        if (simpleType.isContravariant(tp)) {
                             typeArgs = null;
                             break;
-                        } else if (tp.isCovariant() && !isDependedOn) {
+                        } else if (simpleType.isCovariant(tp) && !isDependedOn) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), make().Type(syms().objectType));
                         } else {
                             jta = make().Type(syms().objectType);
@@ -2001,9 +2000,9 @@ public abstract class AbstractTransformer implements Transformation {
                         // - Foo<T> if Foo is invariant in T,
                         // - Foo<? extends T> if Foo is covariant in T, or
                         // - Foo<? super T> if Foo is contravariant in T
-                        if (((flags & JT_CLASS_NEW) == 0) && tp.isContravariant()) {
+                        if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
-                        } else if (((flags & JT_CLASS_NEW) == 0) && tp.isCovariant() && !isDependedOn) {
+                        } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
                         } else {
                             jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
@@ -2021,9 +2020,9 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<T> if Foo is invariant in T,
                     // - Foo<? extends T> if Foo is covariant in T, or
                     // - Foo<? super T> if Foo is contravariant in T
-                    if (((flags & JT_CLASS_NEW) == 0) && tp.isContravariant()) {
+                    if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
-                    } else if (((flags & JT_CLASS_NEW) == 0) && tp.isCovariant() && !isDependedOn) {
+                    } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else {
                         jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
@@ -3748,11 +3747,11 @@ public abstract class AbstractTransformer implements Transformation {
             return false;
         for(Entry<TypeParameter, ProducedType> entry : type.getTypeArguments().entrySet()){
             TypeParameter tp = entry.getKey();
-            java.util.List<ProducedType> bounds = tp.getSatisfiedTypes();
-            ProducedType ta = entry.getValue();
-            if(!tp.isCovariant()) {
+            if(!type.isCovariant(tp)) {
                 return false;
             }
+            java.util.List<ProducedType> bounds = tp.getSatisfiedTypes();
+            ProducedType ta = entry.getValue();
             if ((bounds == null || bounds.isEmpty()) && !isAnything(ta)) {
                 return false;
             }
@@ -4017,7 +4016,7 @@ public abstract class AbstractTransformer implements Transformation {
         Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
         for(TypeParameter typeParam : typeParams){
             ProducedType typeArg = typeArguments.get(typeParam);
-            if(typeParam.isCovariant()
+            if(type.isCovariant(typeParam)
                     && hasDependentTypeParameters(typeParams, typeParam)){
                 // see if the type argument in question contains type parameters and is erased to Object
                 if(containsTypeParameter(typeArg) && willEraseToObject(typeArg))
