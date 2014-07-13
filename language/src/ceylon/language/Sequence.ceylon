@@ -206,7 +206,7 @@ shared sealed interface Sequence<out Element>
         size => outer.size;
         first => outer.last;
         last => outer.first;
-        rest => outer[size-2..0]; //TODO!
+        rest => size==1 then [] else outer[size-2..0]; //TODO optimize!
         
         reversed => outer;
         
