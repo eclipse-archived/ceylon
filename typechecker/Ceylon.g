@@ -2375,25 +2375,34 @@ stringExpression returns [Atom atom]
     ;
 
 typeArguments returns [TypeArgumentList typeArgumentList]
+    @init { TypeVariance v=null; }
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
       (
-        (v1=variance)?
+        (
+          v1=variance
+          { v = $v1.typeVariance; }
+        | { v = null; }
+        )
         ta1=type
         { if ($ta1.type!=null)
-              $typeArgumentList.addType($ta1.type); 
-          if ($v1.typeVariance!=null) 
-              $ta1.type.setTypeVariance($v1.typeVariance); }
+              $typeArgumentList.addType($ta1.type);
+          if (v!=null && $ta1.type!=null) 
+              $ta1.type.setTypeVariance(v); }
         (
           c=COMMA
           { $typeArgumentList.setEndToken($c); }
           (
-            (v2=variance)?
+            (
+              v2=variance
+              { v = $v2.typeVariance; }
+            | { v = null; }
+            )
             ta2=type
             { if ($ta2.type!=null) {
                   $typeArgumentList.addType($ta2.type);
-                  if ($v2.typeVariance!=null) 
-                      $ta1.type.setTypeVariance($v2.typeVariance);
+                  if (v!=null && $ta2.type!=null) 
+                      $ta1.type.setTypeVariance(v);
                   $typeArgumentList.setEndToken(null); } }
             | { displayRecognitionError(getTokenNames(), 
                   new MismatchedTokenException(UIDENTIFIER, input)); }
