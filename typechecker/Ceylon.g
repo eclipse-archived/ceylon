@@ -3858,7 +3858,8 @@ SMALLER_OP
     ;        
 
 LARGE_AS_OP
-    :   '>='
+    :   ('>=' ~'>') => '>='
+    |   '>' { $type=LARGER_OP; }
     ;
 
 SMALL_AS_OP
