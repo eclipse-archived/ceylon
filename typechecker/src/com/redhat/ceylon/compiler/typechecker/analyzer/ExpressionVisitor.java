@@ -4454,11 +4454,17 @@ public class ExpressionVisitor extends Visitor {
                             TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
                             if (variance!=null) {
                                 TypeParameter p = params.get(i);
-                                if (variance.getText().equals("out")) {
-                                    pt.setVariance(p, OUT);
+                                if (p.isInvariant()) {
+                                    if (variance.getText().equals("out")) {
+                                        pt.setVariance(p, OUT);
+                                    }
+                                    else if (variance.getText().equals("in")) {
+                                        pt.setVariance(p, IN);
+                                    }
                                 }
-                                else if (variance.getText().equals("in")) {
-                                    pt.setVariance(p, IN);
+                                else {
+                                    variance.addError("type parameter is not declared invariant: " + 
+                                            p.getName() + " of " + type.getName(unit));
                                 }
                             }
                         }
