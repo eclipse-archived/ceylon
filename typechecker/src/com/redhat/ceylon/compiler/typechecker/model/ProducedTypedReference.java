@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 
+
 /**
  * A produced reference to a method or 
  * attribute with actual type arguments.
@@ -30,8 +31,9 @@ public class ProducedTypedReference extends ProducedReference {
             return null;
         }
         else {
-            if (getQualifyingType()!=null) {
-                type = type.applyVarianceOverrides(getQualifyingType().getVarianceOverrides(), 
+            ProducedType qt = getQualifyingType();
+            if (qt!=null) {
+                type = qt.applyVarianceOverrides(type, 
                         covariant, contravariant);
             }
             return type.substitute(getTypeArguments()); //the type arguments to the member
