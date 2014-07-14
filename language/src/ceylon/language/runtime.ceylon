@@ -1,44 +1,54 @@
-"Machine (Virtual or not) on which the current process is running.
+"Represents the machine and virtual machine on which the 
+ current process is executing.
  
- Holds information about runtime name, version and about inherent limitations
- like minimum/maximum values that can be represented by the runtime."
+ Holds information about runtime name, version and about 
+ inherent limitations like minimum/maximum values that can 
+ be represented by the runtime."
+see (`value process`, `value language`, `value system`)
 shared native object runtime  {
     
-    "The name of the runtime / virtual machine this process is running on."
+    "The name of the runtime / virtual machine this process 
+     is running on."
     shared native String name;
     
-    "The version of the runtime / virtual machine this process is running on."
+    "The version of the runtime / virtual machine this 
+     process is running on."
     shared native String version;
     
-    "The number of bits used to represent the value of an [[Integer]]."
+    "The number of bits used to represent the value of an 
+     [[Integer]]."
     see (`class Integer`)
     shared native Integer integerSize;
     
-    "The number of bits of [[Integer]] instances 
-     which may be manipulated via the methods inherited from [[Binary]]."
+    "The number of bits of [[Integer]] instances which may 
+     be manipulated via the methods inherited from
+     [[Binary]]."
     shared native Integer integerAddressableSize;
     
-    "The minimum [[Integer]] value that can be represented by the runtime.
+    "The minimum [[Integer]] value that can be represented 
+     by the runtime.
      
-     It is the minimum `Integer` that can be distinguished from its successor
-     using below formula:
+     It is the minimum `Integer` that can be distinguished 
+     from its successor using below formula:
      
      `Integer(n-1) = Integer(n) - 1` with `Integer(0) = 0`"
     see (`class Integer`)
     shared native Integer minIntegerValue;
 
-    "The maximum [[Integer]] value that can be represented by the runtime.
+    "The maximum [[Integer]] value that can be represented 
+     by the runtime.
      
-     It is the maximum `Integer` that can be distinguished from its predecessor
-     using below formula:
+     It is the maximum `Integer` that can be distinguished 
+     from its predecessor using below formula:
      
      `Integer(n+1) = Integer(n) + 1` with `Integer(0) = 0`"
     see (`class Integer`)
     shared native Integer maxIntegerValue;
     
-    "The maximum size of an [[Array]] that is possible for this runtime.
-     Note that this is a theoretical limit only. In practice it is usually
-     impossible to allocate an array of this size, due to memory constraints."
+    "The maximum size of an [[Array]] that is possible for 
+     this runtime. Note that this is a theoretical limit 
+     only. In practice it is usually impossible to allocate 
+     an array of this size, due to memory constraints."
     see (`class Array`)
     shared native Integer maxArraySize;
     

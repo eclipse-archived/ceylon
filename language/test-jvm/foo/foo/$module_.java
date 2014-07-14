@@ -10,5 +10,5 @@ import com.redhat.ceylon.compiler.java.metadata.Import;
         @Import(name = "b.b", version = "2", export = true),
         @Import(name = "c.c", version = "3", optional = true),
 })
-public class module_ {
+public class $module_ {
 }

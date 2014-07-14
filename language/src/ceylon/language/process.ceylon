@@ -1,7 +1,7 @@
-
 "Represents the current process (instance of the virtual
  machine)."
 by ("Gavin", "Tako")
+see (`value language`, `value runtime`, `value system`)
 shared native object process {
     
     "The command line arguments to the virtual machine."
@@ -22,28 +22,28 @@ shared native object process {
      machine, if any."
     shared native String? propertyValue(String name);
 
-    "Print a string to the standard output of the 
-     virtual machine process."
+    "Print a string to the standard output of the virtual
+     machine process."
     shared native void write(String string);
     
-    "Print a line to the standard output of the 
-     virtual machine process."
+    "Print a line to the standard output of the virtual 
+     machine process."
     see (`function print`)
     shared void writeLine(String line="") { 
         write(line);
         write(operatingSystem.newline); 
     }
     
-    "Flush the standard output of the 
-     virtual machine process."
+    "Flush the standard output of the virtual machine 
+     process."
     shared native void flush();
     
-    "Print a string to the standard error of the 
-     virtual machine process."
+    "Print a string to the standard error of the virtual 
+     machine process."
     shared native void writeError(String string);
     
-    "Print a line to the standard error of the 
-     virtual machine process."
+    "Print a line to the standard error of the virtual 
+     machine process."
     shared void writeErrorLine(String line="") { 
         writeError(line);
         writeError(operatingSystem.newline);
@@ -53,14 +53,14 @@ shared native object process {
      virtual machine process."
     shared native void flushError();
     
-    "Read a line of input text from the standard input 
-     of the virtual machine process. Returns a line of
-     text after removal of line-termination characters,
-     or `null` to indicate the standard input has been closed."
+    "Read a line of input text from the standard input of 
+     the virtual machine process. Returns a line of text 
+     after removal of line-termination characters, or `null`
+     to indicate the standard input has been closed."
     shared native String? readLine();
     
-    "Force the virtual machine to terminate with 
-     the given exit code."
+    "Force the virtual machine to terminate with the given
+     exit code."
     shared native void exit(Integer code);
     
     string => "process";

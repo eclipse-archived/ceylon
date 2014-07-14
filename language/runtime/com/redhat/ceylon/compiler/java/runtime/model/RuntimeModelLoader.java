@@ -8,8 +8,8 @@ import org.jboss.modules.ModuleClassLoader;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.compiler.loader.LoaderJULLogger;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
@@ -32,7 +32,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     private CachedTOCJars jars = new CachedTOCJars();
 
     public RuntimeModelLoader(ModuleManager moduleManager, Modules modules) {
-        super(moduleManager, modules, new JULLogger());
+        super(moduleManager, modules, new LoaderJULLogger());
     }
 
     @Override

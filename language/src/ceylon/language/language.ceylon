@@ -1,4 +1,5 @@
-"Contains information about the language"
+"Contains information about the Ceylon language version."
+see (`value process`, `value runtime`, `value system`)
 shared native object language {
     
     "The Ceylon language version."
@@ -16,10 +17,12 @@ shared native object language {
     "The Ceylon language release name."
     shared native String versionName;
     
-    "The major version of the code generated for the underlying runtime."
+    "The major version of the code generated for the 
+     underlying runtime."
     shared native Integer majorVersionBinary;
     
-    "The minor version of the code generated for the underlying runtime."
+    "The minor version of the code generated for the 
+     underlying runtime."
     shared native Integer minorVersionBinary;
     
     shared native actual String string;

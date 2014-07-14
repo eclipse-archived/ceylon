@@ -334,6 +334,9 @@ shared void sequences() {
     check(bare.reversed==bare, "bare reversed");
     check(bare.sequence()==bare, "bare.sequence()");
 
+    check([].reversed.rest==[], "[].reversed.rest");
+    check([1].reversed.rest==[], "[1].reversed.rest");
+
     String[] result = sequence{"hello", "world"};
     check(result.size==2, "sequence size");
     check(result nonempty, "nonempty sequence");
