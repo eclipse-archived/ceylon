@@ -1569,8 +1569,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <literal>&gt;=</literal>,
                 <literal>in</literal>,
                 <literal>is</literal>,
-                <literal>of</literal>,
-                <literal>satisfies</literal>
+                <literal>of</literal><!--,
+                <literal>satisfies</literal>-->
                 </entry>
                 <entry>Binary (and ternary)</entry>
                 <entry>None</entry>
