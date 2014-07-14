@@ -240,20 +240,47 @@ public class ProducedType extends ProducedReference {
                     if (arg==null || otherArg==null) {
                         return false;
                     }
-                    else if (isContravariant(p) && !type.isContravariant(p)) {
-                        //Inv<in Nothing> == Inv<out Anything> 
-                        return type.isCovariant(p) &&
-                                arg.isNothing() &&
-                                (otherArg.isExactly(getUpperBoundIntersection(p)));
-                    }
-                    else if (isCovariant(p) && !type.isCovariant(p)) {
-                        //Inv<out Anything> == Inv<in Nothing>
-                        return type.isContravariant(p) &&
-                                otherArg.isNothing() &&
-                                (arg.isExactly(getUpperBoundIntersection(p)));
-                    }
-                    else if (!arg.isExactlyInternal(otherArg)) {
-                        return false;
+                    else {
+                        boolean contravariant = isContravariant(p);
+                        boolean covariant = isCovariant(p);
+                        boolean invariant = !covariant && !contravariant;
+                        boolean otherCovariant = type.isCovariant(p);
+                        boolean otherContravariant = type.isContravariant(p);
+                        boolean otherInvariant = !otherCovariant && !otherContravariant;
+                        if (contravariant && otherCovariant) {
+                            //Inv<in Nothing> == Inv<out Anything> 
+                            if (!arg.isNothing() ||
+                                    !getUpperBoundIntersection(p).isSubtypeOf(otherArg)) {
+                                return false;
+                            }
+                        }
+                        else if (covariant && otherContravariant) {
+                            //Inv<out Anything> == Inv<in Nothing>
+                            if (!otherArg.isNothing() ||
+                                    !getUpperBoundIntersection(p).isSubtypeOf(arg)) {
+                                return false;
+                            }
+                        }
+                        else if (contravariant && otherInvariant ||
+                                invariant && otherContravariant) {
+                            //Inv<in Anything> == Inv<Anything> 
+                            if (!arg.isAnything() || !otherArg.isAnything()) {
+                                return false;
+                            }
+                        }
+                        else if (covariant && otherInvariant ||
+                                invariant && otherCovariant) {
+                            //Inv<out nothing> == Inv<Nothing>
+                            if (!arg.isNothing() || !otherArg.isNothing()) {
+                                return false;
+                            }
+                        }
+                        else {
+                            //variances are same!
+                            if (!arg.isExactlyInternal(otherArg)) {
+                                return false;
+                            }
+                        }
                     }
                 }
                 return true;
@@ -385,6 +412,7 @@ public class ProducedType extends ProducedReference {
                         }
                         else if (type.isCovariant(p)) {
                             if (supertype.isContravariant(p)) {
+                                //Inv<in T> is a subtype of Inv<out Anything>
                                 if (!p.getType().isSubtypeOf(otherArg)) {
                                     return false;
                                 }
@@ -395,6 +423,7 @@ public class ProducedType extends ProducedReference {
                         }
                         else if (type.isContravariant(p)) {
                             if (supertype.isCovariant(p)) {
+                                //Inv<out T> is a subtype of Inv<in Nothing>
                                 if (!otherArg.isNothing()) {
                                     return false;
                                 }
@@ -404,11 +433,12 @@ public class ProducedType extends ProducedReference {
                             }
                         }
                         else {
-                            if (supertype.isCovariant(p) || 
-                                supertype.isContravariant(p)) {
-                                return false;
-                            }
-                            else if (!arg.isExactlyInternal(otherArg)) {
+                            //type is invariant in p
+                            //Inv<out Nothing> is a subtype of Inv<Nothing>
+                            //Inv<in Anything> is a subtype of Inv<Anything>
+                            if (supertype.isCovariant(p) && !arg.isNothing() ||
+                                supertype.isContravariant(p) && !arg.isAnything() ||
+                                !arg.isExactlyInternal(otherArg)) {
                                 return false;
                             }
                         }
@@ -2376,7 +2406,12 @@ public class ProducedType extends ProducedReference {
     public boolean isNothing() {
         return getDeclaration() instanceof NothingType;
     }
-
+    
+    public boolean isAnything() {
+        TypeDeclaration d = getDeclaration();
+        return d.equals(d.getUnit().getAnythingDeclaration());
+    }
+    
     public int getMemoisedHashCode() {
         if (hashCode == 0) {
             int ret = 17;
