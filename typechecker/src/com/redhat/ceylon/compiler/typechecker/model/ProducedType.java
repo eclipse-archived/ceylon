@@ -1894,9 +1894,10 @@ public class ProducedType extends ProducedReference {
             for (ProducedType st: sts) {
                 addToIntersection(list, 
                         st.getUnionOfCases()
-                            .withVarianceOverrides(varianceOverrides)
-                            .substitute(getTypeArguments()), 
-                        unit); //argument substitution is unnecessary
+                            .withVarianceOverrides(varianceOverrides),
+                            //argument substitution is unnecessary
+                            //.substitute(getTypeArguments()), 
+                        unit);
             }
             IntersectionType it = new IntersectionType(unit);
             it.setSatisfiedTypes(list);
@@ -2130,7 +2131,7 @@ public class ProducedType extends ProducedReference {
     	else {
     		ProducedType result = 
     		        d.getProducedType(aliasedQualifyingType, aliasedArgs);
-    		result.varianceOverrides=varianceOverrides;
+    		result.varianceOverrides = varianceOverrides;
             return result;
     	}
     }
