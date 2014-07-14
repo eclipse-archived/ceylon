@@ -1970,19 +1970,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <itemizedlist>
             <listitem>
                 <para><literal>l&lt;x&lt;u</literal> means 
-                <literal>let t=x in t&gt;l &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let t=x in l&lt;t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;u</literal> means 
-                <literal>let t=x in t&gt;=l &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;x&lt;=u</literal> means 
-                <literal>let t=x in t&gt;l &amp;&amp; t&lt;=u</literal>, and</para>
+                <literal>let t=x in l&lt;t &amp;&amp; t&lt;=u</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;=u</literal> means 
-                <literal>let t=x in t&gt;=l &amp;&amp; t&lt;=u</literal></para>
+                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;=u</literal></para>
             </listitem>
         </itemizedlist>
         
