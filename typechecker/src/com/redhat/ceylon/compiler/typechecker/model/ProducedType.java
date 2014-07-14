@@ -668,7 +668,7 @@ public class ProducedType extends ProducedReference {
                 dec instanceof IntersectionType;
         boolean canCache = !complexType && 
                 !hasUnderlyingType() && 
-                varianceOverrides.isEmpty() &&
+                collectVarianceOverrides().isEmpty() &&
                 ProducedTypeCache.isEnabled();
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache && 
@@ -2399,7 +2399,7 @@ public class ProducedType extends ProducedReference {
         return hashCode;
     }
     
-    Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
+    private Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
         ProducedType qt = getQualifyingType();
         Map<TypeParameter,SiteVariance> qualifyingOverrides = 
                 qt==null ? 
@@ -2442,9 +2442,9 @@ public class ProducedType extends ProducedReference {
         else if (dec instanceof UnionType) {
             List<ProducedType> list = 
                     new ArrayList<ProducedType>();
-            for (ProducedType type2: type.getCaseTypes()) {
+            for (ProducedType ut: type.getCaseTypes()) {
                 addToUnion(list, 
-                        type.applyVarianceOverrides(type2, 
+                        applyVarianceOverrides(ut, 
                                 covariant, contravariant));
             }
             UnionType unionType = 
@@ -2455,9 +2455,9 @@ public class ProducedType extends ProducedReference {
         else if (dec instanceof IntersectionType) {
             List<ProducedType> list = 
                     new ArrayList<ProducedType>();
-            for (ProducedType type1: type.getSatisfiedTypes()) {
+            for (ProducedType it: type.getSatisfiedTypes()) {
                 addToIntersection(list, 
-                        type.applyVarianceOverrides(type1, 
+                        applyVarianceOverrides(it, 
                                 covariant, contravariant),
                         dec.getUnit());
             }
@@ -2475,21 +2475,21 @@ public class ProducedType extends ProducedReference {
                 ProducedType arg = args.get(i);
                 TypeParameter param = params.get(i);
                 if (type.isCovariant(param)) {
-                    result.add(type.applyVarianceOverrides(arg, 
+                    result.add(applyVarianceOverrides(arg, 
                             covariant, contravariant));
                 }
                 else if (type.isContravariant(param)) {
                     if (covariant||contravariant) {
-                        result.add(type.applyVarianceOverrides(arg, 
+                        result.add(applyVarianceOverrides(arg, 
                                 !contravariant, !covariant));
                     }
                     else {
-                        result.add(type.applyVarianceOverrides(arg, 
+                        result.add(applyVarianceOverrides(arg, 
                                 covariant, contravariant));
                     }
                 }
                 else {
-                    result.add(type.applyVarianceOverrides(arg, 
+                    result.add(applyVarianceOverrides(arg, 
                             false, false));
                 }
             }
