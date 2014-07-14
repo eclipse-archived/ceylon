@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.Options;
@@ -190,7 +189,7 @@ public class Stitcher {
             try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
                 stitch(infile, writer);
             } finally {
-                ShaSigner.sign(outfile, new JULLogger(), true);
+                ShaSigner.sign(outfile, new JsJULLogger(), true);
             }
         } else {
             System.err.println("Input file is invalid: " + infile);
