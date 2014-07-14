@@ -2501,7 +2501,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
-            <entry><literal>(++lhs).predecessor</literal></entry>
+            <entry></entry>
             <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2509,7 +2509,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
-            <entry><literal>(--lhs).successor</literal></entry>
+            <entry></entry>
             <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
@@ -2634,6 +2634,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </tbody>
     </tgroup>
     </table>
+    
+    <para>The postfix increment and decrement operators are defined as follows:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para><literal>x++</literal> means the value of <literal>result</literal>
+            after executing <literal>X result=x; ++x;</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para><literal>x--</literal> means the value of <literal>result</literal>
+            after executing <literal>X result=x; --x;</literal>.</para>
+        </listitem>
+    </itemizedlist>
     
         <para>Arithmetic operators automatically widen from <literal>Integer</literal> 
         to <literal>Float</literal> when necessary. If one operand expression is 
