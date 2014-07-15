@@ -366,19 +366,6 @@ public class TypeGenerator {
                 }
                 gen.out(gen.getNames().self(d), ")");
                 gen.endLine(true);
-                //Set the reified types from interfaces
-                Map<TypeParameter, ProducedType> reifs = st.getTypeModel().getTypeArguments();
-                if (reifs != null && !reifs.isEmpty()) {
-                    for (Map.Entry<TypeParameter, ProducedType> e : reifs.entrySet()) {
-                        if (e.getValue().getDeclaration() instanceof ClassOrInterface) {
-                            gen.out(GenerateJsVisitor.getClAlias(), "add_type_arg(", gen.getNames().self(d), ",'",
-                                    e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), "',");
-                            TypeUtils.typeNameOrList(that, e.getValue(), gen, false);
-                            gen.out(")");
-                            gen.endLine(true);
-                        }
-                    }
-                }
                 copySuperMembers(typeDecl, superDecs, d, gen);
             }
         }
