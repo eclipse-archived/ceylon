@@ -655,7 +655,7 @@ public class TypeUtils {
             gen.out("}");
         }
         if (satisfies != null && !satisfies.isEmpty()) {
-            gen.out(",satisfies:[");
+            gen.out(",", MetamodelGenerator.KEY_SATISFIES, ":[");
             boolean first = true;
             for (ProducedType st : satisfies) {
                 if (!first)gen.out(",");
@@ -704,7 +704,7 @@ public class TypeUtils {
             List<ProducedType> typelist = tp.getSatisfiedTypes();
             if (typelist != null && !typelist.isEmpty()) {
                 if (comma)gen.out(",");
-                gen.out("satisfies:[");
+                gen.out(MetamodelGenerator.KEY_SATISFIES, ":[");
                 boolean first2 = true;
                 for (ProducedType st : typelist) {
                     if (!first2)gen.out(",");
