@@ -3472,10 +3472,12 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.CaseClause caseClause, Tree.IsCase isCase, 
             JCStatement last, ProducedType expressionType) {
         at(isCase);
-        ProducedType type = isCase.getType().getTypeModel();
+        // Use the type of the variable, which is more precise than the type we test for.
+        ProducedType varType = isCase.getVariable().getDeclarationModel().getType();
+        ProducedType caseType = isCase.getType().getTypeModel();
         // note: There's no point using makeOptimizedTypeTest() because cases are disjoint
         // anyway and the cheap cases get evaluated first.
-        JCExpression cond = makeTypeTest(null, selectorAlias, type, expressionType);
+        JCExpression cond = makeTypeTest(null, selectorAlias, caseType , expressionType);
         
         String name = isCase.getVariable().getIdentifier().getText();
 
@@ -3483,17 +3485,17 @@ public class StatementTransformer extends AbstractTransformer {
         Name substVarName = naming.aliasName(name);
 
         // Want raw type for instanceof since it can't be used with generic types
-        JCExpression rawToTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
+        JCExpression rawToTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES | JT_RAW);
 
         // Substitute variable with the correct type to use in the rest of the code block
         
         JCExpression tmpVarExpr = at(isCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
         JCExpression toTypeExpr;
-        if (!willEraseToObject(isCase.getVariable().getType().getTypeModel())) {
-            toTypeExpr = makeJavaType(type);
-            tmpVarExpr = unboxType(tmpVarExpr, type);
+        if (!willEraseToObject(varType)) {
+            toTypeExpr = makeJavaType(varType);
+            tmpVarExpr = unboxType(tmpVarExpr, varType);
         } else {
-            toTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES);
+            toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
         }
         
         // The variable holding the result for the code inside the code block
