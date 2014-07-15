@@ -33,4 +33,8 @@ public class JavaWithStaticMembersSubClass extends JavaWithStaticMembers {
         long j = i.field; // this class
     }
     */
+    
+    public static JavaWithStaticMembersSubClass getAttribute() {
+        return null;
+    }
 }

@@ -47,13 +47,19 @@ final class staticRefs_ {
                 return new .java.util.Locale.Builder();
             }
         };
-        final long procs = .java.lang.Runtime.getRuntime().availableProcessors();
+        final long procs = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Runtime.getRuntime()).availableProcessors();
         .java.lang.System.out.flush();
         .java.lang.System.err.flush();
         .java.lang.System.exit(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
         final long cmp = .java.lang.Boolean.compare(true, false);
         final .java.io.File[] roots = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
         final .java.util.Locale.Builder localeBuilder = new .java.util.Locale.Builder();
+        final .java.lang.management.MemoryMXBean memoryBean = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.getMemoryMXBean());
+        final .java.lang.management.MemoryMXBean memoryBean2 = .java.lang.management.ManagementFactory.getMemoryMXBean();
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.getMemoryMXBean()).gc();
+        final .javax.management.ObjectName on = .com.redhat.ceylon.compiler.java.Util.checkNull(((.java.lang.management.PlatformManagedObject)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.<.java.lang.management.MemoryMXBean>getPlatformMXBean((.java.lang.Class).ceylon.language.nothing_.get_()))).getObjectName());
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers a = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.getAttribute());
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass a2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.getAttribute());
     }
     
     public static void main(.java.lang.String[] args) {

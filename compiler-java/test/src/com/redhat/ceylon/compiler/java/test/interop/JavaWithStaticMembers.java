@@ -28,4 +28,8 @@ public class JavaWithStaticMembers {
     
     public static long field;
     public static long topField;
+    
+    public static JavaWithStaticMembers getAttribute() {
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
-import java.lang{JBoolean=Boolean, JInteger=Integer, Runtime, System, ObjectArray, Thread}
+import java.lang{JBoolean=Boolean, JInteger=Integer, Runtime, System, ObjectArray, Thread, Class}
 import java.io{File, PrintStream }
 import java.util{Locale }
+import java.lang.management{...}
 
 @noanno
 void staticRefs() {
@@ -29,4 +30,12 @@ void staticRefs() {
     Integer cmp = JBoolean.compare(true, false);
     ObjectArray<File> roots = File.listRoots();
     Locale.Builder localeBuilder = Locale.Builder();
+    
+    value memoryBean = ManagementFactory.memoryMXBean;
+    MemoryMXBean? memoryBean2 = ManagementFactory.memoryMXBean;
+    ManagementFactory.memoryMXBean.gc();
+    value on = ManagementFactory.getPlatformMXBean((nothing of Class<MemoryMXBean>)).objectName;
+    
+    value a = JavaWithStaticMembers.attribute;
+    value a2 = JavaWithStaticMembersSubClass.attribute;
 }
