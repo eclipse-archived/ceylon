@@ -2,7 +2,7 @@
  process, printing the given value\'s `string`, or `<null>` 
  if the value is `null`.
  
- This method is a shortcut for:
+ This function is a shortcut for:
  
      process.writeLine(line?.string else \"<null>\")
  
