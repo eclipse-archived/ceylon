@@ -178,8 +178,8 @@ public class CeylonNewTool extends CeylonBaseTool {
         private Variable moduleName = Variable.moduleName("module.name", "com.example.helloworld");
         private Variable moduleVersion = Variable.moduleVersion("module.version", "1.0.0");
         private Variable eclipseProjectName = new Variable("eclipse.project.name", null, new PromptedValue("eclipse.project.name", "@[module.name]"));
-        private Variable eclipse = Variable.yesNo("eclipse", eclipseProjectName);
-        private Variable ant = Variable.yesNo("ant");
+        private Variable eclipse = Variable.yesNo("eclipse", Messages.msg("mnemonic.yes"), eclipseProjectName);
+        private Variable ant = Variable.yesNo("ant", Messages.msg("mnemonic.yes"));
 
         @Argument(argumentName="dir", multiplicity="1", order=1)
         public void setDirectory(File directory) {

@@ -107,7 +107,7 @@ public class Variable {
                 new PromptedValue(key, validator, defaultValue));
     }
     
-    public static ChoiceVariable booleanVariable(String key, List<Variable> yesVars, List<Variable> noVars) {
+    public static ChoiceVariable booleanVariable(String key, List<Variable> yesVars, List<Variable> noVars, String dv) {
         PatternValidator validator = new PatternValidator("true|false");
         HashMap<String, List<Variable>> choices = new HashMap<>();
         final String oui = Messages.msg("mnemonic.yes");
@@ -117,7 +117,7 @@ public class Variable {
         }
         choices.put("true", yesVars);
         choices.put("false", noVars);
-        PromptedValue prompt = new PromptedValue(key, validator) {
+        PromptedValue prompt = new PromptedValue(key, dv) {
             @Override
             protected String parseValue(String readLine) {
                 return oui.equals(readLine)
@@ -128,7 +128,11 @@ public class Variable {
     }
     
     public static ChoiceVariable yesNo(String key, Variable... yesVars) {
-        return booleanVariable(key, Arrays.asList(yesVars), null);
+        return booleanVariable(key, Arrays.asList(yesVars), null, null);
+    }
+    
+    public static ChoiceVariable yesNo(String key, String dv, Variable... yesVars) {
+        return booleanVariable(key, Arrays.asList(yesVars), null, dv);
     }
 }
 
