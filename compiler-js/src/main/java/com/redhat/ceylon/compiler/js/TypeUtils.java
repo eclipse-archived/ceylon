@@ -818,21 +818,9 @@ public class TypeUtils {
         if (d == null)return null;
         final StringBuilder sb = new StringBuilder();
         for (String p : generateModelPath(d)) {
-            if (sb.length()==0) {
-                sb.append("$CCMM$");
-                if ("$".equals(p)) {
-                    p = Module.LANGUAGE_MODULE_NAME;
-                }
-                if (p.isEmpty() || p.indexOf('.') >= 0) {
-                    sb.append("['").append(p).append("']");
-                } else {
-                    sb.append(".").append(p);
-                }
-            } else {
-                sb.append(".").append(p);
-            }
+            sb.append(sb.length() == 0 ? '\'' : ':').append(p);
         }
-        sb.append(".").append(MetamodelGenerator.KEY_ANNOTATIONS).append(".doc[0]");
+        sb.append('\'');
         return sb.toString();
     }
 
@@ -873,11 +861,11 @@ public class TypeUtils {
             if (annotations.getAnonymousAnnotation() != null) {
                 first = false;
                 final Tree.StringLiteral lit = annotations.getAnonymousAnnotation().getStringLiteral();
-                gen.out(GenerateJsVisitor.getClAlias(), "doc(");
-                final String sb = pathToModelDoc(d);
-                if (sb != null && sb.length() < lit.getText().length()) {
-                    gen.out(sb);
+                final String ptmd = pathToModelDoc(d);
+                if (ptmd != null && ptmd.length() < lit.getText().length()) {
+                    gen.out(GenerateJsVisitor.getClAlias(), "doc$($CCMM$,", ptmd);
                 } else {
+                    gen.out(GenerateJsVisitor.getClAlias(), "doc(");
                     lit.visit(gen);
                 }
                 gen.out(")");
@@ -930,22 +918,25 @@ public class TypeUtils {
                 Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
                 if (ad instanceof Method) {
                     if (first) first=false; else gen.out(",");
-                    gen.qualify(node, ad);
-                    gen.out(gen.getNames().name(ad), "(");
+                    final boolean isDoc = "ceylon.language::doc".equals(ad.getQualifiedNameString());
+                    if (!isDoc) {
+                        gen.qualify(node, ad);
+                        gen.out(gen.getNames().name(ad), "(");
+                    }
                     if (a.getPositionalArguments() == null) {
                         for (Parameter p : ((Method)ad).getParameterLists().get(0).getParameters()) {
                             String v = a.getNamedArguments().get(p.getName());
                             gen.out(v == null ? "undefined" : v);
                         }
                     } else {
-                        if ("ceylon.language::doc".equals(ad.getQualifiedNameString())) {
+                        if (isDoc) {
                             //Use ref if it's too long
                             final String ref = pathToModelDoc(d);
                             final String doc = a.getPositionalArguments().get(0);
                             if (ref != null && ref.length() < doc.length()) {
-                                gen.out(ref);
+                                gen.out(GenerateJsVisitor.getClAlias(), "doc$($CCMM$,", ref);
                             } else {
-                                gen.out("\"", gen.escapeStringLiteral(doc), "\"");
+                                gen.out(GenerateJsVisitor.getClAlias(), "doc(\"", gen.escapeStringLiteral(doc), "\"");
                             }
                         } else {
                             boolean farg = true;
