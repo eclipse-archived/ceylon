@@ -268,14 +268,14 @@ public class TypeParser {
     }
 
     /*
-     * variance: [+-]?
+     * variance: [in |out ]?
      */
     private void parseTypeArgumentVariance(Part type) {
         SiteVariance variance = null;
-        if(lexer.lookingAt(TypeLexer.PLUS)){
+        if(lexer.lookingAt(TypeLexer.OUT)){
             variance = SiteVariance.OUT;
             lexer.eat();
-        }else if(lexer.lookingAt(TypeLexer.MINUS)){
+        }else if(lexer.lookingAt(TypeLexer.IN)){
             variance = SiteVariance.IN;
             lexer.eat();
         }

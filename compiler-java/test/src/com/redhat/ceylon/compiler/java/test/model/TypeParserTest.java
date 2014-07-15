@@ -215,7 +215,7 @@ public class TypeParserTest {
 
     @Test
     public void testParamsVariance1(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<-b,+c>", null, mockModule, mockUnit);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<in b,out c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -228,7 +228,7 @@ public class TypeParserTest {
 
     @Test
     public void testParamsVariance2(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,+c>", null, mockModule, mockUnit);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,out c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -241,7 +241,7 @@ public class TypeParserTest {
 
     @Test
     public void testParamsVariance3(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<-b,c>", null, mockModule, mockUnit);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<in b,c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
