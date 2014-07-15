@@ -2463,12 +2463,13 @@ public class ProducedType extends ProducedReference {
             return type;
         }
         TypeDeclaration dec = type.getDeclaration();
+        Unit unit = dec.getUnit();
         if (dec instanceof TypeParameter) {
             SiteVariance siteVariance = overrides.get(dec);
-            if (!covariant && siteVariance==OUT) {
-                return dec.getUnit().getNothingDeclaration().getType();
+            if (contravariant && siteVariance==OUT) {
+                return unit.getNothingDeclaration().getType();
             }
-            else if (!contravariant && siteVariance==IN) {
+            else if (covariant && siteVariance==IN) {
                 return type.getUpperBoundIntersection((TypeParameter) dec);
             }
             else {
@@ -2484,7 +2485,7 @@ public class ProducedType extends ProducedReference {
                                 covariant, contravariant));
             }
             UnionType unionType = 
-                    new UnionType(dec.getUnit());
+                    new UnionType(unit);
             unionType.setCaseTypes(list);
             return unionType.getType();
         }
@@ -2495,41 +2496,73 @@ public class ProducedType extends ProducedReference {
                 addToIntersection(list, 
                         applyVarianceOverrides(it, 
                                 covariant, contravariant),
-                        dec.getUnit());
+                        unit);
             }
             IntersectionType intersectionType = 
-                    new IntersectionType(dec.getUnit());
+                    new IntersectionType(unit);
             intersectionType.setSatisfiedTypes(list);
             return intersectionType.canonicalize().getType();
         }
         else {
             List<ProducedType> args = type.getTypeArgumentList();
             List<TypeParameter> params = dec.getTypeParameters();
-            List<ProducedType> result = 
+            List<ProducedType> resultArgs = 
                     new ArrayList<ProducedType>(args.size());
+            Map<TypeParameter,SiteVariance> varianceResults = 
+                    new HashMap<TypeParameter,SiteVariance>
+                            (type.varianceOverrides);
             for (int i = 0; i<args.size(); i++) {
                 ProducedType arg = args.get(i);
+                if (arg==null) {
+                    resultArgs.add(null);
+                    continue;
+                }
+                TypeDeclaration argDec = arg.getDeclaration();
                 TypeParameter param = params.get(i);
                 if (type.isCovariant(param)) {
-                    result.add(applyVarianceOverrides(arg, 
+                    resultArgs.add(applyVarianceOverrides(arg, 
                             covariant, contravariant));
                 }
                 else if (type.isContravariant(param)) {
-                    if (covariant||contravariant) {
-                        result.add(applyVarianceOverrides(arg, 
-                                !contravariant, !covariant));
-                    }
-                    else {
-                        result.add(applyVarianceOverrides(arg, 
-                                covariant, contravariant));
-                    }
+//                    if (covariant||contravariant) {
+                        resultArgs.add(applyVarianceOverrides(arg, 
+                                !covariant, !contravariant));
+//                    }
+//                    else {
+//                        resultArgs.add(applyVarianceOverrides(arg, 
+//                                covariant, contravariant));
+//                    }
                 }
                 else {
-                    result.add(applyVarianceOverrides(arg, 
-                            false, false));
+                    if (contravariant) {
+                        if (argDec instanceof TypeParameter &&
+                                overrides.containsKey(argDec)) {
+                            return unit.getNothingDeclaration().getType();
+                        }
+                    }
+                    else if (covariant) {
+                        if (argDec instanceof TypeParameter &&
+                                overrides.containsKey(argDec)) {
+                            varianceResults.put(param,
+                                    overrides.get(argDec));
+                            resultArgs.add(arg);
+                            continue;
+                        }
+                    }
+                    ProducedType resultArg = applyVarianceOverrides(arg, 
+                            covariant, contravariant);
+                    if (resultArg.isNothing()) {
+                        return resultArg;
+                    }
+                    resultArgs.add(resultArg);
+                    varianceResults.put(param, OUT);
                 }
             }
-            return dec.getProducedType(type.getQualifyingType(), result);
+            ProducedType result = 
+                    dec.getProducedType(type.getQualifyingType(), 
+                            resultArgs);
+            result.varianceOverrides = varianceResults;
+            return result;
         }
     }
 
