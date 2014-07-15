@@ -30,7 +30,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -39,8 +41,12 @@ public class TypeParser {
     public class Part {
         String name;
         List<ProducedType> parameters;
+        List<SiteVariance> variance;
         List<ProducedType> getParameters(){
             return parameters != null ? parameters : Collections.<ProducedType>emptyList();
+        }
+        List<SiteVariance> getVariance(){
+            return variance != null ? variance : Collections.<SiteVariance>emptyList();
         }
     }
 
@@ -215,7 +221,19 @@ public class TypeParser {
                 newTypeDeclaration = (TypeDeclaration) newDeclaration;
             else
                 newTypeDeclaration = new FunctionOrValueInterface((TypedDeclaration) newDeclaration);
-            return newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
+            ProducedType ret = newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
+            // set the use-site variance if required, now that we know the TypeParameter declarations
+            if(!part.getVariance().isEmpty()){
+                List<TypeParameter> tps = newTypeDeclaration.getTypeParameters();
+                List<SiteVariance> variance = part.getVariance();
+                for(int i=0, l1=tps.size(), l2=variance.size() ; i<l1 && i<l2 ; i++){
+                    SiteVariance siteVariance = variance.get(i);
+                    if(siteVariance != null){
+                        ret.setVariance(tps.get(i), siteVariance);
+                    }
+                }
+            }
+            return ret;
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
             // - if we have no qualifying type we may be adding package name parts
@@ -229,21 +247,50 @@ public class TypeParser {
     }
 
     /*
-     * typeNameWithArguments: WORD (< type (, type)* >)?
+     * typeNameWithArguments: WORD (< variance type (, variance type)* >)?
      */
     private Part parseTypeNameWithArguments() {
         Part type = new Part();
         type.name = lexer.eatWord();
         if(lexer.lookingAt(TypeLexer.LT)){
             lexer.eat();
+            parseTypeArgumentVariance(type);
             type.parameters = new LinkedList<ProducedType>();
             type.parameters.add(parseType());
             while(lexer.lookingAt(TypeLexer.COMMA)){
                 lexer.eat();
+                parseTypeArgumentVariance(type);
                 type.parameters.add(parseType());
             }
             lexer.eat(TypeLexer.GT);
         }
         return type;
+    }
+
+    /*
+     * variance: [+-]?
+     */
+    private void parseTypeArgumentVariance(Part type) {
+        SiteVariance variance = null;
+        if(lexer.lookingAt(TypeLexer.PLUS)){
+            variance = SiteVariance.OUT;
+            lexer.eat();
+        }else if(lexer.lookingAt(TypeLexer.MINUS)){
+            variance = SiteVariance.IN;
+            lexer.eat();
+        }
+        // lazy allocation
+        if(variance != null && type.variance == null){
+            type.variance = new LinkedList<SiteVariance>();
+            for(int i=0,l=type.getParameters().size();i<l;i++){
+                // patch it up for the previous type params which did not have variance
+                type.variance.add(null);
+            }
+        }
+        // only add the variance if we have to
+        if(type.variance != null){
+            // we add it even if it's null, as long as we're recording variance
+            type.variance.add(variance);
+        }
     }
 }

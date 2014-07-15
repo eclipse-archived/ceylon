@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -208,16 +209,62 @@ public class TypeParserTest {
     @Test
     public void testParams(){
         ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null, mockModule, mockUnit);
+        assertTypeWithParameters(type);
+        
+        Assert.assertTrue(type.getVarianceOverrides().isEmpty());
+    }
+
+    @Test
+    public void testParamsVariance1(){
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<-b,+c>", null, mockModule, mockUnit);
+        assertTypeWithParameters(type);
+
+        Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
+        Assert.assertNotNull(varianceOverrides);
+        Assert.assertEquals(2, varianceOverrides.size());
+        List<TypeParameter> tps = type.getDeclaration().getTypeParameters();
+        Assert.assertEquals(SiteVariance.IN, varianceOverrides.get(tps.get(0)));
+        Assert.assertEquals(SiteVariance.OUT, varianceOverrides.get(tps.get(1)));
+    }
+
+    @Test
+    public void testParamsVariance2(){
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,+c>", null, mockModule, mockUnit);
+        assertTypeWithParameters(type);
+
+        Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
+        Assert.assertNotNull(varianceOverrides);
+        Assert.assertEquals(1, varianceOverrides.size());
+        List<TypeParameter> tps = type.getDeclaration().getTypeParameters();
+        Assert.assertEquals(null, varianceOverrides.get(tps.get(0)));
+        Assert.assertEquals(SiteVariance.OUT, varianceOverrides.get(tps.get(1)));
+    }
+
+    @Test
+    public void testParamsVariance3(){
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<-b,c>", null, mockModule, mockUnit);
+        assertTypeWithParameters(type);
+
+        Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
+        Assert.assertNotNull(varianceOverrides);
+        Assert.assertEquals(1, varianceOverrides.size());
+        List<TypeParameter> tps = type.getDeclaration().getTypeParameters();
+        Assert.assertEquals(SiteVariance.IN, varianceOverrides.get(tps.get(0)));
+        Assert.assertEquals(null, varianceOverrides.get(tps.get(1)));
+    }
+
+    private void assertTypeWithParameters(ProducedType type) {
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
         Assert.assertEquals("t2", declaration.getName());
-        Assert.assertEquals(2, type.getTypeArgumentList().size());
-        Assert.assertEquals("b", type.getTypeArgumentList().get(0).getDeclaration().getName());
-        Assert.assertTrue(type.getTypeArgumentList().get(0).getDeclaration() instanceof Class);
-        Assert.assertEquals("c", type.getTypeArgumentList().get(1).getDeclaration().getName());
-        Assert.assertTrue(type.getTypeArgumentList().get(1).getDeclaration() instanceof Class);
+        List<ProducedType> tal = type.getTypeArgumentList();
+        Assert.assertEquals(2, tal.size());
+        Assert.assertEquals("b", tal.get(0).getDeclaration().getName());
+        Assert.assertTrue(tal.get(0).getDeclaration() instanceof Class);
+        Assert.assertEquals("c", tal.get(1).getDeclaration().getName());
+        Assert.assertTrue(tal.get(1).getDeclaration() instanceof Class);
     }
 
     @Test

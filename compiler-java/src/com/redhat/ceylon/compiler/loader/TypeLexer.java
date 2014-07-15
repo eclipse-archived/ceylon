@@ -30,6 +30,8 @@ public class TypeLexer {
     public final static int DBLCOLON = DOT + 1;
     public final static int EOT = DBLCOLON + 1;
     public final static int WORD = EOT + 1;
+    public final static int PLUS = WORD + 1;
+    public final static int MINUS = PLUS + 1;
 
     // type string to parse
     char[] type;
@@ -67,6 +69,8 @@ public class TypeLexer {
         case '|': token = OR; break;
         case '.': token = DOT; break;
         case ',': token = COMMA; break;
+        case '+': token = PLUS; break;
+        case '-': token = MINUS; break;
         case ':':
             if ((index + 1) < type.length && type[index + 1] == ':') {
                 token = DBLCOLON;
@@ -91,6 +95,8 @@ public class TypeLexer {
             case '.':
             case ',':
             case ':':
+            case '+':
+            case '-':
                 break FOR;
             }
         }
@@ -125,6 +131,8 @@ public class TypeLexer {
         case DBLCOLON   : return "DBLCOLON";
         case EOT   : return "EOT";
         case WORD  : return "WORD";
+        case PLUS  : return "PLUS";
+        case MINUS : return "MINUS";
         }
         // cannot happen
         throw new TypeParserException("Unhandled token: "+token);
