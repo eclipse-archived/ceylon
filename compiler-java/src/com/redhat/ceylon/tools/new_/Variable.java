@@ -19,7 +19,10 @@
  */
 package com.redhat.ceylon.tools.new_;
 
+import java.io.BufferedReader;
 import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -187,12 +190,25 @@ class PromptedValue implements VariableValue {
     public String getValue(String projectName, Environment env) {
         String value;
         while (true) {
-            Console console = System.console();
-            if (console == null) {
-                throw new RuntimeException(Messages.msg("no.console"));
-            }
+            String readLine = null;
             String dv = getDefault(env);
-            String readLine = console.readLine(getPrompt(projectName, env, dv));
+            String prompt = getPrompt(projectName, env, dv);
+            if (System.console() != null) {
+                Console console = System.console();
+                if (console == null) {
+                    throw new RuntimeException(Messages.msg("no.console"));
+                }
+                readLine = console.readLine(prompt);
+            } else {
+                System.out.print(prompt);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                try {
+                    readLine = reader.readLine();
+                } catch (IOException e) {
+                    // Ignore
+                }
+            }
+            
             if (readLine == null) {
                 throw new RuntimeException(Messages.msg("exit"));
             } else if (readLine.isEmpty() && dv != null) {
