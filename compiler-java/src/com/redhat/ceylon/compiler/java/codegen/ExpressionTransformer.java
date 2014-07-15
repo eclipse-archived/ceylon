@@ -3600,27 +3600,29 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (decl instanceof Value) {
             Value member = (Value)decl;
             CallBuilder callBuilder = CallBuilder.instance(this);
+            ProducedType qualifyingType = ((TypeDeclaration)member.getContainer()).getType();
             callBuilder.invoke(naming.makeQualifiedName(
-                    makeJavaType(qmte.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES),
+                    makeJavaType(qualifyingType, JT_RAW | JT_NO_PRIMITIVES),
                     member, 
                     Naming.NA_GETTER | Naming.NA_MEMBER));
-            return callBuilder.build();
+            return utilInvocation().checkNull(callBuilder.build());
         } else if (decl instanceof Method) {
             Method method = (Method)decl;
             final ParameterList parameterList = method.getParameterLists().get(0);
             ProducedType qualifyingType = qmte.getPrimary().getTypeModel();
             Tree.TypeArguments typeArguments = qmte.getTypeArguments();
             ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
-            return makeJavaStaticInvocation(gen(),
-                    method, producedReference, parameterList);
+            return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
+                    method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
             final ParameterList parameterList = class_.getParameterLists().get(0);
             ProducedReference producedReference = qmte.getTarget();
-            return makeJavaStaticInvocation(gen(),
-                    class_, producedReference, parameterList);
+            return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
+                    class_, producedReference, parameterList));
+        } else {
+            return makeErroneous(qmte, "compiler bug: unsupported static");
         }
-        return makeErroneous(qmte, "compiler bug: unsupported static");
     }
 
     JCExpression makeJavaStaticInvocation(CeylonTransformer gen,
