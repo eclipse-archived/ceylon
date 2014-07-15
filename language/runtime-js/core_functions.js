@@ -1,3 +1,131 @@
+var BasicID=1;//used by identityHash
+
+function getT$name() {return this.constructor.T$name;}
+function getT$all() {return this.constructor.T$all;}
+function initType(type, typeName) {
+    var cons = function() {}
+    type.$$ = cons;
+    cons.T$name = typeName;
+    cons.T$all = {}
+    cons.T$all[typeName] = type;
+    for (var i=2; i<arguments.length; ++i) {
+        var superTypes = arguments[i].$$.T$all;
+        for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
+    }
+    cons.prototype.getT$name = getT$name;
+    cons.prototype.getT$all = getT$all;
+}
+function initTypeProto(type, typeName) {
+    initType.apply(this, arguments);
+    var args = [].slice.call(arguments, 2);
+    args.unshift(type);
+    inheritProto.apply(this, args);
+}
+function initTypeProtoI(type, typeName) {
+  initType.apply(this, arguments);
+  var args = [].slice.call(arguments, 2);
+  if (type.$$.T$all['ceylon.language::Object']===undefined) {
+    type.$$.T$all['ceylon.language::Object']=$_Object;
+    //args.unshift($_Object);
+  }
+  args.unshift(type);
+  inheritProto.apply(this, args);
+}
+function initExistingType(type, cons, typeName) {
+    type.$$ = cons;
+    cons.T$name = typeName;
+    cons.T$all = {}
+    cons.T$all[typeName] = type;
+    for (var i=3; i<arguments.length; ++i) {
+        var superTypes = arguments[i].$$.T$all;
+        for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
+    }
+    var proto = cons.prototype;
+    if (proto !== undefined) {
+        try {
+            proto.getT$name = getT$name;
+            proto.getT$all = getT$all;
+        } catch (exc) {
+            // browser probably prevented access to the prototype
+        }
+    }
+}
+function initExistingTypeProto(type, cons, typeName) {
+    var args = [].slice.call(arguments, 0);
+    args.push($init$Basic());
+    initExistingType.apply(this, args);
+    var proto = cons.prototype;
+    if ((proto !== undefined) && (proto.getHash === undefined)) {
+    	var origToString = proto.toString;
+        try {
+            inheritProto(type, Basic);
+            proto.toString = origToString;
+        } catch (exc) {
+            // browser probably prevented access to the prototype
+        }
+    }
+}
+function inheritProto(type) {
+    var proto = type.$$.prototype;
+    for (var i=1; i<arguments.length; ++i) {
+        var superProto = arguments[i].$$.prototype;
+        var names = Object.getOwnPropertyNames(superProto);
+        for (var j=0; j<names.length; ++j) {
+            var name = names[j];
+            var desc = Object.getOwnPropertyDescriptor(superProto, name);
+            // only copy own, enumerable properties
+            if (desc && desc.enumerable) {
+                if (desc.get) {
+                    // defined through getter/setter, so copy the definition
+                    Object.defineProperty(proto, name, desc);
+                } else if (proto[name]===undefined || desc.value.$fml===undefined) {
+                    proto[name] = desc.value;
+                }
+            }
+        }
+    }
+}
+// Define a property on the given object (which may be a prototype).
+// "get" and "set" are getter/setter functions, and the latter is optional.
+function atr$(obj, name, get, set, metamodel,settermm) {
+  Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
+  //if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
+  obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $crtmm$:metamodel};
+  if (settermm)set.$crtmm$=settermm;
+}
+// Create a copy of the given property. The name of the copied property is name+suffix.
+// This is used in closure mode to provide access to inherited attribute implementations.
+function copySuperAttr(obj, name, suffix) {
+    var desc;
+    var o = obj;
+    // It may be an inherited property, so check the prototype chain.
+    do {
+        if ((desc = Object.getOwnPropertyDescriptor(o, name))) {break;}
+        o = o.__proto__;
+    } while (o);
+    if (desc) {
+        Object.defineProperty(obj, name+suffix, desc);
+    }
+}
+// read/writeAttrib return the getter/setter for the given property as defined in the
+// given type. This is used in prototype mode to access inherited attribute implementations.
+function attrGetter(type, name) {
+    return Object.getOwnPropertyDescriptor(type.$$.prototype, name).get;
+}
+function attrSetter(type, name, value) {
+    return Object.getOwnPropertyDescriptor(type.$$.prototype, name).set;
+}
+ex$.initType=initType;
+ex$.initTypeProto=initTypeProto;
+ex$.initTypeProtoI=initTypeProtoI;
+ex$.initExistingType=initExistingType;
+ex$.initExistingTypeProto=initExistingTypeProto;
+ex$.inheritProto=inheritProto;
+ex$.atr$=atr$;
+ex$.copySuperAttr=copySuperAttr;
+ex$.attrGetter=attrGetter;
+ex$.attrSetter=attrSetter;
+
 //These are operators for handling nulls
 //nonempty
 function ne$(value){
