@@ -1309,6 +1309,7 @@ public class TypeVisitor extends Visitor {
         		TypeDeclaration ctd = type.getDeclaration();
         		if (ctd!=null) {
         			if (ctd instanceof UnionType || ctd instanceof IntersectionType) {
+        			    //union/intersection types don't have equals()
         			    if (td instanceof TypeParameter) {
         			        st.addError("enumerated bound must be a class or interface type");
         			    }
@@ -1338,7 +1339,10 @@ public class TypeVisitor extends Visitor {
         					//TODO: error?!
         				}
         			}
-        			else if (!(ctd instanceof ClassOrInterface)) {
+        			else if (ctd instanceof ClassOrInterface) {
+        			    //nothing special to do
+        			}
+        			else {
                         if (td instanceof TypeParameter) {
                             st.addError("enumerated bound must be a class or interface type");
                         }
