@@ -66,3 +66,17 @@ function getAnnotationsForBitmask(bits) {
   if (bits&1024)ans.push(variable());
   return ans;
 }
+//Retrieve the docs from the specified path of the compile-time model
+function doc$(root, path) {
+  path = path.split(':');
+  path.push('an','doc',0);
+  if (path[0]==='$')path[0]='ceylon.language';
+  var e = root;
+  for (var i=0; i < path.length; i++) {
+    var k = path[i];
+    e = e[path[i]];
+    if (e===undefined)return doc('<missing>');
+  }
+  return doc(e);
+}
+ex$.doc$=doc$;
