@@ -1,6 +1,7 @@
 //From a runtime metamodel, get the model definition by following the path into the module's model.
 function get_model(mm) {
   var map=mm.mod;
+  if (typeof(map)==='function')map=map();
   var path=mm.d;
   for (var i=0; i < path.length; i++) {
     var _p=path[i];
@@ -71,7 +72,7 @@ function doc$(root, path) {
   path = path.split(':');
   path.push('an','doc',0);
   if (path[0]==='$')path[0]='ceylon.language';
-  var e = root;
+  var e = typeof(root)==='function'?root():root;
   for (var i=0; i < path.length; i++) {
     var k = path[i];
     e = e[path[i]];
