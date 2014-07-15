@@ -47,11 +47,13 @@ public class JsModuleManager extends ModuleManager {
         if (!clLoaded) {
             clLoaded = true;
             //If we haven't loaded the language module yet, we need to load it first
-            if (!(Module.LANGUAGE_MODULE_NAME.equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
+            if (!(Module.LANGUAGE_MODULE_NAME.equals(artifact.name())
+                    && artifact.artifact().getName().endsWith(ArtifactContext.JS_MODEL))) {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading JS language module before any other modules");
                 }
-                ArtifactContext ac = new ArtifactContext(Module.LANGUAGE_MODULE_NAME, module.getLanguageModule().getVersion(), ".js");
+                ArtifactContext ac = new ArtifactContext(Module.LANGUAGE_MODULE_NAME,
+                        module.getLanguageModule().getVersion(), ArtifactContext.JS_MODEL);
                 ac.setFetchSingleArtifact(true);
                 ac.setThrowErrorIfMissing(true);
                 ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
@@ -66,7 +68,7 @@ public class JsModuleManager extends ModuleManager {
             if (((JsonModule)module).getModel() != null) {
                 return;
             }
-            if (js.exists() && js.isFile() && js.canRead() && js.getName().endsWith(".js")) {
+            if (js.exists() && js.isFile() && js.canRead() && js.getName().endsWith(ArtifactContext.JS_MODEL)) {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading model from " + js);
                 }
@@ -174,7 +176,7 @@ public class JsModuleManager extends ModuleManager {
         for (ModuleImport imp : module.getImports()) {
             if (!imp.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
                 ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
-                        imp.getModule().getVersion(), ArtifactContext.JS);
+                        imp.getModule().getVersion(), ArtifactContext.JS_MODEL);
                 artifact = getContext().getRepositoryManager().getArtifactResult(ac);
                 if (artifact != null) {
                     resolveModule(artifact, imp.getModule(), imp, dependencyTree,
