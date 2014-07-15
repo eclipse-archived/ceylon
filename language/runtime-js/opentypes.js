@@ -44,7 +44,7 @@ function _openTypeFromTarg(targ,o) {
         tl.push(_ct.t?_openTypeFromTarg(_ct,o):_ct);
       }
     }
-    return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)(tl.reifyCeylonType({t:OpenType$meta$declaration}));
+    return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)(tl.rt$({t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
     var mm=getrtmm$$(Tuple);
     var lit = typeLiteral$meta({Type$typeLiteral:targ});

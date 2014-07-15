@@ -5,5 +5,5 @@ function arrayOfSize(size, elem, $$$mptypes) {
             elems.push(elem);
         }
     }
-    return elems.reifyCeylonType($$$mptypes.Element$arrayOfSize);
+    return elems.rt$($$$mptypes.Element$arrayOfSize);
 }

@@ -6,7 +6,7 @@ function(sep, discard, group) {
     // shortcut for empty input
     if (this.length === 0) {
         tokens.push(this);
-        return tokens.reifyCeylonType({t:$_String});
+        return tokens.rt$({t:$_String});
     }
 
     if (sep === undefined) {sep = function(c){return c.value in Character.WS$;}}
@@ -73,5 +73,5 @@ function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return tokens.reifyCeylonType({t:$_String});
+    return tokens.rt$({t:$_String});
 }

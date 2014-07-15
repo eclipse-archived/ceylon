@@ -5,7 +5,7 @@ function (e) {
     for (var i=0; i < this.size-e.size; i++) {
       if (cmpSubString(this, e, i))indexes.push(i);
     }
-    return indexes.reifyCeylonType({t:Integer});
+    return indexes.rt$({t:Integer});
   }
   else {
     return List.$$.prototype.inclusions.call(this,e);

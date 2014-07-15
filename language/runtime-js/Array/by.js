@@ -6,5 +6,5 @@ function(c){
     r.push(this[idx]);
     idx+=c;
   }
-  return r.reifyCeylonType(this._elemTarg());
+  return r.rt$(this._elemTarg());
 }

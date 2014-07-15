@@ -133,7 +133,7 @@ function convert$params(mm,a) {
     } else if (p.seq) {
       for (var eta in p.$t.a)if(eta.startsWith("Element$"))val_t=p.$t.a[eta];
       if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
-      sarg=[].reifyCeylonType(val_t); fa.push(sarg);
+      sarg=[].rt$(val_t); fa.push(sarg);
       for (var j=i; j<a.size;j++){
         if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[j]));
         sarg.push(a[j]);

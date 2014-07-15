@@ -27,7 +27,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
         rv.push(AppliedInterface(ifc.t, {Type$Interface:ifc}));
       }
     }
-    return rv.reifyCeylonType({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
+    return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
   return getEmpty();
 },undefined,function(){
@@ -35,7 +35,9 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   an:function(){return[shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','satisfiedTypes']};
 });
 ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptypes) {
-  if (!extendsType($$$mptypes.Container$getMethod,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+  if (!extendsType({t:this.tipo},$$$mptypes.Container$getMethod) && $$$mptypes.Container$getMethod.t!==Nothing) {
+    throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+  }
   if (types===undefined)types=getEmpty();
   var fun = this.tipo[name];
   if (!fun) fun = this.tipo.$$.prototype[name];
@@ -74,7 +76,9 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod=function(name,types,$
 }
 ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}},{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container:{},Type:{},Arguments:{'satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name$15,$$$mptypes){
-  if (!extendsType($$$mptypes.Container$getAttribute,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+  if (!extendsType({t:this.tipo},$$$mptypes.Container$getAttribute && $$$mptypes.Container$getAttribute.t!==Nothing)) {
+    throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+  }
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
   if (!at) {
@@ -462,7 +466,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes
         }
         var anns=mm.an;
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
-          var types=[].reifyCeylonType({t:Type$meta$model,a:{Type:{t:Anything}}});
+          var types=[].rt$({t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }

@@ -5,6 +5,6 @@ if (tps) {
     rv.push(OpenTypeParam$jsint(this, tp));
   }
   var targ={t:TypeParameter$meta$declaration};
-  return rv.length===0?getEmpty():ArraySequence(rv.reifyCeylonType(targ),{Element$ArraySequence:targ});
+  return rv.length===0?getEmpty():ArraySequence(rv.rt$(targ),{Element$ArraySequence:targ});
 }
 return getEmpty();

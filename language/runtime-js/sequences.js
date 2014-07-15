@@ -1,7 +1,7 @@
 var arrprot$=Array.prototype;
 var origArrToString = arrprot$.toString;
 arrprot$.toString = origArrToString;
-arrprot$.reifyCeylonType=function(t,ne) {
+arrprot$.rt$=function(t,ne) {
     if (t===null || t===undefined)t={t:Anything};
     if (this.$$targs$$===undefined)this.$$targs$$=={};
     add_type_arg(this,'Element$Iterable',t);

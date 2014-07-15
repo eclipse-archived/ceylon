@@ -1,5 +1,5 @@
 function(c) {
-  if (c<=0)return [].reifyCeylonType(this._elemTarg());
+  if (c<=0)return [].rt$(this._elemTarg());
   var r=this.slice(0,c);
-  return r.reifyCeylonType(this._elemTarg());
+  return r.rt$(this._elemTarg());
 }

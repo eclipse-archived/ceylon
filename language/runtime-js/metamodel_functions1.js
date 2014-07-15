@@ -28,12 +28,12 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType$jsint(ut, cases.reifyCeylonType({t:Type$meta$model}), {Union$UnionType:{t:Anything}});
+  return AppliedUnionType$jsint(ut, cases.rt$({t:Type$meta$model}), {Union$UnionType:{t:Anything}});
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType$jsint(it, sats.reifyCeylonType({t:Type$meta$model}), {Intersection$IntersectionType:{t:Anything}});
+  return AppliedIntersectionType$jsint(it, sats.rt$({t:Type$meta$model}), {Intersection$IntersectionType:{t:Anything}});
 }
 
 function getAnnotationBitmask(t) {
