@@ -73,14 +73,13 @@ public class MetamodelHelper {
             gen.out("()");
         }
         gen.out("(", GenerateJsVisitor.getClAlias());
-        if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
-            gen.out("Modulo$jsint(ex$)");
-        } else {
-            gen.out("getModules$meta().find('", m.getNameAsString(),
-                    "','", m.getVersion(), "')");
-        }
         final String pkgname = d.getUnit().getPackage().getNameAsString();
-        gen.out(".findPackage('", "ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
+        if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
+            gen.out("lmp$(ex$,'");
+        } else {
+            gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");
+        }
+        gen.out("ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
         if (d.isMember()) {
             outputPathToDeclaration(that, d, gen);
         }
