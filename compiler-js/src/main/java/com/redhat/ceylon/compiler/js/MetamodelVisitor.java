@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
@@ -25,10 +24,6 @@ public class MetamodelVisitor extends Visitor {
 
     public MetamodelVisitor(Module module) {
         this.gen = new MetamodelGenerator(module);
-    }
-
-    public List<String> getDocs() {
-        return gen.getDocs();
     }
 
     /** Returns the in-memory model as a collection of maps.

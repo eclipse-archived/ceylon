@@ -151,9 +151,7 @@ public class Stitcher {
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }
-                        writer.write("var $CDOC$=");
-                        ModelEncoder.encodeDocs(mmg.getDocs(), writer);
-                        writer.write(";\nvar $CCMM$=");
+                        writer.write("var $CCMM$=");
                         ModelEncoder.encodeModel(mmg.getModel(), writer);
                         writer.write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                         writer.flush();

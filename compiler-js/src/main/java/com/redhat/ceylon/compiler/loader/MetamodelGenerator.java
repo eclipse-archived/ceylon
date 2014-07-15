@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +71,6 @@ public class MetamodelGenerator {
             "sealed", "final", "native", "late", "abstract", "annotation", "variable");
 
     private final Map<String, Object> model = new HashMap<>();
-    private final List<String> docs = new LinkedList<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
     private final Module module;
 
@@ -106,10 +104,6 @@ public class MetamodelGenerator {
         }
     }
 
-    /** Returns the list of documentation strings for all declarations in the module. */
-    public List<String> getDocs() {
-        return Collections.unmodifiableList(docs);
-    }
     /** Returns the in-memory model as a collection of maps.
      * The top-level map represents the module. */
     public Map<String, Object> getModel() {
@@ -328,7 +322,7 @@ public class MetamodelGenerator {
                     //This could be compiled to JS...
                     pm.put(ANN_DEFAULT, parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }*/
-                encodeAnnotations(parm.getModel(), pm, docs);
+                encodeAnnotations(parm.getModel(), pm);
                 p.add(pm);
             }
             return p;
@@ -359,7 +353,7 @@ public class MetamodelGenerator {
         }
 
         //Annotations
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         Map<String, Object> parent= findParent(d);
         if (parent != null) {
             if (!d.isToplevel()) {
@@ -407,7 +401,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getCaseTypes(), m, "of", d);
 
         //Annotations
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         if (d.isAnonymous()) {
             m.put("$anon", 1);
         }
@@ -450,7 +444,7 @@ public class MetamodelGenerator {
         //Case types
         encodeTypes(d.getCaseTypes(), m, "of", d);
         //Annotations
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         if (d.isAlias()) {
             m.put("$alias", typeMap(d.getExtendedType(), d));
         }
@@ -485,7 +479,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, KEY_SATISFIES, d);
 
         //Certain annotations
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         parent.put(TypeUtils.modelName(d.getTypeDeclaration()), m);
     }
 
@@ -518,14 +512,14 @@ public class MetamodelGenerator {
         m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType(), d));
         parent.put(mname, m);
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         if (d instanceof Value && ((Value) d).getSetter() != null) {
             Map<String,Object> smap = (Map<String,Object>)m.get("$set");
             if (smap==null) {
                 smap = new HashMap<>();
                 m.put("$set", smap);
                 smap.put(KEY_METATYPE, METATYPE_SETTER);
-                encodeAnnotations(((Value)d).getSetter(), smap, docs);
+                encodeAnnotations(((Value)d).getSetter(), smap);
             }
         }
         return m;
@@ -562,7 +556,7 @@ public class MetamodelGenerator {
         m.put("$alias", typeMap(d.getExtendedType(), d));
         encodeTypes(d.getCaseTypes(), m, "of", d);
         encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
-        encodeAnnotations(d, m, docs);
+        encodeAnnotations(d, m);
         parent.put(TypeUtils.modelName(d), m);
         return m;
     }
@@ -581,7 +575,7 @@ public class MetamodelGenerator {
      * {@link #KEY_ANNOTATIONS} key in the specified map.
      * If the map is null, only the bitset annotations are calculated and returned.
      * @return The bitmask for the bitset annotations. */
-    public static int encodeAnnotations(Declaration d, Map<String, Object> m, List<String> docMap) {
+    public static int encodeAnnotations(Declaration d, Map<String, Object> m) {
         HashMap<String, Object> anns = m == null ? null : new HashMap<String, Object>();
         int bits = 0;
         for (Annotation a : d.getAnnotations()) {
@@ -589,13 +583,6 @@ public class MetamodelGenerator {
             int idx = annotationBits.indexOf(name);
             if (idx >= 0) {
                 bits |= (1 << idx);
-            } else if (docMap != null && "doc".equals(name)) {
-                String doc = a.getPositionalArguments().get(0);
-                int k = docMap.size();
-                docMap.add(doc);
-                if (anns != null) {
-                    anns.put(name, k);
-                }
             } else if (anns != null) {
                 List<String> args = a.getPositionalArguments();
                 if (args == null) {
