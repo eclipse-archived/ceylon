@@ -92,6 +92,10 @@ public class AnnotationsTest extends CompilerTest {
     public void testTypeParameters(){
         compareWithJavaSource("TypeParameters");
     }
+    @Test
+    public void testUseSiteVariance(){
+        compareWithJavaSource("UseSiteVariance");
+    }
     
     // User annotations
     @Test
