@@ -2402,7 +2402,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
             { if ($ta2.type!=null) {
                   $typeArgumentList.addType($ta2.type);
                   if (v!=null && $ta2.type!=null) 
-                      $ta1.type.setTypeVariance(v);
+                      $ta2.type.setTypeVariance(v);
                   $typeArgumentList.setEndToken(null); } }
             | { displayRecognitionError(getTokenNames(), 
                   new MismatchedTokenException(UIDENTIFIER, input)); }
