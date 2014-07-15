@@ -33,6 +33,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
     public static final String JS = ".js";
+    public static final String JS_MODEL = "-model.js";
     public static final String ZIP = ".zip";
     public static final String SRC = ".src";
     public static final String MAVEN_SRC = "-sources.jar";
