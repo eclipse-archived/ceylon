@@ -5486,20 +5486,21 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
-            for (Tree.StaticType t: that.getTypes()) {
-                ProducedType type = t.getTypeModel();
-                if (type!=null && type.getDeclaration()!=null) {
+            for (Tree.StaticType st: that.getTypes()) {
+                ProducedType type = st.getTypeModel();
+                TypeDeclaration ctd = type.getDeclaration();
+                if (type!=null && ctd!=null) {
                     type = type.resolveAliases();
-                    if (!set.add(type.getDeclaration())) {
+                    if (!set.add(ctd)) {
                         //this error is not really truly necessary
-                        t.addError("duplicate case type: " + 
-                                type.getDeclaration().getName(unit) + 
+                        st.addError("duplicate case type: " + 
+                                ctd.getName(unit) + 
                                 " of " + td.getName());
                     }
-                    if (!(type.getDeclaration() instanceof TypeParameter)) {
+                    if (!(ctd instanceof TypeParameter)) {
                         //it's not a self type
                         if (type!=null) {
-                            checkAssignable(type, td.getType(), t,
+                            checkAssignable(type, td.getType(), st,
                                     getCaseTypeExplanation(td, type));
                             //note: this is a better, faster way to call 
                             //      validateEnumeratedSupertypeArguments()
@@ -5507,7 +5508,40 @@ public class ExpressionVisitor extends Visitor {
                             //      the error on the wrong node, confusing
                             //      the user
                             /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
-                        validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
+                            validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
+                        }
+                    }
+                    if (ctd instanceof ClassOrInterface && st instanceof Tree.SimpleType) {
+                        Tree.TypeArgumentList tal = ((Tree.SimpleType) st).getTypeArgumentList();
+                        if (tal!=null) {
+                            List<Type> args = tal.getTypes();
+                            List<TypeParameter> typeParameters = ctd.getTypeParameters();
+                            for (int i=0; i<args.size() && i<typeParameters.size(); i++) {
+                                Tree.Type arg = args.get(i);
+                                TypeParameter typeParameter = ctd.getTypeParameters().get(i);
+                                ProducedType argType = arg.getTypeModel();
+                                if (argType!=null) {
+                                    TypeDeclaration argTypeDec = argType.getDeclaration();
+                                    if (argTypeDec instanceof TypeParameter) {
+                                        if (!((TypeParameter) argTypeDec).getDeclaration().equals(td)) {
+                                            arg.addError("type argument is not a type parameter of the enumerated type: " +
+                                                    argTypeDec.getName() + " is not a type parameter of " + td.getName());
+                                        }
+                                    }
+                                    else if (typeParameter.isCovariant()) {
+                                        Util.checkAssignable(typeParameter.getType(), argType, arg, 
+                                                "type argument not an upper bound of the type parameter");
+                                    }
+                                    else if (typeParameter.isContravariant()) {
+                                        Util.checkAssignable(argType, typeParameter.getType(), arg, 
+                                                "type argument not a lower bound of the type parameter");
+                                    }
+                                    else {
+                                        arg.addError("type argument is not a type parameter of the enumerated type: " +
+                                                argTypeDec.getName());
+                                    }
+                                }
+                            }
                         }
                     }
                 }
