@@ -5560,7 +5560,7 @@ public class ExpressionVisitor extends Visitor {
                     if (ctd instanceof ClassOrInterface && st instanceof Tree.SimpleType) {
                         Tree.TypeArgumentList tal = ((Tree.SimpleType) st).getTypeArgumentList();
                         if (tal!=null) {
-                            List<Type> args = tal.getTypes();
+                            List<Tree.Type> args = tal.getTypes();
                             List<TypeParameter> typeParameters = ctd.getTypeParameters();
                             for (int i=0; i<args.size() && i<typeParameters.size(); i++) {
                                 Tree.Type arg = args.get(i);
