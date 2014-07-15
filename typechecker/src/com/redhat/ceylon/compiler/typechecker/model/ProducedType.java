@@ -227,7 +227,7 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (depth.get()>30) {
+        if (depth.get()>50) {
             throw new RuntimeException("undecidable subtyping");
         }
         depth.set(depth.get()+1);
@@ -768,7 +768,7 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(Criteria c) {
-        if (depth.get()>30) {
+        if (depth.get()>50) {
             throw new RuntimeException("undecidable canonicalization");
         }
         depth.set(depth.get()+1);
