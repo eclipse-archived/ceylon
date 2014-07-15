@@ -21,12 +21,12 @@ function resourceByPath(_path) {
       if (fs.existsSync(fp)) {
         var f = fs.statSync(fp);
         if (f && f.isFile()) {
-          return JsResource('file:'+fp);
+          return JsResource$jsint('file:'+fp);
         }
       }
     }
   } else if (getRuntime().name === 'Browser') {
-    return JsResource(require.toUrl(mpath));
+    return JsResource$jsint(require.toUrl(mpath));
   } else {
     print("Resources unsupported in this environment.");
   }
