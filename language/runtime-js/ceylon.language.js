@@ -22,7 +22,7 @@
 //#COMPILE meta/declaration/Declaration,meta/declaration/AnnotatedDeclaration,annotated_declaration.js,meta/declaration/NestableDeclaration,NestableDeclaration_addons.js,meta/declaration/GenericDeclaration,GenericDeclaration_addons.js,meta/declaration/ClassOrInterfaceDeclaration,meta/declaration/FunctionalDeclaration,declaration_addons.js,meta/declaration/FunctionOrValueDeclaration,meta/declaration/ValueDeclaration,meta/declaration/ClassDeclaration,meta/declaration/FunctionDeclaration,meta/declaration/InterfaceDeclaration,meta/declaration/ModuleAndPackage,meta/declaration/OpenIntersection,meta/declaration/OpenClassOrInterfaceType,OpenClassOrInterfaceType_addons.js,meta/declaration/OpenClassType,meta/declaration/OpenInterfaceType,meta/declaration/OpenType,meta/declaration/OpenTypeVariable,meta/declaration/OpenUnion,meta/declaration/SetterDeclaration,meta/declaration/TypeParameter,meta/declaration/TypedDeclaration,meta/declaration/nothingType,meta/declaration/AliasDeclaration,meta/declaration/Variance,meta/declaration/ModelError
 //#COMPILE jsint/Importa,jsint/Paquete,jsint/Modulo,jsint/FreeUnion,jsint/FreeIntersection,jsint/OpenTvar,jsint/OpenTypeParam,jsint/OpenAlias,jsint/AppliedUnionType,jsint/AppliedIntersectionType,jsint/OpenClass
 //#COMPILE annotations
-//#COMPILE misc1.js,tuples.js,metamodel_functions1.js,metamodel_functions2.js,jsint/JsResource,appliedtypes.js,opentypes.js
+//#COMPILE Boolean.js,misc1.js,tuples.js,metamodel_functions1.js,metamodel_functions2.js,jsint/JsResource,appliedtypes.js,opentypes.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
