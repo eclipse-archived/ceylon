@@ -9,7 +9,7 @@ function JsResource(uri,$$jsResource){
   $$jsResource.$prop$getSize.get=function(){return size};
   return $$jsResource;
 }
-JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[{nm:'uri',mt:'prm',$t:{t:$_String},an:function(){return[shared(),actual()];}}],satisfies:[{t:Resource}],d:['$','Resource']};};
+JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[{nm:'uri',mt:'prm',$t:{t:$_String},an:function(){return[shared(),actual()];}}],sts:[{t:Resource}],d:['$','Resource']};};
 function $init$JsResource(){
   if(JsResource.$$===undefined){
     initTypeProto(JsResource,'JsResource',Basic,Resource);

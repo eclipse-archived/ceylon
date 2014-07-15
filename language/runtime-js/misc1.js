@@ -58,7 +58,7 @@ function Mapita(o,$$targs$$,$$mapita){
     $$mapita.$prop$getHash.get=function(){return hash};
     return $$mapita;
 }
-Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{V$Mapita:{'var':'out','satisfies':[{t:$_Object}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],pa:1,d:['','Mapita']};};
+Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{V$Mapita:{'var':'out',sts:[{t:$_Object}]}},sts:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],pa:1,d:['','Mapita']};};
 ex$.Mapita=Mapita;
 function $init$Mapita(){
     if(Mapita.$$===undefined){
@@ -101,7 +101,7 @@ function $init$Mapita(){
                     //AttributeDecl idx at caca.ceylon (11:6-11:27)
                     $$miter$3.idx=-1;
                     return $$miter$3;
-                };miter$3.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Iterator,a:{Element$Iterator:{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}}}}],d:['','Mapita','$m','iterator','$o','miter']};};
+                };miter$3.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:Iterator,a:{Element$Iterator:{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:{t:TypeParameter$meta$declaration}}}}}],d:['','Mapita','$m','iterator','$o','miter']};};
                 function $init$miter$3(){
                     if(miter$3.$$===undefined){
                         initTypeProto(miter$3,'Mapita.iterator.miter',Basic,Iterator);

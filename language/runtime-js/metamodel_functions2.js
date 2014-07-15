@@ -48,8 +48,8 @@ function validate$typeparams(t,tparms,types) {
       var _tp = tparms[tp];
       var _ta = _type.tipo;
       t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
-      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+      if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
         for (var j=0; j<restraints.length;j++) {
           var _r=restraints[j];if(typeof(_r)==='function')_r=getrtmm$$(_r).$t;
           if (!extendsType(t.a[tp],_r))
@@ -101,8 +101,8 @@ function resolve$typearg(ta,mm) {
     if (mm.tp)r=mm.tp[ta];
   }
   if (r) {
-    if (r.satisfies)
-      return r.satisfies.length==1?r.satisfies[0]:{t:'i',l:r.satisfies};
+    if (r.sts)
+      return r.sts.length==1?r.sts[0]:{t:'i',l:r.sts};
     return {t:Anything};
   }
   console.log("MISSING definition of type argument " + ta + " in " + qname$(mm));

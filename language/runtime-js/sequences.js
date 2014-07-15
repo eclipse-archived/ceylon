@@ -49,7 +49,7 @@ function sarg$(elems,spread,$$targs$$){
   that.s=spread;
   return that;
 }
-sarg$.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{'var':'out'}},satisfies:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
+sarg$.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{T$LazyIterable:{'var':'out'}},sts:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],pa:1,d:['$','LazyIterable']};};
 ex$.sarg$=sarg$;
 function $init$sarg(){if(sarg$.$$===undefined){
   initTypeProto(sarg$,'ceylon.language::LazyIterable',Basic,Iterable);
@@ -64,7 +64,7 @@ function $init$sarg(){if(sarg$.$$===undefined){
         Iterator({Element$Iterator:sarg.$$targs$$.Element$Iterable},$$4);
         $$4.i=0;
         return $$4;
-      };iter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,satisfies:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
+      };iter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
       if(iter.$$===undefined){
         initTypeProto(iter,'LazyIterable.it',Basic,Iterator);
         iter.$$.prototype.next=function(){

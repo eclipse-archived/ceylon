@@ -93,7 +93,7 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.tipo=tipo;
   return that;
 }
-AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Class:{'var':'out','def':{t:Anything}},Arguments$Class:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],pa:1,d:['ceylon.language.meta.model','Class']};};
+AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Class:{'var':'out','def':{t:Anything}},Arguments$Class:{'var':'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],pa:1,d:['ceylon.language.meta.model','Class']};};
 function $init$AppliedClass(){
   if (AppliedClass.$$===undefined){
     initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
@@ -212,7 +212,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   that.tipo=tipo;
   return that;
 }
-AppliedMemberClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberClass:{'var':'in'},Type$MemberClass:{'var':'out','def':{t:Anything}},Arguments$MemberClass:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$MemberClass',Type$MemberClass:'Type$MemberClass',Container$MemberClass:'Container$MemberClass'}}],an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
+AppliedMemberClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberClass:{'var':'in'},Type$MemberClass:{'var':'out','def':{t:Anything}},Arguments$MemberClass:{'var':'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$MemberClass',Type$MemberClass:'Type$MemberClass',Container$MemberClass:'Container$MemberClass'}}],an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
 ex$.AppliedMemberClass=AppliedMemberClass;
 function $init$AppliedMemberClass(){
   if (AppliedMemberClass.$$===undefined){
@@ -286,7 +286,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   that.tipo=tipo;
   return that;
 }
-AppliedInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Interface:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}}],pa:1,d:['ceylon.language.meta.model','Interface']};};
+AppliedInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Interface:{'var':'out','def':{t:Anything}}},sts:[{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}}],pa:1,d:['ceylon.language.meta.model','Interface']};};
 ex$.AppliedInterface=AppliedInterface;
 
 function $init$AppliedInterface(){
@@ -366,7 +366,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   that.$_bind=function(x){return AppliedMemberInterface.$$.prototype.$_bind.call(that,x);}
   return that;
 }
-AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberInterface:{'var':'in'},Type$MemberInterface:{'var':'out','def':{t:Anything}}},satisfies:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
+AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberInterface:{'var':'in'},Type$MemberInterface:{'var':'out','def':{t:Anything}}},sts:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
 ex$.AppliedMemberInterface=AppliedMemberInterface;
 function $init$AppliedMemberInterface(){
   if (AppliedMemberInterface.$$===undefined){
@@ -486,7 +486,7 @@ f.namedApply=function(args) {
 
   return f;
 }
-AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],satisfies:{t:$_Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},an:function(){return [shared(),actual()];}};};
+AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],sts:{t:$_Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},an:function(){return [shared(),actual()];}};};
 ex$.AppliedFunction$meta$model=AppliedFunction;
 initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,$_Function$meta$model);
 
@@ -524,7 +524,7 @@ atr$($$appliedValue,'string',function(){
   return $$appliedValue;
 }
 AppliedValue.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out'},Set:{'var':'in'}},
-  satisfies:[{t:Value$meta$model,a:{Get:'Get',Set:'Set'}}],pa:1,d:['ceylon.language.meta.model','Value']};};
+  sts:[{t:Value$meta$model,a:{Get:'Get',Set:'Set'}}],pa:1,d:['ceylon.language.meta.model','Value']};};
 ex$.AppliedValue$meta$model=AppliedValue;
 function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
@@ -600,8 +600,8 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       var _tp = mm.tp[tp];
       var _t = typeArgs.$_get(i).tipo;
       _ta[tp]={t:_t};
-      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+      if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
         for (var j=0; j<restraints.length;j++) {
           var _r=restraints[j];if (typeof(_r)==='function')_r=getrtmm$$(_r).$t;
           if (!extendsType(_ta[tp],_r))
@@ -660,7 +660,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedMethod,d:['ceylon.language.meta.model','Model','$at','container']};});
   return $$appliedMethod;
 }
-AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],pa:1,d:['ceylon.language.meta.model','Method']};};
+AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],pa:1,d:['ceylon.language.meta.model','Method']};};
 ex$.AppliedMethod$meta$model=AppliedMethod;
 function $init$AppliedMethod(){
     if (AppliedMethod.$$===undefined){
@@ -731,7 +731,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   }
   return $$appliedAttribute;
 }
-AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out','def':{t:Anything}},Set:{'var':'in','def':{t:Nothing}},Container:{'var':'in'}},satisfies:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};
+AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{'var':'out','def':{t:Anything}},Set:{'var':'in','def':{t:Nothing}},Container:{'var':'in'}},sts:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};
 ex$.AppliedAttribute=AppliedAttribute;
 function $init$AppliedAttribute(){
     if (AppliedAttribute.$$===undefined){

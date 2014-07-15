@@ -1,4 +1,4 @@
-var ints = this.tipo.$crtmm$['satisfies'];
+var ints = this.tipo.$crtmm$.sts;
 if (ints && ints.length) {
   var rv = [];
   for (var i=0; i < ints.length; i++) {

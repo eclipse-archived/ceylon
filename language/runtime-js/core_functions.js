@@ -96,8 +96,8 @@ function is$(obj,type){
                 var smm=getrtmm$$(_mmf['super'].t);
                 if(smm&&smm.tp&&smm.tp[i])iance=smm.tp[i]['var'];
               }
-              if(iance===null&&_mmf&&_mmf['satisfies']){
-                var sats=_mmf['satisfies'];
+              if(iance===null&&_mmf&&_mmf.sts){
+                var sats=_mmf.sts;
                 for(var s=0;iance===null&&s<sats.length;s++){
                   var smm=getrtmm$$(sats[s].t);
                   if (smm&&smm.tp&&smm.tp[i])iance=smm.tp[i]['var'];

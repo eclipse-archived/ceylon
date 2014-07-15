@@ -47,7 +47,7 @@ function JsCallable(o,f) {
   f2.$crtmm$=f.$crtmm$===undefined?Callable.$crtmm$:f.$crtmm$;
   return f2;
 }
-JsCallable.$crtmm$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+JsCallable.$crtmm$=function(){return{ sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 //This is used for spread method references

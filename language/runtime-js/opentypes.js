@@ -72,7 +72,7 @@ function FreeClass(declaration, $$freeClass){
   $$freeClass.$prop$getDeclaration.get=function(){return declaration};
   return $$freeClass;
 }
-FreeClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:OpenClassType$meta$declaration}],d:['ceylon.language.meta.declaration','OpenClassType']};};
+FreeClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:OpenClassType$meta$declaration}],d:['ceylon.language.meta.declaration','OpenClassType']};};
 function $init$FreeClass(){
   if (FreeClass.$$===undefined){
    initTypeProto(FreeClass,'ceylon.language.meta.declaration::FreeClass',Basic,OpenClassType$meta$declaration);
@@ -98,7 +98,7 @@ function FreeInterface(declaration, $$freeInterface){
     $$freeInterface.$prop$getDeclaration.get=function(){return declaration};
     return $$freeInterface;
 }
-FreeInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:OpenInterfaceType$meta$declaration}],d:['ceylon.language.meta.declaration','OpenInterfaceType']};};
+FreeInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:OpenInterfaceType$meta$declaration}],d:['ceylon.language.meta.declaration','OpenInterfaceType']};};
 function $init$FreeInterface(){
   if (FreeInterface.$$===undefined){
     initTypeProto(FreeInterface,'ceylon.language.meta.declaration::FreeInterface',Basic,OpenInterfaceType$meta$declaration);
@@ -136,7 +136,7 @@ function OpenFunction(pkg,meta,that){
     FunctionDeclaration$meta$declaration(that);
     return that;
 }
-OpenFunction.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunctionDeclaration']};};
+OpenFunction.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunctionDeclaration']};};
 function $init$OpenFunction(){
   if (OpenFunction.$$===undefined){
     initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
@@ -176,7 +176,7 @@ atr$($$openFunction,'annotation',function(){
         validate$typeparams(ta,mm.tp,types);
         return AppliedMethod(this.tipo,types,{Container$Method:$mptypes.Container$memberApply,
           Type$Method:mm.$t,Arguments$Method:tupleize$params(mm.ps,ta.a)});
-      };$$openFunction.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},ps:[{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model}}}}],$cont:OpenFunction,tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
+      };$$openFunction.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},ps:[{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model}}}}],$cont:OpenFunction,tp:{Container:{},MethodType:{},Arguments:{'sts':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
             atr$($$openFunction,'defaulted',function(){
@@ -246,7 +246,7 @@ function OpenValue(pkg, meta, that){
   ValueDeclaration$meta$declaration(that);
   return that;
 }
-OpenValue.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValueDeclaration']};};
+OpenValue.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValueDeclaration']};};
 function $init$OpenValue(){
   if (OpenValue.$$===undefined){
     initTypeProto(OpenValue,'ceylon.language.meta.declaration::OpenValue',Basic,ValueDeclaration$meta$declaration);
@@ -351,7 +351,7 @@ function OpenSetter(v, $$openSetter){
   }
   return $$openSetter;
 }
-OpenSetter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
+OpenSetter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
 function $init$OpenSetter(){
   if (OpenSetter.$$===undefined){
     initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);
@@ -393,7 +393,7 @@ function OpenInterface(pkg, meta, that) {
     InterfaceDeclaration$meta$declaration(that);
     return that;
 }
-OpenInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:InterfaceDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','InterfaceDeclaration']};};
+OpenInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},sts:[{t:InterfaceDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','InterfaceDeclaration']};};
 function $init$OpenInterface(){
   if (OpenInterface.$$===undefined){
     initTypeProto(OpenInterface,'ceylon.language.meta.declaration::OpenInterface',Basic,InterfaceDeclaration$meta$declaration);
@@ -431,7 +431,7 @@ atr$($$openInterface,'string',function(){
             
             //AttributeDeclaration interfaceDeclarations at X (91:2-91:89)
             atr$($$openInterface,'satisfiedTypes',function(){
-              var ints = this.tipo.$crtmm$['satisfies'];
+              var ints = this.tipo.$crtmm$.sts;
               if (ints && ints.length) {
                 var rv = [];
                 for (var i=0; i < ints.length; i++) {
@@ -482,7 +482,7 @@ function FunParamDecl(cont,param,$$funParamDecl){
   $$funParamDecl.$prop$getActual.get=function(){return false;};
   return $$funParamDecl;
 }
-FunParamDecl.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],satisfies:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunParamDecl']};};
+FunParamDecl.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],sts:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunParamDecl']};};
 function $init$FunParamDecl(){
   if (FunParamDecl.$$===undefined){
     initTypeProto(FunParamDecl,'ceylon.language.meta.declaration::FunParamDecl',Basic,FunctionDeclaration$meta$declaration);
@@ -541,13 +541,13 @@ function $init$FunParamDecl(){
       $$funParamDecl.$_apply=function $_apply(typeArguments$11,$$$mptypes){
           if(typeArguments$11===undefined){typeArguments$11=getEmpty();}
           throw Exception("IMPL FunParamDecl.apply");
-      };$$funParamDecl.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},ps:[{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Return:{'def':{t:Anything}},Arguments:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
+      };$$funParamDecl.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},ps:[{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
       
       //MethodDef memberApply at caca.ceylon (33:2-34:80)
       $$funParamDecl.memberApply=function memberApply(containerType$12,typeArguments$13,$$$mptypes){
           if(typeArguments$13===undefined){typeArguments$13=getEmpty();}
           throw Exception("IMPL FunParamDecl.memberApply");
-      };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
+      };$$funParamDecl.memberApply.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},ps:[{nm:'containerType',mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},an:function(){return[];}},{nm:'typeArguments',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:FunParamDecl,tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{sts:[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
     })(FunParamDecl.$$.prototype);
   }
   return FunParamDecl;
@@ -571,7 +571,7 @@ function ValParamDecl(cont,param,$$valParamDecl){
   $$valParamDecl.$prop$getActual.get=function(){return false;};
   return $$valParamDecl;
 }
-ValParamDecl.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],satisfies:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValParamDecl']};};
+ValParamDecl.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],sts:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValParamDecl']};};
 function $init$ValParamDecl(){
   if (ValParamDecl.$$===undefined){
     initTypeProto(ValParamDecl,'ceylon.language.meta.declaration::ValParamDecl',Basic,ValueDeclaration$meta$declaration);
