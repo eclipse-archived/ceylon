@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+public final class bug1731_ {
+    
+    private bug1731_() {
+    }
+    
+    public static void bug1731(final .ceylon.language.Sequential values) {
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)values;
+        final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$7;
+        int i$8 = 0;
+        final int length$9;
+        if (isTuple$6) {
+            array$7 = ((.ceylon.language.Tuple)iterable$5).$getArray$();
+            i$8 = ((.ceylon.language.Tuple)iterable$5).$getFirst$();
+            length$9 = i$8 + ((.ceylon.language.Tuple)iterable$5).$getLength$();
+        } else {
+            array$7 = null;
+            length$9 = 0;
+        }
+        .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$1 = isTuple$6 ? null : iterable$5.iterator();
+        loop_0: while (isTuple$6 ? i$8 < length$9 : !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$6) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
+            final .java.lang.Object val = (.java.lang.Object)elem$0;
+            {
+                .java.lang.Object sel$2 = val;
+                if (sel$2 instanceof .ceylon.language.Integer) {
+                    final long val$4 = ((.ceylon.language.Integer)sel$2).longValue();
+                    .ceylon.language.print_.print(.ceylon.language.Integer.instance(val$4 + val$4));
+                } else if (sel$2 instanceof .ceylon.language.String) {
+                    final .java.lang.String val$3 = ((.ceylon.language.String)sel$2).toString();
+                    .ceylon.language.print_.print(.ceylon.language.String.instance(val$3));
+                } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+            }
+        }
+    }
+}

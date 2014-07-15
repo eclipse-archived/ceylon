@@ -9,10 +9,10 @@ class SwitchIsEnumeratedPrimitive implements .com.redhat.ceylon.compiler.java.ru
         {
             .java.lang.Object sel$0 = n;
             if (sel$0 instanceof .ceylon.language.Integer) {
-                final .ceylon.language.Integer n$3 = (.ceylon.language.Integer)sel$0;
+                final .java.lang.Object n$3 = (.java.lang.Object)sel$0;
                 final double f = ((.ceylon.language.Integer)n$3).getFloat();
             } else if (sel$0 instanceof .ceylon.language.Float) {
-                final .ceylon.language.Float n$2 = (.ceylon.language.Float)sel$0;
+                final .java.lang.Object n$2 = (.java.lang.Object)sel$0;
                 final double f = ((.ceylon.language.Float)n$2).doubleValue();
             } else if (sel$0 == null) {
                 final .java.lang.Object n$1 = (.java.lang.Object)sel$0;
