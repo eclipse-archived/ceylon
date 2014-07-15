@@ -25,9 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
+import org.junit.Assert;
 
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
@@ -405,16 +404,16 @@ public class TypeParserTest {
 
     @Test(expected = ModelResolutionException.class)
     public void testParameterisedPackage(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("unknown<a>.b", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("unknown<a>.b", null, mockModule, mockUnit);
     }
 
     @Test(expected = ModelResolutionException.class)
     public void testUnknownMember(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a.unknown", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("a.unknown", null, mockModule, mockUnit);
     }
 
     @Test(expected = TypeParserException.class)
     public void testInvalidType(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<a,b", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("t2<a,b", null, mockModule, mockUnit);
     }
 }
