@@ -2,7 +2,7 @@ function(meta,mod$) {
   mod$.$anns=mod$.meta.$mod$ans$;
   var mm = mod$.meta.$CCMM$;
   if (typeof(mm)==='function') {
-    mm=mm();mod$.meta.$CCMM$=mm;
+    mm=mm();
   }
   mod$.m$=mm;
   mod$.nm$=mm['$mod-name'];

@@ -8,7 +8,8 @@ function typeLiteral$meta($$targs$$) {
       t = $$targs$$.Type$typeLiteral.setter;
       if (t && t.$crtmm$) {
         var mm = getrtmm$$(t);
-        var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+        var _m=typeof(mm.mod)==='function'?mm.mod():mm.mod;
+        var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
         return OpenSetter(OpenValue(_mod.findPackage(mm.d[0]), t));
       }
       throw new Error("'Type' argument should be an open or closed type");
@@ -46,8 +47,9 @@ function typeLiteral$meta($$targs$$) {
     var t = $$targs$$.Type$typeLiteral;
     var mm = getrtmm$$(t);
     var mdl = get_model(mm);
+    var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
     //We need the module
-    var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+    var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl.mt==='c' || mdl.mt==='o') {
       return OpenClass$jsint(_pkg, t);

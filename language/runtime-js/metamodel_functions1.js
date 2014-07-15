@@ -1,7 +1,6 @@
 //From a runtime metamodel, get the model definition by following the path into the module's model.
 function get_model(mm) {
-  var map=mm.mod;
-  if (typeof(map)==='function')map=map();
+  var map=typeof(mm.mod)==='function'?mm.mod():mm.mod;
   var path=mm.d;
   for (var i=0; i < path.length; i++) {
     var _p=path[i];

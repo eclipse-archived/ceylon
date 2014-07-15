@@ -426,7 +426,8 @@ atr$($$openInterface,'string',function(){
               var sc = this.tipo.$crtmm$['super'];
               if (sc === undefined)return null;
               var mm = getrtmm$$(sc.t);
-              return FreeClass(OpenClass$jsint(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
+              var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+              return FreeClass(OpenClass$jsint(getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), sc.t));
             },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:OpenClasType$meta$declaration}]},$cont:OpenInterface,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','extendedType']};});
             
             //AttributeDeclaration interfaceDeclarations at X (91:2-91:89)
@@ -437,7 +438,8 @@ atr$($$openInterface,'string',function(){
                 for (var i=0; i < ints.length; i++) {
                   var ifc = ints[i].t;
                   var mm = getrtmm$$(ifc);
-                  rv.push(FreeInterface(OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), ifc)));
+                  var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+                  rv.push(FreeInterface(OpenInterface(getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), ifc)));
                 }
                 return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:OpenInterfaceType$meta$declaration}});
               }

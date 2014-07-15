@@ -436,7 +436,8 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
 atr$(f,'declaration',function(){
   if (f._decl)return f._decl;
-  f._decl = OpenFunction(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
+  var _m=typeof(mm.mod)==='function'?mm.mod():mm.mod;
+  f._decl = OpenFunction(getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
 },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
   atr$(f,'container',function(){
@@ -536,7 +537,8 @@ atr$($$appliedValue,'string',function(){
       atr$($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$crtmm$;
-        var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+        var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+        var _pkg = getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]);
         return OpenValue(_pkg, $$av.tipo);
       },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedValue,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','declaration']};});
 
@@ -628,7 +630,8 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
 
 //This was copied from prototype style
   atr$($$appliedMethod,'declaration',function(){
-    var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+    var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+    var _pkg = getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]);
     return OpenFunction(_pkg, $$appliedMethod.tipo);
   },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
@@ -698,7 +701,8 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   //AttributeGetterDefinition declaration at X (100:4-100:83)
   atr$($$appliedAttribute,'declaration',function(){
     var mm = getrtmm$$(atr);
-    var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+    var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+    var pkg = getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]);
     return OpenValue(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   $$appliedAttribute.$_bind=function(cont){
