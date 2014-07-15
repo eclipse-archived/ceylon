@@ -329,7 +329,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'caseValues',function(){
     return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:this.tipo}});
   }
   return getEmpty();
-},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Type$ClassOrInterface'}},$cont:ClassOrInterface$meta$model,an:function(){return[doc($CCMM$['ceylon.language.meta.model'].ClassOrInterface.$at.caseValues.an.doc[0]),shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','caseValues']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Type$ClassOrInterface'}},$cont:ClassOrInterface$meta$model,an:function(){return[doc$('ceylon.language.meta.model:ClassOrInterface:$at:caseValues'),shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','caseValues']};});
 
 //This is the new shit May 2014
 ClassOrInterface$meta$model.$$.prototype.getClasses=function getClasses(anntypes,$$$mptypes,noInherit){

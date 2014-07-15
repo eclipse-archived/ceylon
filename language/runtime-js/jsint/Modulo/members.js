@@ -1,6 +1,6 @@
 if (this.m$['$pks$'] === undefined) {
   this.m$['$pks$'] = {};
-  for (mem in this.meta.$CCMM$) {
+  for (mem in this.meta.$CCMM$()) {
     if (typeof(mem) === 'string' && mem[0]!=='$') {
       this.m$['$pks$'][mem] = Paquete$jsint(mem, this, this.m$[mem]);
     }
