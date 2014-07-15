@@ -13,6 +13,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
@@ -38,7 +39,7 @@ public class Stitcher {
     	return path.replace('\\', '/');
     }
 
-    private static void compileLanguageModule(final String line, Writer writer, String clmod)
+    private static void compileLanguageModule(final String line, Writer writer)
             throws IOException {
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
         tmpdir.delete();
@@ -123,42 +124,58 @@ public class Stitcher {
         }
     }
 
-    private static void stitch(File infile, Writer writer) throws IOException {
+    private static void encodeModel(final File moduleFile) throws IOException {
+        final String name = moduleFile.getName();
+        final File file = new File(moduleFile.getParentFile(),
+                name.substring(0,name.length()-3)+ArtifactContext.JS_MODEL);
+        System.out.println("Generating language module compile-time model in JSON...");
+        TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
+        tcb.addSrcDirectory(clSrcDir.getParentFile().getParentFile());
+        TypeChecker tc = tcb.getTypeChecker();
+        tc.process();
+        MetamodelVisitor mmg = null;
+        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+            if (!pu.getCompilationUnit().getErrors().isEmpty()) {
+                System.out.println("whoa, errors in the language module "
+                        + pu.getCompilationUnit().getLocation());
+                for (Message err : pu.getCompilationUnit().getErrors()) {
+                    System.out.println(err.getMessage());
+                }
+            }
+            if (mmg == null) {
+                mmg = new MetamodelVisitor(pu.getPackage().getModule());
+            }
+            pu.getCompilationUnit().visit(mmg);
+        }
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("exports.$CCMM$=");
+            ModelEncoder.encodeModel(mmg.getModel(), writer);
+            writer.write(";\n");
+            compileLanguageModule("MODEL.js", writer);
+        } finally {
+        }
+    }
+
+    private static void stitch(File infile, Writer writer, String version) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
-            String clModel = null;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.length() > 0) {
                     if (line.equals("//#METAMODEL")) {
-                        System.out.println("Generating language module metamodel in JSON...");
-                        TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-                        tcb.addSrcDirectory(clSrcDir.getParentFile().getParentFile());
-                        TypeChecker tc = tcb.getTypeChecker();
-                        tc.process();
-                        MetamodelVisitor mmg = null;
-                        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-                            if (!pu.getCompilationUnit().getErrors().isEmpty()) {
-                                System.out.println("whoa, errors in the language module "
-                                        + pu.getCompilationUnit().getLocation());
-                                for (Message err : pu.getCompilationUnit().getErrors()) {
-                                    System.out.println(err.getMessage());
-                                }
-                            }
-                            if (mmg == null) {
-                                mmg = new MetamodelVisitor(pu.getPackage().getModule());
-                            }
-                            pu.getCompilationUnit().visit(mmg);
-                        }
-                        writer.write("var $CCMM$=");
-                        ModelEncoder.encodeModel(mmg.getModel(), writer);
-                        writer.write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
-                        writer.flush();
+                        writer.write("var _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
+                        writer.write("ceylon/language/");
+                        writer.write(version);
+                        writer.write("/ceylon.language-");
+                        writer.write(version);
+                        writer.write(ArtifactContext.JS_MODEL);
+                        writer.write("').$CCMM$;return _CTM$;}\n");
+                        writer.write("ex$.$CCMM$=$CCMM$;");
                     } else if (line.startsWith("//#COMPILE ")) {
                         final String sourceFiles = line.substring(11);
                         System.out.println("Compiling language module sources: " + sourceFiles);
-                        compileLanguageModule(sourceFiles, writer, clModel);
+                        compileLanguageModule(sourceFiles, writer);
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.write(line);
                         writer.write("\n");
@@ -184,8 +201,11 @@ public class Stitcher {
             if (!outfile.getParentFile().exists()) {
                 outfile.getParentFile().mkdirs();
             }
+            encodeModel(outfile);
+            final int p0 = args[1].indexOf(".language-");
+            final String version = args[1].substring(p0+10,args[1].length()-3);
             try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
-                stitch(infile, writer);
+                stitch(infile, writer, version);
             } finally {
                 ShaSigner.sign(outfile, new JsJULLogger(), true);
             }

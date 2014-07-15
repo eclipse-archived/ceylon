@@ -12,12 +12,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /** A container for things we need to keep per-module. */
 public class JsOutput {
     private File outfile;
+    private File modfile;
     private Writer writer;
     private final Set<String> s = new HashSet<String>();
     final Map<String,String> requires = new HashMap<String,String>();
@@ -40,13 +42,30 @@ public class JsOutput {
         }
         return outfile;
     }
+    File getModelFile() {
+        return modfile;
+    }
+
     void addSource(String src) {
         s.add(src);
     }
     Set<String> getSources() { return s; }
 
-    public void encodeModel() throws IOException {
-        ModelEncoder.encodeModel(mmg.getModel(), writer);
+    public void encodeModel(final Module mod) throws IOException {
+        if (modfile == null) {
+            modfile = File.createTempFile("jsmod", ".tmp");
+            try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
+                fw.write("exports.$CCMM$=");
+                ModelEncoder.encodeModel(mmg.getModel(), fw);
+                fw.write(";\n");
+            } finally {
+            }
+            writer.write("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
+            writer.write(GenerateJsVisitor.scriptPath(mod));
+            writer.write(ArtifactContext.JS_MODEL);
+            writer.write("').$CCMM$;return _CTM$;}\n");
+            writer.write("ex$.$CCMM$=$CCMM$;\n");
+        }
     }
 
     public void outputFile(File f) {

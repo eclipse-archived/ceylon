@@ -346,7 +346,8 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private String scriptPath(Module mod) {
+    /** Create a path for a require call to fetch the specified module. */
+    public static String scriptPath(Module mod) {
         StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
         if (!mod.isDefault()) {
             path.append(mod.getVersion()).append('/');

@@ -227,12 +227,10 @@ public class JsCompiler {
                     }
                 }
             }
-            //Then write it out
+            //Then write it out and output the reference in the module file
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                    e.getValue().getWriter().write(";\nvar $CCMM$=");
-                    e.getValue().encodeModel();
-                    e.getValue().getWriter().write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
+                    e.getValue().encodeModel(e.getKey());
                 }
             }
 
@@ -341,7 +339,8 @@ public class JsCompiler {
             String moduleName = entry.getKey().getNameAsString();
             String moduleVersion = entry.getKey().getVersion();
             //Create the JS file
-            final File jsart = entry.getValue().close();
+            final File jsart = jsout.close();
+            final File modart = jsout.getModelFile();
             if (entry.getKey().isDefault()) {
                 System.err.println("Created module "+moduleName);
             } else if (!compilingLanguageModule) {
@@ -354,11 +353,18 @@ public class JsCompiler {
             } else {
                 final ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
                 outRepo.putArtifact(artifact, jsart);
+                final ArtifactContext martifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS_MODEL);
+                outRepo.putArtifact(martifact, modart);
                 //js file signature
                 artifact.setForceOperation(true);
+                martifact.setForceOperation(true);
                 ArtifactContext sha1Context = artifact.getSha1Context();
                 sha1Context.setForceOperation(true);
                 File sha1File = ShaSigner.sign(jsart, new JsJULLogger(), opts.isVerbose());
+                outRepo.putArtifact(sha1Context, sha1File);
+                sha1Context = martifact.getSha1Context();
+                sha1Context.setForceOperation(true);
+                sha1File = ShaSigner.sign(modart, new JsJULLogger(), opts.isVerbose());
                 outRepo.putArtifact(sha1Context, sha1File);
                 //Create the src archive
                 if (opts.isGenerateSourceArchive()) {
@@ -373,6 +379,7 @@ public class JsCompiler {
                 sha1File.deleteOnExit();
             }
             jsart.deleteOnExit();
+            if (modart!=null)modart.deleteOnExit();
         }
     }
 
