@@ -3628,29 +3628,8 @@ public abstract class AbstractTransformer implements Transformation {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             return typeTester.nullTest(varExpr, JCTree.NE);
         }
-        if (typeFact().isUnion(testedType)) {
-            UnionType union = (UnionType)testedType.getDeclaration();
-            for (ProducedType pt : union.getCaseTypes()) {
-                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
-                firstTimeExpr = null;
-                if (result == null) {
-                    result = partExpr;
-                } else {
-                    result = typeTester.andOr(result, partExpr, JCTree.OR);
-                }
-            }
-        } else if (typeFact().isIntersection(testedType)) {
-            IntersectionType union = (IntersectionType)testedType.getDeclaration();
-            for (ProducedType pt : union.getSatisfiedTypes()) {
-                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
-                firstTimeExpr = null;
-                if (result == null) {
-                    result = partExpr;
-                } else {
-                    result = typeTester.andOr(result, partExpr, JCTree.AND);
-                }
-            }
-        } else {
+        TypeDeclaration declaration = testedType.getDeclaration();
+        if (declaration instanceof ClassOrInterface) {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
@@ -3667,48 +3646,86 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
                 return typeTester.isBasic(varExpr);
-            } else if (testedType.getDeclaration() instanceof NothingType){
-                // nothing is Bottom
-                return typeTester.eval(varExpr, false);
-            } else if ((!testedType.getTypeArguments().isEmpty() || isTypeParameter(testedType))
-                        && !canOptimiseReifiedTypeTest(testedType)){
-                // requires we use Util.isReified()
-                if (testedType.getDeclaration() instanceof ClassOrInterface
-                        && testedType.getDeclaration() != expressionType.getDeclaration()) {
-                    // do a cheap instanceof test to try to shortcircuit the expensive
-                    // Util.isReified()
-                    
-                    // XXX Possible future optimization: When the `is` is a condition 
-                    // in an `assert` we expect the result to be true, so 
-                    // instanceof shortcircuit doesn't achieve anything
-                    result = typeTester.andOr(
-                            typeTester.isInstanceof(varExpr, testedType),
-                            typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
-                } else if (testedType.getDeclaration() instanceof TypeParameter
-                        && !reifiableUpperBounds((TypeParameter)testedType.getDeclaration(), expressionType).isEmpty()) {
-                    // If we're testing against a type parameter with  
-                    // class or interface upper bounds we can again shortcircuit the 
-                    // Util.isReified() using instanceof against the bounds
-                    result = typeTester.isReified(varName.makeIdent(), testedType);
-                    Iterator<ProducedType> iterator = reifiableUpperBounds((TypeParameter)testedType.getDeclaration(), expressionType).iterator();
-                    while (iterator.hasNext()) {
-                        ProducedType type = iterator.next();
-                        ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
-                        result = typeTester.andOr(
-                                typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType()),
-                                result, JCTree.AND);
-                    }
+            } else if (testedType.getTypeArguments().isEmpty()) {
+                // non-generic Class or interface, use instanceof
+                return typeTester.isInstanceof(varExpr, testedType);
+            } else {// generic class or interface...
+                if (declaration.getSelfType() != null 
+                        && declaration.getSelfType().getDeclaration() instanceof TypeParameter // of TypeArg
+                        && declaration.getSelfType().isSubtypeOf(declaration.getType()) // given TypeArg satisfies SelfType<TypeArg>
+                        && testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration()).getDeclaration() instanceof ClassOrInterface) {
+                    // "is SelfType<ClassOrInterface>" can be written "is ClassOrInterface" 
+                    return makeTypeTest(typeTester, firstTimeExpr, varName, testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration()), expressionType);
+                } else if (canOptimiseReifiedTypeTest(testedType)) {
+                    // Use an instanceof
+                    return typeTester.isInstanceof(varExpr, testedType);
                 } else {
-                    result = typeTester.isReified(varExpr, testedType);
+                    // Have to use a reified test
+                    if (declaration != expressionType.getDeclaration()) {
+                        // do a cheap instanceof test to try to shortcircuit the expensive
+                        // Util.isReified()
+                        
+                        // XXX Possible future optimization: When the `is` is a condition 
+                        // in an `assert` we expect the result to be true, so 
+                        // instanceof shortcircuit doesn't achieve anything
+                        return typeTester.andOr(
+                                typeTester.isInstanceof(varExpr, testedType),
+                                typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
+                    } else {
+                        return typeTester.isReified(varExpr, testedType);
+                    }
+                }
+            }
+        } else if (typeFact().isUnion(testedType)) {
+            UnionType union = (UnionType)declaration;
+            for (ProducedType pt : union.getCaseTypes()) {
+                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
+                firstTimeExpr = null;
+                if (result == null) {
+                    result = partExpr;
+                } else {
+                    result = typeTester.andOr(result, partExpr, JCTree.OR);
+                }
+            }
+            return result;
+        } else if (typeFact().isIntersection(testedType)) {
+            IntersectionType union = (IntersectionType)declaration;
+            for (ProducedType pt : union.getSatisfiedTypes()) {
+                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
+                firstTimeExpr = null;
+                if (result == null) {
+                    result = partExpr;
+                } else {
+                    result = typeTester.andOr(result, partExpr, JCTree.AND);
+                }
+            }
+            return result;
+        } else if (declaration instanceof NothingType){
+            // nothing is Bottom
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            return typeTester.eval(varExpr, false);
+        } else if (declaration instanceof TypeParameter) {
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            if (!reifiableUpperBounds((TypeParameter)declaration, expressionType).isEmpty()) {
+                // If we're testing against a type parameter with  
+                // class or interface upper bounds we can again shortcircuit the 
+                // Util.isReified() using instanceof against the bounds
+                result = typeTester.isReified(varName.makeIdent(), testedType);
+                Iterator<ProducedType> iterator = reifiableUpperBounds((TypeParameter)declaration, expressionType).iterator();
+                while (iterator.hasNext()) {
+                    ProducedType type = iterator.next();
+                    ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
+                    result = typeTester.andOr(
+                            typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType()),
+                            result, JCTree.AND);
                 }
                 return result;
-                
             } else {
-                // Use an instanceof
-                result = typeTester.isInstanceof(varExpr, testedType);
+                return typeTester.isReified(varExpr, testedType);
             }
+        } else {
+            throw BugException.unhandledDeclarationCase(declaration);
         }
-        return result;
     }
     
     /**
