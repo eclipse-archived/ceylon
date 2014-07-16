@@ -211,9 +211,27 @@ public class CeylonNewTool extends CeylonBaseTool {
             result.add(moduleName);
             result.add(Variable.moduleDir("module.dir", "module.name"));
             result.add(moduleVersion);
-            result.add(eclipse);
-            result.add(ant);
+            if (shouldCreateProject()) {
+                result.add(eclipse);
+                result.add(ant);
+            }
             return result;
+        }
+
+        // Check if the target directory is not a project
+        private boolean shouldCreateProject() {
+            // If it has a ".ceylon" folder we assume a project exists
+            File ceylonDir = new File(applyCwd(getDirectory()), ".ceylon");
+            if (ceylonDir.isDirectory()) {
+                return false;
+            }
+            // If there's no ".ceylon" folder but there is a "source" folder
+            // we also assume a project exists
+            File sourcesDir = new File(applyCwd(getDirectory()), Constants.DEFAULT_SOURCE_DIR);
+            if (sourcesDir.isDirectory()) {
+                return false;
+            }
+            return true;
         }
 
         @Override
@@ -224,10 +242,10 @@ public class CeylonNewTool extends CeylonBaseTool {
                     fs.getPathMatcher("glob:**"), 
                     new Template("source/@[module.dir]").eval(env)));
             
-            if (env.get("ant").equals("true")) {
+            if ("true".equals(env.get("ant"))) {
                 result.add(substituting("ant", "build.xml", "."));
             }
-            if (env.get("eclipse").equals("true")) {
+            if ("true".equals(env.get("eclipse"))) {
                 result.add(substituting("eclipse",
                         fs.getPathMatcher("glob:**"),
                         "."));
