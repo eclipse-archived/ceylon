@@ -300,8 +300,18 @@ public class Main extends com.sun.tools.javac.main.Main {
             return 0;
         }
         
+        private static int getCeylonCodegenGarbageTreeCount(JavaCompiler comp) {
+            if (comp.log instanceof CeylonLog) {
+                CeylonLog log = ((CeylonLog)comp.log);
+                return log.getCeylonCodegenGarbageTreeCount();
+            } 
+            return 0;
+        }
+        
         private static int getCeylonCodegenErrorCount(JavaCompiler comp) {
-            return getCeylonCodegenErroneousCount(comp) + getCeylonCodegenExceptionCount(comp);
+            return getCeylonCodegenErroneousCount(comp) 
+                    + getCeylonCodegenExceptionCount(comp)
+                    + getCeylonCodegenGarbageTreeCount(comp);
         }
         
         private static int getNonCeylonErrorCount(JavaCompiler comp) {

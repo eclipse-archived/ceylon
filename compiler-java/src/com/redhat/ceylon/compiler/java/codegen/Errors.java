@@ -60,10 +60,6 @@ public class Errors {
         return instance;
     }
     
-    private void error(Node node, String message) {
-        log.error(gen.getPosition(node), "ceylon.codegen.error", message);
-    }
-    
     class ErrorVisitor extends Visitor implements NaturalVisitor {
         
         public boolean hasErrors(Node target) {
