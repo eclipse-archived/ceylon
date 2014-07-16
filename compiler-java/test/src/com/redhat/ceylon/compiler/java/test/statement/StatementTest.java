@@ -64,6 +64,11 @@ public class StatementTest extends CompilerTest {
     // if/else
 
     @Test
+    public void testConIsOptimizations(){
+        compareWithJavaSource("conditional/IsOptimizations");
+    }
+    
+    @Test
     public void testConInitializerIf(){
         compareWithJavaSource("conditional/InitializerIf");
     }
