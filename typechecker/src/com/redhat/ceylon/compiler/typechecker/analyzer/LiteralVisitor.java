@@ -43,6 +43,7 @@ public class LiteralVisitor extends Visitor {
     
     @Override
     public void visit(StringLiteral that) {
+        if (that.getToken()==null) return;
         int type = that.getToken().getType();
         String text = that.getText();
         
