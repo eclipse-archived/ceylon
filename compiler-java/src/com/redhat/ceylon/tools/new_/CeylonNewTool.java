@@ -121,7 +121,9 @@ public class CeylonNewTool extends CeylonBaseTool {
     private Environment buildPromptedEnv() {
         Environment env = new Environment();
         // TODO Tidy up how we create and what's in this initial environment
-        env.put("base.dir", applyCwd(project.getDirectory()).getAbsolutePath());
+        if (project.getDirectory() != null) {
+            env.put("base.dir", applyCwd(project.getDirectory()).getAbsolutePath());
+        }
         env.put("ceylon.home", System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
         //env.put("ceylon.system.repo", System.getProperty("ceylon.system.repo"));
         env.put("ceylon.version.number", Versions.CEYLON_VERSION_NUMBER);
@@ -174,6 +176,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     
     public class HelloWorld extends Project {
 
+        private Variable baseDir = Variable.directory("base.dir", shouldCreateProject() ? "helloworld" : ".");
         private Variable moduleName = Variable.moduleName("module.name", "com.example.helloworld");
         private Variable moduleVersion = Variable.moduleVersion("module.version", "1.0.0");
         private Variable eclipseProjectName = new Variable("eclipse.project.name", null, new PromptedValue("eclipse.project.name", "@[module.name]"));
@@ -208,6 +211,9 @@ public class CeylonNewTool extends CeylonBaseTool {
         @Override
         public List<Variable> getVariables() {
             List<Variable> result = new ArrayList<>();
+            if (getDirectory() == null) {
+                result.add(baseDir);
+            }
             result.add(moduleName);
             result.add(Variable.moduleDir("module.dir", "module.name"));
             result.add(moduleVersion);
