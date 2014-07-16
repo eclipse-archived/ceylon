@@ -84,7 +84,11 @@ public class ProducedType extends ProducedReference {
         }
         varianceOverrides.put(param, variance);
     }
-    
+
+    public void setVarianceOverrides(Map<TypeParameter,SiteVariance> varianceOverrides) {
+        this.varianceOverrides = varianceOverrides;
+    }
+
     ProducedType() {}
 
     @Override
