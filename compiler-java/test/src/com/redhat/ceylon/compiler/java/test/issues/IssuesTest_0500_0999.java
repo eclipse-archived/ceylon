@@ -152,8 +152,7 @@ public class IssuesTest_0500_0999 extends CompilerTest {
 
     @Test
     public void testBug593(){
-        assertErrors("bug05xx/Bug593",
-                new CompilerError(27, "argument must be assignable to parameter arg1 of newFileSystem: HashMap<String,Object> is not assignable to Map<String,Object>?"));
+        compile("bug05xx/Bug593.ceylon");
     }
 
     @Test

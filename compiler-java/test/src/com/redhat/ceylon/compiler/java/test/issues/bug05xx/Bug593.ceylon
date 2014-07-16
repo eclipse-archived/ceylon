@@ -20,9 +20,10 @@
 import java.nio.file { FileSystems { newFileSystem } }
 import java.util { HashMap }
 import java.net { URI { create } }
+import java.lang { JString = String }
 
 @noanno
 void bug593() {
-    value map = HashMap<String,Object>();
+    value map = HashMap<JString,Object>();
     newFileSystem(create("file:/"), map);
 }
