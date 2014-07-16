@@ -21,6 +21,7 @@ package com.redhat.ceylon.tools.new_;
 
 import java.io.BufferedReader;
 import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -84,6 +85,12 @@ public class Variable {
 
     protected List<Variable> subvars(String value) {
         return null;
+    }
+    
+    public static Variable directory(String key, String defaultValue) {
+        PathValidator validator = new PathValidator();
+        return new Variable(key, validator,
+                new PromptedValue(key, validator, defaultValue));
     }
     
     public static Variable moduleName(String key, String defaultValue) {
@@ -284,5 +291,19 @@ class PatternValidator implements VariableValidator {
     @Override
     public boolean isValid(String value) {
         return pattern.matcher(value).matches();
+    }
+}
+
+class PathValidator implements VariableValidator {
+
+    @Override
+    public boolean isValid(String value) {
+        File f = new File(value);
+        try {
+            f.getCanonicalFile();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
