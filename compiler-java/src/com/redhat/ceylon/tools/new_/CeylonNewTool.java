@@ -34,6 +34,8 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -151,6 +153,22 @@ public class CeylonNewTool extends CeylonBaseTool {
             // drive the whole thing from a script in the templates dir.
             vars.addAll(0, var.initialize(getProjectName(), env));
         }
+        
+        String sourceFolder = Constants.DEFAULT_SOURCE_DIR;
+        try {
+            String baseDir = env.get("base.dir");
+            CeylonConfig config = CeylonConfig.createFromLocalDir(new File(baseDir));
+            List<File> srcs = DefaultToolOptions.getCompilerSourceDirs(config);
+            if (!srcs.isEmpty()) {
+                sourceFolder = srcs.get(0).getPath();
+            } else {
+                sourceFolder = Constants.DEFAULT_SOURCE_DIR;
+            }
+        } catch (Exception e) {
+            // Ignore any errors
+        }
+        env.put("source.folder", sourceFolder);
+        
         log(env);
         return env;
     }
@@ -255,7 +273,7 @@ public class CeylonNewTool extends CeylonBaseTool {
             List<Copy> result = new ArrayList<>();
             result.add(substituting("source",
                     fs.getPathMatcher("glob:**"), 
-                    new Template("source/@[module.dir]").eval(env)));
+                    new Template("@[source.folder]/@[module.dir]").eval(env)));
             
             if ("true".equals(env.get("ant"))) {
                 result.add(substituting("ant", "build.xml", "."));
