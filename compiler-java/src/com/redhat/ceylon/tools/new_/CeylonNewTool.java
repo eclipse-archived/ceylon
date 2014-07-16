@@ -59,7 +59,7 @@ public class CeylonNewTool extends CeylonBaseTool {
         this.model = model;
     }
     
-    @Subtool(argumentName="name", classes={HelloWorld.class}, order=2)
+    @Subtool(argumentName="name", classes={Simple.class, HelloWorld.class, JavaInterop.class}, order=2)
     public void setProject(Project project) {
         this.project = project;
     }
@@ -98,7 +98,7 @@ public class CeylonNewTool extends CeylonBaseTool {
         setSystemProperties();
         File fromDir = getFromDir();
         if (!fromDir.exists() || !fromDir.isDirectory()) {
-            throw new IllegalArgumentException(Messages.msg("from.nonexistent.or.nondir", applyCwd(from).getAbsolutePath()));
+            throw new IllegalArgumentException(Messages.msg("from.nonexistent.or.nondir", fromDir));
         }
         Environment env = buildPromptedEnv();
         List<Copy> resources = project.getResources(env);
@@ -174,15 +174,24 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
     }
     
-    public class HelloWorld extends Project {
+    public abstract class BaseProject extends Project {
 
-        private Variable baseDir = Variable.directory("base.dir", shouldCreateProject() ? "helloworld" : ".");
-        private Variable moduleName = Variable.moduleName("module.name", "com.example.helloworld");
-        private Variable moduleVersion = Variable.moduleVersion("module.version", "1.0.0");
-        private Variable eclipseProjectName = new Variable("eclipse.project.name", null, new PromptedValue("eclipse.project.name", "@[module.name]"));
-        private Variable eclipse = Variable.yesNo("eclipse", Messages.msg("mnemonic.yes"), eclipseProjectName);
-        private Variable ant = Variable.yesNo("ant", Messages.msg("mnemonic.yes"));
+        private final Variable baseDir;
+        private final Variable moduleName;
+        private final Variable moduleVersion;
+        private final Variable eclipseProjectName;
+        private final Variable eclipse;
+        private final Variable ant;
 
+        public BaseProject(String defBaseDir, String defModName) {
+            baseDir = Variable.directory("base.dir", shouldCreateProject() ? defBaseDir : ".");
+            moduleName = Variable.moduleName("module.name", defModName);
+            moduleVersion = Variable.moduleVersion("module.version", "1.0.0");
+            eclipseProjectName = new Variable("eclipse.project.name", null, new PromptedValue("eclipse.project.name", "@[module.name]"));
+            eclipse = Variable.yesNo("eclipse", Messages.msg("mnemonic.yes"), eclipseProjectName);
+            ant = Variable.yesNo("ant", Messages.msg("mnemonic.yes"));
+        }
+        
         @OptionArgument
         public void setModuleName(String moduleName) {
             this.moduleName.setVariableValue(new GivenValue(moduleName));
@@ -225,7 +234,7 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
 
         // Check if the target directory is not a project
-        private boolean shouldCreateProject() {
+        protected boolean shouldCreateProject() {
             // If it has a ".ceylon" folder we assume a project exists
             File ceylonDir = new File(applyCwd(getDirectory()), ".ceylon");
             if (ceylonDir.isDirectory()) {
@@ -257,6 +266,30 @@ public class CeylonNewTool extends CeylonBaseTool {
                         "."));
             }
             return result;
+        }
+    }
+    
+    @Description("Generates a 'Hello World' style project")
+    public class HelloWorld extends BaseProject {
+
+        public HelloWorld() {
+            super("helloworld", "com.example.helloworld");
+        }
+    }
+    
+    @Description("Generates a very simple empty project")
+    public class Simple extends BaseProject {
+
+        public Simple() {
+            super("simple", "com.example.simple");
+        }
+    }
+    
+    @Description("Generates a project that is able to use Java legacy code")
+    public class JavaInterop extends BaseProject {
+
+        public JavaInterop() {
+            super("javainterop", "com.example.javainterop");
         }
     }
 
