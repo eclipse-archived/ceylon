@@ -25,7 +25,7 @@ interface InvariantSupertype {
 
 interface CovariantSupertype {
     
-    interface List<T> {
+    interface List<out T> {
         shared formal Iterator<T> iterator();
         shared formal T? get(Integer index);
         shared formal T? first;
