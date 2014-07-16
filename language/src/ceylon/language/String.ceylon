@@ -118,46 +118,68 @@ shared native final class String(characters)
     "Split the string into lines of text."
     shared native {String*} lines => split('\n'.equals);
     
-    "This string, after discarding 
-     [[whitespace|Character.whitespace]] from the beginning 
-     and end of the string."
+    "A string containing the characters of this string, 
+     after discarding [[whitespace|Character.whitespace]] 
+     from the beginning and end of the string."
     shared native String trimmed => trim(Character.whitespace);
     
-    "This string, after discarding the characters matching
-     the given [[predicate function|trimming]] from the 
-     beginning and end of the string.
+    "A string containing the characters of this string, 
+     after discarding the characters matching the given 
+     [[predicate function|trimming]] from the beginning and 
+     end of the string.
      
-         value trimmed = name.trim('_'.equals);"
+         value trimmed = name.trim('_'.equals);
+     
+     A character is removed from the string if it matches
+     the given predicate and if either:
+     
+     - every character occurring earlier in the string also 
+       matches the predicate, or
+     - every character occurring later in the string also
+       matches the predicate."
     shared actual native String trim(
             "The predicate function that determines whether
              a character should be trimmed"
             Boolean trimming(Character elem));
     
-    "This string, after discarding the characters matching
-     the given [[predicate function|trimming]] from the 
-     beginning of the string."
+    "A string containing the characters of this string, 
+     after discarding the characters matching the given 
+     [[predicate function|trimming]] from the 
+     beginning of the string.
+     
+     A character is removed from the string if it matches
+     the given predicate and every character occurring 
+     earlier in the string also matches the predicate."
     shared actual native String trimLeading(
             "The predicate function that determines whether
              a character should be trimmed"
             Boolean trimming(Character elem));
     
-    "This string, after discarding the characters matching
-     the given [[predicate function|trimming]] from the end 
-     of the string."
+    "A string containing the characters of this string, 
+     after discarding the characters matching the given 
+     [[predicate function|trimming]] from the end of the 
+     string.
+     
+     A character is removed from the string if it matches
+     the given predicate and every character occurring 
+     later in the string also matches the predicate."
     shared actual native String trimTrailing(
             "The predicate function that determines whether
              a character should be trimmed"
             Boolean trimming(Character elem));
 
-    "This string, after collapsing strings of 
-     [[whitespace|Character.whitespace]] into single space 
-     characters and discarding whitespace from the beginning 
-     and end of the string."
+    "A string containing the characters of this string after 
+     collapsing strings of [[whitespace|Character.whitespace]] 
+     into single space characters and discarding whitespace 
+     from the beginning and end of the string."
     shared native String normalized;
     
-    "This string, with the characters in reverse order."
+    "A string containing the characters of this string, with
+     the characters in reverse order."
     shared native actual String reversed;
     
+    "Determines if this string contains a character at the
+     given [[index]], that is, if `0<=index<size`."
     shared native actual Boolean defines(Integer index);
     
     "A string containing the characters of this string 
