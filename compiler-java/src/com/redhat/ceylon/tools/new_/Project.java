@@ -29,7 +29,7 @@ import com.redhat.ceylon.common.tool.Tool;
 
 public abstract class Project implements Tool {
 
-    private File directory = new File(".");
+    private File directory;
     
     public abstract List<Variable> getVariables();
     
@@ -44,16 +44,17 @@ public abstract class Project implements Tool {
         return this.directory;
     }
     
-    File mkBaseDir(File cwd) throws IOException {
-        File actualDir = FileUtil.applyCwd(cwd, directory);
-        if (actualDir.exists() && !actualDir.isDirectory()) {
-            throw new IOException(Messages.msg("path.exists.and.not.dir", directory));
-        } else if (!actualDir.exists()) {
-            if (!actualDir.mkdirs()) {
-                throw new IOException(Messages.msg("could.not.mkdir", directory));
+    void mkBaseDir(File cwd) throws IOException {
+        if (directory != null) {
+            File actualDir = FileUtil.applyCwd(cwd, directory);
+            if (actualDir.exists() && !actualDir.isDirectory()) {
+                throw new IOException(Messages.msg("path.exists.and.not.dir", directory));
+            } else if (!actualDir.exists()) {
+                if (!actualDir.mkdirs()) {
+                    throw new IOException(Messages.msg("could.not.mkdir", directory));
+                }
             }
         }
-        return actualDir;
     }
 
     @Override
