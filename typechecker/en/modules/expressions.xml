@@ -1636,7 +1636,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <literal>%=</literal>, 
                 <literal>&amp;=</literal>, 
                 <literal>|=</literal>, 
-                <literal>^=</literal>, 
+                <!--<literal>^=</literal>,-->
                 <literal>~=</literal>, 
                 <literal>&amp;&amp;=</literal>, 
                 <literal>||=</literal>
