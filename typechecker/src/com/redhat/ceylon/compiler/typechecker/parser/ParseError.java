@@ -35,10 +35,10 @@ public class ParseError extends RecognitionError {
     
 	@Override 
 	public String getMessage() {
-		String message = parser.getErrorMessage(recognitionException, tokenNames);
-		message.replace("'<EOF>'", "end of file");
-        message.replace("input", "token");
-        message.replace("missing null", "error");
+	    String message = parser.getErrorMessage(recognitionException, tokenNames)
+	            .replace("'<EOF>'", "end of file")
+	            .replace("input", "token")
+	            .replace("missing null", "error");
         String result = "incorrect syntax: " + message;
 		if (expecting!=-1 && !result.contains("expecting")) {
 			result += " expecting " + tokenNames[expecting];
