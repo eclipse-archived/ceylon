@@ -1220,10 +1220,10 @@ public class ModelLoaderTest extends CompilerTest {
                 // check the method which returns a java list
                 Method javaListMethod = (Method) javaType.getDirectMember("javaList", null, false);
                 Assert.assertNotNull(javaListMethod);
-                Assert.assertEquals("Object", javaListMethod.getType().getProducedTypeName());
+                Assert.assertEquals("List<out Object>", javaListMethod.getType().getProducedTypeName());
                 Parameter javaListParam = javaListMethod.getParameterLists().get(0).getParameters().get(0);
                 Assert.assertNotNull(javaListParam);
-                Assert.assertEquals("List<Object>?", javaListParam.getType().getProducedTypeName());
+                Assert.assertEquals("List<out Object>?", javaListParam.getType().getProducedTypeName());
 
                 // check the method which returns a Ceylon list
                 Method ceylonListMethod = (Method) javaType.getDirectMember("ceylonList", null, false);
