@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Sample Ceylon build script using Ant.
+-->
+<project name="@[module.name]" default="run">
+
+    <property name="ceylon.home" value="@[ceylon.home]"/>
+    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar"/>
+    <property name="source.encoding" value="UTF-8"/>
+
+    <target name="ceylon-ant-taskdefs">
+        <path id="ant-tasks">
+            <pathelement location="${ceylon.ant.lib}"/>
+        </path>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+    </target>
+	
+    <target name="default" depends="doc, run">
+    </target>
+
+    <target name="compile" depends="ceylon-ant-taskdefs">
+        <ceylon-compile encoding="${source.encoding}">
+            <module name="@[module.name]"/>
+        </ceylon-compile>
+    </target>
+
+    <target name="compile-js" depends="ceylon-ant-taskdefs">
+        <ceylon-compile-js encoding="${source.encoding}">
+            <module name="@[module.name]"/>
+        </ceylon-compile-js>
+    </target>
+
+    <target name="doc" depends="ceylon-ant-taskdefs">
+        <ceylon-doc encoding="${source.encoding}">
+            <module name="@[module.name]"/>
+        </ceylon-doc>
+    </target>
+
+    <target name="run" depends="compile">
+        <ceylon-run module="@[module.name]/@[module.version]"/>
+    </target>
+
+    <target name="run-js" depends="compile-js">
+        <ceylon-run-js module="@[module.name]/@[module.version]"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="modules"/>
+    </target>
+
+</project>
