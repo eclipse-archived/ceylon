@@ -72,7 +72,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -4447,11 +4446,12 @@ public class ExpressionVisitor extends Visitor {
                 acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
                 //the type has already been set by TypeVisitor
                 if (tal!=null) {
-                    List<Type> args = tal.getTypes();
+                    List<Tree.Type> args = tal.getTypes();
                     for (int i = 0; i<args.size(); i++) {
-                        Type t = args.get(i);
+                        Tree.Type t = args.get(i);
                         if (t instanceof Tree.StaticType) {
-                            TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
+                            TypeVariance variance = 
+                                    ((Tree.StaticType) t).getTypeVariance();
                             if (variance!=null) {
                                 TypeParameter p = params.get(i);
                                 if (p.isInvariant()) {
