@@ -322,7 +322,6 @@ public class InteropTest extends CompilerTest {
         );
     }
 
-    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopExtendsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -330,8 +329,10 @@ public class InteropTest extends CompilerTest {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
-                new CompilerError(27, "package private type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(27, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg is visible: JavaDefaultAccessClass involves an unshared type declaration"),
+                new CompilerError(27, "type is not visible: JavaDefaultAccessClass"),
+                new CompilerError(29, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg2 is visible: JavaDefaultAccessClass2 involves an unshared type declaration"),
+                new CompilerError(29, "type is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(31, "package private constructor is not visible: JavaDefaultAccessClass3")
         );
     }
@@ -351,7 +352,6 @@ public class InteropTest extends CompilerTest {
         );
     }
 
-    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -359,19 +359,18 @@ public class InteropTest extends CompilerTest {
         assertErrors("CallsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
-                new CompilerError(28, "package private type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(30, "package private constructor is not visible: JavaDefaultAccessClass3")
+                new CompilerError(28, "type is not visible: JavaDefaultAccessClass"),
+                new CompilerError(29, "type is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(30, "type constructor is not visible: JavaDefaultAccessClass3")
         );
     }
 
-    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()"),
-                new CompilerError(27, "package private constructor is not visible: JavaDefaultAccessClass4"),
+                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()"),
+                new CompilerError(27, "type constructor is not visible: JavaDefaultAccessClass4"),
                 new CompilerError(28, "protected constructor is not visible: JavaDefaultAccessClass4")
         );
     }
