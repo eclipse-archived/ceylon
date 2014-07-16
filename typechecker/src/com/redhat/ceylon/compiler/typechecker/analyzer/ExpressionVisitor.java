@@ -675,6 +675,7 @@ public class ExpressionVisitor extends Visitor {
             hasParams = true;
             me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
+        assign(me);
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (me instanceof Tree.BaseMemberExpression) {
             Declaration d = that.getDeclaration();
@@ -3025,7 +3026,16 @@ public class ExpressionVisitor extends Visitor {
         return p==null ? null : p.getTypeModel();
     }
     
+    private void assign(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression m = 
+                    (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
+    }
+    
     @Override public void visit(Tree.PostfixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         ProducedType type = type(that);
         visitIncrementDecrement(that, type, that.getTerm());
@@ -3033,6 +3043,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         ProducedType type = type(that);
         if (that.getTerm()!=null) {
@@ -3647,24 +3658,28 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.AssignOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitAssignOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.LogicalAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitLogicalOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitSetAssignmentOperator(that);
         checkAssignability(that.getLeftTerm(), that);
@@ -4107,14 +4122,18 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = accountForStaticReferenceReceiverType(that, 
                 unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that, false)) {
-            ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
+            ProducedTypedReference ptr = 
+                    receiverType.getTypedMember(member, typeArgs, 
+                            that.getAssigned());
             /*if (ptr==null) {
                 that.addError("member method or attribute does not exist: " + 
                         member.getName(unit) + " of type " + 
                         receiverType.getDeclaration().getName(unit));
             }
             else {*/
-                ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
+                ProducedType t = 
+                        ptr.getFullType(wrap(ptr.getType(), 
+                                receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
                 if (!dynamic && isTypeUnknown(t)) {
                     //this occurs with an ambiguous reference
@@ -4170,8 +4189,11 @@ public class ExpressionVisitor extends Visitor {
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
             TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
-            ProducedType outerType = that.getScope().getDeclaringType(member);
-            ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
+            ProducedType outerType = 
+                    that.getScope().getDeclaringType(member);
+            ProducedTypedReference pr = 
+                    member.getProducedTypedReference(outerType, typeArgs, 
+                            that.getAssigned());
             that.setTarget(pr);
             ProducedType t = pr.getFullType();
             if (isTypeUnknown(t)) {

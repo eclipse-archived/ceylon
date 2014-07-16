@@ -575,7 +575,12 @@ public class ProducedType extends ProducedReference {
                     typeArguments);
         }
     }
-
+    
+    public ProducedTypedReference getTypedMember(TypedDeclaration member, 
+            List<ProducedType> typeArguments) {
+        return getTypedMember(member, typeArguments, false);
+    }
+    
     /**
      * A member of the type with actual type arguments
      * to the receiving type and invocation.
@@ -584,9 +589,11 @@ public class ProducedType extends ProducedReference {
      *               this type
      * @param typeArguments the type arguments of the
      *                      invocation
+     * @param assigned does this reference occur on the
+     *                 RHS of an assignment operator
      */
     public ProducedTypedReference getTypedMember(TypedDeclaration member, 
-            List<ProducedType> typeArguments) {
+            List<ProducedType> typeArguments, boolean assigned) {
         ProducedType declaringType = 
                 getSupertype((TypeDeclaration) member.getContainer());
         /*if (declaringType==null) {
@@ -594,7 +601,7 @@ public class ProducedType extends ProducedReference {
         }
         else {*/
         ProducedTypedReference ptr = 
-                new ProducedTypedReference(true, false);
+                new ProducedTypedReference(!assigned, assigned);
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = 

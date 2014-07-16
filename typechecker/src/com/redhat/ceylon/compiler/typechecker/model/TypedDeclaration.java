@@ -61,6 +61,11 @@ public abstract class TypedDeclaration extends Declaration {
         }
     }
 
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
+            List<ProducedType> typeArguments) {
+        return getProducedTypedReference(qualifyingType, typeArguments, false);
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments
@@ -74,10 +79,13 @@ public abstract class TypedDeclaration extends Declaration {
      * @param typeArguments arguments to the type
      *                      parameters of this 
      *                      declaration
+     * @param assignment the reference occurs on the
+     *                   LHS of an assignment
      */
     public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
-            List<ProducedType> typeArguments) {
-        ProducedTypedReference ptr = new ProducedTypedReference(true, false);
+            List<ProducedType> typeArguments, boolean assignment) {
+        ProducedTypedReference ptr = 
+                new ProducedTypedReference(!assignment, assignment);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
         ptr.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));

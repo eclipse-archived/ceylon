@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -29,7 +30,8 @@ public class SpecificationVisitor extends Visitor {
     
     private final Declaration declaration;
     
-    private SpecificationState specified = new SpecificationState(false, false);
+    private SpecificationState specified = 
+            new SpecificationState(false, false);
     private boolean withinDeclaration = true;
     private boolean inLoop = false;
     private boolean declared = false;
@@ -123,7 +125,8 @@ public class SpecificationVisitor extends Visitor {
     
     private SpecificationState beginSpecificationScope() {
         SpecificationState as = specified;
-        specified = new SpecificationState(specified.definitely, specified.possibly);
+        specified = new SpecificationState(specified.definitely, 
+                specified.possibly);
         return as;
     }
     
@@ -196,7 +199,8 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || that instanceof Tree.Outer;
+        return that instanceof Tree.This || 
+                that instanceof Tree.Outer;
     }
 
     private void visitReference(Tree.Primary that) {
@@ -204,7 +208,8 @@ public class SpecificationVisitor extends Visitor {
         boolean assigned;
         boolean metamodel;
         if (that instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that;
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) that;
             member = mte.getDeclaration();
             assigned = mte.getAssigned();
             metamodel = false;
@@ -228,7 +233,7 @@ public class SpecificationVisitor extends Visitor {
                 //section or interface
                 if (withinAttributeInitializer && 
                 		member instanceof Value && 
-                		!(((Value)member).isTransient())) {
+                		!(((Value) member).isTransient())) {
                 	that.addError("reference to value within its initializer: " + 
                 			member.getName());
                 }
@@ -287,13 +292,6 @@ public class SpecificationVisitor extends Visitor {
                 declaration.isInterfaceMember();
     }
     
-    private void assign(Tree.Term term) {
-        if (term instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression m = (Tree.MemberOrTypeExpression) term;
-            m.setAssigned(true);
-        }
-    }
-    
     @Override
     public void visit(Tree.LogicalOp that) {
         that.getLeftTerm().visit(this);
@@ -325,7 +323,6 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
-        assign(lt);
         if (isEffectivelyBaseMemberExpression(lt)) {
             Tree.StaticMemberOrTypeExpression m = 
                     (Tree.StaticMemberOrTypeExpression) lt;
@@ -348,21 +345,18 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AssignmentOp that) {
-        assign(that.getLeftTerm());
         super.visit(that);
         checkVariable(that.getLeftTerm(), that);
     }
 
     @Override
     public void visit(Tree.PostfixOperatorExpression that) {
-        assign(that.getTerm());
         super.visit(that);
         checkVariable(that.getTerm(), that);
     }
     
     @Override
     public void visit(Tree.PrefixOperatorExpression that) {
-        assign(that.getTerm());
         super.visit(that);
         checkVariable(that.getTerm(), that);
     }
@@ -377,7 +371,7 @@ public class SpecificationVisitor extends Visitor {
 //                    name(m.getIdentifier()), null, false, m.getUnit());
             Declaration member = m.getDeclaration();
             if (member==declaration) {
-            	if ((declaration.isFormal()||declaration.isDefault()) && 
+            	if ((declaration.isFormal() || declaration.isDefault()) && 
             	        !isForwardReferenceable()) {
 	        		node.addError("member is formal and may not be assigned: " +
 	        				member.getName());
@@ -399,7 +393,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
         return term instanceof Tree.BaseMemberExpression ||
                 term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression)term).getPrimary());
+                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
     }
     
     private Tree.Continue lastContinue;
@@ -417,7 +411,8 @@ public class SpecificationVisitor extends Visitor {
         boolean continueInSomeBranchOfCurrentConditional = 
                 lastContinue!=null && 
                 lastContinueStatement==null;
-        boolean blockEndsInBreakReturnThrow = blockEndsInBreakReturnThrow(that);
+        boolean blockEndsInBreakReturnThrow = 
+                blockEndsInBreakReturnThrow(that);
         endsInBreakReturnThrow = endsInBreakReturnThrow || 
                 blockEndsInBreakReturnThrow;
         Tree.Continue last = null;
@@ -512,14 +507,13 @@ public class SpecificationVisitor extends Visitor {
         while (m instanceof Tree.ParameterizedExpression) {
         	m = ((Tree.ParameterizedExpression) m).getPrimary();
         }
-        assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
 	        BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
 	        if (member==declaration) {
-	        	if ((declaration.isFormal()||declaration.isDefault()) && 
+	        	if ((declaration.isFormal() || declaration.isDefault()) && 
 	        	        !isForwardReferenceable()) {
 	        		that.addError("member is formal and may not be specified: " +
 	        				member.getName());
@@ -742,7 +736,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         if (that.getDeclarationModel()==declaration) {
-        	Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        	Tree.SpecifierOrInitializerExpression sie = 
+        	        that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
                 super.visit(that);
                 specify();
@@ -791,8 +786,9 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
-        if (that.getDeclarationModel()==declaration ||
-            that.getDeclarationModel().getParameter().getModel()==declaration) {
+        Setter d = that.getDeclarationModel();
+        if (d==declaration ||
+            d.getParameter().getModel()==declaration) {
             declare();
             specify();
         }
@@ -955,7 +951,8 @@ public class SpecificationVisitor extends Visitor {
         }
         
         Tree.IfClause ifClause = that.getIfClause();
-        Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
+        Tree.ConditionList cl = ifClause==null ? 
+                null : ifClause.getConditionList();
         if (cl!=null) {
             cl.visit(this);
         }
