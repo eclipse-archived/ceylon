@@ -34,7 +34,6 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -181,17 +180,6 @@ public class CeylonNewTool extends CeylonBaseTool {
         private Variable eclipse = Variable.yesNo("eclipse", Messages.msg("mnemonic.yes"), eclipseProjectName);
         private Variable ant = Variable.yesNo("ant", Messages.msg("mnemonic.yes"));
 
-        @Argument(argumentName="dir", multiplicity="1", order=1)
-        public void setDirectory(File directory) {
-            // TODO This sucks -- in general we want an @Argument
-            // for the directory in which the project should be created
-            // but we can't enforce that every Project declared a 
-            // setDirectory() method with the annotation. Perhaps the 
-            // ToolLoader should be looking at the inherited methods, not just 
-            // the ones declared on the tool
-            super.setDirectory(directory);
-        }
-        
         @OptionArgument
         public void setModuleName(String moduleName) {
             this.moduleName.setVariableValue(new GivenValue(moduleName));
