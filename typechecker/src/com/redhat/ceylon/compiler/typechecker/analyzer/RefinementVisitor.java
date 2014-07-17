@@ -19,7 +19,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.matches;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
@@ -125,25 +127,37 @@ public class RefinementVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        Method td = that.getDeclarationModel();
-        Declaration refined = td.getRefinedDeclaration();
-        if (td.isOverloaded() && 
-                (refined==td || 
-                !(refined instanceof Method) || 
-                !((Method) refined).isOverloaded())) {
-            that.addError("overloaded method does not refine an overloaded method");
+        Method m = that.getDeclarationModel();
+        Declaration refined = m.getRefinedDeclaration();
+        if (m.isOverloaded()) { 
+            if (refined==m || 
+                    !(refined instanceof Method) || 
+                    !((Method) refined).isOverloaded()) {
+                that.addError("overloaded method does not refine an overloaded method");
+            }
+            if (!isTypeUnknown(m.getType())) {
+                Method abstraction = (Method) 
+                        m.getContainer().getDirectMember(m.getName(), null, false);
+                if (abstraction.getType().isUnknown()) {
+                    abstraction.setType(m.getType());
+                }
+                else {
+                    abstraction.setType(unionType(m.getType(), 
+                            abstraction.getType(), that.getUnit()));
+                }
+            }
         }
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {
                     Parameter p = tp.getParameterModel();
                     if (p.getModel()!=null) {
-                        checkParameterVisibility(that, td, tp, p);
+                        checkParameterVisibility(that, m, tp, p);
                     }
                 }
             }
         }
-        inheritDefaultedArguments(td);
+        inheritDefaultedArguments(m);
     }
 
     @Override

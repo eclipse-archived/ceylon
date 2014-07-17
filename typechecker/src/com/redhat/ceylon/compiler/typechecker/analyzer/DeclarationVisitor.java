@@ -204,15 +204,36 @@ public class DeclarationVisitor extends Visitor {
                     Declaration member = 
                             s.getDirectMember(model.getName(), null, false);
                     if (member!=null) {
-                        if (member instanceof Method && model instanceof Method) {
-                            ((Method) member).setOverloaded(true);
+                        Unit unit = model.getUnit();
+                        if (member instanceof Method && 
+                            model instanceof Method &&
+                            s instanceof ClassOrInterface) {
+                            Method abstraction;
+                            if (!((Method) member).isAbstraction()) {
+                                abstraction = new Method();
+                                abstraction.setAbstraction(true);
+                                abstraction.setType(new UnknownType(unit).getType());
+                                abstraction.setName(model.getName());
+                                abstraction.setShared(true);
+                                abstraction.setActual(true);
+                                abstraction.setContainer(s);
+                                abstraction.setUnit(unit);
+                                ((Method) member).setOverloaded(true);
+                                abstraction.setOverloads(new ArrayList<Declaration>());
+                                abstraction.getOverloads().add(member);
+                                s.getMembers().add(abstraction);
+                            }
+                            else {
+                                abstraction = (Method) member;
+                            }
                             ((Method) model).setOverloaded(true);
+                            abstraction.getOverloads().add(model);
                         }
                         else {
                             that.addError("duplicate declaration name: " + 
                                     model.getName());
                         }
-                        model.getUnit().getDuplicateDeclarations().add(member);
+                        unit.getDuplicateDeclarations().add(member);
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();
