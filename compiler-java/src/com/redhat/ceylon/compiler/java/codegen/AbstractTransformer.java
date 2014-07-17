@@ -1880,6 +1880,10 @@ public abstract class AbstractTransformer implements Transformation {
             
             boolean isDependedOn = hasDependentTypeParameters(tps, tp);
             
+            // record whether we were initially working with Anything, because getNonNullType turns it into Object
+            // and we need to treat "in Anything" specially below
+            boolean isAnything = isAnything(ta);
+            
             // Null will claim to be optional, but if we get its non-null type we will land with Nothing, which is not what
             // we want, so we make sure it's not Null
             if (isOptional(ta) && !isNull(ta)) {
@@ -1990,7 +1994,9 @@ public abstract class AbstractTransformer implements Transformation {
                         if (simpleType.isContravariant(tp)) {
                             typeArgs = null;
                             break;
-                        } else if (simpleType.isCovariant(tp) && !isDependedOn) {
+                        } else if (tp.isCovariant() && !isDependedOn) {
+                            // DO NOT trust use-site covariance for Nothing, because we consider "out Nothing" to be the same
+                            // as "Nothing". Only look at declaration-site covariance
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), make().Type(syms().objectType));
                         } else {
                             jta = make().Type(syms().objectType);
@@ -2020,7 +2026,11 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<T> if Foo is invariant in T,
                     // - Foo<? extends T> if Foo is covariant in T, or
                     // - Foo<? super T> if Foo is contravariant in T
-                    if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)) {
+                    if (((flags & JT_CLASS_NEW) == 0) 
+                            && simpleType.isContravariant(tp)
+                            && (!isAnything || tp.isContravariant())) {
+                        // DO NOT trust use-site contravariance for Anything, because we consider "in Anything" to be the same
+                        // as "Anything". Only look at declaration-site contravariance
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
