@@ -33,20 +33,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import junit.framework.Assert;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Assert;
 
-import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.sun.net.httpserver.HttpServer;
 
 public class CMRTestHTTP extends CompilerTest {
 
     class RequestCounter{
-        int count;
+        volatile int count;
         synchronized void add(){
             count++;
         }
