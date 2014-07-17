@@ -152,9 +152,10 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, List<ProducedType> typeArguments) {
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, 
+            List<ProducedType> typeArguments, boolean assignment) {
         load();
-        return super.getProducedTypedReference(qualifyingType, typeArguments);
+        return super.getProducedTypedReference(qualifyingType, typeArguments, assignment);
     }
 
     @Override
