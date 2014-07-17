@@ -815,12 +815,19 @@ public abstract class TypeDeclaration extends Declaration
             List<TypeDeclaration> ctds = getCaseTypeDeclarations();
             List<TypeDeclaration> result =
                     new ArrayList<TypeDeclaration>(ctds.size());
+            ProducedType type = getType();
             for (int i=0, l=ctds.size(); i<l; i++) {
+                //actually the loop is unnecessary, we
+                //only need to consider the first case
                 TypeDeclaration ctd = ctds.get(i);
-                ProducedType st = getType().getSupertype(ctd);
-                if (st!=null && !st.isNothing()) {
-                    if (!result.contains(ctd)) {
-                        result.add(ctd);
+                List<TypeDeclaration> ctsts = ctd.getSupertypeDeclarations();
+                for (int j=0; j<ctsts.size(); j++) {
+                    TypeDeclaration std = ctsts.get(j);
+                    ProducedType st = type.getSupertype(std);
+                    if (st!=null && !st.isNothing()) {
+                        if (!result.contains(std)) {
+                            result.add(std);
+                        }
                     }
                 }
             }
