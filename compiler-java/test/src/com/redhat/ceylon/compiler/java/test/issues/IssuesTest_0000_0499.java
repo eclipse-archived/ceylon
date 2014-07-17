@@ -211,6 +211,11 @@ public class IssuesTest_0000_0499 extends CompilerTest {
     }
 
     @Test
+    public void testBug334(){
+        compareWithJavaSource("bug03xx/bug334/Bug334");
+    }
+
+    @Test
     public void testBug353(){
         // compile them both at the same time
         compile("bug03xx/Bug353_1.ceylon", "bug03xx/Bug353_2.ceylon");

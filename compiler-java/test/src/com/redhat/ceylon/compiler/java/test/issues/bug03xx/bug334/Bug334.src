@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334;
+
+class Under implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Over {
+    
+    Under() {
+        foo((float)12.0);
+        foo(.com.redhat.ceylon.compiler.java.Util.toInt(12L));
+    }
+    
+    @.java.lang.Override
+    public final int foo(final int $int) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("int: " + .ceylon.language.Integer.toString($int)));
+        return .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String foo(final float $float) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("float: " + .ceylon.language.Float.toString($float)));
+        return "Hello";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under.class);
+}
+final class bug334_ {
+    
+    private bug334_() {
+    }
+    
+    static void bug334() {
+        final .java.lang.String foo1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under().foo((float)0.0);
+        final long foo2 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Under().foo(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.bug334_.bug334();
+    }
+}
