@@ -89,7 +89,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     @OptionArgument(argumentName = "type")
-    @Description("The artifact ypes to show information for. " +
+    @Description("The artifact types to show information for. " +
             "Allowed values include: `all`, `jvm`, `js`, `src` (default is `all`).")
     public void setShowType(String showType) {
         this.showType = showType;
@@ -322,7 +322,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     append(")");
                 } else if (suffix.equalsIgnoreCase(".jar")) {
                     append("JVM (legacy)");
-                } else if (suffix.equalsIgnoreCase(".js")) {
+                } else if (suffix.equalsIgnoreCase(".js") || suffix.equalsIgnoreCase("-model.js")) {
                     append("JavaScript (#");
                     append(major);
                     if (minor != 0) {
