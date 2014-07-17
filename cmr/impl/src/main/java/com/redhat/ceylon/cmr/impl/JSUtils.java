@@ -21,10 +21,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +59,8 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
 
         ArtifactResult result = context.result();
         File mod = result.artifact();
-        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JS)) {
+        if (mod != null && (mod.getName().toLowerCase().endsWith(ArtifactContext.JS_MODEL)
+                || mod.getName().toLowerCase().endsWith(ArtifactContext.JS))) {
             return readModuleInformation(result.name(), mod);
         } else {
             return null;
@@ -97,7 +96,6 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
         int major = 0;
         int minor = 0;
-        
         ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive, false);
         ModuleVersionArtifact mva = mvd.getArtifactTypes().first();
         if (mva.getMajorBinaryVersion() != null) {
@@ -135,6 +133,9 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         Map<String, Object> model = loadJsonModel(moduleArchive);
+        if (model == null) {
+            return null;
+        }
 
         String name = asString(metaModelProperty(model, "$mod-name"));
         if (!moduleName.equals(name)) {
@@ -156,7 +157,6 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 mayor = Integer.parseInt(bin);
             }
         }
-        
         ModuleVersionDetails mvd = new ModuleVersionDetails(version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
         mvd.getDependencies().addAll(deps);
@@ -184,22 +184,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             return obj.toString();
         }
     }
-    
-    private static String[] asStringArray(Object obj) {
-        if (obj == null) {
-            return null;
-        }
-        if (!(obj instanceof Iterable)) {
-            throw new RuntimeException("Expected something Iterable");
-        }
-        Iterable<Object> array = (Iterable)obj;
-        ArrayList<String> result = new ArrayList<String>();
-        for (Object o : array) {
-            result.add(asString(o));
-        }
-        return result.toArray(new String[result.size()]);
-    }
-    
+
     private static Set<ModuleInfo> asModInfos(Object obj) {
         if (obj == null) {
             return Collections.emptySet();
@@ -207,13 +192,23 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
         }
-        Iterable<Object> array = (Iterable)obj;
+        @SuppressWarnings("unchecked")
+        Iterable<Object> array = (Iterable<Object>)obj;
         Set<ModuleInfo> result = new HashSet<ModuleInfo>();
         for (Object o : array) {
-            String module = asString(o);
+            String module;
+            boolean optional = false;
+            if (o instanceof String) {
+                module = asString(o);
+            } else {
+                @SuppressWarnings("unchecked")
+                Map<String,Object> m = (Map<String,Object>)o;
+                module = m.get("path").toString();
+                optional = m.containsKey("opt");
+            }
             String name = ModuleUtil.moduleName(module);
             if (!"ceylon.language".equals(name)) {
-                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), false, false));
+                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), optional, false));
             }
         }
         return result;
@@ -243,9 +238,6 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     private static Map<String,Object> loadJsonModel(File jsFile) {
         try {
             Map<String, Object> model = readJsonModel(jsFile);
-            if (model == null) {
-                throw new RuntimeException("Unable to read meta model from file " + jsFile);
-            }
             return model;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -254,25 +246,19 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     
     /** Find the metamodel declaration in a js file, parse it as a Map and return it. 
      * @throws IOException */
-    @SuppressWarnings("unchecked")
     public static Map<String,Object> readJsonModel(File jsFile) throws IOException {
         // IMPORTANT
         // This method NEEDS to be able to return the meta model of any previous file formats!!!
         // It MUST stay backward compatible
-        List<String> docs = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
-            String line = reader.readLine();
+            String line = null;
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("var $CCMM$=") || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
+                if ((line.startsWith("exports.$CCMM$=") || line.startsWith("var $CCMM$=")
+                        || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> rv = (Map<String,Object>) JSONValue.parse(line);
-                    if (docs != null) {
-                        rv.put("$mod-DOC$", docs);
-                    }
                     return rv;
-                } else if (line.startsWith("var $CDOC$=[") && line.endsWith("];")) {
-                    line = line.substring(line.indexOf('['), line.length()-1);
-                    docs = (List<String>)JSONValue.parse(line);
                 }
             }
             return null;

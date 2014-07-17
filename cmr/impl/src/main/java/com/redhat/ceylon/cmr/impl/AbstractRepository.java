@@ -446,7 +446,7 @@ public abstract class AbstractRepository implements Repository {
                 if (artifact == null)
                     continue;
                 // is it the right version?
-                if ((suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS)) && !checkBinaryVersion(name, artifact, lookup))
+                if ((suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS_MODEL) || suffix.equals(ArtifactContext.JS)) && !checkBinaryVersion(name, artifact, lookup))
                     continue;
                 // we found the artifact: let's notify
                 found = true;
@@ -726,7 +726,7 @@ public abstract class AbstractRepository implements Repository {
             return BytecodeUtils.INSTANCE;
         } else if (ArtifactContext.JAR.equalsIgnoreCase(suffix)) {
             return JarUtils.INSTANCE;
-        } else if (ArtifactContext.JS.equalsIgnoreCase(suffix)) {
+        } else if (ArtifactContext.JS.equalsIgnoreCase(suffix) || ArtifactContext.JS_MODEL.equalsIgnoreCase(suffix)) {
             return JSUtils.INSTANCE;
         } else {
             return null;
