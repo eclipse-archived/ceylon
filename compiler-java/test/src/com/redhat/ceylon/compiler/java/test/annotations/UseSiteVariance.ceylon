@@ -17,13 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.nio.file { FileSystems { newFileSystem } }
-import java.util { HashMap }
-import java.net { URI { create } }
-import java.lang { JString = String }
-
-@noanno
-void bug593() {
-    value map = HashMap<JString,Object>();
-    newFileSystem(create("file:/"), map);
+shared class UseSiteVariance<A,B>() {
+    shared UseSiteVariance<in A,out B> m() => nothing;
 }

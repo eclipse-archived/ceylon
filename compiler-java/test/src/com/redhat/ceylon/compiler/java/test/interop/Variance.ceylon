@@ -17,25 +17,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.util { Map }
+
 @noanno
 void variance() {
     JavaVariance var = JavaVariance();
     // For M4: tested in Variance2
-    //Class<Object> klass = var;
-    //Interface<Object> interf = var;
+    Class<out Object> klass = var;
+    Interface<out Object> interf = var;
     
-    @type:"Callable<Object,Tuple<Null|Interface<Object>,Null|Interface<Object>,Empty>>"
+    @type:"Callable<Interface<out Object>,Tuple<Null|Interface<out Object>,Null|Interface<out Object>,Empty>>"
     value interfaceMethod = var.interfaceMethod;
-    @type:"Object" value ret1 = var.interfaceMethod(var);
+    @type:"Interface<out Object>" value ret1 = var.interfaceMethod(var);
 
-    @type:"Callable<Object,Tuple<Null|Class<Object>,Null|Class<Object>,Empty>>"
+    @type:"Callable<Class<out Object>,Tuple<Null|Class<out Object>,Null|Class<out Object>,Empty>>"
     value classMethod = var.classMethod;
-    @type:"Object" value ret2 = var.classMethod(var);
+    @type:"Class<out Object>" value ret2 = var.classMethod(var);
     
     @type:"JavaVariance" value m = var.method(var);
     
-    @type:"Object" value v1 = var.roField;
-    @type:"Object" value v2 = var.rwField;
-    @type:"Object" value v3 = var.roProperty;
-    @type:"Object" value v4 = var.rwProperty;
+    @type:"Class<out Object>" value v1 = var.roField;
+    @type:"Class<out Object>" value v2 = var.rwField;
+    @type:"Class<out Object>" value v3 = var.roProperty;
+    @type:"Class<out Object>" value v4 = var.rwProperty;
+
+    @type:"Class<out Object>" value v5 = var.rwCovariantProperty;
+    @type:"Class<in JavaVariance>" value v6 = var.rwContravariantProperty;
+    @type:"Class<out Object>" value v7 = var.rwRawProperty;
 }
+
+//@noanno
+//abstract class MyMap() satisfies Map<String, Object> {
+//    shared actual void putAll(Map<out String, out Object> map) {}
+//}

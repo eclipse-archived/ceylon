@@ -30,6 +30,8 @@ public class TypeLexer {
     public final static int DBLCOLON = DOT + 1;
     public final static int EOT = DBLCOLON + 1;
     public final static int WORD = EOT + 1;
+    public final static int OUT = WORD + 1;
+    public final static int IN = OUT + 1;
 
     // type string to parse
     char[] type;
@@ -67,6 +69,19 @@ public class TypeLexer {
         case '|': token = OR; break;
         case '.': token = DOT; break;
         case ',': token = COMMA; break;
+        case 'o':
+            if((index + 3) < type.length
+                    && type[index + 1] == 'u'
+                    && type[index + 2] == 't'
+                    && type[index + 3] == ' ')
+            token = OUT; 
+            break;
+        case 'i':
+            if((index + 2) < type.length
+                    && type[index + 1] == 'n'
+                    && type[index + 2] == ' ')
+            token = IN; 
+            break;
         case ':':
             if ((index + 1) < type.length && type[index + 1] == ':') {
                 token = DBLCOLON;
@@ -125,6 +140,8 @@ public class TypeLexer {
         case DBLCOLON   : return "DBLCOLON";
         case EOT   : return "EOT";
         case WORD  : return "WORD";
+        case OUT  : return "OUT";
+        case IN : return "IN";
         }
         // cannot happen
         throw new TypeParserException("Unhandled token: "+token);
@@ -143,6 +160,10 @@ public class TypeLexer {
     public void eat() {
         if(lookingAt(DBLCOLON)){
             index += 2;
+        } else if(lookingAt(IN)){
+            index += 3;
+        } else if(lookingAt(OUT)){
+            index += 4;
         } else {
             index++;
         }

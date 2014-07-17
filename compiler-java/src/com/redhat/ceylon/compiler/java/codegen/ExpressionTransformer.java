@@ -840,7 +840,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // see if any of those type arguments has variance
         boolean hasVariance = false;
         for(TypeParameter t : expectedType.getTypeArguments().keySet()){
-            if(t.isContravariant() || t.isCovariant()){
+            if(expectedType.isContravariant(t) || expectedType.isCovariant(t)){
                 hasVariance = true;
                 break;
             }

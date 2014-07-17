@@ -49,4 +49,13 @@ public class JavaVariance extends Class<Class<?>> implements Interface<Interface
 
     public Class<?> getRwProperty(){ return null; }
     public void setRwProperty(Class<?> v){}
+    
+    public Class<? extends Object> getRwCovariantProperty(){ return null; }
+    public void setRwCovariantProperty(Class<? extends Object> v){ }
+
+    public Class<? super JavaVariance> getRwContravariantProperty(){ return null; }
+    public void setRwContravariantProperty(Class<? super JavaVariance> v){ }
+
+    public Class getRwRawProperty(){ return null; }
+    public void setRwRawProperty(Class v){ }
 }
