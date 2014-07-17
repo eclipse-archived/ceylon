@@ -2422,7 +2422,8 @@ public class ProducedType extends ProducedReference {
     
     public boolean isAnything() {
         TypeDeclaration d = getDeclaration();
-        return d.equals(d.getUnit().getAnythingDeclaration());
+        return d instanceof Class && 
+                d.equals(d.getUnit().getAnythingDeclaration());
     }
     
     public int getMemoisedHashCode() {
