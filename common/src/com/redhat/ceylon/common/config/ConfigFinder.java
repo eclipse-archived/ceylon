@@ -21,6 +21,11 @@ public class ConfigFinder {
     private String configName;
     private String systemPropertyOverride;
     
+    /**
+     * @param configName The name of the configuration file
+     * @param systemPropertyOverride The name of the system property that
+     * can be used to override the location of the configuration file
+     */
     public ConfigFinder(String configName, String systemPropertyOverride) {
         this.configName = configName;
         this.systemPropertyOverride = systemPropertyOverride;
