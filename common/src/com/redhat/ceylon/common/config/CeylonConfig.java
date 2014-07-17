@@ -91,7 +91,7 @@ public class CeylonConfig {
      * @return Default CeylonConfig object
      */
     public static CeylonConfig createFromLocalDir(File localDir) {
-        return ConfigParser.loadDefaultConfig(localDir);
+        return CeylonConfigFinder.loadDefaultConfig(localDir);
     }
     
     public CeylonConfig() {

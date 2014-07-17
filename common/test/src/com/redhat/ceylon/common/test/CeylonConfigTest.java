@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 
 public class CeylonConfigTest {
 
@@ -20,10 +20,10 @@ public class CeylonConfigTest {
     
     @Before
     public void setup() throws IOException {
-        testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
-        localConfig = ConfigParser.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
-        mergedConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
-        CeylonConfig localConfig2 = ConfigParser.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+        testConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+        localConfig = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+        mergedConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+        CeylonConfig localConfig2 = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
         mergedConfig.merge(localConfig2);
     }
     

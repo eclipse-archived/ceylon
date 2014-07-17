@@ -8,7 +8,7 @@ import java.net.URLConnection;
 
 import com.redhat.ceylon.common.config.Authentication;
 import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 import com.redhat.ceylon.common.config.Proxies;
 import com.redhat.ceylon.common.config.Proxies.Proxy;
 
@@ -34,7 +34,7 @@ public class ProxyTool {
             return;
         }
         
-        CeylonConfig config = ConfigParser.loadConfigFromFile(configFile);
+        CeylonConfig config = CeylonConfigFinder.loadConfigFromFile(configFile);
         Authentication auth = Authentication.fromConfig(config);
         Proxy proxy = Proxies.withConfig(config).getProxy();
         final URLConnection conn;

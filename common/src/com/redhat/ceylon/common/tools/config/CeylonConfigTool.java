@@ -21,8 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 import com.redhat.ceylon.common.config.ConfigException;
-import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.ConfigFinder;
 import com.redhat.ceylon.common.config.ConfigWriter;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
@@ -87,22 +88,23 @@ public class CeylonConfigTool extends CeylonBaseTool {
     }
 
     private CeylonConfig readConfig() throws IOException {
+        ConfigFinder finder = CeylonConfigFinder.DEFAULT;
         if (file != null) {
             if (file.exists()) {
-                return ConfigParser.loadConfigFromFile(applyCwd(file));
+                return finder.loadConfigFromFile(applyCwd(file));
             } else {
                 return new CeylonConfig();
             }
         } else {
             try {
                 if (system) {
-                    return ConfigParser.loadSystemConfig();
+                    return finder.loadSystemConfig();
                 }
                 if (user) {
-                    return ConfigParser.loadUserConfig();
+                    return finder.loadUserConfig();
                 }
                 if (local) {
-                    return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(applyCwd(new File("."))));
+                    return finder.loadConfigFromFile(finder.findLocalConfig(applyCwd(new File("."))));
                 }
             } catch (FileNotFoundException ex) {
                 return new CeylonConfig();
@@ -112,16 +114,17 @@ public class CeylonConfigTool extends CeylonBaseTool {
     }
     
     private void writeConfig(CeylonConfig config) throws IOException {
+        ConfigFinder finder = CeylonConfigFinder.DEFAULT;
         File cfgFile;
         if (file != null) {
             cfgFile = applyCwd(file);
         } else {
             if (system) {
-                cfgFile = ConfigParser.findSystemConfig();
+                cfgFile = finder.findSystemConfig();
             } else if (user) {
-                cfgFile = ConfigParser.findUserConfig();
+                cfgFile = finder.findUserConfig();
             } else if (local) {
-                cfgFile = ConfigParser.findLocalConfig(applyCwd(new File(".")));
+                cfgFile = finder.findLocalConfig(applyCwd(new File(".")));
             } else {
                 throw new IllegalStateException("A configuration must be specified");
             }

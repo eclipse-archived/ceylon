@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 import com.redhat.ceylon.common.config.Credentials;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.common.config.Repositories.Repository;
@@ -26,7 +26,7 @@ public class RepositoriesTest {
     
     @Before
     public void setup() throws IOException {
-        testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/repos.config"));
+        testConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/repos.config"));
         if (FileUtil.getInstallDir() == null) {
             // Set a fake installation folder
             System.setProperty("ceylon.home", "fake-install-dir");
@@ -36,7 +36,7 @@ public class RepositoriesTest {
         CeylonConfig fakeConfig = new CeylonConfig();
         defaultRepos = Repositories.withConfig(fakeConfig);
         
-        CeylonConfig overriddenConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/overridden.config"));
+        CeylonConfig overriddenConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/overridden.config"));
         overriddenRepos = Repositories.withConfig(overriddenConfig);
     }
     

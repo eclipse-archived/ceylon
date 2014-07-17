@@ -8,7 +8,7 @@ import org.junit.Before;
 
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 
 public abstract class AbstractConfigTest {
     protected final File testDir = new File("build/test-stores");
@@ -23,7 +23,7 @@ public abstract class AbstractConfigTest {
     }
     
     protected CeylonConfig loadConfig(String filename) throws IOException {
-        return ConfigParser.loadConfigFromFile(new File(filename));
+        return CeylonConfigFinder.loadConfigFromFile(new File(filename));
     }
     
     @After
