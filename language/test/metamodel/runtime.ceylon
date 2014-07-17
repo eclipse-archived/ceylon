@@ -132,29 +132,29 @@ shared void checkConstructors(){
     }
     
     try {
-        `ThrowsMyThrowable`(true);
+        `ThrowsMyAssertionError`(true);
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyThrowable`.apply(true);
+        `ThrowsMyAssertionError`.apply(true);
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     
     try {
         `ThrowsThrowable`(true);
         assert(false);
     }catch(Throwable x){
-        assert(!x is MyThrowable);
+        assert(!x is MyAssertionError);
     }
     try {
         `ThrowsThrowable`.apply(true);
         assert(false);
     }catch(Throwable x){
-        assert(!x is MyThrowable);
+        assert(!x is MyAssertionError);
     }
     
     value variadicClass = `VariadicParams`;
@@ -297,30 +297,30 @@ shared void checkMemberAttributes(){
         assert(x is MyException);
     }
     
-    ThrowsMyThrowable tmer = ThrowsMyThrowable(false);
+    ThrowsMyAssertionError tmer = ThrowsMyAssertionError(false);
     try {
-        `ThrowsMyThrowable.getter`(tmer).get();
+        `ThrowsMyAssertionError.getter`(tmer).get();
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyThrowable.getter`(tmer).set(1);
+        `ThrowsMyAssertionError.getter`(tmer).set(1);
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyThrowable.getter`(tmer).setIfAssignable(1);
+        `ThrowsMyAssertionError.getter`(tmer).setIfAssignable(1);
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     try {
-        `value ThrowsMyThrowable.getter`.memberSet(tmer, 1);
+        `value ThrowsMyAssertionError.getter`.memberSet(tmer, 1);
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
 }
 
@@ -404,22 +404,22 @@ shared void checkMemberFunctions(){
         assert(x is IncompatibleTypeException);
     }
     
-    ThrowsMyThrowable tmer = ThrowsMyThrowable(false);
+    ThrowsMyAssertionError tmer = ThrowsMyAssertionError(false);
     try {
-        `ThrowsMyThrowable.method`(tmer)();
+        `ThrowsMyAssertionError.method`(tmer)();
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyThrowable.method`.bind(tmer).apply();
+        `ThrowsMyAssertionError.method`.bind(tmer).apply();
         assert(false);
     }catch(Throwable x){
-        assert(x is MyThrowable);
+        assert(x is MyAssertionError);
     }
     // invalid container type
     try {
-        `ThrowsMyThrowable.method`.bind(1);
+        `ThrowsMyAssertionError.method`.bind(1);
         assert(false);
     }catch(Exception x){
         assert(x is IncompatibleTypeException);

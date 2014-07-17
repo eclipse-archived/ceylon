@@ -1,7 +1,7 @@
 class MyException() extends Exception("my exception", null) {}
 class OtherException() extends Exception("other exception", null) {}
-class MyThrowable() extends Throwable("my throwable", null) {}
-class OtherThrowable() extends Throwable("other throwable", null) {}
+class MyAssertionError() extends AssertionError("my throwable") {}
+class OtherAssertionError() extends AssertionError("other throwable") {}
 
 variable Integer sharedState = -1;
 
@@ -83,10 +83,10 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
-    catch (OtherThrowable oe) {
+    catch (OtherAssertionError oe) {
         fail("other throwable");
     }
-    catch (MyThrowable oe) {
+    catch (MyAssertionError oe) {
         fail("my throwable");
     }
     catch (MyException me) {
@@ -98,7 +98,7 @@ shared void exceptions() {
     
     caught=false;
     try {
-        throw MyThrowable();
+        throw MyAssertionError();
     }
     catch (MyException oe) {
         fail("my exception");
@@ -106,10 +106,10 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
-    catch (OtherThrowable oe) {
+    catch (OtherAssertionError oe) {
         fail("other throwable");
     }
-    catch (MyThrowable me) {
+    catch (MyAssertionError me) {
         caught=true;
         check(me.message=="my throwable", "exception message");
         check(!me.cause exists, "exception cause");
@@ -134,7 +134,7 @@ shared void exceptions() {
     try {
         throw MyException();
     }
-    catch (OtherThrowable|MyThrowable e) {
+    catch (OtherAssertionError|MyAssertionError e) {
         fail("throwable");
     }
     catch (OtherException|MyException e) {
@@ -154,7 +154,7 @@ shared void exceptions() {
     catch (OtherException|MyException e) {
         fail("any exception");
     }
-    catch (OtherThrowable|MyThrowable e) {
+    catch (OtherAssertionError|MyAssertionError e) {
         fail("any throwable");
     }
     catch (Exception me) {
