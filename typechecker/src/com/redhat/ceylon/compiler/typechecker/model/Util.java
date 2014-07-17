@@ -449,16 +449,19 @@ public class Util {
      * account that a subtype is a "duplicate" of its
      * supertype.
      */
-    public static void addToUnion(List<ProducedType> list, ProducedType pt) {
+    public static void addToUnion(List<ProducedType> list, 
+            ProducedType pt) {
         if (pt==null) {
             return;
         }
         if (pt.getDeclaration() instanceof UnionType) {
             // cheaper c-for than foreach
-            List<ProducedType> caseTypes = pt.getDeclaration().getCaseTypes();
+            List<ProducedType> caseTypes = 
+                    pt.getDeclaration().getCaseTypes();
             for ( int i=0,l=caseTypes.size();i<l;i++ ) {
                 ProducedType t = caseTypes.get(i);
-                addToUnion( list, t.substitute(pt.getTypeArguments()) );
+                addToUnion(list, 
+                        t.substitute(pt.getTypeArguments()));
             }
         }
         else if (pt.isWellDefined()) {
@@ -481,6 +484,11 @@ public class Util {
         }
     }
     
+    public static void addToIntersection(List<ProducedType> list, 
+            ProducedType pt, Unit unit) {
+        addToIntersection(list, pt, unit, true);
+    }
+    
     /**
      * Helper method for eliminating duplicate types from
      * lists of types that form an intersection type, taking 
@@ -488,7 +496,7 @@ public class Util {
      * subtype.
      */
     public static void addToIntersection(List<ProducedType> list, 
-            ProducedType pt, Unit unit) {
+            ProducedType pt, Unit unit, boolean reduceDisjointTypes) {
         if (pt==null) {
             return;
         }
@@ -500,7 +508,7 @@ public class Util {
                 ProducedType t = satisfiedTypes.get(i);
                 addToIntersection(list, 
                         t.substitute(pt.getTypeArguments()), 
-                        unit);
+                        unit, reduceDisjointTypes);
             }
         }
         else {
@@ -510,7 +518,7 @@ public class Util {
             //(the intersection of disjoint types is empty)
             
             // cheaper c-for than foreach
-            if (!list.isEmpty()) {
+            if (!list.isEmpty() && reduceDisjointTypes) {
                 List<TypeDeclaration> supertypes = 
                         pt.getDeclaration().getSupertypeDeclarations();
                 for (int i=0, l=supertypes.size(); i<l; i++) {

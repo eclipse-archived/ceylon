@@ -60,13 +60,16 @@ public class UnionType extends TypeDeclaration {
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> 
+    getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
     	//TODO: this can result in the wrong parameter types, and the
     	//      same bug also affects intersection types
-    	Map<String, DeclarationWithProximity> result = super.getMatchingMemberDeclarations(scope, startingWith, proximity);
+    	Map<String, DeclarationWithProximity> result = 
+    	        super.getMatchingMemberDeclarations(scope, startingWith, proximity);
 		TypeDeclaration d = getCaseTypes().get(0).getDeclaration();
-		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = d.getMatchingMemberDeclarations(scope, startingWith, proximity)
-		        .entrySet().iterator();
+		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = 
+		        d.getMatchingMemberDeclarations(scope, startingWith, proximity)
+		                .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = iter.next();
 		    if (getMember(e.getKey(), null, false)!=null) {
@@ -90,7 +93,7 @@ public class UnionType extends TypeDeclaration {
     protected int hashCodeForCache() {
         int ret = 17;
         List<ProducedType> caseTypes = getCaseTypes();
-        for(int i=0,l=caseTypes.size();i<l;i++){
+        for(int i=0,l=caseTypes.size();i<l;i++) {
             ret = (37 * ret) + caseTypes.get(i).hashCode();
         }
         return ret;
@@ -98,16 +101,19 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof UnionType == false)
+        if (o == null || !(o instanceof UnionType)) {
             return false;
+        }
         UnionType b = (UnionType) o;
         List<ProducedType> caseTypesA = getCaseTypes();
         List<ProducedType> caseTypesB = b.getCaseTypes();
-        if(caseTypesA.size() != caseTypesB.size())
+        if (caseTypesA.size() != caseTypesB.size()) {
             return false;
-        for(int i=0,l=caseTypesA.size();i<l;i++){
-            if(!caseTypesA.get(i).equals(caseTypesB.get(i)))
+        }
+        for (int i=0,l=caseTypesA.size(); i<l; i++) {
+            if (!caseTypesA.get(i).equals(caseTypesB.get(i))) {
                 return false;
+            }
         }
         return true;
     }

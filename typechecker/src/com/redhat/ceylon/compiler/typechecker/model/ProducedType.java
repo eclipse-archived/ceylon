@@ -1129,12 +1129,13 @@ public class ProducedType extends ProducedReference {
                     }
                     addToIntersection(list2, 
                             st.getTypeArguments().get(tp), 
-                            getDeclaration().getUnit());
+                            getDeclaration().getUnit(), 
+                            false);
                 }
                 IntersectionType it = 
                         new IntersectionType(getDeclaration().getUnit());
                 it.setSatisfiedTypes(list2);
-                result = it.canonicalize().getType();
+                result = it.canonicalize(false).getType();
             }
             else {
                 for (ProducedType pt: caseTypes) {

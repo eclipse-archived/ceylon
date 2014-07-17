@@ -42,7 +42,8 @@ public class IntersectionType extends TypeDeclaration {
         List<ProducedType> sts = getSatisfiedTypes();
         for (ProducedType pt: sts) {
             if (pt.isUnknown()) {
-                List<ProducedType> list = new ArrayList<ProducedType>(sts.size()-1);
+                List<ProducedType> list = 
+                        new ArrayList<ProducedType>(sts.size()-1);
                 for (ProducedType st: sts) {
                     if (!st.isUnknown()) {
                         list.add(st);
@@ -63,13 +64,17 @@ public class IntersectionType extends TypeDeclaration {
             return super.getType();
         }
     }
+    
+    public TypeDeclaration canonicalize() {
+        return canonicalize(true);
+    }
 
     /**
      * Apply the distributive rule X&(Y|Z) == X&Y|X&Z to simplify the 
      * intersection to a canonical form with no parens. The result is 
      * a union of intersections, instead of an intersection of unions.
      */
-	public TypeDeclaration canonicalize() {
+	public TypeDeclaration canonicalize(boolean reduceDisjointTypes) {
 	    List<ProducedType> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
 	        return unit.getAnythingDeclaration();
@@ -83,21 +88,27 @@ public class IntersectionType extends TypeDeclaration {
 		for (ProducedType st: sts) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
-                List<ProducedType> caseTypes = st.getDeclaration().getCaseTypes();
-				List<ProducedType> ulist = new ArrayList<ProducedType>(caseTypes.size());
+                List<ProducedType> caseTypes = 
+                        st.getDeclaration().getCaseTypes();
+				List<ProducedType> ulist = 
+				        new ArrayList<ProducedType>(caseTypes.size());
                 for (ProducedType ct: caseTypes) {
-					List<ProducedType> ilist = new ArrayList<ProducedType>(sts.size());
+					List<ProducedType> ilist = 
+					        new ArrayList<ProducedType>(sts.size());
 					for (ProducedType pt: sts) {
 						if (pt==st) {
-							addToIntersection(ilist, ct, unit);
+							addToIntersection(ilist, ct, unit, 
+							        reduceDisjointTypes);
 						}
 						else {
-							addToIntersection(ilist, pt, unit);
+							addToIntersection(ilist, pt, unit, 
+							        reduceDisjointTypes);
 						}
 					}
 					IntersectionType it = new IntersectionType(unit);
 					it.setSatisfiedTypes(ilist);
-					addToUnion(ulist, it.canonicalize().getType());
+					addToUnion(ulist, 
+					        it.canonicalize(reduceDisjointTypes).getType());
 				}
 				result.setCaseTypes(ulist);
 				return result;
@@ -120,7 +131,7 @@ public class IntersectionType extends TypeDeclaration {
     protected int hashCodeForCache() {
         int ret = 17;
         List<ProducedType> satisfiedTypes = getSatisfiedTypes();
-        for(int i=0,l=satisfiedTypes.size();i<l;i++){
+        for(int i=0, l=satisfiedTypes.size(); i<l; i++) {
             ret = (37 * ret) + satisfiedTypes.get(i).hashCode();
         }
         return ret;
@@ -128,16 +139,19 @@ public class IntersectionType extends TypeDeclaration {
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof IntersectionType == false)
+        if (o == null || !(o instanceof IntersectionType)) {
             return false;
+        }
         IntersectionType b = (IntersectionType) o;
         List<ProducedType> satisfiedTypesA = getSatisfiedTypes();
         List<ProducedType> satisfiedTypesB = b.getSatisfiedTypes();
-        if(satisfiedTypesA.size() != satisfiedTypesB.size())
+        if (satisfiedTypesA.size() != satisfiedTypesB.size()) {
             return false;
-        for(int i=0,l=satisfiedTypesA.size();i<l;i++){
-            if(!satisfiedTypesA.get(i).equals(satisfiedTypesB.get(i)))
+        }
+        for (int i=0, l=satisfiedTypesA.size(); i<l; i++) {
+            if (!satisfiedTypesA.get(i).equals(satisfiedTypesB.get(i))) {
                 return false;
+            }
         }
         return true;
     }
