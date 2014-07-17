@@ -1137,10 +1137,10 @@ public class Util {
             ProducedType arg;
             ProducedType rta = first.getTypeArguments().get(tp);
             ProducedType prta = second.getTypeArguments().get(tp);
-            if (tp.isContravariant()) {
+            if (first.isContravariant(tp) && second.isContravariant(tp)) {
                 arg = unionType(rta, prta, unit);
             }
-            else if (tp.isCovariant()) {
+            else if (first.isCovariant(tp) && second.isCovariant(tp)) {
                 arg = intersectionType(rta, prta, unit);
             }
             else {
@@ -1164,7 +1164,8 @@ public class Util {
             }
             args.add(arg);
         }
-        return dec.getProducedType(principalQualifyingType(first, second, dec, unit), args);
+        ProducedType pqt = principalQualifyingType(first, second, dec, unit);
+        return dec.getProducedType(pqt, args);
     }
     
     public static boolean areConsistentSupertypes(ProducedType st1, 
@@ -1187,13 +1188,14 @@ public class Util {
         return !intersectionType(st1, st2, unit).isNothing();
     }
 
-    public static ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
-        List<ProducedType> list = new ArrayList<ProducedType>(ci.getSatisfiedTypes().size()+1);
-        if (ci.getExtendedType()!=null) {
-            list.add(ci.getExtendedType());
+    public static ProducedType intersectionOfSupertypes(TypeDeclaration td) {
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>(td.getSatisfiedTypes().size()+1);
+        if (td.getExtendedType()!=null) {
+            list.add(td.getExtendedType());
         }
-        list.addAll(ci.getSatisfiedTypes());
-        IntersectionType it = new IntersectionType(ci.getUnit());
+        list.addAll(td.getSatisfiedTypes());
+        IntersectionType it = new IntersectionType(td.getUnit());
         it.setSatisfiedTypes(list);
         return it.getType();
     }

@@ -5,6 +5,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArgume
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
@@ -49,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -724,7 +727,7 @@ public class TypeVisitor extends Visitor {
             visitSimpleType(that, outerType, type);
         }
     }
-
+    
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
@@ -786,33 +789,41 @@ public class TypeVisitor extends Visitor {
         }
     }
 
-    private void visitSimpleType(Tree.SimpleType that, ProducedType ot, TypeDeclaration dec) {
+    private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
+            TypeDeclaration dec) {
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
-        List<ProducedType> ta = getTypeArguments(tal, 
-        		dec.getTypeParameters(), ot);
-        if (tal!=null) tal.setTypeModels(ta);
+        List<TypeParameter> params = dec.getTypeParameters();
+        List<ProducedType> ta = getTypeArguments(tal, params, ot);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
-            ProducedType pt = dec.getProducedType(ot, ta);
-//            if (!dec.isAlias()) {
-            	//TODO: remove this awful hack which means
-            	//      we can't define aliases for types
-            	//      with sequenced type parameters
-            	dec = pt.getDeclaration();
-//            }
-            that.setTypeModel(pt);
-            that.setDeclarationModel(dec);
-        //}
+        ProducedType pt = dec.getProducedType(ot, ta);
+        //dec = pt.getDeclaration();
+        if (tal!=null) {
+            tal.setTypeModels(ta);
+            //TODO: dupe of logic in ExpressionVisitor
+            List<Tree.Type> args = tal.getTypes();
+            for (int i = 0; i<args.size(); i++) {
+                Tree.Type t = args.get(i);
+                if (t instanceof Tree.StaticType) {
+                    TypeVariance variance = 
+                            ((Tree.StaticType) t).getTypeVariance();
+                    if (variance!=null) {
+                        TypeParameter p = params.get(i);
+                        if (p.isInvariant()) {
+                            if (variance.getText().equals("out")) {
+                                pt.setVariance(p, OUT);
+                            }
+                            else if (variance.getText().equals("in")) {
+                                pt.setVariance(p, IN);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        that.setTypeModel(pt);
+        that.setDeclarationModel(dec);
     }
     
-    /*private void visitExtendedType(Tree.QualifiedType that, ProducedType ot, TypeDeclaration dec) {
-        Tree.TypeArgumentList tal = that.getTypeArgumentList();
-        List<ProducedType> typeArguments = getTypeArguments(tal);
-        //if (acceptsTypeArguments(dec, typeArguments, tal, that)) {
-            ProducedType pt = dec.getProducedType(ot, typeArguments);
-            that.setTypeModel(pt);
-        //}
-    }*/
-        
     @Override 
     public void visit(Tree.VoidModifier that) {
         Class vtd = unit.getAnythingDeclaration();

@@ -17,6 +17,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageMod
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
@@ -70,6 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -672,6 +675,7 @@ public class ExpressionVisitor extends Visitor {
             hasParams = true;
             me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
+        assign(me);
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (me instanceof Tree.BaseMemberExpression) {
             Declaration d = that.getDeclaration();
@@ -3022,7 +3026,16 @@ public class ExpressionVisitor extends Visitor {
         return p==null ? null : p.getTypeModel();
     }
     
+    private void assign(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression m = 
+                    (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
+    }
+    
     @Override public void visit(Tree.PostfixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         ProducedType type = type(that);
         visitIncrementDecrement(that, type, that.getTerm());
@@ -3030,6 +3043,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         ProducedType type = type(that);
         if (that.getTerm()!=null) {
@@ -3644,24 +3658,28 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.AssignOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitAssignOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.LogicalAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitLogicalOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         visitSetAssignmentOperator(that);
         checkAssignability(that.getLeftTerm(), that);
@@ -4104,14 +4122,18 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = accountForStaticReferenceReceiverType(that, 
                 unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that, false)) {
-            ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
+            ProducedTypedReference ptr = 
+                    receiverType.getTypedMember(member, typeArgs, 
+                            that.getAssigned());
             /*if (ptr==null) {
                 that.addError("member method or attribute does not exist: " + 
                         member.getName(unit) + " of type " + 
                         receiverType.getDeclaration().getName(unit));
             }
             else {*/
-                ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
+                ProducedType t = 
+                        ptr.getFullType(wrap(ptr.getType(), 
+                                receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
                 if (!dynamic && isTypeUnknown(t)) {
                     //this occurs with an ambiguous reference
@@ -4167,8 +4189,11 @@ public class ExpressionVisitor extends Visitor {
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
             TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
-            ProducedType outerType = that.getScope().getDeclaringType(member);
-            ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
+            ProducedType outerType = 
+                    that.getScope().getDeclaringType(member);
+            ProducedTypedReference pr = 
+                    member.getProducedTypedReference(outerType, typeArgs, 
+                            that.getAssigned());
             that.setTarget(pr);
             ProducedType t = pr.getFullType();
             if (isTypeUnknown(t)) {
@@ -4437,11 +4462,36 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
             if (type!=null) {
+                List<TypeParameter> params = type.getTypeParameters();
                 List<ProducedType> ta = getTypeArguments(tal, 
-                        type.getTypeParameters(), 
-                        pt.getQualifyingType());
+                        params, pt.getQualifyingType());
                 acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
                 //the type has already been set by TypeVisitor
+                if (tal!=null) {
+                    List<Tree.Type> args = tal.getTypes();
+                    for (int i = 0; i<args.size(); i++) {
+                        Tree.Type t = args.get(i);
+                        if (t instanceof Tree.StaticType) {
+                            TypeVariance variance = 
+                                    ((Tree.StaticType) t).getTypeVariance();
+                            if (variance!=null) {
+                                TypeParameter p = params.get(i);
+                                if (p.isInvariant()) {
+                                    if (variance.getText().equals("out")) {
+                                        pt.setVariance(p, OUT);
+                                    }
+                                    else if (variance.getText().equals("in")) {
+                                        pt.setVariance(p, IN);
+                                    }
+                                }
+                                else {
+                                    variance.addError("type parameter is not declared invariant: " + 
+                                            p.getName() + " of " + type.getName(unit));
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -5351,7 +5401,7 @@ public class ExpressionVisitor extends Visitor {
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
-        
+                
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         Tree.SimpleType et = that.getType();
         if (et!=null) {
@@ -5381,6 +5431,21 @@ public class ExpressionVisitor extends Visitor {
 //                        type.getDeclaration().inherits(unit.getExceptionDeclaration())) {
 //                    et.addUnsupportedError("generic exception types not yet supported");
 //                }
+            }
+            checkSupertypeVarianceAnnotations(et);
+        }
+    }
+
+    private void checkSupertypeVarianceAnnotations(Tree.SimpleType et) {
+        Tree.TypeArgumentList tal = et.getTypeArgumentList();
+        if (tal!=null) {
+            for (Tree.Type t: tal.getTypes()) {
+                if (t instanceof Tree.StaticType) {
+                    TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
+                    if (variance!=null) {
+                        variance.addError("supertype expression may not specify variance");
+                    }
+                }
             }
         }
     }
@@ -5429,6 +5494,9 @@ public class ExpressionVisitor extends Visitor {
                 /*if (!(td instanceof TypeParameter)) {
                     checkCaseOfSupertype(t, td, type);
                 }*/
+            }
+            if (t instanceof Tree.SimpleType) {
+                checkSupertypeVarianceAnnotations((Tree.SimpleType) t);
             }
         }
         //Moved to RefinementVisitor, which 

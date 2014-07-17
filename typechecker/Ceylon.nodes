@@ -252,6 +252,7 @@
     ProducedType typeModel;)
 
 ^(abstract STATIC_TYPE:TYPE
+    TYPE_VARIANCE?
     boolean metamodel;)
 
 ^(GROUPED_TYPE:STATIC_TYPE
@@ -264,6 +265,9 @@
     TypeDeclaration declarationModel;)
 
 ^(BASE_TYPE: SIMPLE_TYPE)
+
+^(QUALIFIED_TYPE: SIMPLE_TYPE
+    STATIC_TYPE outerType)
 
 ^(UNION_TYPE: STATIC_TYPE
     STATIC_TYPE*)
@@ -290,9 +294,6 @@
 ^(ENTRY_TYPE: STATIC_TYPE
     STATIC_TYPE keyType
     STATIC_TYPE valueType)
-
-^(QUALIFIED_TYPE: SIMPLE_TYPE
-    STATIC_TYPE outerType)
 
 ^(SUPER_TYPE: STATIC_TYPE)
 
