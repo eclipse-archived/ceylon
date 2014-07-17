@@ -125,7 +125,14 @@ public class RefinementVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        TypedDeclaration td = that.getDeclarationModel();
+        Method td = that.getDeclarationModel();
+        Declaration refined = td.getRefinedDeclaration();
+        if (td.isOverloaded() && 
+                (refined==td || 
+                !(refined instanceof Method) || 
+                !((Method) refined).isOverloaded())) {
+            that.addError("overloaded method does not refine an overloaded method");
+        }
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {

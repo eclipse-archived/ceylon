@@ -121,7 +121,9 @@ public class DeclarationVisitor extends Visitor {
     private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
         if ( setModelName(that, model, that.getIdentifier()) ) {
-            if (checkDupe) checkForDuplicateDeclaration(that, model);
+            if (checkDupe) {
+                checkForDuplicateDeclaration(that, model);
+            }
         }
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
@@ -156,44 +158,39 @@ public class DeclarationVisitor extends Visitor {
             return false;
         }
         else {
-            //model.setName(internalName(that, model, id));
             model.setName(id.getText());
             return true;
             //TODO: check for dupe arg name
         }
     }
-
-    /*private String internalName(Node that, Declaration model,
-            Tree.Identifier id) {
-        String n = id.getText();
-        if ((that instanceof Tree.ObjectDefinition||that instanceof Tree.ObjectArgument) 
-                && model instanceof Class) {
-            n = "#" + n;
-        }
-        return n;
-    }*/
-
+    
     private static void checkForDuplicateDeclaration(Tree.Declaration that, 
             final Declaration model) {
         if (model.getName()!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
                 //a setter must have a matching getter
-                Declaration member = model.getContainer().getDirectMember(model.getName(), null, false);
+                Declaration member = 
+                        model.getContainer().getDirectMember(model.getName(), 
+                                null, false);
                 if (member==null) {
-                    that.addError("setter with no matching getter: " + model.getName());
+                    that.addError("setter with no matching getter: " + 
+                            model.getName());
                 }
                 else if (!(member instanceof Value)) {
-                    that.addError("setter name does not resolve to matching getter: " + model.getName());
+                    that.addError("setter name does not resolve to matching getter: " + 
+                            model.getName());
                 }
                 else if (!((Value) member).isTransient()) {
-                    that.addError("matching value is a reference or is forward-declared: " + model.getName());
+                    that.addError("matching value is a reference or is forward-declared: " + 
+                            model.getName());
                 }
                 else {
                     Value getter = (Value) member;
                     setter.setGetter(getter);
                     if (getter.isVariable()) {
-                        that.addError("duplicate setter for getter: " + model.getName());
+                        that.addError("duplicate setter for getter: " + 
+                                model.getName());
                     }
                     else {
                         getter.setSetter(setter);
@@ -204,9 +201,17 @@ public class DeclarationVisitor extends Visitor {
                 Scope s = model.getContainer();
                 boolean isControl;
                 do {
-                    Declaration member = s.getDirectMember(model.getName(), null, false);
+                    Declaration member = 
+                            s.getDirectMember(model.getName(), null, false);
                     if (member!=null) {
-                        that.addError("duplicate declaration name: " + model.getName());
+                        if (member instanceof Method && model instanceof Method) {
+                            ((Method) member).setOverloaded(true);
+                            ((Method) model).setOverloaded(true);
+                        }
+                        else {
+                            that.addError("duplicate declaration name: " + 
+                                    model.getName());
+                        }
                         model.getUnit().getDuplicateDeclarations().add(member);
                     }
                     isControl = s instanceof ControlBlock;
