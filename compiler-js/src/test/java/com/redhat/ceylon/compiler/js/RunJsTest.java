@@ -42,7 +42,7 @@ public class RunJsTest {
         tmpModules.mkdir();
         File sub = new File(tmpModules, "check/0.1");
         sub.mkdirs();
-        File src = new File("build/test/modules/check/0.1");
+        File src = new File("build/test/proto/check/0.1");
         for (File f : src.listFiles()) {
             copyFile(f, new File(sub, f.getName()));
         }
@@ -53,7 +53,7 @@ public class RunJsTest {
         CeylonRunJsTool runner = new CeylonRunJsTool();
         runner.setModuleVersion("misc/0.1");
         runner.setRun("test");
-        runner.setRepository(Arrays.asList(new URI(tmpModules.getAbsolutePath()), new URI("build/runtime"), new URI("build/test/modules")));
+        runner.setRepository(Arrays.asList(new URI(tmpModules.getAbsolutePath()), new URI("build/runtime"), new URI("build/test/proto")));
         runner.run();
     }
 
