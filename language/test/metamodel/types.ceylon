@@ -332,16 +332,16 @@ shared class ThrowsMyThrowable(Boolean t){
 
 shared class ThrowsThrowable(Boolean t){
     if(t){
-        throw Throwable("error");
+        throw (Exception("error") of Throwable);
     }
     shared Integer getter {
-        throw Throwable("error");
+        throw (Exception("error") of Throwable);
     }
     assign getter {
-        throw Throwable("error");
+        throw (Exception("error") of Throwable);
     }
     shared Integer method() {
-        throw Throwable("error");
+        throw (Exception("error") of Throwable);
     }
 }
 
