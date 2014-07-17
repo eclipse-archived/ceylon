@@ -8,6 +8,9 @@ public abstract class Constants {
     public static final String CEYLON_SUFFIX = ".ceylon";
     public static final String JAVA_SUFFIX = ".java";
     public static final String JS_SUFFIX = ".js";
+    
+    public static final String CEYLON_CONFIG_DIR = ".ceylon";
+    public static final String CEYLON_CONFIG_FILE = "config";
 
     public static final String MODULE_DESCRIPTOR = "module.ceylon";
     
@@ -17,6 +20,7 @@ public abstract class Constants {
 
     public static final String PROP_CEYLON_HOME_DIR = "ceylon.home";
     public static final String PROP_CEYLON_CONFIG_DIR = "ceylon.config.dir";
+    public static final String PROP_CEYLON_CONFIG_FILE = "ceylon.config";
     public static final String PROP_CEYLON_USER_DIR = "ceylon.user.dir";
     public static final String PROP_CEYLON_SYSLIBS_DIR = "ceylon.system.libs";
     
