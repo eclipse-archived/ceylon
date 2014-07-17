@@ -18,21 +18,21 @@ import org.antlr.runtime.ANTLRStringStream;
  * 
  * @see <a href="https://github.com/ceylon/ceylon-compiler/issues/1712">#1712</a>
  */
-public class NewlineFixingInputStream extends
+public class NewlineFixingStringStream extends
         ANTLRStringStream {
     
     private static final int DEFAULT_INIT_BUF_SIZE = 1024;
     
     
-    public NewlineFixingInputStream() {
+    public NewlineFixingStringStream() {
         super();
     }
 
-    public NewlineFixingInputStream(char[] data, int numberOfActualCharsInArray) {
+    public NewlineFixingStringStream(char[] data, int numberOfActualCharsInArray) {
         super(data, numberOfActualCharsInArray);
     }
 
-    public NewlineFixingInputStream(String input) {
+    public NewlineFixingStringStream(String input) {
         super(input);
     }
     
@@ -44,7 +44,7 @@ public class NewlineFixingInputStream extends
      * @param input The stream to read. This will be closed by side-effect.
      * @param encoding How the characters in the given stream are encoded.
      */
-    public static NewlineFixingInputStream fromStream(InputStream input, 
+    public static NewlineFixingStringStream fromStream(InputStream input, 
             String encoding)
             throws IOException {
         return fromStream(input, encoding, DEFAULT_INIT_BUF_SIZE);
@@ -58,7 +58,7 @@ public class NewlineFixingInputStream extends
      * @param encoding How the characters in the given stream are encoded.
      * @param bufSize The initial size of the char data buffer
      */
-    public static NewlineFixingInputStream fromStream(InputStream input, String encoding, int bufSize) 
+    public static NewlineFixingStringStream fromStream(InputStream input, String encoding, int bufSize) 
             throws IOException {
         return fromReader(new InputStreamReader(new BufferedInputStream(input), encoding), bufSize);
     }
@@ -69,7 +69,7 @@ public class NewlineFixingInputStream extends
      * 
      * @param reader The reader to read. This will be closed by side-effect.
      */
-    public static NewlineFixingInputStream fromReader(Reader reader) 
+    public static NewlineFixingStringStream fromReader(Reader reader) 
             throws IOException {
         return fromReader(reader, DEFAULT_INIT_BUF_SIZE);
     }
@@ -81,7 +81,7 @@ public class NewlineFixingInputStream extends
      * @param reader The reader to read. This will be closed by side-effect.
      * @param bufSize The initial size of the char data buffer
      */
-    public static NewlineFixingInputStream fromReader(Reader reader, int bufSize) 
+    public static NewlineFixingStringStream fromReader(Reader reader, int bufSize) 
             throws IOException {
         try {
             char[] data = new char[bufSize];
@@ -96,7 +96,7 @@ public class NewlineFixingInputStream extends
                 }
                 read = reader.read(data, n, data.length-n);
             }
-            return new NewlineFixingInputStream(data, n);
+            return new NewlineFixingStringStream(data, n);
         } finally {
             reader.close();
         }

@@ -384,7 +384,7 @@ public class LanguageCompiler extends JavaCompiler {
                 return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), filename, pkgName, phasedUnit);
             }
             if (phasedUnit == null) {
-                ANTLRStringStream input = new NewlineFixingInputStream(source);
+                ANTLRStringStream input = new NewlineFixingStringStream(source);
                 CeylonLexer lexer = new CeylonLexer(input);
 
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
