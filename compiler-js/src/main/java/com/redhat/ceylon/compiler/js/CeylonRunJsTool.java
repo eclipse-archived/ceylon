@@ -354,7 +354,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
             }
             //Module names have escaped forward slashes due to JSON encoding
             int idx = depname.indexOf('/');
-            ArtifactContext ac = new ArtifactContext(depname.substring(0, idx), depname.substring(idx+1), ".js");
+            ArtifactContext ac = new ArtifactContext(depname.substring(0, idx), depname.substring(idx+1),
+                    ArtifactContext.JS_MODEL);
             ac.setFetchSingleArtifact(true);
             ac.setThrowErrorIfMissing(!optional);
             File other = repoman.getArtifact(ac);
@@ -428,8 +429,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
-        ArtifactContext ac = new ArtifactContext(modName, modVersion, ".js");
-        ac.setFetchSingleArtifact(true);
+        ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS_MODEL, ArtifactContext.JS);
+        ac.setFetchSingleArtifact(false);
         ac.setThrowErrorIfMissing(false);
         File jsmod = repoman.getArtifact(ac);
         if (jsmod == null) {
