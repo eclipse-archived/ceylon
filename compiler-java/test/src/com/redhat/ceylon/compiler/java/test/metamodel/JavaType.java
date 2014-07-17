@@ -133,7 +133,7 @@ public class JavaType {
         }
     }
     
-    public <T extends ceylon.language.Number> void methodBoundObjectVarargs(long count, T b0, T... b){
+    public <T extends ceylon.language.Number<T>> void methodBoundObjectVarargs(long count, T b0, @SuppressWarnings("unchecked") T... b){
         assertt(b0.equals(ceylon.language.Integer.instance(1)));
         assertt(b != null && b.length == count);
         for(T t : b){
