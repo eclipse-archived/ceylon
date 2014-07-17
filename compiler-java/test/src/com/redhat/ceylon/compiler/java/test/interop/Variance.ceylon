@@ -44,6 +44,28 @@ void variance() {
     @type:"Class<out Object>" value v5 = var.rwCovariantProperty;
     @type:"Class<in JavaVariance>" value v6 = var.rwContravariantProperty;
     @type:"Class<out Object>" value v7 = var.rwRawProperty;
+    
+    // test casts and assignability
+    Class<Anything> anythingClass = nothing;
+    Class<Integer> integerClass = nothing;
+    Class<Nothing> nothingClass = nothing;
+    Class<out Nothing> outNothingClass = nothing;
+    Class<in Anything> inAnythingClass = nothing;
+    
+    // any instantiation of Inv to Inv<in Nothing> or Inv<out Anything>
+    Class<in Nothing> inNothing1 = anythingClass;
+    Class<in Nothing> inNothing2 = integerClass;
+    Class<in Nothing> inNothing3 = nothingClass;
+
+    Class<out Anything> inAnything1 = anythingClass;
+    Class<out Anything> inAnything2 = integerClass;
+    Class<out Anything> inAnything3 = nothingClass;
+    
+    // Inv<out Nothing> to Inv<Nothing>
+    Class<Nothing> nothing1 = outNothingClass;
+    
+    //// Inv<in Anything> to Inv<Anything>
+    Class<Anything> anything1 = inAnythingClass;
 }
 
 @noanno

@@ -35,6 +35,19 @@ final class variance_ {
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v5 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwCovariantProperty());
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? super .com.redhat.ceylon.compiler.java.test.interop.JavaVariance> v6 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwContravariantProperty());
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v7 = (.com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>).com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwRawProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anythingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.ceylon.language.Integer> integerClass = (.com.redhat.ceylon.compiler.java.test.interop.Class).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> nothingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> outNothingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> inAnythingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing1 = anythingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing2 = integerClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing3 = nothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything1 = anythingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything2 = integerClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything3 = nothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> nothing1 = outNothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anything1 = inAnythingClass;
     }
     
     public static void main(.java.lang.String[] args) {
