@@ -46,7 +46,9 @@ void variance() {
     @type:"Class<out Object>" value v7 = var.rwRawProperty;
 }
 
-//@noanno
-//abstract class MyMap() satisfies Map<String, Object> {
-//    shared actual void putAll(Map<out String, out Object> map) {}
-//}
+@noanno
+abstract class MyMap() satisfies Map<String, Object> {
+    shared actual void putAll(Map<out String, out Object> map) {}
+    shared actual formal Integer hash;
+    shared actual formal Boolean equals(Object o);
+}

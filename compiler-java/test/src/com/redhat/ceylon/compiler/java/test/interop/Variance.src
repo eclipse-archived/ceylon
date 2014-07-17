@@ -42,3 +42,24 @@ final class variance_ {
         .com.redhat.ceylon.compiler.java.test.interop.variance_.variance();
     }
 }
+abstract class MyMap implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map<.ceylon.language.String, .java.lang.Object> {
+    
+    MyMap() {
+    }
+    
+    @.java.lang.Override
+    public final void putAll(final .java.util.Map<? extends .ceylon.language.String, ? extends .java.lang.Object> map) {
+    }
+    
+    @.java.lang.Override
+    public abstract int hashCode();
+    
+    @.java.lang.Override
+    public abstract boolean equals(final .java.lang.Object o);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.MyMap.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.MyMap.class);
+}
