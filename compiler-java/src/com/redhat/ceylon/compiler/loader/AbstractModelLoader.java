@@ -109,6 +109,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -3994,80 +3995,111 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                             TypeMirror type, Scope scope, VarianceLocation variance,
                                             TypeMappingMode mode, Set<TypeDeclaration> rawDeclarationsSeen) {
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
-        if(!javacTypeArguments.isEmpty()){
+        boolean hasTypeParameters = !declaration.getTypeParameters().isEmpty();
+        boolean hasTypeArguments = !javacTypeArguments.isEmpty();
+        boolean isRaw = !hasTypeArguments && hasTypeParameters;
+        // if we have type arguments or type parameters (raw)
+        if(hasTypeArguments || isRaw){
+            // if it's raw we will need the map anyways
+            if(rawDeclarationsSeen == null)
+                rawDeclarationsSeen = new HashSet<TypeDeclaration>();
             // detect recursive bounds that we can't possibly satisfy, such as Foo<T extends Foo<T>>
             if(rawDeclarationsSeen != null && !rawDeclarationsSeen.add(declaration))
                 throw new RecursiveTypeParameterBoundException();
             try{
                 List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
-                for(TypeMirror typeArgument : javacTypeArguments){
-                    // if a single type argument is a wildcard and we are in a covariant location, we erase to Object
-                    if(typeArgument.getKind() == TypeKind.WILDCARD){
-                        // if contravariant or if it's a ceylon type we use its bound
-                        if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
+                List<TypeParameter> typeParameters = declaration.getTypeParameters();
+                List<TypeParameterMirror> typeParameterMirrors = null;
+                // SimpleReflType for Object and friends don't have a type, but don't need one
+                if(type.getDeclaredClass() != null)
+                    typeParameterMirrors = type.getDeclaredClass().getTypeParameters();
+                Map<TypeParameter,SiteVariance> siteVarianceMap = null;
+                int len = hasTypeArguments ? javacTypeArguments.size() : typeParameters.size();
+                for(int i=0 ; i<len ; i++){
+                    TypeParameter typeParameter = null;
+                    if(i < typeParameters.size())
+                        typeParameter = typeParameters.get(i);
+                    ProducedType producedTypeArgument = null;
+                    // do we have a type argument?
+                    TypeMirror typeArgument = null;
+                    SiteVariance siteVariance = null;
+                    if(hasTypeArguments){
+                        typeArgument = javacTypeArguments.get(i);
+                        // if a single type argument is a wildcard and we are in a covariant location, we erase to Object
+                        if(typeArgument.getKind() == TypeKind.WILDCARD){
+                            
                             TypeMirror bound = typeArgument.getUpperBound();
-                            if(bound == null)
+                            if(bound != null){
+                                siteVariance = SiteVariance.OUT;
+                            } else {
                                 bound = typeArgument.getLowerBound();
-                            // if it has no bound let's take Object
-                            if(bound == null){
-                                // add the type arg and move to the next one
-                                typeArguments.add(typeFactory.getObjectDeclaration().getType());
-                                continue;
+                                if(bound != null){
+                                    // it has a lower bound
+                                    siteVariance = SiteVariance.IN;
+                                }
                             }
+                            // use the bound in any case
                             typeArgument = bound;
-                        } else {
-                            ProducedType result = typeFactory.getObjectDeclaration().getType();
-                            result.setUnderlyingType(type.getQualifiedName());
-                            return result;
                         }
                     }
-                    ProducedType producedTypeArgument;
-                    if(mode == TypeMappingMode.NORMAL)
-                        producedTypeArgument = obtainType(moduleScope, typeArgument, scope, TypeLocation.TYPE_PARAM, variance);
-                    else
-                        producedTypeArgument = obtainTypeParameterBound(moduleScope, typeArgument, scope, rawDeclarationsSeen);
+                    // if we have no type argument, or if it's a wildcard with no bound, use the type parameter bounds if we can
+                    if(typeArgument == null && typeParameterMirrors != null && i < typeParameterMirrors.size()){
+                        TypeParameterMirror typeParameterMirror = typeParameterMirrors.get(i);
+                        // FIXME: multiple bounds?
+                        if(typeParameterMirror.getBounds().size() == 1){
+                            // make sure we don't go overboard
+                            if(rawDeclarationsSeen == null){
+                                rawDeclarationsSeen = new HashSet<TypeDeclaration>();
+                                // detect recursive bounds that we can't possibly satisfy, such as Foo<T extends Foo<T>>
+                                if(!rawDeclarationsSeen.add(declaration))
+                                    throw new RecursiveTypeParameterBoundException();
+                            }
+                            TypeMirror bound = typeParameterMirror.getBounds().get(0);
+                            try{
+                                producedTypeArgument = obtainTypeParameterBound(moduleScope, bound, declaration, rawDeclarationsSeen);
+                                siteVariance = SiteVariance.OUT;
+                            }catch(RecursiveTypeParameterBoundException x){
+                                // damnit, go for Object later
+                            }
+                        }                                        
+                    }
+
+                    // if we have no type argument, or it was a wildcard with no bounds and we could not use the type parameter bounds,
+                    // let's fall back to "out Object"
+                    if(typeArgument == null && producedTypeArgument == null){
+                        producedTypeArgument = typeFactory.getObjectDeclaration().getType();
+                        siteVariance = SiteVariance.OUT;
+                    }
+
+                    // record use-site variance if required
+                    if(!Decl.isCeylon(declaration) && siteVariance != null){
+                        // lazy alloc
+                        if(siteVarianceMap == null)
+                            siteVarianceMap = new HashMap<TypeParameter,SiteVariance>();
+                        siteVarianceMap.put(typeParameter, siteVariance);
+                    }
+                    
+                    // in some cases we may already have a produced type argument we can use. if not let's fetch it
+                    if(producedTypeArgument == null){
+                        if(mode == TypeMappingMode.NORMAL)
+                            producedTypeArgument = obtainType(moduleScope, typeArgument, scope, TypeLocation.TYPE_PARAM, variance);
+                        else
+                            producedTypeArgument = obtainTypeParameterBound(moduleScope, typeArgument, scope, rawDeclarationsSeen);
+                    }
                     typeArguments.add(producedTypeArgument);
                 }
-                return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+                ProducedType ret = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+                if(siteVarianceMap != null){
+                    ret.setVarianceOverrides(siteVarianceMap);
+                }
+                ret.setUnderlyingType(type.getQualifiedName());
+                ret.setRaw(isRaw);
+
+                return ret;
             }finally{
                 if(rawDeclarationsSeen != null)
                     rawDeclarationsSeen.remove(declaration);
             }
-        }else if(!declaration.getTypeParameters().isEmpty()){
-            // we have a raw type
-            ProducedType result;
-            if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
-                // detect recursive bounds that we can't possibly satisfy, such as Foo<T extends Foo<T>>
-                if(rawDeclarationsSeen == null)
-                    rawDeclarationsSeen = new HashSet<TypeDeclaration>();
-                if(!rawDeclarationsSeen.add(declaration))
-                    throw new RecursiveTypeParameterBoundException();
-                try{
-                    // generate a compatible bound for each type parameter
-                    int count = declaration.getTypeParameters().size();
-                    List<ProducedType> typeArguments = new ArrayList<ProducedType>(count);
-                    for(TypeParameterMirror tp : type.getDeclaredClass().getTypeParameters()){
-                        // FIXME: multiple bounds?
-                        if(tp.getBounds().size() == 1){
-                            TypeMirror bound = tp.getBounds().get(0);
-                            typeArguments.add(obtainTypeParameterBound(moduleScope, bound, declaration, rawDeclarationsSeen));
-                        }else
-                            typeArguments.add(typeFactory.getObjectDeclaration().getType());
-                    }
-                    result = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
-                }catch(RecursiveTypeParameterBoundException x){
-                    // damnit, go for Object
-                    result = typeFactory.getObjectDeclaration().getType();
-                }finally{
-                    rawDeclarationsSeen.remove(declaration);
-                }
-            }else{
-                // covariant raw erases to Object
-                result = typeFactory.getObjectDeclaration().getType();
-            }
-            result.setUnderlyingType(type.getQualifiedName());
-            result.setRaw(true);
-            return result;
         }
         return declaration.getType();
     }
