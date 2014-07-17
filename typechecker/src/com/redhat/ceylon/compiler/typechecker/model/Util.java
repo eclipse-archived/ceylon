@@ -487,17 +487,20 @@ public class Util {
      * into account that a supertype is a "duplicate" of its
      * subtype.
      */
-    public static void addToIntersection(List<ProducedType> list, ProducedType pt, 
-            Unit unit) {
+    public static void addToIntersection(List<ProducedType> list, 
+            ProducedType pt, Unit unit) {
         if (pt==null) {
             return;
         }
         if (pt.getDeclaration() instanceof IntersectionType) {
-            List<ProducedType> satisfiedTypes = pt.getDeclaration().getSatisfiedTypes();
+            List<ProducedType> satisfiedTypes = 
+                    pt.getDeclaration().getSatisfiedTypes();
             // cheaper c-for than foreach
-            for ( int i=0,l=satisfiedTypes.size();i<l;i++ ) {
+            for (int i=0,l=satisfiedTypes.size(); i<l; i++) {
                 ProducedType t = satisfiedTypes.get(i);
-                addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);
+                addToIntersection(list, 
+                        t.substitute(pt.getTypeArguments()), 
+                        unit);
             }
         }
         else {
@@ -507,33 +510,37 @@ public class Util {
             //(the intersection of disjoint types is empty)
             
             // cheaper c-for than foreach
-            List<TypeDeclaration> supertypes = pt.getDeclaration()
-                    .getSupertypeDeclarations();
-            for ( int i=0, l=supertypes.size(); i<l; i++ ) {
-                TypeDeclaration supertype = supertypes.get(i);
-                List<TypeDeclaration> ctds = supertype.getCaseTypeDeclarations();
-                if (ctds!=null) {
-                    TypeDeclaration ctd=null;
-                    // cheaper c-for than foreach
-                    for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
-                        TypeDeclaration ct = ctds.get(cti);
-                        if (pt.getDeclaration().inherits(ct)) {
-                            ctd = ct;
-                            break;
-                        }
-                    }
-                    if (ctd!=null) {
+            if (!list.isEmpty()) {
+                List<TypeDeclaration> supertypes = 
+                        pt.getDeclaration().getSupertypeDeclarations();
+                for (int i=0, l=supertypes.size(); i<l; i++) {
+                    TypeDeclaration supertype = supertypes.get(i);
+                    List<TypeDeclaration> ctds = 
+                            
+                            supertype.getCaseTypeDeclarations();
+                    if (ctds!=null) {
+                        TypeDeclaration ctd=null;
                         // cheaper c-for than foreach
                         for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
                             TypeDeclaration ct = ctds.get(cti);
-                            if (ct!=ctd) {
-                                // cheaper c-for than foreach
-                                for (int ti=0, tl=list.size(); ti<tl; ti++) {
-                                    ProducedType t = list.get(ti);
-                                    if (t.getDeclaration().inherits(ct)) {
-                                        list.clear();
-                                        list.add(new NothingType(unit).getType());
-                                        return;
+                            if (pt.getDeclaration().inherits(ct)) {
+                                ctd = ct;
+                                break;
+                            }
+                        }
+                        if (ctd!=null) {
+                            // cheaper c-for than foreach
+                            for (int cti=0, ctl=ctds.size(); cti<ctl; cti++) {
+                                TypeDeclaration ct = ctds.get(cti);
+                                if (ct!=ctd) {
+                                    // cheaper c-for than foreach
+                                    for (int ti=0, tl=list.size(); ti<tl; ti++) {
+                                        ProducedType t = list.get(ti);
+                                        if (t.getDeclaration().inherits(ct)) {
+                                            list.clear();
+                                            list.add(new NothingType(unit).getType());
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -545,7 +552,7 @@ public class Util {
             Boolean add = pt.isWellDefined();
             if (add) {
                 // cheaper c-for than foreach
-                for (int i=0;i<list.size();i++) {
+                for (int i=0; i<list.size(); i++) {
                     ProducedType t = list.get(i);
                     if (pt.isSupertypeOf(t)) {
                         add = false;
@@ -566,7 +573,9 @@ public class Util {
                             !pt.containsUnknowns() &&
                             !t.containsUnknowns()) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
-                        ProducedType pi = principalInstantiation(pt.getDeclaration(), pt, t, unit);
+                        ProducedType pi = 
+                                principalInstantiation(pt.getDeclaration(), 
+                                        pt, t, unit);
                         if (!pi.containsUnknowns()) {
                             list.remove(i);
                             list.add(pi);
@@ -580,9 +589,11 @@ public class Util {
                 //supertype of the intersection, even though
                 //it is not a supertype of any of the 
                 //intersected types!
-                IntersectionType it = new IntersectionType(unit);
+                IntersectionType it = 
+                        new IntersectionType(unit);
                 it.setSatisfiedTypes(list);
-                ProducedType type = it.canonicalize().getType();
+                ProducedType type = 
+                        it.canonicalize().getType();
                 if (pt.isSupertypeOf(type)) {
                     add = false;
                 }
