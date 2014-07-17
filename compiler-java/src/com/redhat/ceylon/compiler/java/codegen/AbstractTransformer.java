@@ -1939,26 +1939,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.isExactly(typeFact.getAnythingDeclaration().getType())) {
-                // For the root type Void:
-                if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
-                    // - The Ceylon type Foo<Void> appearing in an extends or satisfies
-                    //   clause results in the Java raw type Foo<Object>
-                    jta = make().Type(syms().objectType);
-                } else {
-                    // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
-                    // - Foo<Object> if Foo<T> is invariant in T
-                    // - Foo<?> if Foo<T> is covariant in T, or
-                    // - Foo<Object> if Foo<T> is contravariant in T
-                    if (simpleType.isContravariant(tp)) {
-                        jta = make().Type(syms().objectType);
-                    } else if (simpleType.isCovariant(tp)) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags | JT_TYPE_ARGUMENT));
-                    } else {
-                        jta = make().Type(syms().objectType);
-                    }
-                }
-            } else if (ta.getDeclaration() instanceof NothingType
+            if (ta.getDeclaration() instanceof NothingType
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
