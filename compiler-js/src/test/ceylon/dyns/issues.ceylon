@@ -50,7 +50,7 @@ void issue366() {
     }
     try {
         f366_2();
-    } catch (Exception ex) {
+    } catch (Throwable ex) {
         check("dynamic" in ex.message, "Issue 366 #2");
     }
     try {
@@ -58,7 +58,7 @@ void issue366() {
             check({1,2,*f366_1()}.sequence().size==4, "Issue 366 #3.1");
         }
         fail("Issue 366 #3");
-    } catch (Exception ex) {
+    } catch (Throwable ex) {
         check("dynamic" in ex.message, "Issue 366 #3.2");
     }
     dynamic {

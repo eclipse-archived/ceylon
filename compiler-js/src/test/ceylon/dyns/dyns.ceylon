@@ -55,31 +55,31 @@ shared void test() {
         try {
             testSingleton = n;
             fail("dynamic should not be assignable to typed");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             check(true);
             try {
                 value poop = Singleton<Anything>(n);
                 fail("dynamic should not be passed to typed methods");
-            } catch (Exception e2) {
+            } catch (Throwable e2) {
                 check(true);
             }
         }
         try {
             Singleton<Object> ts2 = n;
             fail("Typed declaration with dynamic value");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             check(true);
         }
         try {
             zzz = n3[0];
             check(zzz=="a", "typed is assignable to typed");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             fail("typed should be assignable to typed");
         }
         try {
             print(n);
             fail("dynamic should not be passed to typed methods");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             check(true);
         }
         /*these now fail at compile time
@@ -106,7 +106,7 @@ shared void test() {
         try {
             somethingThatDoesntExist.doSomething();
             fail("A sensible exception should have been thrown");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             check("somethingThatDoesntExist" in e.message,
                 "Undefined/unknown dynamic exception message should mention somethingThatDoesntExist");
         }
@@ -116,7 +116,7 @@ shared void test() {
           dynamic buf2 = MadeUpType(5);
           check(buf2.length==666, "TuMama length");
           fail("Can't instantiate this");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             check("MadeUpType" in e.message, "exception message should mention MadeUpType");
         }
         check(\iMath.random()>=0, "dynamic >=");
@@ -138,7 +138,7 @@ shared void test() {
             switch(n)
             case (is String) { fail("n is not a string"); }
             fail("Incomplete dynamic switch should fail at runtime");
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             check(true, "OK incomplete switch fails at runtime");
         }
     }
@@ -146,7 +146,7 @@ shared void test() {
     try {
         leakTest(false);
         fail("leaking objects outside dynamic blocks...");
-    } catch (Exception ex) {
+    } catch (Throwable ex) {
         check("dynamic" in ex.message, "leak test 2");
     }
     value tuple = [1,"2", '3'];
