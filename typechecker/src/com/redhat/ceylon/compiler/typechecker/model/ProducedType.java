@@ -1618,7 +1618,7 @@ public class ProducedType extends ProducedReference {
         return satisfiedTypes;
     }
 
-    private ProducedType getExtendedType() {
+    public ProducedType getExtendedType() {
         ProducedType extendedType = 
                 getDeclaration().getExtendedType();
         if (extendedType==null) {
@@ -1906,7 +1906,7 @@ public class ProducedType extends ProducedReference {
             for (ProducedType st: sts) {
                 addToIntersection(list, 
                         st.getUnionOfCases()
-                            .withVarianceOverrides(varianceOverrides),
+                          .withVarianceOverrides(varianceOverrides),
                             //argument substitution is unnecessary
                             //.substitute(getTypeArguments()), 
                         unit);
@@ -1931,8 +1931,8 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType ct: cts) {
                     addToUnion(list, 
                             ct.withVarianceOverrides(varianceOverrides)
-                                .substitute(getTypeArguments())
-                                .getUnionOfCases()); //note recursion
+                              .substitute(getTypeArguments())
+                              .getUnionOfCases()); //note recursion
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(list);
@@ -2015,14 +2015,15 @@ public class ProducedType extends ProducedReference {
             return true;
         }
         TypeDeclaration dec = t.getDeclaration();
-        Map<TypeParameter, ProducedType> args = 
+        Map<TypeParameter,ProducedType> args = 
                 t.getTypeArguments();
         if (dec instanceof UnionType) {
             //X covers Y if Y has the cases A|B|C and 
             //X covers all of A, B, and C
             for (ProducedType ct: uoc.getCaseTypes()) {
-                ProducedType sct = ct.withVarianceOverrides(varianceOverrides)
-                        .substituteInternal(args);
+                ProducedType sct = 
+                        ct.withVarianceOverrides(t.varianceOverrides)
+                          .substituteInternal(args);
                 if (!coversInternal(sct)) {
                     return false;
                 }
@@ -2033,16 +2034,18 @@ public class ProducedType extends ProducedReference {
             //X covers Y if Y extends Z and X covers Z
             ProducedType et = dec.getExtendedType();
             if (et!=null) {
-                ProducedType set = et.withVarianceOverrides(varianceOverrides)
-                        .substituteInternal(args);
+                ProducedType set = 
+                        et.withVarianceOverrides(varianceOverrides)
+                          .substituteInternal(args);
                 if (coversInternal(set)) {
                     return true;
                 }
             }
             //X covers Y if Y satisfies Z and X covers Z
             for (ProducedType st: dec.getSatisfiedTypes()) {
-                ProducedType sst = st.withVarianceOverrides(varianceOverrides)
-                        .substituteInternal(args);
+                ProducedType sst = 
+                        st.withVarianceOverrides(varianceOverrides)
+                          .substituteInternal(args);
                 if (coversInternal(sst)) {
                     return true;
                 }
