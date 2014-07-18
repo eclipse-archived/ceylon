@@ -1602,7 +1602,7 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getSatisfiedTypes() {
-        Map<TypeParameter, ProducedType> args = 
+        Map<TypeParameter,ProducedType> args = 
                 getTypeArguments();
         List<ProducedType> sts = 
                 getDeclaration().getSatisfiedTypes();
@@ -1613,7 +1613,10 @@ public class ProducedType extends ProducedReference {
                 new ArrayList<ProducedType>(sts.size());
         for (int i=0, l=sts.size(); i<l; i++) {
             ProducedType st = sts.get(i);
-            satisfiedTypes.add(st.substitute(args));
+            ProducedType t = 
+                    st.withVarianceOverrides(varianceOverrides)
+                            .substitute(args);
+            satisfiedTypes.add(t);
         }
         return satisfiedTypes;
     }
@@ -1625,11 +1628,15 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
-            Map<TypeParameter, ProducedType> args = 
+            Map<TypeParameter,ProducedType> args = 
                     getTypeArguments();
-            return args.isEmpty() ? 
-                    extendedType : 
-                    extendedType.substitute(args);
+            if (args.isEmpty()) {
+                return extendedType;
+            }
+            else {
+                return extendedType.withVarianceOverrides(varianceOverrides)
+                        .substitute(args);
+            }
         }
     }
 
@@ -1640,13 +1647,18 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
-            Map<TypeParameter, ProducedType> args = 
+            Map<TypeParameter,ProducedType> args = 
                     getTypeArguments();
-            if (args.isEmpty()) return cts;
+            if (args.isEmpty()) {
+                return cts;
+            }
             List<ProducedType> caseTypes = 
                     new ArrayList<ProducedType>(cts.size());
             for (ProducedType ct: cts) {
-                caseTypes.add(ct.substitute(args));
+                ProducedType t = 
+                        ct.withVarianceOverrides(varianceOverrides)
+                                .substitute(args);
+                caseTypes.add(t);
             }
             return caseTypes;
         }
