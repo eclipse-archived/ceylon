@@ -16,9 +16,11 @@ public class Package
 
     private List<String> name;
     private Module module;
-    private List<Unit> units = new ArrayList<Unit>();
+    private List<Unit> units = 
+            new ArrayList<Unit>();
     private boolean shared = false;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
+    private List<Annotation> annotations = 
+            new ArrayList<Annotation>();
     private Unit unit;
     private String nameAsString;
     
@@ -85,7 +87,8 @@ public class Package
     }
     
     private List<Declaration> getMembersInternal() {
-        List<Declaration> result = new ArrayList<Declaration>();
+        List<Declaration> result = 
+                new ArrayList<Declaration>();
         for (Unit unit: units) {
             for (Declaration d: unit.getDeclarations()) {
                 if (d.getContainer().equals(this)) {
@@ -127,13 +130,16 @@ public class Package
      * Search only inside the package, ignoring imports
      */
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis);
+    public Declaration getDirectMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(getMembers(), 
+                name, signature, ellipsis);
     }
 
     @Override
@@ -146,13 +152,15 @@ public class Package
      * imports
      */
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, 
+            String name, List<ProducedType> signature, 
+            boolean ellipsis) {
         //this implements the rule that imports hide 
         //toplevel members of a package
         //TODO: would it be better to look in the given unit 
         //      first, before checking imports?
-        Declaration d = unit.getImportedDeclaration(name, signature, ellipsis);
+        Declaration d = unit.getImportedDeclaration(name, 
+                signature, ellipsis);
         if (d!=null) {
             return d;
         }
@@ -174,37 +182,54 @@ public class Package
     }
     
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<String,DeclarationWithProximity> 
+    getMatchingDeclarations(Unit unit, String startingWith, 
+            int proximity) {
+        Map<String,DeclarationWithProximity> result = 
+                new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d) ) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
+            if (isResolvable(d) && 
+                    !isOverloadedVersion(d) && 
+                    isNameMatching(startingWith, d) ) {
+                result.put(d.getName(), 
+                        new DeclarationWithProximity(d, 
+                                proximity+1));
             }
         }
         if (unit!=null) {
-            result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
+            result.putAll(unit.getMatchingImportedDeclarations(startingWith, 
+                    proximity));
         }
+        Map<String,DeclarationWithProximity> importableDeclarations = 
+                getModule().getAvailableDeclarations(startingWith);
         for (Map.Entry<String, DeclarationWithProximity> e: 
-        	getModule().getAvailableDeclarations(startingWith).entrySet()) {
+        	    importableDeclarations.entrySet()) {
     		boolean already = false;
-        	for (DeclarationWithProximity dwp: result.values()) {
-        		if (dwp.getDeclaration().equals(e.getValue().getDeclaration())) {
+        	DeclarationWithProximity existing = e.getValue();
+            String name = e.getKey();
+            for (DeclarationWithProximity importable: result.values()) {
+        		if (importable.getDeclaration()
+        		        .equals(existing.getDeclaration())) {
         			already = true;
         			break;
         		}
         	}
-    		if (!already) result.put(e.getKey(), e.getValue());
+    		if (!already) {
+                result.put(name, existing);
+    		}
         }
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
-                    new DeclarationWithProximity(new NothingType(unit), proximity+100));
+                    new DeclarationWithProximity(new NothingType(unit), 
+                            proximity+100));
         }
         return result;
     }
 
     public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, 
     		String startingWith, List<Import> imports, int proximity) {
-        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		!isOverloadedVersion(d) &&
@@ -219,7 +244,8 @@ public class Package
                 }
                 if (!already) {
                     result.put(d.getName(), 
-                    		new DeclarationWithProximity(d, proximity));
+                    		new DeclarationWithProximity(d, 
+                    		        proximity));
                 }
             }
         }
@@ -233,7 +259,8 @@ public class Package
 
     @Override
     public int hashCode() {
-        // use the cached version, profiling says List.hashCode is expensive
+        // use the cached version, profiling says 
+        // List.hashCode is expensive
         return getNameAsString().hashCode();
     }
     
