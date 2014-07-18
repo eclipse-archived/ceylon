@@ -4,7 +4,7 @@
 //#METAMODEL
 
 //#COMPILE core_functions.js,Anything.js,Object,Null,Identifiable,Callable,callables.js,dynamic_functions.js
-//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Error,Exception,Comparison,identityHash,impl/rethrow,impl/bases
+//#COMPILE comprehensions.js,Basic,Throwable,printStackTrace,Exception,Comparison,identityHash,impl/rethrow,impl/bases
 //#Anything
 //#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty
 //#native Boolean
@@ -26,26 +26,25 @@
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 
-function NativeException(e) {
-    var that = new NativeException.$$;
+function NatErr(e) {
+    var that = new NatErr.$$;
     var msg;
     if (typeof e === 'string') {
         msg = e;
     } else if (e) {
         msg = e.toString();
     } else {
-        msg = "Native JavaScript Exception";
+        msg = "Native JavaScript Error";
     }
-    Exception(msg,null,that);
+    Throwable(msg,null,that);
     return that;
 }
-initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$crtmm$=function(){return{nm:'NativeException',mt:'c',ps:[{t:Exception}],pa:1,mod:$CCMM$,d:['$','Exception']};}
-ex$.Anything=Anything;
+initTypeProto(NatErr, 'ceylon.language::NativeError', $init$Throwable());
+NatErr.$crtmm$=function(){return{nm:'NativeError',mt:'c',ps:[{$t:{t:Throwable},nm:'src',mt:'prm'}],pa:1,mod:$CCMM$,d:['$','Throwable']};}
 ex$.Nothing=Nothing;
 ex$.getTrue=getTrue;
 ex$.getFalse=getFalse;
-ex$.NativeException=NativeException;
+ex$.NatErr=NatErr;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
