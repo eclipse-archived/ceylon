@@ -39,7 +39,7 @@ void issues() {
         check(declMethods.size==1, "annotatedMemberDeclarations expected 2, got ``declMethods.size``: ``declMethods``");
         value types = `class Fuera`.memberDeclarations<ClassOrInterfaceDeclaration>();
         check(types.size==2, "member types expected 2, got ``types.size``: ``types``");
-    } catch (Exception e) {
+    } catch (Throwable e) {
         if ("Cannot read property '$$' of undefined" in e.message) {
             fail("Member declaration tests won't work in lexical scope style");
         } else {
