@@ -133,9 +133,6 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         Map<String, Object> model = loadJsonModel(moduleArchive);
-        if (model == null) {
-            return null;
-        }
 
         String name = asString(metaModelProperty(model, "$mod-name"));
         if (!moduleName.equals(name)) {
@@ -238,6 +235,9 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     private static Map<String,Object> loadJsonModel(File jsFile) {
         try {
             Map<String, Object> model = readJsonModel(jsFile);
+            if (model == null) {
+                throw new RuntimeException("Unable to read meta model from file " + jsFile);
+            }
             return model;
         } catch (IOException e) {
             throw new RuntimeException(e);
