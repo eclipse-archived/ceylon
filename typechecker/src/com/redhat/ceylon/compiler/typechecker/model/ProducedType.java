@@ -2021,10 +2021,10 @@ public class ProducedType extends ProducedReference {
             //X covers Y if Y has the cases A|B|C and 
             //X covers all of A, B, and C
             for (ProducedType ct: uoc.getCaseTypes()) {
-                ProducedType sct = 
-                        ct.withVarianceOverrides(t.varianceOverrides)
-                          .substituteInternal(args);
-                if (!coversInternal(sct)) {
+//                ProducedType sct = 
+//                        ct.withVarianceOverrides(t.varianceOverrides)
+//                          .substituteInternal(args);
+                if (!coversInternal(ct)) {
                     return false;
                 }
             }
