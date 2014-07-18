@@ -313,35 +313,35 @@ shared class ThrowsException(Boolean t){
     }
 }
 
-shared class MyError() extends Error("my error"){}
+shared class MyAssertionError() extends AssertionError("my error"){}
 
-shared class ThrowsMyError(Boolean t){
+shared class ThrowsMyAssertionError(Boolean t){
     if(t){
-        throw MyError();
+        throw MyAssertionError();
     }
     shared Integer getter {
-        throw MyError();
+        throw MyAssertionError();
     }
     assign getter {
-        throw MyError();
+        throw MyAssertionError();
     }
     shared Integer method() {
-        throw MyError();
+        throw MyAssertionError();
     }
 }
 
-shared class ThrowsError(Boolean t){
+shared class ThrowsThrowable(Boolean t){
     if(t){
-        throw Error("error");
+        throw (Exception("error") of Throwable);
     }
     shared Integer getter {
-        throw Error("error");
+        throw (Exception("error") of Throwable);
     }
     assign getter {
-        throw Error("error");
+        throw (Exception("error") of Throwable);
     }
     shared Integer method() {
-        throw Error("error");
+        throw (Exception("error") of Throwable);
     }
 }
 

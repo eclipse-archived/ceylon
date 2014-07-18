@@ -370,7 +370,7 @@ public class Metamodel {
                             try {
                                 lock.wait(5000);
                             } catch (InterruptedException e) {
-                                throw Metamodel.newModelError(e);
+                                throw Metamodel.newModelError("Interrupted");
                             }
                             if(tries-- < 0)
                                 throw Metamodel.newModelError("JBoss modules failed to make module available: "+declaration.getNameAsString());
@@ -394,11 +394,11 @@ public class Metamodel {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present. Also not an issue for optional modules.
             if(!declaration.isDefault() && !optional)
-                throw Metamodel.newModelError(e);
+                throw Metamodel.newModelError(e.toString());
         } catch (SecurityException e) {
-            throw Metamodel.newModelError(e);
+            throw Metamodel.newModelError(e.toString());
         } catch (IllegalArgumentException e) {
-            throw Metamodel.newModelError(e);
+            throw Metamodel.newModelError(e.toString());
         }
     }
 
@@ -1029,7 +1029,7 @@ public class Metamodel {
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {/* aka ReflectiveOperationException */
-            throw Metamodel.newModelError(e);
+            throw Metamodel.newModelError(e.toString());
         }
     }
     
@@ -1444,13 +1444,9 @@ public class Metamodel {
         return newModelError(string, null);
     }
 
-    public static RuntimeException newModelError(Throwable t) {
-        return newModelError(null, t);
-    }
-
     public static RuntimeException newModelError(String string, Throwable cause) {
         // we throw in rethrow in order not to have to declare the error everywhere
-        Util.rethrow(new ceylon.language.meta.declaration.ModelError(ceylon.language.String.instance(string), cause));
+        Util.rethrow(new ModelError(string, cause));
         // we don't return any thing since we throw
         return null;
     }

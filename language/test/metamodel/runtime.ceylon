@@ -132,29 +132,29 @@ shared void checkConstructors(){
     }
     
     try {
-        `ThrowsMyError`(true);
+        `ThrowsMyAssertionError`(true);
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyError`.apply(true);
+        `ThrowsMyAssertionError`.apply(true);
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     
     try {
-        `ThrowsError`(true);
+        `ThrowsThrowable`(true);
         assert(false);
-    }catch(Error x){
-        assert(!x is MyError);
+    }catch(Throwable x){
+        assert(!x is MyAssertionError);
     }
     try {
-        `ThrowsError`.apply(true);
+        `ThrowsThrowable`.apply(true);
         assert(false);
-    }catch(Error x){
-        assert(!x is MyError);
+    }catch(Throwable x){
+        assert(!x is MyAssertionError);
     }
     
     value variadicClass = `VariadicParams`;
@@ -297,30 +297,30 @@ shared void checkMemberAttributes(){
         assert(x is MyException);
     }
     
-    ThrowsMyError tmer = ThrowsMyError(false);
+    ThrowsMyAssertionError tmer = ThrowsMyAssertionError(false);
     try {
-        `ThrowsMyError.getter`(tmer).get();
+        `ThrowsMyAssertionError.getter`(tmer).get();
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyError.getter`(tmer).set(1);
+        `ThrowsMyAssertionError.getter`(tmer).set(1);
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyError.getter`(tmer).setIfAssignable(1);
+        `ThrowsMyAssertionError.getter`(tmer).setIfAssignable(1);
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     try {
-        `value ThrowsMyError.getter`.memberSet(tmer, 1);
+        `value ThrowsMyAssertionError.getter`.memberSet(tmer, 1);
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
 }
 
@@ -404,22 +404,22 @@ shared void checkMemberFunctions(){
         assert(x is IncompatibleTypeException);
     }
     
-    ThrowsMyError tmer = ThrowsMyError(false);
+    ThrowsMyAssertionError tmer = ThrowsMyAssertionError(false);
     try {
-        `ThrowsMyError.method`(tmer)();
+        `ThrowsMyAssertionError.method`(tmer)();
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     try {
-        `ThrowsMyError.method`.bind(tmer).apply();
+        `ThrowsMyAssertionError.method`.bind(tmer).apply();
         assert(false);
-    }catch(Error x){
-        assert(x is MyError);
+    }catch(Throwable x){
+        assert(x is MyAssertionError);
     }
     // invalid container type
     try {
-        `ThrowsMyError.method`.bind(1);
+        `ThrowsMyAssertionError.method`.bind(1);
         assert(false);
     }catch(Exception x){
         assert(x is IncompatibleTypeException);
@@ -561,20 +561,9 @@ shared void checkHierarchy(){
     
     assert(exists throwableSup=`class Throwable`.extendedType,
             throwableSup.declaration.name == "Basic");
-    assert(`class Throwable`.caseTypes.size == 2);
-    assert(`class Throwable`.abstract);
-    assert(is OpenClassType[] throwableCases=`class Throwable`.caseTypes);
-    assert(`class Exception` in throwableCases*.declaration); 
-    assert(exists exceptionSup=`class Exception`.extendedType,
-            exceptionSup.declaration.name== "Throwable");
-    assert(exists myExceptionSup=`class MyException`.extendedType,
-            myExceptionSup.declaration.name == "Exception");
     
-    assert(`class Error` in throwableCases*.declaration);
-    assert(exists errorSup=`class Error`.extendedType,
-            errorSup.declaration.name == "Throwable");
-    assert(exists myErrorSup=`class MyError`.extendedType,
-            myErrorSup.declaration.name == "Error");
+    assert(exists exceptionSup=`class Exception`.extendedType,
+        exceptionSup.declaration.name == "Throwable");
 }
 
 @test

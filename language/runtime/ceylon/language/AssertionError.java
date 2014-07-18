@@ -11,39 +11,25 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Throwable")
-public class Error extends java.lang.Error implements ReifiedType {
+public class AssertionError extends java.lang.Error implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Exception.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(AssertionError.class);
 
     private static final long serialVersionUID = -1790691559137471641L;
 
     @Ignore
-    private final String description;
+    private final java.lang.String message;
     
-    public Error(
-            @TypeInfo("ceylon.language::Null|ceylon.language::String")
-            @Name("description")
-            @Defaulted
-            String description,
-            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
-            @Name("cause")
-            @Defaulted
-            java.lang.Throwable cause) {
-        super(description==null ? null : description.toString(), cause);
-        this.description = description;
-    }
-    
-    @Ignore
-    public Error(String description) {
-        this(description, $default$cause(description));
-    }
-    
-    @Ignore
-    public Error() {
-        this($default$description());
+    public AssertionError(
+            @TypeInfo("ceylon.language::String")
+            @Name("message")
+            java.lang.String message) {
+        super(message);
+        this.message = message;
     }
         
+    @Override
     @Ignore
     public java.lang.Throwable getCause() {
         return super.getCause();
@@ -52,14 +38,7 @@ public class Error extends java.lang.Error implements ReifiedType {
     @Override
     @Ignore
     public java.lang.String getMessage() {
-        if (description != null) {
-            return description.toString();
-        } 
-        else if (getCause() != null 
-                && getCause().getMessage() != null) {
-            return getCause().getMessage();
-        }
-        return "";
+        return message;
     }
 
     @Override
@@ -71,7 +50,7 @@ public class Error extends java.lang.Error implements ReifiedType {
     @Override
     @Ignore
     public void printStackTrace() {
-    	super.printStackTrace();
+        super.printStackTrace();
     }
 
     @Ignore
@@ -83,7 +62,7 @@ public class Error extends java.lang.Error implements ReifiedType {
         return null;
     }
 
-    @Override
+    //@Override
     @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;

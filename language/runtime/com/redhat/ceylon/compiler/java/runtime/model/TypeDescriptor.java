@@ -206,7 +206,6 @@ public abstract class TypeDescriptor {
                 return java.lang.Object.class;
             }
             if (klass==ceylon.language.Exception.class ||
-                klass==ceylon.language.Error.class ||
                 klass==ceylon.language.Throwable.class) {
                 return java.lang.Throwable.class;
             }

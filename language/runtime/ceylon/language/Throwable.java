@@ -1,6 +1,5 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -8,12 +7,13 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Basic")
-@CaseTypes({"ceylon.language::Exception", "ceylon.language::Error"})
-public abstract class Throwable extends java.lang.Object {
+public abstract class Throwable extends java.lang.Object 
+        implements ReifiedType {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Throwable.class);
@@ -92,5 +92,11 @@ public abstract class Throwable extends java.lang.Object {
             @TypeInfo("ceylon.language::Throwable")
             java.lang.Throwable suppressed) {
         
+    }
+    
+    @Override
+    @Ignore
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

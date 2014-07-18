@@ -485,7 +485,7 @@ class Predicates {
                 refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation$", 
                         false, refAnnotationClass.getClassLoader());
             } catch (ClassNotFoundException e) {
-                throw Metamodel.newModelError(e);
+                throw Metamodel.newModelError("Class not found: " + refAnnotationClass.getName()+"$annotation$");
             }
             Class<?> c;
             try {
