@@ -883,8 +883,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         MethodOrValue model = that.getParameterModel().getModel();
         if (model!=null) {
-        	ProducedType type = model.getTypedReference()
-        					.getFullType();
+        	ProducedType type = 
+        	        model.getTypedReference().getFullType();
         	if (type!=null && !isTypeUnknown(type)) {
         		checkType(type, that.getSpecifierExpression());
         	}
@@ -918,7 +918,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (!isTypeUnknown(et)) {
             checkAssignable(et, that.getTypeModel(), se, 
-                    "specified expression type must be assignable to declared return type");
+                    "specified expression type must be assignable to declared return type",
+                    2100);
         }
     }
 
