@@ -1,12 +1,14 @@
 package com.redhat.ceylon.compiler;
 
 import java.io.File;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.common.log.Logger;
 
 /** Represents all the options for compiling.
  * 
@@ -38,6 +40,8 @@ public class Options {
     private boolean srcmap;
     private boolean minify;
     private String encoding = System.getProperty("file.encoding");
+    private Logger logger;
+    private Writer outWriter;
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
      * @param args The argument list from which to parse repositories
@@ -353,4 +357,21 @@ public class Options {
         return resources;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public Options logger(Logger logger) {
+        this.logger = logger;
+        return this;
+    }
+
+    public Writer getOutWriter() {
+        return outWriter;
+    }
+
+    public Options outWriter(Writer outWriter) {
+        this.outWriter = outWriter;
+        return this;
+    }
 }

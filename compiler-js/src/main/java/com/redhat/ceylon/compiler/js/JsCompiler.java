@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -59,6 +60,7 @@ public class JsCompiler {
     static boolean compilingLanguageModule;
     private TypeUtils types;
     private int exitCode = 0;
+    private Logger logger;
 
     public int getExitCode() {
         return exitCode;
@@ -138,15 +140,20 @@ public class JsCompiler {
             File root = new File(outDir);
             if (root.exists()) {
                 if (!(root.isDirectory() && root.canWrite())) {
-                    System.err.printf("Cannot write to %s. Stop.%n", root);
+                    logger.error("Cannot write to "+root+". Stop.");
+                    exitCode = 1;
                 }
             } else {
                 if (!root.mkdirs()) {
-                    System.err.printf("Cannot create %s. Stop.%n", root);
+                    logger.error("Cannot create "+root+". Stop.");
+                    exitCode = 1;
                 }
             }
         }
         types = new TypeUtils(tc.getContext().getModules().getLanguageModule());
+        logger = opts.getLogger();
+        if(logger == null)
+            logger = new JsLogger(opts);
     }
 
     private boolean isURL(String path) {
@@ -182,7 +189,7 @@ public class JsCompiler {
         if (exitCode != 0)return;
         if (errCount == 0 || !stopOnErrors) {
             if (opts.isVerbose()) {
-                System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
+                logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
             }
             //Perform capture analysis
             for (com.redhat.ceylon.compiler.typechecker.model.Declaration d : pu.getDeclarations()) {
@@ -221,7 +228,7 @@ public class JsCompiler {
         output.clear();
         try {
             if (opts.isVerbose()) {
-                System.out.println("Generating metamodel...");
+                logger.debug("Generating metamodel...");
             }
             List<PhasedUnit> phasedUnits = tc.getPhasedUnits().getPhasedUnits();
             boolean generatedCode = false;
@@ -232,7 +239,7 @@ public class JsCompiler {
                 if (files == null || files.contains(path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
-                        System.out.println(pu.getCompilationUnit());
+                        logger.debug(pu.getCompilationUnit().toString());
                     }
                 }
             }
@@ -253,7 +260,7 @@ public class JsCompiler {
                         return false;
                     }
                     if (stopOnError()) {
-                        System.err.println("Errors found. Compilation stopped.");
+                        logger.error("Errors found. Compilation stopped.");
                         break;
                     }
                     getOutput(pu).addSource(getFullPath(pu));
@@ -296,7 +303,7 @@ public class JsCompiler {
                                     return false;
                                 }
                                 if (stopOnError()) {
-                                    System.err.println("Errors found. Compilation stopped.");
+                                    logger.error("Errors found. Compilation stopped.");
                                     break;
                                 }
                                 getOutput(pu).addSource(getFullPath(pu));
@@ -307,7 +314,7 @@ public class JsCompiler {
                 }
             }
             if(!generatedCode){
-                System.err.println("No source units found to compile");
+                logger.error("No source units found to compile");
                 exitCode = 2;
             }
         } finally {
@@ -357,9 +364,9 @@ public class JsCompiler {
             final File jsart = jsout.close();
             final File modart = jsout.getModelFile();
             if (entry.getKey().isDefault()) {
-                System.err.println("Created module "+moduleName);
+                logger.info("Created module "+moduleName);
             } else if (!compilingLanguageModule) {
-                System.err.println("Created module "+moduleName+"/"+moduleVersion);
+                logger.info("Created module "+moduleName+"/"+moduleVersion);
             }
             if (compilingLanguageModule) {
                 ArtifactContext artifact = new ArtifactContext("delete", "me", ArtifactContext.JS);
@@ -375,7 +382,7 @@ public class JsCompiler {
                 martifact.setForceOperation(true);
                 ArtifactContext sha1Context = artifact.getSha1Context();
                 sha1Context.setForceOperation(true);
-                File sha1File = ShaSigner.sign(jsart, new JsJULLogger(), opts.isVerbose());
+                File sha1File = ShaSigner.sign(jsart, logger, opts.isVerbose());
                 outRepo.putArtifact(sha1Context, sha1File);
                 sha1Context = martifact.getSha1Context();
                 sha1Context.setForceOperation(true);
@@ -388,7 +395,7 @@ public class JsCompiler {
                         sourcePaths.add(new File(sp));
                     }
                     SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
-                            moduleName, moduleVersion, opts.isVerbose(), new JsJULLogger());
+                            moduleName, moduleVersion, opts.isVerbose(), logger);
                     sac.copySourceFiles(jsout.getSources());
                 }
                 sha1File.deleteOnExit();
