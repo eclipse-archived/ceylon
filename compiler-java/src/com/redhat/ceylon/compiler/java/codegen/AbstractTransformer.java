@@ -2284,6 +2284,10 @@ public abstract class AbstractTransformer implements Transformation {
     static final int TP_SEQUENCED_TYPE = 1<<1;
     
     ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
+        /* this method is bogus: It's really trying to answer 
+         * "what's the type of the java declaration of the given parameter", 
+         * but using the ceylon type system to do so. 
+         */
         boolean functional = parameter.getModel() instanceof Method;
         if (producedReference == null) {
             return parameter.getType();
@@ -2309,24 +2313,24 @@ public abstract class AbstractTransformer implements Transformation {
             return type;
         } else if ((declTypeDecl instanceof TypeParameter)
                 && (flags & TP_TO_BOUND) != 0) {
-            ProducedType upperBound = null;
-            boolean needsCastToBound = false;
             if(!declTypeDecl.getSatisfiedTypes().isEmpty()){
                 // use upper bound
-                upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
                 // make sure we apply the type arguments
                 upperBound = substituteTypeArgumentsForTypeParameterBound(producedReference, upperBound);
                 ProducedType self = upperBound.getDeclaration().getSelfType();
                 if (self != null) {
                     // make sure we apply the type arguments
-                    upperBound = self.substitute(upperBound.getTypeArguments());
-                }
-                needsCastToBound = expressionGen().needsCast(type, upperBound, false, false, false);
-            }
-            if ((willEraseToObject(type) || needsCastToBound)
-                    && upperBound != null) {
-                if(!willEraseToObject(upperBound))
+                    ProducedType selfUpperBound = self.substitute(upperBound.getTypeArguments());
+                    if (!willEraseToObject(selfUpperBound)
+                            && (willEraseToObject(type) || expressionGen().needsCast(type, selfUpperBound, false, false, false))) {
+                        return selfUpperBound;
+                    }
+                } 
+                if (!willEraseToObject(upperBound)
+                        && (willEraseToObject(type) || expressionGen().needsCast(type, upperBound, false, false, false))) {
                     return upperBound;
+                }
             }
         }
         return type;
