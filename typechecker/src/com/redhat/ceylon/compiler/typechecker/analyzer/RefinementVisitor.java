@@ -19,9 +19,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.matches;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
@@ -135,7 +133,8 @@ public class RefinementVisitor extends Visitor {
                     !((Method) refined).isOverloaded()) {
                 that.addError("overloaded method does not refine an overloaded method");
             }
-            if (!isTypeUnknown(m.getType())) {
+            //the Java model loader does not do this:
+            /*if (!isTypeUnknown(m.getType())) {
                 Method abstraction = (Method) 
                         m.getContainer().getDirectMember(m.getName(), null, false);
                 if (abstraction.getType().isUnknown()) {
@@ -145,7 +144,7 @@ public class RefinementVisitor extends Visitor {
                     abstraction.setType(unionType(m.getType(), 
                             abstraction.getType(), that.getUnit()));
                 }
-            }
+            }*/
         }
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
