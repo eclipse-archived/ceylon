@@ -972,7 +972,7 @@ public class Util {
         List<Declaration> results = null;
         Declaration result = null;
         Declaration inexactMatch = null;
-        for (int i = 0,l = members.size() ; i < l ; i++) {
+        for (int i = 0, l = members.size(); i < l ; i++) {
             Declaration d = members.get(i);
             if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
@@ -1002,11 +1002,12 @@ public class Util {
                     if (hasMatchingSignature(signature, ellipsis, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
-                        if(result == null)
+                        if (result == null) {
                             result = d; // first match
-                        else{
+                        }
+                        else {
                             // more than one match, move to array
-                            if(results == null){
+                            if (results == null) {
                                 results = new ArrayList<Declaration>(2);
                                 results.add(result);
                             }
@@ -1017,10 +1018,11 @@ public class Util {
             }
         }
         // if we never needed a results array
-        if(results == null){
+        if (results == null) {
             // single result
-            if(result != null)
+            if (result != null) {
                 return result;
+            }
             // no exact match
             return inexactMatch;
         }
@@ -1080,15 +1082,19 @@ public class Util {
     public static List<ProducedType> getSignature(Declaration dec) {
         if(dec instanceof Functional == false)
             return null;
-        List<ParameterList> parameterLists = ((Functional)dec).getParameterLists();
-        if(parameterLists == null || parameterLists.isEmpty())
+        List<ParameterList> parameterLists = 
+                ((Functional)dec).getParameterLists();
+        if (parameterLists == null || parameterLists.isEmpty()) {
             return null;
+        }
         ParameterList parameterList = parameterLists.get(0);
-        if(parameterList == null || parameterList.getParameters() == null)
+        if (parameterList == null || 
+                parameterList.getParameters() == null) {
             return null;
+        }
         int size = parameterList.getParameters().size();
         List<ProducedType> signature = new ArrayList<ProducedType>(size);
-        for(Parameter param : parameterList.getParameters()){
+        for (Parameter param : parameterList.getParameters()) {
             signature.add(param.getModel()==null ? 
                     new UnknownType(dec.getUnit()).getType() : 
                     param.getModel().getType());

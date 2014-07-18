@@ -304,8 +304,9 @@ public abstract class Declaration
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
-            if(!Objects.equals(getQualifier(), that.getQualifier()))
+            if (!Objects.equals(getQualifier(), that.getQualifier())) {
                 return false;
+            }
             Scope thisContainer = getAbstraction(getContainer());
             Scope thatContainer = getAbstraction(that.getContainer());
             if (thisName==null || thatName==null || 
