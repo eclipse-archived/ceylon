@@ -1,4 +1,4 @@
-import check { check }
+import check { check, fail }
 
 void m1() {
   throw Exception("Catch me!");
@@ -26,13 +26,13 @@ void testStackTrace() {
   check(e.suppressed nonempty, "Exception.suppressed 2");
   try {
     dynamic {
-      dynamic u = undefined;
-      u.a="BOOM!";
+      dynamic u = 1;
+      u.somethingSomething();
     }
     fail("TypeError expected");
-  } catch (Throwable e) {
-    check("Native" in className(e), "Catch native error");
-    check("TypeError" in e.string, "TypeError expected");
+  } catch (Throwable ex) {
+    check("Native" in className(ex), "Catch native error");
+    check("TypeError" in ex.string, "TypeError expected");
     return;
   }
   fail("TypeError not caught");
