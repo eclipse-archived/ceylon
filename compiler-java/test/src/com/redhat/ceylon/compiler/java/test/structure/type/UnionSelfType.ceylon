@@ -24,4 +24,11 @@ shared class UnionSelfType_Foo() satisfies Comparable<UnionSelfType_Foo|UnionSel
 @noanno
 shared class UnionSelfType_Bar() satisfies Comparable<UnionSelfType_Foo|UnionSelfType_Bar> { 
     shared actual Comparison compare(UnionSelfType_Foo|UnionSelfType_Bar other) => nothing; 
-} 
+}
+@noanno
+void unionSelfType(UnionSelfType_Foo|UnionSelfType_Bar i) {
+    i.compare(i);
+    i.compare{
+        other=i;
+    };
+}

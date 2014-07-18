@@ -96,3 +96,20 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.class);
 }
+final class unionSelfType_ {
+    
+    private unionSelfType_() {
+    }
+    
+    static void unionSelfType(final .java.lang.Object i) {
+        ((.ceylon.language.Comparable)i).compare((.ceylon.language.Comparable)i);
+        (
+            let
+            {
+                .ceylon.language.Comparable arg$0$callable$ = (.ceylon.language.Comparable)i;
+                .ceylon.language.Comparable arg$0$0 = (.ceylon.language.Comparable)i;
+            }
+            returning arg$0$callable$.compare(arg$0$0);
+        );
+    }
+}
