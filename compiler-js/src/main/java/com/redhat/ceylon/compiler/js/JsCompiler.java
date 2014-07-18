@@ -223,8 +223,11 @@ public class JsCompiler {
             if (opts.isVerbose()) {
                 System.out.println("Generating metamodel...");
             }
+            List<PhasedUnit> phasedUnits = tc.getPhasedUnits().getPhasedUnits();
+            boolean generatedCode = false;
+            
             //First generate the metamodel
-            for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
+            for (PhasedUnit pu: phasedUnits) {
                 String path = pu.getUnitFile().getPath();
                 if (files == null || files.contains(path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
@@ -242,9 +245,10 @@ public class JsCompiler {
 
             //Then generate the JS code
             JsIdentifierNames names = new JsIdentifierNames();
-            if (files == null) {
-                for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
+            if (files == null && !phasedUnits.isEmpty()) {
+                for (PhasedUnit pu: phasedUnits) {
                     compileUnit(pu, names);
+                    generatedCode = true;
                     if (exitCode != 0) {
                         return false;
                     }
@@ -254,7 +258,7 @@ public class JsCompiler {
                     }
                     getOutput(pu).addSource(getFullPath(pu));
                 }
-            } else if(!tc.getPhasedUnits().getPhasedUnits().isEmpty()){
+            } else if(!phasedUnits.isEmpty() && !files.isEmpty()){
                 final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
                 PhasedUnit lastUnit = units.get(0);
                 for (String path : files) {
@@ -280,12 +284,14 @@ public class JsCompiler {
                         } finally {
                             lastOut.addSource(path);
                         }
+                        generatedCode = true;
                     } else {
                         //Find the corresponding compilation unit
                         for (PhasedUnit pu : units) {
                             String unitPath = pu.getUnitFile().getPath();
                             if (path.equals(unitPath)) {
                                 compileUnit(pu, names);
+                                generatedCode = true;
                                 if (exitCode != 0) {
                                     return false;
                                 }
@@ -299,8 +305,10 @@ public class JsCompiler {
                         }
                     }
                 }
-            }else{
+            }
+            if(!generatedCode){
                 System.err.println("No source units found to compile");
+                exitCode = 2;
             }
         } finally {
             if (exitCode==0) {
