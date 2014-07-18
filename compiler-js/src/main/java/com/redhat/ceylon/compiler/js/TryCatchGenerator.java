@@ -82,7 +82,7 @@ public class TryCatchGenerator {
             gen.beginBlock();
             //Check if it's native and if so, wrap it
             gen.out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
-                    GenerateJsVisitor.getClAlias(), "NativeException(", catchVarName, ")");
+                    GenerateJsVisitor.getClAlias(), "NatErr(", catchVarName, ")");
             gen.endLine(true);
             if (resources != null) {
                 for (Res r : resourceVars) {
