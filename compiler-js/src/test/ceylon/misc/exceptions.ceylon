@@ -24,4 +24,16 @@ void testStackTrace() {
   check(e.suppressed.size==0, "Exception.suppressed 1");
   e.addSuppressed(Exception("another"));
   check(e.suppressed nonempty, "Exception.suppressed 2");
+  try {
+    dynamic {
+      dynamic u = undefined;
+      u.a="BOOM!";
+    }
+    fail("TypeError expected");
+  } catch (Throwable e) {
+    check("Native" in className(e), "Catch native error");
+    check("TypeError" in e.string, "TypeError expected");
+    return;
+  }
+  fail("TypeError not caught");
 }
