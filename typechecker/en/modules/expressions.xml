@@ -894,10 +894,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             not contain a reference to a variable value.</para>
             
             <comment><para>Note: a comprehension, like a spread argument, is not considered an 
-            expression. An expression, when evaluated, produces a single value. A comprehension,
+            expression. An expression, when evaluated, produces a single value. A comprehension
             produces multiple values, like a spread argument, or like a series of listed 
             arguments. Therefore, a comprehension may only appear in an argument list or an 
-            enumeration expression. This is however, no limitation; we can simply wrap the
+            enumeration expression. This is, however, no limitation; we can simply wrap the
             comprehension in braces in order to get an expression of type <literal>{T*}</literal>,
             or in brackets to get an expression of type <literal>[T*]</literal>.</para></comment>
             
