@@ -1018,7 +1018,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <xref linkend="enumeration"/>, is formed from the ordinary list of arguments, 
                     and assigned to that parameter.</para>
                     
-                    <para>If there is no such parameter, and the the ordinary list of arguments is
+                    <para>If there is no such parameter, and the ordinary list of arguments is
                     nonempty, then construction of the positional argument list fails, and the 
                     invocation is not well-typed.</para>
                     
