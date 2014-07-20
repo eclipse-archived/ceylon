@@ -13,7 +13,7 @@ shared Element[] sort<Element>({Element*} elements)
         return [];
     }
     else {
-        array.sortInPlace(byIncreasing((Element e) => e));
+        array.sortInPlace(byIncreasing(identity<Element>));
         return ArraySequence(array);
     }
 }
