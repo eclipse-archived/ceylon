@@ -684,7 +684,7 @@
             <para>The package descriptor is optional for unshared packages.</para>
             
             <programlisting>"The typesafe query API."
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 shared package org.hibernate.query;</programlisting>
     
         </section>
@@ -745,14 +745,14 @@ shared package org.hibernate.query;</programlisting>
             module descriptor for <literal>x</literal> must be <literal>shared</literal>.</para>
             
             <programlisting>"The best-ever ORM solution!"
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 module org.hibernate "3.0.0.beta" {
     shared import ceylon.language "1.0.1";
     import javax.sql "4.0";
 }</programlisting>
             
             <programlisting>"The test suite for Hibernate"
-license "http://www.gnu.org/licenses/lgpl.html"
+license ("http://www.gnu.org/licenses/lgpl.html")
 module org.hibernate.test "3.0.0.beta" {
     import org.hibernate "3.0.0.beta";
     TestSuite().run();
