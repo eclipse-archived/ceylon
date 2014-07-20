@@ -416,7 +416,7 @@ public abstract class Declaration
     protected abstract boolean equalsForCache(Object o);
 
     public String getQualifier() {
-        return qualifier;
+        return isParameter() ? null : qualifier;
     }
 
     public void setQualifier(String qualifier) {
@@ -425,7 +425,7 @@ public abstract class Declaration
     
     public String getPrefixedName(){
         String qualifier = getQualifier();
-        return qualifier == null ? name : qualifier + name;
+        return qualifier==null || isParameter() ? name : qualifier + name;
     }
 
     public boolean sameKind(Declaration m) {
