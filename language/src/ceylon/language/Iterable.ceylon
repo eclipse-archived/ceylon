@@ -552,6 +552,12 @@ shared interface Iterable<out Element, out Absent=Null>
      partial order upon the elements of the stream, or `null`
      if this stream is empty.
      
+     For example, the expression
+     
+         {-10.0, -1.0, 5.0}.max(byIncreasing(Float.magnitude))
+     
+     evaluates to `-10`.
+     
      For any nonempty stream `it`, and comparator function 
      `c`, `it.max(c)` evaluates to the first element of `it` 
      such that for every element `e` of `it`, 
