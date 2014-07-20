@@ -369,7 +369,7 @@ TypeConstraints?
         a control structure. Nor may a parameter declaration appear as a toplevel declaration 
         in a compilation unit.</para>
         
-        <synopsis>ParameterDeclaration: ValueParameter | CallableParameter | VariadicParameter</synopsis>
+        <synopsis>ParameterDeclaration: ( ValueParameter | CallableParameter | VariadicParameter ) ";"</synopsis>
         
         <para>Every parameter declaration that occurs outside a parameter list must be named
         in the parameter list of the class or function in whose body it directly occurs, and
