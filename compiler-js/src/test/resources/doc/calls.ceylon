@@ -8,11 +8,11 @@ void greet(String? name) {
 }
 String magnify1(Integer|String x) {
   if (is Integer x) {
-    variable Integer factor := 0;
+    variable Integer factor = 0;
     switch (x <=> 1000)
-    case (smaller) { factor:=1000000; }
-    case (larger)  { factor:=1000; }
-    else { factor:=1; }
+    case (smaller) { factor=1000000; }
+    case (larger)  { factor=1000; }
+    else { factor=1; }
     return (x*factor).string;
   } else if (is String x) {
     return x.uppercased;
@@ -29,7 +29,7 @@ String magnify2(Integer|String x) {
   }
 }
 void f() {
-  Sequence<Integer> seq={1,2,3,4};
+  Sequence<Integer> seq=[1,2,3,4];
   Range<Integer> r = 1..10;
   Entry<Integer,String> e = 5->"E";
   for (i in seq) {
