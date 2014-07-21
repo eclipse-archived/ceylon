@@ -2,18 +2,22 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -48,6 +52,8 @@ public class JsCompiler {
     protected Set<Message> errors = new HashSet<Message>();
     protected Set<Message> unitErrors = new HashSet<Message>();
     protected List<String> files;
+    protected List<File> resources;
+    protected List<File> resourceRoots;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
@@ -164,6 +170,14 @@ public class JsCompiler {
         this.files = files;
     }
 
+    /** Sets the list of resources to pack next to the compiled module. */
+    public void setResources(List<File> files) {
+        resources = files;
+    }
+    /** Sets the list of root directories where the resources come from. This is to properly pack the paths. */
+    public void setResourceRoots(List<File> roots) {
+        resourceRoots = roots;
+    }
     public Set<Message> listErrors() {
         return getErrors();
     }
@@ -377,6 +391,26 @@ public class JsCompiler {
                     sac.copySourceFiles(jsout.getSources());
                 }
                 sha1File.deleteOnExit();
+                if (resources != null && !resources.isEmpty()) {
+                    final File resfile = File.createTempFile("jsres", "zip");
+                    try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(resfile))) {
+                        for (File res : resources) {
+                            //Add to the stream
+                            zip.putNextEntry(getZipEntryName(res));
+                            //Copy the file
+                            Files.copy(res.toPath(), zip);
+                        }
+                    } finally {
+                    }
+                    final ArtifactContext rsartifact = new ArtifactContext(moduleName,
+                            moduleVersion, ArtifactContext.JS_RESOURCES);
+                    outRepo.putArtifact(rsartifact, resfile);
+                    sha1Context = rsartifact.getSha1Context();
+                    sha1Context.setForceOperation(true);
+                    sha1File = ShaSigner.sign(resfile, new JsJULLogger(), opts.isVerbose());
+                    outRepo.putArtifact(sha1Context, sha1File);
+                    resfile.deleteOnExit();
+                }
             }
             jsart.deleteOnExit();
             if (modart!=null)modart.deleteOnExit();
@@ -440,4 +474,16 @@ public class JsCompiler {
     public static boolean isCompilingLanguageModule() {
         return compilingLanguageModule;
     }
+
+    private ZipEntry getZipEntryName(File resource) {
+        String parent = resource.getParentFile().getAbsolutePath();
+        for (File f : resourceRoots) {
+            String p = f.getAbsolutePath();
+            if (parent.startsWith(p)) {
+                return new ZipEntry(resource.getAbsolutePath().substring(p.length()+1));
+            }
+        }
+        return null;
+    }
+
 }
