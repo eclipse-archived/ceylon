@@ -4514,7 +4514,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
             boolean abs = isAbstractType(t) || isAbstraction(type);
             ProducedType ft = abs ?
-                    producedType(unit.getCallableDeclaration(), t, new UnknownType(unit).getType()) :
+                    producedType(unit.getCallableDeclaration(), t, 
+                            new UnknownType(unit).getType()) :
                     t.getFullType(wrap(t, receivingType, that));
             that.setTarget(t);
             if (!dynamic && !abs && !that.getStaticMethodReference() && isTypeUnknown(ft)) {
@@ -4540,7 +4541,8 @@ public class ExpressionVisitor extends Visitor {
 //        }
         if (acceptsTypeArguments(type, typeArgs, tal, that, false)) {
             ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
-                    producedType(unit.getCallableDeclaration(), t, new UnknownType(unit).getType()) :
+                    producedType(unit.getCallableDeclaration(), t, 
+                            new UnknownType(unit).getType()) :
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
