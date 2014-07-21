@@ -36,7 +36,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
 
     private byte value;
     
-    public Byte(@Name("bits") long bits) {
+    public Byte(@Name("congruent") long bits) {
         value = (byte) bits;
     }
     

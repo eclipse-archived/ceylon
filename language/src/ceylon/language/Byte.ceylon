@@ -6,12 +6,25 @@
  - addition modulo 256.
  
  `Byte`s with modular addition form a [[mathematical 
- group|Invertible]]."
-shared native final class Byte(bits) 
+ group|Invertible]]. Thus, every byte `b` has an additive
+ inverse `-b`, even though `Byte`s are unsigned."
+shared native final class Byte(congruent) 
         extends Object()
         satisfies Binary<Byte> & Invertible<Byte> {
     
-    Integer bits;
+    "An integer congruent (modulo 256) to the resulting 
+     `Byte`.
+     
+     That is, for any integer `x`:
+     
+         Byte(x).integer == x % 256 
+     
+     And for any integers `x` and `y` which are congruent
+     modulo 256:
+     
+         Byte(x) == Byte(y)"
+    Integer congruent;
+    
     //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
     
     shared native Integer integer;
