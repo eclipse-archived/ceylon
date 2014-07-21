@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+class Bug1734Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable {
+    
+    Bug1734Test() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object destroy(final .java.lang.Throwable exception) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1734Test();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1734Test.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1734Test.class);
+}
+final class bug1734_ {
+    
+    private bug1734_() {
+    }
+    
+    static void bug1734() {
+        {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1734Test foo = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1734Test();
+            .java.lang.Throwable $ceylontmp$ex$0 = null;
+            try {
+                
+                final class test_ {
+                    
+                    private test_() {
+                    }
+                    
+                    void test() {
+                        .ceylon.language.print_.print(foo);
+                    }
+                }
+                final test_ test = new test_();
+            } catch (final .java.lang.Throwable $ceylontmp$ex$1) {
+                $ceylontmp$ex$0 = $ceylontmp$ex$1;
+                throw $ceylontmp$ex$1;
+            } finally {
+                if ($ceylontmp$ex$0 != null) try {
+                    foo.destroy($ceylontmp$ex$0);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
+                    $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
+                } else foo.destroy($ceylontmp$ex$0);
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1734_.bug1734();
+    }
+}
