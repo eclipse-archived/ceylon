@@ -2836,7 +2836,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // CloseableType $var = resource-expression
                 JCExpression expr = expressionGen().transformExpression(resExpr);
                 JCExpression javaType = makeJavaType(resVarType);
-                JCVariableDecl var = makeVar(resVarName, javaType, expr);
+                JCVariableDecl var = makeVar(FINAL, resVarName, javaType, expr);
                 stats = stats.append(var);
                 
                 // $var.open() /// ((Closeable)$var).open()
