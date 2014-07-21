@@ -409,6 +409,8 @@
                 <include name="ceylon/language/Boolean.java"/>
                 <include name="ceylon/language/true_.java"/>
                 <include name="ceylon/language/false_.java"/>
+                <exclude name="ceylon/language/Byte.ceylon"/>
+                <include name="ceylon/language/Byte.java"/>
                 <exclude name="ceylon/language/Callable.ceylon"/>
                 <include name="ceylon/language/Callable.java"/>
                 <exclude name="ceylon/language/Character.ceylon"/>

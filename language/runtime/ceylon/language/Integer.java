@@ -23,7 +23,8 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class Integer
     implements Integral<Integer>,
                Binary<Integer>,
-               Exponentiable<Integer,Integer>, ReifiedType {
+               Exponentiable<Integer,Integer>, 
+               ReifiedType {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Integer.class);
@@ -599,7 +600,7 @@ public final class Integer
 
     @Ignore
     public static long set(long value, long index) {
-        return set(value , index, true);
+        return set(value, index, true);
     }
 
     @Ignore
