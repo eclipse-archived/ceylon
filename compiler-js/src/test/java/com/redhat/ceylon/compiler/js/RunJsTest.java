@@ -1,14 +1,13 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,24 +15,6 @@ import org.junit.Test;
 public class RunJsTest {
 
     static File tmpModules;
-
-    static void copyFile(File sourceFile, File destFile) throws IOException {
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
-        try (FileInputStream fIn = new FileInputStream(sourceFile);
-                FileChannel source = fIn.getChannel();
-                FileOutputStream fOut = new FileOutputStream(destFile);
-                FileChannel destination = fOut.getChannel()) {
-            long transfered = 0;
-            long bytes = source.size();
-            while (transfered < bytes) {
-                transfered += destination.transferFrom(source, 0, source.size());
-                destination.position(transfered);
-            }
-        } finally {
-        }
-    }
 
     @BeforeClass
     public static void setup() throws IOException {
@@ -44,7 +25,7 @@ public class RunJsTest {
         sub.mkdirs();
         File src = new File("build/test/proto/check/0.1");
         for (File f : src.listFiles()) {
-            copyFile(f, new File(sub, f.getName()));
+            Files.copy(f.toPath(), new File(sub, f.getName()).toPath());
         }
     }
 
@@ -61,4 +42,25 @@ public class RunJsTest {
     public static void cleanup() {
         tmpModules.delete();
     }
+
+    @Test
+    public void testResources() throws Exception {
+        //Compile a module with resources
+        CeylonCompileJsTool compiler = new CeylonCompileJsTool();
+        compiler.setRepositoryAsStrings(Arrays.asList("build/runtime"));
+        compiler.setSource(Arrays.asList(new File("src/test/resources/doc/highers.ceylon")));
+        compiler.setSkipSrcArchive(true);
+        compiler.setResource(Arrays.asList(new File("src/test/resources/res_test")));
+        compiler.run();
+        //Run it, just to make sure the resources were exploded
+        CeylonRunJsTool runner = new CeylonRunJsTool();
+        runner.setModuleVersion("default");
+        runner.setRun("run");
+        runner.setRepositoryAsStrings(Arrays.asList("build/runtime", "modules"));
+        runner.run();
+        Assert.assertTrue("test.txt is missing", new File("modules/default/test.txt").exists());
+        Assert.assertTrue("another_test.txt is missing", new File("modules/default/another_test.txt").exists());
+        Assert.assertTrue("third.txt is missing", new File("modules/default/subdir/third.txt").exists());
+    }
+
 }
