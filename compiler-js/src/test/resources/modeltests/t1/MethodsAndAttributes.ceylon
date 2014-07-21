@@ -36,8 +36,8 @@ shared void parmtypes5<Value>(Value x)
     given Value of Integer|Float {
 }
 
-void intersector1(Container<Anything>&Category inters) {}
-void intersector2(Iterable<Container<Anything>>&Category beast){}
+void intersector1({Anything*}&Category inters) {}
+void intersector2({{Anything*}*}&Category beast){}
 
 //attributes
 Integer i1 = 5;
@@ -45,6 +45,6 @@ shared String s1 = "hey";
 variable Float pi = 3.14;
 shared variable Sequence<Integer> seq = [ 5 ];
 variable Integer|String union = "five";
-Container<String|Singleton<Integer>> useq = { "a", Singleton(2) };
+{<String|Singleton<Integer>>*} useq = { "a", Singleton(2) };
 shared Integer[] sequentialAttribute1 = [ 0 ];
-shared Integer[] sequentialAttribute2 = {};
+shared Integer[] sequentialAttribute2 = [];
