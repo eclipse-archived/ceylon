@@ -12,7 +12,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public final void m() {
         {
-            .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
             .java.lang.Throwable $ceylontmp$ex$1 = null;
             try {
             } catch (final .java.lang.Throwable $ceylontmp$ex$2) {
@@ -27,13 +27,13 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             }
         }
         {
-            .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
             .java.lang.Throwable $ceylontmp$ex$13 = null;
             try {
-                .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
+                final .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
                 .java.lang.Throwable $ceylontmp$ex$9 = null;
                 try {
-                    .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
+                    final .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource $ceylontmp$try$4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
                     .java.lang.Throwable $ceylontmp$ex$5 = null;
                     try {
                     } catch (final .java.lang.Throwable $ceylontmp$ex$6) {
@@ -68,7 +68,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             }
         }
         try {
-            .ceylon.language.Obtainable r = $getResource$priv$();
+            final .ceylon.language.Obtainable r = $getResource$priv$();
             r.obtain();
             .java.lang.Throwable $ceylontmp$ex$16 = null;
             try {
