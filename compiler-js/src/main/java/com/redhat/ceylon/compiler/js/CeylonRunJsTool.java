@@ -2,15 +2,20 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -350,17 +355,20 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 depname = (String)dep;
             } else {
                 depname = (String)((Map)dep).get("path");
-                optional = "1".equals(((Map)dep).get("opt"));
+                optional = new Integer(1).equals(((Map)dep).get("opt"));
             }
             //Module names have escaped forward slashes due to JSON encoding
             int idx = depname.indexOf('/');
-            ArtifactContext ac = new ArtifactContext(depname.substring(0, idx), depname.substring(idx+1),
-                    ArtifactContext.JS_MODEL);
+            final String modname = depname.substring(0, idx);
+            final String modvers = depname.substring(idx+1);
+            ArtifactContext ac = new ArtifactContext(modname, modvers,
+                    ArtifactContext.JS_MODEL, ArtifactContext.JS);
             ac.setFetchSingleArtifact(true);
             ac.setThrowErrorIfMissing(!optional);
             File other = repoman.getArtifact(ac);
             if (other != null) {
                 repos.add(getRepoDir(ac.getName(), other));
+                loadResources(modname, modvers, repoman);
                 loadDependencies(repos, repoman, other);
             }
         }
@@ -408,6 +416,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         
         File jsmod = getArtifact(modname, version, repoman);
+        loadResources(modname, version, repoman);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         Set<File> localRepos = new HashSet<File>();
@@ -428,9 +437,26 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
     }
 
+    protected void loadResources(String modName, String modVersion, RepositoryManager repoman) throws IOException {
+        final ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS_RESOURCES);
+        ac.setThrowErrorIfMissing(false);
+        final File res = repoman.getArtifact(ac);
+        if (res != null && res.exists() && res.isFile() && res.canRead()) {
+            final File resdir = res.getParentFile();
+            try (ZipFile zip = new ZipFile(res)) {
+                for (Enumeration<? extends ZipEntry> enu = zip.entries(); enu.hasMoreElements();) {
+                    final ZipEntry e = enu.nextElement();
+                    final File f = new File(resdir, e.getName());
+                    f.getParentFile().mkdirs();
+                    f.delete();
+                    Files.copy(zip.getInputStream(e), f.toPath());
+                }
+            }
+        }
+    }
+
     protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
         ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS_MODEL, ArtifactContext.JS);
-        ac.setFetchSingleArtifact(false);
         ac.setThrowErrorIfMissing(false);
         File jsmod = repoman.getArtifact(ac);
         if (jsmod == null) {

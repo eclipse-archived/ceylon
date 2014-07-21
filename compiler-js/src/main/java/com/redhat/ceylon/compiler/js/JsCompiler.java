@@ -400,7 +400,6 @@ public class JsCompiler {
                             //Copy the file
                             Files.copy(res.toPath(), zip);
                         }
-                    } finally {
                     }
                     final ArtifactContext rsartifact = new ArtifactContext(moduleName,
                             moduleVersion, ArtifactContext.JS_RESOURCES);
