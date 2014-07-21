@@ -4,7 +4,7 @@ String int2string(Integer i) {
 void higher(String f(Integer i)) {
   f(0);
 }
-void run() {
+shared void run() {
   Callable<String,[Integer]> f1 = int2string;
   function f2(Integer i) => int2string(i);
   higher(f1);
