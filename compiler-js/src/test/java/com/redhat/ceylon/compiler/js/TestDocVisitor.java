@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import junit.framework.AssertionFailedError;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -42,11 +41,9 @@ public class TestDocVisitor {
         m1.put("void", Arrays.asList("4:0-4:3", "31:0-31:3"));
         m1.put("String", Arrays.asList("4:11-4:16", "9:0-9:5", "9:24-9:29", "17:16-17:21",
                 "22:0-22:5", "22:24-22:29", "27:11-27:16", "34:16-34:21"));
-        m1.put("Null", Collections.singletonList("4:17-4:17"));
         m1.put("print", Arrays.asList("6:4-6:8", "36:4-36:8"));
         m1.put("smaller", Collections.singletonList("13:10-13:16"));
         m1.put("larger", Collections.singletonList("14:10-14:15"));
-        m1.put(".string", Arrays.asList("16:22-16:27", "25:20-25:25"));
         m1.put(".uppercased", Arrays.asList("18:13-18:22", "28:13-28:22"));
         m1.put("className", Collections.singletonList("20:9-20:17"));
         m1.put("Sequence", Collections.singletonList("32:2-32:18"));
@@ -64,7 +61,7 @@ public class TestDocVisitor {
 
         Map<String, List<String>> m3 = new HashMap<String, List<String>>();
         m3.put("String", Arrays.asList("1:0-1:5", "4:12-4:17", "8:11-8:16"));
-        m3.put("Integer", Arrays.asList("1:18-1:24", "4:21-4:27", "8:18-8:24", "9:14-9:20"));
+        m3.put("Integer", Arrays.asList("1:18-1:24", "4:21-4:27", "8:19-8:25", "9:14-9:20"));
         m3.put("void", Arrays.asList("4:0-4:3", "7:0-7:3"));
         //m3.put("Callable", Arrays.asList("8:2-8:9"));
         return Arrays.asList(new Object[][]{
@@ -90,12 +87,10 @@ public class TestDocVisitor {
             if (doccer.getLocations().containsKey(loc)) {
                 set.add(doccer.getLocations().get(loc));
             } else {
-                throw new AssertionFailedError("Invalid key " + loc);
+                Assert.assertTrue("Invalid key " + loc, false);
             }
         }
-        if (set.size() != 1) {
-            throw new AssertionFailedError(String.format("'%s' points to different docs", name));
-        }
+        Assert.assertTrue(String.format("'%s' points to different docs", name), set.size() == 1);
     }
 
     @Test
@@ -104,9 +99,9 @@ public class TestDocVisitor {
         //Check we have all locations
         for (Map.Entry<String, List<String>> locEntry : locations.entrySet()) {
             for (String loc : locEntry.getValue()) {
-                if (!locs.containsKey(loc)) {
-                    throw new AssertionFailedError("No doc for location " + loc + " in " + file);
-                }
+                if (!locs.containsKey(loc))System.out.println("Buscando " + loc + " en " + locs.keySet());
+                Assert.assertTrue("No doc for location " + loc + " in " + file + " - " + locs.keySet(),
+                        locs.containsKey(loc));
             }
         }
         //Now check locations we don't have
