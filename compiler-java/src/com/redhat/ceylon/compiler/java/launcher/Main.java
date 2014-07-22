@@ -247,6 +247,8 @@ public class Main extends com.sun.tools.javac.main.Main {
         
         public final int ceylonCodegenErroneousCount;
 
+        public final int ceylonCodegenGarbageCount;
+
         public final int nonCeylonErrorCount;
         
         private ExitState(int javacExitCode, CeylonState ceylonState, int errorCount,
@@ -258,6 +260,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             this.errorCount = errorCount;
             this.ceylonCodegenExceptionCount = comp != null ? getCeylonCodegenExceptionCount(comp) : 0;
             this.ceylonCodegenErroneousCount = comp != null ? getCeylonCodegenErroneousCount(comp) : 0;
+            this.ceylonCodegenGarbageCount = comp != null ? getCeylonCodegenGarbageTreeCount(comp) : 0;
             this.nonCeylonErrorCount = comp != null ? getNonCeylonErrorCount(comp) : 0;
             this.abortingException = abortingException;
         }
