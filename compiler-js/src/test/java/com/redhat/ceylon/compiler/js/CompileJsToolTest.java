@@ -78,7 +78,22 @@ public class CompileJsToolTest {
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
         checkResources("modules/default/default-resources.zip",
-                "test.txt", "another_test.txt", "subdir/third.txt");
+                "test.txt", "another_test.txt", "subdir/third.txt", "inroot.txt", "ALTROOT/altroot.txt");
+    }
+
+    @Test
+    public void testWithAltRoot() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--rep=build/runtime",// "--verbose",
+                "--source=src/test/resources/doc",
+                "--resource=src/test/resources/res_test",
+                "--resource-root=ALTROOT",
+                "src/test/resources/doc/calls.ceylon"));
+        jsc.run();
+        checkResources("modules/default/default-resources.zip",
+                "test.txt", "another_test.txt", "subdir/third.txt", "altroot.txt", "ROOT/inroot.txt");
     }
 
     void checkResources(String path, String... paths) throws IOException {
