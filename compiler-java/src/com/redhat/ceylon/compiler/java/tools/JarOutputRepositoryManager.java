@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.WritePendingException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,14 +39,15 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -58,11 +58,13 @@ public class JarOutputRepositoryManager {
     private Log log;
     private Options options;
     private CeyloncFileManager ceyloncFileManager;
+    private TaskListener taskListener;
     
-    JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager){
+    JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager, TaskListener taskListener){
         this.log = log;
         this.options = options;
         this.ceyloncFileManager = ceyloncFileManager;
+        this.taskListener = taskListener;
     }
     
     public JavaFileObject getFileObject(RepositoryManager repositoryManager, Module module, String fileName, File sourceFile) throws IOException{
@@ -73,7 +75,7 @@ public class JarOutputRepositoryManager {
     private ProgressiveJar getProgressiveJar(RepositoryManager repositoryManager, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            jarFile = new ProgressiveJar(repositoryManager, module, log, options, ceyloncFileManager);
+            jarFile = new ProgressiveJar(repositoryManager, module, log, options, ceyloncFileManager, taskListener);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -110,8 +112,9 @@ public class JarOutputRepositoryManager {
         private boolean writeOsgiManifest;
         private final String resourceRootPath;
         private boolean writeMavenManifest;
+        private TaskListener taskListener;
 
-        public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
+        public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager, TaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
@@ -133,6 +136,7 @@ public class JarOutputRepositoryManager {
                 rootName = Constants.DEFAULT_RESOURCE_ROOT;
             }
             this.resourceRootPath = rrp + rootName + "/";
+            this.taskListener = taskListener;
             
             setupJarOutput();
         }
@@ -192,6 +196,9 @@ public class JarOutputRepositoryManager {
             else
                 info = module.getNameAsString() + "/" + module.getVersion();
             cmrLog.info("Created module " + info);
+            if(taskListener instanceof CeylonTaskListener){
+                ((CeylonTaskListener) taskListener).moduleCompiled(module.getNameAsString(), module.getVersion());
+            }
         }
 
         private JarUtils.JarEntryFilter getJarFilter(final Properties previousMapping, final Set<String> copiedSourceFiles) {

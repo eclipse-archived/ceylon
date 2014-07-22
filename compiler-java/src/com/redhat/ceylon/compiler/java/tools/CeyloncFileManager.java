@@ -55,6 +55,7 @@ import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.file.JavacFileManager;
@@ -86,7 +87,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     
     private JarOutputRepositoryManager getJarRepository(){
         if(jarRepository == null)
-            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this);
+            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this, context.get(TaskListener.class));
         return jarRepository;
     }
     
