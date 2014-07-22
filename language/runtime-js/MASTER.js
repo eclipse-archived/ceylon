@@ -9,7 +9,7 @@
 //#COMPILE Iterable,Correspondence,Finished,Sequential,Sequence,Empty
 //#native Boolean
 //#native Callable
-//#COMPILE Binary,Destroyable,Obtainable,Comparable,Invertible,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,CycledIterator,Entry
+//#COMPILE Binary,Destroyable,Obtainable,Comparable,Invertible,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,CycledIterator,Entry,Byte
 //#Number
 //#COMPILE Set,Range,Span,Measure,Singleton,AssertionError,Map,String,strings.js,Character
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,count,emptyOrSingleton,curry,apply,comparing,functions
