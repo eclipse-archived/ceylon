@@ -1,1 +1,1 @@
-return this;
+return Byte(256-this.integer);
