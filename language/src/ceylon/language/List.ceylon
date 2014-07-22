@@ -613,7 +613,7 @@ shared interface List<out Element>
      
      For any `list`, and for any integer `index`:
      
-         list.size(index) == [list[...index-1], list[index...]]
+         list.slice(index) == [list[...index-1], list[index...]]
      
      This is an eager operation."
     shared default 
