@@ -38,4 +38,15 @@ shared void bytes() {
   check(Byte(255).rightLogicalShift(9) == Byte(0), "255>>9");
   check(Byte(255).rightLogicalShift(4) == Byte(15), "255>>4");
   check(Byte(255).rightArithmeticShift(4)==Byte(255).rightLogicalShift(4), "equal right shifts");
+  variable Byte b = Byte(1);
+  b++;
+  check(b==Byte(2), "1++");
+  b--;
+  check(b==Byte(1), "2--");
+  b--;
+  check(b==Byte(0), "1--");
+  b--;
+  check(b==Byte(255), "0--");
+  b++;
+  check(b==Byte(0), "255++");
 }
