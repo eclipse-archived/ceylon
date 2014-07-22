@@ -37,15 +37,13 @@ import java.util.Locale;
 
 import javax.lang.model.SourceVersion;
 import javax.tools.DiagnosticListener;
-import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.launcher.Main;
-import com.sun.source.util.JavacTask;
 import com.sun.tools.javac.api.JavacTool;
-import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.file.JavacFileManager;
+import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Log;
 
 /**
@@ -55,9 +53,20 @@ import com.sun.tools.javac.util.Log;
 public class CeyloncTool {
 
     public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
+        return getStandardFileManager(null, diagnosticListener, locale, charset);
+    }
+    
+    public JavacFileManager getStandardFileManager(Writer out, DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
         Context context = new Context();
         if (diagnosticListener != null)
             context.put(DiagnosticListener.class, diagnosticListener);
+        // make sure we set the out before someone else sets a default one, or uses one
+        if (context.get(Log.outKey) == null) {
+            if (out == null)
+                context.put(Log.outKey, new PrintWriter(System.err, true));
+            else
+                context.put(Log.outKey, new PrintWriter(out, true));
+        }
         CeylonLog.preRegister(context);
         return new CeyloncFileManager(context, true, charset);
     }
@@ -75,18 +84,11 @@ public class CeyloncTool {
         }
 
         if (fileManager == null)
-            fileManager = getStandardFileManager(diagnosticListener, null, null);
+            fileManager = getStandardFileManager(out, diagnosticListener, null, null);
 
         Context context = ((CeyloncFileManager) fileManager).getContext();
         if (diagnosticListener != null && context.get(DiagnosticListener.class) == null)
             context.put(DiagnosticListener.class, diagnosticListener);
-
-        if (context.get(Log.outKey) == null) {
-            if (out == null)
-                context.put(Log.outKey, new PrintWriter(System.err, true));
-            else
-                context.put(Log.outKey, new PrintWriter(out, true));
-        }
 
         context.put(JavaFileManager.class, fileManager);
         JavacTool.processOptions(context, fileManager, options);
