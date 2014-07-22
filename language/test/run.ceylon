@@ -2,9 +2,10 @@ shared void run() {
     print("Equality");
     equality();
     //complex();
-    print("Booleans & Numbers");
+    print("Booleans, Numbers & Bytes");
     booleans();
     numbers();
+    bytes();
     print("Lists & sequences");
     lists();
     sequences();
