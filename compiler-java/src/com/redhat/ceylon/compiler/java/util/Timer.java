@@ -19,11 +19,13 @@
  */
 package com.redhat.ceylon.compiler.java.util;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
 
 public class Timer {
@@ -32,6 +34,7 @@ public class Timer {
     private long currentTaskStart;
     private boolean verbose;
     private final Map<String,IgnoredCategory> ignoredCategories;
+    private PrintWriter out;
 
     private static final Context.Key<Timer> timerKey = new Context.Key<Timer>();
     
@@ -60,6 +63,7 @@ public class Timer {
         Options options = Options.instance(context);
         verbose = options.get(OptionName.VERBOSE) != null 
                 || options.get(OptionName.VERBOSE + ":benchmark" ) != null;
+        out = context.get(Log.outKey);
     }
     
     private void setup(boolean verbose) {
@@ -115,7 +119,11 @@ public class Timer {
 
     private void log(String string, long now) {
         long delta = (now - programStart)/1_000_000;
-        System.err.println("["+delta+"ms] "+string);
+        String msg = "["+delta+"ms] "+string;
+        if(out != null)
+            out.println(msg);
+        else
+            System.err.println(msg);
     }
 
     /**
