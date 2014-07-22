@@ -268,6 +268,7 @@ public class MiscTest extends CompilerTest {
                 "math",
                 "net",
                 "process",
+                "promise",
                 "test",
                 "time",
                 "unicode"
