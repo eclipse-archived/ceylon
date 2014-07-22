@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 })
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
-public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
+public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);
@@ -34,6 +34,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         throw Util.makeUnimplementedMixinAccessException();
     }
 
+    @Ignore
     final byte value;
     
     public Byte(@Name("congruent") long congruent) {
@@ -45,6 +46,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         this.value = value;
     }
     
+    @Ignore
     public static Byte instance(byte value) {
         return new Byte(value);
     }
