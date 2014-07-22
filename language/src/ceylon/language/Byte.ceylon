@@ -7,10 +7,20 @@
  
  `Byte`s with modular addition form a [[mathematical 
  group|Invertible]]. Thus, every byte `b` has an additive
- inverse `-b`, even though `Byte`s are unsigned."
+ inverse `-b`, even though `Byte`s are unsigned.
+ 
+ Note that the [[integer]] of the additive inverse of a 
+ `Byte` under modular arithmetic is _not_ the same as the 
+ additive inverse of the `Byte`'s `integer` under ordinary 
+ integer arithmetic. For example:
+ 
+ - `-Byte(1).integer == -1`, but
+ - `(-Byte(1)).integer == 255`."
 shared native final class Byte(congruent) 
         extends Object()
-        satisfies Binary<Byte> & Invertible<Byte> {
+        satisfies Binary<Byte> & 
+                  Invertible<Byte> &
+                  Ordinal<Byte> {
     
     "An integer congruent (modulo 256) to the resulting 
      `Byte`.
@@ -42,6 +52,9 @@ shared native final class Byte(congruent)
     shared actual native Byte rightLogicalShift(Integer shift);
     shared actual native Byte set(Integer index, Boolean bit);
     shared actual native Byte xor(Byte other);
+    
+    shared actual native Byte predecessor;
+    shared actual native Byte successor;
     
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;

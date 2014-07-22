@@ -14,11 +14,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 7)
 @SatisfiedTypes({
     "ceylon.language::Binary<ceylon.language::Byte>",
-    "ceylon.language::Invertible<ceylon.language::Byte>"
+    "ceylon.language::Invertible<ceylon.language::Byte>",
+    "ceylon.language::Ordinal<ceylon.language::Byte>"
 })
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
-public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
+public final class Byte implements Binary<Byte>, Invertible<Byte>, Ordinal<Byte>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);
@@ -289,6 +290,26 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         else {
             return false;
         }
+    }
+    
+    @Override
+    public Byte getPredecessor() {
+        return new Byte((byte) (value-1));
+    }
+    
+    @Ignore
+    public static byte getPredecessor(byte value) {
+        return (byte) (value-1);
+    }
+    
+    @Override
+    public Byte getSuccessor() {
+        return new Byte((byte) (value+1));
+    }
+    
+    @Ignore
+    public static byte getSuccessor(byte value) {
+        return (byte) (value+1);
     }
     
     @Override
