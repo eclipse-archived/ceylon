@@ -24,11 +24,13 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);
 
 
+    @Ignore
     @Override
     public Invertible$impl<Byte> $ceylon$language$Invertible$impl() {
         throw Util.makeUnimplementedMixinAccessException();
     }
 
+    @Ignore
     @Override
     public Binary$impl<Byte> $ceylon$language$Binary$impl() {
         throw Util.makeUnimplementedMixinAccessException();
@@ -56,6 +58,7 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return value;
     }
     
+    @Ignore
     @Override
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
@@ -81,6 +84,7 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return (byte) (value+other);
     }
 
+    @Ignore
     @Override
     public Byte minus(@Name("other") Byte other) {
         return new Byte((byte) (value-other.value));
@@ -161,6 +165,7 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return (byte) ((0xff&value)>>shift);
     }
 
+    @Ignore
     @Override
     public Byte clear(@Name("index") long index) {
         if (index < 0 || index > 7) {
