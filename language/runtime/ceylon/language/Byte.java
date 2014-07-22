@@ -174,7 +174,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
             return this;
         }
         int mask = 1 << index;
-        return new Byte((byte) ((0xff&value) ^ ~mask));
+        return new Byte((byte) ((0xff&value) ^ mask));
     }
 
     @Override
@@ -226,7 +226,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
             return value;
         }
         int mask = 1 << index;
-        return (byte) ((0xff&value) ^ ~mask);
+        return (byte) ((0xff&value) ^ mask);
     }
 
     @Ignore
