@@ -11,7 +11,10 @@ shared void bytes() {
   check(Byte(3).xor(Byte(1))==Byte(2), "byte 3^1");
   check(Byte(3).xor(Byte(2))==Byte(1), "byte 3^2");
   check(Byte(5).xor(Byte(10))==Byte(15), "byte 5^10");
-  check(Byte(127).negated==Byte(127), "byte negated");
+  check(Byte(1).negated==Byte(255), "byte 1.negated");
+  check(Byte(255).negated==Byte(1), "byte 255.negated");
+  check(Byte(127).negated==Byte(129), "byte 127.negated");
+  check(Byte(0).negated==Byte(0), "byte 0.negated");
   check(Byte(127)+Byte(128)==Byte(255), "byte 127+128");
   check(Byte(250)+Byte(10)==Byte(4), "byte 250+10");
   check(Byte(499)+Byte(1)==Byte(244), "byte 499+1");
@@ -22,9 +25,13 @@ shared void bytes() {
   check(!Byte(15).get(4), "15 get 5");
   check(Byte(7).set(3,true)==Byte(15), "7.set(4,t)");
   check(Byte(128).set(7,false)==Byte(0), "128.set(7,f)");
-  check(!Byte(15)==Byte(240), "byte !15");
-  check(Byte(170).hash==170, "byte.hash");
-  check(Byte(85).string=="85", "byte.string");
+  check(Byte(15).not==Byte(240), "byte !15");
+  check(Byte(127).not==Byte(128), "byte !127");
+  check(Byte(170).not==Byte(85), "byte !170");
+  check(Byte(120).hash==120, "byte.hash 120");
+  check(Byte(170).hash==-86, "byte.hash 170");
+  check(Byte(85).string=="85", "byte.string 85");
+  check(Byte(255).string=="255", "byte.string 255");
   check(Byte(1).leftLogicalShift(3) == Byte(8), "1<<3");
   check(Byte(8).rightLogicalShift(3) == Byte(1), "8>>3");
   check(Byte(255).leftLogicalShift(9) == Byte(0), "255<<9");
