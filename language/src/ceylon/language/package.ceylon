@@ -3,14 +3,15 @@
  following areas of functionality:
  
  - the foundational types [[Anything]], [[Object]], and 
-   [[Null]], and a [[logical boolean|Boolean]] type, 
+   [[Null]], and a [[logical boolean|Boolean]] type,
  - abstractions of [[numeric|Numeric]] types, along with
    basic types representing [[integral|Integer]] and 
-   [[floating point|Float]] values, 
+   [[floating point|Float]] values,
  - [[characters|Character]] and [[character strings|String]],
+ - [[unsigned bytes|Byte]],
  - support for functional programming with 
    [[streams|Iterable]],
- - abstract interfaces for unmodifiable [[lists|List]], 
+ - abstract interfaces for unmodifiable [[lists|List]],
    [[sets|Set]], and [[maps|Map]],
  - a low-level abstraction of native [[arrays|Array]],
  - immutable [[sequences|Sequential]], [[ranges|Range]], and
@@ -25,7 +26,7 @@
  - support for loading [[resources|Resource]] packaged with
    a module,
  - access to information about the current 
-   [[virtual machine|runtime]], [[system|system]], 
+   [[virtual machine|runtime]], [[system|system]],
    [[process]], and [[operating system|system]], and
  - support for definition of [[annotations|Annotation]].
  
