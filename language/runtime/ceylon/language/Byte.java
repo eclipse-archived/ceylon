@@ -66,24 +66,24 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte)-value);
     }
 
-    @Override
-    public Byte plus(@Name("other") Byte other) {
-        return new Byte((byte) (value+other.value));
-    }
-
-    @Override
-    public Byte minus(@Name("other") Byte other) {
-        return new Byte((byte) (value-other.value));
-    }
-
     @Ignore
     public static byte getNegated(byte value) {
         return (byte)-value;
     }
 
+    @Override
+    public Byte plus(@Name("other") Byte other) {
+        return new Byte((byte) (value+other.value));
+    }
+
     @Ignore
     public static byte plus(byte value, byte other) {
         return (byte) (value+other);
+    }
+
+    @Override
+    public Byte minus(@Name("other") Byte other) {
+        return new Byte((byte) (value-other.value));
     }
 
     @Ignore
@@ -96,24 +96,14 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte) (value & other.value));
     }
 
-    @Override
-    public Byte or(@Name("other") Byte other) {
-        return new Byte((byte) (value | other.value));
-    }
-
-    @Override
-    public Byte xor(@Name("other") Byte other) {
-        return new Byte((byte) (value ^ other.value));
-    }
-
-    @Override
-    public Byte getNot() {
-        return new Byte((byte) ~value);
-    }
-    
     @Ignore
     public static byte and(byte value, byte other) {
         return (byte) (value & other);
+    }
+
+    @Override
+    public Byte or(@Name("other") Byte other) {
+        return new Byte((byte) (value | other.value));
     }
 
     @Ignore
@@ -121,11 +111,21 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return (byte) (value | other);
     }
 
+    @Override
+    public Byte xor(@Name("other") Byte other) {
+        return new Byte((byte) (value ^ other.value));
+    }
+
     @Ignore
     public static byte xor(byte value, byte other) {
         return (byte) (value ^ other);
     }
 
+    @Override
+    public Byte getNot() {
+        return new Byte((byte) ~value);
+    }
+    
     @Ignore
     public static byte getNot(byte value) {
         return (byte) ~value;
@@ -136,24 +136,24 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte) (value<<shift));
     }
 
-    @Override
-    public Byte rightArithmeticShift(@Name("shift") long shift) {
-        return new Byte((byte) ((0xff&value)>>shift));
-    }
-
-    @Override
-    public Byte rightLogicalShift(@Name("shift") long shift) {
-        return new Byte((byte) ((0xff&value)>>shift));
-    }
-
     @Ignore
     public static byte leftLogicalShift(byte value, long shift) {
         return (byte) (value<<shift);
     }
 
+    @Override
+    public Byte rightArithmeticShift(@Name("shift") long shift) {
+        return new Byte((byte) ((0xff&value)>>shift));
+    }
+
     @Ignore
     public static byte rightArithmeticShift(byte value, long shift) {
         return (byte) ((0xff&value)>>shift);
+    }
+
+    @Override
+    public Byte rightLogicalShift(@Name("shift") long shift) {
+        return new Byte((byte) ((0xff&value)>>shift));
     }
 
     @Ignore
@@ -170,6 +170,15 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte) ((0xff&value) & ~mask));
     }
 
+    @Ignore
+    public static byte clear(byte value, long index) {
+        if (index < 0 || index > 7) {
+            return value;
+        }
+        int mask = 1 << index;
+        return (byte) ((0xff&value) & ~mask);
+    }
+
     @Override
     public Byte flip(@Name("index") long index) {
         if (index < 0 || index > 7) {
@@ -179,10 +188,24 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte) ((0xff&value) ^ mask));
     }
 
+    @Ignore
+    public static byte flip(byte value, long index) {
+        if (index < 0 || index > 7) {
+            return value;
+        }
+        int mask = 1 << index;
+        return (byte) ((0xff&value) ^ ~mask);
+    }
+
     @Override
     @Ignore
     public Byte set(long index) {
         return set(index, true);
+    }
+
+    @Ignore
+    public static byte set(byte value, long index) {
+        return set(value, index, true);
     }
 
     @Override
@@ -198,6 +221,18 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         return new Byte((byte) masked);
     }
 
+    @Ignore
+    public static byte set(byte value, long index, boolean bit) {
+        if (index < 0 || index > 7) {
+            return value;
+        }
+        int mask = 1 << index;
+        int masked = bit ? 
+                (0xff&value) | mask : 
+                (0xff&value) & ~mask;
+        return (byte) masked;
+    }
+
     @Override
     @Ignore
     public boolean set$bit(long index) {
@@ -211,41 +246,6 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         }
         int mask = 1 << index;
         return ((0xff&value) & mask) != 0;
-    }
-
-    @Ignore
-    public static byte clear(byte value, long index) {
-        if (index < 0 || index > 7) {
-            return value;
-        }
-        int mask = 1 << index;
-        return (byte) ((0xff&value) & ~mask);
-    }
-
-    @Ignore
-    public static byte flip(byte value, long index) {
-        if (index < 0 || index > 7) {
-            return value;
-        }
-        int mask = 1 << index;
-        return (byte) ((0xff&value) ^ mask);
-    }
-
-    @Ignore
-    public static byte set(byte value, long index) {
-        return set(value, index, true);
-    }
-
-    @Ignore
-    public static byte set(byte value, long index, boolean bit) {
-        if (index < 0 || index > 7) {
-            return value;
-        }
-        int mask = 1 << index;
-        int masked = bit ? 
-                (0xff&value) | mask : 
-                (0xff&value) & ~mask;
-        return (byte) masked;
     }
 
     @Ignore
@@ -276,11 +276,6 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         }
     }
     
-    @Override
-    public int hashCode() {
-        return value;
-    }
-    
     @Ignore
     public static boolean equals(byte value, java.lang.Object obj) {
         if (obj instanceof Byte) {
@@ -289,6 +284,11 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         else {
             return false;
         }
+    }
+    
+    @Override
+    public int hashCode() {
+        return value;
     }
     
     @Ignore
