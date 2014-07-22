@@ -15,11 +15,13 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({
     "ceylon.language::Binary<ceylon.language::Byte>",
     "ceylon.language::Invertible<ceylon.language::Byte>",
-    "ceylon.language::Ordinal<ceylon.language::Byte>"
+    "ceylon.language::Enumerable<ceylon.language::Byte>"
 })
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
-public final class Byte implements Binary<Byte>, Invertible<Byte>, Ordinal<Byte>, ReifiedType {
+public final class Byte implements 
+        Binary<Byte>, Invertible<Byte>, 
+        Enumerable<Byte>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);
@@ -34,6 +36,11 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, Ordinal<Byte>
     @Ignore
     @Override
     public Binary$impl<Byte> $ceylon$language$Binary$impl() {
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Override
+    public Enumerable$impl<Byte> $ceylon$language$Enumerable$impl() {
         throw Util.makeUnimplementedMixinAccessException();
     }
 
@@ -330,6 +337,36 @@ public final class Byte implements Binary<Byte>, Invertible<Byte>, Ordinal<Byte>
     @Ignore
     public static java.lang.String toString(byte value) {
         return Integer.toString(0xff&value);
+    }
+
+    @Override
+    public Byte neighbour(long offset) {
+        return new Byte(((byte) (value + offset)));
+    }
+
+    @Override
+    public long offset(Byte other) {
+        return ((byte) (value - other.value)) & 0xff;
+    }
+
+    @Override
+    public long offsetSign(Byte other) {
+        return value==other.value ? 0 : 1;
+    }
+    
+    @Ignore
+    public static byte neighbour(byte value, long offset) {
+        return (byte) (value + offset);
+    }
+
+    @Ignore
+    public static long offset(byte value, byte other) {
+        return ((byte) (value - other)) & 0xff;
+    }
+
+    @Ignore
+    public static long offsetSign(byte value, byte other) {
+        return value==other ? 0 : 1;
     }
     
 }

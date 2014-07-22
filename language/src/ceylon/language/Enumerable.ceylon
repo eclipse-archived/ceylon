@@ -30,7 +30,7 @@
  is a linear enumerable type, then the offset function 
  satisfies:
  
- - `x.predecessor.offset(x) == -1` if `x!=x.predecessor`
+ - `x.predecessor.offset(x) == -1` if `x!=x.predecessor`,
  - `x.offset(y) == -y.offset(x)` for any instance `y` of `X`, 
    and
  - `x.offset(y) == x.offset(z) + z.offset(y)`.
@@ -40,8 +40,8 @@
  offset and neighbour functions must satisfy:
  
  - `x.neighbour(count)==x`,
- - `x.offset(y)>=0` for any instance `y` of `X`, and 
- - `x.predecessor.offset(x)==count`.
+ - `x.offset(y) >= 0` for any instance `y` of `X`, and 
+ - `x.predecessor.offset(x) == count`.
  
  A range of values of an enumerable type may be specified 
  using:

@@ -20,7 +20,7 @@ shared native final class Byte(congruent)
         extends Object()
         satisfies Binary<Byte> & 
                   Invertible<Byte> &
-                  Ordinal<Byte> {
+                  Enumerable<Byte> {
     
     "An integer congruent (modulo 256) to the resulting 
      `Byte`.
@@ -55,6 +55,10 @@ shared native final class Byte(congruent)
     
     shared actual native Byte predecessor;
     shared actual native Byte successor;
+    
+    shared actual native Byte neighbour(Integer offset);
+    shared actual native Integer offset(Byte other);
+    shared actual native Integer offsetSign(Byte other);
     
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;

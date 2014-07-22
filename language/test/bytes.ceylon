@@ -1,5 +1,6 @@
 @test
 shared void bytes() {
+  check(Byte(-1).integer==255, "byte -1");
   check(Byte(0).integer==0, "byte 0");
   check(Byte(255).integer==255, "byte 255");
   check(Byte(256).integer==0, "byte 256");
@@ -49,4 +50,6 @@ shared void bytes() {
   check(b==Byte(255), "0--");
   b++;
   check(b==Byte(0), "255++");
+  check(Byte(1)..Byte(3) == [Byte(1), Byte(2), Byte(3)], "1..3");
+  check(Byte(255)..Byte(1) == [Byte(255), Byte(0), Byte(1)], "255..1");
 }
