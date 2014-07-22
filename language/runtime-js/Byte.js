@@ -6,6 +6,7 @@ function Byte(bits,that) {
   Invertible({Other$Invertible:{t:Byte}},that);
   //Ordinal({Other$Ordinal:{t:Byte}},that);
   Enumerable({Other$Enumerable:{t:Byte}},that);
-  that.val$=Math.abs(bits)%256;
+  var remainder = bits%256;
+  that.val$ = remainder>=0 ? remainder : 256+remainder;
   return that;
 }
