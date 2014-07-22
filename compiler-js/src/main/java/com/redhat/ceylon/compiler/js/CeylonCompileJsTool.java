@@ -49,6 +49,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
+    private String resourceRootName = DefaultToolOptions.getCompilerResourceRootName();
     private List<String> files = Arrays.asList("*");
 
     public CeylonCompileJsTool() {
@@ -142,6 +143,13 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         this.resources = resource;
     }
 
+    @OptionArgument(shortName='R', argumentName="folder-name")
+    @Description("Sets the special resource folder name whose files will " +
+            "end up in the root of the resulting module CAR file (default: ROOT).")
+    public void setResourceRoot(String resourceRootName) {
+        this.resourceRootName = resourceRootName;
+    }
+    
     public String getOut() {
         return (out != null) ? out : DefaultToolOptions.getCompilerOutDir().getPath();
     }
@@ -400,6 +408,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         if (!onlyRes.isEmpty()) {
             jsc.setResources(onlyRes);
             jsc.setResourceRoots(resrcs);
+            jsc.setResourceRootName(resourceRootName);
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {
