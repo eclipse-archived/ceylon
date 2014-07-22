@@ -256,12 +256,12 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
     }
     
     public long getInteger() {
-        return value;
+        return 0xff&value;
     }
     
     @Ignore
     public static long getInteger(byte value) {
-        return value;
+        return 0xff&value;
     }
     
     @Override
