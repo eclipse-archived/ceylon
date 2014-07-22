@@ -121,9 +121,9 @@ public class TestModelMethodsAndAttributes {
         method = (Map<String, Object>)model.get("parmtypes4");
         ModelUtils.checkType(method, "SomethingElse");
         List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_PARAMS);
-        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("satisfies"),
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get(MetamodelGenerator.KEY_SATISFIES),
                 "ceylon.language::Comparable<Something>");
-        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get("satisfies"), "Something");
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get(MetamodelGenerator.KEY_SATISFIES), "Something");
 
         method = (Map<String, Object>)model.get("parmtypes5");
         ModelUtils.checkParam(method, 0, "x", "Value", false, false);
@@ -137,11 +137,11 @@ public class TestModelMethodsAndAttributes {
     @Test @SuppressWarnings("unchecked")
     public void testIntersectionTypes() {
         Map<String, Object> method = (Map<String, Object>)model.get("intersector1");
-        ModelUtils.checkParam(method, 0, "inters", "ceylon.language::Category&ceylon.language::Container", false, false);
+        ModelUtils.checkParam(method, 0, "inters", "ceylon.language::Category&ceylon.language::Iterable<ceylon.language::Anything>", false, false);
         method = (Map<String,Object>)model.get("intersector2");
         System.out.println(method);
         ModelUtils.checkParam(method, 0, "beast",
-                "ceylon.language::Category&ceylon.language::Iterable<ceylon.language::Container>", false, false);
+                "ceylon.language::Category&ceylon.language::Iterable<ceylon.language::Iterable<ceylon.language::Anything>>", false, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -162,7 +162,7 @@ public class TestModelMethodsAndAttributes {
         attrib = (Map<String, Object>)model.get("union");
         ModelUtils.checkType(attrib, "ceylon.language::Integer|ceylon.language::String");
         attrib = (Map<String, Object>)model.get("useq");
-        ModelUtils.checkType(attrib, "ceylon.language::Container<ceylon.language::Singleton<ceylon.language::Integer>|ceylon.language::String>");
+        ModelUtils.checkType(attrib, "ceylon.language::Iterable<ceylon.language::Singleton<ceylon.language::Integer>|ceylon.language::String>");
     }
 
     @Test @SuppressWarnings("unchecked")

@@ -62,7 +62,7 @@ public class TestDocVisitor {
         Map<String, List<String>> m3 = new HashMap<String, List<String>>();
         m3.put("String", Arrays.asList("1:0-1:5", "4:12-4:17", "8:11-8:16"));
         m3.put("Integer", Arrays.asList("1:18-1:24", "4:21-4:27", "8:19-8:25", "9:14-9:20"));
-        m3.put("void", Arrays.asList("4:0-4:3", "7:0-7:3"));
+        m3.put("void", Arrays.asList("4:0-4:3", "7:7-7:10"));
         //m3.put("Callable", Arrays.asList("8:2-8:9"));
         return Arrays.asList(new Object[][]{
             {"src/test/resources/doc/calls.ceylon", m1 },

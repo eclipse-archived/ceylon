@@ -13,9 +13,9 @@ import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 public class ModelUtils {
 
     /** Asserts that every specified key is in the map and that it equals the corresponding value. */
-    public static void checkMap(Map<String, Object> map, String... keysValues) {
+    public static void checkMap(Map<String, Object> map, Object... keysValues) {
         for (int i = 0; i < keysValues.length; i+=2) {
-            Assert.assertEquals(keysValues[i+1], (String)map.get(keysValues[i]));
+            Assert.assertEquals(keysValues[i+1], map.get(keysValues[i]));
         }
     }
 
@@ -216,6 +216,17 @@ public class ModelUtils {
             return "ceylon.language";
         }
         return p;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String,Object> getPrivateMethod(String name, Map<String,Object> container) {
+        Map<String,Object> methods = (Map<String,Object>)container.get(MetamodelGenerator.KEY_METHODS);
+        for (String n : methods.keySet()) {
+            if (n.startsWith(name)) {
+                return (Map<String,Object>)methods.get(n);
+            }
+        }
+        return null;
     }
 
 }
