@@ -123,6 +123,14 @@ public final class Array<Element>
     			}
     			return array;
     		}
+            else if (clazz==Byte.class) {
+                byte[] array = new byte[size];
+                for (int i=0; i<size; i++) {
+                    array[i] = 
+                            ((Byte) list.get(i)).value;
+                }
+                return array;
+            }
     		else if (clazz==java.lang.Boolean.class) {
     			boolean[] array = new boolean[size];
     			for (int i=0; i<size; i++) {
@@ -266,6 +274,15 @@ public final class Array<Element>
         		}
         		return array;
         	}
+            else if (clazz==Byte.class) {
+                byte[] array = new byte[size];
+                for (int i=0; i<size; i++) {
+                    Byte e = (Byte)
+                            elements.getFromFirst(i);
+                    array[i] = e.value;
+                }
+                return array;
+            }
         	else if (clazz==java.lang.Boolean.class) {
         		boolean[] array = new boolean[size];
         		for (int i=0; i<size; i++) {
@@ -389,6 +406,12 @@ public final class Array<Element>
                 		0, array, 0, size);
                 return array;
             }
+            else if (clazz==Byte.class) {
+                byte[] array = new byte[size];
+                arraycopy(elements.array, 
+                        0, array, 0, size);
+                return array;
+            }
             else if (clazz==java.lang.Boolean.class) {
             	boolean[] array = new boolean[size];
             	arraycopy(elements.array, 
@@ -489,6 +512,12 @@ public final class Array<Element>
                 boolean[] array = new boolean[size];
                 boolean value = ((Boolean) element).booleanValue();
                 if (value!=false) Arrays.fill(array, value); 
+                return array;
+            }
+            else if (clazz==Byte.class) {
+                byte[] array = new byte[size];
+                byte value = ((Byte) element).value;
+                if (value!=0.0d) Arrays.fill(array, value); 
                 return array;
             }
             else if (clazz==java.lang.Boolean.class) {
@@ -661,6 +690,14 @@ public final class Array<Element>
             return null;
         }
         return new Array<Boolean>(Boolean.$TypeDescriptor$, array);
+    }
+    
+    @Ignore
+    public static Array<Byte> instanceForBytes(byte[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<Byte>(Byte.$TypeDescriptor$, array);
     }
     
     @Ignore
@@ -1020,7 +1057,12 @@ public final class Array<Element>
         } 
         else if (array instanceof byte[]) {
             byte val = ((byte[])array)[index];
-            return (Element) java.lang.Byte.valueOf(val);
+            if (arrayElementClass == Byte.class) {
+                return (Element) Byte.instance(val);
+            }
+            else {
+                return (Element) java.lang.Byte.valueOf(val);
+            }
         } 
         else if (array instanceof short[]) {
             short val = ((short[])array)[index];
@@ -1099,8 +1141,13 @@ public final class Array<Element>
                         ((java.lang.Character)element).charValue();
             }
             else if (array instanceof byte[]) {
-                ((byte[])array)[idx] = 
-                        ((java.lang.Byte)element).byteValue();
+                if (element instanceof Byte) {
+                    ((byte[])array)[idx] = ((Byte)element).value;
+                }
+                else {
+                    ((byte[])array)[idx] = 
+                            ((java.lang.Byte)element).byteValue();
+                }
             }
             else if (array instanceof short[]) {
                 ((short[])array)[idx] = 
@@ -1500,8 +1547,14 @@ public final class Array<Element>
                     if (array instanceof Object[]) {
                         java.lang.Object val = 
                                 ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = 
-                                ((java.lang.Byte) val).byteValue();
+                        if (val instanceof Byte) {
+                            target[desti] = 
+                                    ((Byte) val).value;
+                        }
+                        else {
+                            target[desti] = 
+                                    ((java.lang.Byte) val).byteValue();
+                        }
                     }
                     else {
                         throw new AssertionError(
@@ -1586,8 +1639,14 @@ public final class Array<Element>
                                 java.lang.Short.valueOf(((short[])array)[sourcei]);
                     }
                     else if (array instanceof byte[]) {
-                        target[desti] = 
-                                java.lang.Byte.valueOf(((byte[])array)[sourcei]);
+                        if ($reifiedElement==Byte.$TypeDescriptor$) {
+                            target[desti] = 
+                                    Byte.instance(((byte[])array)[sourcei]);
+                        }
+                        else {
+                            target[desti] = 
+                                    java.lang.Byte.valueOf(((byte[])array)[sourcei]);
+                        }
                     }
                     else if (array instanceof double[]) {
                         if ($reifiedElement==Float.$TypeDescriptor$) {

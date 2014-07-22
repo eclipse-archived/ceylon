@@ -34,15 +34,24 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
         throw Util.makeUnimplementedMixinAccessException();
     }
 
-    private byte value;
+    final byte value;
     
-    public Byte(@Name("congruent") long bits) {
-        value = (byte) bits;
+    public Byte(@Name("congruent") long congruent) {
+        value = (byte) congruent;
     }
     
     @Ignore
     public Byte(byte value) {
         this.value = value;
+    }
+    
+    public static Byte instance(byte value) {
+        return new Byte(value);
+    }
+    
+    @Ignore
+    public byte byteValue() {
+        return value;
     }
     
     @Override

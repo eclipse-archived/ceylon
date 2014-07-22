@@ -259,16 +259,18 @@
             <filter token="Name" value="Byte"/>
             <filter token="Classname" value="ByteArray"/>
             <filter token="PrimitiveType" value="byte"/>
-            <filter token="BoxedType" value="ceylon.language.Integer"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+            <filter token="BoxedType" value="ceylon.language.Byte"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Byte"/>
             <filter token="JavaBoxedType" value="java.lang.Byte"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Byte"/>
-            <filter token="UnboxMethod" value="longValue"/>
+            <filter token="UnboxMethod" value="byteValue"/>
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value="/*"/>
-            <filter token="OptionalEnd" value="*/"/>
-            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
-            <filter token="CeylonArrayGetter" value="NOTUSED"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForBytes"/>
+            <filter token="CeylonArrayGetter" value="getByteArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Byte"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Byte"/>
           </filterset>
         </copy>
         <!-- Boolean -->

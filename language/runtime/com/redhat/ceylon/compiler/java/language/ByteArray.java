@@ -60,7 +60,7 @@ public final class ByteArray implements ReifiedType {
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(ByteArray.class);
 
-    public ByteArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") byte element){
+    public ByteArray(@Name("size") int size, @TypeInfo("ceylon.language::Byte") @Defaulted @Name("element") byte element){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -105,17 +105,17 @@ public final class ByteArray implements ReifiedType {
     public ceylon.language.Array<java.lang.Byte> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
-    /*
+    
     @Ignore
-    public static ceylon.language.Array<@CeylonArrayGetterType@> NOTUSED(byte[] array){
-        return Array.NOTUSED(array);
+    public static ceylon.language.Array<ceylon.language.Byte> getByteArray(byte[] array){
+        return Array.instanceForBytes(array);
     }
 
-    @TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
-    public ceylon.language.Array<@CeylonArrayGetterType@> NOTUSED(){
+    @TypeInfo("ceylon.language::Array<ceylon.language::Byte>")
+    public ceylon.language.Array<ceylon.language.Byte> getByteArray(){
         throw Util.makeJavaArrayWrapperException();
     }
-    */
+    
     @Ignore
     public static void copyTo(byte[] array, byte[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
@@ -232,7 +232,7 @@ public final class ByteArray implements ReifiedType {
     
     /* Implement Iterable */
 
-    public static class ByteArrayIterable extends BaseIterable<ceylon.language.Integer, ceylon.language.Null> {
+    public static class ByteArrayIterable extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
         
         /** The array over which we iterate */
         private final byte[] array;
@@ -250,7 +250,7 @@ public final class ByteArray implements ReifiedType {
         
         @Ignore
         private ByteArrayIterable(byte[] array, int start, int end, int step) {
-        	super(ceylon.language.Integer.$TypeDescriptor$, Null.$TypeDescriptor$);
+        	super(ceylon.language.Byte.$TypeDescriptor$, Null.$TypeDescriptor$);
             if (start < 0) {
                 throw new ceylon.language.AssertionError("start must be positive");
             }
@@ -272,9 +272,9 @@ public final class ByteArray implements ReifiedType {
             Iterator<? extends Object> iter = arg0.iterator();
             Object item;
             while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Integer) {
+                if (item instanceof ceylon.language.Byte) {
                     for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Integer)item).longValue()) {
+                        if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
                             return true;
                         }
                     }
@@ -289,9 +289,9 @@ public final class ByteArray implements ReifiedType {
             Iterator<? extends Object> iter = arg0.iterator();
             Object item;
             OUTER: while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Integer) {
+                if (item instanceof ceylon.language.Byte) {
                     for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Integer)item).longValue()) {
+                        if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
                             continue OUTER;
                         }
                     }
@@ -304,7 +304,7 @@ public final class ByteArray implements ReifiedType {
         @Override
         public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
             for (int ii=this.start; ii < this.end; ii+=this.step) {
-                if (arg0.$call$(ceylon.language.Integer.instance(array[ii])).booleanValue()) {
+                if (arg0.$call$(ceylon.language.Byte.instance(array[ii])).booleanValue()) {
                     return true;
                 }
             }
@@ -314,8 +314,8 @@ public final class ByteArray implements ReifiedType {
         @Override
         public boolean contains(Object item) {
             for (int ii = this.start; ii < this.end; ii+=this.step) {
-                if (item instanceof ceylon.language.Integer 
-                        && array[ii] == ((ceylon.language.Integer)item).longValue()) {
+                if (item instanceof ceylon.language.Byte 
+                        && array[ii] == ((ceylon.language.Byte)item).byteValue()) {
                     return true;
                 }
             }
@@ -331,7 +331,7 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Integer, ? extends Object> getCoalesced() {
+        public Iterable<? extends ceylon.language.Byte, ? extends Object> getCoalesced() {
             return this;
         }
         
@@ -346,14 +346,14 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Override
-        public ceylon.language.Integer getFirst() {
-            return this.getEmpty() ? null : ceylon.language.Integer.instance(this.array[this.start]);
+        public ceylon.language.Byte getFirst() {
+            return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.start]);
         }
         
         
         @Override
-        public ceylon.language.Integer getLast() {
-            return this.getEmpty() ? null : ceylon.language.Integer.instance(this.array[this.end-1]);
+        public ceylon.language.Byte getLast() {
+            return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.end-1]);
         }
         
         @Override
@@ -362,7 +362,7 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Override
-        public Sequential<? extends ceylon.language.Integer> sequence() {
+        public Sequential<? extends ceylon.language.Byte> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
         	//TODO: use a more efficient imple, like in List.sequence()
@@ -370,18 +370,18 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Override
-        public Iterator<? extends ceylon.language.Integer> iterator() {
+        public Iterator<? extends ceylon.language.Byte> iterator() {
             if (this.getEmpty()) {
                 return (Iterator)ceylon.language.emptyIterator_.get_();
             }
-            return new Iterator<ceylon.language.Integer>() {
+            return new Iterator<ceylon.language.Byte>() {
                 
                 private int index = ByteArrayIterable.this.start;
                 
                 @Override
                 public Object next() {
                     if (index < ByteArrayIterable.this.end) {
-                        ceylon.language.Integer result = ceylon.language.Integer.instance(ByteArrayIterable.this.array[index]);
+                        ceylon.language.Byte result = ceylon.language.Byte.instance(ByteArrayIterable.this.array[index]);
                         index += ByteArrayIterable.this.step;
                         return result;
                     } else {
