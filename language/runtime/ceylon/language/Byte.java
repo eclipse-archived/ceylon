@@ -208,7 +208,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
             return false;
         }
         int mask = 1 << index;
-        return ((0xff&value) & ~mask) != 0;
+        return ((0xff&value) & mask) != 0;
     }
 
     @Ignore
@@ -252,7 +252,7 @@ public class Byte implements Binary<Byte>, Invertible<Byte>, ReifiedType {
             return false;
         }
         int mask = 1 << index;
-        return ((0xff&value) & ~mask) != 0;
+        return ((0xff&value) & mask) != 0;
     }
     
     public long getInteger() {
