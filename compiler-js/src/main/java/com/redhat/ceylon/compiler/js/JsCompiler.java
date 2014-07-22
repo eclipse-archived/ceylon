@@ -498,15 +498,10 @@ public class JsCompiler {
     }
     
     private String resourceRootPath(String moduleName) {
-        if (!resourceRootName.isEmpty()) {
-            String rrp;
-            if (!"default".equals(moduleName)) {
-                rrp = moduleName.replace('.', '/');
-                if (!rrp.isEmpty() && !rrp.endsWith("/")) {
-                    rrp = rrp + "/";
-                }
-            } else {
-                rrp = "";
+        if (!resourceRootName.isEmpty() && !"default".equals(moduleName)) {
+            String rrp = moduleName.replace('.', '/');
+            if (!rrp.isEmpty() && !rrp.endsWith("/")) {
+                rrp = rrp + "/";
             }
             String rootName = resourceRootName;
             if (rootName == null) {
