@@ -1442,8 +1442,8 @@ public class CallableBuilder {
         private boolean isValueTypeCall(Parameter param, ProducedType parameterType) {
             if(!param.isSequenced()
                     && forwardCallTo instanceof Tree.QualifiedMemberExpression){
-                ProducedReference target = ((Tree.QualifiedMemberExpression) forwardCallTo).getTarget();
-                return Decl.isValueTypeDecl(target.getType())
+                Tree.Primary primary = ((Tree.QualifiedMemberExpression) forwardCallTo).getPrimary();
+                return Decl.isValueTypeDecl(primary.getTypeModel())
                         && Decl.isValueTypeDecl(parameterType);
             }
             return false;
