@@ -24,6 +24,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -54,6 +55,7 @@ public class JsCompiler {
     protected List<String> files;
     protected List<File> resources;
     protected List<File> resourceRoots;
+    protected String resourceRootName;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
@@ -177,6 +179,10 @@ public class JsCompiler {
     /** Sets the list of root directories where the resources come from. This is to properly pack the paths. */
     public void setResourceRoots(List<File> roots) {
         resourceRoots = roots;
+    }
+    /** Sets the name of the special folder whose contents will and up in the root of the resulting resource zip. */
+    public void setResourceRootName(String resourceRootName) {
+        this.resourceRootName = resourceRootName;
     }
     public Set<Message> listErrors() {
         return getErrors();
@@ -352,6 +358,7 @@ public class JsCompiler {
             }
             String moduleName = entry.getKey().getNameAsString();
             String moduleVersion = entry.getKey().getVersion();
+            
             //Create the JS file
             final File jsart = jsout.close();
             final File modart = jsout.getModelFile();
@@ -396,7 +403,7 @@ public class JsCompiler {
                     try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(resfile))) {
                         for (File res : resources) {
                             //Add to the stream
-                            zip.putNextEntry(getZipEntryName(res));
+                            zip.putNextEntry(getZipEntryName(moduleName, res));
                             //Copy the file
                             Files.copy(res.toPath(), zip);
                         }
@@ -474,15 +481,37 @@ public class JsCompiler {
         return compilingLanguageModule;
     }
 
-    private ZipEntry getZipEntryName(File resource) {
+    private ZipEntry getZipEntryName(String moduleName, File resource) {
+        String rrp = resourceRootPath(moduleName);
         String parent = resource.getParentFile().getAbsolutePath();
         for (File f : resourceRoots) {
             String p = f.getAbsolutePath();
             if (parent.startsWith(p)) {
-                return new ZipEntry(resource.getAbsolutePath().substring(p.length()+1));
+                String entry = resource.getAbsolutePath().substring(p.length()+1);
+                if (!rrp.isEmpty() && entry.startsWith(rrp)) {
+                    entry = entry.substring(rrp.length());
+                }
+                return new ZipEntry(entry);
             }
         }
         return null;
+    }
+    
+    private String resourceRootPath(String moduleName) {
+        if (!resourceRootName.isEmpty()) {
+            String rrp = moduleName.replace('.', '/');
+            if (!rrp.isEmpty() && !rrp.endsWith("/")) {
+                rrp = rrp + "/";
+            }
+            String rootName = resourceRootName;
+            if (rootName == null) {
+                rootName = Constants.DEFAULT_RESOURCE_ROOT;
+            }
+            rrp = rrp + rootName + "/";
+            return rrp;
+        } else {
+            return "";
+        }
     }
 
 }
