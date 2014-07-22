@@ -406,6 +406,10 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Character");
     }
     
+    public TypeDeclaration getByteDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("Byte");
+    }
+    
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
