@@ -1,7 +1,7 @@
 "Abstraction of types that are conceptually a sequence of 
  bits, and may be the subject of bitwise operations. A bit 
  is a [[Boolean]] value. Bits are indexed from right to 
- left."
+ left, where `0` is the index of the least significant bit."
 see (`class Integer`)
 by ("Stef")
 shared interface Binary<Other> of Other 
@@ -10,16 +10,25 @@ shared interface Binary<Other> of Other
     "The binary complement of this sequence of bits."
     shared formal Other not;
 
-    "Performs a left logical shift. Sign is not preserved. 
-     Padded with zeros."
+    "Shift the sequence of bits to the left, by the 
+     given [[number of places|shift]], filling the least
+     significant bits with zeroes."
     shared formal Other leftLogicalShift(Integer shift);
 
-    "Performs a right logical shift. Sign is not preserved. 
-     Padded with zeros."
+    "Shift the sequence of bits to the right, by the 
+     given [[number of places|shift]], filling the most
+     significant bits with zeroes.
+     
+     If the sequence of bits represents a signed integer, 
+     the sign is not preserved."
     shared formal Other rightLogicalShift(Integer shift);
 
-    "Performs a right arithmetic shift. Sign is preserved. 
-     Padded with zeros."
+    "Shift the sequence of bits to the right, by the 
+     given [[number of places|shift]], preserving the values
+     of the most significant bits.
+     
+     If the sequence of bits represents a signed integer, 
+     the sign is preserved."
     shared formal Other rightArithmeticShift(Integer shift);
 
     "Performs a logical AND operation."
