@@ -15,7 +15,18 @@
  integer arithmetic. For example:
  
  - `-Byte(1).integer == -1`, but
- - `(-Byte(1)).integer == 255`."
+ - `(-Byte(1)).integer == 255`.
+ 
+ `Byte` is a [[recursive enumerable type|Enumerable]]. For
+ example, the range `Byte(254)..Byte(1)` contains the values
+ `Byte(254), Byte(255), Byte(0), Byte(1)`.
+ 
+ `Byte` does not have a [[total order|Comparable]] because 
+ the order would not be consistent with the definition of 
+ [[successor]] and [[predecessor]].
+ 
+ `Byte`s are useful mainly because they can be efficiently 
+ stored in an [[Array]]."
 shared native final class Byte(congruent) 
         extends Object()
         satisfies Binary<Byte> & 
