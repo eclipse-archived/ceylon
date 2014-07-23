@@ -149,6 +149,9 @@ shared native final class Integer(Integer integer)
     shared actual native Boolean notSmallerThan(Integer other); 
     shared actual native Boolean notLargerThan(Integer other); 
     
+    "A [[Byte]] whose [[signed|Byte.signed]] and
+     [[unsigned|Byte.unsigned]] interpretations are 
+     congruent modulo 256 to this integer."
     shared native Byte byte;
     
 }
