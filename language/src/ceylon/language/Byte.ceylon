@@ -21,9 +21,9 @@
  `Byte` is a [[recursive enumerable type|Enumerable]]. For
  example, the range:
  
-     Byte(254)..Byte(1)
+     254.byte .. 1.byte
      
- contains the values `Byte(254), Byte(255), Byte(0), Byte(1)`.
+ contains the values `254.byte, 255.byte, 0.byte, 1.byte`.
  
  `Byte` does not have a [[total order|Comparable]] because
  any such order would:
@@ -45,23 +45,23 @@ shared native final class Byte(congruent)
                   Invertible<Byte> &
                   Enumerable<Byte> {
     
-    "An integer congruent (modulo 256) to the resulting 
-     `Byte`.
+    "An integer member of the congruence class of the 
+     resulting `Byte`.
      
-     That is, for any integer `x>=0`:
+     For any integer `x>=0`:
      
-         Byte(x).unsigned == x % 256
-         Byte(x).signed == x % 256
+         x.byte.unsigned == x % 256
+         x.byte.signed == x % 256
      
      And for an integer `x<0`:
      
-         Byte(x).unsigned == 256 + x % 256
-         Byte(x).signed == x % 256
+         x.byte.unsigned == 256 + x % 256
+         x.byte.signed == x % 256
      
      And for any integers `x` and `y` which are congruent
      modulo 256:
      
-         Byte(x) == Byte(y)"
+         x.byte == y.byte"
     Integer congruent;
     
     //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
@@ -76,7 +76,7 @@ shared native final class Byte(congruent)
     
     "The additive inverse of this byte. For any integer `x`:
      
-         (-Byte(x)).signed = -Byte(x).signed"
+         (-x.byte).signed = -x.byte.signed"
     shared actual native Byte negated;
     
     "The modulo 256 sum of this byte and the given byte."
