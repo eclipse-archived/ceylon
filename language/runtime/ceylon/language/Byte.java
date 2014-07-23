@@ -39,6 +39,7 @@ public final class Byte implements
         throw Util.makeUnimplementedMixinAccessException();
     }
 
+    @Ignore
     @Override
     public Enumerable$impl<Byte> $ceylon$language$Enumerable$impl() {
         throw Util.makeUnimplementedMixinAccessException();
@@ -349,7 +350,7 @@ public final class Byte implements
     }
 
     @Override
-    public Byte neighbour(long offset) {
+    public Byte neighbour(@Name("offset") long offset) {
         return new Byte(((byte) (value + offset)));
     }
     
@@ -359,7 +360,7 @@ public final class Byte implements
     }
 
     @Override
-    public long offset(Byte other) {
+    public long offset(@Name("other") Byte other) {
         return ((byte) (value - other.value)) & 0xff;
     }
 
@@ -369,7 +370,7 @@ public final class Byte implements
     }
 
     @Override
-    public long offsetSign(Byte other) {
+    public long offsetSign(@Name("other") Byte other) {
         return value==other.value ? 0 : 1;
     }
 
