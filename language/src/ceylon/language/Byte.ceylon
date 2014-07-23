@@ -9,7 +9,7 @@
  only:
  
  - [[bitwise|Binary]] operations, and 
- - addition modulo 256.
+ - addition and subtraction modulo 256.
  
  `Byte`s with modular addition form a [[mathematical 
  group|Invertible]]. Thus, every byte `b` has an additive
