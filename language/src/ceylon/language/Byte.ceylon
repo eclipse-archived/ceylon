@@ -1,7 +1,10 @@
-"An 8-bit byte. A `Byte` value may be interpreted as an
- [[unsigned]] integer value in the range `0..255`, or as a 
- [[signed]] integer value in the range `-128..127`. `Byte` 
- is not considered a full numeric type, supporting only:
+"An 8-bit byte. A `Byte` value may be interpreted either as:
+ 
+ - an [[unsigned]] integer value in the range `0..255`, or 
+ - a [[signed]] integer value in the range `-128..127`. 
+ 
+ `Byte` is not considered a full numeric type, supporting 
+ only:
  
  - [[bitwise|Binary]] operations, and 
  - addition modulo 256.
@@ -14,14 +17,23 @@
      (-b).unsigned == b.unsigned==0 then 0 else 256 - b.unsigned
  
  `Byte` is a [[recursive enumerable type|Enumerable]]. For
- example, the range `Byte(254)..Byte(1)` contains the values
- `Byte(254), Byte(255), Byte(0), Byte(1)`.
+ example, the range:
  
- `Byte` does not have a [[total order|Comparable]] because 
- the order would not be consistent with the definition of 
- [[successor]] and [[predecessor]] under modular arithmetic, 
- and would force an interpretation of each `Byte` value as
- signed or unsigned.
+     Byte(254)..Byte(1)
+     
+ contains the values `Byte(254), Byte(255), Byte(0), Byte(1)`.
+ 
+ `Byte` does not have a [[total order|Comparable]] because
+ any such order would:
+  
+ - be inconsistent with the definition of [[successor]] and 
+   [[predecessor]] under modular addition, and
+ - would depend on interpretation of the `Byte` value as
+   signed or unsigned.
+ 
+ Thus, to compare the magnitude of two bytes, it is 
+ necessary to first convert them to either their `signed` or 
+ `unsigned` integer values.
  
  `Byte`s are useful mainly because they can be efficiently 
  stored in an [[Array]]."
