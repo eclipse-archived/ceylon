@@ -1,2 +1,2 @@
-if (this.integer<128)return this.integer;
-return -1-(this.integer^0xff);
+if (this.val$<128)return this.val$;
+return -1-(this.val$^0xff);

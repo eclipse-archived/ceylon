@@ -1,1 +1,1 @@
-return Byte(this.integer^0xff);
+return Byte(this.val$^0xff);

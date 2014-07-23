@@ -1,10 +1,15 @@
 @test
 shared void bytes() {
-  check(Byte(-1).integer==255, "byte -1");
-  check(Byte(0).integer==0, "byte 0");
-  check(Byte(255).integer==255, "byte 255");
-  check(Byte(256).integer==0, "byte 256");
-  check(Byte(65535).integer==255, "byte 65535");
+  check(Byte(-1).unsigned==255, "byte -1");
+  check(Byte(0).unsigned==0, "byte 0");
+  check(Byte(255).unsigned==255, "byte 255");
+  check(Byte(256).unsigned==0, "byte 256");
+  check(Byte(65535).unsigned==255, "byte 65535");
+  check(Byte(-1).signed==-1, "byte -1");
+  check(Byte(0).signed==0, "byte 0");
+  check(Byte(255).signed==-1, "byte 255");
+  check(Byte(256).signed==0, "byte 256");
+  check(Byte(65535).signed==-1, "byte 65535");
   check(Byte(0).or(Byte(1))==Byte(1), "byte 0|1");
   check(Byte(15).or(Byte(5))==Byte(15), "byte 15|5");
   check(Byte(7).and(Byte(1))==Byte(1), "byte 7&2");
@@ -33,12 +38,22 @@ shared void bytes() {
   check(Byte(170).hash==-86, "byte.hash 170");
   check(Byte(85).string=="85", "byte.string 85");
   check(Byte(255).string=="255", "byte.string 255");
+  check(Byte(0).leftLogicalShift(3) == Byte(0), "0<<3");
   check(Byte(1).leftLogicalShift(3) == Byte(8), "1<<3");
-  check(Byte(8).rightLogicalShift(3) == Byte(1), "8>>3");
   check(Byte(255).leftLogicalShift(9) == Byte(0), "255<<9");
-  check(Byte(255).rightLogicalShift(9) == Byte(0), "255>>9");
-  check(Byte(255).rightLogicalShift(4) == Byte(15), "255>>4");
-  check(Byte(255).rightArithmeticShift(4)==Byte(255).rightLogicalShift(4), "equal right shifts");
+  check(Byte(0).rightLogicalShift(3) == Byte(0), "0>>>3");
+  check(Byte(8).rightLogicalShift(3) == Byte(1), "8>>>3");
+  check(Byte(128).rightLogicalShift(1)==Byte(64), "128>>>1");
+  check(Byte(255).rightLogicalShift(9) == Byte(0), "255>>>9");
+  check(Byte(255).rightLogicalShift(4) == Byte(15), "255>>>4");
+  check(Byte(0).rightArithmeticShift(3) == Byte(0), "0>>3");
+  check(Byte(64).rightArithmeticShift(1)==Byte(32), "64>>1");
+  check(Byte(255).rightArithmeticShift(1)==Byte(255), 
+      "255>>1 " + Byte(255).rightArithmeticShift(1).string);
+  check(Byte(255).rightArithmeticShift(4)==Byte(255), 
+      "255>>4 " + Byte(255).rightArithmeticShift(4).string);
+  check(Byte(255).rightArithmeticShift(9)==Byte(255), 
+      "255>>9 " + Byte(255).rightArithmeticShift(9).string);
   variable Byte b = Byte(1);
   b++;
   check(b==Byte(2), "1++");

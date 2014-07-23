@@ -1,1 +1,1 @@
-return this.integer==0 ? this : Byte(256-this.integer);
+return this.val$==0 ? this : Byte(256-this.val$);

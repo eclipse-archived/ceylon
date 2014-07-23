@@ -1,3 +1,3 @@
 function(b) {
-  return Byte(this.integer&b.integer);
+  return Byte(this.val$ & b.val$);
 }

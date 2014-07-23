@@ -1,6 +1,6 @@
 function(o) {
   if (is$(o,{t:Byte})) {
-    return o.integer===this.integer;
+    return o.val$===this.val$;
   }
   return false;
 }

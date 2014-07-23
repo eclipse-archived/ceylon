@@ -1,3 +1,3 @@
 function(bits) {
-  return this.rightLogicalShift(bits);
+  return Byte(this.signed>>bits);
 }

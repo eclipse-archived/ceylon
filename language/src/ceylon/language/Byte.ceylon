@@ -1,21 +1,17 @@
-"An unsigned 8-bit byte. A `Byte` is capable of representing
- integer values between 0 and 255 inclusive. `Byte` is not
- considered a full numeric type, supporting only:
+"An 8-bit byte. A `Byte` value may be interpreted as an
+ [[unsigned]] integer value in the range `0..255`, or as a 
+ [[signed]] integer value in the range `-128..127`. `Byte` 
+ is not considered a full numeric type, supporting only:
  
  - [[bitwise|Binary]] operations, and 
  - addition modulo 256.
  
  `Byte`s with modular addition form a [[mathematical 
  group|Invertible]]. Thus, every byte `b` has an additive
- inverse `-b`, even though `Byte`s are unsigned.
+ inverse `-b` where:
  
- Note that the [[integer]] of the additive inverse of a 
- `Byte` under modular arithmetic is _not_ the same as the 
- additive inverse of the `Byte`'s `integer` under ordinary 
- integer arithmetic. For example:
- 
- - `-Byte(1).integer == -1`, but
- - `(-Byte(1)).integer == 255`.
+     (-b).signed == -b.signed
+     (-b).unsigned == b.unsigned==0 then 0 else 256 - b.unsigned
  
  `Byte` is a [[recursive enumerable type|Enumerable]]. For
  example, the range `Byte(254)..Byte(1)` contains the values
@@ -23,7 +19,9 @@
  
  `Byte` does not have a [[total order|Comparable]] because 
  the order would not be consistent with the definition of 
- [[successor]] and [[predecessor]].
+ [[successor]] and [[predecessor]] under modular arithmetic, 
+ and would force an interpretation of each `Byte` value as
+ signed or unsigned.
  
  `Byte`s are useful mainly because they can be efficiently 
  stored in an [[Array]]."
@@ -36,9 +34,15 @@ shared native final class Byte(congruent)
     "An integer congruent (modulo 256) to the resulting 
      `Byte`.
      
-     That is, for any integer `x`:
+     That is, for any integer `x>=0`:
      
-         Byte(x).integer == x % 256 
+         Byte(x).unsigned == x % 256
+         Byte(x).signed == x % 256
+     
+     And for an integer `x<0`:
+     
+         Byte(x).unsigned == 256 + x % 256
+         Byte(x).signed == x % 256
      
      And for any integers `x` and `y` which are congruent
      modulo 256:
@@ -48,9 +52,20 @@ shared native final class Byte(congruent)
     
     //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
     
-    shared native Integer integer;
+    "This byte interpreted as an unsigned integer in the
+     range `0..255`."
+    shared native Integer unsigned;
     
+    "This byte interpreted as a signed integer in the range 
+     `-128..127`."
+    shared native Integer signed;
+    
+    "The additive inverse of this byte. For any integer `x`:
+     
+         (-Byte(x)).signed = -Byte(x).signed"
     shared actual native Byte negated;
+    
+    "The modulo 256 sum of this byte and the given byte."
     shared actual native Byte plus(Byte other);
     
     shared actual native Byte and(Byte other);
@@ -74,6 +89,8 @@ shared native final class Byte(congruent)
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;
     
+    "The [[unsigned]] interpretation of this byte as a 
+     string."
     shared actual native String string;
     
 }

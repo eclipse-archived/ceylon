@@ -155,22 +155,22 @@ public final class Byte implements
 
     @Override
     public Byte rightArithmeticShift(@Name("shift") long shift) {
-        return new Byte((byte) ((0xff&value)>>shift));
+        return new Byte((byte) (value>>shift));
     }
 
     @Ignore
     public static byte rightArithmeticShift(byte value, long shift) {
-        return (byte) ((0xff&value)>>shift);
+        return (byte) (value>>shift);
     }
 
     @Override
     public Byte rightLogicalShift(@Name("shift") long shift) {
-        return new Byte((byte) ((0xff&value)>>shift));
+        return new Byte((byte) ((0xff&value)>>>shift));
     }
 
     @Ignore
     public static byte rightLogicalShift(byte value, long shift) {
-        return (byte) ((0xff&value)>>shift);
+        return (byte) ((0xff&value)>>>shift);
     }
 
     @Ignore
@@ -270,13 +270,22 @@ public final class Byte implements
         return ((0xff&value) & mask) != 0;
     }
     
-    public long getInteger() {
+    public long getUnsigned() {
         return 0xff&value;
     }
     
     @Ignore
-    public static long getInteger(byte value) {
+    public static long getUnsigned(byte value) {
         return 0xff&value;
+    }
+    
+    public long getSigned() {
+        return value;
+    }
+    
+    @Ignore
+    public static long getSigned(byte value) {
+        return value;
     }
     
     @Override
