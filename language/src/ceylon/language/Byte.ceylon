@@ -1,4 +1,6 @@
-"An 8-bit byte. A `Byte` value may be interpreted either as:
+"An 8-bit byte. A `Byte` value represents a congruence class
+ of [[integers|Integer]] modulo 256, and may be interpreted 
+ as:
  
  - an [[unsigned]] integer value in the range `0..255`, or 
  - a [[signed]] integer value in the range `-128..127`. 
