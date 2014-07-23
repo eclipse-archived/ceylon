@@ -343,25 +343,25 @@ public final class Byte implements
     public Byte neighbour(long offset) {
         return new Byte(((byte) (value + offset)));
     }
-
-    @Override
-    public long offset(Byte other) {
-        return ((byte) (value - other.value)) & 0xff;
-    }
-
-    @Override
-    public long offsetSign(Byte other) {
-        return value==other.value ? 0 : 1;
-    }
     
     @Ignore
     public static byte neighbour(byte value, long offset) {
         return (byte) (value + offset);
     }
 
+    @Override
+    public long offset(Byte other) {
+        return ((byte) (value - other.value)) & 0xff;
+    }
+
     @Ignore
     public static long offset(byte value, byte other) {
         return ((byte) (value - other)) & 0xff;
+    }
+
+    @Override
+    public long offsetSign(Byte other) {
+        return value==other.value ? 0 : 1;
     }
 
     @Ignore
