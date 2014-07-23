@@ -149,4 +149,6 @@ shared native final class Integer(Integer integer)
     shared actual native Boolean notSmallerThan(Integer other); 
     shared actual native Boolean notLargerThan(Integer other); 
     
+    shared native Byte byte;
+    
 }

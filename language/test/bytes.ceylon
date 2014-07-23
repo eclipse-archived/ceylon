@@ -1,5 +1,6 @@
 @test
 shared void bytes() {
+  check(127.byte==Byte(127), "byte 127");
   check(Byte(-1).unsigned==255, "byte -1");
   check(Byte(0).unsigned==0, "byte 0");
   check(Byte(255).unsigned==255, "byte 255");

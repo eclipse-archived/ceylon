@@ -148,6 +148,8 @@ atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','float']};});
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','integer']};});
+atr$(JSNum$proto, '$_byte', function(){ return Byte(this); },
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','byte']};});
 atr$(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
 atr$(JSNum$proto, 'successor', function(){ return this+1; },
