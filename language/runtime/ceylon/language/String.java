@@ -790,15 +790,7 @@ public final class String
     public static java.lang.String getTrimmed(java.lang.String value) {
         // Don't use value.trim() because that has a definition of ws that is 
         // inconsistent with ceylon.language::Character.whitespace
-        return internalTrim(value, 
-                new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
-                        TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
-                                Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
-                                "whitespace", (short)-1) {
-            public Boolean $call$(java.lang.Object c) {
-                return Boolean.instance(((Character) c).getWhitespace());
-            }
-        });
+        return internalTrim(value, WHITESPACE);
     }
     
     @Override
@@ -1256,15 +1248,7 @@ public final class String
 
     @Ignore
     public static Callable<? extends Boolean> split$splitting(){
-        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
-                        Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
-                "whitespace", (short)-1) {
-            @Override
-            public Boolean $call$(java.lang.Object ch) {
-                return Boolean.instance(((Character) ch).getWhitespace());
-            }
-        };
+        return WHITESPACE;
     }
 
     @Ignore
@@ -1278,7 +1262,7 @@ public final class String
         return true;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("rawtypes")
     @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
     @Override
     public Tuple slice(@Name("index") long index) {
@@ -1308,32 +1292,40 @@ public final class String
                         instance(second) });
     }
     
+    @Ignore
+    private static Callable<Boolean> WHITESPACE = 
+    new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+            TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
+                    Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
+            "whitespace", (short)-1) {
+        @Override
+        public Boolean $call$(java.lang.Object ch) {
+            return Boolean.instance(((Character) ch).getWhitespace());
+        }
+    };
+    
+    @Ignore
+    private static Callable<Boolean> NEWLINES = 
+    new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+            TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
+                    Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
+            "whitespace", (short)-1) {
+        @Override
+        public Boolean $call$(java.lang.Object ch) {
+            return Boolean.instance(((Character) ch).intValue()=='\n');
+        }
+    };
+    
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     @Transient
     public Iterable<? extends String, ?> getLines() {
-        return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
-                        Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
-                "whitespace", (short)-1) {
-            @Override
-            public Boolean $call$(java.lang.Object ch) {
-                return Boolean.instance(((Character) ch).toString().equals("\n"));
-            }
-        }, true);
+        return split(NEWLINES, true, false);
     }
 
     @Ignore
     public static Iterable<? extends String, ?> 
     getLines(java.lang.String value) {
-        return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
-                        Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
-                "whitespace", (short)-1) {
-            @Override
-            public Boolean $call$(java.lang.Object ch) {
-                return Boolean.instance(((Character) ch).toString().equals("\n"));
-            }
-        }, true);
+        return split(value, NEWLINES, true, false);
     }
 
     @Ignore

@@ -116,7 +116,8 @@ shared native final class String(characters)
     shared native String join({Object*} objects);
     
     "Split the string into lines of text."
-    shared native {String*} lines => split('\n'.equals);
+    shared native {String*} lines 
+            => split('\n'.equals, true, false);
     
     "A string containing the characters of this string, 
      after discarding [[whitespace|Character.whitespace]] 
