@@ -325,26 +325,29 @@ public class Options {
     }
 
     /** Sets the name of the special folder whose contents will and up in the root of the resulting resource zip. */
-    public void setResourceRootName(String resourceRootName) {
+    public Options resourceRootName(String resourceRootName) {
         resourceRoot = resourceRootName;
+        return this;
     }
     public String getResourceRootName() {
         return resourceRoot;
     }
 
     /** Sets the list of directories where the resources come from. This is to properly pack the paths. */
-    public void setResourceDirs(List<String> value) {
+    public Options resourceDirs(List<String> value) {
         resourceDirs.clear();
         resourceDirs.addAll(value);
+        return this;
     }
     public List<String> getResourceDirs() {
         return resourceDirs;
     }
 
     /** Sets the list of resources to pack next to the compiled modules. */
-    public void setResources(List<String> value) {
+    public Options resources(List<String> value) {
         resources.clear();
         resources.addAll(value);
+        return this;
     }
     public List<String> getResources() {
         return resources;
