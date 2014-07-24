@@ -103,10 +103,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         this.comments = !nocomments;
     }
 
-    public List<String> getSrcAsStrings() {
-        if (roots != null) {
-            List<String> result = new ArrayList<>(roots.size());
-            for (File f : roots) {
+    public List<String> getFilesAsStrings(final List<File> files) {
+        if (files != null) {
+            List<String> result = new ArrayList<>(files.size());
+            for (File f : files) {
                 result.add(f.getPath());
             }
             return result;
@@ -114,7 +114,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             return Collections.emptyList();
         }
     }
-    
+
     @OptionArgument(shortName='s', longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to source files. " +
@@ -178,7 +178,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         final Options opts = new Options()
                 .cwd(cwd)
                 .repos(getRepositoryAsStrings())
-                .sources(getSrcAsStrings())
+                .sources(getFilesAsStrings(roots))
                 .systemRepo(systemRepo)
                 .outDir(getOut())
                 .user(user)
@@ -406,9 +406,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             }
         }
         if (!onlyRes.isEmpty()) {
-            jsc.setResources(onlyRes);
-            jsc.setResourceRoots(resrcs);
-            jsc.setResourceRootName(resourceRootName);
+            opts.setResources(getFilesAsStrings(onlyRes));
+            opts.setResourceDirs(getFilesAsStrings(resrcs));
+            opts.setResourceRootName(resourceRootName);
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {

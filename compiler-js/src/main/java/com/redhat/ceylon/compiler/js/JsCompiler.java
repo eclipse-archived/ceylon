@@ -53,9 +53,6 @@ public class JsCompiler {
     protected Set<Message> errors = new HashSet<Message>();
     protected Set<Message> unitErrors = new HashSet<Message>();
     protected List<String> files;
-    protected List<File> resources;
-    protected List<File> resourceRoots;
-    protected String resourceRootName;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
@@ -172,18 +169,6 @@ public class JsCompiler {
         this.files = files;
     }
 
-    /** Sets the list of resources to pack next to the compiled module. */
-    public void setResources(List<File> files) {
-        resources = files;
-    }
-    /** Sets the list of root directories where the resources come from. This is to properly pack the paths. */
-    public void setResourceRoots(List<File> roots) {
-        resourceRoots = roots;
-    }
-    /** Sets the name of the special folder whose contents will and up in the root of the resulting resource zip. */
-    public void setResourceRootName(String resourceRootName) {
-        this.resourceRootName = resourceRootName;
-    }
     public Set<Message> listErrors() {
         return getErrors();
     }
@@ -398,14 +383,17 @@ public class JsCompiler {
                     sac.copySourceFiles(jsout.getSources());
                 }
                 sha1File.deleteOnExit();
-                if (resources != null && !resources.isEmpty()) {
+                if (opts.getResources() != null && !opts.getResources().isEmpty()) {
                     final File resfile = File.createTempFile("jsres", "zip");
                     try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(resfile))) {
-                        for (File res : resources) {
+                        for (String res : opts.getResources()) {
+                            final File _f = new File(res);
+                            final ZipEntry e = getZipEntryName(moduleName, _f);
+                            System.out.println("ADD ZIP " + _f + " => " + e);
                             //Add to the stream
-                            zip.putNextEntry(getZipEntryName(moduleName, res));
+                            zip.putNextEntry(e);
                             //Copy the file
-                            Files.copy(res.toPath(), zip);
+                            Files.copy(_f.toPath(), zip);
                         }
                     }
                     final ArtifactContext rsartifact = new ArtifactContext(moduleName,
@@ -483,11 +471,12 @@ public class JsCompiler {
 
     private ZipEntry getZipEntryName(String moduleName, File resource) {
         String rrp = resourceRootPath(moduleName);
-        String parent = resource.getParentFile().getAbsolutePath();
-        for (File f : resourceRoots) {
-            String p = f.getAbsolutePath();
+        String parent = resource.getParentFile().getPath();
+        System.out.println("rrp=" + rrp + " parent=" + parent + " mod=" + moduleName + " res=" + resource);
+        for (String f : opts.getResourceDirs()) {
+            String p = new File(f).getPath();
             if (parent.startsWith(p)) {
-                String entry = resource.getAbsolutePath().substring(p.length()+1);
+                String entry = resource.getPath().substring(p.length()+1);
                 if (!rrp.isEmpty() && entry.startsWith(rrp)) {
                     entry = entry.substring(rrp.length());
                 }
@@ -498,12 +487,12 @@ public class JsCompiler {
     }
     
     private String resourceRootPath(String moduleName) {
-        if (!resourceRootName.isEmpty() && !"default".equals(moduleName)) {
+        if (!opts.getResourceRootName().isEmpty() && !"default".equals(moduleName)) {
             String rrp = moduleName.replace('.', '/');
             if (!rrp.isEmpty() && !rrp.endsWith("/")) {
                 rrp = rrp + "/";
             }
-            String rootName = resourceRootName;
+            String rootName = opts.getResourceRootName();
             if (rootName == null) {
                 rootName = Constants.DEFAULT_RESOURCE_ROOT;
             }

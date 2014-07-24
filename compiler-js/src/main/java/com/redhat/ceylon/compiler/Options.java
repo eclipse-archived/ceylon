@@ -20,6 +20,9 @@ public class Options {
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
+    private List<String> resourceDirs = new ArrayList<String>();
+    private List<String> resources = new ArrayList<String>();
+    private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private String outDir = DefaultToolOptions.getCompilerOutDir().getPath();
     private boolean optimize = true;
     private boolean modulify = true;
@@ -319,6 +322,32 @@ public class Options {
             return true;
         }
         return lst.contains(flag);
+    }
+
+    /** Sets the name of the special folder whose contents will and up in the root of the resulting resource zip. */
+    public void setResourceRootName(String resourceRootName) {
+        resourceRoot = resourceRootName;
+    }
+    public String getResourceRootName() {
+        return resourceRoot;
+    }
+
+    /** Sets the list of directories where the resources come from. This is to properly pack the paths. */
+    public void setResourceDirs(List<String> value) {
+        resourceDirs.clear();
+        resourceDirs.addAll(value);
+    }
+    public List<String> getResourceDirs() {
+        return resourceDirs;
+    }
+
+    /** Sets the list of resources to pack next to the compiled modules. */
+    public void setResources(List<String> value) {
+        resources.clear();
+        resources.addAll(value);
+    }
+    public List<String> getResources() {
+        return resources;
     }
 
 }
