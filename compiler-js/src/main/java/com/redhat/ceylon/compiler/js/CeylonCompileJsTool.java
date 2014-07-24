@@ -406,9 +406,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             }
         }
         if (!onlyRes.isEmpty()) {
-            opts.setResources(getFilesAsStrings(onlyRes));
-            opts.setResourceDirs(getFilesAsStrings(resrcs));
-            opts.setResourceRootName(resourceRootName);
+            opts.resources(getFilesAsStrings(onlyRes))
+                .resourceDirs(getFilesAsStrings(resrcs))
+                .resourceRootName(resourceRootName);
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {
