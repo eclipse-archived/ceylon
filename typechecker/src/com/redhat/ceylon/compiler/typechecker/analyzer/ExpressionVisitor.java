@@ -4008,7 +4008,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
         boolean check = packageQualified ||
-                that.getStaticMethodReference() ||
+//                that.getStaticMethodReference() ||
                 pt!=null &&
                 //account for dynamic blocks
                 (!pt.getType().isUnknown() || 
