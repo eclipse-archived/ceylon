@@ -143,22 +143,22 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateCallable(pt)) {
                     List<ProducedType> tal = pt.getTypeArgumentList();
                     ProducedType rt = tal.get(0);
-                    String argtypes = argtypes(tal.get(1), unit);
-                    if (rt!=null && argtypes!=null) {
+                    String paramTypes = getTupleElementTypeNames(tal.get(1), unit);
+                    if (rt!=null && paramTypes!=null) {
                         if (!isPrimitiveAbbreviatedType(rt)) {
                             return lt() + getProducedTypeName(rt, unit) + gt() + 
-                                    "(" + argtypes + ")";
+                                    "(" + paramTypes + ")";
                         }
                         else {
                             return getProducedTypeName(rt, unit) + 
-                                    "(" + argtypes + ")";
+                                    "(" + paramTypes + ")";
                         }
                     }
                 }
                 if (abbreviateTuple(pt)) {
-                    String argtypes = argtypes(pt, unit);
-                    if (argtypes!=null) {
-                        return "[" + argtypes + "]";
+                    String elemTypes = getTupleElementTypeNames(pt, unit);
+                    if (elemTypes!=null) {
+                        return "[" + elemTypes + "]";
                     }
                 }
             }
@@ -285,15 +285,21 @@ public class ProducedTypeNamePrinter {
     public static boolean abbreviateTuple(ProducedType pt) {
         return pt.getDeclaration() instanceof Class && 
                 pt.getDeclaration().equals(pt.getDeclaration().getUnit()
-                        .getTupleDeclaration());
+                        .getTupleDeclaration()) &&
+                        isTupleTypeWellformed(pt);
     }
 
     public static boolean abbreviateCallable(ProducedType pt) {
-        return pt.getDeclaration() instanceof Interface &&
-                pt.getDeclaration().equals(pt.getDeclaration().getUnit().getCallableDeclaration()) &&
-                pt.getTypeArgumentList().size()>0 && pt.getTypeArgumentList().get(0)!=null &&
-                //              pt.getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
-                pt.getTypeArgumentList().size()==pt.getDeclaration().getTypeParameters().size();
+        if (pt.getDeclaration() instanceof Interface) {
+            Interface callableDeclaration = pt.getDeclaration().getUnit().getCallableDeclaration();
+            return  pt.getDeclaration().equals(callableDeclaration) &&
+                    pt.getTypeArgumentList().size()==2 && 
+                    pt.getTypeArgumentList().get(0)!=null &&
+                    isTupleTypeWellformed(pt.getTypeArgumentList().get(1));
+        }
+        else {
+            return false;
+        }
     }
 
     public static boolean abbreviateSequence(ProducedType pt) {
@@ -336,8 +342,28 @@ public class ProducedTypeNamePrinter {
         }
         return false;
     }
+    
+    private static boolean isTupleTypeWellformed(ProducedType args) {
+        if (args==null || args.getTypeArgumentList().size()<3) {
+            return false;
+        }
+        Unit u = args.getDeclaration().getUnit();
+        List<ProducedType> elemtypes = u.getTupleElementTypes(args);
+        if (u.isTupleLengthUnbounded(args)) {
+            int lastIndex = elemtypes.size()-1;
+            ProducedType last = elemtypes.get(lastIndex);
+            elemtypes.set(lastIndex, u.getSequentialElementType(last));
+        }
+        if (elemtypes==null) {
+            return false;
+        }
+        UnionType ut = new UnionType(u);
+        ut.setCaseTypes(elemtypes);
+        ProducedType t = ut.getType();
+        return t.isExactly(args.getTypeArgumentList().get(0));
+    }
 
-    private String argtypes(ProducedType args, Unit unit) {
+    private String getTupleElementTypeNames(ProducedType args, Unit unit) {
         if (args!=null) {
             Unit u = args.getDeclaration().getUnit();
             boolean defaulted=false;
@@ -370,7 +396,7 @@ public class ProducedTypeNamePrinter {
                                     rest.getDeclaration().equals(u.getEmptyDeclaration())) {
                                 return defaulted ? argtype + "=" : argtype;
                             }
-                            String argtypes = argtypes(rest, unit);
+                            String argtypes = getTupleElementTypeNames(rest, unit);
                             if (argtypes!=null) {
                                 return defaulted ? 
                                         argtype + "=, " + argtypes : 
