@@ -3163,9 +3163,11 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.Assertion that) {
-        out("//assert");
-        location(that);
-        endLine();
+        if (opts.isComment() && !opts.isMinify()) {
+            out("//assert");
+            location(that);
+            endLine();
+        }
         String custom = "Assertion failed";
         //Scan for a "doc" annotation with custom message
         if (that.getAnnotationList() != null && that.getAnnotationList().getAnonymousAnnotation() != null) {
@@ -3186,11 +3188,10 @@ public class GenerateJsVisitor extends Visitor
         }
         sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                 that.getConditionList().getLocation()).append(")");
-        conds.specialConditionsAndBlock(that.getConditionList(), null, "if(!");
+        conds.specialConditionsAndBlock(that.getConditionList(), null, clAlias+"asrt$(");
         //escape
-        out("){throw ", clAlias, "wrapexc(", clAlias, "AssertionError(\"",
-                escapeStringLiteral(sb.toString()), "\"),'",that.getLocation(), "','",
-                that.getUnit().getFilename(), "');}");
+        out(",\"", escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
+                that.getUnit().getFilename(), "');");
         endLine();
     }
 
