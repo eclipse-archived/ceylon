@@ -17,4 +17,5 @@ function(msg,cause,exc) {
       ilf=_caller;
     }
   }
+  exc.toString=function(){return this.string;}
 }
