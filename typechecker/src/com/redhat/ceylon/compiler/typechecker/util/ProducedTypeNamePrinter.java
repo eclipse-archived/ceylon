@@ -294,8 +294,10 @@ public class ProducedTypeNamePrinter {
             Interface callableDeclaration = pt.getDeclaration().getUnit().getCallableDeclaration();
             return  pt.getDeclaration().equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
-                    pt.getTypeArgumentList().get(0)!=null &&
-                    isTupleTypeWellformed(pt.getTypeArgumentList().get(1));
+                    pt.getTypeArgumentList().get(0)!=null && 
+                    (abbreviateEmpty(pt) || 
+                     abbreviateSequence(pt) || abbreviateSequence(pt) ||
+                     abbreviateTuple(pt) && isTupleTypeWellformed(pt.getTypeArgumentList().get(1)));
         }
         else {
             return false;
