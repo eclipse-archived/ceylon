@@ -297,7 +297,7 @@ public class ProducedTypeNamePrinter {
                     pt.getTypeArgumentList().get(0)!=null && 
                     (abbreviateEmpty(pt.getTypeArgumentList().get(1)) || 
                      abbreviateSequence(pt.getTypeArgumentList().get(1)) || 
-                     abbreviateSequence(pt.getTypeArgumentList().get(1)) ||
+                     abbreviateSequential(pt.getTypeArgumentList().get(1)) ||
                      abbreviateTuple(pt.getTypeArgumentList().get(1)));
         }
         else {
