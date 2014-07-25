@@ -295,9 +295,10 @@ public class ProducedTypeNamePrinter {
             return  pt.getDeclaration().equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
                     pt.getTypeArgumentList().get(0)!=null && 
-                    (abbreviateEmpty(pt) || 
-                     abbreviateSequence(pt) || abbreviateSequence(pt) ||
-                     abbreviateTuple(pt) && isTupleTypeWellformed(pt.getTypeArgumentList().get(1)));
+                    (abbreviateEmpty(pt.getTypeArgumentList().get(1)) || 
+                     abbreviateSequence(pt.getTypeArgumentList().get(1)) || 
+                     abbreviateSequence(pt.getTypeArgumentList().get(1)) ||
+                     abbreviateTuple(pt.getTypeArgumentList().get(1)));
         }
         else {
             return false;
