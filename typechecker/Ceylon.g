@@ -3065,8 +3065,13 @@ forIterator returns [ForIterator iterator]
 containment returns [SpecifierExpression specifierExpression]
     : IN_OP 
       { $specifierExpression = new SpecifierExpression($IN_OP); }
-      (expression
-      { $specifierExpression.setExpression($expression.expression); })?
+      (
+        comparisonExpression
+        { Expression expression = new Expression(null);
+          expression.setTerm($comparisonExpression.term);
+          $specifierExpression.setExpression(expression); 
+        }
+      )?
     ;
     
 whileLoop returns [WhileStatement statement]
