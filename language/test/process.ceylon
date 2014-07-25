@@ -74,7 +74,7 @@ shared void testRuntime() {
         check(runtime.maxIntegerValue == 9223372036854775807, "jvm runtime.maxIntegerValue");
     } else if (runtime.integerSize == 53) {
         check(runtime.minIntegerValue == -9007199254740991, "js runtime.minIntegerValue");
-        check(runtime.maxIntegerValue == 9007199254740989, "js runtime.maxIntegerValue");
+        check(runtime.maxIntegerValue == 9007199254740991, "js runtime.maxIntegerValue");
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number tests for this runtime");
     }

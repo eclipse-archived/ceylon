@@ -607,17 +607,19 @@ void checkParseInteger() {
         check(!parseInteger("1y2p0ij32e8e8", 36) exists, "parseInteger(1y2p0ij32e8e8, 36)");
         check(!parseInteger("-1y2p0ij32e8e9", 36) exists, "parseInteger(-1y2p0ij32e8e9, 36)");
     } else if (runtime.integerSize == 53) {
-        check(9007199254740989==(parseInteger("9007199254740989") else ""), "parseInteger(9007199254740989)");
-        check(9_007_199_254_740_989==(parseInteger("9007199254740989") else ""), "parseInteger(9_007_199_254_740_989)");
+        check(9007199254740991==(parseInteger("9007199254740991") else ""), "parseInteger(9007199254740991)");
+        check(9_007_199_254_740_991==(parseInteger("9007199254740991") else ""), "parseInteger(9_007_199_254_740_991)");
         check(-9007199254740991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9007199254740991)");
         check(-9_007_199_254_740_991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9_007_199_254_740_991)");
-        check(!parseInteger("9007199254740990") exists, "parseInteger(9007199254740990)");
+        check(!parseInteger("9007199254740992") exists, "parseInteger(9007199254740992)");
         check(!parseInteger("-9007199254740992") exists, "parseInteger(-9007199254740992)");
         
         check(9007199254740989 == (parseInteger("11111111111111111111111111111111111111111111111111101", 2) else ""),
           "parseInteger(11111111111111111111111111111111111111111111111111101, 2)");
-        check(!parseInteger("11111111111111111111111111111111111111111111111111110", 2) exists,
-          "parseInteger(11111111111111111111111111111111111111111111111111110, 2)");
+        check(parseInteger("11111111111111111111111111111111111111111111111111111", 2) exists,
+          "parseInteger(11111111111111111111111111111111111111111111111111111, 2)");
+        check(!parseInteger("100000000000000000000000000000000000000000000000000000", 2) exists,
+          "parseInteger(100000000000000000000000000000000000000000000000000000, 2)");
         check(-9007199254740991 == (parseInteger("-11111111111111111111111111111111111111111111111111111", 2) else ""),
           "parseInteger(-11111111111111111111111111111111111111111111111111111, 2)");
         check(!parseInteger("-100000000000000000000000000000000000000000000000000000", 2) exists,
@@ -627,12 +629,14 @@ void checkParseInteger() {
         check(9_007_199_254_740_989==(parseInteger("1ffffffffffffd", 16) else ""), "parseInteger(1f_ffff_ffff_fffd, 16)");
         check(-9007199254740991==(parseInteger("-1fffffffffffff", 16) else ""), "parseInteger(-1fffffffffffff, 16)");
         check(-9_007_199_254_740_991==(parseInteger("-1fffffffffffff", 16) else ""), "parseInteger(-1f_ffff_ffff_ffff, 16)");
-        check(!parseInteger("1ffffffffffffe", 16) exists, "parseInteger(1ffffffffffffe, 16)");
+        check(  parseInteger("1fffffffffffff", 16) exists, "parseInteger(1fffffffffffff, 16)");
+        check( !parseInteger("20000000000000", 16) exists, "parseInteger(20000000000000, 16)");
         check(!parseInteger("-20000000000000", 16) exists, "parseInteger(-20000000000000, 16)");
         
         check(9007199254740989==(parseInteger("2gosa7pa2gt", 36) else ""), "parseInteger(2gosa7pa2gt, 36)");
         check(-9007199254740991==(parseInteger("-2gosa7pa2gv", 36) else ""), "parseInteger(-2gosa7pa2gv, 36)");
-        check(!parseInteger("2gosa7pa2gu", 36) exists, "parseInteger(2gosa7pa2gu, 36)");
+        check(parseInteger("2gosa7pa2gu", 36) exists, "parseInteger(2gosa7pa2gu, 36)");
+        check(!parseInteger("2gosa7pa2gw", 36) exists, "parseInteger(2gosa7pa2gw, 36)");
         check(!parseInteger("-2gosa7pa2gw", 36) exists, "parseInteger(-2gosa7pa2gw, 36)");
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add parseInteger() tests for this platform");
