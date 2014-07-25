@@ -434,7 +434,10 @@ function eorl$(comp) {
   if (comp===getEqual())return function(a,b){return a.compare(b)===getEqual();}
   return function(a,b){return a.compare(b)!==comp;}
 }
-
+//for shorter assert
+function asrt$(cond,msg,loc,file) {
+  if (!cond)throw wrapexc(AssertionError(msg),loc,file);
+}
 ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
 ex$.ne$=ne$;
@@ -443,3 +446,4 @@ ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
 ex$.nn$=nn$;
 ex$.eorl$=eorl$;
+ex$.asrt$=asrt$;
