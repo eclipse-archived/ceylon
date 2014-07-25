@@ -407,6 +407,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
         
         List<File> srcs = applyCwd(this.sources);
+        List<File> resrcs = applyCwd(this.resources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
         if (expandedModulesOrFiles.isEmpty()) {
             throw new IllegalArgumentException("No modules or source files to compile");
@@ -427,7 +428,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                 } else {
-                    if (LanguageCompiler.getSrcDir(applyCwd(this.resources), file) == null) {
+                    if (LanguageCompiler.getSrcDir(resrcs, file) == null) {
                         String resrcPath = this.resources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
