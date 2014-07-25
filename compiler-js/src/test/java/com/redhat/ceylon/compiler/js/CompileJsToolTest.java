@@ -41,7 +41,7 @@ public class CompileJsToolTest {
     }
 
     @Test(expected=CompilerErrorException.class)
-    public void testInvalidResource() throws Exception {
+    public void testDefaultModuleInvalidResource() throws Exception {
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
@@ -54,7 +54,7 @@ public class CompileJsToolTest {
     }
 
     @Test
-    public void testValidResource() throws Exception {
+    public void testDefaultModuleValidResource() throws Exception {
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
@@ -65,10 +65,12 @@ public class CompileJsToolTest {
                 "src/test/resources/res_test/test.txt"));
         jsc.run();
         checkResources("modules/default/default-resources.zip", "test.txt");
+        checkExcludedResources("modules/default/default-resources.zip", "m1res.txt",
+                "m1/m1res.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
 
     @Test
-    public void testAllResources() throws Exception {
+    public void testDefaultModuleAllResources() throws Exception {
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
@@ -78,11 +80,13 @@ public class CompileJsToolTest {
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
         checkResources("modules/default/default-resources.zip",
-                "test.txt", "another_test.txt", "subdir/third.txt", "inroot.txt", "ALTROOT/altroot.txt");
+                "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
+        checkExcludedResources("modules/default/default-resources.zip",
+                "m1res.txt");
     }
 
     @Test
-    public void testWithAltRoot() throws Exception {
+    public void testDefaultModuleWithAltRoot() throws Exception {
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
@@ -93,7 +97,76 @@ public class CompileJsToolTest {
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
         checkResources("modules/default/default-resources.zip",
-                "test.txt", "another_test.txt", "subdir/third.txt", "altroot.txt", "ROOT/inroot.txt");
+                "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
+        checkExcludedResources("modules/default/default-resources.zip",
+                "m1res.txt");
+    }
+
+    @Test(expected=CompilerErrorException.class)
+    public void testModuleInvalidResource() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--rep=build/runtime",
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "src/test/resources/loader/pass1/m1/*.ceylon",
+                "src/test/resources/res_test/invalid.txt"));
+        jsc.run();
+    }
+
+    @Test
+    public void testModuleValidResource() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--rep=build/runtime",// "--verbose",
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "src/test/resources/loader/pass1/m1/test.ceylon",
+                "src/test/resources/loader/pass1/m1/module.ceylon",
+                "src/test/resources/loader/pass1/m1/package.ceylon",
+                "src/test/resources/res_test/test.txt"));
+        jsc.run();
+        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip", "test.txt");
+    }
+
+    @Test
+    public void testModuleAllResources() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--rep=build/runtime",// "--verbose",
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "src/test/resources/loader/pass1/m1/test.ceylon",
+                "src/test/resources/loader/pass1/m1/module.ceylon",
+                "src/test/resources/loader/pass1/m1/package.ceylon"));
+        jsc.run();
+        checkResources("modules/m1/0.1/m1-0.1-resources.zip",
+                "m1root.txt", "m1res.txt", "ALTROOT/altrootm1.txt");
+        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip",
+                "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/m1root.txt",
+                "ROOT/inroot.txt", "ALTROOT/altroot.txt");
+    }
+
+    @Test
+    public void testModuleWithAltRoot() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--rep=build/runtime",// "--verbose",
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "--resource-root=ALTROOT",
+                "src/test/resources/loader/pass1/m1/test.ceylon",
+                "src/test/resources/loader/pass1/m1/module.ceylon",
+                "src/test/resources/loader/pass1/m1/package.ceylon"));
+        jsc.run();
+        checkResources("modules/m1/0.1/m1-0.1-resources.zip",
+                "altrootm1.txt", "m1res.txt");
+        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip",
+                "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
     }
 
     void checkResources(String path, String... paths) throws IOException {
@@ -103,6 +176,19 @@ public class CompileJsToolTest {
             for (String r : paths) {
                 ZipEntry e = zip.getEntry(r);
                 Assert.assertTrue("Missing resource " + r, e != null);
+            }
+        } finally {
+            //nothing
+        }
+    }
+
+    void checkExcludedResources(String path, String... paths) throws IOException {
+        File res = new File(path);
+        Assert.assertTrue("Resources file missing", res.exists() && res.isFile());
+        try (ZipFile zip = new ZipFile(res)) {
+            for (String r : paths) {
+                ZipEntry e = zip.getEntry(r);
+                Assert.assertNull("Resource should NOT be in resources file: " + r, e);
             }
         } finally {
             //nothing

@@ -1,0 +1,1 @@
+Resource in root of module m1
