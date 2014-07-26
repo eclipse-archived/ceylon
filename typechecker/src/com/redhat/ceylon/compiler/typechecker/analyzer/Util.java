@@ -637,8 +637,8 @@ public class Util {
         if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
             Tree.Primary p = ie.getPrimary();
-            if (p instanceof Tree.BaseTypeExpression 
-                    || p instanceof Tree.QualifiedTypeExpression) {
+            if (p instanceof Tree.BaseTypeExpression || 
+                p instanceof Tree.QualifiedTypeExpression) {
                 return true;
             }
         }

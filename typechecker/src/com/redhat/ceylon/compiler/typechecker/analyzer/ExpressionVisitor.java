@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMembe
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
@@ -497,10 +498,13 @@ public class ExpressionVisitor extends Visitor {
         if (typedNode!=null) {
             if (!isTypeUnknown(t)) {
                 if (e != null) {
-                    if (Util.isInstantiationExpression(e)) {
-                        checkAssignable(t, unit.getType(unit.getDestroyableDeclaration()), typedNode, 
+                    if (isInstantiationExpression(e)) {
+                        ProducedType ut = unionType(unit.getType(unit.getDestroyableDeclaration()), 
+                                unit.getType(unit.getObtainableDeclaration()), unit);
+                        checkAssignable(t, ut, typedNode, 
                                 "resource must be destroyable");
-                    } else {
+                    }
+                    else {
                         checkAssignable(t, unit.getType(unit.getObtainableDeclaration()), typedNode, 
                                 "resource must be obtainable");
                     }
