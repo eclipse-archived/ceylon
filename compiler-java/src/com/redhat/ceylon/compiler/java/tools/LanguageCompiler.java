@@ -615,31 +615,12 @@ public class LanguageCompiler extends JavaCompiler {
     // FIXME: this function is terrible, possibly refactor it with getPackage?
     private File getSrcDir(File sourceFile) throws IOException {
         Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
-        File srcDirFile = getSrcDir(prefixes, sourceFile);
+        File srcDirFile = FileUtil.selectPath(prefixes, sourceFile.getPath());
         if (srcDirFile != null) {
             return srcDirFile;
         } else {
             // This error should have been caught by the tool chain
             throw new RuntimeException(sourceFile.getPath() + " is not in the current source path");
-        }
-    }
-
-    public static File getSrcDir(Iterable<? extends File> prefixes, File sourceFile) {
-        try {
-            String name = sourceFile.getCanonicalPath();
-            int maxPrefixLength = 0;
-            File srcDirFile = null;
-            for (File prefixFile : prefixes) {
-                String path = prefixFile.getCanonicalPath() + File.separatorChar;
-                if (name.startsWith(path) && path.length() > maxPrefixLength) {
-                    maxPrefixLength = path.length();
-                    srcDirFile = prefixFile;
-                }
-            }
-            return srcDirFile;
-        } catch (IOException e) {
-            // FIXME
-            throw new RuntimeException(e);
         }
     }
 

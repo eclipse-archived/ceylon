@@ -29,6 +29,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -423,12 +424,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 if (moduleOrFile.endsWith(Constants.CEYLON_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JAVA_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JS_SUFFIX)) {
-                    if (LanguageCompiler.getSrcDir(srcs, file) == null) {
+                    if (FileUtil.selectPath(srcs, moduleOrFile) == null) {
                         String srcPath = this.sources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                 } else {
-                    if (LanguageCompiler.getSrcDir(resrcs, file) == null) {
+                    if (FileUtil.selectPath(resrcs, moduleOrFile) == null) {
                         String resrcPath = this.resources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
