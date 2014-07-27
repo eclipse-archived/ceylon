@@ -1725,7 +1725,7 @@ public class DeclarationVisitor extends Visitor {
             args.put(stps.get(1), elementType);
             args.put(stps.get(3), 
                     len==1 ? unit.getEmptyDeclaration().getType() : 
-                             new StaticLengthSequenceType(elementType, len));
+                             new StaticLengthSequenceType(elementType, len-1));
             return args;
         }
     }
