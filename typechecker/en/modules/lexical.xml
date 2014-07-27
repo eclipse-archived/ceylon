@@ -16,12 +16,12 @@
         <literal>FORM FEED (FF)</literal>, <literal>LINE FEED (LF)</literal> and 
         <literal>CARRIAGE RETURN (CR)</literal> characters.</para>
         
-        <synopsis>Whitespace: " " | Tab | Formfeed | Newline | Return</synopsis>
+        <synopsis>Whitespace: " " | Tab | Formfeed | Newline | CarriageReturn</synopsis>
         
         <synopsis>Tab: "\{CHARACTER TABULATION}"</synopsis>
         <synopsis>Formfeed: "\{FORM FEED (FF)}"</synopsis>
         <synopsis>Newline: "\{LINE FEED (LF)}"</synopsis>
-        <synopsis>Return: "\{CARRIAGE RETURN (CR)}"</synopsis>
+        <synopsis>CarriageReturn: "\{CARRIAGE RETURN (CR)}"</synopsis>
         
         <para>Outside of a comment, string literal, or single quoted literal,
         whitespace acts as a token separator and is immediately discarded by
@@ -67,7 +67,7 @@
         
         <para>Both kinds of comments can be nested.</para>
         
-        <synopsis>LineComment: ("//"|"#!") ~(Newline | Return)* (Return Newline | Return | Newline)?</synopsis>
+        <synopsis>LineComment: ("//"|"#!") ~(Newline | CarriageReturn)* (CarriageReturn Newline | CarriageReturn | Newline)?</synopsis>
         
         <synopsis>MultilineComment: "/*" (MultilineCommentCharacter | MultilineComment)* "*/"</synopsis>
         
