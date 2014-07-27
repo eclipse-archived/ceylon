@@ -282,11 +282,11 @@ public class FileUtil {
     }
     
     /**
-     * Given an absolute file path and a list of "search paths"
+     * Given a file path and a list of "search paths"
      * returns the relative path of the file (relative to the one
      * search path that matched)
      * @param paths A list of folders
-     * @param file An absolute path to a file 
+     * @param file A path to a file 
      * @return The relative file path or the original file path if no match was found
      */
     public static String relativeFile(Iterable<? extends File> paths, String file){
@@ -307,6 +307,29 @@ public class FileUtil {
         }
         
         return path;
+    }
+    
+    /**
+     * Given a file path and a list of "search paths"
+     * returns the search path where the file was located
+     * @param paths A list of folders
+     * @param file A path to a file 
+     * @return The search path where the file was located or null
+     */
+    public static File selectPath(Iterable<? extends File> paths, String file) {
+        // make sure file is absolute and normalized
+        file = absoluteFile(new File(file)).getPath();
+        // find the matching path prefix
+        int srcDirLength = 0;
+        File srcDirFile = null;
+        for (File prefixFile : paths) {
+            String absPrefix = absoluteFile(prefixFile).getPath() + File.separatorChar;
+            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
+                srcDirLength = absPrefix.length();
+                srcDirFile = prefixFile;
+            }
+        }
+        return srcDirFile;
     }
     
     public static boolean sameFile(File a, File b) {
