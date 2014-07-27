@@ -295,13 +295,24 @@ public class ProducedTypeNamePrinter {
             return  pt.getDeclaration().equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
                     pt.getTypeArgumentList().get(0)!=null && 
-                    (abbreviateEmpty(pt.getTypeArgumentList().get(1)) || 
-                     abbreviateSequence(pt.getTypeArgumentList().get(1)) || 
-                     abbreviateSequential(pt.getTypeArgumentList().get(1)) ||
-                     abbreviateTuple(pt.getTypeArgumentList().get(1)));
+                    abbreviateCallableArg(pt.getTypeArgumentList().get(1));
         }
         else {
             return false;
+        }
+    }
+    
+    private static boolean abbreviateCallableArg(ProducedType at) {
+        if (at.getDeclaration() instanceof UnionType) {
+            return at.getCaseTypes().size()==2 &&
+                    abbreviateEmpty(at.getCaseTypes().get(0)) &&
+                    abbreviateCallableArg(at.getCaseTypes().get(1));
+        }
+        else {
+            return abbreviateEmpty(at) || 
+                    abbreviateSequence(at) || 
+                    abbreviateSequential(at) ||
+                    abbreviateTuple(at);
         }
     }
 
