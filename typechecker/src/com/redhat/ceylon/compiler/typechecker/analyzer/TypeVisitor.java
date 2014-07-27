@@ -564,11 +564,34 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.SequenceType that) {
         super.visit(that);
-        if (that.getElementType()!=null) {
-        	ProducedType et = that.getElementType().getTypeModel();
-        	if (et!=null) {
-        		that.setTypeModel(unit.getSequentialType(et));
-        	}
+        Tree.StaticType elementType = that.getElementType();
+        Tree.NaturalLiteral length = that.getLength();
+        ProducedType et = elementType.getTypeModel();
+        if (et!=null) {
+            ProducedType t;
+            if (length==null) {
+                t = unit.getSequentialType(et);
+            }
+            else {
+                final int len;
+                try {
+                    len = Integer.parseInt(length.getText());
+                }
+                catch (NumberFormatException nfe) {
+                    length.addError("must be a positive decimal integer");
+                    return;
+                }
+                if (len<1) {
+                    length.addError("must be positive");
+                    return;
+                }
+                Class td = unit.getTupleDeclaration();
+                t = unit.getEmptyDeclaration().getType();
+                for (int i=0; i<len; i++) {
+                    t = producedType(td, et, et, t);
+                }
+            }
+            that.setTypeModel(t);
         }
     }
     

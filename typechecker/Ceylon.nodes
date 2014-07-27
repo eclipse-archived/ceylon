@@ -276,7 +276,8 @@
     STATIC_TYPE*)
 
 ^(SEQUENCE_TYPE: STATIC_TYPE
-    STATIC_TYPE elementType)
+    STATIC_TYPE elementType
+    NATURAL_LITERAL? length)
 
 ^(ITERABLE_TYPE: STATIC_TYPE
     TYPE? elementType)

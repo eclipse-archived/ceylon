@@ -2572,7 +2572,7 @@ qualifiedOrTupleType returns [StaticType type]
     ;*/
 
 abbreviatedType returns [StaticType type]
-    @init { FunctionType bt=null; }
+    @init { FunctionType bt=null; SequenceType st=null; }
     : qualifiedOrTupleType
       { $type=$qualifiedOrTupleType.type; }
       (
@@ -2586,11 +2586,17 @@ abbreviatedType returns [StaticType type]
           ot.setDefiniteType($type);
           ot.setEndToken($OPTIONAL);
           $type=ot; }
-      | LBRACKET RBRACKET 
-        { SequenceType st = new SequenceType(null);
+      | LBRACKET
+        { st = new SequenceType(null);
           st.setElementType($type);
-          st.setEndToken($LBRACKET);
-          st.setEndToken($RBRACKET);
+          st.setEndToken($LBRACKET); }
+        (
+          NATURAL_LITERAL 
+          { st.setLength(new NaturalLiteral($NATURAL_LITERAL)); 
+            st.setEndToken($NATURAL_LITERAL); }
+        )?
+        RBRACKET 
+        { st.setEndToken($RBRACKET);
           $type=st; }
       | LPAREN
         { bt = new FunctionType(null);

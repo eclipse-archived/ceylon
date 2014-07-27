@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
@@ -1664,22 +1665,71 @@ public class DeclarationVisitor extends Visitor {
         if (inExtends) {
             final ProducedType elementType = 
                     that.getElementType().getTypeModel();
-            ProducedType t = new LazyProducedType(unit) {
-                @Override
-                public TypeDeclaration initDeclaration() {
-                    return unit.getSequentialDeclaration();
+            final NaturalLiteral length = that.getLength();
+            ProducedType t;
+            if (length==null) {
+                t = new LazyProducedType(unit) {
+                    @Override
+                    public TypeDeclaration initDeclaration() {
+                        return unit.getSequentialDeclaration();
+                    }
+                    @Override
+                    public Map<TypeParameter, ProducedType> initTypeArguments() {
+                        List<TypeParameter> stps = 
+                                unit.getSequentialDeclaration().getTypeParameters();
+                        return singletonMap(stps.get(0), elementType);
+                    }
+                };
+            }
+            else {
+                final int len;
+                try {
+                    len = Integer.parseInt(length.getText());
                 }
-                @Override
-                public Map<TypeParameter, ProducedType> initTypeArguments() {
-                    List<TypeParameter> stps = 
-                            unit.getSequentialDeclaration().getTypeParameters();
-                    return singletonMap(stps.get(0), elementType);
+                catch (NumberFormatException nfe) {
+                    return;
                 }
-            };
+                if (len<1) {
+                    return;
+                }
+                else {
+                    t = new StaticLengthSequenceType(elementType, len);
+                }
+            }
             that.setTypeModel(t);
         }
     }
     
+    private final class StaticLengthSequenceType extends LazyProducedType {
+        private final ProducedType elementType;
+        private final int len;
+
+        private StaticLengthSequenceType(ProducedType elementType, int len) {
+            super(unit);
+            this.elementType = elementType;
+            this.len = len;
+        }
+
+        @Override
+        public TypeDeclaration initDeclaration() {
+            return unit.getTupleDeclaration();
+        }
+
+        @Override
+        public Map<TypeParameter,ProducedType> initTypeArguments() {
+            List<TypeParameter> stps = 
+                    unit.getTupleDeclaration().getTypeParameters();
+            Map<TypeParameter,ProducedType> args = 
+                    new HashMap<TypeParameter,ProducedType>(3);
+            args.put(stps.get(0), elementType);
+            args.put(stps.get(1), elementType);
+            args.put(stps.get(3), 
+                    len==1 ? unit.getEmptyDeclaration().getType() : 
+                             new StaticLengthSequenceType(elementType, len));
+            return args;
+        }
+    }
+
     public void visit(final Tree.SequencedType that) {
         super.visit(that);
         if (inExtends) {
