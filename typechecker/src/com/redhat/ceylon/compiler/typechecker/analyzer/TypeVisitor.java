@@ -585,6 +585,10 @@ public class TypeVisitor extends Visitor {
                     length.addError("must be positive");
                     return;
                 }
+                if (len>100) {
+                    length.addError("may not be greater than 100");
+                    return;
+                }
                 Class td = unit.getTupleDeclaration();
                 t = unit.getEmptyDeclaration().getType();
                 for (int i=0; i<len; i++) {

@@ -1689,7 +1689,7 @@ public class DeclarationVisitor extends Visitor {
                 catch (NumberFormatException nfe) {
                     return;
                 }
-                if (len<1) {
+                if (len<1 || len>100) {
                     return;
                 }
                 else {
