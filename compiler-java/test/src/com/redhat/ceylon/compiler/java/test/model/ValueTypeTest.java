@@ -18,6 +18,7 @@ public class ValueTypeTest {
     @Test
     public void testValueTypes() {
         validateValueType(ceylon.language.Boolean.class);
+        validateValueType(ceylon.language.Byte.class);
         validateValueType(ceylon.language.Character.class);
         validateValueType(ceylon.language.Float.class);
         validateValueType(ceylon.language.Integer.class);

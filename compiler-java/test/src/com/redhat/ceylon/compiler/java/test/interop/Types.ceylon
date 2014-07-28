@@ -50,13 +50,13 @@ void booleanTypes() {
 @noanno
 void byteTypes() {
     TypesJava java = TypesJava();
-    Integer n1 = java.return_byte();
-    Integer? n2 = java.return_byte();
+    Byte n1 = java.return_byte();
+    Byte? n2 = java.return_byte();
     Integer n3 = java.return_Byte().longValue();
     // FIXME:
     //Integer? n4 = java.return_Byte()?.longValue();
-    java.byteParams(1, JByte(1));
-    java.byteParams(box(1), JByte(box(1)));
+    java.byteParams(1.byte, JByte(1.byte));
+    java.byteParams(box(1.byte), JByte(box(1.byte)));
     java.byteParams(java.return_byte(), JByte(java.return_byte()));
     java.byteParams(java.return_Byte().byteValue(), java.return_Byte());
 }
@@ -160,93 +160,67 @@ void objectTypes() {
 void operationsOnBytes() {
     TypesJava java = TypesJava();
     java.byte_attr = java.byte_attr + java.byte_attr;
-    java.byte_attr = java.byte_attr * java.byte_attr;
-    java.byte_attr = java.byte_attr / java.byte_attr;
     java.byte_attr = java.byte_attr - java.byte_attr;
-    java.byte_attr = java.byte_attr ^ java.byte_attr;
     
     java.byte_attr = java.byte_attr++;
     java.byte_attr = ++java.byte_attr;
 
     java.byte_attr = java.byte_attr += java.byte_attr;
     java.byte_attr = java.byte_attr -= java.byte_attr;
-    java.byte_attr = java.byte_attr *= java.byte_attr;
-    java.byte_attr = java.byte_attr /= java.byte_attr;
     
     variable Boolean sync;
     sync = java.byte_attr == java.byte_attr;
     sync = java.byte_attr != java.byte_attr;
-    sync = java.byte_attr < java.byte_attr;
 }
 
 @noanno
 void operationsOnBytes2() {
     TypesJava java = TypesJava();
     java.byte = java.byte + java.byte;
-    java.byte = java.byte * java.byte;
-    java.byte = java.byte / java.byte;
     java.byte = java.byte - java.byte;
-    java.byte = java.byte ^ java.byte;
     
     java.byte = java.byte++;
     java.byte = ++java.byte;
 
     java.byte = java.byte += java.byte;
     java.byte = java.byte -= java.byte;
-    java.byte = java.byte *= java.byte;
-    java.byte = java.byte /= java.byte;
     
     variable Boolean sync;
     sync = java.byte == java.byte;
     sync = java.byte != java.byte;
-    sync = java.byte < java.byte;
 }
 
 @noanno
 class OperationsOnBytes() extends TypesJava(){
     void m(){
         byte_attr = byte_attr + byte_attr;
-        byte_attr = byte_attr * byte_attr;
-        byte_attr = byte_attr / byte_attr;
         byte_attr = byte_attr - byte_attr;
-        byte_attr = byte_attr ^ byte_attr;
         
         byte_attr = byte_attr++;
         byte_attr = ++byte_attr;
         
         byte_attr = byte_attr += byte_attr;
         byte_attr = byte_attr -= byte_attr;
-        byte_attr = byte_attr *= byte_attr;
-        byte_attr = byte_attr /= byte_attr;
         
         variable Boolean sync;
         sync = byte_attr == byte_attr;
         sync = byte_attr != byte_attr;
-        sync = byte_attr < byte_attr;
     }
 }
 
 @noanno
 void operationsOnMixedTypes() {
     TypesJava java = TypesJava();
-    java.byte_attr = java.byte_attr + java.int_attr;
-    java.int_attr = java.byte_attr + java.int_attr;
-    java.byte_attr = java.int_attr + java.byte_attr;
-    java.int_attr = java.int_attr + java.byte_attr;
+    java.byte_attr = java.byte_attr + java.int_attr.byte;
+    java.int_attr = java.byte_attr.unsigned + java.int_attr;
+    java.byte_attr = java.int_attr.byte + java.byte_attr;
+    java.int_attr = java.int_attr + java.byte_attr.unsigned;
     
-    java.byte_attr = java.byte_attr ^ java.int_attr;
-    java.byte_attr = java.int_attr ^ java.byte_attr;
-    
-    java.byte_attr = java.int_attr++;
-    java.byte_attr = ++java.int_attr;
-
-    java.byte_attr = java.byte_attr += java.int_attr;
-    java.byte_attr = java.int_attr += java.byte_attr;
+    java.byte_attr = java.byte_attr += java.int_attr.byte;
     
     variable Boolean sync;
     sync = java.byte_attr == java.int_attr;
     sync = java.byte_attr != java.int_attr;
-    sync = java.byte_attr < java.int_attr;
 }
 
 @noanno

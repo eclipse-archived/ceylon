@@ -178,15 +178,15 @@ final class test_bytes_ {
     static void test_bytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_bytes());
-        final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[.com.redhat.ceylon.compiler.java.Util.toInt(0L)]);
-        .ceylon.language.Integer n$24;
+        final .ceylon.language.Byte n = .ceylon.language.Byte.instance(items[.com.redhat.ceylon.compiler.java.Util.toInt(0L)]);
+        .ceylon.language.Byte n$24;
         if ((n$24 = n) != null) {
-            final long n$25 = n$24.longValue();
-            items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = .com.redhat.ceylon.compiler.java.Util.toByte(n$25);
+            final byte n$25 = n$24.byteValue();
+            items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = n$25;
         }
         java.take_bytes(items);
         new byte[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<byte[]>(.com.redhat.ceylon.compiler.java.language.ByteArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ByteArray(Integer, Integer=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<byte[]>(.com.redhat.ceylon.compiler.java.language.ByteArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Byte.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ByteArray(Integer, Byte=)", (short)-1){
             
             @.java.lang.Override
             public byte[] $call$(final .java.lang.Object $param$0) {
@@ -197,7 +197,7 @@ final class test_bytes_ {
             @.java.lang.Override
             public byte[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                final byte $ceylontmp$element = .com.redhat.ceylon.compiler.java.Util.toByte(((.ceylon.language.Integer)$param$1).longValue());
+                final byte $ceylontmp$element = ((.ceylon.language.Byte)$param$1).byteValue();
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[$ceylontmp$size], $ceylontmp$element);
             }
         };

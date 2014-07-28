@@ -6,24 +6,24 @@ import java.lang { ByteArray, ShortArray, IntArray, LongArray, FloatArray, Doubl
 }
 
 void interopRuntime(){
-    Class<JavaType,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
+    Class<JavaType,[Boolean,Byte,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
     
     //
     // constructor
     
-    value instance = javaType(true,1,2,3,4,1.0,2.0,'a',"a","b");
+    value instance = javaType(true,1.byte,2,3,4,1.0,2.0,'a',"a","b");
 
     //
     // methods
     
-    assert(exists method = javaType.getMethod<JavaType,Anything,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]>("method"));
-    method(instance)(true,1,2,3,4,1.0,2.0,'a',"a","b");
+    assert(exists method = javaType.getMethod<JavaType,Anything,[Boolean,Byte,Integer,Integer,Integer,Float,Float,Character,String,Object]>("method"));
+    method(instance)(true,1.byte,2,3,4,1.0,2.0,'a',"a","b");
 
     assert(exists methodBoolean = javaType.getMethod<JavaType,Boolean,[]>("methodBoolean"));
     assert(true == methodBoolean(instance)());
 
-    assert(exists methodByte = javaType.getMethod<JavaType,Integer,[]>("methodByte"));
-    assert(1 == methodByte(instance)());
+    assert(exists methodByte = javaType.getMethod<JavaType,Byte,[]>("methodByte"));
+    assert(1.byte == methodByte(instance)());
 
     assert(exists methodShort = javaType.getMethod<JavaType,Integer,[]>("methodShort"));
     assert(2 == methodShort(instance)());
@@ -56,8 +56,8 @@ void interopRuntime(){
     methodBooleanVarargs(instance)(1, true, true);
     methodBooleanVarargs(instance)(2, true, true, true);
 
-    assert(exists methodByteVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodByteVarargs"));
-    methodByteVarargs(instance)(1, 1);
+    assert(exists methodByteVarargs = javaType.getMethod<JavaType,Anything,[Byte, Byte*]>("methodByteVarargs"));
+    methodByteVarargs(instance)(1.byte, 1.byte);
 
     assert(exists methodShortVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodShortVarargs"));
     methodShortVarargs(instance)(2, 2);
@@ -97,9 +97,9 @@ void interopRuntime(){
     assert(booleanAttr(instance).get() == true);
     booleanAttr(instance).set(true);
 
-    assert(is Attribute<JavaType,Integer,Integer> byteAttr = javaType.getAttribute<JavaType,Integer,Integer>("byte"));
-    assert(byteAttr(instance).get() == 1);
-    byteAttr(instance).set(1);
+    assert(is Attribute<JavaType,Byte,Byte> byteAttr = javaType.getAttribute<JavaType,Byte,Byte>("byte"));
+    assert(byteAttr(instance).get() == 1.byte);
+    byteAttr(instance).set(1.byte);
 
     assert(is Attribute<JavaType,Integer,Integer> shortAttr = javaType.getAttribute<JavaType,Integer,Integer>("short"));
     assert(shortAttr(instance).get() == 2);
@@ -140,9 +140,9 @@ void interopRuntime(){
     assert(booleanFieldAttr(instance).get() == true);
     booleanFieldAttr(instance).set(true);
 
-    assert(is Attribute<JavaType,Integer,Integer> byteFieldAttr = javaType.getAttribute<JavaType,Integer,Integer>("byteField"));
-    assert(byteFieldAttr(instance).get() == 1);
-    byteFieldAttr(instance).set(1);
+    assert(is Attribute<JavaType,Byte,Byte> byteFieldAttr = javaType.getAttribute<JavaType,Byte,Byte>("byteField"));
+    assert(byteFieldAttr(instance).get() == 1.byte);
+    byteFieldAttr(instance).set(1.byte);
 
     assert(is Attribute<JavaType,Integer,Integer> shortFieldAttr = javaType.getAttribute<JavaType,Integer,Integer>("shortField"));
     assert(shortFieldAttr(instance).get() == 2);
@@ -256,60 +256,60 @@ void interopRuntime(){
 
 void testByteArray(){
     value byteArray = ByteArray(3);
-    byteArray.set(0, 1);
-    byteArray.set(1, 2);
-    byteArray.set(2, 3);
+    byteArray.set(0, 1.byte);
+    byteArray.set(1, 2.byte);
+    byteArray.set(2, 3.byte);
     // type
     assert("java.lang::ByteArray" == type(byteArray).string);
     // constructor
     value byteArray2 = `ByteArray`(4);
     assert(byteArray2.size == 4);
-    assert(byteArray2.get(0) == 0);
-    value byteArray3 = `ByteArray`(4, 2);
+    assert(byteArray2.get(0) == 0.byte);
+    value byteArray3 = `ByteArray`(4, 2.byte);
     assert(byteArray3.size == 4);
-    assert(byteArray3.get(0) == 2);
+    assert(byteArray3.get(0) == 2.byte);
     // size
     value length = `ByteArray.size`;
     assert(length(byteArray).get() == 3);
     // get
     value get = `ByteArray.get`;
-    assert(get(byteArray)(0) == 1);
-    assert(get(byteArray)(1) == 2);
-    assert(get(byteArray)(2) == 3);
+    assert(get(byteArray)(0) == 1.byte);
+    assert(get(byteArray)(1) == 2.byte);
+    assert(get(byteArray)(2) == 3.byte);
     // set
     value set = `ByteArray.set`;
-    set(byteArray)(0, 10);
-    set(byteArray)(1, 11);
-    set(byteArray)(2, 12);
-    assert(byteArray.get(0) == 10);
-    assert(byteArray.get(1) == 11);
-    assert(byteArray.get(2) == 12);
+    set(byteArray)(0, 10.byte);
+    set(byteArray)(1, 11.byte);
+    set(byteArray)(2, 12.byte);
+    assert(byteArray.get(0) == 10.byte);
+    assert(byteArray.get(1) == 11.byte);
+    assert(byteArray.get(2) == 12.byte);
     // copyTo
     value dest = ByteArray(5);
     value copyTo = `ByteArray.copyTo`;
     copyTo(byteArray)(dest);
-    assert(dest.get(0) == 10);
-    assert(dest.get(1) == 11);
-    assert(dest.get(2) == 12);
-    assert(dest.get(3) == 0);//left-over
+    assert(dest.get(0) == 10.byte);
+    assert(dest.get(1) == 11.byte);
+    assert(dest.get(2) == 12.byte);
+    assert(dest.get(3) == 0.byte);//left-over
     copyTo(byteArray)(dest, 1);
-    assert(dest.get(0) == 11);
-    assert(dest.get(1) == 12);
-    assert(dest.get(2) == 12);//left-over
-    assert(dest.get(3) == 0);//left-over
+    assert(dest.get(0) == 11.byte);
+    assert(dest.get(1) == 12.byte);
+    assert(dest.get(2) == 12.byte);//left-over
+    assert(dest.get(3) == 0.byte);//left-over
     copyTo(byteArray)(dest, 0, 1);
-    assert(dest.get(0) == 11);//left-over
-    assert(dest.get(1) == 10);
-    assert(dest.get(2) == 11);
-    assert(dest.get(3) == 12);
+    assert(dest.get(0) == 11.byte);//left-over
+    assert(dest.get(1) == 10.byte);
+    assert(dest.get(2) == 11.byte);
+    assert(dest.get(3) == 12.byte);
     copyTo(byteArray)(dest, 0, 0, 2);
-    assert(dest.get(0) == 10);
-    assert(dest.get(1) == 11);
-    assert(dest.get(2) == 11);//left-over
-    assert(dest.get(3) == 12);//left-over
+    assert(dest.get(0) == 10.byte);
+    assert(dest.get(1) == 11.byte);
+    assert(dest.get(2) == 11.byte);//left-over
+    assert(dest.get(3) == 12.byte);//left-over
     // array
     value array = `ByteArray.array`;
-    assert(array(byteArray).get() == {JByte(10), JByte(11), JByte(12)}.sequence());
+    assert(array(byteArray).get() == {JByte(10.byte), JByte(11.byte), JByte(12.byte)}.sequence());
 }
 
 void testShortArray(){

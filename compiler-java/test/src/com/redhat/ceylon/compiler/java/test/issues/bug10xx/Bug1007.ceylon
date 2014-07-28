@@ -23,7 +23,7 @@ import java.lang { ByteArray }
 @noanno
 void bug1007() {
     value file = File("/foo");
-    value fileData = ByteArray { size = file.length(); element = 0; };
+    value fileData = ByteArray { size = file.length(); element = 0.byte; };
     value fileIn = FileInputStream(file);
     fileIn.read(fileData);
 }

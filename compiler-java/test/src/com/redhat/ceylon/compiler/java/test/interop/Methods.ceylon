@@ -85,11 +85,11 @@ void variadicMethods() {
     java.variadicChar(*[]);
     java.variadicChar(*['a', box('b'), 'c']);
 
-    java.variadicByte(1, box(2), 3);
+    java.variadicByte(1.byte, box(2.byte), 3.byte);
     java.variadicByte(*[]);
-    java.variadicByte(*[1, box(2), 3]);
-    java.variadicByte(1, *[1, box(2), 3]);
-    java.variadicByte(1, box(2), *[1, box(2), 3]);
+    java.variadicByte(*[1.byte, box(2.byte), 3.byte]);
+    java.variadicByte(1.byte, *[1.byte, box(2.byte), 3.byte]);
+    java.variadicByte(1.byte, box(2.byte), *[1.byte, box(2.byte), 3.byte]);
 
     java.variadicShort(*[]);
     java.variadicShort(*[1, box(2), 3]);
@@ -158,18 +158,18 @@ void variadicMethods() {
 @noanno
 void tupleSpreading(){
     TypesJava java = TypesJava();
-    value tuple = [true, 1, 2, 3, 4, 5.0, 6.0, 'a', "foo", java];
-    java.takeAll(true, 1, 2, 3, 4, 5.0, 6.0, 'a', "foo", java);
+    value tuple = [true, 1.byte, 2, 3, 4, 5.0, 6.0, 'a', "foo", java];
+    java.takeAll(true, 1.byte, 2, 3, 4, 5.0, 6.0, 'a', "foo", java);
     // full spread
     java.takeAll(*tuple);
     // partial spread
     java.takeAll(true, *tuple.rest);
-    value tuple2 = [true, 1, 'a', 'b', 'c'];
+    value tuple2 = [true, 1.byte, 'a', 'b', 'c'];
     // full spread including variadic
     java.takeAllVariadic(*tuple2);
     // partial spread including variadic
     value tuple3 = ['c', 'd'];
-    java.takeAllVariadic(true, 1, 'a', 'b', *tuple3);
+    java.takeAllVariadic(true, 1.byte, 'a', 'b', *tuple3);
 }
 
 @noanno

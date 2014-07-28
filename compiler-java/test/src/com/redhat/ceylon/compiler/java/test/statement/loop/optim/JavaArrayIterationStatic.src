@@ -59,8 +59,8 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfBytes$priv$(final byte[] array) {
         final byte[] array$18 = array;
         loop_6: for (int i$20 = 0; i$20 < array$18.length; i$20++) {
-            final long element = array$18[i$20];
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element));
+            final byte element = array$18[i$20];
+            .ceylon.language.print_.print(.ceylon.language.Byte.instance(element));
         }
     }
     
@@ -69,8 +69,8 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
         final int step$24 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$24 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_7: for (int i$23 = 0; i$23 < array$21.length; i$23 += step$24) {
-            final long element = array$21[i$23];
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element));
+            final byte element = array$21[i$23];
+            .ceylon.language.print_.print(.ceylon.language.Byte.instance(element));
         }
     }
     

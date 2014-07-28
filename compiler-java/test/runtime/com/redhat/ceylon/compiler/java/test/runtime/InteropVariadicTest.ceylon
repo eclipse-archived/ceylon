@@ -25,11 +25,11 @@ shared class InteropVariadicTest() {
     @test
     shared void testVarargsByte() {
         VariadicJava java = VariadicJava();
-        java.testVarargsByte3(1, box(2), 3);
-        java.testVarargsByte3(*[1, box(2), 3]);
-        java.testVarargsByte3(1, *[box(2), 3]);
-        java.testVarargsByte3(1, box(2), *[3]);
-        value seq = [1, box(2), 3];
+        java.testVarargsByte3(1.byte, box(2.byte), 3.byte);
+        java.testVarargsByte3(*[1.byte, box(2.byte), 3.byte]);
+        java.testVarargsByte3(1.byte, *[box(2.byte), 3.byte]);
+        java.testVarargsByte3(1.byte, box(2.byte), *[3.byte]);
+        value seq = [1.byte, box(2.byte), 3.byte];
         java.testVarargsByte3(*seq);
 
         java.testVarargsByte0();

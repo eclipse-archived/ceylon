@@ -11,7 +11,7 @@ final class bug1007_ {
             let
             {
                 int arg$0$0 = .com.redhat.ceylon.compiler.java.Util.toInt(file.length());
-                byte arg$0$1 = .com.redhat.ceylon.compiler.java.Util.toByte(0L);
+                byte arg$0$1 = .ceylon.language.Integer.getByte(0L);
             }
             returning .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[arg$0$0], arg$0$1);
         );

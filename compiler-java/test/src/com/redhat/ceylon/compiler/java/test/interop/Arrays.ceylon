@@ -117,7 +117,7 @@ void test_JBooleans() {
 void test_bytes() {
     TypesJava java = TypesJava();
     ByteArray items = java.return_bytes();
-    Integer? n = items.get(0);
+    Byte? n = items.get(0);
     if (exists n) {
         items.set(1, n);
     }

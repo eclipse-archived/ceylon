@@ -24,7 +24,7 @@ generated{
 }
 javaAnnotationPrimitives {
     b=true;
-    o=8;
+    o=Byte(8);
     s=16;
     i=32;
     l=64;
@@ -33,7 +33,7 @@ javaAnnotationPrimitives {
     str="";
     
     ba={true};
-    oa={8};
+    oa={Byte(8)};
     sa={16};
     ia={32};
     la={64};

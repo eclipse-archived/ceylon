@@ -92,7 +92,8 @@ public class MiscTest extends CompilerTest {
             public boolean accept(File pathname) {
                 String filename = pathname.getName();
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
-                for (String s : new String[]{"Boolean", "Integer", "Float", "Character", "String", 
+                for (String s : new String[]{
+                        "Boolean", "Integer", "Float", "Character", "String", "Byte",
                         "Array", "Tuple", "Exception", "AssertionError", "Callable", 
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "language", "metamodel", "modules", "operatingSystem", 
