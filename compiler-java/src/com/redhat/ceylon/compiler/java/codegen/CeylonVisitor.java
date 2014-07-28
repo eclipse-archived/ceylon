@@ -116,6 +116,18 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
         }
     }
+    public void visit(Tree.InterfaceBody that) {
+        for (Tree.Statement stmt : that.getStatements()) {
+            if (stmt instanceof Tree.Declaration
+                    || stmt instanceof Tree.SpecifierStatement) {
+                stmt.visit(this);
+            } else if (stmt instanceof Tree.ExecutableStatement) {
+                // ignore it: the Tree is malformed.
+            } else {
+                throw BugException.unhandledCase(stmt);
+            }
+        }
+    }
 
     public void visit(Tree.ObjectDefinition decl) {
         if(gen.errors().hasDeclarationError(decl))
