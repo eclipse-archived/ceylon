@@ -68,7 +68,7 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum $ceylontmp$1 = offset % 2L == 0L ^ this == .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_() ? .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_() : null;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum $ceylontmp$1 = !(offset % 2L == 0L == (this == .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_())) ? .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_() : null;
             }
             returning $ceylontmp$1 != null ? $ceylontmp$1 : .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
         );

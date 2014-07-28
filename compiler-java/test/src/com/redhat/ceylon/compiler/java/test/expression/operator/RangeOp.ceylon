@@ -35,7 +35,7 @@ abstract class RangeOpEnum() of rangeOpE|rangeOpF
     shared actual Integer offset(RangeOpEnum other)
             => this === other then 0 else 1;
     shared actual RangeOpEnum neighbour(Integer offset)
-            => (offset%2 == 0).xor(this === rangeOpE) then rangeOpF else rangeOpE;
+            => (offset%2 == 0) != (this === rangeOpE) then rangeOpF else rangeOpE;
 }
 @noanno
 object rangeOpF extends RangeOpEnum() {
