@@ -99,8 +99,8 @@ public class MethodHandleUtil {
                         initialParamType = paramType;
                     }else if(paramType == byte[].class){
                         methodName = "toByteArray";
-                        empty = new long[0];
-                        initialParamType = long[].class;
+                        empty = new byte[0];
+                        initialParamType = byte[].class;
                     }else if(paramType == short[].class){
                         methodName = "toShortArray";
                         empty = new long[0];
@@ -157,13 +157,17 @@ public class MethodHandleUtil {
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.String.class, "toString", 
                                                                                MethodType.methodType(java.lang.String.class));
                     filters[i] = unbox.asType(MethodType.methodType(java.lang.String.class, java.lang.Object.class));
-                }else if(paramType == byte.class 
-                        || paramType == short.class
+                }else if(paramType == short.class
                         || (paramType == int.class && !isCeylonCharacter(producedType))){
                     // (paramType)((ceylon.language.Integer)obj).longValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Integer.class, "longValue", 
                                                                              MethodType.methodType(long.class));
                     filters[i] = MethodHandles.explicitCastArguments(unbox, MethodType.methodType(paramType, java.lang.Object.class));
+                }else if(paramType == byte.class){
+                    // ((ceylon.language.Byte)obj).byteValue()
+                    MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Byte.class, "byteValue", 
+                                                                             MethodType.methodType(byte.class));
+                    filters[i] = unbox.asType(MethodType.methodType(byte.class, java.lang.Object.class));
                 }else if(paramType == long.class){
                     // ((ceylon.language.Integer)obj).longValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Integer.class, "longValue", 
@@ -228,11 +232,17 @@ public class MethodHandleUtil {
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Character.class, "instance", 
                                                                      MethodType.methodType(ceylon.language.Character.class, int.class));
                 return MethodHandles.filterReturnValue(method, box);
-            }else if(type == byte.class || type == int.class || type == short.class){
+            }else if(type == int.class || type == short.class){
                 // ceylon.language.Integer.instance((long)obj)
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Integer.class, "instance", 
                                                                      MethodType.methodType(ceylon.language.Integer.class, long.class));
                 box = box.asType(MethodType.methodType(ceylon.language.Integer.class, type));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == byte.class){
+                // ceylon.language.Byte.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Byte.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Byte.class, byte.class));
+                box = box.asType(MethodType.methodType(ceylon.language.Byte.class, type));
                 return MethodHandles.filterReturnValue(method, box);
             }else if(type == long.class){
                 // ceylon.language.Integer.instance(obj)
@@ -527,6 +537,7 @@ public class MethodHandleUtil {
         Class<?> arrayType = getJavaArrayType(arrayClass);
         if(getterName.equals("getArray") 
                 || (arrayClass == BooleanArray.class && getterName.equals("getBooleanArray"))
+                || (arrayClass == ByteArray.class && getterName.equals("getByteArray"))
                 || (arrayClass == LongArray.class && getterName.equals("getIntegerArray"))
                 || (arrayClass == DoubleArray.class && getterName.equals("getFloatArray"))
                 || (arrayClass == IntArray.class && getterName.equals("getCodePointArray")))
