@@ -52,6 +52,8 @@ public class MetamodelGenerator {
     public static final String KEY_PARAMS       = "ps";
     public static final String KEY_SELF_TYPE    = "st";
     public static final String KEY_SATISFIES    = "sts";
+    public static final String KEY_DS_VARIANCE  = "dv"; //declaration-site variance
+    public static final String KEY_US_VARIANCE  = "uv"; //use-site variance
 
     public static final String KEY_DEFAULT      = "def";
     public static final String KEY_DYNAMIC      = "dyn";
@@ -192,14 +194,14 @@ public class MetamodelGenerator {
     }
 
     /** Returns a map with the same info as {@link #typeParameterMap(ProducedType)} but with
-     * an additional key "variance" if it's covariant ("out") or contravariant ("in"). */
+     * an additional key {@value #KEY_DS_VARIANCE} if it's covariant ("out") or contravariant ("in"). */
     private Map<String, Object> typeParameterMap(TypeParameter tp, Declaration from) {
         Map<String, Object> map = new HashMap<>();
         map.put(MetamodelGenerator.KEY_NAME, tp.getName());
         if (tp.isCovariant()) {
-            map.put("variance", "out");
+            map.put(KEY_DS_VARIANCE, "out");
         } else if (tp.isContravariant()) {
-            map.put("variance", "in");
+            map.put(KEY_DS_VARIANCE, "in");
         }
         if (tp.getSelfType() != null) {
             map.put(KEY_SELF_TYPE, typeMap(tp.getSelfType(), from));

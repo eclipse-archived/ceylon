@@ -695,10 +695,10 @@ public class TypeUtils {
             first=false;
             gen.out(tp.getName(), "$", tp.getDeclaration().getName(), ":{");
             if (tp.isCovariant()) {
-                gen.out("'var':'out'");
+                gen.out(MetamodelGenerator.KEY_DS_VARIANCE, ":'out'");
                 comma = true;
             } else if (tp.isContravariant()) {
-                gen.out("'var':'in'");
+                gen.out(MetamodelGenerator.KEY_DS_VARIANCE, ":'in'");
                 comma = true;
             }
             List<ProducedType> typelist = tp.getSatisfiedTypes();

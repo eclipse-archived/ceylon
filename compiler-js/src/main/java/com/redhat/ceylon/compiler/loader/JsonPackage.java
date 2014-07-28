@@ -280,7 +280,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 } else if (!tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
                     throw new IllegalArgumentException("Invalid type parameter map " + tp);
                 }
-                String variance = (String)tp.get("variance");
+                String variance = (String)tp.get(MetamodelGenerator.KEY_DS_VARIANCE);
                 if ("out".equals(variance)) {
                     tparm.setCovariant(true);
                 } else if ("in".equals(variance)) {
