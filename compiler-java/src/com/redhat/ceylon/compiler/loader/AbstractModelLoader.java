@@ -217,6 +217,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleCeylonObjectType("ceylon.language.Boolean");
     
     private static final TypeMirror PRIM_BYTE_TYPE = simpleJDKObjectType("byte");
+    private static final TypeMirror CEYLON_BYTE_TYPE = simpleCeylonObjectType("ceylon.language.Byte");
+    
     private static final TypeMirror PRIM_SHORT_TYPE = simpleJDKObjectType("short");
 
     private static final TypeMirror PRIM_INT_TYPE = simpleJDKObjectType("int");
@@ -3908,7 +3910,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return CEYLON_BOOLEAN_TYPE;
             
         } else if (sameType(type, PRIM_BYTE_TYPE)) {
-            return CEYLON_INTEGER_TYPE;
+            return CEYLON_BYTE_TYPE;
             
         } else if (sameType(type, PRIM_SHORT_TYPE)) {
             return CEYLON_INTEGER_TYPE;
