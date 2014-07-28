@@ -402,13 +402,13 @@ public final class Integer
         }
     }
 
-    public Byte getByte() { //TODO: change return type to byte
+    public byte getByte() {
         return getByte(value);
     }
 
     @Ignore
-    public static Byte getByte(long value) { //TODO: change return type to byte
-        return new Byte((byte) value);
+    public static byte getByte(long value) {
+        return (byte) value;
     }
 
     @TypeInfo("ceylon.language::Character")
