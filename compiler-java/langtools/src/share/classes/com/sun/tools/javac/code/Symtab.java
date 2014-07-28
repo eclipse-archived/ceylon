@@ -189,6 +189,7 @@ public class Symtab {
     public  Type ceylonLazyIterableType;
     public  Type ceylonLazyInvokingIterableType;
     public  Type ceylonCharacterType;
+    public  Type ceylonByteType;
     public  Type ceylonBooleanType;
     public  Type ceylonFinishedType;
     public  Type ceylonExceptionType;
@@ -203,11 +204,13 @@ public class Symtab {
     public  Type ceylonVariableBoxLongType;
     public  Type ceylonVariableBoxIntType;
     public  Type ceylonVariableBoxDoubleType;
+    public  Type ceylonVariableBoxByteType;
     public  Type ceylonVariableBoxBooleanType;
     public  Type ceylonGetterType;
     public  Type ceylonGetterLongType;
     public  Type ceylonGetterIntType;
     public  Type ceylonGetterDoubleType;
+    public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
     
     public final Type ceylonAtCeylonType;
@@ -902,6 +905,7 @@ public class Symtab {
         ceylonLazyIterableType = enterClass("com.redhat.ceylon.compiler.java.language.LazyIterable");
         ceylonLazyInvokingIterableType = enterClass("com.redhat.ceylon.compiler.java.language.LazyInvokingIterable");
         ceylonCharacterType = enterClass("ceylon.language.Character");
+        ceylonByteType = enterClass("ceylon.language.Byte");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonFinishedType = enterClass("ceylon.language.Finished");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
@@ -916,11 +920,13 @@ public class Symtab {
         ceylonVariableBoxLongType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxLong");
         ceylonVariableBoxIntType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxInt");
         ceylonVariableBoxDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxDouble");
+        ceylonVariableBoxByteType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxByte");
         ceylonVariableBoxBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxBoolean");
         ceylonGetterType = enterClass("com.redhat.ceylon.compiler.java.language.Getter");
         ceylonGetterLongType = enterClass("com.redhat.ceylon.compiler.java.language.GetterLong");
         ceylonGetterIntType = enterClass("com.redhat.ceylon.compiler.java.language.GetterInt");
         ceylonGetterDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.GetterDouble");
+        ceylonGetterByteType = enterClass("com.redhat.ceylon.compiler.java.language.GetterByte");
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
     }
 }
