@@ -79,7 +79,6 @@ public class Operators {
         UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.NEG, IntegerFloat),
         
         UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, PrimitiveType.INTEGER),
-        UNARY_LOGICAL_NOT("ceylon.language.Boolean", 1, "not", JCTree.NOT, PrimitiveType.BOOLEAN),
 
         UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.POSTINC, IntegerCharacter),
         UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.POSTDEC, IntegerCharacter),
@@ -102,10 +101,6 @@ public class Operators {
         BINARY_BITWISE_LOG_LEFT_SHIFT("ceylon.language.Integer", 2, "leftLogicalShift", JCTree.SL, PrimitiveType.INTEGER),
         BINARY_BITWISE_LOG_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightLogicalShift", JCTree.USR, PrimitiveType.INTEGER),
         BINARY_BITWISE_ARI_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightArithmeticShift", JCTree.SR, PrimitiveType.INTEGER),
-        
-        BINARY_LOGICAL_AND("ceylon.language.Boolean", 2, "and", JCTree.AND, PrimitiveType.BOOLEAN),
-        BINARY_LOGICAL_OR("ceylon.language.Boolean", 2, "or", JCTree.OR, PrimitiveType.BOOLEAN),
-        BINARY_LOGICAL_XOR("ceylon.language.Boolean", 2, "xor", JCTree.BITXOR, PrimitiveType.BOOLEAN),
 
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
@@ -129,10 +124,7 @@ public class Operators {
                     ProducedType rightType = t.getRightTerm().getTypeModel();
 
                     // make sure both types are the same, can't optimise otherwise
-                    // but allow for Boolean/false/true 
-                    if(!leftType.isExactly(rightType)
-                            && !(gen.isCeylonBoolean(leftType) 
-                                    && gen.isCeylonBoolean(rightType)) )
+                    if(!leftType.isExactly(rightType))
                         return OptimisationStrategy.NONE;
                     
                     // special case for String where we can't use == but don't need to box
