@@ -1585,6 +1585,10 @@ public class StatementTransformer extends AbstractTransformer {
                 elementGet = utilInvocation().getCharacterArray( 
                         indexableName.makeIdent(), indexName.makeIdent());
                 gotType = elementType;
+            } else if (isCeylonByte(elementType)) {
+                elementGet = utilInvocation().getByteArray( 
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
             }
             
             if(elementGet == null){
@@ -3542,6 +3546,8 @@ public class StatementTransformer extends AbstractTransformer {
                 return makeLong(0);
             } else if (isCeylonCharacter(type)) {
                 return make().Literal(0);
+            } else if (isCeylonByte(type)) {
+                return makeByte((byte)0);
             }
         }
         // The default value cannot be seen from the Ceylon code, so it's
