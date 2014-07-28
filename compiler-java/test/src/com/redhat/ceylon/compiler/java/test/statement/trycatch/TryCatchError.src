@@ -1,0 +1,93 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class AssertionErrorSubclass extends .ceylon.language.AssertionError {
+    
+    AssertionErrorSubclass(final .java.lang.String message) {
+        super(message);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass.class);
+}
+final class tryCatchError_ {
+    
+    private tryCatchError_() {
+    }
+    
+    static void tryCatchError() {
+        try {
+            try {
+                throw new .ceylon.language.AssertionError("oops");
+            } catch (final .java.lang.Error exception$0) {
+                if (exception$0 instanceof .java.lang.Error && !(exception$0 instanceof .ceylon.language.AssertionError)) {
+                    final .java.lang.Error error = (.java.lang.Error)exception$0;
+                    throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
+                } else throw exception$0;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+        }
+        try {
+            try {
+                throw new .ceylon.language.AssertionError("oops");
+            } catch (final .java.lang.Throwable exception$1) {
+                if (exception$1 instanceof .java.lang.Error && !(exception$1 instanceof .ceylon.language.AssertionError) || exception$1 instanceof .java.lang.NullPointerException) {
+                    final .java.lang.Object error = exception$1;
+                    throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), (.java.lang.Throwable)error);
+                } else throw exception$1;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+        }
+        try {
+            try {
+                throw new .ceylon.language.AssertionError("oops");
+            } catch (final .java.lang.Throwable exception$2) {
+                if (exception$2 instanceof .java.lang.Error && !(exception$2 instanceof .ceylon.language.AssertionError) || exception$2 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass) {
+                    final .java.lang.Object error = exception$2;
+                    throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), (.java.lang.Throwable)error);
+                } else throw exception$2;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+        }
+        try {
+            try {
+                throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass("oops");
+            } catch (final .java.lang.Throwable exception$3) {
+                if (exception$3 instanceof .java.lang.Error && !(exception$3 instanceof .ceylon.language.AssertionError) || exception$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass) {
+                    final .java.lang.Object error = exception$3;
+                } else throw exception$3;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), e);
+        }
+        try {
+            try {
+                throw new .ceylon.language.AssertionError("oops");
+            } catch (final .java.lang.Error exception$4) {
+                if (exception$4 instanceof .java.lang.Error && !(exception$4 instanceof .ceylon.language.AssertionError)) {
+                    final .java.lang.Error error = (.java.lang.Error)exception$4;
+                    throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
+                } else throw exception$4;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+        }
+        try {
+            try {
+                throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass("oops");
+            } catch (final .java.lang.Error exception$5) {
+                if (exception$5 instanceof .java.lang.Error && !(exception$5 instanceof .ceylon.language.AssertionError)) {
+                    final .java.lang.Error error = (.java.lang.Error)exception$5;
+                    throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
+                } else throw exception$5;
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.trycatch.tryCatchError_.tryCatchError();
+    }
+}

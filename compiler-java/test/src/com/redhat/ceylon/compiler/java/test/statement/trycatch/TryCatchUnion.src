@@ -38,8 +38,11 @@ class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final void m$priv$() {
         try {
             t$priv$();
-        } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1 | .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2 e) {
-            c$priv$((.java.lang.Exception)e);
+        } catch (final .java.lang.Throwable exception$0) {
+            if (exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1 || exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2) {
+                final .java.lang.Object e = exception$0;
+                c$priv$((.java.lang.Exception)e);
+            } else throw exception$0;
         }
     }
     

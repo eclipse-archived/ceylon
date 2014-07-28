@@ -89,6 +89,18 @@ public class TryCatchTest extends CompilerTest {
     }
     
     @Test
+    public void testTryTryCatchError(){
+        compareWithJavaSource("trycatch/TryCatchError");
+        run("com.redhat.ceylon.compiler.java.test.statement.trycatch.tryCatchError");
+    }
+    
+    @Test
+    public void testTryTryCatchErrorAssertionError(){
+        compareWithJavaSource("trycatch/TryCatchErrorAssertionError");
+        run("com.redhat.ceylon.compiler.java.test.statement.trycatch.tryCatchErrorAssertionError");
+    }
+    
+    @Test
     public void testTryTryCatchFinally(){
         compareWithJavaSource("trycatch/TryCatchFinally");
     }

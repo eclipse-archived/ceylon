@@ -66,7 +66,7 @@ public final class testThrowable_ {
             final .com.redhat.ceylon.compiler.java.test.interop.MyException t$6 = (.com.redhat.ceylon.compiler.java.test.interop.MyException)t$5;
         }
         .java.lang.Object t$8;
-        if ((t$8 = t) instanceof .java.lang.Error) {
+        if ((t$8 = t) instanceof .java.lang.Error && !(t$8 instanceof .ceylon.language.AssertionError)) {
             final .java.lang.Error t$9 = (.java.lang.Error)t$8;
         }
         .java.lang.Object t$11;
