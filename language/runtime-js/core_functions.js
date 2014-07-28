@@ -208,7 +208,7 @@ function is$(obj,type){
           var tmpobj=obj;
           var iance=null;
           var _mm=getrtmm$$(type.t);
-          if(_mm&&_mm.tp&&_mm.tp[i])iance=_mm.tp[i]['var'];
+          if(_mm&&_mm.tp&&_mm.tp[i])iance=_mm.tp[i].dv;
           if(iance===null) {
             //null means no i in _mm.tp
             //Type parameter may be in the outer type
@@ -217,18 +217,18 @@ function is$(obj,type){
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
               var _mmf = getrtmm$$(_tmpf);
               if(_mmf&&_mmf.tp&&_mmf.tp[i]){
-                iance=_mmf.tp[i]['var'];
+                iance=_mmf.tp[i].dv;
               }
               if(iance===null&&_mmf&&_mmf['super']){
                 //lookup the type parameter in the supertype
                 var smm=getrtmm$$(_mmf['super'].t);
-                if(smm&&smm.tp&&smm.tp[i])iance=smm.tp[i]['var'];
+                if(smm&&smm.tp&&smm.tp[i])iance=smm.tp[i].dv;
               }
               if(iance===null&&_mmf&&_mmf.sts){
                 var sats=_mmf.sts;
                 for(var s=0;iance===null&&s<sats.length;s++){
                   var smm=getrtmm$$(sats[s].t);
-                  if (smm&&smm.tp&&smm.tp[i])iance=smm.tp[i]['var'];
+                  if (smm&&smm.tp&&smm.tp[i])iance=smm.tp[i].dv;
                 }
               }
             }
@@ -239,7 +239,7 @@ function is$(obj,type){
             var _omm=_mm;
             while(iance===null&&_omm) {
               if(_omm.tp&&_omm.tp[i]!==undefined){
-                iance=_omm.tp[i]['var'];
+                iance=_omm.tp[i].dv;
                 tmpobj=obj;
               }
               if(iance===null)_omm=getrtmm$$(_omm.$cont);

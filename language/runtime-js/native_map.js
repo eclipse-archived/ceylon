@@ -11,7 +11,7 @@ function Mapita(o,$$targs$$,$$mapita){
     $$mapita.$prop$getHash.get=function(){return hash};
     return $$mapita;
 }
-Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{V$Mapita:{'var':'out',sts:[{t:$_Object}]}},sts:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],pa:1,d:['','Mapita']};};
+Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{V$Mapita:{dv:'out',sts:[{t:$_Object}]}},sts:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:{t:TypeParameter$meta$declaration}}}],pa:1,d:['','Mapita']};};
 ex$.Mapita=Mapita;
 function $init$Mapita(){
     if(Mapita.$$===undefined){
