@@ -373,6 +373,10 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Literal(TypeTags.BOT, null);
     }
     
+    JCExpression makeByte(byte i) {
+        return make().Literal(Byte.valueOf(i));
+    }
+    
     JCExpression makeInteger(int i) {
         return make().Literal(Integer.valueOf(i));
     }
@@ -518,6 +522,8 @@ public abstract class AbstractTransformer implements Transformation {
             boxClass = make().Type(syms().ceylonVariableBoxDoubleType);
         } else if (unboxed && isCeylonCharacter(declarationModel.getType())) {
             boxClass = make().Type(syms().ceylonVariableBoxIntType);
+        } else if (unboxed && isCeylonByte(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxByteType);
         } else {
             boxClass = make().Ident(syms().ceylonVariableBoxType.tsym);
             int flags = unboxed ? 0 : JT_TYPE_ARGUMENT;
@@ -1117,7 +1123,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean willEraseToPrimitive(ProducedType type) {
-        return (isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
+        return (isCeylonBoolean(type)
+                || isCeylonInteger(type)
+                || isCeylonFloat(type)
+                || isCeylonCharacter(type)
+                || isCeylonByte(type));
     }
     
     boolean willEraseToException(ProducedType type) {
@@ -1316,6 +1326,10 @@ public abstract class AbstractTransformer implements Transformation {
         return type != null && type.isExactly(typeFact.getCharacterDeclaration().getType());
     }
 
+    boolean isCeylonByte(ProducedType type) {
+        return type != null && type.isExactly(typeFact.getByteDeclaration().getType());
+    }
+
     boolean isCeylonArray(ProducedType type) {
         return type.getSupertype(typeFact.getArrayDeclaration()) != null;
     }
@@ -1325,7 +1339,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonBasicType(ProducedType type) {
-        return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
+        return (isCeylonString(type)
+                || isCeylonBoolean(type)
+                || isCeylonInteger(type)
+                || isCeylonFloat(type)
+                || isCeylonCharacter(type)
+                || isCeylonByte(type));
     }
     
     boolean isCeylonCallable(ProducedType type) {
@@ -1481,9 +1500,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (isCeylonBoolean(type)) {
                 return make().TypeIdent(TypeTags.BOOLEAN);
             } else if (isCeylonInteger(type)) {
-                if ("byte".equals(type.getUnderlyingType())) {
-                    return make().TypeIdent(TypeTags.BYTE);
-                } else if ("short".equals(type.getUnderlyingType())) {
+                if ("short".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.SHORT);
                 } else if ((flags & JT_SMALL) != 0 || "int".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.INT);
@@ -1502,6 +1519,8 @@ public abstract class AbstractTransformer implements Transformation {
                 } else {
                     return make().TypeIdent(TypeTags.INT);
                 }
+            } else if (isCeylonByte(type)) {
+                return make().TypeIdent(TypeTags.BYTE);
             }
         } else if (isCeylonBoolean(type)
                 && !isTypeParameter(type)) {
@@ -3014,6 +3033,8 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (isCeylonCharacter(exprType)) {
             boolean isJavaCharacter = exprType.getUnderlyingType() != null;
             expr = unboxCharacter(expr, isJavaCharacter);
+        } else if (isCeylonByte(exprType)) {
+            expr = unboxByte(expr);
         } else if (isCeylonBoolean(exprType)) {
             expr = unboxBoolean(expr);
         } else if (isOptional(exprType)) {
@@ -3034,6 +3055,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxString(expr);
         } else if (isCeylonCharacter(exprType)) {
             expr = boxCharacter(expr);
+        } else if (isCeylonByte(exprType)) {
+            expr = boxByte(expr);
         } else if (isCeylonBoolean(exprType)) {
             expr = boxBoolean(expr);
         } else if (isAnything(exprType)) {
@@ -3063,6 +3086,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation boxCharacter(JCExpression value) {
         return makeBoxType(value, syms().ceylonCharacterType);
+    }
+    
+    private JCTree.JCMethodInvocation boxByte(JCExpression value) {
+        return makeBoxType(value, syms().ceylonByteType);
     }
     
     private JCTree.JCMethodInvocation boxBoolean(JCExpression value) {
@@ -3118,6 +3145,10 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value, boolean isJava) {
         return makeUnboxType(value, isJava ? "charValue" : "intValue");
+    }
+    
+    private JCTree.JCMethodInvocation unboxByte(JCExpression value) {
+        return makeUnboxType(value, "byteValue");
     }
     
     private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
@@ -3322,9 +3353,7 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType type = typeFact().getIteratedType(sequenceType);
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
-                if("byte".equals(type.getUnderlyingType()))
-                    return utilInvocation().toByteArray(expr, initialElements);
-                else if("short".equals(type.getUnderlyingType()))
+                if("short".equals(type.getUnderlyingType()))
                     return utilInvocation().toShortArray(expr, initialElements);
                 else if("int".equals(type.getUnderlyingType()))
                     return utilInvocation().toIntArray(expr, initialElements);
@@ -3339,6 +3368,8 @@ public abstract class AbstractTransformer implements Transformation {
                 if ("char".equals(type.getUnderlyingType()))
                     return utilInvocation().toCharArray(expr, initialElements);
                 // else it must be boxed, right?
+            } else if (isCeylonByte(type)) {
+                return utilInvocation().toByteArray(expr, initialElements);
             } else if (isCeylonBoolean(type)) {
                 return utilInvocation().toBooleanArray(expr, initialElements);
             } else if (isJavaString(type)) {
@@ -4407,6 +4438,8 @@ public abstract class AbstractTransformer implements Transformation {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterDoubleType);
         } else if (unboxed && isCeylonCharacter(nonWideningType)) {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
+        } else if (unboxed && isCeylonByte(nonWideningType)) {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterByteType);
         } else {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterType);
             ProducedType typeArg = nonWideningType;
