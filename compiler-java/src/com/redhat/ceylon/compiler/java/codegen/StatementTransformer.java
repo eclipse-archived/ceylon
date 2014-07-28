@@ -39,11 +39,15 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -2934,6 +2938,9 @@ public class StatementTransformer extends AbstractTransformer {
     boolean usePolymorphicCatches(Iterable<Tree.CatchClause> catchClauses) {
         for (Tree.CatchClause catchClause : catchClauses) {
             ProducedType type = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
+            if (isOrContainsError(type)) {
+                return false;
+            }
             if (type.getDeclaration().isParameterized()) {
                 // e.g. E<T>
                 return false;
@@ -2941,12 +2948,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // e.g. E&Interface
                 return false;
             } else if (typeFact().isUnion(type)) {
-                // e.g. E1|E2<T>
-                for (ProducedType utype : type.getDeclaration().getCaseTypes()) {
-                    if (utype.getDeclaration().isParameterized()) {
-                        return false;
-                    } 
-                }
+                return false;
             }
         }
         return true;
@@ -2982,6 +2984,30 @@ public class StatementTransformer extends AbstractTransformer {
             
         }
         return catches.toList();
+    }
+
+
+    private boolean isOrContainsError(ProducedType exceptionType) {
+        TypeDeclaration declaration = exceptionType.getDeclaration();
+        if (declaration instanceof TypeAlias) {
+            return isOrContainsError(exceptionType.resolveAliases());
+        } else if (declaration instanceof UnionType) {
+            for (ProducedType t : declaration.getCaseTypes()) {
+                if (isOrContainsError(t)) {
+                    return true;
+                }
+            }
+            return false;
+        } else if (declaration instanceof IntersectionType) {
+            for (ProducedType t : declaration.getSatisfiedTypes()) {
+                if (isOrContainsError(t)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return "java.lang::Error".equals(declaration.getQualifiedNameString());
+        }
     }
 
     /**

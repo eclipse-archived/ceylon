@@ -3409,6 +3409,7 @@ public abstract class AbstractTransformer implements Transformation {
          * depending on the {@code op} parameter 
          */
         public R andOr(R a, R b, int op);
+        public R not(R a);
         /** Make a type test using that just evaluates as the given result */
         public R eval(JCExpression varExpr, boolean result);
         /** 
@@ -3435,6 +3436,11 @@ public abstract class AbstractTransformer implements Transformation {
         @Override
         public JCExpression andOr(JCExpression a, JCExpression b, int op) {
             return make().Binary(op, a, b);
+        }
+        
+        @Override
+        public JCExpression not(JCExpression a) {
+            return make().Unary(JCTree.NOT, a);
         }
 
         @Override
@@ -3490,7 +3496,12 @@ public abstract class AbstractTransformer implements Transformation {
             // cheap only if both halves are cheap
             return aIsCheap.booleanValue() && bIsCheap.booleanValue() ? Boolean.TRUE : Boolean.FALSE;
         }
-
+        
+        @Override
+        public Boolean not(Boolean a) {
+            return a;
+        }
+        
         @Override
         public Boolean eval(JCExpression varExpr, boolean result) {
             return Boolean.TRUE;
@@ -3625,6 +3636,11 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
                 return typeTester.isBasic(varExpr);
+            } else if (testedType.getDeclaration().getQualifiedNameString().equals("java.lang::Error")){
+                // need to exclude AssertionError
+                return typeTester.andOr(typeTester.isInstanceof(varExpr, testedType), 
+                        typeTester.not(typeTester.isInstanceof(varName.makeIdent(), typeFact().getAssertionErrorDeclaration().getType())), 
+                        JCTree.AND);
             } else if (testedType.getTypeArguments().isEmpty()) {
                 // non-generic Class or interface, use instanceof
                 return typeTester.isInstanceof(varExpr, testedType);
