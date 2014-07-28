@@ -1433,9 +1433,7 @@ public class Util {
      * Used by the JVM backend to get unboxed items from an Array&lt;Integer> backing array
      */
     public static long getIntegerArray(Object o, int index) {
-        if (o instanceof byte[])
-            return ((byte[])o)[index];
-        else if (o instanceof short[])
+        if (o instanceof short[])
             return ((short[])o)[index];
         else if (o instanceof int[])
             return ((int[])o)[index];
@@ -1461,6 +1459,15 @@ public class Util {
     public static int getCharacterArray(Object o, int index) {
         if (o instanceof int[])
             return ((int[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Byte> backing array
+     */
+    public static byte getByteArray(Object o, int index) {
+        if (o instanceof byte[])
+            return ((byte[])o)[index];
         throw new ClassCastException(notArrayType(o));
     }
     
