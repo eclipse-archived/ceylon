@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.util.List;
 
 /**
@@ -178,6 +177,10 @@ class RuntimeUtil {
 
     public JCExpression getCharacterArray(JCExpression indexable, JCExpression index) {
         return makeUtilInvocation(null, "getCharacterArray", List.of(indexable, index));
+    }
+
+    public JCExpression getByteArray(JCExpression indexable, JCExpression index) {
+        return makeUtilInvocation(null, "getByteArray", List.of(indexable, index));
     }
 
     public JCExpression arrayLength(JCExpression array) {
