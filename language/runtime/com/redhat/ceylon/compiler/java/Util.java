@@ -1496,7 +1496,7 @@ public class Util {
         else if (o instanceof char[])
             return ceylon.language.Character.instance(((char[])o)[index]);
         else if (o instanceof byte[])
-            return ceylon.language.Integer.instance(((byte[])o)[index]);
+            return ceylon.language.Byte.instance(((byte[])o)[index]);
         else if (o instanceof short[])
             return ceylon.language.Integer.instance(((short[])o)[index]);
         else if (o instanceof int[])
