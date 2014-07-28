@@ -544,37 +544,37 @@ public class Util {
     
     @SuppressWarnings("unchecked")
     public static byte[] 
-    toByteArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-            long... initialElements){
+    toByteArray(ceylon.language.Iterable<? extends ceylon.language.Byte, ?> sequence,
+            byte... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toByteArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
+            return toByteArray((ceylon.language.List<? extends ceylon.language.Byte>)sequence,
                     initialElements);
         ByteArrayBuilder builder = new ByteArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++){
-            builder.appendLong(initialElements[i]);
+            builder.appendByte(initialElements[i]);
         }
-        Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
+        Iterator<? extends ceylon.language.Byte> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendLong(((ceylon.language.Integer)o).longValue());
+            builder.appendByte(((ceylon.language.Byte)o).byteValue());
         }
         return builder.build();
     }
 
     public static byte[]
-    toByteArray(ceylon.language.List<? extends ceylon.language.Integer> list,
-            long... initialElements){
+    toByteArray(ceylon.language.List<? extends ceylon.language.Byte> list,
+            byte... initialElements){
         byte[] ret = new byte[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = toByte(initialElements[i]);
+            ret[i] = initialElements[i];
         }
         if(list != null){
-            Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
+            Iterator<? extends ceylon.language.Byte> iterator = list.iterator();
             Object o;
             while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = toByte(((ceylon.language.Integer)o).longValue());
+                ret[i++] = ((ceylon.language.Byte)o).byteValue();
             }
         }
         return ret;
