@@ -759,13 +759,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return ret;
         }
         if (convertTo != null) {
-            if(convertTo.equals("byte")) {
-                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
-                    ret = utilInvocation().toByte(ret);
-                } else {
-                    ret = make().TypeCast(syms().byteType, ret);
-                }
-            } else if(convertTo.equals("short")) {
+            if(convertTo.equals("short")) {
                 if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
                     ret = utilInvocation().toShort(ret);
                 } else {
