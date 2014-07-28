@@ -2966,16 +2966,7 @@ public class StatementTransformer extends AbstractTransformer {
             at(catchClause);
             Tree.Variable variable = catchClause.getCatchVariable().getVariable();
             ProducedType exceptionType = variable.getDeclarationModel().getType();
-            JCExpression type;
-            if (typeFact().isUnion(exceptionType)) {
-                ListBuffer<JCExpression> caughtTypes = ListBuffer.<JCExpression>lb();
-                for (ProducedType caughtType : exceptionType.getDeclaration().getCaseTypes()) {
-                    caughtTypes.append(makeJavaType(caughtType, JT_CATCH));
-                }
-                type = make().TypeUnion(caughtTypes.toList());
-            } else {
-                type = makeJavaType(exceptionType, JT_CATCH);
-            }
+            JCExpression type = makeJavaType(exceptionType, JT_CATCH);
             JCVariableDecl param = make().VarDef(
                     make().Modifiers(Flags.FINAL), 
                     names().fromString(variable.getIdentifier().getText()),
