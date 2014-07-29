@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
 import java.io.File;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
