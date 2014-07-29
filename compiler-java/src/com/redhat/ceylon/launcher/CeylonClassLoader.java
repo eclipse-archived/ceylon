@@ -242,6 +242,10 @@ public class CeylonClassLoader extends URLClassLoader {
         return null;
     }
 
+    /**
+     * Cleans up any resource associated with this class loader. This class loader will not be usable after calling this
+     * method, so any code using it to run better not be running anymore.
+     */
     public void clearCache() {
         try {
             Class<?> klass = java.net.URLClassLoader.class;
