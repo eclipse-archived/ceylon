@@ -76,7 +76,9 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                     manifest.write(baos);
                     log.fine(String.format("No OSGi Require-Bundle attribute, main-attributes: %s", new String(baos.toByteArray())));
                 }
-                return Collections.emptySet();
+                // we must return null to allow other resolvers to try, it's valid to have
+                // a manifest with no OSGi in there
+                return null;
             } else {
                 return parseRequireBundle(requireBundle);
             }
