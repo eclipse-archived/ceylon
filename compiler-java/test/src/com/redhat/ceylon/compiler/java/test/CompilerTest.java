@@ -580,6 +580,12 @@ public abstract class CompilerTest {
                 // TODO Auto-generated method stub
                 return null;
             }
+
+            @Override
+            public Repository repository() {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
     }
 
