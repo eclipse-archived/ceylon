@@ -2375,7 +2375,7 @@ case (hexadecimal) {
             
             <para>A setter defines how the value of a getter is assigned.</para>
             
-            <synopsis>SetterDeclaration: "assign" MemberName (Block | LazySpecifier)</synopsis>
+            <synopsis>SetterDeclaration: Annotations "assign" MemberName (Block | LazySpecifier)</synopsis>
             
             <para>The name specified in a setter declaration must be the name of a
             matching getter that directly occurs earlier in the body containing the 
