@@ -38,13 +38,15 @@ import com.sun.tools.javac.tree.JCTree;
 public class Operators {
 
     private enum PrimitiveType {
-        BOOLEAN, CHARACTER, INTEGER, FLOAT, STRING;
+        BOOLEAN, BYTE, CHARACTER, INTEGER, FLOAT, STRING;
     }
 
+    private static final PrimitiveType[] IntegerByte = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.BYTE};
     private static final PrimitiveType[] IntegerFloat = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT};
-    private static final PrimitiveType[] IntegerCharacter = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.CHARACTER};
+    private static final PrimitiveType[] IntegerFloatByte = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.BYTE};
+    private static final PrimitiveType[] IntegerCharacterByte = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.CHARACTER, PrimitiveType.BYTE};
     private static final PrimitiveType[] IntegerFloatCharacter = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.CHARACTER};
-    private static final PrimitiveType[] IntegerFloatString = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING};
+    private static final PrimitiveType[] IntegerFloatStringByte = new PrimitiveType[]{PrimitiveType.INTEGER, PrimitiveType.FLOAT, PrimitiveType.STRING, PrimitiveType.BYTE};
     private static final PrimitiveType[] All = PrimitiveType.values();
 
     public enum OptimisationStrategy {
@@ -75,19 +77,19 @@ public class Operators {
     public enum OperatorTranslation {
         
         // Unary operators
-        UNARY_POSITIVE(Tree.PositiveOp.class, 1, "<noop>", JCTree.POS, IntegerFloat),
-        UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.NEG, IntegerFloat),
+        UNARY_POSITIVE(Tree.PositiveOp.class, 1, "<noop>", JCTree.POS, IntegerFloatByte),
+        UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.NEG, IntegerFloatByte),
         
-        UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, PrimitiveType.INTEGER),
+        UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, IntegerByte),
 
-        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.POSTINC, IntegerCharacter),
-        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.POSTDEC, IntegerCharacter),
-        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, 1, "getSuccessor", JCTree.PREINC, IntegerCharacter),
-        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, 1, "getPredecessor", JCTree.PREDEC, IntegerCharacter),
+        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.POSTINC, IntegerCharacterByte),
+        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.POSTDEC, IntegerCharacterByte),
+        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, 1, "getSuccessor", JCTree.PREINC, IntegerCharacterByte),
+        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, 1, "getPredecessor", JCTree.PREDEC, IntegerCharacterByte),
 
         // Binary operators
-        BINARY_SUM(Tree.SumOp.class, 2, "plus", JCTree.PLUS, IntegerFloatString),
-        BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.MINUS, IntegerFloat),
+        BINARY_SUM(Tree.SumOp.class, 2, "plus", JCTree.PLUS, IntegerFloatStringByte),
+        BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.MINUS, IntegerFloatByte),
         BINARY_PRODUCT(Tree.ProductOp.class, 2, "times", JCTree.MUL, IntegerFloat),
         BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.DIV, IntegerFloat),
         BINARY_POWER(Tree.PowerOp.class, 2, "power"),
@@ -95,12 +97,12 @@ public class Operators {
         
         BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
 
-        BINARY_BITWISE_AND("ceylon.language.Integer", 2, "and", JCTree.BITAND, PrimitiveType.INTEGER),
-        BINARY_BITWISE_OR("ceylon.language.Integer", 2, "or", JCTree.BITOR, PrimitiveType.INTEGER),
-        BINARY_BITWISE_XOR("ceylon.language.Integer", 2, "xor", JCTree.BITXOR, PrimitiveType.INTEGER),
-        BINARY_BITWISE_LOG_LEFT_SHIFT("ceylon.language.Integer", 2, "leftLogicalShift", JCTree.SL, PrimitiveType.INTEGER),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightLogicalShift", JCTree.USR, PrimitiveType.INTEGER),
-        BINARY_BITWISE_ARI_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightArithmeticShift", JCTree.SR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_AND("ceylon.language.Integer", 2, "and", JCTree.BITAND, IntegerByte),
+        BINARY_BITWISE_OR("ceylon.language.Integer", 2, "or", JCTree.BITOR, IntegerByte),
+        BINARY_BITWISE_XOR("ceylon.language.Integer", 2, "xor", JCTree.BITXOR, IntegerByte),
+        BINARY_BITWISE_LOG_LEFT_SHIFT("ceylon.language.Integer", 2, "leftLogicalShift", JCTree.SL, IntegerByte),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightLogicalShift", JCTree.USR, IntegerByte),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightArithmeticShift", JCTree.SR, IntegerByte),
 
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
@@ -235,6 +237,10 @@ public class Operators {
                 switch(type){
                 case BOOLEAN:
                     if(gen.isCeylonBoolean(pt))
+                        return OptimisationStrategy.OPTIMISE;
+                    break;
+                case BYTE:
+                    if(gen.isCeylonByte(pt))
                         return OptimisationStrategy.OPTIMISE;
                     break;
                 case CHARACTER:
