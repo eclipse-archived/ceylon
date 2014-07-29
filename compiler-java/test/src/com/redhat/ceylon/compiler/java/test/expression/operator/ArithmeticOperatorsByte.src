@@ -1,0 +1,938 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> {
+    
+    MyByte() {
+        super();
+        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
+    }
+    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Binary$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Binary$impl() {
+        return $ceylon$language$Binary$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this$.set$bit(index);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte clear(final long index) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Binary$this$.clear(index);
+    }
+    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Invertible$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Invertible$impl() {
+        return $ceylon$language$Invertible$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte other) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Invertible$this$.minus(other);
+    }
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Enumerable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.class);
+}
+class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI) {
+        this.initN = initN;
+        this.initI = initI;
+        this.n1 = .ceylon.language.Integer.getByte(0L);
+        this.n2 = .ceylon.language.Integer.getByte(0L);
+        this.i1 = .ceylon.language.Integer.getByte(0L);
+        this.boxedByte1 = getInitN$priv$();
+        this.boxedByte2 = getInitN$priv$();
+        this.boxedByte3 = getInitI$priv$();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getInitN$priv$() {
+        return initN;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getInitI$priv$() {
+        return initI;
+    }
+    private byte n1;
+    
+    public final byte getN1() {
+        return n1;
+    }
+    
+    public final void setN1(final byte n1) {
+        this.n1 = n1;
+    }
+    private byte n2;
+    
+    public final byte getN2() {
+        return n2;
+    }
+    
+    public final void setN2(final byte n2) {
+        this.n2 = n2;
+    }
+    private byte i1;
+    
+    public final byte getI1() {
+        return i1;
+    }
+    
+    public final void setI1(final byte i1) {
+        this.i1 = i1;
+    }
+    
+    public final byte getGetterByte1() {
+        return getN1();
+    }
+    
+    public final void setGetterByte1(final byte getterByte1) {
+        setN1(getterByte1);
+    }
+    
+    public final byte getGetterByte2() {
+        return getN2();
+    }
+    
+    public final void setGetterByte2(final byte getterByte2) {
+        setN2(getterByte2);
+    }
+    
+    public final byte getGetterByte3() {
+        return getI1();
+    }
+    
+    public final void setGetterByte3(final byte getterByte3) {
+        setI1(getterByte3);
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte1;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte1() {
+        return boxedByte1;
+    }
+    
+    public final void setBoxedByte1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte1) {
+        this.boxedByte1 = boxedByte1;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte2;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte2() {
+        return boxedByte2;
+    }
+    
+    public final void setBoxedByte2(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte2) {
+        this.boxedByte2 = boxedByte2;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte3;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte3() {
+        return boxedByte3;
+    }
+    
+    public final void setBoxedByte3(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte3) {
+        this.boxedByte3 = boxedByte3;
+    }
+    
+    private final void unboxedAttributes$priv$() {
+        (
+            let
+            {
+                byte $ceylontmp$op$0 = getN1();
+                setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$0 + 1));
+            }
+            returning $ceylontmp$op$0;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$1 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() + 1);
+                setN1($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$2 = getN1();
+                setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$2 - 1));
+            }
+            returning $ceylontmp$op$2;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$3 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() - 1);
+                setN1($ceylontmp$op$3);
+            }
+            returning $ceylontmp$op$3;
+        );
+        setI1(getN1());
+        setI1(.com.redhat.ceylon.compiler.java.Util.toByte(-getN1()));
+        setN1(.com.redhat.ceylon.compiler.java.Util.toByte(getN1() + getN2()));
+        setI1(.com.redhat.ceylon.compiler.java.Util.toByte(getN1() - getN2()));
+        (
+            let
+            {
+                byte $ceylontmp$op$4 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() + getN2());
+                setN1($ceylontmp$op$4);
+            }
+            returning $ceylontmp$op$4;
+        );
+    }
+    
+    private final void unboxedGetterAttributes$priv$() {
+        (
+            let
+            {
+                byte $ceylontmp$op$5 = getGetterByte1();
+                setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$5 + 1));
+            }
+            returning $ceylontmp$op$5;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$6 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + 1);
+                setGetterByte1($ceylontmp$op$6);
+            }
+            returning $ceylontmp$op$6;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$7 = getGetterByte1();
+                setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$7 - 1));
+            }
+            returning $ceylontmp$op$7;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$8 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() - 1);
+                setGetterByte1($ceylontmp$op$8);
+            }
+            returning $ceylontmp$op$8;
+        );
+        setGetterByte3(getGetterByte1());
+        setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-getGetterByte1()));
+        setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + getGetterByte2()));
+        setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() - getGetterByte2()));
+        (
+            let
+            {
+                byte $ceylontmp$op$9 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + getGetterByte2());
+                setGetterByte1($ceylontmp$op$9);
+            }
+            returning $ceylontmp$op$9;
+        );
+    }
+    
+    private final void unboxedQualifiedAttributes$priv$() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$10 = this;
+                byte $ceylontmp$opV$11 = $ceylontmp$opE$10.getN1();
+                $ceylontmp$opE$10.setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$11 + 1));
+            }
+            returning $ceylontmp$opV$11;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$12 = this;
+                byte $ceylontmp$opV$13 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$12.getN1() + 1);
+                $ceylontmp$opE$12.setN1($ceylontmp$opV$13);
+            }
+            returning $ceylontmp$opV$13;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$14 = this;
+                byte $ceylontmp$opV$15 = $ceylontmp$opE$14.getN1();
+                $ceylontmp$opE$14.setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$15 - 1));
+            }
+            returning $ceylontmp$opV$15;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$16 = this;
+                byte $ceylontmp$opV$17 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$16.getN1() - 1);
+                $ceylontmp$opE$16.setN1($ceylontmp$opV$17);
+            }
+            returning $ceylontmp$opV$17;
+        );
+        this.setI1(this.getN1());
+        this.setI1(.com.redhat.ceylon.compiler.java.Util.toByte(-this.getN1()));
+        this.setN1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getN1() + this.getN2()));
+        this.setI1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getN1() - this.getN2()));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$18 = this;
+                byte $ceylontmp$opV$19 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$18.getN1() + this.getN2());
+                $ceylontmp$opE$18.setN1($ceylontmp$opV$19);
+            }
+            returning $ceylontmp$opV$19;
+        );
+    }
+    
+    public .java.lang.Object unboxedQualifiedGetterAttributes() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$20 = this;
+                byte $ceylontmp$opV$21 = $ceylontmp$opE$20.getGetterByte1();
+                $ceylontmp$opE$20.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$21 + 1));
+            }
+            returning $ceylontmp$opV$21;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$22 = this;
+                byte $ceylontmp$opV$23 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$22.getGetterByte1() + 1);
+                $ceylontmp$opE$22.setGetterByte1($ceylontmp$opV$23);
+            }
+            returning $ceylontmp$opV$23;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$24 = this;
+                byte $ceylontmp$opV$25 = $ceylontmp$opE$24.getGetterByte1();
+                $ceylontmp$opE$24.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$25 - 1));
+            }
+            returning $ceylontmp$opV$25;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$26 = this;
+                byte $ceylontmp$opV$27 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$26.getGetterByte1() - 1);
+                $ceylontmp$opE$26.setGetterByte1($ceylontmp$opV$27);
+            }
+            returning $ceylontmp$opV$27;
+        );
+        this.setGetterByte3(this.getGetterByte1());
+        this.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-this.getGetterByte1()));
+        this.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getGetterByte1() + this.getGetterByte2()));
+        this.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(this.getGetterByte1() - this.getGetterByte2()));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$28 = this;
+                byte $ceylontmp$opV$29 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$28.getGetterByte1() + this.getGetterByte2());
+                $ceylontmp$opE$28.setGetterByte1($ceylontmp$opV$29);
+            }
+            returning $ceylontmp$opV$29;
+        );
+        return null;
+    }
+    
+    public .java.lang.Object boxedQualifiedAttributes() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$30 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$31 = $ceylontmp$opE$30.getBoxedByte1();
+                $ceylontmp$opE$30.setBoxedByte1($ceylontmp$opV$31.getSuccessor());
+            }
+            returning $ceylontmp$opV$31;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$32 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$33 = $ceylontmp$opE$32.getBoxedByte1().getSuccessor();
+                $ceylontmp$opE$32.setBoxedByte1($ceylontmp$opV$33);
+            }
+            returning $ceylontmp$opV$33;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$34 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$35 = $ceylontmp$opE$34.getBoxedByte1();
+                $ceylontmp$opE$34.setBoxedByte1($ceylontmp$opV$35.getPredecessor());
+            }
+            returning $ceylontmp$opV$35;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$36 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$37 = $ceylontmp$opE$36.getBoxedByte1().getPredecessor();
+                $ceylontmp$opE$36.setBoxedByte1($ceylontmp$opV$37);
+            }
+            returning $ceylontmp$opV$37;
+        );
+        this.setBoxedByte3(this.getBoxedByte1());
+        this.setBoxedByte3(this.getBoxedByte1().getNegated());
+        this.setBoxedByte1(this.getBoxedByte1().plus(this.getBoxedByte2()));
+        this.setBoxedByte3(this.getBoxedByte1().minus(this.getBoxedByte2()));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$38 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$39 = $ceylontmp$opE$38.getBoxedByte1().plus(this.getBoxedByte2());
+                $ceylontmp$opE$38.setBoxedByte1($ceylontmp$opV$39);
+            }
+            returning $ceylontmp$opV$39;
+        );
+        return null;
+    }
+    
+    private final void unboxedLocals$priv$() {
+        byte n1 = .ceylon.language.Integer.getByte(0L);
+        byte n2 = .ceylon.language.Integer.getByte(0L);
+        byte i1 = .ceylon.language.Integer.getByte(0L);
+        n1++;
+        ++n1;
+        n1--;
+        --n1;
+        i1 = n1;
+        i1 = .com.redhat.ceylon.compiler.java.Util.toByte(-n1);
+        n1 = .com.redhat.ceylon.compiler.java.Util.toByte(n1 + n2);
+        i1 = .com.redhat.ceylon.compiler.java.Util.toByte(n1 - n2);
+        n1 += n2;
+    }
+    
+    private final void unboxedLocalGetters$priv$() {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
+        
+        final class getterByte1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte1$getter$_() {
+            }
+            
+            public byte get_() {
+                return n1.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterByte getterByte1$getter$_ = new getterByte1$getter$_();
+        
+        final class getterByte1$setter$_ {
+            
+            private getterByte1$setter$_() {
+            }
+            private byte value;
+            
+            public void set_(final byte getterByte1) {
+                n1.ref = getterByte1;
+            }
+        }
+        final getterByte1$setter$_ getterByte1$setter$_ = new getterByte1$setter$_();
+        
+        final class getterByte2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte2$getter$_() {
+            }
+            
+            public byte get_() {
+                return n2.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterByte getterByte2$getter$_ = new getterByte2$getter$_();
+        
+        final class getterByte2$setter$_ {
+            
+            private getterByte2$setter$_() {
+            }
+            private byte value;
+            
+            public void set_(final byte getterByte2) {
+                n2.ref = getterByte2;
+            }
+        }
+        final getterByte2$setter$_ getterByte2$setter$_ = new getterByte2$setter$_();
+        
+        final class getterByte3$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterByte {
+            
+            private getterByte3$getter$_() {
+            }
+            
+            public byte get_() {
+                return i1.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterByte getterByte3$getter$_ = new getterByte3$getter$_();
+        
+        final class getterByte3$setter$_ {
+            
+            private getterByte3$setter$_() {
+            }
+            private byte value;
+            
+            public void set_(final byte getterByte3) {
+                i1.ref = getterByte3;
+            }
+        }
+        final getterByte3$setter$_ getterByte3$setter$_ = new getterByte3$setter$_();
+        (
+            let
+            {
+                byte $ceylontmp$op$40 = getterByte1$getter$_.get_();
+                getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$40 + 1));
+            }
+            returning $ceylontmp$op$40;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$41 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + 1);
+                getterByte1$setter$_.set_($ceylontmp$op$41);
+            }
+            returning $ceylontmp$op$41;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$42 = getterByte1$getter$_.get_();
+                getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$42 - 1));
+            }
+            returning $ceylontmp$op$42;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$43 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() - 1);
+                getterByte1$setter$_.set_($ceylontmp$op$43);
+            }
+            returning $ceylontmp$op$43;
+        );
+        getterByte3$setter$_.set_(getterByte1$getter$_.get_());
+        getterByte3$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-getterByte1$getter$_.get_()));
+        getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + getterByte2$getter$_.get_()));
+        getterByte3$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() - getterByte2$getter$_.get_()));
+        (
+            let
+            {
+                byte $ceylontmp$op$44 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + getterByte2$getter$_.get_());
+                getterByte1$setter$_.set_($ceylontmp$op$44);
+            }
+            returning $ceylontmp$op$44;
+        );
+    }
+    
+    private final void boxedLocals$priv$() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte n1 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte n2 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte i1 = getInitI$priv$();
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$op$45 = n1;
+                n1 = $ceylontmp$op$45.getSuccessor();
+            }
+            returning $ceylontmp$op$45;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$op$46 = n1.getSuccessor();
+                n1 = $ceylontmp$op$46;
+            }
+            returning $ceylontmp$op$46;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$op$47 = n1;
+                n1 = $ceylontmp$op$47.getPredecessor();
+            }
+            returning $ceylontmp$op$47;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$op$48 = n1.getPredecessor();
+                n1 = $ceylontmp$op$48;
+            }
+            returning $ceylontmp$op$48;
+        );
+        i1 = n1;
+        i1 = n1.getNegated();
+        n1 = n1.plus(n2);
+        i1 = n1.minus(n2);
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$op$49 = n1.plus(n2);
+                n1 = $ceylontmp$op$49;
+            }
+            returning $ceylontmp$op$49;
+        );
+    }
+    
+    private final void unboxedToplevel$priv$() {
+        (
+            let
+            {
+                byte $ceylontmp$op$50 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$50 + 1));
+            }
+            returning $ceylontmp$op$50;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$51 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$51);
+            }
+            returning $ceylontmp$op$51;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$52 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$52 - 1));
+            }
+            returning $ceylontmp$op$52;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$53 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$53);
+            }
+            returning $ceylontmp$op$53;
+        );
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
+        (
+            let
+            {
+                byte $ceylontmp$op$54 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_());
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$54);
+            }
+            returning $ceylontmp$op$54;
+        );
+    }
+    
+    private final void unboxedToplevelGetter$priv$() {
+        (
+            let
+            {
+                byte $ceylontmp$op$55 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$55 + 1));
+            }
+            returning $ceylontmp$op$55;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$56 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$56);
+            }
+            returning $ceylontmp$op$56;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$57 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$57 - 1));
+            }
+            returning $ceylontmp$op$57;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$op$58 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$58);
+            }
+            returning $ceylontmp$op$58;
+        );
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
+        (
+            let
+            {
+                byte $ceylontmp$op$59 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_());
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$59);
+            }
+            returning $ceylontmp$op$59;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.class);
+}
+class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
+    
+    ArithmeticOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI) {
+        super(initN, initI);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedGetterAttributes() {
+        (
+            let
+            {
+                byte $ceylontmp$opV$61 = super.getGetterByte1();
+                super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$61 + 1));
+            }
+            returning $ceylontmp$opV$61;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$opV$63 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + 1);
+                super.setGetterByte1($ceylontmp$opV$63);
+            }
+            returning $ceylontmp$opV$63;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$opV$65 = super.getGetterByte1();
+                super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$65 - 1));
+            }
+            returning $ceylontmp$opV$65;
+        );
+        (
+            let
+            {
+                byte $ceylontmp$opV$67 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() - 1);
+                super.setGetterByte1($ceylontmp$opV$67);
+            }
+            returning $ceylontmp$opV$67;
+        );
+        super.setGetterByte3(super.getGetterByte1());
+        super.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-super.getGetterByte1()));
+        super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + super.getGetterByte2()));
+        super.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() - super.getGetterByte2()));
+        (
+            let
+            {
+                byte $ceylontmp$opV$69 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + super.getGetterByte2());
+                super.setGetterByte1($ceylontmp$opV$69);
+            }
+            returning $ceylontmp$opV$69;
+        );
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object boxedQualifiedAttributes() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$71 = super.getBoxedByte1();
+                super.setBoxedByte1($ceylontmp$opV$71.getSuccessor());
+            }
+            returning $ceylontmp$opV$71;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$73 = super.getBoxedByte1().getSuccessor();
+                super.setBoxedByte1($ceylontmp$opV$73);
+            }
+            returning $ceylontmp$opV$73;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$75 = super.getBoxedByte1();
+                super.setBoxedByte1($ceylontmp$opV$75.getPredecessor());
+            }
+            returning $ceylontmp$opV$75;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$77 = super.getBoxedByte1().getPredecessor();
+                super.setBoxedByte1($ceylontmp$opV$77);
+            }
+            returning $ceylontmp$opV$77;
+        );
+        super.setBoxedByte3(super.getBoxedByte1());
+        super.setBoxedByte3(super.getBoxedByte1().getNegated());
+        super.setBoxedByte1(super.getBoxedByte1().plus(super.getBoxedByte2()));
+        super.setBoxedByte3(super.getBoxedByte1().minus(super.getBoxedByte2()));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte $ceylontmp$opV$79 = super.getBoxedByte1().plus(super.getBoxedByte2());
+                super.setBoxedByte1($ceylontmp$opV$79);
+            }
+            returning $ceylontmp$opV$79;
+        );
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.class);
+}
+final class toplevelByte1_ {
+    
+    private toplevelByte1_() {
+    }
+    private static byte[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    public static byte get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte1\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte toplevelByte1) {
+        value[0] = toplevelByte1;
+    }
+}
+final class toplevelByte2_ {
+    
+    private toplevelByte2_() {
+    }
+    private static byte[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    public static byte get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte2\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte toplevelByte2) {
+        value[0] = toplevelByte2;
+    }
+}
+final class toplevelByte3_ {
+    
+    private toplevelByte3_() {
+    }
+    private static byte[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    public static byte get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte3\' before it was set");
+        }
+    }
+    
+    public static void set_(final byte toplevelByte3) {
+        value[0] = toplevelByte3;
+    }
+}
+final class toplevelGetterByte1_ {
+    
+    private toplevelGetterByte1_() {
+    }
+    
+    public static byte get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_();
+    }
+    
+    public static void set_(final byte toplevelGetterByte1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(toplevelGetterByte1);
+    }
+}
+final class toplevelGetterByte2_ {
+    
+    private toplevelGetterByte2_() {
+    }
+    
+    public static byte get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_();
+    }
+    
+    public static void set_(final byte toplevelGetterByte2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.set_(toplevelGetterByte2);
+    }
+}
+final class toplevelGetterByte3_ {
+    
+    private toplevelGetterByte3_() {
+    }
+    
+    public static byte get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.get_();
+    }
+    
+    public static void set_(final byte toplevelGetterByte3) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(toplevelGetterByte3);
+    }
+}

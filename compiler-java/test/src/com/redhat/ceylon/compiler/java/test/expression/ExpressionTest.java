@@ -381,6 +381,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/ArithmeticOperators");
     }
     @Test
+    public void testOprArithmeticOperatorsByte(){
+        compareWithJavaSource("operator/ArithmeticOperatorsByte");
+    }
+    @Test
     public void testOprIntPowerWithIntLiteralOptim(){
         compareWithJavaSource("operator/IntPowerWithIntLiteralOptim");
     }
@@ -401,6 +405,10 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testOprBitwiseOperators(){
         compareWithJavaSource("operator/BitwiseOperators");
+    }
+    @Test
+    public void testOprBitwiseOperatorsByte(){
+        compareWithJavaSource("operator/BitwiseOperatorsByte");
     }
     @Test
     public void testOprOptionalTypeParamAssign(){
