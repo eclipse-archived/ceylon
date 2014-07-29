@@ -422,7 +422,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             }
         }
         t1=System.nanoTime();
-        typeChecker.process();
+        typeChecker.process(true);
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
