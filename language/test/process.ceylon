@@ -54,6 +54,7 @@ shared void testSystem() {
     check(timezoneOffset >= -(12 * 3600 * 1000), "system.timezoneOffset min value");
     check(timezoneOffset <= (14 * 3600 * 1000), "system.timezoneOffset max value");
     check(system.locale.size > 0, "system.locale");
+    check(system.characterEncoding.size > 0, "system.characterEncoding");
 }
 
 @test
