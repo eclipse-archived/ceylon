@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +39,33 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
         "\n\n" +
         OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonCompileJsTool extends OutputRepoUsingTool {
+
+    public static class AppendableWriter extends Writer {
+
+        private Appendable out;
+
+        public AppendableWriter(Appendable out) {
+            this.out = out;
+        }
+
+        @Override
+        public void close() throws IOException {
+        }
+
+        @Override
+        public void flush() throws IOException {
+        }
+
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+            out.append(new String(cbuf, off, len));
+        }
+
+        @Override
+        public void write(String str) throws IOException {
+            out.append(str);
+        }
+    }
 
     private boolean profile = false;
     private boolean optimize = true;
@@ -176,6 +205,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     @Override
     public void run() throws Exception {
         setSystemProperties();
+        AppendableWriter writer = new AppendableWriter(getOutAppendable());
         final Options opts = new Options()
                 .cwd(cwd)
                 .repos(getRepositoryAsStrings())
@@ -193,7 +223,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
                 .encoding(encoding)
-                .diagnosticListener(diagnosticListener);
+                .diagnosticListener(diagnosticListener)
+                .outWriter(writer);
         final TypeChecker typeChecker;
         if (opts.hasVerboseFlag("cmr")) {
             append("Using repositories: "+getRepositoryAsStrings());
@@ -417,7 +448,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             if (jsc.getExitCode() != 0) {
                 System.exit(jsc.getExitCode());
             }
-            int count = jsc.printErrors(System.out);
+            int count = jsc.printErrors(writer);
             throw new CompilerErrorException(String.format("%d errors.", count));
         }
         t4=System.nanoTime();

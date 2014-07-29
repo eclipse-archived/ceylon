@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -55,13 +56,14 @@ public class MainForJsTest {
         }
         System.out.println("Compiling in prototype style");
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(true);
+        PrintWriter writer = new PrintWriter(System.out);
         if (!jsc.generate()) {
-            jsc.printErrorsAndCount(System.out);
+            jsc.printErrorsAndCount(writer);
         }
         System.out.println("Compiling in lexical scope style");
         jsc = new JsCompiler(typeChecker, opts.optimize(false).outDir("build/test/lexical")).stopOnErrors(false);
         if (!jsc.generate()) {
-            jsc.printErrors(System.out);
+            jsc.printErrors(writer);
         }
     }
 

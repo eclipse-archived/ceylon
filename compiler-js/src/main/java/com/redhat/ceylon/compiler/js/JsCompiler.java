@@ -409,25 +409,26 @@ public class JsCompiler {
         }
     }
 
-    /** Print all the errors found during compilation to the specified stream. */
-    public int printErrors(PrintStream out) {
+    /** Print all the errors found during compilation to the specified stream. 
+     * @throws IOException */
+    public int printErrors(Writer out) throws IOException {
         int count = 0;
         DiagnosticListener diagnosticListener = opts.getDiagnosticListener();
         for (Message err: errors) {
             if (err instanceof UsageWarning) {
-                out.print("warning");
+                out.write("warning");
             } else {
-                out.print("error");
+                out.write("error");
             }
-            out.printf(" encountered [%s]", err.getMessage());
+            out.write(String.format(" encountered [%s]", err.getMessage()));
             if (err instanceof AnalysisMessage) {
                 Node n = ((AnalysisMessage)err).getTreeNode();
-                out.printf(" at %s of %s", n.getLocation(), n.getUnit().getFilename());
+                out.write(String.format(" at %s of %s", n.getLocation(), n.getUnit().getFilename()));
             } else if (err instanceof RecognitionError) {
                 RecognitionError rer = (RecognitionError)err;
-                out.printf(" at %d:%d", rer.getLine(), rer.getCharacterInLine());
+                out.write(String.format(" at %d:%d", rer.getLine(), rer.getCharacterInLine()));
             }
-            out.println();
+            out.write(System.lineSeparator());
             count++;
             
             if(diagnosticListener != null){
@@ -462,9 +463,9 @@ public class JsCompiler {
         return Collections.unmodifiableSet(errors);
     }
 
-    public void printErrorsAndCount(PrintStream out) {
+    public void printErrorsAndCount(Writer out) throws IOException {
         int count = printErrors(out);
-        out.printf("%d errors.%n", count);
+        out.write(String.format("%d errors.%n", count));
     }
 
     /** Writes the beginning of the wrapper function for a JS module. */
