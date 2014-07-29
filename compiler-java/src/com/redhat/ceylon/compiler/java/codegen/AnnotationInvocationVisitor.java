@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCAssign;
@@ -156,10 +157,17 @@ class AnnotationInvocationVisitor extends Visitor {
                 append(transformConstructor(exprGen, invocation));
             } else if (primary instanceof Tree.BaseTypeExpression) {
                 Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)primary;
-                if (!Decl.isAnnotationClass(bte.getDeclaration())) {
-                    append(exprGen.makeErroneous(primary, "compiler bug: " + bte.getDeclaration().getName() + " is not an annotation class"));
+                if (exprGen.typeFact().getByteDeclaration().equals(bte.getDeclaration())) {
+                    // Special case for "Byte(x)" where we make use of the fact that it looks
+                    // like an annotation class instantiation but is in fact a byte literal
+                    PositionalArgument arg = invocation.getPositionalArgumentList().getPositionalArguments().get(0);
+                    arg.visit(this);
+                } else {
+                    if (!Decl.isAnnotationClass(bte.getDeclaration())) {
+                        append(exprGen.makeErroneous(primary, "compiler bug: " + bte.getDeclaration().getName() + " is not an annotation class"));
+                    }
+                    append(transformInstantiation(exprGen, invocation));
                 }
-                append(transformInstantiation(exprGen, invocation));
             } else {
                 append(exprGen.makeErroneous(primary, "compiler bug: primary is not an annotation constructor or annotation class"));
             }
