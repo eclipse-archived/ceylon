@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,7 +31,6 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.compiler.loader.JsModuleManager;
 
 @Summary("Executes a Ceylon program")
