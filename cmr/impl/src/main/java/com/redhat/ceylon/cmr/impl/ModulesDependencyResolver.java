@@ -44,7 +44,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
         final ArtifactResult result = context.result();
 
         if (context.ignoreInner() == false) {
-            String descriptorPath = String.format("META-INF/jbossmodules/%s/%s/" + descriptorName, result.name().replace('.', '/'), result.version());
+            String descriptorPath = getQualifiedMetaInfDescriptorName(result.name(), result.version());
             final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
             if (descriptor != null) {
                 try {
@@ -57,13 +57,27 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
 
         if (context.ignoreExternal() == false) {
             final File artifact = result.artifact();
-            final File mp = new File(artifact.getParent(), descriptorName);
+            File mp = new File(artifact.getParent(), descriptorName);
+            if(!mp.exists()){
+                // if we don't have module.xml, look for module.name-version-module.xml
+                // FIXME: go through the repository so we can find it in other repos?
+                String qualifiedDescriptorName = getQualifiedToplevelDescriptorName(result.name(), result.version());
+                mp = new File(artifact.getParent(), qualifiedDescriptorName);
+            }
             return resolveFromFile(mp);
         }
 
         return null;
     }
 
+    public String getQualifiedMetaInfDescriptorName(String module, String version) {
+        return String.format("META-INF/jbossmodules/%s/%s/" + descriptorName, module.replace('.', '/'), version);
+    }
+
+    public String getQualifiedToplevelDescriptorName(String module, String version){
+        return String.format("%s-%s-" + descriptorName, module, version);
+    }
+    
     public Set<ModuleInfo> resolveFromFile(File mp) {
         if (mp.exists() == false) {
             return null;
