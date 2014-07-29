@@ -10,8 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -258,13 +260,13 @@ public class ToolsTest {
         });
         final String[] compiledModule = new String[1];
         final String[] compiledVersion = new String[1];
-        final String[] error = new String[1];
+        final Set<String> errors = new HashSet<String>();
         CompilationListener listener = new CompilationListener(){
 
             @Override
             public void error(File file, long line, long column, String message) {
-                String desc = file+" at "+line+":"+column+" -> "+message;
-                error[0] = desc;
+                String desc = FileUtil.relativeFile(file)+" at "+line+":"+column+" -> "+message;
+                errors.add(desc);
                 System.err.println("GOT ERROR: "+desc);
             }
 
@@ -291,7 +293,9 @@ public class ToolsTest {
         Assert.assertEquals(module, compiledModule[0]);
         Assert.assertEquals(expectedVersion, compiledVersion[0]);
         if(module.endsWith(".errors")){
-            Assert.assertEquals("/home/stephane/src/java-eclipse/ceylon.language/test-jvm/modules/errors/run.ceylon at 1:14 -> does not definitely return: run", error[0]);
+            Assert.assertEquals(2, errors.size());
+            Assert.assertTrue(errors.contains("test-jvm/modules/errors/run.ceylon at 1:8 -> type declaration does not exist: Error"));
+            Assert.assertTrue(errors.contains("test-jvm/modules/errors/run.ceylon at 1:14 -> does not definitely return: run"));
             Assert.assertFalse(ret);
         }else{
             Assert.assertTrue(ret);
