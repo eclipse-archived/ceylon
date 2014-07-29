@@ -3550,7 +3550,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
     }
 
-    private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
+    JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous(expr, "compiler bug: "
                     // make sure we don't die of a missing declaration too

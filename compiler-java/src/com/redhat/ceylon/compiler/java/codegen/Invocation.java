@@ -873,11 +873,14 @@ class CallableInvocation extends DirectInvocation {
     
     private boolean tempVars;
 
+    private Naming.SyntheticName instanceFieldName;
+
     public CallableInvocation(
-            AbstractTransformer gen, Tree.Term primary,
+            AbstractTransformer gen, Naming.SyntheticName primaryName, Tree.Term primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount, boolean tempVars) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
+        this.instanceFieldName = primaryName;
         Functional functional = null;
         if(primary instanceof Tree.MemberOrTypeExpression)
             functional = (Functional) ((Tree.MemberOrTypeExpression) primary).getDeclaration();
@@ -944,6 +947,11 @@ class CallableInvocation extends DirectInvocation {
     @Override
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
+    }
+    
+    protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
+            String selector) {
+        return new TransformedInvocationPrimary(instanceFieldName != null ? instanceFieldName.makeIdent() : primaryExpr, selector);
     }
 }
 

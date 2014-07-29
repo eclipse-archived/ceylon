@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 
@@ -45,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
@@ -136,6 +136,8 @@ public class CallableBuilder {
     private CallableTransformation transformation;
     
     private boolean companionAccess = false;
+
+    private JCVariableDecl instanceField;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -170,6 +172,31 @@ public class CallableBuilder {
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
+        Naming.SyntheticName instanceFieldName;
+        if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
+            boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+            try {
+                instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
+                ProducedType primaryType = qmte.getPrimary().getTypeModel();
+                JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
+                //primaryExpr = gen.expressionGen().applyErasureAndBoxing(primaryExpr, primaryType, false, false, BoxingStrategy.UNBOXED, 
+                //        Decl.getPrivateAccessType(qmte), Decl.isPrivateAccessRequiringCompanion(qmte) ? ExpressionTransformer.EXPR_WANTS_COMPANION : 0);
+                if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
+                    primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
+                }
+                cb.instanceField = gen.makeVar(Flags.PRIVATE|Flags.FINAL, 
+                        instanceFieldName, 
+                        gen.makeJavaType(qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte), 
+                                Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0), 
+                        primaryExpr);
+            } finally {
+                gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
+            }
+        } else {
+            instanceFieldName = null;
+        }
+        
         CallableTransformation tx;
         cb.defaultValueCall = new DefaultValueMethodTransformation() {
             @Override
@@ -192,11 +219,12 @@ public class CallableBuilder {
         };
         if (cb.isVariadic) {
             tx = cb.new VariadicCallableTransformation(
-                    cb.new CallMethodWithForwardedBody(forwardCallTo, false));
+                    cb.new CallMethodWithForwardedBody(instanceFieldName, forwardCallTo, false));
         } else {
-            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(forwardCallTo, true), null);
+            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, forwardCallTo, true), null);
         }
         cb.useTransformation(tx);
+        
         return cb;
     }
     
@@ -685,8 +713,10 @@ public class CallableBuilder {
         
         final boolean isCallMethod;
         private final Tree.Term forwardCallTo;
+        private final Naming.SyntheticName instanceFieldName;
 
-        CallMethodWithForwardedBody(Tree.Term forwardCallTo, boolean isCallMethod) {
+        CallMethodWithForwardedBody(Naming.SyntheticName instanceFieldName, Tree.Term forwardCallTo, boolean isCallMethod) {
+            this.instanceFieldName = instanceFieldName;
             this.forwardCallTo = forwardCallTo;
             this.isCallMethod = isCallMethod;
         }
@@ -751,6 +781,7 @@ public class CallableBuilder {
             TypeDeclaration primaryDeclaration = getTypeModel().getDeclaration();;
             CallableInvocation invocationBuilder = new CallableInvocation (
                     gen,
+                    instanceFieldName,
                     forwardCallTo,
                     primaryDeclaration,
                     target,
@@ -1363,6 +1394,10 @@ public class CallableBuilder {
     public JCNewClass build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
+        
+        if (instanceField != null) {
+            classBody.append(instanceField);
+        }
         
         if (parameterDefaultValueMethods != null) {
             for (MethodDefinitionBuilder mdb : parameterDefaultValueMethods) {
