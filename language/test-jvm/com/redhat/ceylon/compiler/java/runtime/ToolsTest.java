@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.runtime.tools.CompilerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunner;
 
 public class ToolsTest {
     
@@ -244,6 +245,9 @@ public class ToolsTest {
         options.addUserRepository(OutputRepository);
         Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, "modules.usesProvided", "1");
         runner.run();
+        // make sure we only got a single module in the CL
+        Assert.assertTrue(runner instanceof JavaRunner);
+        Assert.assertEquals(1, ((JavaRunner) runner).getClassLoaderURLs().length);
         runner.cleanup();
     }
 

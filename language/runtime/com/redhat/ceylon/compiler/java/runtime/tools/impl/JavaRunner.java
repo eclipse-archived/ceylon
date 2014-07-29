@@ -90,6 +90,15 @@ public class JavaRunner implements Runner {
         }
     }
     
+    // for tests
+    public URL[] getClassLoaderURLs(){
+        if(moduleClassLoader != delegateClassLoader
+                && moduleClassLoader instanceof CloseableURLClassLoader){
+            return ((CloseableURLClassLoader) moduleClassLoader).getURLs();
+        }
+        return null;
+    }
+    
     private void invokeMain(String module, String[] arguments) {
         String className;
         if(module.equals(com.redhat.ceylon.compiler.typechecker.model.Module.DEFAULT_MODULE_NAME))
