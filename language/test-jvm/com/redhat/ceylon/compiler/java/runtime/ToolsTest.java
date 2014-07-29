@@ -219,10 +219,14 @@ public class ToolsTest {
     private void testJavaScriptRunner_() throws IOException{
         // depend on compilation
         testJavaScriptCompiler_();
+        testCompiler(CeylonToolProvider.getCompiler(Backend.JavaScript), "modules.extra", "1");
+
         RuntimeOptions options = new RuntimeOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository(OutputRepository);
+        options.addExtraModule("modules.extra", "1");
+
         Runner runner = CeylonToolProvider.getRunner(Backend.JavaScript, options, "modules.hello", "1");
         runner.run();
         runner.cleanup();
@@ -237,16 +241,20 @@ public class ToolsTest {
     private void testJavaRunner_() throws IOException{
         // depend on compilation
         testJavaCompiler_();
+        testCompiler(CeylonToolProvider.getCompiler(Backend.Java), "modules.extra", "1");
+        
         RuntimeOptions options = new RuntimeOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository("flat:"+FlatRepoOverrides);
         options.addUserRepository(OutputRepository);
+        options.addExtraModule("modules.extra", "1");
+        
         Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, "modules.usesProvided", "1");
         runner.run();
-        // make sure we only got a single module in the CL
+        // make sure we only got our two modules in the CL
         Assert.assertTrue(runner instanceof JavaRunner);
-        Assert.assertEquals(1, ((JavaRunner) runner).getClassLoaderURLs().length);
+        Assert.assertEquals(2, ((JavaRunner) runner).getClassLoaderURLs().length);
         runner.cleanup();
     }
 
