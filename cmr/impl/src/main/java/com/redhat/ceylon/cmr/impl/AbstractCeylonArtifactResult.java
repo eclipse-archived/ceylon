@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 
@@ -38,8 +39,8 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResult {
     private RepositoryManager manager;
 
-    protected AbstractCeylonArtifactResult(RepositoryManager manager, String name, String version) {
-        super(name, version);
+    protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
+        super(repository, name, version);
         this.manager = manager;
     }
 
@@ -68,7 +69,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         private final ImportType importType;
 
         private LazyArtifactResult(String name, String version, ImportType importType) {
-            super(name, version);
+            super(null, name, version);
             this.importType = importType;
         }
 
@@ -81,6 +82,11 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
             return delegate;
         }
 
+        @Override
+        public Repository repository() {
+            return getDelegate().repository();
+        }
+        
         @Override
         public ImportType importType() {
             return importType;

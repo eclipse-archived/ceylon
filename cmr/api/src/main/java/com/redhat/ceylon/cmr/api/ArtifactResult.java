@@ -93,4 +93,10 @@ public interface ArtifactResult {
      * @return the repository display string.
      */
     String repositoryDisplayString();
+    
+    /**
+     * Get the repository this result was resolved from.
+     * @return the repository this result was resolved from.
+     */
+    Repository repository();
 }

@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -42,15 +43,15 @@ public class DefaultRepository extends AbstractRepository {
     }
 
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
-        return new DefaultArtifactResult(manager, node);
+        return new DefaultArtifactResult(this, manager, node);
     }
 
-    private static class DefaultArtifactResult extends AbstractCeylonArtifactResult {
+    protected static class DefaultArtifactResult extends AbstractCeylonArtifactResult {
 
         private Node node;
 
-        private DefaultArtifactResult(RepositoryManager manager, Node node) {
-            super(manager, ArtifactContext.fromNode(node).getName(), ArtifactContext.fromNode(node).getVersion());
+        protected DefaultArtifactResult(Repository repository, RepositoryManager manager, Node node) {
+            super(repository, manager, ArtifactContext.fromNode(node).getName(), ArtifactContext.fromNode(node).getVersion());
             this.node = node;
         }
 

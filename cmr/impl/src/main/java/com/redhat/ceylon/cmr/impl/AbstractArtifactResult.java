@@ -23,6 +23,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.PathFilter;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 
@@ -40,10 +41,13 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private volatile boolean checked;
 
     private PathFilter filter;
+    
+    private Repository repository;
 
-    protected AbstractArtifactResult(String name, String version) {
+    protected AbstractArtifactResult(Repository repository, String name, String version) {
         this.name = name;
         this.version = version;
+        this.repository = repository;
     }
 
     public String name() {
@@ -91,5 +95,9 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         return "[Artifact result: " + name + "/" + version + "]";
     }
 
+    @Override
+    public Repository repository() {
+        return repository;
+    }
 }
 

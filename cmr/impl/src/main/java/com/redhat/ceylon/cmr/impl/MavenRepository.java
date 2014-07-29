@@ -24,6 +24,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -49,7 +50,7 @@ public class MavenRepository extends AbstractRepository {
     @Override
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, final Node node) {
         ArtifactContext context = ArtifactContext.fromNode(node);
-        return new MavenArtifactResult(manager, context.getName(), context.getVersion(), node);
+        return new MavenArtifactResult(this, manager, context.getName(), context.getVersion(), node);
     }
 
     @Override
@@ -60,8 +61,8 @@ public class MavenRepository extends AbstractRepository {
     private static class MavenArtifactResult extends AbstractCeylonArtifactResult {
         private Node node;
 
-        private MavenArtifactResult(RepositoryManager manager, String name, String version, Node node) {
-            super(manager, name, version);
+        private MavenArtifactResult(Repository repository, RepositoryManager manager, String name, String version, Node node) {
+            super(repository, manager, name, version);
             this.node = node;
         }
 

@@ -41,8 +41,8 @@ public class ResolverTestCase extends AbstractAetherTest {
     public void testMavenDependecyResolver() throws Exception {
         final MavenDependencyResolver resolver = new MavenDependencyResolver();
         doTest(new Tester() {
-            public void run(final File artifact) {
-                Set<ModuleInfo> infos = resolver.resolve(new TestArtifactResult("org.apache.camel.camel-core", "2.9.2", artifact));
+            public void run(Repository repository, final File artifact) {
+                Set<ModuleInfo> infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel.camel-core", "2.9.2", artifact));
                 Assert.assertNotNull(infos);
                 Assert.assertEquals(String.valueOf(infos), 3, infos.size());
             }
@@ -61,7 +61,7 @@ public class ResolverTestCase extends AbstractAetherTest {
             Assert.assertNotNull(artifact);
             Assert.assertTrue(artifact.exists());
             exists = true;
-            tester.run(artifact);
+            tester.run(repository, artifact);
         } finally {
             if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one
@@ -71,14 +71,14 @@ public class ResolverTestCase extends AbstractAetherTest {
     }
 
     private static interface Tester {
-        void run(File artifact);
+        void run(Repository repository, File artifact);
     }
 
     private static class TestArtifactResult extends AbstractArtifactResult {
         private final File artifact;
 
-        private TestArtifactResult(String name, String version, File artifact) {
-            super(name, version);
+        private TestArtifactResult(Repository repository, String name, String version, File artifact) {
+            super(repository, name, version);
             this.artifact = artifact;
         }
 
