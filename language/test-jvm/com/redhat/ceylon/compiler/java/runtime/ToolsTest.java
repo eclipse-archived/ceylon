@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -23,12 +22,12 @@ import org.junit.rules.TestName;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
+import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
 import com.redhat.ceylon.compiler.java.runtime.tools.Compiler;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilerOptions;
-import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
-import com.redhat.ceylon.compiler.java.runtime.tools.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunner;
 
 public class ToolsTest {
@@ -220,7 +219,7 @@ public class ToolsTest {
     private void testJavaScriptRunner_() throws IOException{
         // depend on compilation
         testJavaScriptCompiler_();
-        Options options = new Options();
+        RuntimeOptions options = new RuntimeOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository(OutputRepository);
@@ -238,7 +237,7 @@ public class ToolsTest {
     private void testJavaRunner_() throws IOException{
         // depend on compilation
         testJavaCompiler_();
-        Options options = new Options();
+        RuntimeOptions options = new RuntimeOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository("flat:"+FlatRepoOverrides);

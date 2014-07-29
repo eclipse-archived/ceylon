@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.tools.JVMRuntimeOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class JavaRunner implements Runner {
@@ -38,7 +39,7 @@ public class JavaRunner implements Runner {
     private ClassLoader delegateClassLoader;
     private String module;
     
-    public JavaRunner(Options options, String module, String version){
+    public JavaRunner(RuntimeOptions options, String module, String version){
         repositoryManager = CeylonUtils.repoManager()
                 .userRepos(options.getUserRepositories())
                 .systemRepo(options.getSystemRepository())

@@ -19,7 +19,7 @@ public class CeylonToolProvider {
         }
     }
 
-    public static Runner getRunner(Backend backend, Options options, String module, String version) {
+    public static Runner getRunner(Backend backend, RuntimeOptions options, String module, String version) {
         switch(backend){
         case JavaScript:
             return new JavaScriptRunner(options, module, version);

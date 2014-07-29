@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 import java.util.Arrays;
 
 import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.compiler.java.runtime.tools.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
 import com.redhat.ceylon.compiler.js.CeylonRunJsTool;
 
 public class JavaScriptRunner implements Runner {
@@ -12,7 +12,7 @@ public class JavaScriptRunner implements Runner {
     private CeylonRunJsTool tool;
     private String moduleSpec;
 
-    public JavaScriptRunner(Options options, String module, String version) {
+    public JavaScriptRunner(final RuntimeOptions options, String module, String version) {
         tool = new CeylonRunJsTool();
         moduleSpec = ModuleUtil.makeModuleName(module, version);
         tool.setThrowOnError(true);
