@@ -83,6 +83,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
 
+    public void visit(Tree.SequenceType that) {
+        // Ignore sequence types
+    }
+
     public void visit(Tree.ImportList that) {
         //append(gen.transform(that));
     }
