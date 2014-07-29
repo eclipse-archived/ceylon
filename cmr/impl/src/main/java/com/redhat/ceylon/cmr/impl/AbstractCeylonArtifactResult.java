@@ -48,8 +48,16 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         return ArtifactResultType.CEYLON;
     }
 
+    protected Set<ModuleInfo> resolve(){
+        return Configuration.getResolvers(manager).resolve(this);
+    }
+    
+    protected RepositoryManager getManager(){
+        return manager;
+    }
+    
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        Set<ModuleInfo> infos = Configuration.getResolvers(manager).resolve(this);
+        Set<ModuleInfo> infos = resolve();
         // TODO -- perhaps null is not valid?
         if (infos == null || infos.isEmpty())
             return Collections.emptyList();
