@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
