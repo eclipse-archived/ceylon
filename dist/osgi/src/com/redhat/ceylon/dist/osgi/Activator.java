@@ -25,6 +25,7 @@ import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 
@@ -40,6 +41,11 @@ public class Activator implements BundleActivator {
 		@Override
 		public VisibilityType visibilityType() {
 			return VisibilityType.STRICT;
+		}
+		
+		@Override
+		public Repository repository() {
+			return null;
 		}
 		
 		@Override
