@@ -76,7 +76,7 @@ public class MainTest {
     public void testCeylonModule() throws IOException, ModuleNotFoundException{
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-        File moduleFile = new File("test-jvm/foo/foo", "module_.java");
+        File moduleFile = new File("test-jvm/foo/foo", "$module_.java");
         Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
         File destDir = new File("build/mainTest");
         FileUtil.delete(destDir);
