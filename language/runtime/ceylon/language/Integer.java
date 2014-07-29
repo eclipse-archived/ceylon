@@ -430,6 +430,15 @@ public final class Integer
         return result;
     }
 
+    public boolean getEven() {
+        return value%2==0;
+    }
+
+    @Ignore
+    public static boolean getEven(long value) {
+        return value%2==0;
+    }
+
     @Override
     public boolean getUnit() {
         return value==1;

@@ -128,6 +128,16 @@ shared native final class Integer(Integer integer)
     shared actual native Boolean unit;
     shared actual native Boolean zero;
     
+    "Determine if this integer is even.
+     
+     An integer `i` is even if there exists an integer `k` 
+     such that:
+     
+         i == 2*k
+     
+     Thus, `i` is even if and only if `i%2 == 0`."
+    shared native Boolean even;
+    
     shared actual native Integer magnitude;    
     shared actual native Integer sign;
     shared actual native Boolean negative;
