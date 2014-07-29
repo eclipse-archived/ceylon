@@ -503,11 +503,19 @@ public class CeylonUtils {
         }
 
         private String absolute(String path) {
+            String prefix = null;
+            if(path.startsWith("flat:")){
+                prefix = "flat:";
+                path = path.substring(5);
+            }
             if (!isRemote(path)) {
                 File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
                 path = f.getPath();
             }
-            return path;
+            if(prefix == null)
+                return path;
+            else
+                return prefix + path;
         }
 
         private synchronized RepositoryBuilder getThrowawayRB() {

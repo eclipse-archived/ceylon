@@ -67,6 +67,15 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
             return createMavenRepository(token, "mvn:");
+        } else if (token.startsWith("flat:")) {
+            final File file = new File(token.substring(5));
+            if (file.exists() == false)
+                throw new IllegalArgumentException("Directory does not exist: " + token);
+            if (file.isDirectory() == false)
+                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
+
+            structureBuilder = new FileContentStore(file);
+            return new FlatRepository(structureBuilder.createRoot());
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
