@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
@@ -31,6 +33,45 @@ import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.ModuleNotFoundExce
 
 public class MainTest {
 
+    public static String getCurrentPackagePath() {
+        return "test-jvm/"+getCurrentPackagePathPart();
+    }
+
+    public static String getCurrentPackagePathPart() {
+        return MainTest.class.getPackage().getName().replace('.', '/');
+    }
+
+    public static File compileAndJar(String javaModule, String javaClassName) throws IOException{
+        return compileAndJar(javaModule, javaClassName, null);
+    }
+    
+    public static File compileAndJar(String javaModule, String javaClassName, File addToClassPath) throws IOException{
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        
+        String javaModulePath = javaModule.replace('.', '/');
+        File moduleFile = new File("test-jvm/"+javaModulePath, javaClassName+".java");
+        Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
+        File destDir = new File("build/javaModules");
+        FileUtil.delete(destDir);
+        destDir.mkdirs();
+        List<String> options = new LinkedList<String>();
+        options.add("-d");
+        options.add(destDir.getPath());
+        if(addToClassPath != null){
+            options.add("-cp");
+            options.add(addToClassPath.getPath());
+        }
+        CompilationTask task = compiler.getTask(null, null, null, options, null, units);
+        Boolean result = task.call();
+        assertTrue(result != null && result.booleanValue());
+
+        File compiledModuleFile = new File(destDir, javaModulePath+"/"+javaClassName+".class");
+        assertTrue(compiledModuleFile.isFile());
+        
+        return jar(compiledModuleFile, javaModulePath);
+    }
+    
     @Test
     public void testCeylonModule() throws IOException, ModuleNotFoundException{
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -117,7 +158,7 @@ public class MainTest {
         return jar(sourceFile, destDir);
     }
 
-    private File jar(File sourceFile, String destDir) throws IOException {
+    private static File jar(File sourceFile, String destDir) throws IOException {
         File jarFile = File.createTempFile("testmain", ".jar");
         JarOutputStream jar = new JarOutputStream(new FileOutputStream(jarFile));
         String dirName = destDir.isEmpty() ? sourceFile.getName() : destDir+"/"+sourceFile.getName();
@@ -126,9 +167,5 @@ public class MainTest {
         // relative to this file
         IOUtils.copyStream(new FileInputStream(sourceFile), jar, true, true);
         return jarFile;
-    }
-
-    private String getCurrentPackagePath() {
-        return "test-jvm/"+MainTest.class.getPackage().getName().replace('.', '/');
     }
 }
