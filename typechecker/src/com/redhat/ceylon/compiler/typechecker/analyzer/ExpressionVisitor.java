@@ -4729,7 +4729,19 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Dynamic that) {
         super.visit(that);
-        if (!dynamic) {
+        if (dynamic) {
+            Tree.NamedArgumentList nal = that.getNamedArgumentList();
+            if (nal!=null) {
+                for (Tree.NamedArgument na: nal.getNamedArguments()) {
+                    if (na instanceof Tree.SpecifiedArgument) {
+                        if (na.getIdentifier()==null) {
+                            na.addError("missing argument name in dynamic instantiation expression");
+                        }
+                    }
+                }
+            }
+        }
+        else {
             that.addError("dynamic instantiation expression occurs outside dynamic block");
         }
     }

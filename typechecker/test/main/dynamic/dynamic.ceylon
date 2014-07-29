@@ -32,6 +32,7 @@ void test() {
     }
     dynamic {
         dynamic x = value { y="hello"; };
+        //@error dynamic x0 = value { "hello"; };
         x.w = "goodbye";
         dynamic f(dynamic z) => x.y + " " + z;
         dynamic s = f(name);
