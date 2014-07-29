@@ -160,6 +160,8 @@ atr$(JSNum$proto, 'unit', function(){ return this == 1; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','unit']};});
 atr$(JSNum$proto, 'zero', function(){ return this == 0; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','zero']};});
+atr$(JSNum$proto, 'even', function(){ return this%2 == 0; },
+  undefined,function(){return{an:function(){return[shared()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','even']};});
 atr$(JSNum$proto, 'fractionalPart', function() {
     if (!nflt$(this)) { return 0; }
     return Float(this - toInt(this));
