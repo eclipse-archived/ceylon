@@ -336,7 +336,7 @@ public class LazyPackage extends Package {
                 elementType = unit.getByteDeclaration().getType();
             } else if (name.equals("java.lang::ShortArray")) {
                 elementType = unit.getIntegerDeclaration().getType();
-                underlyingType = "byte";
+                underlyingType = "short";
             } else if (name.equals("java.lang::IntArray")){
                 elementType = unit.getIntegerDeclaration().getType();
                 underlyingType = "int";
