@@ -195,6 +195,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         for (Object o : array) {
             String module;
             boolean optional = false;
+            boolean exported = false;
             if (o instanceof String) {
                 module = asString(o);
             } else {
@@ -202,10 +203,11 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 Map<String,Object> m = (Map<String,Object>)o;
                 module = m.get("path").toString();
                 optional = m.containsKey("opt");
+                exported = m.containsKey("exp");
             }
             String name = ModuleUtil.moduleName(module);
             if (!"ceylon.language".equals(name)) {
-                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), optional, false));
+                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
             }
         }
         return result;
