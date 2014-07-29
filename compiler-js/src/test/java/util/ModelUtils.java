@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -227,6 +228,15 @@ public class ModelUtils {
             }
         }
         return null;
+    }
+
+    public static void deleteRecursively(File f) {
+        if (f.isDirectory()) {
+            for (File sub : f.listFiles()) {
+                deleteRecursively(sub);
+            }
+        }
+        f.delete();
     }
 
 }
