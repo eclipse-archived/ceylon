@@ -30,14 +30,10 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
-import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
 
@@ -48,11 +44,8 @@ public class CeyloncTaskImpl extends JavacTaskImpl {
     CeyloncTaskImpl(Main compilerMain, Iterable<String> flags, Context context, Iterable<String> classes, Iterable<? extends JavaFileObject> fileObjects) {
         super(compilerMain, flags, context, classes, fileObjects);
         this.compilerMain = compilerMain;
-        try {
-            System.setProperty("env.class.path", CeylonClassLoader.getClassPathAsString());
-        } catch (FileNotFoundException | URISyntaxException e) {
-            // Ignore any erorrs
-        }
+        // Make sure it does not inherit the classpath, because we set it using options or module imports
+        System.getProperties().remove("env.class.path");
     }
     
     public Main.ExitState getExitState() {
