@@ -135,6 +135,9 @@ public class JsCompiler {
                 .user(options.getUser())
                 .password(options.getPass())
                 .buildOutputManager();
+        logger = opts.getLogger();
+        if(logger == null)
+            logger = new JsLogger(opts);
         String outDir = options.getOutDir();
         if(!isURL(outDir)){
             File root = new File(outDir);
@@ -151,9 +154,6 @@ public class JsCompiler {
             }
         }
         types = new TypeUtils(tc.getContext().getModules().getLanguageModule());
-        logger = opts.getLogger();
-        if(logger == null)
-            logger = new JsLogger(opts);
     }
 
     private boolean isURL(String path) {
