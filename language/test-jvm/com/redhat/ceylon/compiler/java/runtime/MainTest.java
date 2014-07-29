@@ -85,17 +85,25 @@ public class MainTest {
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 
-        File compiledModuleFile = new File(destDir, "foo/foo/module_.class");
+        File compiledModuleFile = new File(destDir, "foo/foo/$module_.class");
         assertTrue(compiledModuleFile.isFile());
         
         File jar = jar(compiledModuleFile, "foo/foo");
-        checkJarDependencies(jar);
+        try{
+            checkJarDependencies(jar);
+        }finally{
+            jar.delete();
+        }
     }
 
     @Test
     public void testOsgiModule() throws IOException, ModuleNotFoundException{
         File jar = jar("MANIFEST.MF", "META-INF");
-        checkJarDependencies(jar);
+        try{
+            checkJarDependencies(jar);
+        }finally{
+            jar.delete();
+        }
     }
 
     @Test(expected = ModuleNotFoundException.class)
@@ -116,20 +124,32 @@ public class MainTest {
     @Test
     public void testJBossModuleXml() throws IOException, ModuleNotFoundException{
         File jar = jar("module.xml", "META-INF/jbossmodules/foo/foo/1");
-        checkJarDependencies(jar);
+        try{
+            checkJarDependencies(jar);
+        }finally{
+            jar.delete();
+        }
     }
 
     @Test
     public void testJBossModuleProperties() throws IOException, ModuleNotFoundException{
         File jar = jar("module.properties", "META-INF/jbossmodules/foo/foo/1");
-        checkJarDependencies(jar);
+        try{
+            checkJarDependencies(jar);
+        }finally{
+            jar.delete();
+        }
     }
 
     @Ignore("Requires a fix to disable resolution since modules come from the classpath")
     @Test
     public void testMavenModule() throws IOException, ModuleNotFoundException{
         File jar = jar("pom.xml", "META-INF/maven/foo/foo");
-        checkJarDependencies(jar);
+        try{
+            checkJarDependencies(jar);
+        }finally{
+            jar.delete();
+        }
     }
 
     private void checkJarDependencies(File jar) throws ModuleNotFoundException {
