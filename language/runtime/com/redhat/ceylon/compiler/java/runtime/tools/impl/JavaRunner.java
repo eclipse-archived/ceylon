@@ -52,13 +52,13 @@ public class JavaRunner implements Runner {
         
         this.module = module;
         try {
-            loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false);
-            loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
-            loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
-            loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
-            loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
+            loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
+            loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true);
+            loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true);
+            loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true);
+            loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true);
             // this one not necessarily
-            loadModule(module, version, false);
+            loadModule(module, version, false, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -139,7 +139,7 @@ public class JavaRunner implements Runner {
         return new CloseableURLClassLoader(urls , delegateClassLoader);
     }
 
-    private void loadModule(String name, String version, boolean optional) throws IOException {
+    private void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
         if(loadedModules.containsKey(name)){
             ArtifactResult loadedModule = loadedModules.get(name);
             String resolvedVersion = loadedModuleVersions.get(name);
@@ -168,12 +168,13 @@ public class JavaRunner implements Runner {
         loadedModules.put(name, result);
         loadedModuleVersions.put(name, version);
         if(result != null){
-            boolean inCurrentClassLoader = result.repository() instanceof FlatRepository;
-            if(inCurrentClassLoader){
+            // everything we know should be in the current class loader
+            // plus everything from flat repositories
+            if(inCurrentClassLoader || result.repository() instanceof FlatRepository){
                 loadedModulesInCurrentClassLoader.add(name);
             }
             for(ArtifactResult dep : result.dependencies()){
-                loadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL);
+                loadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader);
             }
         }
     }
