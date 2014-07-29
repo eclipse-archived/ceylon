@@ -82,4 +82,44 @@ public class Util {
         return sb.toString();
     }
 
+    /**
+     * Returns the best Node to attach errors to. This code is used by both backends.
+     */
+    public static Node getIdentifyingNode(Node node) {
+        Node result = null;
+        if (node instanceof Tree.Declaration) {
+            result = ((Tree.Declaration) node).getIdentifier();
+        }
+        else if (node instanceof Tree.ModuleDescriptor) {
+            result = ((Tree.ModuleDescriptor) node).getImportPath();
+        }
+        else if (node instanceof Tree.PackageDescriptor) {
+            result = ((Tree.PackageDescriptor) node).getImportPath();
+        }
+        else if (node instanceof Tree.NamedArgument) {
+            result = ((Tree.NamedArgument) node).getIdentifier();
+        }
+        else if (node instanceof Tree.StaticMemberOrTypeExpression) {
+            result = ((Tree.StaticMemberOrTypeExpression) node).getIdentifier();
+        }
+        else if (node instanceof Tree.ExtendedTypeExpression) {
+            //TODO: whoah! this is really ugly!
+            result = ((Tree.SimpleType) ((Tree.ExtendedTypeExpression) node).getChildren().get(0))
+                    .getIdentifier();
+        }
+        else if (node instanceof Tree.SimpleType) {
+            result = ((Tree.SimpleType) node).getIdentifier();
+        }
+        else if (node instanceof Tree.ImportMemberOrType) {
+            result = ((Tree.ImportMemberOrType) node).getIdentifier();
+        }
+        else {
+            result = node;
+        }
+        if (result == null) {
+            result = node;
+        }
+        return result;
+    }
+
 }
