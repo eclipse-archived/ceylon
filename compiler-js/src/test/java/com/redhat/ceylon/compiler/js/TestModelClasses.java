@@ -11,7 +11,6 @@ import util.ModelUtils;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class TestModelClasses {
 
@@ -60,7 +59,7 @@ public class TestModelClasses {
         ModelUtils.checkAnnotations(((List<Map<String,Object>>)cls.get(MetamodelGenerator.KEY_PARAMS)).get(0), "shared");
         cls = (Map<String, Object>)cls.get("super");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Basic",
-                MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
+                MetamodelGenerator.KEY_MODULE, "$");
 
         cls = (Map<String, Object>)model.get("SimpleClass4");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass4",
@@ -135,7 +134,7 @@ public class TestModelClasses {
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes2 must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "Element");
-        ModelUtils.checkMap(ps.get(0), "variance", "out");
+        ModelUtils.checkMap(ps.get(0), MetamodelGenerator.KEY_DS_VARIANCE, "out");
         ModelUtils.checkParam(cls, 0, "x", "Element", false, true);
         ps = (List<Map<String, Object>>)ps.get(0).get(MetamodelGenerator.KEY_SATISFIES);
         ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language::Object");
@@ -163,7 +162,7 @@ public class TestModelClasses {
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes4 must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "Element");
-        ModelUtils.checkMap(ps.get(0), "variance", "out");
+        ModelUtils.checkMap(ps.get(0), MetamodelGenerator.KEY_DS_VARIANCE, "out");
         ModelUtils.checkParam(cls, 0, "elems", "Element", false, true);
         ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_SATISFIES);
         Assert.assertEquals("ParmTypes4 should satisfy 1 interface", 1, ps.size());

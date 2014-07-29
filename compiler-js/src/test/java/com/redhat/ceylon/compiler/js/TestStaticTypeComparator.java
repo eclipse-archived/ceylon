@@ -55,7 +55,6 @@ public class TestStaticTypeComparator {
         final ProducedType d_iterable = getType("Iterable", getType("Integer"), getType("Null"));
         types = Arrays.asList(staticType(d_coll), staticType(d_ranged), staticType(d_iterable));
         Collections.sort(types, new TypeGenerator.StaticTypeComparator());
-        System.out.println("FUCK " + types);
         Assert.assertTrue(d_iterable == types.get(0).getTypeModel());
         Assert.assertTrue(d_ranged == types.get(1).getTypeModel());
         Assert.assertTrue(d_coll == types.get(2).getTypeModel());
