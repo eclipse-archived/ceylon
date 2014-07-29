@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 public class TestSiteVariance {
 
     private Options options(String srcdir) {
-        return new Options().outDir("modules").addRepo("vartests").addRepo("build/runtime")
+        return new Options().outDir("modules").addRepo("build/runtime")
                 .optimize(true).generateSourceArchive(false)
                 .addSrc(srcdir);
     }
@@ -72,9 +72,6 @@ public class TestSiteVariance {
         Assert.assertEquals(SiteVariance.IN.ordinal(), parm.get(MetamodelGenerator.KEY_US_VARIANCE));
 
         //Typecheck phase2
-        final File repo2 = new File("vartests/phase1");
-        repo2.mkdirs();
-        new File("modules/phase1").renameTo(repo2);
         opts = options("src/test/resources/variance/phase2");
         tc = typeChecker(opts);
         Method m2 = (Method)tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getPackage("phase1").getDirectMember("m2", null, false);
@@ -91,7 +88,6 @@ public class TestSiteVariance {
 
     @After
     public void cleanup() {
-        ModelUtils.deleteRecursively(new File("vartests"));
         ModelUtils.deleteRecursively(new File("modules"));
     }
 
