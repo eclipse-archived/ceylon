@@ -758,23 +758,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (convertFrom != null && convertFrom.equals(convertTo)) {
             return ret;
         }
-        if (convertTo != null) {
-            if(convertTo.equals("short")) {
-                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
-                    ret = utilInvocation().toShort(ret);
-                } else {
-                    ret = make().TypeCast(syms().shortType, ret);
+        if (isCeylonByte(definiteExpectedType) && isCeylonInteger(exprType)) {
+            if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                ret = utilInvocation().toByte(ret);
+            } else {
+                ret = make().TypeCast(syms().byteType, ret);
+            }
+        } else {
+            if (convertTo != null) {
+                if(convertTo.equals("short")) {
+                    if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                        ret = utilInvocation().toShort(ret);
+                    } else {
+                        ret = make().TypeCast(syms().shortType, ret);
+                    }
+                } else if(convertTo.equals("int")) {
+                    if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                        ret = utilInvocation().toInt(ret);
+                    } else {
+                        ret = make().TypeCast(syms().intType, ret);
+                    }
+                } else if(convertTo.equals("float")) {
+                    ret = make().TypeCast(syms().floatType, ret);
+                } else if(convertTo.equals("char")) {
+                    ret = make().TypeCast(syms().charType, ret);
                 }
-            } else if(convertTo.equals("int")) {
-                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
-                    ret = utilInvocation().toInt(ret);
-                } else {
-                    ret = make().TypeCast(syms().intType, ret);
-                }
-            } else if(convertTo.equals("float")) {
-                ret = make().TypeCast(syms().floatType, ret);
-            } else if(convertTo.equals("char")) {
-                ret = make().TypeCast(syms().charType, ret);
             }
         }
         return ret;
