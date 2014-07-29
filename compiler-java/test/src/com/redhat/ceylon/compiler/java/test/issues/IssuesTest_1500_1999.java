@@ -565,6 +565,12 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
     
     @Test
+    public void testBug1739() {
+        compile("bug17xx/Bug1739.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1739");
+    }
+    
+    @Test
     public void testBug1743() {
         assertErrors("bug17xx/Bug1743",
                 new CompilerError(22, "nothing to return from"),
