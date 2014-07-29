@@ -1,7 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
@@ -13,7 +18,19 @@ public class JavaScriptRunner implements Runner {
     private String moduleSpec;
 
     public JavaScriptRunner(final RuntimeOptions options, String module, String version) {
-        tool = new CeylonRunJsTool();
+        tool = new CeylonRunJsTool() {
+            @Override
+            protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+                for (Map.Entry<String,String> extraModule : options.getExtraModules().entrySet()) {
+                    String modName = extraModule.getKey();
+                    String modVersion = extraModule.getValue();
+                    File artifact = getArtifact(modName, modVersion, repoman);
+                    localRepos.add(getRepoDir(modName, artifact));
+                    loadDependencies(localRepos, repoman, artifact);
+                }
+            };
+        };
+
         moduleSpec = ModuleUtil.makeModuleName(module, version);
         tool.setThrowOnError(true);
         tool.setModuleVersion(moduleSpec);

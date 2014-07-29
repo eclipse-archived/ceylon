@@ -38,6 +38,7 @@ public class JavaRunner implements Runner {
     private ClassLoader moduleClassLoader;
     private ClassLoader delegateClassLoader;
     private String module;
+    private Map<String, String> extraModules;
     
     public JavaRunner(RuntimeOptions options, String module, String version){
         repositoryManager = CeylonUtils.repoManager()
@@ -52,14 +53,19 @@ public class JavaRunner implements Runner {
             delegateClassLoader = JavaRunner.class.getClassLoader();
         
         this.module = module;
+        this.extraModules = options.getExtraModules();
         try {
+            // those come from the delegate class loader
             loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
             loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true);
             loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true);
             loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true);
             loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true);
-            // this one not necessarily
+            // these ones not necessarily
             loadModule(module, version, false, false);
+            for(Entry<String,String> entry : options.getExtraModules().entrySet()){
+                loadModule(entry.getKey(), entry.getValue(), false, false);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,6 +85,11 @@ public class JavaRunner implements Runner {
         registerInMetamodel("com.redhat.ceylon.module-resolver");
         registerInMetamodel("com.redhat.ceylon.compiler.java");
         registerInMetamodel(module);
+        if(extraModules != null){
+            for(String extraModule : extraModules.keySet()){
+                registerInMetamodel(extraModule);
+            }
+        }
         // now load and invoke the main class
         invokeMain(module, arguments);
     }
