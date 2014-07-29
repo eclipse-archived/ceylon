@@ -66,6 +66,12 @@ shared native final class Byte(congruent)
     
     //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
     
+    shared native Boolean even;
+    
+    shared native Boolean zero;
+    
+    shared native Boolean unit;
+    
     "This byte interpreted as an unsigned integer in the
      range `0..255`."
     shared native Integer unsigned;

@@ -72,6 +72,33 @@ public final class Byte implements
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+    
+    public boolean getEven() {
+        return (value & 1) == 0;
+    }
+
+    @Ignore
+    public static boolean getEven(byte value) {
+        return (value & 1) == 0;
+    }
+
+    public boolean getZero() {
+        return value == 0;
+    }
+
+    @Ignore
+    public static boolean getZero(byte value) {
+        return value == 0;
+    }
+
+    public boolean getUnit() {
+        return value == 1;
+    }
+
+    @Ignore
+    public static boolean getUnit(byte value) {
+        return value == 1;
+    }
 
     @Override
     public Byte getNegated() {
