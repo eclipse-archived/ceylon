@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -756,7 +757,10 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     }
                 }
             } else {
-                final String mname = (String)m.get(MetamodelGenerator.KEY_MODULE);
+                String mname = (String)m.get(MetamodelGenerator.KEY_MODULE);
+                if ("$".equals(mname)) {
+                    mname = Module.LANGUAGE_MODULE_NAME;
+                }
                 com.redhat.ceylon.compiler.typechecker.model.Package rp;
                 if ("$".equals(pname)) {
                     //Language module package
@@ -817,6 +821,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (td != null && modelParms != null) {
             //Substitute type parameters
             final HashMap<TypeParameter, ProducedType> concretes = new HashMap<TypeParameter, ProducedType>();
+            HashMap<TypeParameter,SiteVariance> variances = null;
             if (td.getTypeParameters().size() < modelParms.size()) {
                 if (td.getUnit().getPackage() == this) {
                     parseTypeParameters(modelParms, td, null);
@@ -827,7 +832,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 TypeParameter _cparm = viter.next();
                 if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
                     //Substitute for proper type
-                    concretes.put(_cparm, getTypeFromJson(ptparm, container, typeParams));
+                    final ProducedType _pt = getTypeFromJson(ptparm, container, typeParams);
+                    if (ptparm.containsKey(MetamodelGenerator.KEY_US_VARIANCE)) {
+                        if (variances == null) {
+                            variances = new HashMap<>();
+                        }
+                        variances.put(_cparm, SiteVariance.values()[(int)ptparm.get(MetamodelGenerator.KEY_US_VARIANCE)]);
+                    }
+                    concretes.put(_cparm, _pt);
                 } else if (ptparm.containsKey(MetamodelGenerator.KEY_NAME)) {
                     //Look for type parameter with same name
                     for (TypeParameter typeParam : typeParams) {
@@ -838,7 +850,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
             }
             if (!concretes.isEmpty()) {
-                return td.getType().substitute(concretes);
+                ProducedType rval = td.getType().substitute(concretes);
+                if (variances != null) {
+                    rval.setVarianceOverrides(variances);
+                }
+                return rval;
             }
         }
         if (td == null) {
@@ -855,8 +871,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
 
     /** Load a top-level declaration with the specified name, by parsing its model data. */
     Declaration load(String name, List<TypeParameter> existing) {
-        if (model == null){
-            System.out.println("AY NO MAMES " + getNameAsString() + " no tengo modelo para cargar " + name + java.util.Arrays.toString(Thread.currentThread().getStackTrace()).replace(',', '\n'));
+        if (model == null) {
+            throw new IllegalStateException("No model available to load " + name);
         }
         @SuppressWarnings("unchecked")
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
