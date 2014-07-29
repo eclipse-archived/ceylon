@@ -13,6 +13,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.PathFilter;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
@@ -162,6 +163,12 @@ public class Launcher {
 
             @Override
             public PathFilter filter() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public Repository repository() {
                 // TODO Auto-generated method stub
                 return null;
             }};

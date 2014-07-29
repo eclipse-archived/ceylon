@@ -91,7 +91,7 @@ public class Main {
             public final boolean optional, shared;
 
             public Dependency(String name, String version, boolean optional, boolean shared) {
-                super(name, version);
+                super(null, name, version);
                 this.optional = optional;
                 this.shared = shared;
             }
@@ -159,7 +159,7 @@ public class Main {
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
 
             public Module(String name, String version, Type type, File jar) {
-                super(name, version);
+                super(null, name, version);
                 this.type = type;
                 this.jar = jar;
             }
