@@ -90,7 +90,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         if(this.dependencies == null){
             List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
-            ArrayList<FreeImport> sb = new ArrayList<FreeImport>(modelImports.size()-1);
+            ArrayList<FreeImport> sb = new ArrayList<FreeImport>(modelImports.size());
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
                 if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
                     continue;
