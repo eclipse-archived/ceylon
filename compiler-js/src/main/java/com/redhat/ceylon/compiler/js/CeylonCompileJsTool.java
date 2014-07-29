@@ -51,6 +51,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private String resourceRootName = DefaultToolOptions.getCompilerResourceRootName();
     private List<String> files = Arrays.asList("*");
+    private DiagnosticListener diagnosticListener;
 
     public CeylonCompileJsTool() {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
@@ -191,7 +192,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .profile(profile)
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
-                .encoding(encoding);
+                .encoding(encoding)
+                .diagnosticListener(diagnosticListener);
         final TypeChecker typeChecker;
         if (opts.hasVerboseFlag("cmr")) {
             append("Using repositories: "+getRepositoryAsStrings());
@@ -472,5 +474,13 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private static String normalizePath(String path) {
     	return path.replace('\\', '/');
     }
+
+    /**
+     * Sets the diagnostic listener. Not part of the command-line contract, only used by APIs.
+     */
+    public void setDiagnosticListener(DiagnosticListener diagnosticListener) {
+        this.diagnosticListener = diagnosticListener;
+    }
+    
     
 }

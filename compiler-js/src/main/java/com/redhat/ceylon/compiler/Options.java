@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.compiler.js.DiagnosticListener;
 
 /** Represents all the options for compiling.
  * 
@@ -42,6 +43,7 @@ public class Options {
     private String encoding = System.getProperty("file.encoding");
     private Logger logger;
     private Writer outWriter;
+    private DiagnosticListener diagnosticListener;
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
      * @param args The argument list from which to parse repositories
@@ -372,6 +374,15 @@ public class Options {
 
     public Options outWriter(Writer outWriter) {
         this.outWriter = outWriter;
+        return this;
+    }
+
+    public DiagnosticListener getDiagnosticListener() {
+        return diagnosticListener;
+    }
+
+    public Options diagnosticListener(DiagnosticListener diagnosticListener) {
+        this.diagnosticListener = diagnosticListener;
         return this;
     }
 }

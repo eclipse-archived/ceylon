@@ -360,6 +360,9 @@ public class JsCompiler {
             String moduleName = entry.getKey().getNameAsString();
             String moduleVersion = entry.getKey().getVersion();
             
+            if(opts.getDiagnosticListener() != null)
+                opts.getDiagnosticListener().moduleCompiled(moduleName, moduleVersion);
+            
             //Create the JS file
             final File jsart = jsout.close();
             final File modart = jsout.getModelFile();
@@ -409,6 +412,7 @@ public class JsCompiler {
     /** Print all the errors found during compilation to the specified stream. */
     public int printErrors(PrintStream out) {
         int count = 0;
+        DiagnosticListener diagnosticListener = opts.getDiagnosticListener();
         for (Message err: errors) {
             if (err instanceof UsageWarning) {
                 out.print("warning");
@@ -425,6 +429,30 @@ public class JsCompiler {
             }
             out.println();
             count++;
+            
+            if(diagnosticListener != null){
+                boolean warning = err instanceof UsageWarning;
+                int position = -1;
+                File file = null;
+                if(err instanceof AnalysisMessage){
+                    Node node = ((AnalysisMessage) err).getTreeNode();
+                    if(node != null)
+                        node = com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(node);
+                    if(node != null && node.getToken() != null)
+                        position = node.getToken().getCharPositionInLine();
+                    if(node.getUnit() != null && node.getUnit().getFullPath() != null)
+                        file = new File(node.getUnit().getFullPath()).getAbsoluteFile();
+                }else if(err instanceof RecognitionError){
+                    // FIXME: file??
+                    position = ((RecognitionError) err).getCharacterInLine();
+                }
+                if(position != -1)
+                    position++; // make it 1-based
+                if(warning)
+                    diagnosticListener.warning(file, err.getLine(), position, err.getMessage());
+                else
+                    diagnosticListener.error(file, err.getLine(), position, err.getMessage());
+            }
         }
         return count;
     }
