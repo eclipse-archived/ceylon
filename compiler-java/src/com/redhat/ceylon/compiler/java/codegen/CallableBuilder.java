@@ -138,6 +138,8 @@ public class CallableBuilder {
     private boolean companionAccess = false;
 
     private JCVariableDecl instanceField;
+
+    private Naming.Substitution instanceSubstitution;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -190,6 +192,11 @@ public class CallableBuilder {
                         gen.makeJavaType(qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte), 
                                 Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0), 
                         primaryExpr);
+                
+                if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
+                        && ((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration() instanceof TypedDeclaration) {
+                    cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), Unfix.$instance$.toString());
+                }
             } finally {
                 gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
             }
@@ -1418,6 +1425,10 @@ public class CallableBuilder {
                                       gen.make().Literal(typeModel.getProducedTypeName(true)),
                                       gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
                 classDef);
+        
+        if (instanceSubstitution != null) {
+            instanceSubstitution.close();
+        }
         return instance;
     }
 

@@ -3388,7 +3388,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
-            JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
             Naming.SyntheticName tmpVarName = naming.alias("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
             JCExpression transExpr = transformMemberExpression(expr, tmpVarName.makeIdent(), transformer);
@@ -3402,6 +3401,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             transExpr = boxUnboxIfNecessary(transExpr, isBoxed, expr.getTarget().getType(), BoxingStrategy.BOXED);
             JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
             JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
+            JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
             result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
         } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
             result = transformSpreadOperator(expr, transformer);
