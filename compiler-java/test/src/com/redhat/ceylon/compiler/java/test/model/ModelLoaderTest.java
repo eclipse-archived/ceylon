@@ -45,6 +45,7 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
@@ -175,7 +176,7 @@ public class ModelLoaderTest extends CompilerTest {
         ModuleWithArtifact moduleWithArtifact = new ModuleWithArtifact(module, version);
         synchronized(RUN_LOCK){
             // this initialises the metamodel, even if we don't use the resulting ClassLoader
-            NonCachingURLClassLoader classLoader;
+            CloseableURLClassLoader classLoader;
             try {
                 classLoader = getClassLoader("runtime model loader tests", moduleWithArtifact);
             } catch (MalformedURLException e) {

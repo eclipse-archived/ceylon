@@ -28,19 +28,15 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 
 import javax.tools.Diagnostic;
@@ -55,9 +51,11 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.PathFilter;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
+import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
@@ -592,7 +590,7 @@ public abstract class CompilerTest {
             // we set up the module system while another thread is setting it up for other modules we're toast
             try{
                 // make sure we load the stuff from the Car
-                NonCachingURLClassLoader loader = getClassLoader(className, modules);
+                CloseableURLClassLoader loader = getClassLoader(className, modules);
                 
                 java.lang.Class<?> klass = java.lang.Class.forName(className, true, loader);
                 
@@ -614,7 +612,7 @@ public abstract class CompilerTest {
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
             Object result = null;
-            NonCachingURLClassLoader loader = null;
+            CloseableURLClassLoader loader = null;
             try{
                 // make sure we load the stuff from the Car
 
@@ -651,11 +649,11 @@ public abstract class CompilerTest {
         }
     }
 
-    protected NonCachingURLClassLoader getClassLoader(String main,
+    protected CloseableURLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
-        NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
+        CloseableURLClassLoader loader = new CloseableURLClassLoader(urls.toArray(new URL[urls.size()]));
         // set up the runtime module system
         Metamodel.resetModuleManager();
         Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
@@ -684,40 +682,6 @@ public abstract class CompilerTest {
             files.add(car);
         }
         return files;
-    }
-
-    public static class NonCachingURLClassLoader extends URLClassLoader {
-
-        public NonCachingURLClassLoader(URL[] urls) {
-            super(urls);
-        }
-
-        public void clearCache() {
-            try {
-                Class<?> klass = java.net.URLClassLoader.class;
-                Field ucp = klass.getDeclaredField("ucp");
-                ucp.setAccessible(true);
-                Object sunMiscURLClassPath = ucp.get(this);
-                Field loaders = sunMiscURLClassPath.getClass().getDeclaredField("loaders");
-                loaders.setAccessible(true);
-                Object collection = loaders.get(sunMiscURLClassPath);
-                for (Object sunMiscURLClassPathJarLoader : ((Collection<?>) collection).toArray()) {
-                    try {
-                        Field loader = sunMiscURLClassPathJarLoader.getClass().getDeclaredField("jar");
-                        loader.setAccessible(true);
-                        Object jarFile = loader.get(sunMiscURLClassPathJarLoader);
-                        ((JarFile) jarFile).close();
-                    } catch (Throwable t) {
-                        // not a JAR loader?
-                        t.printStackTrace();
-                    }
-                }
-            } catch (Throwable t) {
-                // Something's wrong
-                t.printStackTrace();
-            }
-            return;
-        }
     }
 
     protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){

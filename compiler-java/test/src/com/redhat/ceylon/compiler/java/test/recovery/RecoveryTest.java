@@ -46,6 +46,7 @@ import org.junit.Test;
 import ceylon.language.Anything;
 import ceylon.language.Callable;
 
+import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
 import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
@@ -124,7 +125,7 @@ public class RecoveryTest extends CompilerTest {
     private void checkClassHasCompileTimeErrorAnnotation(String brokenClass) {
         synchronized(RUN_LOCK){
             try {
-                NonCachingURLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
+                CloseableURLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
                 try {
                     Class<?> c = Class.forName(brokenClass, false, classLoader);
                     Assert.assertTrue("class lacks @CompileTimeError", c.isAnnotationPresent((CompileTimeError.class)));
