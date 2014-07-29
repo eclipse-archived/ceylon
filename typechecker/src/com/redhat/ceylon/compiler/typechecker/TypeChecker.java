@@ -118,8 +118,12 @@ public class TypeChecker {
     }*/
 
     public void process() throws RuntimeException {
+        process(false);
+    }
+    
+    public void process(boolean forceSilence) throws RuntimeException {
         long start = System.nanoTime();
-        executePhases(phasedUnits, false);
+        executePhases(phasedUnits, forceSilence);
         long time = System.nanoTime()-start;
         if(statistics)
         	System.out.println("Type checked in " + time/1000000 + " ms");
