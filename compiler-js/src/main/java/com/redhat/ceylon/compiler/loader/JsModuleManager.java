@@ -62,8 +62,16 @@ public class JsModuleManager extends ModuleManager {
             }
             //Then we continue loading whatever they asked for first.
         }
-        //Create a similar artifact but with .js extension
+        //Create a similar artifact but with -model.js extension
         File js = artifact.artifact();
+        if (js.getName().endsWith(ArtifactContext.JS) && !js.getName().endsWith(ArtifactContext.JS_MODEL)) {
+            ArtifactContext ac = new ArtifactContext(artifact.name(),
+                    artifact.version(), ArtifactContext.JS_MODEL);
+            ac.setFetchSingleArtifact(true);
+            ac.setThrowErrorIfMissing(true);
+            ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
+            js = lmar.artifact();
+        }
         if (module instanceof JsonModule) {
             if (((JsonModule)module).getModel() != null) {
                 return;
