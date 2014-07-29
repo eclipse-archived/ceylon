@@ -423,6 +423,8 @@ public class JsCompiler {
             out.write(String.format(" encountered [%s]", err.getMessage()));
             if (err instanceof AnalysisMessage) {
                 Node n = ((AnalysisMessage)err).getTreeNode();
+                if(n != null)
+                    n = com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(n);
                 out.write(String.format(" at %s of %s", n.getLocation(), n.getUnit().getFilename()));
             } else if (err instanceof RecognitionError) {
                 RecognitionError rer = (RecognitionError)err;
