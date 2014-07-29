@@ -652,4 +652,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
         return this;
     }
+    
+    public Appendable getOutAppendable(){
+        return out;
+    }
 }
