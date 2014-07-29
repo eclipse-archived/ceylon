@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -187,7 +189,8 @@ public class MetamodelGenerator {
             addPackage(m, pkg.getNameAsString());
         }
         if (pkg != null && !pkg.getModule().equals(module)) {
-            m.put(KEY_MODULE, pkg.getModule().getNameAsString());
+            final String modname = pkg.getModule().getNameAsString();
+            m.put(KEY_MODULE, Module.LANGUAGE_MODULE_NAME.equals(modname)?"$":modname);
         }
         putTypeParameters(m, pt, from);
         return m;
@@ -247,7 +250,8 @@ public class MetamodelGenerator {
             addPackage(m, pkg.getNameAsString());
         }
         if (!pkg.getModule().equals(module)) {
-            m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
+            final String modname = d.getUnit().getPackage().getModule().getNameAsString();
+            m.put(KEY_MODULE, Module.LANGUAGE_MODULE_NAME.equals(modname)?"$":modname);
         }
         putTypeParameters(m, pt, from);
         return m;
@@ -255,9 +259,18 @@ public class MetamodelGenerator {
 
     private void putTypeParameters(Map<String, Object> container, ProducedType pt, Declaration from) {
         if (pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty()) {
-            List<Map<String, Object>> list = new ArrayList<>(pt.getTypeArgumentList().size());
-            for (ProducedType tparm : pt.getTypeArgumentList()) {
-                list.add(typeParameterMap(tparm, from));
+            final List<Map<String, Object>> list = new ArrayList<>(pt.getTypeArgumentList().size());
+            final Map<TypeParameter, SiteVariance> usv = pt.getVarianceOverrides();
+            final Iterator<TypeParameter> typeParameters = usv == null || usv.isEmpty() ?
+                    null : pt.getDeclaration().getTypeParameters().iterator();
+            for (ProducedType targ : pt.getTypeArgumentList()) {
+                final Map<String, Object> tpmap = typeParameterMap(targ, from);
+                final TypeParameter typeParam = typeParameters == null ? null : typeParameters.next();
+                final SiteVariance variance = typeParam == null ? null : usv.get(typeParam);
+                if (variance != null) {
+                    tpmap.put(MetamodelGenerator.KEY_US_VARIANCE, variance.ordinal());
+                }
+                list.add(tpmap);
             }
             container.put(KEY_TYPE_PARAMS, list);
         }
