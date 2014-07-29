@@ -292,11 +292,12 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         this.c = c;
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl(this);
         this.m$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass $instance$ = .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl.this.getC$priv$();
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl.this.getC$priv$().<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor$));
+                return .ceylon.language.Integer.instance($instance$.<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor$));
             }
         };
     }

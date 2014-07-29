@@ -4,18 +4,20 @@ final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private bug1726_() {
         final .ceylon.language.Callable<? extends .ceylon.language.String> s1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .java.lang.String $instance$ = "";
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.ceylon.language.String.$clone(""));
+                return .ceylon.language.String.instance(.ceylon.language.String.$clone($instance$));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.String> s2;
         s2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .java.lang.String $instance$ = "";
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.ceylon.language.String.$clone(""));
+                return .ceylon.language.String.instance(.ceylon.language.String.$clone($instance$));
             }
         };
     }

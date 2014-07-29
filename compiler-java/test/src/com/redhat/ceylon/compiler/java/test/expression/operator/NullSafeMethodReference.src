@@ -7,6 +7,7 @@ final class nullSafeMethodReference_ {
     
     static void nullSafeMethodReference(final .ceylon.language.String s) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String?(Integer)", (short)-1){
+            private final .ceylon.language.String $instance$ = s;
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -14,9 +15,9 @@ final class nullSafeMethodReference_ {
                 return (
                     let
                     {
-                        .ceylon.language.String safe$1 = s;
+                        .ceylon.language.String safe$1 = $instance$;
                     }
-                    returning safe$1 != null ? safe$1.initial($ceylontmp$length) : null;
+                    returning safe$1 != null ? $instance$.initial($ceylontmp$length) : null;
                 );
             }
         };

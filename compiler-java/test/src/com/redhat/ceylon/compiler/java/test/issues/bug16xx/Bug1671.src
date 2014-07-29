@@ -28,31 +28,33 @@ final class bug1671_ {
             }
         });
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Integer)", (short)-1){
+            private final long $instance$ = 2L;
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Boolean.instance(.ceylon.language.Integer.divides(2L, $ceylontmp$other));
+                return .ceylon.language.Boolean.instance(.ceylon.language.Integer.divides($instance$, $ceylontmp$other));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>> t = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))))), "{String*}(Boolean(Character)=, Boolean=, Boolean=)", (short)-1){
+            private final .java.lang.String $instance$ = "";
             
             @.java.lang.Override
             public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$() {
-                return .ceylon.language.String.split("");
+                return .ceylon.language.String.split($instance$);
             }
             
             @.java.lang.Override
             public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
-                return .ceylon.language.String.split("", $ceylontmp$splitting);
+                return .ceylon.language.String.split($instance$, $ceylontmp$splitting);
             }
             
             @.java.lang.Override
             public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
                 final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
-                return .ceylon.language.String.split("", $ceylontmp$splitting, $ceylontmp$discardSeparators);
+                return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators);
             }
             
             @.java.lang.Override
@@ -60,7 +62,7 @@ final class bug1671_ {
                 final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
                 final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
                 final boolean $ceylontmp$groupSeparators = ((.ceylon.language.Boolean)$param$2).booleanValue();
-                return .ceylon.language.String.split("", $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
+                return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
             }
         };
     }

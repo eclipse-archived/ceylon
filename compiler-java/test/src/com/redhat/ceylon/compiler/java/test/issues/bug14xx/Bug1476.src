@@ -7,10 +7,11 @@ public final class run_ {
     
     public static void run(final .ceylon.language.meta.model.Value nameValue) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .ceylon.language.meta.model.Value $instance$ = nameValue;
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return (.ceylon.language.String)nameValue.get();
+                return (.ceylon.language.String)$instance$.get();
             }
         };
         final .java.lang.String name = ((.ceylon.language.String)nameValue.get()).toString();

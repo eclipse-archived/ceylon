@@ -7,6 +7,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String[](Integer)", (short)-1){
+            private final .ceylon.language.Sequential<? extends .ceylon.language.String> $instance$ = seq;
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
@@ -14,7 +15,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
                 return (
                     let
                     {
-                        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = seq;
+                        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = $instance$;
                     }
                     returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                         
@@ -27,7 +28,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
                                 public final .java.lang.Object next() {
                                     .java.lang.Object spread$1$element$;
                                     if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                        spread$1$element$ = ((.ceylon.language.String)spread$1$element$).initial($ceylontmp$length);
+                                        spread$1$element$ = $instance$.initial($ceylontmp$length);
                                     }
                                     return spread$1$element$;
                                 }

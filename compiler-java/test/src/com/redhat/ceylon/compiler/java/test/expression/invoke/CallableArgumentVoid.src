@@ -35,13 +35,14 @@ class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runti
             }
         });
         f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m$priv$();
+                        $instance$.m$priv$();
                     }
                     returning null;
                 );
@@ -55,10 +56,11 @@ class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runti
             }
         });
         f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m2();
+                return $instance$.m2();
             }
         });
         f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
@@ -69,10 +71,11 @@ class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runti
             }
         });
         f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m3();
+                return $instance$.m3();
             }
         });
     }

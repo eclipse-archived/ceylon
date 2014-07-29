@@ -96,31 +96,35 @@ final class bug1108_ {
             }
         }
         final .java.lang.String f1 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                return .ceylon.language.String.instance($instance$.readLine());
             }
         }).getFoo();
         final .java.lang.String b1 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                return .ceylon.language.String.instance($instance$.readLine());
             }
         }).getBar().$call$().toString();
         final .java.lang.String f2 = new Bug1108Inner("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                return .ceylon.language.String.instance($instance$.readLine());
             }
         }).getFoo();
         final .java.lang.String b2 = new Bug1108Inner("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
             
             @.java.lang.Override
             public .ceylon.language.String $call$() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                return .ceylon.language.String.instance($instance$.readLine());
             }
         }).getBar().$call$().toString();
         
@@ -154,45 +158,51 @@ final class bug1108_ {
                     }
                 }
                 final .java.lang.String f3 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getFoo();
                 final .java.lang.String b3 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getBar().$call$().toString();
                 final .java.lang.String f4 = new Bug1108Inner("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getFoo();
                 final .java.lang.String b4 = new Bug1108Inner("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getBar().$call$().toString();
                 final .java.lang.String f5 = new Bug1108Local("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getFoo();
                 final .java.lang.String b5 = new Bug1108Local("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_().readLine());
+                        return .ceylon.language.String.instance($instance$.readLine());
                     }
                 }).getBar().$call$().toString();
             }

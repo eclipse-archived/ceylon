@@ -8,11 +8,12 @@ final class bug1544_ {
     static void bug1544() {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong num = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(3L);
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            private final long $instance$ = num.ref;
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus(num.ref, $ceylontmp$other));
+                return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus($instance$, $ceylontmp$other));
             }
         };
     }

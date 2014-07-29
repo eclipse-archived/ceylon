@@ -21,20 +21,22 @@ class CallableReturnMethod implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$priv$() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this;
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this.f$priv$());
+                return .ceylon.language.Integer.instance($instance$.f$priv$());
             }
         };
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod c) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod $instance$ = c;
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(c.f$priv$());
+                return .ceylon.language.Integer.instance($instance$.f$priv$());
             }
         };
     }

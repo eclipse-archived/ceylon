@@ -69,11 +69,12 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
             returning arg$4$callable$.m$priv$(arg$4$0);
         );
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> refm = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass $instance$ = bar;
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass)bar).m$priv$($ceylontmp$p));
+                return .ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> staticm = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subclass.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)(Bug1381_Subclass)", (short)-1){
@@ -101,11 +102,12 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
             returning arg$5$callable$.new C(arg$5$0);
         );
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C> refC = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1381_Superclass.C(Integer)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass $instance$ = bar;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass)bar.new C($ceylontmp$p);
+                return $instance$.new C($ceylontmp$p);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C>> staticC = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subclass.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1381_Superclass.C(Integer)(Bug1381_Subclass)", (short)-1){
@@ -228,11 +230,12 @@ final class Bug1381_Superinterface$impl {
             returning arg$10$callable$.m$priv$(arg$10$0);
         );
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> refm = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl $instance$ = bar.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1381_Superinterface$impl();
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Integer.instance(bar.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1381_Superinterface$impl().m$priv$($ceylontmp$p));
+                return .ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> staticm = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)(Bug1381_Subinterface)", (short)-1){
@@ -260,11 +263,12 @@ final class Bug1381_Superinterface$impl {
             returning arg$11$callable$.new C(arg$11$0);
         );
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C> refC = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1381_Superinterface.C(Integer)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl $instance$ = bar.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1381_Superinterface$impl();
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                return bar.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1381_Superinterface$impl().new C($ceylontmp$p);
+                return $instance$.new C($ceylontmp$p);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C>> staticC = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1381_Superinterface.C(Integer)(Bug1381_Subinterface)", (short)-1){

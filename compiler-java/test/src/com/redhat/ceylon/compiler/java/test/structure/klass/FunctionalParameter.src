@@ -106,6 +106,7 @@ final class methodRefsFromOutside_ {
     
     static void methodRefsFromOutside(final .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter instance) {
         final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(String)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter $instance$ = instance;
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -113,18 +114,19 @@ final class methodRefsFromOutside_ {
                 return (
                     let
                     {
-                        instance.sharedVoidFp($ceylontmp$arg);
+                        $instance$.sharedVoidFp($ceylontmp$arg);
                     }
                     returning null;
                 );
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+            private final .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter $instance$ = instance;
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String $ceylontmp$arg = ((.ceylon.language.String)$param$0).toString();
-                return .ceylon.language.String.instance(instance.sharedStringFp($ceylontmp$arg));
+                return .ceylon.language.String.instance($instance$.sharedStringFp($ceylontmp$arg));
             }
         };
     }

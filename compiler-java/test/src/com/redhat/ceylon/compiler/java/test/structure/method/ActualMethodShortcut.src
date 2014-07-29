@@ -24,13 +24,14 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     ActualMethodShortcutSub() {
         super();
         this.print2$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String=)", (short)-1){
+            private final .ceylon.language.process_ $instance$ = .ceylon.language.process_.get_();
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
                 return (
                     let
                     {
-                        .ceylon.language.process_.get_().writeLine();
+                        $instance$.writeLine();
                     }
                     returning null;
                 );
@@ -42,7 +43,7 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
                 return (
                     let
                     {
-                        .ceylon.language.process_.get_().writeLine($ceylontmp$line);
+                        $instance$.writeLine($ceylontmp$line);
                     }
                     returning null;
                 );
