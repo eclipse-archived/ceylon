@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
         str = "",
         ba = {true},
         oa = {(byte)8L},
-        sa = {(byte)16L},
+        sa = {(short)16L},
         ia = {(int)32L},
         la = {64L},
         fa = {(float)32.0},
