@@ -132,13 +132,15 @@ public class FileUtil {
      */
     public static File relativeFile(File f) {
         if (f.isAbsolute()) {
-            File cwd = new File(".");
+            String cwd = System.getProperty("user.dir");
+            if(cwd == null)
+                return f;
+            // make sure we compare with a path separator to not match part of paths
+            if(!cwd.endsWith(File.separator))
+                cwd += File.separator;
             String path = f.getAbsolutePath();
-            if (path.startsWith(cwd.getAbsolutePath())) {
-                path = "./" + path.substring(cwd.getAbsolutePath().length());
-                f = new File(path);
-            } else if (path.startsWith(System.getProperty("user.home"))) {
-                path = "~/" + path.substring(System.getProperty("user.home").length() + 1);
+            if (path.startsWith(cwd)) {
+                path = path.substring(cwd.length());
                 f = new File(path);
             }
         }
