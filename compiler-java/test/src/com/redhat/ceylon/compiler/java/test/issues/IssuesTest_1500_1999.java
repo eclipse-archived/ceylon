@@ -570,4 +570,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new CompilerError(22, "nothing to return from"),
                 new CompilerError(22, "statement or initializer may not occur directly in interface body"));
     }
+
+    @Test
+    public void testBug1744() {
+        compareWithJavaSource("bug17xx/Bug1744");
+    }
 }

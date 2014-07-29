@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class Months1 {
+    
+    private Months1() {
+    }
+}
+class Bug1744 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1744() {
+    }
+    
+    final class Months2 {
+        
+        private Months2() {
+        }
+    }
+    
+    private final void test$priv$() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1744();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1744.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1744.class);
+}
