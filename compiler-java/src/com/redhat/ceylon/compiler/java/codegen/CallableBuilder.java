@@ -606,11 +606,18 @@ public class CallableBuilder {
             }
         }
         
+        /**
+         * Make the public {@code $call$()} and {@code $call$variadic()} methods
+         * with the given arity.
+         * @param arity
+         * @return
+         */
         protected abstract Iterable<MethodDefinitionBuilder> makeMethodsForArity(int arity);
         
         /**
-         * Make the private $call$typed() method, whose arity must 
-         * be {@link #numParams}
+         * Make the private {@code $call$typed()} method, whose arity must 
+         * be {@link #numParams}, or return null if 
+         * no {@code $call$typed()} is required
          * @return
          */
         abstract MethodDefinitionBuilder makeCallTypedMethod();
@@ -1090,9 +1097,6 @@ public class CallableBuilder {
             return result;
         }
         
-        /**
-         * Make the $call$typed() method
-         */
         @Override
         MethodDefinitionBuilder makeCallTypedMethod() {
             return callTyped.makeMethod(numParams);
