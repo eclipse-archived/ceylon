@@ -81,6 +81,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private String resourceRootName = DefaultToolOptions.getCompilerResourceRootName();
     private List<String> files = Arrays.asList("*");
     private DiagnosticListener diagnosticListener;
+    private boolean throwOnError;
 
     public CeylonCompileJsTool() {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
@@ -446,7 +447,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         t3=System.nanoTime();
         if (!jsc.generate()) {
             if (jsc.getExitCode() != 0) {
-                System.exit(jsc.getExitCode());
+                if(throwOnError)
+                    throw new RuntimeException("Compiler exited with non-zero exit code: "+jsc.getExitCode());
+                else
+                    System.exit(jsc.getExitCode());
             }
             int count = jsc.printErrors(writer);
             throw new CompilerErrorException(String.format("%d errors.", count));
@@ -513,5 +517,21 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         this.diagnosticListener = diagnosticListener;
     }
     
+    /**
+     * Tell the tool not to exit on a non-zero exit code from node, but throw otherwise. This is not
+     * used by the command-line, but can be useful when invoked via the API.
+     * @param throwOnError true to throw instead of calling System.exit. Defaults to false.
+     */
+    public void setThrowOnError(boolean throwOnError) {
+        this.throwOnError = throwOnError;
+    }
     
+    /**
+     * Check if we throw on a non-zero exit code from node, rather than exit. This is not
+     * used by the command-line, but can be useful when invoked via the API.
+     * @return true to throw instead of calling System.exit. Defaults to false.
+     */
+    public boolean isThrowOnError() {
+        return throwOnError;
+    }
 }
