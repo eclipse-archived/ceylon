@@ -431,12 +431,12 @@ public final class Integer
     }
 
     public boolean getEven() {
-        return value%2==0;
+        return (value&1)==0;
     }
 
     @Ignore
     public static boolean getEven(long value) {
-        return value%2==0;
+        return (value&1)==0;
     }
 
     @Override
