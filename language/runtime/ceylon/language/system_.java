@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -32,6 +33,10 @@ public final class system_ {
     
     public java.lang.String getLocale() {
         return Locale.getDefault().toLanguageTag();
+    }
+    
+    public java.lang.String getCharacterEncoding() {
+        return Charset.defaultCharset().name();
     }
     
     @Override

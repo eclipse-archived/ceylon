@@ -21,5 +21,9 @@ shared native object system {
      locale for this system."
     shared native String locale;
     
+    "Returns the IANA character set name representing the default 
+     character encoding for this system."
+    shared native String characterEncoding;
+    
     string => "system";
 }
