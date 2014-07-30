@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,12 +20,10 @@ import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
-import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.tools.JVMRuntimeOptions;
-import com.redhat.ceylon.compiler.java.runtime.tools.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -97,16 +96,21 @@ public class JavaRunner implements Runner {
     @Override
     public void cleanup() {
         if(moduleClassLoader != delegateClassLoader
-                && moduleClassLoader instanceof CloseableURLClassLoader){
-            ((CloseableURLClassLoader) moduleClassLoader).clearCache();
+                && moduleClassLoader instanceof URLClassLoader){
+            try {
+                ((URLClassLoader) moduleClassLoader).close();
+            } catch (IOException e) {
+                // ignore
+                e.printStackTrace();
+            }
         }
     }
     
     // for tests
     public URL[] getClassLoaderURLs(){
         if(moduleClassLoader != delegateClassLoader
-                && moduleClassLoader instanceof CloseableURLClassLoader){
-            return ((CloseableURLClassLoader) moduleClassLoader).getURLs();
+                && moduleClassLoader instanceof URLClassLoader){
+            return ((URLClassLoader) moduleClassLoader).getURLs();
         }
         return null;
     }
@@ -157,7 +161,7 @@ public class JavaRunner implements Runner {
                 throw new RuntimeException("Failed to get a URL for module file for "+module, e);
             }
         }
-        return new CloseableURLClassLoader(urls , delegateClassLoader);
+        return new URLClassLoader(urls , delegateClassLoader);
     }
 
     private void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
