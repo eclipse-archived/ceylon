@@ -571,6 +571,11 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
     
     @Test
+    public void testBug1740() {
+        compareWithJavaSource("bug17xx/Bug1740");
+    }
+    
+    @Test
     public void testBug1743() {
         assertErrors("bug17xx/Bug1743",
                 new CompilerError(22, "nothing to return from"),

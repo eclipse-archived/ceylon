@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+class Bug1740 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1740(final boolean $boolean) {
+        final .java.lang.Object obj = null;
+        if ($boolean) {
+            final .java.lang.Object bar$3;
+            .java.lang.Object bar$2 = null;
+            if ((bar$2 = obj) != null) {
+                bar$3 = bar$2;
+            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists bar = obj"));
+            final .ceylon.language.Callable<? extends .ceylon.language.Boolean> baz = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                private final .java.lang.Object $instance$ = bar$3;
+                
+                @.java.lang.Override
+                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$that = $param$0;
+                    return .ceylon.language.Boolean.instance($instance$.equals($ceylontmp$that));
+                }
+            };
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1740.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1740.class);
+}
