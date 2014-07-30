@@ -459,6 +459,7 @@ public class JsCompiler {
                     diagnosticListener.error(file, err.getLine(), position, err.getMessage());
             }
         }
+        out.flush();
         return count;
     }
 
