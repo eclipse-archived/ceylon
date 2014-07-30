@@ -698,7 +698,7 @@ public class StatementTransformer extends AbstractTransformer {
                         cond.makeTypeExpr(), 
                         null);
                 unassignedResultVars.put(cond, cond.getVariableName());
-                (Decl.getDeclarationContainer(cond.getCondition().getScope()) instanceof ClassOrInterface
+                (Decl.getNonConditionScope(cond.getCondition().getScope()) instanceof ClassOrInterface
                         && cond.getVariable().getDeclarationModel().isCaptured() ? fieldDecls : varDecls).append(resultVarDecl);
                 stmts = stmts.prepend(make().Exec(make().Assign(cond.getVariableName().makeIdent(), cond.makeResultExpr())));
             }

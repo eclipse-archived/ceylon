@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -835,11 +836,16 @@ public class Decl {
         return ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
     }
 
-    public static Declaration getDeclarationContainer(Scope scope) {
+    /**
+     * Finds the first containing scope of the given scope which is not a ConditionScope.
+     * @param scope
+     * @return
+     */
+    public static Scope getNonConditionScope(Scope scope) {
         while (scope != null &&
-                !(scope instanceof Declaration)) {
+                scope instanceof ConditionScope) {
             scope = scope.getContainer();
         }
-        return (Declaration)scope;
+        return scope;
     }
 }
