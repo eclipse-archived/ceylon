@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+class Bug1746Obt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Obtainable {
+    
+    Bug1746Obt() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object obtain() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object release(final .java.lang.Throwable error) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt.class);
+}
+final class bug1746_ {
+    
+    private bug1746_() {
+    }
+    
+    static void bug1746() {
+        {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt $ceylontmp$try$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1746Obt();
+            $ceylontmp$try$0.obtain();
+            .java.lang.Throwable $ceylontmp$ex$1 = null;
+            try {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$2) {
+                $ceylontmp$ex$1 = $ceylontmp$ex$2;
+                throw $ceylontmp$ex$2;
+            } finally {
+                if ($ceylontmp$ex$1 != null) try {
+                    $ceylontmp$try$0.release($ceylontmp$ex$1);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$3) {
+                    $ceylontmp$ex$1.addSuppressed($ceylontmp$closex$3);
+                } else $ceylontmp$try$0.release($ceylontmp$ex$1);
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1746_.bug1746();
+    }
+}
