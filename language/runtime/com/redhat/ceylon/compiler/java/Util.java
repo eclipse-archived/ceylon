@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java;
 
 import java.util.Arrays;
 
+import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Finished;
@@ -9,11 +10,14 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
+import ceylon.language.OverflowException;
 import ceylon.language.Ranged;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.sequence_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -46,18 +50,18 @@ public class Util {
     }
 
     public static void loadModule(String name, String version, 
-    		ArtifactResult result, ClassLoader classLoader){
+    		ArtifactResult result, ClassLoader classLoader) {
         Metamodel.loadModule(name, version, result, classLoader);
     }
     
-    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
+    public static boolean isReified(java.lang.Object o, TypeDescriptor type) {
         return Metamodel.isReified(o, type);
     }
 
     /**
      * Returns true if the given object satisfies ceylon.language.Identifiable
      */
-    public static boolean isIdentifiable(java.lang.Object o){
+    public static boolean isIdentifiable(java.lang.Object o) {
         if(o == null)
             return false;
         Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
@@ -67,9 +71,9 @@ public class Util {
     
     private static Class getClassAnnotationForIdentifiableOrBasic(Object o) {
         java.lang.Class<? extends Object> klass = o.getClass();
-        while(klass != null && klass != java.lang.Object.class){
+        while(klass != null && klass != java.lang.Object.class) {
             Class classAnnotation = klass.getAnnotation(Class.class);
-            if(classAnnotation != null){
+            if(classAnnotation != null) {
                 return classAnnotation;
             }
             // else keep looking up
@@ -82,8 +86,8 @@ public class Util {
     /**
      * Returns true if the given object extends ceylon.language.Basic
      */
-    public static boolean isBasic(java.lang.Object o){
-        if(o == null)
+    public static boolean isBasic(java.lang.Object o) {
+        if (o == null)
             return false;
         Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
         // unless marked as NOT identifiable, every instance is Basic
@@ -94,25 +98,24 @@ public class Util {
     // Java variadic conversions
     
     /** Return the size of the given iterable if we know it can be computed 
-     * efficiently (typcially without iterating the iterable)
+     * efficiently (typically without iterating the iterable)
      */
     private static <T> int fastIterableSize(Iterable<? extends T, ?> iterable) {
         if (iterable instanceof Sequential
                 || iterable instanceof AbstractArrayIterable) {
             return toInt(iterable.getSize());
         }
-        String[] o = null;
-        Object[] i;
-        i = o;
         return -1;
     }
     
-    private static <T> void fillArray(T[] array, int offset, Iterable<? extends T, ?> iterable) {
+    @SuppressWarnings("unchecked")
+    private static <T> void fillArray(T[] array, int offset, 
+            Iterable<? extends T, ?> iterable) {
         Iterator<?> iterator = iterable.iterator();
         Object o;
         int index = offset;
-        while((o = iterator.next()) != finished_.get_()){
-            array[index] = (T)o;
+        while ((o = iterator.next()) != finished_.get_()) {
+            array[index] = (T) o;
             index++;
         }
     }
@@ -195,7 +198,8 @@ public class Util {
      * An array builder whose result is an {@code Object[]}.
      * @see ReflectingObjectArrayBuilder
      */
-    static final class ObjectArrayBuilder extends ArrayBuilder<Object[]> {
+    static final class ObjectArrayBuilder 
+            extends ArrayBuilder<Object[]> {
         ObjectArrayBuilder(int initialSize) {
             super(initialSize);
         }
@@ -219,9 +223,11 @@ public class Util {
      * The intermediate arrays are {@code Object[]}.
      * @see ObjectArrayBuilder
      */
-    public static final class ReflectingObjectArrayBuilder<T> extends ArrayBuilder<T[]> {
+    public static final class ReflectingObjectArrayBuilder<T> 
+            extends ArrayBuilder<T[]> {
         private final java.lang.Class<T> klass;
-        public ReflectingObjectArrayBuilder(int initialSize, java.lang.Class<T> klass) {
+        public ReflectingObjectArrayBuilder(int initialSize, 
+                java.lang.Class<T> klass) {
             super(initialSize);
             this.klass = klass;
         }
@@ -241,6 +247,7 @@ public class Util {
             size++;
         }
         public T[] build() {
+            @SuppressWarnings("unchecked")
             T[] result = (T[])java.lang.reflect.Array.newInstance(klass, this.size);
             System.arraycopy(this.array, 0, result, 0, this.size);
             return result;
@@ -249,7 +256,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code int[]}.
      */
-    static final class IntArrayBuilder extends ArrayBuilder<int[]> {
+    static final class IntArrayBuilder 
+            extends ArrayBuilder<int[]> {
 
         IntArrayBuilder(int initialSize) {
             super(initialSize);
@@ -279,7 +287,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code long[]}.
      */
-    static final class LongArrayBuilder extends ArrayBuilder<long[]> {
+    static final class LongArrayBuilder 
+            extends ArrayBuilder<long[]> {
 
         LongArrayBuilder(int initialSize) {
             super(initialSize);
@@ -305,7 +314,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@ocde boolean[]}.
      */
-    static final class BooleanArrayBuilder extends ArrayBuilder<boolean[]> {
+    static final class BooleanArrayBuilder 
+            extends ArrayBuilder<boolean[]> {
 
         BooleanArrayBuilder(int initialSize) {
             super(initialSize);
@@ -331,7 +341,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code byte[]}.
      */
-    static final class ByteArrayBuilder extends ArrayBuilder<byte[]> {
+    static final class ByteArrayBuilder 
+            extends ArrayBuilder<byte[]> {
 
         ByteArrayBuilder(int initialSize) {
             super(initialSize);
@@ -361,7 +372,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code short[]}.
      */
-    static final class ShortArrayBuilder extends ArrayBuilder<short[]> {
+    static final class ShortArrayBuilder 
+            extends ArrayBuilder<short[]> {
 
         ShortArrayBuilder(int initialSize) {
             super(initialSize);
@@ -391,7 +403,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code double[]}.
      */
-    static final class DoubleArrayBuilder extends ArrayBuilder<double[]> {
+    static final class DoubleArrayBuilder 
+            extends ArrayBuilder<double[]> {
 
         DoubleArrayBuilder(int initialSize) {
             super(initialSize);
@@ -417,7 +430,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code float[]}.
      */
-    static final class FloatArrayBuilder extends ArrayBuilder<float[]> {
+    static final class FloatArrayBuilder 
+            extends ArrayBuilder<float[]> {
 
         FloatArrayBuilder(int initialSize) {
             super(initialSize);
@@ -447,7 +461,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code char[]}.
      */
-    static final class CharArrayBuilder extends ArrayBuilder<char[]> {
+    static final class CharArrayBuilder 
+            extends ArrayBuilder<char[]> {
 
         CharArrayBuilder(int initialSize) {
             super(initialSize);
@@ -482,7 +497,8 @@ public class Util {
     /** 
      * An array builder whose result is a {@code java.lang.String[]}.
      */
-    static final class StringArrayBuilder extends ArrayBuilder<java.lang.String[]> {
+    static final class StringArrayBuilder 
+            extends ArrayBuilder<java.lang.String[]> {
 
         StringArrayBuilder(int initialSize) {
             super(initialSize);
@@ -512,32 +528,35 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static boolean[] 
     toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ?> sequence,
-            boolean... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toBooleanArray((ceylon.language.List<? extends ceylon.language.Boolean>)sequence,
-                    initialElements);
-        BooleanArrayBuilder builder = new BooleanArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            boolean... initialElements) {
+        if (sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Boolean> list = 
+                    (ceylon.language.List<? extends ceylon.language.Boolean>) sequence;
+            return toBooleanArray(list, initialElements);
+        }
+        BooleanArrayBuilder builder = 
+                new BooleanArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         builder.appendArray(initialElements);
         Iterator<? extends ceylon.language.Boolean> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendBoolean(((ceylon.language.Boolean)o).booleanValue());
+            builder.appendBoolean(((ceylon.language.Boolean) o).booleanValue());
         }
         return builder.build();
     }
 
     public static boolean[]
     toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> list,
-            boolean... initialElements){
-        if(list == null)
+            boolean... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         boolean[] ret = new boolean[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Boolean> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ret[i++] = ((ceylon.language.Boolean)o).booleanValue();
+        while ((o = iterator.next()) != finished_.get_()) {
+            ret[i++] = ((ceylon.language.Boolean) o).booleanValue();
         }
         return ret;
     }
@@ -545,36 +564,39 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static byte[] 
     toByteArray(ceylon.language.Iterable<? extends ceylon.language.Byte, ?> sequence,
-            byte... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toByteArray((ceylon.language.List<? extends ceylon.language.Byte>)sequence,
-                    initialElements);
-        ByteArrayBuilder builder = new ByteArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            byte... initialElements) {
+        if (sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Byte> list = 
+                    (ceylon.language.List<? extends ceylon.language.Byte>) sequence;
+            return toByteArray(list, initialElements);
+        }
+        ByteArrayBuilder builder = 
+                new ByteArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
-        for(;i<initialElements.length;i++){
+        for(;i<initialElements.length;i++) {
             builder.appendByte(initialElements[i]);
         }
         Iterator<? extends ceylon.language.Byte> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendByte(((ceylon.language.Byte)o).byteValue());
+            builder.appendByte(((ceylon.language.Byte) o).byteValue());
         }
         return builder.build();
     }
 
     public static byte[]
     toByteArray(ceylon.language.List<? extends ceylon.language.Byte> list,
-            byte... initialElements){
+            byte... initialElements) {
         byte[] ret = new byte[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
-        for(;i<initialElements.length;i++){
+        for (;i<initialElements.length;i++) {
             ret[i] = initialElements[i];
         }
-        if(list != null){
+        if (list != null) {
             Iterator<? extends ceylon.language.Byte> iterator = list.iterator();
             Object o;
-            while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = ((ceylon.language.Byte)o).byteValue();
+            while ((o = iterator.next()) != finished_.get_()) {
+                ret[i++] = ((ceylon.language.Byte) o).byteValue();
             }
         }
         return ret;
@@ -583,36 +605,39 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static short[] 
     toShortArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-            long... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toShortArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
-                    initialElements);
-        ShortArrayBuilder builder = new ShortArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            long... initialElements) {
+        if(sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Integer> list = 
+                    (ceylon.language.List<? extends ceylon.language.Integer>) sequence;
+            return toShortArray(list, initialElements);
+        }
+        ShortArrayBuilder builder = 
+                new ShortArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
-        for(;i<initialElements.length;i++){
+        for(;i<initialElements.length;i++) {
             builder.appendLong(initialElements[i]);
         }
         Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendLong(((ceylon.language.Integer)o).longValue());
+            builder.appendLong(((ceylon.language.Integer) o).longValue());
         }
         return builder.build();
     }
 
     public static short[]
     toShortArray(ceylon.language.List<? extends ceylon.language.Integer> list,
-            long... initialElements){
+            long... initialElements) {
         short[] ret = new short[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
-        for(;i<initialElements.length;i++){
+        for (;i<initialElements.length;i++) {
             ret[i] = toShort(initialElements[i]);
         }
-        if(list != null){
+        if (list != null) {
             Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
             Object o;
-            while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = toShort(((ceylon.language.Integer)o).longValue());
+            while ((o = iterator.next()) != finished_.get_()) {
+                ret[i++] = toShort(((ceylon.language.Integer) o).longValue());
             }
         }
         return ret;
@@ -621,36 +646,40 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static int[] 
     toIntArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-            long... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toIntArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
+            long... initialElements) {
+        if(sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Integer> list = 
+                    (ceylon.language.List<? extends ceylon.language.Integer>) sequence;
+            return toIntArray(list,
                     initialElements);
-        IntArrayBuilder builder = new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        }
+        IntArrayBuilder builder = 
+                new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
-        for(;i<initialElements.length;i++){
+        for(;i<initialElements.length;i++) {
             builder.appendLong(initialElements[i]);
         }
         Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendLong(((ceylon.language.Integer)o).longValue());
+            builder.appendLong(((ceylon.language.Integer) o).longValue());
         }
         return builder.build();
     }
 
     public static int[]
     toIntArray(ceylon.language.List<? extends ceylon.language.Integer> list,
-            long... initialElements){
+            long... initialElements) {
         int[] ret = new int[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
-        for(;i<initialElements.length;i++){
+        for (;i<initialElements.length;i++) {
             ret[i] = toInt(initialElements[i]);
         }
-        if(list != null){
+        if (list != null) {
             Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
             Object o;
-            while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = toInt(((ceylon.language.Integer)o).longValue());
+            while ((o = iterator.next()) != finished_.get_()) {
+                ret[i++] = toInt(((ceylon.language.Integer) o).longValue());
             }
         }
         return ret;
@@ -659,32 +688,35 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static long[] 
     toLongArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-            long... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toLongArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
-                    initialElements);
-        LongArrayBuilder builder = new LongArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            long... initialElements) {
+        if(sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Integer> list = 
+                    (ceylon.language.List<? extends ceylon.language.Integer>) sequence;
+            return toLongArray(list, initialElements);
+        }
+        LongArrayBuilder builder = 
+                new LongArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         builder.appendArray(initialElements);
         Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendLong(((ceylon.language.Integer)o).longValue());
+            builder.appendLong(((ceylon.language.Integer) o).longValue());
         }
         return builder.build();
     }
 
     public static long[]
     toLongArray(ceylon.language.List<? extends ceylon.language.Integer> list,
-            long... initialElements){
-        if(list == null)
+            long... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         long[] ret = new long[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ret[i++] = ((ceylon.language.Integer)o).longValue();
+        while ((o = iterator.next()) != finished_.get_()) {
+            ret[i++] = ((ceylon.language.Integer) o).longValue();
         }
         return ret;
     }
@@ -692,13 +724,16 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static float[] 
     toFloatArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence, 
-            double... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toFloatArray((ceylon.language.List<? extends ceylon.language.Float>)sequence,
-                    initialElements);
-        FloatArrayBuilder builder = new FloatArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            double... initialElements) {
+        if(sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Float> list = 
+                    (ceylon.language.List<? extends ceylon.language.Float>) sequence;
+            return toFloatArray(list, initialElements);
+        }
+        FloatArrayBuilder builder = 
+                new FloatArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
-        for(;i<initialElements.length;i++){
+        for (;i<initialElements.length;i++) {
             builder.appendDouble(initialElements[i]);
         }
         Iterator<? extends ceylon.language.Float> iterator = sequence.iterator();
@@ -711,17 +746,17 @@ public class Util {
 
     public static float[]
     toFloatArray(ceylon.language.List<? extends ceylon.language.Float> list,
-            double... initialElements){
+            double... initialElements) {
         float[] ret = new float[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
-        for(;i<initialElements.length;i++){
+        for (;i<initialElements.length;i++) {
             ret[i] = (float) initialElements[i];
         }
-        if(list != null){
+        if (list != null) {
             Iterator<? extends ceylon.language.Float> iterator = list.iterator();
             Object o;
-            while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = (float)((ceylon.language.Float)o).doubleValue();
+            while ((o = iterator.next()) != finished_.get_()) {
+                ret[i++] = (float)((ceylon.language.Float) o).doubleValue();
             }
         }
         return ret;
@@ -730,89 +765,97 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static double[] 
     toDoubleArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence,
-            double... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toDoubleArray((ceylon.language.List<? extends ceylon.language.Float>)sequence,
-                    initialElements);
-        DoubleArrayBuilder builder = new DoubleArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            double... initialElements) {
+        if (sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Float> list = 
+                    (ceylon.language.List<? extends ceylon.language.Float>) sequence;
+            return toDoubleArray(list, initialElements);
+        }
+        DoubleArrayBuilder builder = 
+                new DoubleArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         builder.appendArray(initialElements);
         Iterator<? extends ceylon.language.Float> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendDouble(((ceylon.language.Float)o).doubleValue());
+            builder.appendDouble(((ceylon.language.Float) o).doubleValue());
         }
         return builder.build();
     }
 
     public static double[]
     toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> list,
-            double... initialElements){
-        if(list == null)
+            double... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         double[] ret = new double[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Float> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ret[i++] = ((ceylon.language.Float)o).doubleValue();
+        while ((o = iterator.next()) != finished_.get_()) {
+            ret[i++] = ((ceylon.language.Float) o).doubleValue();
         }
         return ret;
     }
 
     public static char[] 
 	toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-	        int... initialElements){
-        // Note the List optimization doesn't work because the number of codepoints in the sequence
+	        int... initialElements) {
+        // Note the List optimization doesn't work because 
+        // the number of codepoints in the sequence
         // doesn't equal the size of the result array.
-        CharArrayBuilder builder = new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        CharArrayBuilder builder = 
+                new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
-        for(;i<initialElements.length;i++){
+        for(;i<initialElements.length;i++) {
             builder.appendCodepoint((char) initialElements[i]);
             
         }
         Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendCodepoint(((ceylon.language.Character)o).codePoint);
+            builder.appendCodepoint(((ceylon.language.Character) o).codePoint);
         }
         return builder.build();
     }
 
     public static char[] 
 	toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
-	        int... initialElements){
+	        int... initialElements) {
         return toCharArray((ceylon.language.Iterable<? extends ceylon.language.Character, ?>)sequence, initialElements);
     }
 
     @SuppressWarnings("unchecked")
     public static int[] 
 	toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-	        int... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toCodepointArray((ceylon.language.List<? extends ceylon.language.Character>)sequence,
-                    initialElements);
-        IntArrayBuilder builder = new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+	        int... initialElements) {
+        if (sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.Character> list = 
+                    (ceylon.language.List<? extends ceylon.language.Character>)sequence;
+            return toCodepointArray(list, initialElements);
+        }
+        IntArrayBuilder builder = 
+                new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         builder.appendArray(initialElements);
         Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendInt(((ceylon.language.Character)o).codePoint);
+            builder.appendInt(((ceylon.language.Character) o).codePoint);
         }
         return builder.build();
     }
 
     public static int[]
     toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> list,
-            int... initialElements){
-        if(list == null)
+            int... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         int[] ret = new int[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Character> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
+        while ((o = iterator.next()) != finished_.get_()) {
             ret[i++] = ((ceylon.language.Character)o).intValue();
         }
         return ret;
@@ -821,11 +864,14 @@ public class Util {
     @SuppressWarnings("unchecked")
     public static java.lang.String[] 
     toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String, ?> sequence,
-            java.lang.String... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toJavaStringArray((ceylon.language.List<? extends ceylon.language.String>)sequence,
-                    initialElements);
-        StringArrayBuilder builder = new StringArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+            java.lang.String... initialElements) {
+        if (sequence instanceof ceylon.language.List) {
+            ceylon.language.List<? extends ceylon.language.String> list = 
+                    (ceylon.language.List<? extends ceylon.language.String>) sequence;
+            return toJavaStringArray(list, initialElements);
+        }
+        StringArrayBuilder builder = 
+                new StringArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         builder.appendArray(initialElements);
         Iterator<? extends ceylon.language.String> iterator = sequence.iterator();
         Object o;
@@ -837,30 +883,30 @@ public class Util {
 
     public static java.lang.String[]
     toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> list,
-            java.lang.String... initialElements){
-        if(list == null)
+            java.lang.String... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         java.lang.String[] ret = new java.lang.String[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.String> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
-            ret[i++] = ((ceylon.language.String)o).toString();
+        while ((o = iterator.next()) != finished_.get_()) {
+            ret[i++] = ((ceylon.language.String) o).toString();
         }
         return ret;
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.List<? extends T> sequence,
-            T[] ret, T... initialElements){
-        if(sequence == null)
+            T[] ret, T... initialElements) {
+        if (sequence == null)
             return initialElements;
         int i=initialElements.length;
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends T> iterator = sequence.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
+        while ((o = iterator.next()) != finished_.get_()) {
             ret[i++] = (T)o;
         }
         return ret;
@@ -869,7 +915,7 @@ public class Util {
     
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ?> iterable,
-            java.lang.Class<T> klass, T... initialElements){
+            java.lang.Class<T> klass, T... initialElements) {
         if (iterable == null) {
             return initialElements;
         }
@@ -878,18 +924,21 @@ public class Util {
         if (size != -1) {
             ret = (T[]) java.lang.reflect.Array.newInstance(klass, 
                     size + initialElements.length);
-            if(initialElements.length != 0){
+            if (initialElements.length != 0) {
                 // fast copy of list
-                System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
+                System.arraycopy(initialElements, 0, ret, 0, 
+                        initialElements.length);
             }    
             fillArray(ret, initialElements.length, iterable);
         } else {
-            ReflectingObjectArrayBuilder<T> builder = new ReflectingObjectArrayBuilder<T>(initialElements.length+INIT_ARRAY_SIZE, klass);
+            ReflectingObjectArrayBuilder<T> builder = 
+                    new ReflectingObjectArrayBuilder<T>
+                        (initialElements.length+INIT_ARRAY_SIZE, klass);
             builder.appendArray(initialElements);
             Iterator<? extends T> iterator = iterable.iterator();
             Object o;
             while (!((o = iterator.next()) instanceof Finished)) {
-                builder.appendRef((T)o);
+                builder.appendRef((T) o);
             }
             ret = builder.build();
         }
@@ -898,16 +947,16 @@ public class Util {
 
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.List<? extends T> list,
-            java.lang.Class<T> klass, T... initialElements){
-        if(list == null)
+            java.lang.Class<T> klass, T... initialElements) {
+        if (list == null)
             return initialElements;
         int i=initialElements.length;
         T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass,
-                        toInt(list.getSize() + i));
+                toInt(list.getSize() + i));
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends T> iterator = list.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.get_()){
+        while ((o = iterator.next()) != finished_.get_()) {
             ret[i++] = (T)o;
         }
         return ret;
@@ -946,12 +995,13 @@ public class Util {
      * @param elements The elements
      * @return A Sequential
      */
+    @SuppressWarnings({"unchecked","rawtypes"})
     public static <T> Sequential<T> 
     sequentialWrapper(TypeDescriptor $reifiedT, T[] elements) {
         if (elements.length == 0) {
-            return (Sequential)empty_.get_();
+            return (Sequential) empty_.get_();
         }
-        return new Tuple<>($reifiedT, elements);
+        return new Tuple<T,T,Sequential<? extends T>>($reifiedT, elements);
     }
 
     /** 
@@ -966,14 +1016,14 @@ public class Util {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.String> 
     sequentialWrapperBoxed(java.lang.String[] elements) {
-        if (elements.length == 0){
-            return (Sequential)empty_.get_();
+        if (elements.length == 0) {
+            return (Sequential) empty_.get_();
 
         }
         int total = elements.length;
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
-        for(java.lang.String element : elements){
+        for(java.lang.String element : elements) {
             newArray[i++] = ceylon.language.String.instance(element);
         }
         return new Tuple(ceylon.language.String.$TypeDescriptor$, newArray);
@@ -991,14 +1041,14 @@ public class Util {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Integer> 
     sequentialWrapperBoxed(long[] elements) {
-        if (elements.length == 0){
+        if (elements.length == 0) {
             return (Sequential)empty_.get_();
 
         }
         int total = elements.length;
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
-        for(long element : elements){
+        for(long element : elements) {
             newArray[i++] = ceylon.language.Integer.instance(element);
         }
         return new Tuple(ceylon.language.Integer.$TypeDescriptor$, newArray);
@@ -1016,14 +1066,14 @@ public class Util {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Character> 
     sequentialWrapperBoxed(int[] elements) {
-        if (elements.length == 0){
+        if (elements.length == 0) {
             return (Sequential)empty_.get_();
 
         }
         int total = elements.length;
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
-        for(int element : elements){
+        for(int element : elements) {
             newArray[i++] = ceylon.language.Character.instance(element);
         }
         return new Tuple(ceylon.language.Character.$TypeDescriptor$, newArray);
@@ -1041,14 +1091,14 @@ public class Util {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Boolean> 
     sequentialWrapperBoxed(boolean[] elements) {
-        if (elements.length == 0){
+        if (elements.length == 0) {
             return (Sequential)empty_.get_();
 
         }
         int total = elements.length;
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
-        for(boolean element : elements){
+        for(boolean element : elements) {
             newArray[i++] = ceylon.language.Boolean.instance(element);
         }
         return new Tuple(ceylon.language.Boolean.$TypeDescriptor$, newArray);
@@ -1066,14 +1116,14 @@ public class Util {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Float> 
     sequentialWrapperBoxed(double[] elements) {
-        if (elements.length == 0){
+        if (elements.length == 0) {
             return (Sequential)empty_.get_();
 
         }
         int total = elements.length;
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
-        for(double element : elements){
+        for(double element : elements) {
             newArray[i++] = ceylon.language.Float.instance(element);
         }
         return new Tuple(ceylon.language.Float.$TypeDescriptor$, newArray);
@@ -1108,7 +1158,7 @@ public class Util {
             TypeDescriptor $reifiedT,  
             int start, int length, T[] elements, 
             Sequential<? extends T> rest) {
-        if (length == 0){
+        if (length == 0) {
             if(rest.getEmpty()) {
                 return (Sequential<T>)empty_.get_();
             }
@@ -1116,7 +1166,8 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty()) {
-            return new ObjectArrayIterable<T>($reifiedT, elements).skip(start).take(length).sequence();
+            return new ObjectArrayIterable<T>($reifiedT, elements)
+                    .skip(start).take(length).sequence();
         }
         // we have both, let's find the total size
         int total = toInt(rest.getSize() + length);
@@ -1124,7 +1175,7 @@ public class Util {
         System.arraycopy(elements, start, newArray, 0, length);
         Iterator<? extends T> iterator = rest.iterator();
         int i = length;
-        for(Object elem; (elem = iterator.next()) != finished_.get_(); i++){
+        for(Object elem; (elem = iterator.next()) != finished_.get_(); i++) {
             newArray[i] = elem;
         }
         return new ObjectArrayIterable<T>($reifiedT, (T[])newArray).sequence();
@@ -1140,8 +1191,9 @@ public class Util {
      * a 
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Sequential sequentialOf(TypeDescriptor reified$Element, final Iterable iterable) {
-        Object result = ceylon.language.sequence_.sequence(reified$Element,
+    public static Sequential sequentialOf(TypeDescriptor reified$Element, 
+            final Iterable iterable) {
+        Object result = sequence_.sequence(reified$Element,
                 Null.$TypeDescriptor$,
                 iterable);
         if (result == null) {
@@ -1166,77 +1218,77 @@ public class Util {
      * generic one that returns a Sequential. Here we return 
      * a Tuple, although our type signature hides this.
      */
-    public static Sequential<?> tuple_spanFrom(Ranged tuple, 
-    		ceylon.language.Integer index){
+    public static Sequential<?> tuple_spanFrom(Ranged<?,?,?> tuple, 
+    		ceylon.language.Integer index) {
         Sequential<?> seq = (Sequential<?>)tuple;
         long i = index.longValue();
-        while(i-- > 0){
+        while(i-- > 0) {
             seq = seq.getRest();
         }
         return seq;
     }
     
     /** Called to initialize an {@code BooleanArray} when one is instantiated */
-    public static boolean[] fillArray(boolean[] array, boolean val){
+    public static boolean[] fillArray(boolean[] array, boolean val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize a {@code ByteArray} when one is instantiated */
-    public static byte[] fillArray(byte[] array, byte val){
+    public static byte[] fillArray(byte[] array, byte val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize an {@code ShortArray} when one is instantiated */
-    public static short[] fillArray(short[] array, short val){
+    public static short[] fillArray(short[] array, short val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize an {@code IntArray} when one is instantiated */
-    public static int[] fillArray(int[] array, int val){
+    public static int[] fillArray(int[] array, int val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize a {@code LongArray} when one is instantiated */
-    public static long[] fillArray(long[] array, long val){
+    public static long[] fillArray(long[] array, long val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize a {@code FloatArray} when one is instantiated */
-    public static float[] fillArray(float[] array, float val){
+    public static float[] fillArray(float[] array, float val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize a {@code DoubleArray} when one is instantiated */
-    public static double[] fillArray(double[] array, double val){
+    public static double[] fillArray(double[] array, double val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize a {@code CharArray} when one is instantiated */
-    public static char[] fillArray(char[] array, char val){
+    public static char[] fillArray(char[] array, char val) {
         Arrays.fill(array, val);
         return array;
     }
     
     /** Called to initialize an {@code ObjectArray<T>} when one it instantiated */
-    public static <T> T[] fillArray(T[] array, T val){
+    public static <T> T[] fillArray(T[] array, T val) {
         Arrays.fill(array, val);
         return array;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int size){
+    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int size) {
         return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), size);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int... dimensions){
+    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int... dimensions) {
         return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), dimensions);
     }
 
@@ -1260,7 +1312,7 @@ public class Util {
      * which starts to smell real bad when we can just use a 
      * Ceylon helper.
      */
-    public static void rethrow(final Throwable t){
+    public static void rethrow(final Throwable t) {
         ceylon.language.impl.rethrow_.rethrow(t);
     }
 
@@ -1292,7 +1344,7 @@ public class Util {
      */
     public static <Return> Return 
     apply(Callable<? extends Return> function, 
-    		Sequential<? extends Object> arguments){
+    		Sequential<? extends Object> arguments) {
         int variadicParameterIndex = function.$getVariadicParameterIndex$();
         switch (toInt(arguments.getSize())) {
         case 0:
@@ -1304,7 +1356,7 @@ public class Util {
                 return function.$callvariadic$(arguments);
             return function.$call$(arguments.getFromFirst(0));
         case 2:
-            switch(variadicParameterIndex){
+            switch(variadicParameterIndex) {
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
@@ -1316,7 +1368,7 @@ public class Util {
                                           arguments.getFromFirst(1));
             }
         case 3:
-            switch(variadicParameterIndex){
+            switch(variadicParameterIndex) {
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
@@ -1333,7 +1385,7 @@ public class Util {
                     arguments.getFromFirst(2));
             }
         default:
-            switch(variadicParameterIndex){
+            switch(variadicParameterIndex) {
             // pass the sequence along
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
@@ -1363,11 +1415,11 @@ public class Util {
                 java.lang.Object it;
                 int i=0;
                 while(i < beforeVariadic && 
-                		(it = iterator.next()) != finished_.get_()){
+                		(it = iterator.next()) != finished_.get_()) {
                     args[i++] = it;
                 }
                 // add the remainder as a variadic arg if required
-                if(needsVariadic){
+                if(needsVariadic) {
                     args[i] = arguments.spanFrom(Integer.instance(beforeVariadic));
                     return function.$callvariadic$(args);
                 }
@@ -1392,11 +1444,11 @@ public class Util {
             return getJavaClassForDescriptor(((TypeDescriptor.Member) descriptor).getMember());
         if(descriptor instanceof TypeDescriptor.Intersection)
             return (java.lang.Class<T>) Object.class;
-        if(descriptor instanceof TypeDescriptor.Union){
+        if(descriptor instanceof TypeDescriptor.Union) {
             TypeDescriptor.Union union = (TypeDescriptor.Union) descriptor;
             TypeDescriptor[] members = union.getMembers();
             // special case for optional types
-            if(members.length == 2){
+            if(members.length == 2) {
                 if(members[0] == ceylon.language.Null.$TypeDescriptor$)
                     return getJavaClassForDescriptor(members[1]);
                 if(members[1] == ceylon.language.Null.$TypeDescriptor$)
@@ -1510,21 +1562,24 @@ public class Util {
         return (o == null ? "null" : o.getClass().getName()) + " is not an array type";
     }
     
-    public static ceylon.language.Sequential<? extends java.lang.Throwable> suppressedExceptions(
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Sequential<? extends java.lang.Throwable> suppressedExceptions(
             @Name("exception")
             @TypeInfo("ceylon.language::Exception")
             final java.lang.Throwable exception) {
         java.lang.Throwable[] sup = exception.getSuppressed();
         if (sup.length > 0) {
-            return new ObjectArrayIterable(TypeDescriptor.klass(java.lang.Throwable.class), sup).sequence();
+            return new ObjectArrayIterable<java.lang.Throwable>
+                (TypeDescriptor.klass(java.lang.Throwable.class), sup)
+                .sequence();
         } else {
-            return (ceylon.language.Sequential)empty_.get_();
+            return (Sequential) empty_.get_();
         }
     }
     
-    public static <T> ceylon.language.Sequence<T> asSequence(ceylon.language.Sequential<T> sequential) {
-        if (sequential instanceof ceylon.language.Sequence) {
-            return (ceylon.language.Sequence)sequential;
+    public static <T> Sequence<T> asSequence(Sequential<T> sequential) {
+        if (sequential instanceof Sequence) {
+            return (Sequence<T>) sequential;
         } else {
             throw new AssertionError("Assertion failed: Sequence expected");
         }
@@ -1547,7 +1602,7 @@ public class Util {
                 && value >= java.lang.Integer.MIN_VALUE) {
             return (int)value;
         }
-        throw new ceylon.language.OverflowException();
+        throw new OverflowException();
     }
     
     /** 
@@ -1566,7 +1621,7 @@ public class Util {
                 && value >= java.lang.Short.MIN_VALUE) {
             return (short)value;
         }
-        throw new ceylon.language.OverflowException();
+        throw new OverflowException();
     }
     
     /** 
@@ -1586,7 +1641,7 @@ public class Util {
                 && value >= java.lang.Byte.MIN_VALUE) {
             return (byte)value;
         }
-        throw new ceylon.language.OverflowException();
+        throw new OverflowException();
     }
     
 }
