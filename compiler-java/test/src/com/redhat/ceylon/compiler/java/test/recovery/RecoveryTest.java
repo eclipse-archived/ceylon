@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -46,7 +47,6 @@ import org.junit.Test;
 import ceylon.language.Anything;
 import ceylon.language.Callable;
 
-import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
 import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
@@ -125,12 +125,11 @@ public class RecoveryTest extends CompilerTest {
     private void checkClassHasCompileTimeErrorAnnotation(String brokenClass) {
         synchronized(RUN_LOCK){
             try {
-                CloseableURLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
+                URLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
                 try {
                     Class<?> c = Class.forName(brokenClass, false, classLoader);
                     Assert.assertTrue("class lacks @CompileTimeError", c.isAnnotationPresent((CompileTimeError.class)));
                 } finally {
-                    classLoader.clearCache();
                     classLoader.close();
                 }
             } catch (RuntimeException e) {

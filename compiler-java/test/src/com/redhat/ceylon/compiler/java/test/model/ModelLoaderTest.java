@@ -20,7 +20,9 @@
 package com.redhat.ceylon.compiler.java.test.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,14 +40,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
-import org.junit.ComparisonFailure;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
@@ -176,7 +176,7 @@ public class ModelLoaderTest extends CompilerTest {
         ModuleWithArtifact moduleWithArtifact = new ModuleWithArtifact(module, version);
         synchronized(RUN_LOCK){
             // this initialises the metamodel, even if we don't use the resulting ClassLoader
-            CloseableURLClassLoader classLoader;
+            URLClassLoader classLoader;
             try {
                 classLoader = getClassLoader("runtime model loader tests", moduleWithArtifact);
             } catch (MalformedURLException e) {
@@ -189,7 +189,12 @@ public class ModelLoaderTest extends CompilerTest {
                 // now see if we can find our declarations
                 compareDeclarations(modelCompare, decls, modelLoader, modules);
             }finally{
-                classLoader.clearCache();
+                try {
+                    classLoader.close();
+                } catch (IOException e) {
+                    // ignore
+                    e.printStackTrace();
+                }
             }
         }
     }

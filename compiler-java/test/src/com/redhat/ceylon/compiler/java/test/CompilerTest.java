@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +56,6 @@ import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
-import com.redhat.ceylon.common.CloseableURLClassLoader;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
@@ -596,7 +596,7 @@ public abstract class CompilerTest {
             // we set up the module system while another thread is setting it up for other modules we're toast
             try{
                 // make sure we load the stuff from the Car
-                CloseableURLClassLoader loader = getClassLoader(className, modules);
+                URLClassLoader loader = getClassLoader(className, modules);
                 
                 java.lang.Class<?> klass = java.lang.Class.forName(className, true, loader);
                 
@@ -618,7 +618,7 @@ public abstract class CompilerTest {
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
             Object result = null;
-            CloseableURLClassLoader loader = null;
+            URLClassLoader loader = null;
             try{
                 // make sure we load the stuff from the Car
 
@@ -649,17 +649,22 @@ public abstract class CompilerTest {
                 throw new RuntimeException(x);
             } finally {
                 if (loader != null) {
-                    loader.clearCache();
+                    try {
+                        loader.close();
+                    } catch (IOException e) {
+                        // ignore
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
 
-    protected CloseableURLClassLoader getClassLoader(String main,
+    protected URLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
-        CloseableURLClassLoader loader = new CloseableURLClassLoader(urls.toArray(new URL[urls.size()]));
+        URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
         // set up the runtime module system
         Metamodel.resetModuleManager();
         Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
