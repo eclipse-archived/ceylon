@@ -2220,23 +2220,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs*.member</literal></entry>
+            <entry><literal>lhs*.attribute</literal></entry>
             <entry>spread attribute</entry>
-            <entry><literal>[ for (X x in lhs) x.member ]</literal></entry>
-            <entry><literal>{X*}</literal></entry>
+            <entry><literal>[*lhs.map(X.attribute)]</literal></entry>
+            <entry><literal>Iterable&lt;X,N&gt;</literal></entry>
             <entry>attribute of <literal>X</literal> of
             type <literal>T</literal></entry>
-            <entry><literal>T[]</literal></entry>
+            <entry><literal>[T*]</literal> or <literal>[T+]</literal></entry>
         </row>
         
         <row>
-            <entry><literal>lhs*.member</literal></entry>
+            <entry><literal>lhs*.method</literal></entry>
             <entry>spread method</entry>
-            <entry></entry>
-            <entry><literal>{X*}</literal></entry>
+            <entry><literal>compose((Iterable&lt;T,N&gt; ts)=>[*ts], lhs.spread(X.method))</literal></entry>
+            <entry><literal>Iterable&lt;X,N&gt;</literal></entry>
             <entry>method of <literal>X</literal> of
             callable type <literal>Callable &lt;T,P&gt;</literal></entry>
-            <entry><literal>Callable &lt;T[],P&gt;</literal></entry>
+            <entry><literal>Callable &lt;[T*],P&gt;</literal> or
+            <literal>Callable &lt;[T+],P&gt;</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Spread multiplication</emphasis></entry></row>
