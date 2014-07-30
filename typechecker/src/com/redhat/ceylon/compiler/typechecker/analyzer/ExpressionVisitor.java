@@ -498,15 +498,16 @@ public class ExpressionVisitor extends Visitor {
         if (typedNode!=null) {
             if (!isTypeUnknown(t)) {
                 if (e != null) {
+                    ProducedType ot = unit.getType(unit.getObtainableDeclaration());
+                    ProducedType dt = unit.getType(unit.getDestroyableDeclaration());
                     if (isInstantiationExpression(e)) {
-                        ProducedType ut = unionType(unit.getType(unit.getDestroyableDeclaration()), 
-                                unit.getType(unit.getObtainableDeclaration()), unit);
-                        checkAssignable(t, ut, typedNode, 
-                                "resource must be destroyable");
+                        if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
+                            typedNode.addError("resource must be either obtainable or destroyable: " +
+                                    t.getProducedTypeName(unit) + " is neither Obtainable nor Destroyable");
+                        }
                     }
                     else {
-                        checkAssignable(t, unit.getType(unit.getObtainableDeclaration()), typedNode, 
-                                "resource must be obtainable");
+                        checkAssignable(t, ot, typedNode, "resource must be obtainable");
                     }
                 }
             }
