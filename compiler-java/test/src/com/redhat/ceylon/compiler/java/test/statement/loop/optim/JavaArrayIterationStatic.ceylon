@@ -38,7 +38,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfIntsBy(IntArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element + 5);
         }
     }
@@ -59,7 +59,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfCharsBy(CharArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -69,7 +69,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfBytesBy(ByteArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -79,7 +79,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfShortsBy(ShortArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -89,7 +89,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfLongsBy(LongArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -99,7 +99,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfBooleansBy(BooleanArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -109,7 +109,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfFloatsBy(FloatArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }
@@ -119,7 +119,7 @@ class JavaArrayIterationStatic() {
         }
     }
     void arrayOfDoublesBy(DoubleArray array) {
-        for (element in (array.iterable by 2)) {
+        for (element in array.iterable by 2) {
             print(element);
         }
     }

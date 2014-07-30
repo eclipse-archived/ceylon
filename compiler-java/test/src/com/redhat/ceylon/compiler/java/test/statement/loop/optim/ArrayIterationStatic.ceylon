@@ -26,7 +26,7 @@ class ArrayIterationStatic() {
         }
     }
     void arrayOfIntegersBy(Array<Integer> array) {
-        for (element in (array by 5)) {
+        for (element in array by 5) {
             print(element + 5);
         }
     }
