@@ -29,7 +29,7 @@ atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
         }
         targs[param.qualifiedName]=[param,targ];
       }
-      return Mapita(targs,{V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return TpMap$jsint(targs,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }

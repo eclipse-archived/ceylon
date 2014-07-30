@@ -25,7 +25,7 @@ atr$(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments',func
       }
       targs[otp.qualifiedName]=[otp,targ];
     }
-    return Mapita(targs,{V$Mapita:{t:OpenType$meta$declaration}});
+    return TpMap$jsint(targs,{V$TpMap:{t:OpenType$meta$declaration}});
   }
   return getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:OpenClassOrInterfaceType,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','typeArguments']};});
