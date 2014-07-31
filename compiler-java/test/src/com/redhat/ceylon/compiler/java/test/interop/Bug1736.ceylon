@@ -17,23 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.interop;
-
-public class JavaWithStaticMembers {
-    public static void method(){}
-    public static void method(long param){}
-    public static void method(long param, long param2){}
-    
-    public static void topMethod(){}
-    
-    public static long field;
-    public static long topField;
-    
-    public static JavaWithStaticMembers getAttribute() {
-        return null;
-    }
-    
-    public static String[] strings() {
-        return new String[0];
+@noanno
+shared void bug1736() {
+    for (s in JavaWithStaticMembers.strings().iterable) {
+        print(s);
     }
 }

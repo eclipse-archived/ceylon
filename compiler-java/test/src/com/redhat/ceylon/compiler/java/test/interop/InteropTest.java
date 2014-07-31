@@ -441,4 +441,10 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(29, "type constructor is not visible: Runtime"),
                 new CompilerError(30, "type constructor is not visible: JavaSealed"));
     }
+    
+    @Test
+    public void testIopBug1736(){
+        compile("JavaWithStaticMembers.java");
+        compareWithJavaSource("Bug1736");
+    }
 }
