@@ -52,7 +52,8 @@ public abstract class Element {
     /**
      * Search only directly inside this scope.
      */
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getDirectMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         return lookupMember(getMembers(), name, signature, ellipsis);
     }
     
@@ -63,7 +64,8 @@ public abstract class Element {
      * members, but return them anyway, to let the caller 
      * produce a nicer error.
      */
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
     
@@ -73,13 +75,15 @@ public abstract class Element {
      * and containing scopes, returning even un-shared 
      * declarations of this scope and containing scopes.
      */
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         Declaration d = getMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
         else if (getScope()!=null) {
-            return getScope().getMemberOrParameter(unit, name, signature, ellipsis);
+            return getScope().getMemberOrParameter(unit, name, 
+                    signature, ellipsis);
         }
         else {
             //union type or bottom type 
@@ -93,7 +97,8 @@ public abstract class Element {
      * or imports. We are even interested in un-shared 
      * direct members.
      */
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+    protected Declaration getMemberOrParameter(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
     
@@ -130,12 +135,15 @@ public abstract class Element {
         }
     }
     
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> 
+    getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = getScope()
     			.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d)) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+            if (isResolvable(d) && !isOverloadedVersion(d) && 
+                    isNameMatching(startingWith, d)) {
+                result.put(d.getName(), 
+                        new DeclarationWithProximity(d, proximity));
             }
         }
     	return result;
