@@ -339,9 +339,52 @@ public class Util {
         }
     }
     
+    /**
+     * Match the name of the given declaration to the given
+     * pattern. A name matches if:
+     * 
+     * - it starts with the pattern
+     * - the pattern is all lowercase and its lowercased 
+     *   form matches the pattern, or
+     * - the pattern consists of all uppercase after the
+     *   first character, and its uppercase "humps" match 
+     *   the pattern.
+     */
     static boolean isNameMatching(String startingWith, Declaration d) {
-        return d.getName()!=null && 
-            d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
+        if (startingWith==null ||
+                startingWith.isEmpty()) {
+            return true;
+        }
+        String name = d.getName();
+        if (name==null || name.isEmpty() || 
+                name.length()<startingWith.length()) {
+            return false;
+        }
+        if (name.startsWith(startingWith) ||
+            name.toLowerCase().startsWith(startingWith)) {
+            return true;
+        }
+        if (startingWith.charAt(0)!=name.charAt(0)) {
+            return false;
+        }
+        int i=1, j=1;
+        while (i<startingWith.length()) {
+            char swc = startingWith.charAt(i++);
+            if (!Character.isUpperCase(swc)) {
+                return false;
+            }
+            while (j<name.length() && 
+                    Character.isLowerCase(name.charAt(j))) {
+                j++;
+            }
+            if (j>=name.length()) {
+                return false;
+            }
+            if (name.charAt(j++)!=swc) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**
