@@ -1635,7 +1635,8 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeIndexable() {
             Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
-            return expressionGen().transform((Tree.BaseMemberExpression)expr.getPrimary());
+            
+            return expressionGen().transformExpression(expr.getPrimary());
         }
         
         protected JCExpression makeCondition() {
