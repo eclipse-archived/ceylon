@@ -9,15 +9,15 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
-import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
 import com.redhat.ceylon.compiler.js.CeylonRunJsTool;
 
-public class JavaScriptRunner implements Runner {
+public class JavaScriptRunnerImpl implements Runner {
 
     private CeylonRunJsTool tool;
     private String moduleSpec;
 
-    public JavaScriptRunner(final RuntimeOptions options, String module, String version) {
+    public JavaScriptRunnerImpl(final RunnerOptions options, String module, String version) {
         tool = new CeylonRunJsTool() {
             @Override
             protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {

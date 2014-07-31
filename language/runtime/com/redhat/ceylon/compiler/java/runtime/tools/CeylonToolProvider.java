@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaCompiler;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunner;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptCompiler;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptRunner;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaCompilerImpl;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptCompilerImpl;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptRunnerImpl;
 
 
 public class CeylonToolProvider {
@@ -11,20 +11,20 @@ public class CeylonToolProvider {
     public static Compiler getCompiler(Backend backend){
         switch(backend){
         case Java:
-            return new JavaCompiler();
+            return new JavaCompilerImpl();
         case JavaScript:
-            return new JavaScriptCompiler();
+            return new JavaScriptCompilerImpl();
         default:
             throw new RuntimeException("Compiler for backend not supported yet: "+backend);
         }
     }
 
-    public static Runner getRunner(Backend backend, RuntimeOptions options, String module, String version) {
+    public static Runner getRunner(Backend backend, RunnerOptions options, String module, String version) {
         switch(backend){
         case JavaScript:
-            return new JavaScriptRunner(options, module, version);
+            return new JavaScriptRunnerImpl(options, module, version);
         case Java:
-            return new JavaRunner(options, module, version);
+            return new JavaRunnerImpl(options, module, version);
         default:
             throw new RuntimeException("Runner for backend not supported yet: "+backend);
         }

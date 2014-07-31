@@ -24,12 +24,12 @@ import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.tools.JVMRuntimeOptions;
-import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
-import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
+import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
-public class JavaRunner implements Runner {
+public class JavaRunnerImpl implements JavaRunner {
 
     private Map<String,ArtifactResult> loadedModules = new HashMap<String,ArtifactResult>();
     private Map<String,String> loadedModuleVersions = new HashMap<String,String>();
@@ -40,17 +40,17 @@ public class JavaRunner implements Runner {
     private String module;
     private Map<String, String> extraModules;
     
-    public JavaRunner(RuntimeOptions options, String module, String version){
+    public JavaRunnerImpl(RunnerOptions options, String module, String version){
         repositoryManager = CeylonUtils.repoManager()
                 .userRepos(options.getUserRepositories())
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
                 .buildManager();
-        if(options instanceof JVMRuntimeOptions){
-            delegateClassLoader = ((JVMRuntimeOptions) options).getDelegateClassLoader();
+        if(options instanceof JavaRunnerOptions){
+            delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();
         }
         if(delegateClassLoader == null)
-            delegateClassLoader = JavaRunner.class.getClassLoader();
+            delegateClassLoader = JavaRunnerImpl.class.getClassLoader();
         
         this.module = module;
         this.extraModules = options.getExtraModules();
@@ -232,6 +232,11 @@ public class JavaRunner implements Runner {
         for(ArtifactResult dep : artifact.dependencies()){
             registerInMetamodel(dep.name());
         }
+    }
+
+    @Override
+    public ClassLoader getModuleClassLoader() {
+        return moduleClassLoader;
     }
 
 }

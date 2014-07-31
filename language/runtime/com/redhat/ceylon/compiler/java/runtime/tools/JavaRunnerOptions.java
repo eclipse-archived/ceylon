@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
-public class JVMRuntimeOptions extends RuntimeOptions {
+public class JavaRunnerOptions extends RunnerOptions {
     private ClassLoader delegateClassLoader;
 
     public ClassLoader getDelegateClassLoader() {

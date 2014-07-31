@@ -27,8 +27,8 @@ import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
 import com.redhat.ceylon.compiler.java.runtime.tools.Compiler;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
-import com.redhat.ceylon.compiler.java.runtime.tools.RuntimeOptions;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunner;
+import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
 
 public class ToolsTest {
     
@@ -221,7 +221,7 @@ public class ToolsTest {
         testJavaScriptCompiler_();
         testCompiler(CeylonToolProvider.getCompiler(Backend.JavaScript), "modules.extra", "1");
 
-        RuntimeOptions options = new RuntimeOptions();
+        RunnerOptions options = new RunnerOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository(OutputRepository);
@@ -243,7 +243,7 @@ public class ToolsTest {
         testJavaCompiler_();
         testCompiler(CeylonToolProvider.getCompiler(Backend.Java), "modules.extra", "1");
         
-        RuntimeOptions options = new RuntimeOptions();
+        RunnerOptions options = new RunnerOptions();
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository("flat:"+FlatRepoOverrides);
@@ -253,8 +253,8 @@ public class ToolsTest {
         Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, "modules.usesProvided", "1");
         runner.run();
         // make sure we only got our two modules in the CL
-        Assert.assertTrue(runner instanceof JavaRunner);
-        Assert.assertEquals(2, ((JavaRunner) runner).getClassLoaderURLs().length);
+        Assert.assertTrue(runner instanceof JavaRunnerImpl);
+        Assert.assertEquals(2, ((JavaRunnerImpl) runner).getClassLoaderURLs().length);
         runner.cleanup();
     }
 

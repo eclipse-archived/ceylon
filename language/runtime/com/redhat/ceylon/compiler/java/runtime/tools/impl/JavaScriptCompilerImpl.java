@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.js.CeylonCompileJsTool;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.DiagnosticListener;
 
-public class JavaScriptCompiler implements Compiler {
+public class JavaScriptCompilerImpl implements Compiler {
 
     @Override
     public boolean compile(CompilerOptions options, 

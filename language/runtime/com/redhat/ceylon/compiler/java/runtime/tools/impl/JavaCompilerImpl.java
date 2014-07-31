@@ -23,7 +23,7 @@ import com.sun.source.util.TaskEvent;
 import com.sun.tools.javac.api.ClientCodeWrapper.Trusted;
 import com.sun.tools.javac.file.JavacFileManager;
 
-public class JavaCompiler implements Compiler {
+public class JavaCompilerImpl implements Compiler {
 
     // if this is not here, this task will be wrapped into a TaskListener that does not implement CeylonTaskListener
     @Trusted

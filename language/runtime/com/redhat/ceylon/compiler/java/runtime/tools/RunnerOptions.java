@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.tools;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RuntimeOptions extends Options {
+public class RunnerOptions extends Options {
     private Map<String,String> extraModules = new HashMap<String,String>();
 
     public Map<String, String> getExtraModules() {
