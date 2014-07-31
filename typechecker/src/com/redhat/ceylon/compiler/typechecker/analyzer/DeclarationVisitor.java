@@ -218,6 +218,7 @@ public class DeclarationVisitor extends Visitor {
                                 abstraction.setShared(true);
                                 abstraction.setActual(true);
                                 abstraction.setContainer(s);
+                                abstraction.setScope(s);
                                 abstraction.setUnit(unit);
                                 ((Method) member).setOverloaded(true);
                                 abstraction.setOverloads(new ArrayList<Declaration>());
