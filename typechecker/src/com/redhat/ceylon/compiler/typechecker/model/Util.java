@@ -350,7 +350,7 @@ public class Util {
      *   first character, and its uppercase "humps" match 
      *   the pattern.
      */
-    static boolean isNameMatching(String startingWith, Declaration d) {
+    public static boolean isNameMatching(String startingWith, Declaration d) {
         if (startingWith==null ||
                 startingWith.isEmpty()) {
             return true;
