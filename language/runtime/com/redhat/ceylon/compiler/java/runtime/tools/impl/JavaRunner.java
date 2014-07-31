@@ -16,6 +16,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -165,6 +166,9 @@ public class JavaRunner implements Runner {
     }
 
     private void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
+        // skip JDK modules
+        if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))
+            return;
         if(loadedModules.containsKey(name)){
             ArtifactResult loadedModule = loadedModules.get(name);
             String resolvedVersion = loadedModuleVersions.get(name);
@@ -206,6 +210,9 @@ public class JavaRunner implements Runner {
 
     // we only need the module name since we already dealt with conflicting versions
     private void registerInMetamodel(String module) {
+        // skip JDK modules
+        if(JDKUtils.isJDKModule(module) || JDKUtils.isOracleJDKModule(module))
+            return;
         // use the one we got from the CMR rather than the one for dependencies mapping
         ArtifactResult dependencyArtifact = loadedModules.get(module);
         // it may be optional, we already dealt with those checks earlier
