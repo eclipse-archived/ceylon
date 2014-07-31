@@ -35,7 +35,22 @@ public interface Scope {
     public boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
+    /**
+     * The "real" containing scope, ignoring that conditions 
+     * (in an assert, if, or while) each have their own "fake" 
+     * scope.
+     * 
+     * @see ConditionScope
+     */
     public Scope getContainer();
+    
+    /**
+     * The containing scope, taking into account that conditions 
+     * (in an assert, if, or while) each have their own "fake" 
+     * scope.
+     * 
+     * @see ConditionScope
+     */
     public Scope getScope();
     
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);

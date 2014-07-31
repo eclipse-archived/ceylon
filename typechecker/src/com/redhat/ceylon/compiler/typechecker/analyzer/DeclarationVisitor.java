@@ -251,6 +251,12 @@ public class DeclarationVisitor extends Visitor {
         model.setContainer(getContainer(that));
     }
 
+    /**
+     * Get the containing scope, skipping any condition
+     * scopes. 
+     * 
+     * @see com.redhat.ceylon.compiler.typechecker.model.ConditionScope
+     */
     private Scope getContainer(Node that) {
         if (that instanceof Tree.Declaration &&
                 !(that instanceof Tree.Parameter) &&

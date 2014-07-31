@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * A scope representing a block of a control structure. Note
+ * that even though declarations belonging to this scope 
+ * aren't visible in the containing scope, the language still
+ * imposes a constraint of name uniqueness across the outer
+ * scope and all contained control structure blocks!
+ *
+ */
 public class ControlBlock extends Element implements Scope {
     
     private Set<Value> specifiedValues;

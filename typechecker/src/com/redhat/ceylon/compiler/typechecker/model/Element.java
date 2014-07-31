@@ -29,6 +29,13 @@ public abstract class Element {
         this.unit = compilationUnit;
     }
 
+    /**
+     * The "real" scope of the element, ignoring that
+     * conditions (in an assert, if, or while) each have
+     * their own "fake" scope.
+     * 
+     * @see ConditionScope
+     */
     public Scope getContainer() {
         return container;
     }
@@ -37,10 +44,17 @@ public abstract class Element {
         this.container = scope;
     }
     
+    /**
+     * The scope of the element, taking into account that
+     * conditions (in an assert, if, or while) each have
+     * their own "fake" scope.
+     * 
+     * @see ConditionScope
+     */
     public Scope getScope() {
 		return scope;
 	}
-
+    
     public void setScope(Scope scope) {
     	this.scope = scope;
     }
