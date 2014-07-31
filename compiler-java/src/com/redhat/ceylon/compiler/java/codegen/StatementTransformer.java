@@ -1526,6 +1526,7 @@ public class StatementTransformer extends AbstractTransformer {
                 ProducedType arrayType) {
             super(stmt, baseIterable, step, typeFact().getArrayElementType(arrayType), "array");
             unboxed = typeFact().getArrayType(typeFact().getBooleanDeclaration().getType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getByteDeclaration().getType()).isExactly(arrayType)
                     || typeFact().getArrayType(typeFact().getIntegerDeclaration().getType()).isExactly(arrayType)
                     || typeFact().getArrayType(typeFact().getCharacterDeclaration().getType()).isExactly(arrayType)
                     || typeFact().getArrayType(typeFact().getFloatDeclaration().getType()).isExactly(arrayType);
