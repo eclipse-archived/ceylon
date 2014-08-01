@@ -81,7 +81,7 @@ public class UsageVisitor extends Visitor {
                 d.getName().equals("nothing") && 
                 d.getUnit().getPackage().getNameAsString()
                         .equals(Module.LANGUAGE_MODULE_NAME)) {
-            that.addUsageWarning("evaluates nothing");
+            that.addUsageWarning("evaluates 'nothing'");
         }
     }
 }
