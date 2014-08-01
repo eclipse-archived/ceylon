@@ -11,8 +11,8 @@ public class DeprecationVisitor extends Visitor {
         super.visit(that);
         Declaration d = that.getDeclaration();
 		if (d!=null && d.isDeprecated()) {
-        	that.addUsageWarning("declaration is deprecated: " + 
-        			d.getName());
+        	that.addUsageWarning("declaration is deprecated: '" + 
+        			d.getName() + "'");
         }
     }
     @Override
@@ -20,8 +20,8 @@ public class DeprecationVisitor extends Visitor {
     	super.visit(that);
         TypeDeclaration d = that.getDeclarationModel();
 		if (d!=null && d.isDeprecated()) {
-        	that.addUsageWarning("type is deprecated: " + 
-        			d.getName());
+        	that.addUsageWarning("type is deprecated: '" + 
+        			d.getName() + "'");
         }
     }
     @Override
@@ -29,8 +29,8 @@ public class DeprecationVisitor extends Visitor {
         super.visit(that);
         Declaration d = that.getDeclarationModel();
 		if (d!=null && d.isDeprecated()) {
-        	that.addUsageWarning("imported declaration is deprecated: " + 
-        			d.getName());
+        	that.addUsageWarning("imported declaration is deprecated: '" + 
+        			d.getName() + "'");
         }
     }
 

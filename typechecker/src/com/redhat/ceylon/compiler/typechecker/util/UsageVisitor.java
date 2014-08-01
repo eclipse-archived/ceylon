@@ -30,8 +30,8 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         if (!referenced(that)) {
-    		that.addUsageWarning("import is never used: " + 
-    				that.getDeclarationModel().getName());
+    		that.addUsageWarning("import is never used: '" + 
+    				that.getDeclarationModel().getName() + "'");
     	}
     }
 
@@ -68,8 +68,8 @@ public class UsageVisitor extends Visitor {
         		!rc.isReferenced(declaration) &&
         		!declaration.isParameter() &&
         		!(that instanceof Tree.Variable)) {
-            that.addUsageWarning("declaration is never used: " + 
-        		    declaration.getName());
+            that.addUsageWarning("declaration is never used: '" + 
+        		    declaration.getName() + "'");
         }
     }
 
