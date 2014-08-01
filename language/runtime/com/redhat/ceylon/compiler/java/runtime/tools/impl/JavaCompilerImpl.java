@@ -43,8 +43,13 @@ public class JavaCompilerImpl implements Compiler {
             long column = diagnostic.getColumnNumber();
             JavaFileObject source = diagnostic.getSource();
             File file = null;
-            if(source != null)
-                file = new File(source.toUri());
+            if(source != null) {
+                try {
+                    file = new File(source.toUri());
+                } catch (IllegalArgumentException ignore) {
+                    // An entry in a zip file that is not hierarchical
+                }
+            }
             switch(kind){
             case ERROR:
                 listener.error(file, line, column, message);
