@@ -46,6 +46,7 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",
+                "--out=build/test-modules",
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon",
@@ -59,13 +60,14 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon",
                 "src/test/resources/res_test/test.txt"));
         jsc.run();
-        checkResources("modules/default/default-resources.zip", "test.txt");
-        checkExcludedResources("modules/default/default-resources.zip", "m1res.txt",
+        checkResources("build/test-modules/default/default-resources.zip", "test.txt");
+        checkExcludedResources("build/test-modules/default/default-resources.zip", "m1res.txt",
                 "m1/m1res.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
 
@@ -75,13 +77,14 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
-        checkResources("modules/default/default-resources.zip",
+        checkResources("build/test-modules/default/default-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
-        checkExcludedResources("modules/default/default-resources.zip",
+        checkExcludedResources("build/test-modules/default/default-resources.zip",
                 "m1res.txt");
     }
 
@@ -91,14 +94,15 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/doc",
                 "--resource=src/test/resources/res_test",
                 "--resource-root=ALTROOT",
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
-        checkResources("modules/default/default-resources.zip",
+        checkResources("build/test-modules/default/default-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
-        checkExcludedResources("modules/default/default-resources.zip",
+        checkExcludedResources("build/test-modules/default/default-resources.zip",
                 "m1res.txt");
     }
 
@@ -108,6 +112,7 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",
+                "--out=build/test-modules",
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/*.ceylon",
@@ -121,6 +126,7 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
@@ -128,7 +134,7 @@ public class CompileJsToolTest {
                 "src/test/resources/loader/pass1/m1/package.ceylon",
                 "src/test/resources/res_test/test.txt"));
         jsc.run();
-        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip", "test.txt");
+        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip", "test.txt");
     }
 
     @Test
@@ -137,15 +143,16 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "src/test/resources/loader/pass1/m1/test.ceylon",
                 "src/test/resources/loader/pass1/m1/module.ceylon",
                 "src/test/resources/loader/pass1/m1/package.ceylon"));
         jsc.run();
-        checkResources("modules/m1/0.1/m1-0.1-resources.zip",
+        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
                 "m1root.txt", "m1res.txt", "ALTROOT/altrootm1.txt");
-        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip",
+        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/m1root.txt",
                 "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
@@ -156,6 +163,7 @@ public class CompileJsToolTest {
         Assert.assertNotNull(tool);
         CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
                 "--rep=build/runtime",// "--verbose",
+                "--out=build/test-modules",
                 "--source=src/test/resources/loader/pass1",
                 "--resource=src/test/resources/res_test",
                 "--resource-root=ALTROOT",
@@ -163,9 +171,9 @@ public class CompileJsToolTest {
                 "src/test/resources/loader/pass1/m1/module.ceylon",
                 "src/test/resources/loader/pass1/m1/package.ceylon"));
         jsc.run();
-        checkResources("modules/m1/0.1/m1-0.1-resources.zip",
+        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
                 "altrootm1.txt", "m1res.txt");
-        checkExcludedResources("modules/m1/0.1/m1-0.1-resources.zip",
+        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
     }
 
