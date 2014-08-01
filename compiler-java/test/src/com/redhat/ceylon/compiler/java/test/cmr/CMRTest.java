@@ -778,7 +778,7 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(20, "source code imports two different versions of the same module: version 1 and version 2 of a"));
+                new CompilerError(20, "source code imports two different versions of module 'a': version \"1\" and version \"2\""));
     }
 
     @Test
@@ -801,8 +801,8 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency: version 1 and version 2 of a"),
-                new CompilerError(20, "source code imports two different versions of the same module: version 1 and version 2 of a"),
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version \"1\" and version \"2\""),
+                new CompilerError(20, "source code imports two different versions of module 'a': version \"1\" and version \"2\""),
                 new CompilerError(22, "duplicate module import: a")
         );
     }
@@ -855,8 +855,8 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency: version 1 and version 2 of a"),
-                new CompilerError(20, "source code imports two different versions of the same module: version 1 and version 2 of a")
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version \"1\" and version \"2\""),
+                new CompilerError(20, "source code imports two different versions of module 'a': version \"1\" and version \"2\"")
         );
     }
 
@@ -1042,8 +1042,8 @@ public class CMRTest extends CompilerTest {
         // JavaB/1 shared imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(1, "module (transitively) imports conflicting versions of dependency: version 1 and version 2 of bug1062.javaA"),
-                new CompilerError(1, "source code imports two different versions of the same module: version 1 and version 2 of bug1062.javaA")
+                new CompilerError(1, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version \"1\" and version \"2\""),
+                new CompilerError(1, "source code imports two different versions of module 'bug1062.javaA': version \"1\" and version \"2\"")
                 );
     }
 

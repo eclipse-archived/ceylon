@@ -89,9 +89,10 @@ public abstract class LazyModuleManager extends ModuleManager {
                     // as long as they are not reexported, but we don't support that since they all go in the same
                     // classpath (direct imports of compiled modules)
                     String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
-                    String error = "source code imports two different versions of the same module: "+
-                            "version "+versions[0] + " and version "+ versions[1] +
-                            " of " + module.getNameAsString();
+                    String error = "source code imports two different versions of module '" + 
+                            module.getNameAsString() + "': "+
+                            "version \""+versions[0] + "\" and version \""+ versions[1] +
+                            "\"";
                     addErrorToModule(dependencyTree.getFirst(), error);
                     return;
                 }
@@ -186,7 +187,8 @@ public abstract class LazyModuleManager extends ModuleManager {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         if(AbstractModelLoader.isJDKModule(name)){
-            error = "unsupported JDK module version: the only supported version is '" + JDKUtils.jdk.version + "' which you get with Java "+JDKUtils.jdk.version;
+            error = "unsupported JDK module version: the only supported version is '" + 
+                    JDKUtils.jdk.version + "' which you get with Java "+JDKUtils.jdk.version;
         }
         super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error);
     }
