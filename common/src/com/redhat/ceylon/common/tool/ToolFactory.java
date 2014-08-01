@@ -341,7 +341,7 @@ public class ToolFactory {
                 final ArgumentModel<?> argument = entry.getKey();
                 List values = (List)entry.getValue();
                 if (argument.getMultiplicity().isMultivalued()) {
-                    Binding<List<?>> mv = Binding.mv(values);
+                    Binding<? extends List<?>> mv = Binding.mv(values);
                     setValue(mv);    
                 }
             }
