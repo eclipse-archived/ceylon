@@ -274,7 +274,7 @@ public class FileUtil {
     }
     
     /**
-     * Given a file path and a list of "search paths"
+     * Given a path to a file and a list of "search paths"
      * returns the relative path of the file (relative to the one
      * search path that matched)
      * @param paths A list of folders
@@ -290,8 +290,8 @@ public class FileUtil {
     }
     
     /**
-     * Given a file path and a list of "search paths"
-     * returns the search path where the file was located
+     * Given a path to a file and a list of "search paths" returns
+     * the search path that matched the path of the file
      * @param paths A list of folders
      * @param file A path to a file 
      * @return The search path where the file was located or null
