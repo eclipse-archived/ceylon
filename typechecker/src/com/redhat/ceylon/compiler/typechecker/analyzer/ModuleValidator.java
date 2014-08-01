@@ -255,11 +255,10 @@ public class ModuleValidator {
         Module dupe = moduleManager.findModule(module, dependencies, false);
         if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
-            StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency: ");
+            StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency '");
+            error.append(module.getNameAsString()).append("': ");
             String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
-            error.append("version ").append(versions[0])
-                 .append(" and version ").append(versions[1])
-                 .append(" of ").append(module.getNameAsString());
+            error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
             moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
         }
         else {
