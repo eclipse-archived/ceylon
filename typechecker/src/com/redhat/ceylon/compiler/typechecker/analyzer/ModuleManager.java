@@ -34,6 +34,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleManager {
+    public static class ModuleDependencyAnalysisError extends AnalysisError {
+    
+        public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
+            super(treeNode, message, code);
+        }
+        
+        public ModuleDependencyAnalysisError(Node treeNode, String message) {
+            super(treeNode, message);
+        }
+    }
+
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
     private final Context context;
@@ -246,7 +257,7 @@ public class ModuleManager {
         Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
-                definition.addError(error);
+                definition.addError(new ModuleDependencyAnalysisError(definition, error));
             }
             return true;
         }
@@ -262,7 +273,7 @@ public class ModuleManager {
             for(Entry<ModuleImport, Set<Node>> entry : moduleImportToNode.entrySet()){
                 if(entry.getKey().getModule() == module){
                     for ( Node definition :  entry.getValue() ) {
-                        definition.addError(error);
+                        definition.addError(new ModuleDependencyAnalysisError(definition, error));
                     }
                 }
             }
@@ -273,7 +284,7 @@ public class ModuleManager {
     public void addErrorToModule(Module module, String error) {
         Node node = moduleToNode.get(module);
         if (node != null) {
-            node.addError(error);
+            node.addError(new ModuleDependencyAnalysisError(node, error));
         }
         else {
             //might happen if the faulty module is a compiled module
@@ -297,7 +308,7 @@ public class ModuleManager {
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
-                descriptor.addError(error);
+                descriptor.addError(new ModuleDependencyAnalysisError(descriptor, error));
             }
             errors.clear();
         }
