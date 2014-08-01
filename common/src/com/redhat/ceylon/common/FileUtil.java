@@ -132,17 +132,7 @@ public class FileUtil {
      */
     public static File relativeFile(File f) {
         if (f.isAbsolute()) {
-            String cwd = System.getProperty("user.dir");
-            if(cwd == null)
-                return f;
-            // make sure we compare with a path separator to not match part of paths
-            if(!cwd.endsWith(File.separator))
-                cwd += File.separator;
-            String path = f.getAbsolutePath();
-            if (path.startsWith(cwd)) {
-                path = path.substring(cwd.length());
-                f = new File(path);
-            }
+            f = relativeFile(new File("."), f);
         }
         return f;
     }
@@ -292,23 +282,11 @@ public class FileUtil {
      * @return The relative file path or the original file path if no match was found
      */
     public static String relativeFile(Iterable<? extends File> paths, String file){
-        // make sure file is absolute and normalized
-        file = absoluteFile(new File(file)).getPath();
         // find the matching path prefix
-        int srcDirLength = 0;
-        for (File prefixFile : paths) {
-            String absPrefix = absoluteFile(prefixFile).getPath();
-            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
-                srcDirLength = absPrefix.length();
-            }
-        }
-        
-        String path = file.substring(srcDirLength);
-        if (path.startsWith(File.separator)) {
-            path = path.substring(1);
-        }
-        
-        return path;
+        File path = selectPath(paths, file);
+        // and get the path of the file relative to the prefix
+        File relFile = relativeFile(path, new File(file));
+        return relFile.getPath();
     }
     
     /**
