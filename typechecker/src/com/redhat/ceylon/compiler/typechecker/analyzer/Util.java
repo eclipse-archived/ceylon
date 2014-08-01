@@ -202,12 +202,12 @@ public class Util {
             typeName = type.getProducedTypeQualifiedName();
             otherTypeName = otherType.getProducedTypeQualifiedName();
         }
-        return ": " + typeName + problem + otherTypeName;
+        return ": '" + typeName + "'" + problem + "'" + otherTypeName + "'";
     }
     
     private static String message(ProducedType type, String problem, Unit unit) {
         String typeName = type.getProducedTypeName(unit);
-        return ": " + typeName + problem;
+        return ": '" + typeName + "'" + problem;
     }
     
     static boolean checkCallable(ProducedType type, Node node, String message) {
@@ -233,9 +233,9 @@ public class Util {
                         extra = ": " + d.getName() + " is a type parameter";
                     }
                     else if (d instanceof Value) {
-                        extra = ": value " + d.getName() + " has type " + 
+                        extra = ": value " + d.getName() + " has type '" + 
                                 type.getProducedTypeName(unit) + 
-                                " which is not a subtype of Callable";
+                                "' which is not a subtype of Callable";
                     }
                 }
                 node.addError(message + extra);

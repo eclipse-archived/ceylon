@@ -135,8 +135,8 @@ public class TypeArgumentVisitor extends Visitor {
                 throw new RuntimeException();
             }
             that.addError(var + " type parameter " + td.getName() + 
-                    " appears in " + loc + " location in type: " + 
-                    type.getProducedTypeName(that.getUnit()));
+                    " appears in " + loc + " location in type: '" + 
+                    type.getProducedTypeName(that.getUnit()) + "'");
         }
     }
     

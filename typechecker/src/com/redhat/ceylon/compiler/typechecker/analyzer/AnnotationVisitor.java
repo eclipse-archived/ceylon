@@ -639,7 +639,7 @@ public class AnnotationVisitor extends Visitor {
                 }
                 else {
                     StringBuilder sb = new StringBuilder();
-                    sb.append(" (");
+                    sb.append(" '");
                     for (ProducedType pt: sig) {
                         if (pt!=null) {
                             sb.append(pt.getProducedTypeName(that.getUnit()));
@@ -649,7 +649,7 @@ public class AnnotationVisitor extends Visitor {
                     if (!sig.isEmpty()) {
                         sb.setLength(sb.length()-2);
                     }
-                    sb.append(")");
+                    sb.append("'");
                     that.addError("ambiguous invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of " + 
                             dec.getName(that.getUnit()) + 

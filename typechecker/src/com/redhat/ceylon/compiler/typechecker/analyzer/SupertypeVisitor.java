@@ -39,8 +39,8 @@ public class SupertypeVisitor extends Visitor {
         if (displayErrors)
         for (TypeDeclaration td: errors) {
             node.addError("type with contravariant type parameter " + td.getName() + 
-                    " appears in contravariant location in supertype: " + 
-                    type.getProducedTypeName(node.getUnit()));
+                    " appears in contravariant location in supertype: '" +
+                    type.getProducedTypeName(node.getUnit()) + "'");
         }
         return !errors.isEmpty();
     }

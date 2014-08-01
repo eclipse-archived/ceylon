@@ -79,15 +79,15 @@ public class RefinementVisitor extends Visitor {
             Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {
                 typeNode.addError("type of declaration " + td.getName() +
-                        " is not visible everywhere declaration is visible: " + 
+                        " is not visible everywhere declaration is visible: '" + 
                         type.getProducedTypeName(that.getUnit()) +
-                        " involves an unshared type declaration", 711);
+                        "' involves an unshared type declaration", 711);
             }
             if (!checkModuleVisibility(td, type)) {
                 typeNode.addError("type of declaration " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: " + 
+                        " that is visible outside this module comes from an imported module that is not re-exported: '" + 
                         type.getProducedTypeName(that.getUnit()) +
-                        " involves an unexported type declaration", 712);
+                        "' involves an unexported type declaration", 712);
             }
         }
     }
@@ -99,16 +99,16 @@ public class RefinementVisitor extends Visitor {
             if (!isCompletelyVisible(td, pt)) {
                 getParameterTypeErrorNode(tp)
                     .addError("type of parameter " + p.getName() + " of " + td.getName() +
-                        " is not visible everywhere declaration is visible: " + 
+                        " is not visible everywhere declaration is visible: '" + 
                         pt.getProducedTypeName(that.getUnit()) +
-                        " involves an unshared type declaration", 710);
+                        "' involves an unshared type declaration", 710);
             }
             if (!checkModuleVisibility(td, pt)) {
                 getParameterTypeErrorNode(tp)
                     .addError("type of parameter " + p.getName() + " of " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: " +
+                        " that is visible outside this module comes from an imported module that is not re-exported: '" +
                         pt.getProducedTypeName(that.getUnit()) +
-                        " involves an unexported type declaration", 714);
+                        "' involves an unexported type declaration", 714);
             }
         }
     }
@@ -340,16 +340,16 @@ public class RefinementVisitor extends Visitor {
             ProducedType at = td.getExtendedType();
             if (!isCompletelyVisible(td, at)) {
                 that.addError("aliased type is not visible everywhere type alias " + 
-                        td.getName() + " is visible: " + 
+                        td.getName() + " is visible: '" + 
                         at.getProducedTypeName(that.getUnit()) +
-                        " involves an unshared type declaration", 
+                        "' involves an unshared type declaration", 
                         713);
             }
             if (!checkModuleVisibility(td, at)) {
                 that.addError("aliased type of type alias " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: " +
+                        " that is visible outside this module comes from an imported module that is not re-exported: '" +
                         at.getProducedTypeName(that.getUnit()) +
-                        " involves an unexported type declaration", 
+                        "' involves an unexported type declaration", 
                         714);
             }
         }
@@ -368,16 +368,16 @@ public class RefinementVisitor extends Visitor {
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
                             that.addError("supertype is not visible everywhere type " + 
-                                    td.getName() + " is visible: " + 
+                                    td.getName() + " is visible: '" + 
                                     st.getProducedTypeName(that.getUnit()) +
-                                    " involves an unshared type declaration", 
+                                    "' involves an unshared type declaration", 
                                     713);
                         }
                         if (!checkModuleVisibility(td, st)) {
                             that.addError("supertype of type " + td.getName() + 
-                                    " that is visible outside this module comes from an imported module that is not re-exported: " +
+                                    " that is visible outside this module comes from an imported module that is not re-exported: '" +
                                     st.getProducedTypeName(that.getUnit()) +
-                                    " involves an unexported type declaration", 
+                                    "' involves an unexported type declaration", 
                                     714);
                         }
                     }
@@ -393,9 +393,9 @@ public class RefinementVisitor extends Visitor {
             Unit unit = that.getUnit();
             if (!areConsistentSupertypes(st1, st2, unit)) {
                 that.addError(typeDescription(td, unit) +
-                        " has the same parameterized supertype twice with incompatible type arguments: " +
+                        " has the same parameterized supertype twice with incompatible type arguments: '" +
                         st1.getProducedTypeName(unit) + " & " + 
-                        st2.getProducedTypeName(unit));
+                        st2.getProducedTypeName(unit) + "'");
                td.setInconsistentType(true);
             }
         }
@@ -415,9 +415,9 @@ public class RefinementVisitor extends Visitor {
             it.setSatisfiedTypes(list);
             if (it.canonicalize().getType().isNothing()) {
                 that.addError(typeDescription(td, unit) + 
-                        " has unsatisfiable upper bound constraints: the constraints " + 
+                        " has unsatisfiable upper bound constraints: the constraints '" + 
                         typeNamesAsIntersection(upperBounds, unit) + 
-                        " cannot be satisfied by any type except Nothing");
+                        "' cannot be satisfied by any type except Nothing");
             }
         }
     }
@@ -742,7 +742,7 @@ public class RefinementVisitor extends Visitor {
 	                that.addError("member type parameter " + refiningTypeParam.getName() +
 	                        " has upper bound which refined member type parameter " + 
 	                        refinedTypeParam.getName() + " of " + message(refined) + 
-	                        " does not satisfy: " + t.getProducedTypeName(that.getUnit()));
+	                        " does not satisfy: '" + t.getProducedTypeName(that.getUnit()) + "'");
 	            }
 	        }
             for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
@@ -758,7 +758,7 @@ public class RefinementVisitor extends Visitor {
                     that.addUnsupportedError("refined member type parameter " + 
                             refinedTypeParam.getName() + " of " + message(refined) +
                             " with upper bound which member type parameter " + refiningTypeParam.getName() + 
-                            " does not satisfy not yet supported: " + st.getProducedTypeName(that.getUnit()));
+                            " does not satisfy not yet supported: '" + st.getProducedTypeName(that.getUnit()) + "'");
                 }
             }
 	        typeArgs.add(refinedProducedType);

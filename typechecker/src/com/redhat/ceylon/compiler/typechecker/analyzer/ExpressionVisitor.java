@@ -287,18 +287,18 @@ public class ExpressionVisitor extends Visitor {
                     String help = " (expression is already of the specified type)";
                     if (that.getNot()) {
                         if (intersectionType(type,knownType, unit).isNothing()) {
-                            that.addError("does not narrow type: intersection of " + type.getProducedTypeName(unit) + 
-                                    " and " + knownType.getProducedTypeName(unit) + " is empty" + help);
+                            that.addError("does not narrow type: intersection of '" + type.getProducedTypeName(unit) + 
+                                    "' and '" + knownType.getProducedTypeName(unit) + "' is empty" + help);
                         }
                         else if (knownType.isSubtypeOf(type)) {
-                            that.addError("tests assignability to Nothing type: " + knownType.getProducedTypeName(unit) + 
-                                    " is a subtype of " + type.getProducedTypeName(unit));
+                            that.addError("tests assignability to Nothing type: '" + knownType.getProducedTypeName(unit) + 
+                                    "' is a subtype of '" + type.getProducedTypeName(unit) + "'");
                         }
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("does not narrow type: " + knownType.getProducedTypeName(unit) + 
-                                    " is a subtype of " + type.getProducedTypeName(unit) + help);
+                            that.addError("does not narrow type: '" + knownType.getProducedTypeName(unit) + 
+                                    "' is a subtype of '" + type.getProducedTypeName(unit) + "'" + help);
                         }
                     }
                 }
@@ -317,9 +317,9 @@ public class ExpressionVisitor extends Visitor {
                             type.getProducedTypeName(unit));*/
                 }
                 else {
-                    that.addError("tests assignability to Nothing type: intersection of " +
-                            knownType.getProducedTypeName(unit) + " and " + 
-                            type.getProducedTypeName(unit) + " is empty");
+                    that.addError("tests assignability to Nothing type: intersection of '" +
+                            knownType.getProducedTypeName(unit) + "' and '" + 
+                            type.getProducedTypeName(unit) + "' is empty");
                 }
             }
             //do this *after* checking for disjointness!
@@ -439,8 +439,8 @@ public class ExpressionVisitor extends Visitor {
             n.addError("expression must be a type with fixed size: type not known");
         }
         else*/ if (!isTypeUnknown(t) && !unit.isPossiblyEmptyType(t)) {
-            term.addError("expression must be a possibly-empty type: " + 
-                    t.getProducedTypeName(unit) + " is not possibly-empty");
+            term.addError("expression must be a possibly-empty type: '" + 
+                    t.getProducedTypeName(unit) + "' is not possibly-empty");
         }
     }
     
@@ -451,8 +451,8 @@ public class ExpressionVisitor extends Visitor {
         else*/ 
         if (!isTypeUnknown(t) && !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
-            term.addError("expression must be of optional type: " +
-                    t.getProducedTypeName(unit) + " is not optional");
+            term.addError("expression must be of optional type: '" +
+                    t.getProducedTypeName(unit) + "' is not optional");
         }
     }
 
@@ -502,8 +502,8 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType dt = unit.getType(unit.getDestroyableDeclaration());
                     if (isInstantiationExpression(e)) {
                         if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
-                            typedNode.addError("resource must be either obtainable or destroyable: " +
-                                    t.getProducedTypeName(unit) + " is neither Obtainable nor Destroyable");
+                            typedNode.addError("resource must be either obtainable or destroyable: '" +
+                                    t.getProducedTypeName(unit) + "' is neither Obtainable nor Destroyable");
                         }
                     }
                     else {
@@ -523,9 +523,9 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
                     if (!unit.isIterableType(et)) {
-                        se.addError("expression is not iterable: " + 
+                        se.addError("expression is not iterable: '" + 
                                 et.getProducedTypeName(unit) + 
-                                " is not a subtype of Iterable");
+                                "' is not a subtype of Iterable");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
                         se.addError("iterated expression is definitely empty");
@@ -555,9 +555,9 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType it = unit.getIteratedType(et);
                     if (it!=null && !isTypeUnknown(it)) {
                         if (!unit.isEntryType(it)) {
-                            se.addError("iterated element type is not an entry type: " + 
+                            se.addError("iterated element type is not an entry type: '" + 
                                     it.getProducedTypeName(unit) + 
-                                    " is not a subtype of Entry");
+                                    "' is not a subtype of Entry");
                         }
                     }
                 }
@@ -1580,9 +1580,9 @@ public class ExpressionVisitor extends Visitor {
                 result = unit.getIteratedType(pt);
             }
             else {
-                p.addError("expression must be of iterable type: " +
+                p.addError("expression must be of iterable type: '" +
                         pt.getProducedTypeName(unit) + 
-                        " is not a subtype of Iterable");
+                        "' is not a subtype of Iterable");
                 result = pt;
             }
         }
@@ -2391,7 +2391,7 @@ public class ExpressionVisitor extends Visitor {
                     "named argument must be assignable to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2100);
         }
     }
@@ -2431,7 +2431,7 @@ public class ExpressionVisitor extends Visitor {
                     "iterable arguments must be assignable to iterable parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in " + pr.getQualifyingType().getProducedTypeName(unit)));
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'");
         }
     }
     
@@ -2722,7 +2722,7 @@ public class ExpressionVisitor extends Visitor {
                             "spread argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
                                     (pr.getQualifyingType()==null ? "" : 
-                                        " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                        " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                                     2101);
                 }
                 else {
@@ -2730,7 +2730,7 @@ public class ExpressionVisitor extends Visitor {
                             "argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
                                     (pr.getQualifyingType()==null ? "" : 
-                                        " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                        " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                                     2101);
                     //if we already have an arg to a nonempty variadic parameter,
                     //we can treat it like a possibly-empty variadic now
@@ -2755,7 +2755,7 @@ public class ExpressionVisitor extends Visitor {
                     "argument must be assignable to variadic parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2101);
         }
     }
@@ -2780,7 +2780,7 @@ public class ExpressionVisitor extends Visitor {
                     "argument must be assignable to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2100);
         }
     }
@@ -2798,9 +2798,9 @@ public class ExpressionVisitor extends Visitor {
             if (t!=null) {
                 if (!isTypeUnknown(t)) {
                     if (!unit.isIterableType(t)) {
-                        e.addError("spread argument is not iterable: " + 
+                        e.addError("spread argument is not iterable: '" + 
                                 t.getProducedTypeName(unit) + 
-                                " is not a subtype of Iterable");
+                                "' is not a subtype of Iterable");
                     }
                 }
                 that.setTypeModel(t);
@@ -3191,10 +3191,10 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(rhst, id.getType(), that.getRightTerm(), 
                     "operand expression must be of type Identifiable");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
-                that.addError("values of disjoint types are never identical: " +
+                that.addError("values of disjoint types are never identical: '" +
                         lhst.getProducedTypeName(unit) + 
-                        " has empty intersection with " +
-                        rhst.getProducedTypeName(unit));
+                        "' has empty intersection with '" +
+                        rhst.getProducedTypeName(unit) + "'");
             }
         }
         that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
@@ -3478,8 +3478,9 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType pt = tt.getTypeModel();
                         if (!isTypeUnknown(pt)) {
                             if (!t.covers(pt)) {
-                                that.addError("specified type does not cover the cases of the operand expression: " +
-                                        t.getProducedTypeName(unit) + " does not cover " + pt.getProducedTypeName(unit));
+                                that.addError("specified type does not cover the cases of the operand expression: '" +
+                                        t.getProducedTypeName(unit) + "' does not cover '" + 
+                                        pt.getProducedTypeName(unit) + "'");
                             }
                         }
                     }
@@ -3499,16 +3500,15 @@ public class ExpressionVisitor extends Visitor {
                 if (that.getTerm()!=null) {
                     ProducedType pt = that.getTerm().getTypeModel();
                     if (pt!=null && pt.isSubtypeOf(t)) {
-                        that.addError("expression type is a subtype of the type: " +
-                                pt.getProducedTypeName(unit) + " is assignable to " +
-                                t.getProducedTypeName(unit));
+                        that.addError("expression type is a subtype of the type: '" +
+                                pt.getProducedTypeName(unit) + "' is assignable to '" +
+                                t.getProducedTypeName(unit) + "'");
                     }
                     else {
                         if (intersectionType(t, pt, unit).isNothing()) {
-                            that.addError("tests assignability to Nothing type: intersection of " +
-                                    pt.getProducedTypeName(unit) + " and " + 
-                                    t.getProducedTypeName(unit) +
-                                    " is empty");
+                            that.addError("tests assignability to Nothing type: intersection of '" +
+                                    pt.getProducedTypeName(unit) + "' and '" + 
+                                    t.getProducedTypeName(unit) + "' is empty");
                         }
                     }
                 }
@@ -4028,7 +4028,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
-                container = "package " + unit.getPackage().getNameAsString();
+                container = "package '" + unit.getPackage().getNameAsString() + "'";
                 Declaration pm = unit.getPackage()
                         .getMember(name, signature, ellipsis);
                 if (pm instanceof TypedDeclaration) {
@@ -4042,7 +4042,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
-                container = "type " + d.getName(unit);
+                container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
                 if (ci!=null && d.inherits(ci)) {
                     Declaration direct = ci.getDirectMember(name, signature, ellipsis);
@@ -4963,9 +4963,9 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                        that.addError("narrows to Nothing type: " + 
-                                pt.getProducedTypeName(unit) + " has empty intersection with " + 
-                                st.getProducedTypeName(unit));
+                        that.addError("narrows to Nothing type: '" + 
+                                pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                                st.getProducedTypeName(unit) + "'");
                     }
                     /*checkAssignable(ct, switchType, cc.getCaseItem(), 
                         "case type must be a case of the switch type");*/
@@ -5038,9 +5038,9 @@ public class ExpressionVisitor extends Visitor {
             //the switch expression type then the 
             //switch is exhaustive
             if (!ut.getType().covers(st)) {
-                switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: " +
-                                ut.getType().getProducedTypeName(unit) + " does not cover " + 
-                                st.getProducedTypeName(unit));
+                switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
+                                ut.getType().getProducedTypeName(unit) + "' does not cover '" + 
+                                st.getProducedTypeName(unit) + "'");
             }
         }
         /*else if (dynamic) {
@@ -5187,15 +5187,15 @@ public class ExpressionVisitor extends Visitor {
                             if (ect!=null) {
                                 if (ct.isSubtypeOf(ect)) {
                                     cc.getCatchVariable().getVariable().getType()
-                                            .addError("exception type is already handled by earlier catch clause:" 
-                                                    + ct.getProducedTypeName(unit));
+                                            .addError("exception type is already handled by earlier catch clause: '" 
+                                                    + ct.getProducedTypeName(unit) + "'");
                                 }
                                 if (ct.getDeclaration() instanceof UnionType) {
                                     for (ProducedType ut: ct.getDeclaration().getCaseTypes()) {
                                         if ( ut.substitute(ct.getTypeArguments()).isSubtypeOf(ect) ) {
                                             cc.getCatchVariable().getVariable().getType()
-                                                    .addError("exception type is already handled by earlier catch clause: "
-                                                            + ut.getProducedTypeName(unit));
+                                                    .addError("exception type is already handled by earlier catch clause: '"
+                                                            + ut.getProducedTypeName(unit) + "'");
                                         }
                                     }
                                 }
@@ -5251,19 +5251,19 @@ public class ExpressionVisitor extends Visitor {
                             if (!isCondition && !argType.isSubtypeOf(sts)) {
                                 if (argTypeMeaningful) {
                                     if (tal instanceof Tree.InferredTypeArguments) {
-                                        parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
-                                                + " to type parameter " + param.getName()
+                                        parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
+                                                + "' to type parameter " + param.getName()
                                                 + " of declaration " + dec.getName(unit)
-                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit)
-                                                + " of " + param.getName());
+                                                + " not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                + "' of " + param.getName());
                                     }
                                     else {
                                         ((Tree.TypeArgumentList) tal).getTypes()
                                                 .get(i).addError("type parameter " + param.getName() 
                                                         + " of declaration " + dec.getName(unit)
-                                                        + " has argument " + argType.getProducedTypeName(unit) 
-                                                        + " not assignable to upper bound " + sts.getProducedTypeName(unit)
-                                                        + " of " + param.getName(), 2102);
+                                                        + " has argument '" + argType.getProducedTypeName(unit) 
+                                                        + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                        + "' of " + param.getName(), 2102);
                                     }
                                 }
                                 return false;
@@ -5275,8 +5275,8 @@ public class ExpressionVisitor extends Visitor {
                                     typeArguments, argType, param)) {
                         if (argTypeMeaningful) {
                             if (tal instanceof Tree.InferredTypeArguments) {
-                                parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
-                                        + " to type parameter " + param.getName()
+                                parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
+                                        + "' to type parameter " + param.getName()
                                         + " of declaration " + dec.getName(unit)
                                         + " not one of the enumerated cases of " + param.getName());
                             }
@@ -5671,9 +5671,9 @@ public class ExpressionVisitor extends Visitor {
             Node ot) {
         if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
             if (!intersectionType(type.resolveAliases(), other.resolveAliases(), unit).isNothing()) {
-                ot.addError("cases are not disjoint: " + 
-                        type.getProducedTypeName(unit) + " and " + 
-                        other.getProducedTypeName(unit));
+                ot.addError("cases are not disjoint: '" + 
+                        type.getProducedTypeName(unit) + "' and '" + 
+                        other.getProducedTypeName(unit) + "'");
             }
         }
     }
@@ -5693,9 +5693,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            that.addError("qualifying type " + qt.getProducedTypeName(unit) + 
-                    " of supertype " + type.getProducedTypeName(unit) + 
-                    " is not an outer type or supertype of any outer type of " +
+            that.addError("qualifying type '" + qt.getProducedTypeName(unit) + 
+                    "' of supertype '" + type.getProducedTypeName(unit) + 
+                    "' is not an outer type or supertype of any outer type of " +
                     td.getName(unit));
         }
     }
@@ -5740,8 +5740,8 @@ public class ExpressionVisitor extends Visitor {
                             help = "";
                         }
                         that.addError("type argument does not satisfy self type constraint on type parameter " +
-                                param.getName() + " of " + type.getDeclaration().getName(unit) + ": " +
-                                arg.getProducedTypeName(unit) + " is not a supertype or self type of " + 
+                                param.getName() + " of " + type.getDeclaration().getName(unit) + ": '" +
+                                arg.getProducedTypeName(unit) + "' is not a supertype or self type of " + 
                                 td.getName(unit) + help);
                     }
                 }
@@ -5773,7 +5773,7 @@ public class ExpressionVisitor extends Visitor {
                     else if (types.size()>1) {
                         StringBuilder sb = new StringBuilder();
                         for (ProducedType pt: types) {
-                            sb.append(pt.getProducedTypeName(unit)).append(" and ");
+                            sb.append("'").append(pt.getProducedTypeName(unit)).append("' and ");
                         }
                         sb.setLength(sb.length()-5);
                         that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
@@ -5848,8 +5848,8 @@ public class ExpressionVisitor extends Visitor {
             //TODO: do I need to do type arg substitution here??
             ProducedType ub = formIntersection(sts);
             if (!(arg.isExactly(ub))) {
-                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or " + 
-                        typeNamesAsIntersection(sts, unit) + ": " + 
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or '" + 
+                        typeNamesAsIntersection(sts, unit) + "': " + 
                         typeDescription(p, unit));
             }
         }
