@@ -72,7 +72,7 @@ public class CeyloncTool {
     }
     
     public CeyloncTaskImpl getTask(Writer out, JavaFileManager fileManager, DiagnosticListener<? super JavaFileObject> diagnosticListener, Iterable<String> options, Iterable<String> classes, Iterable<? extends JavaFileObject> compilationUnits) {
-        final String kindMsg = "All compilation units must be of SOURCE kind";
+//        final String kindMsg = "All compilation units must be of SOURCE kind";
         if (options != null)
             for (String option : options)
                 option.getClass(); // null check
