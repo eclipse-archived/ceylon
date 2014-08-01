@@ -69,8 +69,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
@@ -493,20 +494,36 @@ public class CeylonEnter extends Enter {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu, runAssertions){
                 @Override
                 protected void out(UnexpectedError err) {
+                    setSource();
                     logError(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisError err) {
+                    setSource();
                     Node node = getIdentifyingNode(err.getTreeNode());
                     logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
+                protected void out(Node that, LexError err) {
+                    setSource();
+                    int pos = getPosition((err.getLine()), err.getCharacterInLine());
+                    logError(pos, "ceylon", err.getMessage());
+                }
+                @Override
+                protected void out(Node that, ParseError err) {
+                    setSource();
+                    int pos = getPosition((err.getLine()), err.getCharacterInLine());
+                    logError(pos, "ceylon", err.getMessage());
+                }
+                @Override
                 protected void out(UnsupportedError err) {
+                    setSource();
                     Node node = getIdentifyingNode(err.getTreeNode());
                     logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(Node that, String message) {
+                    setSource();
                     logError(getPosition(that), "ceylon", message);
                 }
             });
@@ -546,6 +563,10 @@ public class CeylonEnter extends Enter {
                 protected void out(AnalysisError err) {}
                 @Override
                 protected void out(UnsupportedError err) {}
+                @Override
+                protected void out(Node that, ParseError err) {}
+                @Override
+                protected void out(Node that, LexError err) {}
                 @Override
                 protected void out(Node that, String message) {}
             });
@@ -607,16 +628,31 @@ public class CeylonEnter extends Enter {
         protected Node getIdentifyingNode(Node node) {
             return com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(node);
         }
-        protected int getPosition(Node node) {
-            int pos;
-            if(node != null && node.getToken() != null)
-                pos = cpu.getLineMap().getStartPosition(node.getToken().getLine())
-                + node.getToken().getCharPositionInLine();
-            else
-                pos = -1;
-            log.useSource(cpu.getFileObject());
-            return pos;
+        
+        protected int getPosition(int line, int characterInLine) {
+            if (line<0) {
+                return -1;
+            }
+            try {
+                return cpu.getLineMap().getPosition(line,characterInLine);
+            }
+            catch (ArrayIndexOutOfBoundsException aie) {
+                return cpu.getLineMap().getPosition(line-1, 0);
+            }
         }
+        
+        protected int getPosition(Node node) {
+            if(node != null && node.getToken() != null)
+                return getPosition(node.getToken().getLine(), 
+                        node.getToken().getCharPositionInLine());
+            else
+                return -1;
+        }
+        
+        protected void setSource() {
+            log.useSource(cpu.getFileObject());
+        }
+        
         @Override
         protected void initExpectingError(java.util.List<CompilerAnnotation> annotations) {
             if (runAssertions) {
