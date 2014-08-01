@@ -85,6 +85,24 @@ public class FileUtil {
     }
 
     /**
+     * Given an Iterable of files and a "current working directory"
+     * returns an Iterable where the files that were relative are
+     * now absolute after having the "CWD" applied to them
+     * as their parent directory. Files in the list that were
+     * already absolute are returned unmodified.
+     * @param cwd The current working directory
+     * @param files An Iterable of files
+     * @return An Iterable of absolute files
+     */
+    public static Iterable<File> applyCwd(File cwd, Iterable<File> files) {
+        List<File> result = new ArrayList<>();
+        for (File f : files) {
+            result.add(applyCwd(cwd, f));
+        }
+        return result;
+    }
+
+    /**
      * Given a file and a "current working directory" returns
      * an absolute file after having the "CWD" applied to it
      * first as its parent directory. If the file was already
@@ -310,6 +328,23 @@ public class FileUtil {
             }
         }
         return srcDirFile;
+    }
+    
+    /**
+     * Given a relative file path and a list of "search paths"
+     * returns the search path where the file was located
+     * @param paths A list of folders
+     * @param file A relative path to a file 
+     * @return The search path where the file was located or null
+     */
+    public static File searchPaths(Iterable<? extends File> paths, String relFile) {
+        for (File path : paths) {
+            File f = new File(path, relFile);
+            if (f.exists()) {
+                return path;
+            }
+        }
+        return null;
     }
     
     public static boolean sameFile(File a, File b) {
