@@ -84,7 +84,7 @@ public class ProducedTypeNamePrinter {
     }
 
     public String getProducedTypeName(ProducedType pt, Unit unit) {
-        if (pt.getDeclaration()==null) {
+        if (pt==null || pt.getDeclaration()==null) {
             return "unknown";
         }
         else {
