@@ -41,4 +41,30 @@ public abstract class ModuleUtil {
         return new File(moduleName.replace('.', File.separatorChar));
     }
 
+    public static String pathToModule(File modulePath) {
+        return modulePath.getPath().replace('/', '.').replace('\\', '.');
+    }
+    
+    public static boolean isModuleFolder(Iterable<File> paths, File modPath) {
+        File modDesc = new File(modPath, Constants.MODULE_DESCRIPTOR);
+        File path = FileUtil.searchPaths(paths, modDesc.getPath());
+        return path != null && (new File(path, modDesc.getPath())).isFile();
+    }
+
+    public static File moduleFolder(Iterable<File> paths, File relFile) {
+        while (relFile != null && !isModuleFolder(paths, relFile)) {
+            relFile = relFile.getParentFile();
+        }
+        return relFile;
+    }
+    
+    public static String moduleName(Iterable<File> paths, File relFile) {
+        File modPath = moduleFolder(paths, relFile);
+        if (modPath != null) {
+            return ModuleUtil.pathToModule(modPath);
+        } else {
+            return "default";
+        }
+    }
+
 }
