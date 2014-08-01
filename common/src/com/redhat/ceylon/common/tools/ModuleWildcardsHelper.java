@@ -83,7 +83,7 @@ public abstract class ModuleWildcardsHelper {
      * @param names The list of module names
      * @return An expanded list of module names
      */
-    public static List<String> expandWildcards(List<File> dirs, List<String> names) {
+    public static List<String> expandWildcards(Iterable<File> dirs, List<String> names) {
         List<String> result = new ArrayList<>(names.size());
         for (String name : names) {
             expandWildcard(result, dirs, name);
@@ -91,7 +91,7 @@ public abstract class ModuleWildcardsHelper {
         return result;
     }
 
-    public static void expandWildcard(List<String> result, List<File> dirs, String name) {
+    public static void expandWildcard(List<String> result, Iterable<File> dirs, String name) {
         if ("*".equals(name)) {
             List<String> modules = findModules(dirs, ".");
             result.addAll(modules);
@@ -108,7 +108,7 @@ public abstract class ModuleWildcardsHelper {
         result.add(name);
     }
 
-    public static boolean isValidModuleDir(List<File> dirs, String name) {
+    public static boolean isValidModuleDir(Iterable<File> dirs, String name) {
         if (isModuleName(name)) {
             String path = name.replace('.', File.separatorChar);
             if (existsSourceSubDir(dirs, path)) {
@@ -132,7 +132,7 @@ public abstract class ModuleWildcardsHelper {
         return true;
     }
 
-    private static boolean existsSourceSubDir(List<File> dirs, String file) {
+    private static boolean existsSourceSubDir(Iterable<File> dirs, String file) {
         for (File dir : dirs) {
             File subDir = new File(dir, file);
             if (subDir.isDirectory() && subDir.canRead()) {
@@ -142,7 +142,7 @@ public abstract class ModuleWildcardsHelper {
         return false;
     }
 
-    private static List<String> findModules(List<File> dirs, String modPath) {
+    private static List<String> findModules(Iterable<File> dirs, String modPath) {
         List<String> modules = new ArrayList<>();
         for (File dir : dirs) {
             File modDir = new File(dir, modPath);
