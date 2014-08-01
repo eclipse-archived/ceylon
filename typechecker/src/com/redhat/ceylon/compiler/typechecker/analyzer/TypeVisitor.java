@@ -233,8 +233,8 @@ public class TypeVisitor extends Visitor {
             if(module.isDefault())
                 help = " (define a module and add module import to its module descriptor)";
             else
-                help = " (add module import to module descriptor of " +
-                        module.getNameAsString() + ")";
+                help = " (add module import to module descriptor of '" +
+                        module.getNameAsString() + "')";
             path.addError("package not found in imported modules: '" + 
             		nameToImport + "'" + help, 7000);
         }
