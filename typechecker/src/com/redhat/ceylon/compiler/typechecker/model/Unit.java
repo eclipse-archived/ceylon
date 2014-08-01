@@ -1224,6 +1224,9 @@ public class Unit {
     
     public ProducedType getFunctionMetatype(ProducedTypedReference pr) {
         Functional f = (Functional) pr.getDeclaration();
+        if (f.getParameterLists().isEmpty()) {
+            return null;
+        }
         ParameterList fpl = f.getParameterLists().get(0);
         ProducedType parameterTuple = 
                 getParameterTypesAsTupleType(fpl.getParameters(), pr);
