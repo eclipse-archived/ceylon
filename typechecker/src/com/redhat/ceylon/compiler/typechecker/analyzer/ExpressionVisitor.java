@@ -913,7 +913,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = sie.getExpression().getTypeModel();
             if (!isTypeUnknown(t)) {
                 checkAssignable(t, declaredType, sie, 
-                        "specified expression must be assignable to declared type of " + name,
+                        "specified expression must be assignable to declared type of '" + name + "'",
                         code);
             }
         }
