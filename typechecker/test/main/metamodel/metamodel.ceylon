@@ -72,9 +72,9 @@ void test<T>() {
     value toplevelMethodFunction = `function method`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelMethod = `method`;
-    @error:"does not accept type arguments: method"
+    @error:"does not accept type arguments: 'method'"
     value toplevelMethodErr = `method<String>`;
-    @error:"function or value does not exist: missingMethod"
+    @error:"function or value does not exist: 'missingMethod'"
     value toplevelMethodErr2 = `missingMethod`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
@@ -88,7 +88,7 @@ void test<T>() {
     value containerMethodFunction = `function Container.method`;
     @type:"Method<Container,Anything,Empty>"
     value containerMethod = `Container.method`;
-    @error:"method or attribute does not exist: missing in type Container"
+    @error:"method or attribute does not exist: 'missing' in type 'Container'"
     value containerMethodErr = `Container.missing`;
     @type:"Method<ParameterisedContainer<String>,Anything,Tuple<Integer,Integer,Empty>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
@@ -106,7 +106,7 @@ void test<T>() {
     value toplevelAttributeValue = `value attribute`;
     @type:"Value<Integer,Nothing>"
     value toplevelAttribute = `attribute`;
-    @error:"does not accept type arguments: attribute"
+    @error:"does not accept type arguments: 'attribute'"
     value toplevelAttributeErr = `attribute<String>`;
     @type:"ValueDeclaration"
     value toplevelVariableAttributeValue = `value variableAttribute`;
@@ -195,9 +195,9 @@ void test<T>() {
     value classMethodAndParameter = `Container.methodAndParameter`;
     
     // private attributes
-    @error:"method or attribute is not visible: privateAttribute of type Container"
+    @error:"method or attribute is not visible: 'privateAttribute' of type 'Container'"
     value privateAttributeValue = `value Container.privateAttribute`;
-    @error:"method or attribute is not visible: privateAttribute of type Container"
+    @error:"method or attribute is not visible: 'privateAttribute' of type 'Container'"
     value privateAttribute = `Container.privateAttribute`;
     
     // local values and methods
