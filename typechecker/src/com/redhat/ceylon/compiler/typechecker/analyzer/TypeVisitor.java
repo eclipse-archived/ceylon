@@ -81,7 +81,7 @@ public class TypeVisitor extends Visitor {
             if (ip!=null) {
                 String mp = formatPath(ip.getIdentifiers());
                 if (!set.add(mp)) {
-                    ip.addError("duplicate import: " + mp);
+                    ip.addError("duplicate import: '" + mp + "'");
                 }
             }
         }
@@ -173,7 +173,7 @@ public class TypeVisitor extends Visitor {
             if (pkg != null) {
                 Module mod = pkg.getModule();
                 if (!pkg.getNameAsString().equals(mod.getNameAsString())) {
-                    path.addError("not a module: " + nameToImport);
+                    path.addError("not a module: '" + nameToImport + "'");
                     return null;
                 }
                 if (mod.equals(module)) {
@@ -191,8 +191,8 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }
-            path.addError("module not found in imported modules: " + 
-                    nameToImport, 7000);
+            path.addError("module not found in imported modules: '" + 
+                    nameToImport + "'", 7000);
         }
         return null;
     }
@@ -207,8 +207,8 @@ public class TypeVisitor extends Visitor {
                     return pkg;
                 }
                 if (!pkg.isShared()) {
-                    path.addError("imported package is not shared: " + 
-                            nameToImport);
+                    path.addError("imported package is not shared: '" + 
+                            nameToImport + "'");
                 }
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&
@@ -235,8 +235,8 @@ public class TypeVisitor extends Visitor {
             else
                 help = " (add module import to module descriptor of " +
                         module.getNameAsString() + ")";
-            path.addError("package not found in imported modules: " + 
-            		nameToImport + help, 7000);
+            path.addError("package not found in imported modules: '" + 
+            		nameToImport + "'" + help, 7000);
         }
         return null;
     }
@@ -288,10 +288,10 @@ public class TypeVisitor extends Visitor {
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n)) {
                 if (alias==null) {
-                    id.addError("toplevel declaration with this name declared in this unit: " + n);
+                    id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
                 else {
-                    alias.addError("toplevel declaration with this name declared in this unit: " + n);
+                    alias.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
                 return true;
             }
@@ -329,13 +329,13 @@ public class TypeVisitor extends Visitor {
 			int tt = id.getToken().getType();
             if (d instanceof TypeDeclaration &&
                     tt!=CeylonLexer.UIDENTIFIER) {
-                id.addError("imported type should have uppercase alias: " +
-                        d.getName());
+                id.addError("imported type should have uppercase alias: '" +
+                        d.getName() + "'");
             }
             else if (d instanceof TypedDeclaration &&
                     tt!=CeylonLexer.LIDENTIFIER) {
-                id.addError("imported member should have lowercase alias: " +
-                        d.getName());
+                id.addError("imported member should have lowercase alias: '" +
+                        d.getName() + "'");
             }
         }
     }
@@ -362,29 +362,29 @@ public class TypeVisitor extends Visitor {
         }        
         Declaration d = importedPackage.getMember(name, null, false);
         if (d==null) {
-            id.addError("imported declaration not found: " + 
-                    name, 100);
+            id.addError("imported declaration not found: '" + 
+                    name + "'", 100);
             unit.getUnresolvedReferences().add(id);
         }
         else {
             if (!declaredInPackage(d, unit)) {
                 if (!d.isShared()) {
-                    id.addError("imported declaration is not shared: " +
-                            name, 400);
+                    id.addError("imported declaration is not shared: '" +
+                            name + "'", 400);
                 }
                 else if (d.isPackageVisibility()) {
-                    id.addError("imported package private declaration is not visible: " +
-                            name);
+                    id.addError("imported package private declaration is not visible: '" +
+                            name + "'");
                 }
                 else if (d.isProtectedVisibility()) {
-                    id.addError("imported protected declaration is not visible: " +
-                            name);
+                    id.addError("imported protected declaration is not visible: '" +
+                            name + "'");
                 }
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
             if (il.hasImport(d)) {
-                id.addError("already imported: " + name);
+                id.addError("already imported: '" + name + "'");
             }
             else if (!checkForHiddenToplevel(id, i, alias)) {
                 addImport(member, il, i);
@@ -413,31 +413,31 @@ public class TypeVisitor extends Visitor {
         }
         Declaration m = td.getMember(name, null, false);
         if (m==null) {
-            id.addError("imported declaration not found: " + 
-                    name + " of " + td.getName(), 100);
+            id.addError("imported declaration not found: '" + 
+                    name + "' of '" + td.getName() + "'", 100);
             unit.getUnresolvedReferences().add(id);
         }
         else {
             for (Declaration d: m.getContainer().getMembers()) {
                 if (d.getName().equals(name) && !d.sameKind(m)) {
                     //crazy interop cases like isOpen() + open()
-                    id.addError("ambiguous member declaration: " +
-                            name + " of " + td.getName());
+                    id.addError("ambiguous member declaration: '" +
+                            name + "' of '" + td.getName() + "'");
                     return null;
                 }
             }
             if (!m.isShared()) {
-                id.addError("imported declaration is not shared: " +
-                        name + " of " + td.getName(), 400);
+                id.addError("imported declaration is not shared: '" +
+                        name + "' of '" + td.getName() + "'", 400);
             }
             else if (!declaredInPackage(m, unit)) {
                 if (m.isPackageVisibility()) {
-                    id.addError("imported package private declaration is not visible: " +
-                            name + " of " + td.getName());
+                    id.addError("imported package private declaration is not visible: '" +
+                            name + "' of '" + td.getName() + "'");
                 }
                 else if (m.isProtectedVisibility()) {
-                    id.addError("imported protected declaration is not visible: " +
-                            name + " of " + td.getName());
+                    id.addError("imported protected declaration is not visible: '" +
+                            name + "' of '" + td.getName() + "'");
                 }
             }
             if (!m.isStaticallyImportable()) {
@@ -449,8 +449,8 @@ public class TypeVisitor extends Visitor {
             i.setDeclaration(m);
             member.setDeclarationModel(m);
             if (il.hasImport(m)) {
-                id.addError("already imported: " +
-                        name + " of " + td.getName());
+                id.addError("already imported: '" +
+                        name + "' of '" + td.getName() + "'");
             }
             else {
                 if (m.isStaticallyImportable()) {
@@ -479,7 +479,7 @@ public class TypeVisitor extends Visitor {
                     (!d.getUnit().getPackage().getNameAsString()
                             .equals(Module.LANGUAGE_MODULE_NAME) ||
                     !mods.containsKey(d.getName()))) {
-                member.addError("import hides a language modifier: " + alias);
+                member.addError("import hides a language modifier: '" + alias + "'");
             }
             else {
                 Import o = unit.getImport(alias);
@@ -494,7 +494,7 @@ public class TypeVisitor extends Visitor {
                     il.getImports().add(i);
                 }
                 else {
-                    member.addError("duplicate import alias: " + alias);
+                    member.addError("duplicate import alias: '" + alias + "'");
                 }
             }
         }
@@ -509,7 +509,7 @@ public class TypeVisitor extends Visitor {
     			il.getImports().add(i);
     		}
     		else {
-    			member.addError("duplicate member import alias: " + alias);
+    			member.addError("duplicate member import alias: '" + alias + "'");
     		}
     	}
     }
@@ -745,7 +745,7 @@ public class TypeVisitor extends Visitor {
                 name(that.getIdentifier()), null, false, that.getUnit());
         String name = name(that.getIdentifier());
         if (type==null) {
-            that.addError("type declaration does not exist: " + name, 102);
+            that.addError("type declaration does not exist: '" + name + "'", 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
@@ -800,12 +800,12 @@ public class TypeVisitor extends Visitor {
             TypeDeclaration type = getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
-                    that.addError("member type declaration is ambiguous: " + 
-                            name + " for type " + d.getName());
+                    that.addError("member type declaration is ambiguous: '" + 
+                            name + "' for type '" + d.getName() + "'");
                 }
                 else {
-                    that.addError("member type declaration does not exist: " + 
-                            name + " in type " + d.getName(), 100);
+                    that.addError("member type declaration does not exist: '" + 
+                            name + "' in type '" + d.getName() + "'", 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
             }
@@ -903,7 +903,7 @@ public class TypeVisitor extends Visitor {
         
     private void setType(Node that, Tree.Type type, TypedDeclaration td) {
         if (type==null) {
-            that.addError("missing type of declaration: " + td.getName());
+            that.addError("missing type of declaration: '" + td.getName() + "'");
         }
         else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             ProducedType t = type.getTypeModel();
@@ -1053,13 +1053,13 @@ public class TypeVisitor extends Visitor {
                     	that.getDeclarationModel().setExtendedType(type);
                     } 
                     else {
-                        ct.addError("not a class: " + 
-                                type.getDeclaration().getName(unit));
+                        ct.addError("not a class: '" + 
+                                type.getDeclaration().getName(unit) + "'");
                     }
                     TypeDeclaration etd = ct.getDeclarationModel();
                     if (etd==td) {
                         //TODO: handle indirect circularities!
-                        ct.addError("directly aliases itself: " + td.getName());
+                        ct.addError("directly aliases itself: '" + td.getName() + "'");
                         return;
                     }
                 }
@@ -1101,8 +1101,8 @@ public class TypeVisitor extends Visitor {
                         id.setExtendedType(type);
                     } 
                     else {
-                        et.addError("not an interface: " + 
-                                type.getDeclaration().getName(unit));
+                        et.addError("not an interface: '" + 
+                                type.getDeclaration().getName(unit) + "'");
                     }
                 }
             }
@@ -1148,8 +1148,8 @@ public class TypeVisitor extends Visitor {
         if (dec!=null && dec.isParameter() && 
                 dec.getInitializerParameter().isHidden()) {
             if (sie!=null) {
-                sie.addError("function is an initializer parameter and may not have an initial value: " + 
-                        dec.getName());
+                sie.addError("function is an initializer parameter and may not have an initial value: '" + 
+                        dec.getName() + "'");
             }
         }
     }
@@ -1167,8 +1167,8 @@ public class TypeVisitor extends Visitor {
                 param.setAtLeastOne(((Tree.SequencedType)that.getType()).getAtLeastOne());
             }
             if (sie!=null) {
-                sie.addError("value is an initializer parameter and may not have an initial value: " + 
-                        dec.getName());
+                sie.addError("value is an initializer parameter and may not have an initial value: '" + 
+                        dec.getName() + "'");
             }
         }
     }
@@ -1204,19 +1204,19 @@ public class TypeVisitor extends Visitor {
                 TypeDeclaration etd = et.getDeclarationModel();
                 if (etd==td) {
                     //TODO: handle indirect circularities!
-                    et.addError("directly extends itself: " + td.getName());
+                    et.addError("directly extends itself: '" + td.getName() + "'");
                 }
                 else if (etd instanceof TypeParameter) {
-                    et.addError("directly extends a type parameter: " + 
-                            type.getDeclaration().getName(unit));
+                    et.addError("directly extends a type parameter: '" + 
+                            type.getDeclaration().getName(unit) + "'");
                 }
                 else if (etd instanceof Interface) {
-                    et.addError("extends an interface: " + 
-                            type.getDeclaration().getName(unit));
+                    et.addError("extends an interface: '" + 
+                            type.getDeclaration().getName(unit) + "'");
                 }
                 else if (etd instanceof TypeAlias) {
-                    et.addError("extends a type alias: " + 
-                            type.getDeclaration().getName(unit));
+                    et.addError("extends a type alias: '" + 
+                            type.getDeclaration().getName(unit) + "'");
                 }
                 else {
                     td.setExtendedType(type);
@@ -1245,12 +1245,12 @@ public class TypeVisitor extends Visitor {
                 TypeDeclaration std = type.getDeclaration();
 				if (std==td) {
                     //TODO: handle indirect circularities!
-                    st.addError("directly extends itself: " + td.getName());
+                    st.addError("directly extends itself: '" + td.getName() + "'");
                     continue;
                 }
                 if (std instanceof TypeAlias) {
-                    st.addError("satisfies a type alias: " + 
-                    		type.getDeclaration().getName(unit));
+                    st.addError("satisfies a type alias: '" + 
+                    		type.getDeclaration().getName(unit) + "'");
                     continue;
                 }
                 if (td instanceof TypeParameter) {
@@ -1279,13 +1279,13 @@ public class TypeVisitor extends Visitor {
                 } 
                 else {
                     if (std instanceof TypeParameter) {
-                        st.addError("directly satisfies type parameter: " + 
-                        		type.getDeclaration().getName(unit));
+                        st.addError("directly satisfies type parameter: '" + 
+                        		type.getDeclaration().getName(unit) + "'");
                         continue;
                     }
                     else if (std instanceof Class) {
-                        st.addError("satisfies a class: " + 
-                        		type.getDeclaration().getName(unit));
+                        st.addError("satisfies a class: '" + 
+                        		type.getDeclaration().getName(unit) + "'");
                         continue;
                     }
             		else if (!(std instanceof Interface)) {
@@ -1355,7 +1355,7 @@ public class TypeVisitor extends Visitor {
         			    }
         			}
         			else if (ctd.equals(td)) {
-        				st.addError("directly enumerates itself: " + td.getName());
+        				st.addError("directly enumerates itself: '" + td.getName() + "'");
         				continue;
         			}
         			else if (ctd instanceof TypeParameter) {
@@ -1396,12 +1396,14 @@ public class TypeVisitor extends Visitor {
         	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
         		Scope s = list.get(0).getDeclaration().getContainer();
         		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
-        			that.addError("non-abstract class parameterized by self type: " + td.getName(), 905);
+        			that.addError("non-abstract class parameterized by self type: '" + 
+        			        td.getName() + "'", 905);
         		}
         	}
         	else {
         		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-        			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
+        			that.addError("non-abstract class has enumerated subtypes: '" +
+        			        td.getName() + "'", 905);
         		}
         	}
         	td.setCaseTypes(list);
@@ -1415,15 +1417,15 @@ public class TypeVisitor extends Visitor {
         Parameter p = that.getParameterModel();
         Declaration a = that.getScope().getDirectMember(p.getName(), null, false);
         if (a==null) {
-            that.addError("parameter declaration does not exist: " + p.getName());
+            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
         }
         else if (!(a instanceof Value && !((Value) a).isTransient()) && 
                 !(a instanceof Method)) {
-            that.addError("parameter is not a reference value or function: " + p.getName());
+            that.addError("parameter is not a reference value or function: '" + p.getName() + "'");
         }
         else {
             if (a.isFormal()) {
-                that.addError("parameter is a formal attribute: " + p.getName(), 320);
+                that.addError("parameter is a formal attribute: '" + p.getName() + "'", 320);
             }
             /*else if (a.isDefault()) {
                 that.addError("initializer parameter refers to a default attribute: " + 
@@ -1442,8 +1444,8 @@ public class TypeVisitor extends Visitor {
             }
         }*/
         if (a instanceof Generic && !((Generic) a).getTypeParameters().isEmpty()) {
-            that.addError("parameter declaration has type parameters: " + 
-                    p.getName());
+            that.addError("parameter declaration has type parameters: '" + 
+                    p.getName() + "' may not declare type parameters");
         }
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);
@@ -1457,8 +1459,8 @@ public class TypeVisitor extends Visitor {
     		Value v = (Value) that.getDeclarationModel();
 			Parameter p = v.getInitializerParameter();
 			if (p==null) {
-				that.getType().addError("value is not a parameter, so may not be variadic: " +
-						v.getName());
+				that.getType().addError("value is not a parameter, so may not be variadic: '" +
+						v.getName() + "'");
 			}
 			else {
 				p.setSequenced(true);
@@ -1529,8 +1531,8 @@ public class TypeVisitor extends Visitor {
             else {
                 Declaration d = p.getDeclaration();
                 if (d.isActual()) {
-                    se.addError("parameter of actual declaration may not define default value: parameter " +
-                            p.getName() + " of " + p.getDeclaration().getName());
+                    se.addError("parameter of actual declaration may not define default value: parameter '" +
+                            p.getName() + "' of '" + p.getDeclaration().getName() + "'");
                 }
             }
             /*if (declaration instanceof Method &&

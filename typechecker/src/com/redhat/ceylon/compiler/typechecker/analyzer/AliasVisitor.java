@@ -25,8 +25,8 @@ public class AliasVisitor extends Visitor {
         if (t!=null) {
             List<TypeDeclaration> l = t.isRecursiveTypeAliasDefinition(singleton(d));
             if (!l.isEmpty()) {
-                that.addError("type alias is circular: definition of " + 
-                        d.getName() + " is recursive, involving " + typeList(l));
+                that.addError("type alias is circular: definition of '" + 
+                        d.getName() + "' is recursive, involving " + typeList(l));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
@@ -38,7 +38,7 @@ public class AliasVisitor extends Visitor {
     public static String typeList(List<TypeDeclaration> l) {
         StringBuffer sb = new StringBuffer();
         for (TypeDeclaration td: l) {
-            sb.append(td.getName()).append(", ");
+            sb.append("'").append(td.getName()).append("', ");
         }
         sb.setLength(sb.length()-2);
         return sb.toString();

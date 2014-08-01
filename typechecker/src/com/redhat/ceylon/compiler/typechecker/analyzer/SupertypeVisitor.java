@@ -38,8 +38,8 @@ public class SupertypeVisitor extends Visitor {
         List<TypeDeclaration> errors = type.resolveAliases().checkDecidability();
         if (displayErrors)
         for (TypeDeclaration td: errors) {
-            node.addError("type with contravariant type parameter " + td.getName() + 
-                    " appears in contravariant location in supertype: '" +
+            node.addError("type with contravariant type parameter '" + td.getName() + 
+                    "' appears in contravariant location in supertype: '" +
                     type.getProducedTypeName(node.getUnit()) + "'");
         }
         return !errors.isEmpty();
@@ -55,8 +55,8 @@ public class SupertypeVisitor extends Visitor {
                     List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton(d));
                     if (!l.isEmpty()) {
                         if (displayErrors)
-                        stn.addError("inheritance is circular: definition of " + 
-                                d.getName() + " is recursive, involving " + typeList(l));
+                        stn.addError("inheritance is circular: definition of '" + 
+                                d.getName() + "' is recursive, involving " + typeList(l));
                         d.getSatisfiedTypes().remove(t);
                         d.addBrokenSupertype(t);
                         d.clearProducedTypeCache();
@@ -74,8 +74,8 @@ public class SupertypeVisitor extends Visitor {
             		List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
             		if (!l.isEmpty()) {
             	        if (displayErrors)
-            			etn.addError("inheritance is circular: definition of " + 
-            					d.getName() + " is recursive, involving " + typeList(l));
+            			etn.addError("inheritance is circular: definition of '" + 
+            					d.getName() + "' is recursive, involving " + typeList(l));
             			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
             			d.addBrokenSupertype(t);
                         d.clearProducedTypeCache();
@@ -97,8 +97,8 @@ public class SupertypeVisitor extends Visitor {
             catch (RuntimeException re) {
                 if (displayErrors)
                 that.addError("inheritance hierarchy is undecidable: " + 
-                        "could not canonicalize the intersection of all supertypes of " +
-                        d.getName());
+                        "could not canonicalize the intersection of all supertypes of '" +
+                        d.getName() + "'");
                 d.getSatisfiedTypes().clear();
                 d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
                 d.clearProducedTypeCache();

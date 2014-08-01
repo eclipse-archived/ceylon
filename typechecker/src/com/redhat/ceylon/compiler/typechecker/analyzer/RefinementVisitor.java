@@ -78,14 +78,14 @@ public class RefinementVisitor extends Visitor {
         if (type!=null) {
             Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {
-                typeNode.addError("type of declaration " + td.getName() +
-                        " is not visible everywhere declaration is visible: '" + 
+                typeNode.addError("type of declaration '" + td.getName() +
+                        "' is not visible everywhere declaration is visible: '" + 
                         type.getProducedTypeName(that.getUnit()) +
                         "' involves an unshared type declaration", 711);
             }
             if (!checkModuleVisibility(td, type)) {
-                typeNode.addError("type of declaration " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: '" + 
+                typeNode.addError("type of declaration '" + td.getName() + 
+                        "' that is visible outside this module comes from an imported module that is not re-exported: '" + 
                         type.getProducedTypeName(that.getUnit()) +
                         "' involves an unexported type declaration", 712);
             }
@@ -98,15 +98,15 @@ public class RefinementVisitor extends Visitor {
         if (pt!=null) {
             if (!isCompletelyVisible(td, pt)) {
                 getParameterTypeErrorNode(tp)
-                    .addError("type of parameter " + p.getName() + " of " + td.getName() +
-                        " is not visible everywhere declaration is visible: '" + 
+                    .addError("type of parameter '" + p.getName() + "' of '" + td.getName() +
+                        "' is not visible everywhere declaration is visible: '" + 
                         pt.getProducedTypeName(that.getUnit()) +
                         "' involves an unshared type declaration", 710);
             }
             if (!checkModuleVisibility(td, pt)) {
                 getParameterTypeErrorNode(tp)
-                    .addError("type of parameter " + p.getName() + " of " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: '" +
+                    .addError("type of parameter '" + p.getName() + "' of '" + td.getName() + 
+                        "' that is visible outside this module comes from an imported module that is not re-exported: '" +
                         pt.getProducedTypeName(that.getUnit()) +
                         "' involves an unexported type declaration", 714);
             }
@@ -339,15 +339,15 @@ public class RefinementVisitor extends Visitor {
         if (td instanceof TypeAlias) {
             ProducedType at = td.getExtendedType();
             if (!isCompletelyVisible(td, at)) {
-                that.addError("aliased type is not visible everywhere type alias " + 
-                        td.getName() + " is visible: '" + 
+                that.addError("aliased type is not visible everywhere type alias '" + 
+                        td.getName() + "' is visible: '" + 
                         at.getProducedTypeName(that.getUnit()) +
                         "' involves an unshared type declaration", 
                         713);
             }
             if (!checkModuleVisibility(td, at)) {
-                that.addError("aliased type of type alias " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: '" +
+                that.addError("aliased type of type alias '" + td.getName() + 
+                        "' that is visible outside this module comes from an imported module that is not re-exported: '" +
                         at.getProducedTypeName(that.getUnit()) +
                         "' involves an unexported type declaration", 
                         714);
@@ -367,15 +367,15 @@ public class RefinementVisitor extends Visitor {
                     // don't do this check for ObjectArguments
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
-                            that.addError("supertype is not visible everywhere type " + 
-                                    td.getName() + " is visible: '" + 
+                            that.addError("supertype is not visible everywhere type '" + 
+                                    td.getName() + "' is visible: '" + 
                                     st.getProducedTypeName(that.getUnit()) +
                                     "' involves an unshared type declaration", 
                                     713);
                         }
                         if (!checkModuleVisibility(td, st)) {
-                            that.addError("supertype of type " + td.getName() + 
-                                    " that is visible outside this module comes from an imported module that is not re-exported: '" +
+                            that.addError("supertype of type '" + td.getName() + 
+                                    "' that is visible outside this module comes from an imported module that is not re-exported: '" +
                                     st.getProducedTypeName(that.getUnit()) +
                                     "' involves an unexported type declaration", 
                                     714);
@@ -417,7 +417,7 @@ public class RefinementVisitor extends Visitor {
                 that.addError(typeDescription(td, unit) + 
                         " has unsatisfiable upper bound constraints: the constraints '" + 
                         typeNamesAsIntersection(upperBounds, unit) + 
-                        "' cannot be satisfied by any type except Nothing");
+                        "' cannot be satisfied by any type except 'Nothing'");
             }
         }
     }
@@ -739,9 +739,9 @@ public class RefinementVisitor extends Visitor {
 	                }
 	            }
 	            if (!ok) {
-	                that.addError("member type parameter " + refiningTypeParam.getName() +
-	                        " has upper bound which refined member type parameter " + 
-	                        refinedTypeParam.getName() + " of " + message(refined) + 
+	                that.addError("member type parameter '" + refiningTypeParam.getName() +
+	                        "' has upper bound which refined member type parameter '" + 
+	                        refinedTypeParam.getName() + "' of " + message(refined) + 
 	                        " does not satisfy: '" + t.getProducedTypeName(that.getUnit()) + "'");
 	            }
 	        }
@@ -843,35 +843,38 @@ public class RefinementVisitor extends Visitor {
     private void checkNonMember(Tree.Declaration that, Declaration dec, boolean mayBeShared) {
         if (!dec.isClassOrInterfaceMember() && mayBeShared) {
             if (dec.isActual()) {
-                that.addError("actual declaration is not a member of a class or interface: " + dec.getName(), 1301);
+                that.addError("actual declaration is not a member of a class or interface: '" + 
+                        dec.getName() + "'", 1301);
             }
             if (dec.isFormal()) {
-                that.addError("formal declaration is not a member of a class or interface: " + dec.getName(), 1302);
+                that.addError("formal declaration is not a member of a class or interface: '" + 
+                        dec.getName() + "'", 1302);
             }
             if (dec.isDefault()) {
-                that.addError("default declaration is not a member of a class or interface: " + dec.getName(), 1303);
+                that.addError("default declaration is not a member of a class or interface: '" + 
+                        dec.getName() + "'", 1303);
             }
         }
         else if (!dec.isShared() && mayBeShared) {
             if (dec.isActual()) {
-                that.addError("actual declaration must be shared: " + dec.getName(), 701);
+                that.addError("actual declaration must be shared: '" + dec.getName() + "'", 701);
             }
             if (dec.isFormal()) {
-                that.addError("formal declaration must be shared: " + dec.getName(), 702);
+                that.addError("formal declaration must be shared: '" + dec.getName() + "'", 702);
             }
             if (dec.isDefault()) {
-                that.addError("default declaration must be shared: " + dec.getName(), 703);
+                that.addError("default declaration must be shared: '" + dec.getName() + "'", 703);
             }
         }
         else {
             if (dec.isActual()) {
-                that.addError("declaration may not be actual: " + dec.getName(), 1301);
+                that.addError("declaration may not be actual: '" + dec.getName() + "'", 1301);
             }
             if (dec.isFormal()) {
-                that.addError("declaration may not be formal: " + dec.getName(), 1302);
+                that.addError("declaration may not be formal: '" + dec.getName() + "'", 1302);
             }
             if (dec.isDefault()) {
-                that.addError("declaration may not be default: " + dec.getName(), 1303);
+                that.addError("declaration may not be default: '" + dec.getName() + "'", 1303);
             }
         }
     }
@@ -930,11 +933,11 @@ public class RefinementVisitor extends Visitor {
 
 	private void handleWrongParameterListLength(Tree.Declaration that,
             ProducedReference member, ProducedReference refinedMember) {
-	    that.addError("member does not have the same number of parameters as the member it refines: " + 
+	    that.addError("member does not have the same number of parameters as the member it refines: '" + 
                    member.getDeclaration().getName() + 
-                   " declared by " + containerName(member) +
-                   " refining " + refinedMember.getDeclaration().getName() +
-                   " declared by " + containerName(refinedMember), 9100);
+                   "' declared by '" + containerName(member) +
+                   "' refining '" + refinedMember.getDeclaration().getName() +
+                   "' declared by '" + containerName(refinedMember) + "'", 9100);
     }
 
 	private void checkRefiningParameterType(ProducedReference member,
@@ -945,33 +948,33 @@ public class RefinementVisitor extends Visitor {
 	    checkIsExactlyForInterop(refinedMember, 
 	            refinedParams.isNamedParametersSupported(), 
 	            parameterType, refinedParameterType, typeNode,
-	            "type of parameter " + param.getName() + " of " + 
+	            "type of parameter '" + param.getName() + "' of '" + 
 	                    member.getDeclaration().getName() +
-	                    " declared by " + containerName(member) +
-	                    " is different to type of corresponding parameter " +
-	                    rparam.getName() + " of refined member " + 
-	                    refinedMember.getDeclaration().getName() + " of " +
-	                    containerName(refinedMember), 9200);
+	                    "' declared by '" + containerName(member) +
+	                    "' is different to type of corresponding parameter '" +
+	                    rparam.getName() + "' of refined member '" + 
+	                    refinedMember.getDeclaration().getName() + "' of '" +
+	                    containerName(refinedMember) + "'", 9200);
     }
 
 	private void handleUnknownParameterType(ProducedReference member,
             ProducedReference refinedMember, Parameter param, Node typeNode) {
-	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
-	            param.getName() + " of " + member.getDeclaration().getName() + 
-	            " declared by " + containerName(member) +
-	            " refining " + refinedMember.getDeclaration().getName() +
-	            " declared by " + containerName(refinedMember));
+	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: '" +
+	            param.getName() + "' of '" + member.getDeclaration().getName() + 
+	            "' declared by '" + containerName(member) +
+	            "' refining '" + refinedMember.getDeclaration().getName() +
+	            "' declared by '" + containerName(refinedMember) + "'");
     }
 
 	private void checkRefinedParameterDynamicallyTyped(
             ProducedReference member, ProducedReference refinedMember,
             Parameter rparam, Parameter param, Node typeNode) {
 	    if (!rparam.getModel().isDynamicallyTyped()) {
-	    	typeNode.addError("parameter which refines statically typed parameter must also be statically typed: " + 
-	    			param.getName() + " of " + member.getDeclaration().getName() + 
-	                " declared by " + containerName(member) +
-	                " refining " + refinedMember.getDeclaration().getName() +
-	                " declared by " + containerName(refinedMember));
+	    	typeNode.addError("parameter which refines statically typed parameter must also be statically typed: '" + 
+	    			param.getName() + "' of '" + member.getDeclaration().getName() + 
+	                "' declared by '" + containerName(member) +
+	                "' refining '" + refinedMember.getDeclaration().getName() +
+	                "' declared by '" + containerName(refinedMember) + "'");
 	    }
     }
 
@@ -979,11 +982,11 @@ public class RefinementVisitor extends Visitor {
             ProducedReference member, ProducedReference refinedMember,
             Parameter param, Node typeNode) {
 	    if (!param.getModel().isDynamicallyTyped()) {
-	    	typeNode.addError("parameter which refines dynamically typed parameter must also be dynamically typed: " + 
-	    			param.getName() + " of " + member.getDeclaration().getName() + 
-	                " declared by " + containerName(member) +
-	                " refining " + refinedMember.getDeclaration().getName() +
-	                " declared by " + containerName(refinedMember));
+	    	typeNode.addError("parameter which refines dynamically typed parameter must also be dynamically typed: '" + 
+	    			param.getName() + "' of '" + member.getDeclaration().getName() + 
+	                "' declared by '" + containerName(member) +
+	                "' refining '" + refinedMember.getDeclaration().getName() +
+	                "' declared by '" + containerName(refinedMember) + "'");
 	    }
     }
 
@@ -1080,8 +1083,8 @@ public class RefinementVisitor extends Visitor {
                     // interpret this specification as a 
                     // refinement of an inherited member
                     if (d.getContainer()==that.getScope()) {
-                        that.addError("parameter declaration hides refining member: " +
-                                d.getName() + " (rename parameter)");
+                        that.addError("parameter declaration hides refining member: '" +
+                                d.getName() + "' (rename parameter)");
                     }
                     else if (d instanceof Value) {
                         refineValue((Value) d, bme, that, (ClassOrInterface) cs);
@@ -1091,8 +1094,8 @@ public class RefinementVisitor extends Visitor {
                     }
                     else {
                         //TODO!
-                        bme.addError("not a reference to a formal attribute: " + 
-                                d.getName(that.getUnit()));
+                        bme.addError("not a reference to a formal attribute: '" + 
+                                d.getName(that.getUnit()) + "'");
                     }
                 }
             }

@@ -121,21 +121,21 @@ public class TypeArgumentVisitor extends Visitor {
 
     private void displayErrors(Node that, ProducedType type,
             List<TypeParameter> errors) {
-        for (TypeParameter td: errors) {
+        for (TypeParameter tp: errors) {
             String var; String loc;
-            if ( td.isContravariant() ) {
+            if (tp.isContravariant()) {
                 var = "contravariant (in)";
-                loc = "covariant";
+                loc = "covariant or invariant";
             }
-            else if ( td.isCovariant() ) {
+            else if (tp.isCovariant()) {
                 var = "covariant (out)";
-                loc = "contravariant";
+                loc = "contravariant or invariant";
             }
             else {
                 throw new RuntimeException();
             }
-            that.addError(var + " type parameter " + td.getName() + 
-                    " appears in " + loc + " location in type: '" + 
+            that.addError(var + " type parameter '" + tp.getName() + 
+                    "' appears in " + loc + " location in type: '" + 
                     type.getProducedTypeName(that.getUnit()) + "'");
         }
     }

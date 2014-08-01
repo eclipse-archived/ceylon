@@ -175,23 +175,23 @@ public class DeclarationVisitor extends Visitor {
                         model.getContainer().getDirectMember(model.getName(), 
                                 null, false);
                 if (member==null) {
-                    that.addError("setter with no matching getter: " + 
-                            model.getName());
+                    that.addError("setter with no matching getter: '" + 
+                            model.getName() + "'");
                 }
                 else if (!(member instanceof Value)) {
-                    that.addError("setter name does not resolve to matching getter: " + 
-                            model.getName());
+                    that.addError("setter name does not resolve to matching getter: '" + 
+                            model.getName() + "'");
                 }
                 else if (!((Value) member).isTransient()) {
-                    that.addError("matching value is a reference or is forward-declared: " + 
-                            model.getName());
+                    that.addError("matching value is a reference or is forward-declared: '" + 
+                            model.getName() + "'");
                 }
                 else {
                     Value getter = (Value) member;
                     setter.setGetter(getter);
                     if (getter.isVariable()) {
-                        that.addError("duplicate setter for getter: " + 
-                                model.getName());
+                        that.addError("duplicate setter for getter: '" + 
+                                model.getName() + "'");
                     }
                     else {
                         getter.setSetter(setter);
@@ -232,8 +232,8 @@ public class DeclarationVisitor extends Visitor {
                             abstraction.getOverloads().add(model);
                         }
                         else {
-                            that.addError("duplicate declaration name: " + 
-                                    model.getName());
+                            that.addError("duplicate declaration name: '" + 
+                                    model.getName() + "'");
                         }
                         unit.getDuplicateDeclarations().add(member);
                     }
@@ -413,8 +413,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
-            that.addError("missing parameter list in class declaration: " + 
-                    name(that.getIdentifier()) + " must have a parameter list", 1000);
+            that.addError("missing parameter list in class declaration: '" + 
+                    name(that.getIdentifier()) + "' must have a parameter list", 1000);
         }
         else {
             that.getParameterList().getModel().setFirst(true);
@@ -426,12 +426,12 @@ public class DeclarationVisitor extends Visitor {
             that.addUnsupportedError("nested classes of inner classes are not yet supported");
         }
         if (c.isAbstract() && c.isFinal()) {
-            that.addError("class may not be both abstract and final: " + 
-                    name(that.getIdentifier()));
+            that.addError("class may not be both abstract and final: '" + 
+                    name(that.getIdentifier()) + "'");
         }
         if (c.isFormal() && c.isFinal()) {
-            that.addError("class may not be both formal and final: " + 
-                    name(that.getIdentifier()));
+            that.addError("class may not be both formal and final: '" + 
+                    name(that.getIdentifier()) + "'");
         }
     }
 
@@ -1175,7 +1175,7 @@ public class DeclarationVisitor extends Visitor {
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("getter may not be annotated variable: " + model.getName());
+                that.addError("getter may not be annotated variable: '" + model.getName() + "'");
             }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
@@ -1254,7 +1254,8 @@ public class DeclarationVisitor extends Visitor {
             if (d.getContainer() instanceof Declaration) {
                 Declaration ci = (Declaration) d.getContainer();
                 if (!ci.isNative()) {
-                    that.addError("native member belongs to a non-native declaration");
+                    that.addError("native member belongs to a non-native declaration: '" + 
+                            d.getName() + "' of '" + ci.getName());
                 }
             }
         }
@@ -1282,8 +1283,8 @@ public class DeclarationVisitor extends Visitor {
         TypeParameter p = (TypeParameter) scope.getDirectMember(name, null, false);
         that.setDeclarationModel(p);
         if (p==null) {
-            that.addError("no matching type parameter for constraint: " + 
-                    name);
+            that.addError("no matching type parameter for constraint: '" + 
+                    name + "'");
             p = new TypeParameter();
             p.setDeclaration(declaration);
             that.setDeclarationModel(p);
@@ -1291,8 +1292,8 @@ public class DeclarationVisitor extends Visitor {
         }
         else {
         	if (p.isConstrained()) {
-        		that.addError("duplicate constraint list for type parameter: " +
-        				name);
+        		that.addError("duplicate constraint list for type parameter: '" +
+        				name + "'");
         	}
         	p.setConstrained(true);
         }

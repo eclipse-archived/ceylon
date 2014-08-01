@@ -291,7 +291,7 @@ public class ExpressionVisitor extends Visitor {
                                     "' and '" + knownType.getProducedTypeName(unit) + "' is empty" + help);
                         }
                         else if (knownType.isSubtypeOf(type)) {
-                            that.addError("tests assignability to Nothing type: '" + knownType.getProducedTypeName(unit) + 
+                            that.addError("tests assignability to bottom type 'Nothing': '" + knownType.getProducedTypeName(unit) + 
                                     "' is a subtype of '" + type.getProducedTypeName(unit) + "'");
                         }
                     } 
@@ -317,7 +317,7 @@ public class ExpressionVisitor extends Visitor {
                             type.getProducedTypeName(unit));*/
                 }
                 else {
-                    that.addError("tests assignability to Nothing type: intersection of '" +
+                    that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
                             knownType.getProducedTypeName(unit) + "' and '" + 
                             type.getProducedTypeName(unit) + "' is empty");
                 }
@@ -415,16 +415,16 @@ public class ExpressionVisitor extends Visitor {
         	int code = isSwitch ? 3101:3100;
             String help=" (assign to a new local value to narrow type)";
             if (!(d instanceof Value)) {
-                ref.addError("referenced declaration is not a value: " + 
-                        d.getName(unit), code);
+                ref.addError("referenced declaration is not a value: '" + 
+                        d.getName(unit) + "'", code);
             }
             else if (isNonConstant(d)) {
-                ref.addError("referenced value is non-constant: " + 
-                        d.getName(unit) + help, code);
+                ref.addError("referenced value is non-constant: '" + 
+                        d.getName(unit) + "'" + help, code);
             }
             else if (d.isDefault() || d.isFormal()) {
-                ref.addError("referenced value may be refined by a non-constant value: " + 
-                        d.getName(unit) + help, code);
+                ref.addError("referenced value may be refined by a non-constant value: '" + 
+                        d.getName(unit) + "'" + help, code);
             }
         }
     }
@@ -503,7 +503,7 @@ public class ExpressionVisitor extends Visitor {
                     if (isInstantiationExpression(e)) {
                         if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
                             typedNode.addError("resource must be either obtainable or destroyable: '" +
-                                    t.getProducedTypeName(unit) + "' is neither Obtainable nor Destroyable");
+                                    t.getProducedTypeName(unit) + "' is neither 'Obtainable' nor 'Destroyable'");
                         }
                     }
                     else {
@@ -525,7 +525,7 @@ public class ExpressionVisitor extends Visitor {
                     if (!unit.isIterableType(et)) {
                         se.addError("expression is not iterable: '" + 
                                 et.getProducedTypeName(unit) + 
-                                "' is not a subtype of Iterable");
+                                "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
                         se.addError("iterated expression is definitely empty");
@@ -557,7 +557,7 @@ public class ExpressionVisitor extends Visitor {
                         if (!unit.isEntryType(it)) {
                             se.addError("iterated element type is not an entry type: '" + 
                                     it.getProducedTypeName(unit) + 
-                                    "' is not a subtype of Entry");
+                                    "' is not a subtype of 'Entry'");
                         }
                     }
                 }
@@ -582,8 +582,8 @@ public class ExpressionVisitor extends Visitor {
         	ProducedType t = type.getTypeModel();
         	if (type instanceof Tree.LocalModifier) {
         		if (dec.isParameter()) {
-        			type.addError("parameter may not have inferred type: " + 
-        					dec.getName());
+        			type.addError("parameter may not have inferred type: '" + 
+        					dec.getName() + "'");
         		}
         		else {
         			if (sie==null) {
@@ -620,8 +620,8 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType ct = pt.getSupertype(unit.getCallableDeclaration());
                         String refName = mte.getDeclaration().getName();
                         if (ct==null) {                        
-                            pl.addError("no matching parameter list in referenced declaration: " + 
-                                    refName);
+                            pl.addError("no matching parameter list in referenced declaration: '" + 
+                                    refName + "'");
                         }
                         else if (ct.getTypeArgumentList().size()>=2) {
                             ProducedType tupleType = ct.getTypeArgumentList().get(1);
@@ -630,8 +630,8 @@ public class ExpressionVisitor extends Visitor {
                             boolean atLeastOne = unit.isTupleVariantAtLeastOne(tupleType);
                             List<Tree.Parameter> params = pl.getParameters();
                             if (argTypes.size()!=params.size()) {
-                                pl.addError("wrong number of declared parameters: " + refName  + 
-                                        " has " + argTypes.size() + " parameters");
+                                pl.addError("wrong number of declared parameters: '" + refName  + 
+                                        "' has " + argTypes.size() + " parameters");
                             }
                             for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
                                 ProducedType at = argTypes.get(i);
@@ -639,28 +639,28 @@ public class ExpressionVisitor extends Visitor {
                                 ProducedType t = param.getParameterModel().getModel()
                                         .getTypedReference()
                                         .getFullType();
-                                checkAssignable(at, t, param, "type of parameter " + param.getParameterModel().getName() + 
-                                        " must be a supertype of parameter type in declaration of " + refName);
+                                checkAssignable(at, t, param, "type of parameter '" + param.getParameterModel().getName() + 
+                                        "' must be a supertype of parameter type in declaration of '" + refName + "'");
                             }
                             if (!params.isEmpty()) {
                                 Tree.Parameter lastParam = params.get(params.size()-1);
                                 boolean refSequenced = lastParam.getParameterModel().isSequenced();
                                 boolean refAtLeastOne = lastParam.getParameterModel().isAtLeastOne();
                                 if (refSequenced && !variadic) {
-                                    lastParam.addError("parameter list in declaration of " + refName + 
-                                            " does not have a variadic parameter");
+                                    lastParam.addError("parameter list in declaration of '" + refName + 
+                                            "' does not have a variadic parameter");
                                 }
                                 else if (!refSequenced && variadic) {
-                                    lastParam.addError("parameter list in declaration of " + refName + 
-                                            " has a variadic parameter");
+                                    lastParam.addError("parameter list in declaration of '" + refName + 
+                                            "' has a variadic parameter");
                                 }
                                 else if (refAtLeastOne && !atLeastOne) {
-                                    lastParam.addError("variadic parameter in declaration of " + refName + 
-                                            " is optional");
+                                    lastParam.addError("variadic parameter in declaration of '" + refName + 
+                                            "' is optional");
                                 }
                                 else if (!refAtLeastOne && atLeastOne) {
-                                    lastParam.addError("variadic parameter in declaration of " + refName + 
-                                            " is not optional");
+                                    lastParam.addError("variadic parameter in declaration of '" + refName + 
+                                            "' is not optional");
                                 }
                             }
                             pt = ct.getTypeArgumentList().get(0);
@@ -700,19 +700,19 @@ public class ExpressionVisitor extends Visitor {
                 else if (d instanceof MethodOrValue) {
                     MethodOrValue mv = (MethodOrValue) d;
                     if (mv.isShortcutRefinement()) {
-                        that.getBaseMemberExpression().addError("already specified: " + 
-                                d.getName(unit));
+                        that.getBaseMemberExpression().addError("already specified: '" + 
+                                d.getName(unit) + "'");
                     }
                     else if (d.isToplevel() && !mv.isVariable() && !mv.isLate()) {
-                        that.addError("cannot specify non-variable toplevel value here: " + 
-                                d.getName(unit), 803);
+                        that.addError("cannot specify non-variable toplevel value here: '" + 
+                                d.getName(unit) + "' is not variable or late", 803);
                     }
                 }
                 if (hasParams && d instanceof Method && 
                         ((Method) d).isDeclaredVoid() && 
                         !isSatementExpression(sie.getExpression())) {
-                    that.addError("function is declared void so specified expression must be a statement: " + 
-                            d.getName(unit));
+                    that.addError("function is declared void so specified expression must be a statement: '" + 
+                            d.getName(unit) + "' is declared void");
                 }
                 if (d instanceof Value && 
                         that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
@@ -879,8 +879,8 @@ public class ExpressionVisitor extends Visitor {
         if (type instanceof Tree.LocalModifier) {
             Parameter p = that.getParameterModel();
             type.setTypeModel(new UnknownType(unit).getType());
-            type.addError("parameter may not have inferred type: " + 
-                    p.getName());
+            type.addError("parameter may not have inferred type: '" + 
+                    p.getName() + "' must declare an explicit type");
         }
     }
     
@@ -1041,8 +1041,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 if (!isSatementExpression(e)) {
-                    se.addError("function is declared void so specified expression must be a statement: " +
-                            sd.getName());
+                    se.addError("function is declared void so specified expression must be a statement: '" +
+                            sd.getName() + "'");
                 }
             }
         }
@@ -1063,8 +1063,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
-                    se.addError("function is declared void so specified expression must be a statement: " +
-                            that.getDeclarationModel().getName());
+                    se.addError("function is declared void so specified expression must be a statement: '" +
+                            that.getDeclarationModel().getName() + "'");
                 }
             }
         }
@@ -1116,8 +1116,8 @@ public class ExpressionVisitor extends Visitor {
                     checkFunctionType(returnType, type, se);
                 }
                 if (d.isDeclaredVoid() && !isSatementExpression(e)) {
-                    se.addError("functional argument is declared void so specified expression must be a statement: " + 
-                            d.getName());
+                    se.addError("functional argument is declared void so specified expression must be a statement: '" + 
+                            d.getName() + "'");
                 }
             }
         }
@@ -1523,16 +1523,16 @@ public class ExpressionVisitor extends Visitor {
             if (name==null) name = "anonymous function";
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
-                    that.addError("non-void function or getter must return a value: " +
-                            name);
+                    that.addError("non-void function or getter must return a value: '" +
+                            name + "' is not a void function");
                 }
             }
             else {
                 ProducedType et = returnType.getTypeModel();
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
-                    that.addError("void function, setter, or class initializer may not return a value: " +
-                            name);
+                    that.addError("void function, setter, or class initializer may not return a value: '" +
+                            name + "' is declared void");
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     inferReturnType(et, at);
@@ -1540,8 +1540,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     if (!isTypeUnknown(et) && !isTypeUnknown(at)) {
                         checkAssignable(at, et, e, 
-                                "returned expression must be assignable to return type of " +
-                                        name, 2100);
+                                "returned expression must be assignable to return type of '" +
+                                        name + "'", 2100);
                     }
                 }
             }
@@ -1582,7 +1582,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 p.addError("expression must be of iterable type: '" +
                         pt.getProducedTypeName(unit) + 
-                        "' is not a subtype of Iterable");
+                        "' is not a subtype of 'Iterable'");
                 result = pt;
             }
         }
@@ -1667,26 +1667,26 @@ public class ExpressionVisitor extends Visitor {
         Declaration member = qmte.getDeclaration();
         if (member!=null) {
             if (member.isFormal() && !inExtendsClause) {
-                qmte.addError("supertype member is declared formal: " + member.getName() + 
-                        " of " + ((TypeDeclaration) member.getContainer()).getName());
+                qmte.addError("supertype member is declared formal: '" + member.getName() + 
+                        "' of '" + ((TypeDeclaration) member.getContainer()).getName() + "'");
             }
             else {
                 ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
                 Declaration etm = ci.getExtendedTypeDeclaration()
                         .getMember(member.getName(), null, false);
                 if (etm!=null && !etm.equals(member) && etm.refines(member)) {
-                    qmte.addError("inherited member is refined by intervening superclass: " + 
+                    qmte.addError("inherited member is refined by intervening superclass: '" + 
                             ((TypeDeclaration) etm.getContainer()).getName() + 
-                            " refines " + member.getName() + " declared by " + 
-                            ((TypeDeclaration) member.getContainer()).getName());
+                            "' refines '" + member.getName() + "' declared by '" + 
+                            ((TypeDeclaration) member.getContainer()).getName() + "'");
                 }
                 for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
                     Declaration stm = td.getMember(member.getName(), null, false);
                     if (stm!=null && !stm.equals(member) && stm.refines(member)) {
-                        qmte.addError("inherited member is refined by intervening superinterface: " + 
+                        qmte.addError("inherited member is refined by intervening superinterface: '" + 
                                 ((TypeDeclaration) stm.getContainer()).getName() + 
-                                " refines " + member.getName() + " declared by " + 
-                                ((TypeDeclaration) member.getContainer()).getName());
+                                "' refines '" + member.getName() + "' declared by '" + 
+                                ((TypeDeclaration) member.getContainer()).getName() + "'");
                     }
                 }
             }
@@ -1747,8 +1747,8 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary().getTypeModel(),
                         tp, parameters);
                 if (it.containsUnknowns()) {
-                    that.addError("could not infer type argument from given arguments: " + 
-                            tp.getName());
+                    that.addError("could not infer type argument from given arguments: type parameter'" + 
+                            tp.getName() + "' could not be inferred");
                 }
                 else {
                     it = constrainInferredType(dec, tp, it);
@@ -2158,7 +2158,8 @@ public class ExpressionVisitor extends Visitor {
         if (dec==null) return;
         if (!(p instanceof Tree.ExtendedTypeExpression)) {
             if (dec instanceof Class && ((Class) dec).isAbstract()) {
-                that.addError("abstract class may not be instantiated: " + dec.getName(unit));
+                that.addError("abstract class may not be instantiated: '" + 
+                        dec.getName(unit) + "'");
             }
         }
         if (that.getNamedArgumentList()!=null && 
@@ -2167,8 +2168,8 @@ public class ExpressionVisitor extends Visitor {
             //      that we're calling Java and don't have
             //      meaningful parameter names that is the
             //      real problem, not the overload
-            that.addError("overloaded declarations may not be called using named arguments: " +
-                    dec.getName(unit));
+            that.addError("overloaded declarations may not be called using named arguments: '" +
+                    dec.getName(unit) + "'");
         }
         //that.setTypeModel(prf.getType());
         ProducedType ct = p.getTypeModel();
@@ -2249,12 +2250,12 @@ public class ExpressionVisitor extends Visitor {
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
-                that.addError("type has no parameter list: " + 
-                        dec.getName(unit));
+                that.addError("type has no parameter list: '" + 
+                        dec.getName(unit) + "'");
             }
             else {
-                that.addError("function has no parameter list: " +
-                        dec.getName(unit));
+                that.addError("function has no parameter list: '" +
+                        dec.getName(unit) + "'");
             }
         }
         else /*if (!dec.isOverloaded())*/ {
@@ -2304,8 +2305,8 @@ public class ExpressionVisitor extends Visitor {
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
                     !p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
-                nal.addError("missing named argument to parameter " + 
-                        p.getName() + " of " + pr.getDeclaration().getName(unit));
+                nal.addError("missing named argument to parameter '" + 
+                        p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
             }
         }
     }
@@ -2314,18 +2315,18 @@ public class ExpressionVisitor extends Visitor {
             ProducedReference pr, Set<Parameter> foundParameters) {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         if (sp==null) {
-            sa.addError("all iterable parameters specified by named argument list: " + 
+            sa.addError("all iterable parameters specified by named argument list: '" + 
                     pr.getDeclaration().getName(unit) +
-                    " does not declare any additional parameters of type Iterable");
+                    "' does not declare any additional parameters of type 'Iterable'");
         }
         else {
             if (!foundParameters.add(sp)) {
-                sa.addError("duplicate argument for parameter: " +
-                        sp + " of " + pr.getDeclaration().getName(unit));
+                sa.addError("duplicate argument for parameter: '" +
+                        sp + "' of '" + pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic && isTypeUnknown(sp.getType())) {
-                sa.addError("parameter type could not be determined: " + 
-                        sp.getName() + " of " + sp.getDeclaration().getName(unit));
+                sa.addError("parameter type could not be determined: '" + 
+                        sp.getName() + "' of '" + sp.getDeclaration().getName(unit) + "'");
             }
             checkSequencedArgument(sa, pr, sp);
         }
@@ -2336,24 +2337,24 @@ public class ExpressionVisitor extends Visitor {
         Parameter p = getMatchingParameter(pl, a, foundParameters);
         if (p==null) {
             if (a.getIdentifier()==null) {
-                a.addError("all parameters specified by named argument list: " + 
+                a.addError("all parameters specified by named argument list: '" + 
                         pr.getDeclaration().getName(unit) +
-                        " does not declare any additional parameters");
+                        "' does not declare any additional parameters");
             }
             else {
-                a.addError("no matching parameter for named argument " + 
-                        name(a.getIdentifier()) + " declared by " + 
-                        pr.getDeclaration().getName(unit), 101);
+                a.addError("no matching parameter for named argument '" + 
+                        name(a.getIdentifier()) + "' declared by '" + 
+                        pr.getDeclaration().getName(unit) + "'", 101);
             }
         }
         else {
             if (!foundParameters.add(p)) {
-                a.addError("duplicate argument for parameter: " +
-                        p + " of " + pr.getDeclaration().getName(unit));
+                a.addError("duplicate argument for parameter: '" +
+                        p + "' of '" + pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic && isTypeUnknown(p.getType())) {
-                a.addError("parameter type could not be determined: " + 
-                        p.getName() + " of " + p.getDeclaration().getName(unit));
+                a.addError("parameter type could not be determined: '" + 
+                        p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'");
             }
             checkNamedArgument(a, pr, p);
         }
@@ -2412,8 +2413,8 @@ public class ExpressionVisitor extends Visitor {
                         t.getToken()==null &&
                     p.isDeclaredVoid() &&
                     !isSatementExpression(se.getExpression())) {
-                    ta.addError("functional parameter is declared void so argument may not evaluate to a value: " +
-                            p.getName());
+                    ta.addError("functional parameter is declared void so argument may not evaluate to a value: '" +
+                            p.getName() + "'");
                 }
             }
         }
@@ -2487,15 +2488,15 @@ public class ExpressionVisitor extends Visitor {
             if (i>=args.size()) {
                 if (!p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
                     Node n = that instanceof Tree.Annotation && args.isEmpty() ? that : pal;
-                    n.addError("missing argument to required parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit));
+                    n.addError("missing argument to required parameter '" + 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
                 }
             } 
             else {
                 Tree.PositionalArgument a = args.get(i);
                 if (!dynamic && isTypeUnknown(p.getType())) {
-                    a.addError("parameter type could not be determined: " + 
-                            p.getName() + " of " + p.getDeclaration().getName(unit));
+                    a.addError("parameter type could not be determined: '" + 
+                            p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'");
                 }
                 if (a instanceof Tree.SpreadArgument) {
                     checkSpreadArgument(pr, p, a, 
@@ -2509,8 +2510,8 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.Comprehension) a, p.isAtLeastOne());
                     }
                     else {
-                        a.addError("not a variadic parameter: parameter " + 
-                                p.getName() + " of " + pr.getDeclaration().getName());
+                        a.addError("not a variadic parameter: parameter '" + 
+                                p.getName() + "' of '" + pr.getDeclaration().getName() + "'");
                     }
                     break;
                 }
@@ -2534,9 +2535,9 @@ public class ExpressionVisitor extends Visitor {
                     continue;
                 }
             }
-            arg.addError("no matching parameter declared by " +
-                    pr.getDeclaration().getName(unit) + ": " + 
-                    pr.getDeclaration().getName(unit) + " has " + 
+            arg.addError("no matching parameter declared by '" +
+                    pr.getDeclaration().getName(unit) + "': '" + 
+                    pr.getDeclaration().getName(unit) + "' has " + 
                     params.size() + " parameters", 2000);
         }
     
@@ -2752,10 +2753,10 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
             ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
-                    "argument must be assignable to variadic parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
-                            (pr.getQualifyingType()==null ? "" : 
-                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
+                    "argument must be assignable to variadic parameter '" + 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + 
+                            (pr.getQualifyingType()==null ? "'" : 
+                                "' in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2101);
         }
     }
@@ -2777,10 +2778,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType at = a.getTypeModel();
         if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
             checkAssignable(at, paramType, a, 
-                    "argument must be assignable to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
-                            (pr.getQualifyingType()==null ? "" : 
-                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
+                    "argument must be assignable to parameter '" + 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + 
+                            (pr.getQualifyingType()==null ? "'" : 
+                                "' in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2100);
         }
     }
@@ -2800,7 +2801,7 @@ public class ExpressionVisitor extends Visitor {
                     if (!unit.isIterableType(t)) {
                         e.addError("spread argument is not iterable: '" + 
                                 t.getProducedTypeName(unit) + 
-                                "' is not a subtype of Iterable");
+                                "' is not a subtype of 'Iterable'");
                     }
                 }
                 that.setTypeModel(t);
@@ -2850,8 +2851,8 @@ public class ExpressionVisitor extends Visitor {
                 if (that.getElementOrRange() instanceof Tree.Element) {
                     ProducedType cst = pt.getSupertype(unit.getCorrespondenceDeclaration());
                     if (cst==null) {
-                        that.getPrimary().addError("illegal receiving type for index expression: " +
-                                pt.getDeclaration().getName(unit) + " is not a subtype of Correspondence");
+                        that.getPrimary().addError("illegal receiving type for index expression: '" +
+                                pt.getDeclaration().getName(unit) + "' is not a subtype of 'Correspondence'");
                     }
                     else {
                         List<ProducedType> args = cst.getTypeArgumentList();
@@ -2874,8 +2875,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     ProducedType rst = pt.getSupertype(unit.getRangedDeclaration());
                     if (rst==null) {
-                        that.getPrimary().addError("illegal receiving type for index range expression: " +
-                                pt.getDeclaration().getName(unit) + " is not a subtype of Ranged");
+                        that.getPrimary().addError("illegal receiving type for index range expression: '" +
+                                pt.getDeclaration().getName(unit) + "' is not a subtype of 'Ranged'");
                     }
                     else {
                         List<ProducedType> args = rst.getTypeArgumentList();
@@ -3187,9 +3188,9 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             TypeDeclaration id = unit.getIdentifiableDeclaration();
             checkAssignable(lhst, id.getType(), that.getLeftTerm(), 
-                    "operand expression must be of type Identifiable");
+                    "operand expression must be of type 'Identifiable'");
             checkAssignable(rhst, id.getType(), that.getRightTerm(), 
-                    "operand expression must be of type Identifiable");
+                    "operand expression must be of type 'Identifiable'");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
                 that.addError("values of disjoint types are never identical: '" +
                         lhst.getProducedTypeName(unit) + 
@@ -3506,7 +3507,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         if (intersectionType(t, pt, unit).isNothing()) {
-                            that.addError("tests assignability to Nothing type: intersection of '" +
+                            that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
                                     pt.getProducedTypeName(unit) + "' and '" + 
                                     t.getProducedTypeName(unit) + "' is empty");
                         }
@@ -3524,13 +3525,13 @@ public class ExpressionVisitor extends Visitor {
             if (pr!=null) {
                 Declaration dec = pr.getDeclaration();
                 if (!(dec instanceof Value)) {
-                    that.addError("member cannot be assigned: " 
-                            + dec.getName(unit));
+                    that.addError("member cannot be assigned: '" 
+                            + dec.getName(unit) + "'");
                 }
                 else if (!((MethodOrValue) dec).isVariable() &&
                          !((MethodOrValue) dec).isLate()) {
-                    that.addError("value is not variable: " 
-                            + dec.getName(unit), 800);
+                    that.addError("value is not variable: '" 
+                            + dec.getName(unit) + "'", 800);
                 }
             }
             if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
@@ -3802,13 +3803,13 @@ public class ExpressionVisitor extends Visitor {
     private void checkBaseVisibility(Node that, TypedDeclaration member, 
             String name) {
         if (!member.isVisible(that.getScope())) {
-            that.addError("function or value is not visible: " +
-                    name, 400);
+            that.addError("function or value is not visible: '" +
+                    name + "'", 400);
         }
         else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
-            that.addError("package private function or value is not visible: " +
-                    name);
+            that.addError("package private function or value is not visible: '" +
+                    name + "'");
         }
         //don't need to consider "protected" because
         //there are no toplevel members in Java and
@@ -3819,13 +3820,13 @@ public class ExpressionVisitor extends Visitor {
     private void checkQualifiedVisibility(Node that, TypedDeclaration member, 
             String name, String container, boolean selfReference) {
         if (!member.isVisible(that.getScope())) {
-            that.addError("method or attribute is not visible: " +
-                    name + " of " + container, 400);
+            that.addError("method or attribute is not visible: '" +
+                    name + "' of " + container, 400);
         }
         else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
-            that.addError("package private method or attribute is not visible: " +
-                    name + " of " + container);
+            that.addError("package private method or attribute is not visible: '" +
+                    name + "' of " + container);
         }
         //this is actually too restrictive since
         //it doesn't take into account "other 
@@ -3834,8 +3835,8 @@ public class ExpressionVisitor extends Visitor {
         else if (member.isProtectedVisibility() && 
                 !selfReference && 
                 !declaredInPackage(member, unit)) {
-            that.addError("protected method or attribute is not visible: " +
-                    name + " of " + container);
+            that.addError("protected method or attribute is not visible: '" +
+                    name + "' of " + container);
         }
     }
 
@@ -3852,39 +3853,39 @@ public class ExpressionVisitor extends Visitor {
             //Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
             Declaration at = type.getExtendedTypeDeclaration();
             if (!at.isVisible(that.getScope())) {
-                that.addError("type is not visible: " + name);
+                that.addError("type is not visible: '" + name + "'");
             }
             else if (at.isPackageVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: " + name);
+                that.addError("package private type is not visible: '" + name + "'");
             }
             else if (at.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected type is not visible: " + name);
+                that.addError("protected type is not visible: '" + name + "'");
             }
             else if (!type.isVisible(that.getScope())) {
-                that.addError("type constructor is not visible: " + name);
+                that.addError("type constructor is not visible: '" + name + "'");
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private constructor is not visible: " + name);
+                that.addError("package private constructor is not visible: '" + name + "'");
             }
             else if (type.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected constructor is not visible: " + name);
+                that.addError("protected constructor is not visible: '" + name + "'");
             }
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " + name, 400);
+                that.addError("type is not visible: '" + name + "'", 400);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: " + name);
+                that.addError("package private type is not visible: '" + name + "'");
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected type is not visible: " + name);
+                that.addError("protected type is not visible: '" + name + "'");
             }
         }
     }
@@ -3903,60 +3904,60 @@ public class ExpressionVisitor extends Visitor {
             //Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
             Declaration at = type.getExtendedTypeDeclaration();
             if (!at.isVisible(that.getScope())) {
-                that.addError("member type is not visible: " +
-                        name + " of " + container);
+                that.addError("member type is not visible: '" +
+                        name + "' of '" + container);
             }
             else if (at.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type is not visible: " +
-                        name + " of type " + container);
+                that.addError("package private member type is not visible: '" +
+                        name + "' of type " + container);
             }
             else if (at.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type is not visible: " +
-                        name + " of type " + container);
+                that.addError("protected member type is not visible: '" +
+                        name + "' of type " + container);
             }
             else if (!type.isVisible(that.getScope())) {
-                that.addError("member type constructor is not visible: " +
-                        name + " of " + container);
+                that.addError("member type constructor is not visible: '" +
+                        name + "' of " + container);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type constructor is not visible: " +
-                        name + " of " + container);
+                that.addError("package private member type constructor is not visible: '" +
+                        name + "' of " + container);
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type constructor is not visible: " +
-                        name + " of " + container);
+                that.addError("protected member type constructor is not visible: '" +
+                        name + "' of " + container);
             }
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                that.addError("member type is not visible: " +
-                        name + " of " + container, 400);
+                that.addError("member type is not visible: '" +
+                        name + "' of " + container, 400);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type is not visible: " +
-                        name + " of " + container);
+                that.addError("package private member type is not visible: '" +
+                        name + "' of " + container);
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type is not visible: " +
-                        name + " of " + container);
+                that.addError("protected member type is not visible: '" +
+                        name + "' of " + container);
             }
         }
     }
 
     private static String baseDescription(Tree.BaseType that) {
-        return name(that.getIdentifier());
+        return "'" + name(that.getIdentifier()) +"'";
     }
     
     private static String qualifiedDescription(Tree.QualifiedType that) {
         String name = name(that.getIdentifier());
         Declaration d = that.getOuterType().getTypeModel().getDeclaration();
-        return name + " of type " + d.getName();
+        return "'" + name + "' of type '" + d.getName() + "'";
     }
     
     @Override public void visit(Tree.BaseMemberExpression that) {
@@ -3969,8 +3970,8 @@ public class ExpressionVisitor extends Visitor {
                 that.getUnit());
         if (member==null) {
             if (!dynamic) {
-                that.addError("function or value does not exist: " +
-                        name, 100);
+                that.addError("function or value does not exist: '" +
+                        name + "'", 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
@@ -4061,12 +4062,12 @@ public class ExpressionVisitor extends Visitor {
             }
             if (member==null) {
                 if (ambiguous) {
-                    that.addError("method or attribute is ambiguous: " +
-                            name + " for " + container);
+                    that.addError("method or attribute is ambiguous: '" +
+                            name + "' for " + container);
                 }
                 else {
-                    that.addError("method or attribute does not exist: " +
-                            name + " in " + container, 100);
+                    that.addError("method or attribute does not exist: '" +
+                            name + "' in " + container, 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
             }
@@ -4117,8 +4118,14 @@ public class ExpressionVisitor extends Visitor {
 
     private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
         if (!that.getDirectlyInvoked()) {
-            that.addError("missing type arguments to generic declaration: " + 
-                    that.getDeclaration().getName(unit) + " declares type parameters");
+            Functional dec = (Functional) that.getDeclaration();
+            StringBuilder params = new StringBuilder();
+            for (TypeParameter tp: dec.getTypeParameters()) {
+                if (params.length()>0) params.append(", ");
+                params.append("'").append(tp.getName()).append("'");
+            }
+            that.addError("missing type arguments to generic declaration: '" + 
+                    dec.getName(unit) + "' declares type parameters " + params);
         }
     }
     
@@ -4144,9 +4151,9 @@ public class ExpressionVisitor extends Visitor {
                 if (!dynamic && isTypeUnknown(t)) {
                     //this occurs with an ambiguous reference
                     //to a member of an intersection type
-                    that.addError("could not determine type of method or attribute reference: " +
-                            member.getName(unit)  + " of " + 
-                            receiverType.getDeclaration().getName(unit));
+                    that.addError("could not determine type of method or attribute reference: '" +
+                            member.getName(unit) + "' of '" + 
+                            receiverType.getDeclaration().getName(unit) + "'");
                 }
                 that.setTypeModel(accountForStaticReferenceType(that, member, t));
             //}
@@ -4204,8 +4211,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = pr.getFullType();
             if (isTypeUnknown(t)) {
                 if (!dynamic) {
-                    that.addError("could not determine type of function or value reference: " +
-                            member.getName(unit));
+                    that.addError("could not determine type of function or value reference: '" +
+                            member.getName(unit) + "'");
                 }
             }
             else {
@@ -4224,7 +4231,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getUnit());
         if (type==null) {
             if (!dynamic) {
-                that.addError("type does not exist: " + name, 102);
+                that.addError("type does not exist: '" + name + "'", 102);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
@@ -4253,26 +4260,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
             if (!(type instanceof ClassOrInterface)) {
-                that.addError("type cannot be instantiated: " +
-                        type.getName(unit) + " is not a class or interface");
+                that.addError("type cannot be instantiated: '" +
+                        type.getName(unit) + "' is not a class or interface");
             }
         }
         else {
             if (type instanceof Class) {
                 if (((Class) type).isAbstract()) {
-                    that.addError("class cannot be instantiated: " +
-                            type.getName(unit) + " is abstract");
+                    that.addError("class cannot be instantiated: '" +
+                            type.getName(unit) + "' is abstract");
                 }
             }
             else if (type instanceof TypeParameter) {
                 if (((TypeParameter) type).getParameterList()==null) {
-                    that.addError("type parameter cannot be instantiated: " +
-                            type.getName(unit));
+                    that.addError("type parameter cannot be instantiated: '" +
+                            type.getName(unit) + "'");
                 }
             }
             else {
-                that.addError("type cannot be instantiated: " +
-                        type.getName(unit) + " is not a class");
+                that.addError("type cannot be instantiated: '" +
+                        type.getName(unit) + "' is not a class");
             }
         }
     }
@@ -4281,9 +4288,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
 	    if (type.isSealed() && !inSameModule(type) &&
 	    		(!that.getStaticMethodReferencePrimary())) {
-	    	that.addError("invokes or references a sealed class in a different module: " +
-	    			type.getName(unit) + " in " + 
-	    			type.getUnit().getPackage().getModule().getNameAsString());
+	    	that.addError("invokes or references a sealed class in a different module: '" +
+	    			type.getName(unit) + "' in '" + 
+	    			type.getUnit().getPackage().getModule().getNameAsString() + "'");
 	    }
     }
     
@@ -4305,8 +4312,8 @@ public class ExpressionVisitor extends Visitor {
                         //it is a Java constructor
                         if (result.isPackageVisibility() && 
                                 !declaredInPackage(result, unit)) {
-                            that.addError("package private constructor is not visible: " + 
-                                    result.getName());
+                            that.addError("package private constructor is not visible: '" + 
+                                    result.getName() + "'");
                         }
                     }
                 }
@@ -4353,7 +4360,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
-                container = "package " + unit.getPackage().getNameAsString();
+                container = "package '" + unit.getPackage().getNameAsString() + "'";
                 Declaration pm = unit.getPackage()
                         .getMember(name, signature, ellipsis);
                 if (pm instanceof TypeDeclaration) {
@@ -4367,7 +4374,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
-                container = "type " + d.getName(unit);
+                container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
                 if (ci!=null && d.inherits(ci)) {
                     Declaration direct = ci.getDirectMember(name, signature, ellipsis);
@@ -4386,12 +4393,12 @@ public class ExpressionVisitor extends Visitor {
             }
             if (type==null) {
                 if (ambiguous) {
-                    that.addError("member type is ambiguous: " +
-                            name + " for " + container);
+                    that.addError("member type is ambiguous: '" +
+                            name + "' for " + container);
                 }
                 else {
-                    that.addError("member type does not exist: " +
-                            name + " in " + container, 100);
+                    that.addError("member type does not exist: '" +
+                            name + "' in " + container, 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
             }
@@ -4491,8 +4498,8 @@ public class ExpressionVisitor extends Visitor {
                                     }
                                 }
                                 else {
-                                    variance.addError("type parameter is not declared invariant: " + 
-                                            p.getName() + " of " + type.getName(unit));
+                                    variance.addError("type parameter is not declared invariant: '" + 
+                                            p.getName() + "' of '" + type.getName(unit) + "'");
                                 }
                             }
                         }
@@ -4526,9 +4533,9 @@ public class ExpressionVisitor extends Visitor {
             if (!dynamic && !abs && !that.getStaticMethodReference() && isTypeUnknown(ft)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
-                that.addError("could not determine type of member class reference: " +
-                        type.getName(unit)  + " of " + 
-                        receiverType.getDeclaration().getName(unit));
+                that.addError("could not determine type of member class reference: '" +
+                        type.getName(unit)  + "' of '" + 
+                        receiverType.getDeclaration().getName(unit) + "'");
             }
             that.setTypeModel(accountForStaticReferenceType(that, type, ft));
         }
@@ -4917,7 +4924,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (term instanceof Tree.Literal) {
                         if (term instanceof Tree.FloatLiteral) {
-                            e.addError("literal case may not be a Float literal");
+                            e.addError("literal case may not be a 'Float' literal");
                         }
                     }
                     else if (term instanceof Tree.MemberOrTypeExpression) {
@@ -5252,18 +5259,18 @@ public class ExpressionVisitor extends Visitor {
                                 if (argTypeMeaningful) {
                                     if (tal instanceof Tree.InferredTypeArguments) {
                                         parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
-                                                + "' to type parameter " + param.getName()
-                                                + " of declaration " + dec.getName(unit)
-                                                + " not assignable to upper bound '" + sts.getProducedTypeName(unit)
-                                                + "' of " + param.getName());
+                                                + "' to type parameter '" + param.getName()
+                                                + "' of declaration '" + dec.getName(unit)
+                                                + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                + "' of '" + param.getName() + "'");
                                     }
                                     else {
                                         ((Tree.TypeArgumentList) tal).getTypes()
-                                                .get(i).addError("type parameter " + param.getName() 
-                                                        + " of declaration " + dec.getName(unit)
-                                                        + " has argument '" + argType.getProducedTypeName(unit) 
+                                                .get(i).addError("type parameter '" + param.getName() 
+                                                        + "' of declaration '" + dec.getName(unit)
+                                                        + "' has argument '" + argType.getProducedTypeName(unit) 
                                                         + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
-                                                        + "' of " + param.getName(), 2102);
+                                                        + "' of '" + param.getName() + "'", 2102);
                                     }
                                 }
                                 return false;
@@ -5276,16 +5283,16 @@ public class ExpressionVisitor extends Visitor {
                         if (argTypeMeaningful) {
                             if (tal instanceof Tree.InferredTypeArguments) {
                                 parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
-                                        + "' to type parameter " + param.getName()
-                                        + " of declaration " + dec.getName(unit)
-                                        + " not one of the enumerated cases of " + param.getName());
+                                        + "' to type parameter '" + param.getName()
+                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' not one of the enumerated cases of '" + param.getName() + "'");
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
-                                        .get(i).addError("type parameter " + param.getName() 
-                                                + " of declaration " + dec.getName(unit)
-                                                + " has argument " + argType.getProducedTypeName(unit) 
-                                                + " not one of the enumerated cases of " + param.getName());
+                                        .get(i).addError("type parameter '" + param.getName() 
+                                                + "' of declaration '" + dec.getName(unit)
+                                                + "' has argument '" + argType.getProducedTypeName(unit) 
+                                                + "' not one of the enumerated cases of '" + param.getName() + "'");
                             }
                         }
                         return false;
@@ -5296,8 +5303,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
                     if (!metamodel) {
-                        parent.addError("missing type arguments to generic type: " + 
-                                dec.getName(unit) + " declares type parameters");
+                        parent.addError("missing type arguments to generic type: '" + 
+                                dec.getName(unit) + "' declares type parameters");
                     }
                 }
                 else {
@@ -5308,8 +5315,8 @@ public class ExpressionVisitor extends Visitor {
                     else if (args>max) {
                         help = " allows at most " + max + " type arguments";
                     }
-                    tal.addError("wrong number of type arguments: " + 
-                            dec.getName(unit) + help);
+                    tal.addError("wrong number of type arguments: '" + 
+                            dec.getName(unit) + "'" + help);
                 }
                 return false;
             }
@@ -5317,8 +5324,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             boolean empty = typeArguments.isEmpty();
             if (!empty) {
-                tal.addError("does not accept type arguments: " + 
-                        dec.getName(unit));
+                tal.addError("does not accept type arguments: '" + 
+                        dec.getName(unit) + "'");
             }
             return empty;
         }
@@ -5437,13 +5444,13 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (etd!=null) {
                         if (etd.isFinal()) {
-                            et.addError("extends a final class: " + 
-                                    etd.getName(unit));
+                            et.addError("extends a final class: '" + 
+                                    etd.getName(unit) + "'");
                         }
                     	if (etd.isSealed() && !inSameModule(etd)) {
-                    		et.addError("extends a sealed class in a different module: " +
-                    				etd.getName(unit) + " in " + 
-                    				etd.getUnit().getPackage().getModule().getNameAsString());
+                    		et.addError("extends a sealed class in a different module: '" +
+                    				etd.getName(unit) + "' in '" + 
+                    				etd.getUnit().getPackage().getModule().getNameAsString() + "'");
                     	}
                     }
                 }
@@ -5489,25 +5496,25 @@ public class ExpressionVisitor extends Visitor {
                 if (td instanceof ClassOrInterface &&
                         !inLanguageModule(that.getUnit())) {
                     if (unit.isCallableType(type)) {
-                        t.addError("satisfies Callable");
+                        t.addError("satisfies 'Callable'");
                     }
                     if (type.getDeclaration().equals(unit.getConstrainedAnnotationDeclaration())) {
-                        t.addError("directly satisfies ConstrainedAnnotation");
+                        t.addError("directly satisfies 'ConstrainedAnnotation'");
                     }
                 }
                 if (!set.add(type.getDeclaration())) {
                     //this error is not really truly necessary
                     //but the spec says it is an error, and
                     //the backend doesn't like it
-                    t.addError("duplicate satisfied type: " + 
+                    t.addError("duplicate satisfied type: '" + 
                             type.getDeclaration().getName(unit) +
-                            " of " + td.getName());
+                            "' of '" + td.getName() + "'");
                 }
             	if (td instanceof ClassOrInterface && 
             			std.isSealed() && !inSameModule(std)) {
-        			t.addError("satisfies a sealed interface in a different module: " +
-        					std.getName(unit) + " in " + 
-        					std.getUnit().getPackage().getModule().getNameAsString());
+        			t.addError("satisfies a sealed interface in a different module: '" +
+        					std.getName(unit) + "' in '" + 
+        					std.getUnit().getPackage().getModule().getNameAsString() + "'");
             	}
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
@@ -5581,9 +5588,9 @@ public class ExpressionVisitor extends Visitor {
                     type = type.resolveAliases();
                     if (!set.add(ctd)) {
                         //this error is not really truly necessary
-                        st.addError("duplicate case type: " + 
+                        st.addError("duplicate case type: '" + 
                                 ctd.getName(unit) + 
-                                " of " + td.getName());
+                                "' of '" + td.getName() + "'");
                     }
                     if (!(ctd instanceof TypeParameter)) {
                         //it's not a self type
@@ -5612,21 +5619,21 @@ public class ExpressionVisitor extends Visitor {
                                     TypeDeclaration argTypeDec = argType.getDeclaration();
                                     if (argTypeDec instanceof TypeParameter) {
                                         if (!((TypeParameter) argTypeDec).getDeclaration().equals(td)) {
-                                            arg.addError("type argument is not a type parameter of the enumerated type: " +
-                                                    argTypeDec.getName() + " is not a type parameter of " + td.getName());
+                                            arg.addError("type argument is not a type parameter of the enumerated type: '" +
+                                                    argTypeDec.getName() + "' is not a type parameter of '" + td.getName());
                                         }
                                     }
                                     else if (typeParameter.isCovariant()) {
-                                        Util.checkAssignable(typeParameter.getType(), argType, arg, 
+                                        checkAssignable(typeParameter.getType(), argType, arg, 
                                                 "type argument not an upper bound of the type parameter");
                                     }
                                     else if (typeParameter.isContravariant()) {
-                                        Util.checkAssignable(argType, typeParameter.getType(), arg, 
+                                        checkAssignable(argType, typeParameter.getType(), arg, 
                                                 "type argument not a lower bound of the type parameter");
                                     }
                                     else {
-                                        arg.addError("type argument is not a type parameter of the enumerated type: " +
-                                                argTypeDec.getName());
+                                        arg.addError("type argument is not a type parameter of the enumerated type: '" +
+                                                argTypeDec.getName() + "'");
                                     }
                                 }
                             }
@@ -5639,12 +5646,12 @@ public class ExpressionVisitor extends Visitor {
                 Declaration d = bme.getDeclaration();
                 if (d!=null && type!=null && 
                         !type.getDeclaration().isAnonymous()) {
-                    bme.addError("case must be a toplevel anonymous class: " + 
-                            d.getName(unit) + " is not an anonymous class");
+                    bme.addError("case must be a toplevel anonymous class: '" + 
+                            d.getName(unit) + "' is not an anonymous class");
                 }
                 else if (d!=null && !d.isToplevel()) {
-                    bme.addError("case must be a toplevel anonymous class: " + 
-                            d.getName(unit) + " is not toplevel");
+                    bme.addError("case must be a toplevel anonymous class: '" + 
+                            d.getName(unit) + "' is not toplevel");
                 }
                 if (type!=null) {
                     checkAssignable(type, td.getType(), bme, 
@@ -5695,8 +5702,8 @@ public class ExpressionVisitor extends Visitor {
             }
             that.addError("qualifying type '" + qt.getProducedTypeName(unit) + 
                     "' of supertype '" + type.getProducedTypeName(unit) + 
-                    "' is not an outer type or supertype of any outer type of " +
-                    td.getName(unit));
+                    "' is not an outer type or supertype of any outer type of '" +
+                    td.getName(unit) + "'");
         }
     }
     
@@ -5739,10 +5746,10 @@ public class ExpressionVisitor extends Visitor {
                         else {
                             help = "";
                         }
-                        that.addError("type argument does not satisfy self type constraint on type parameter " +
-                                param.getName() + " of " + type.getDeclaration().getName(unit) + ": '" +
-                                arg.getProducedTypeName(unit) + "' is not a supertype or self type of " + 
-                                td.getName(unit) + help);
+                        that.addError("type argument does not satisfy self type constraint on type parameter '" +
+                                param.getName() + "' of '" + type.getDeclaration().getName(unit) + "': '" +
+                                arg.getProducedTypeName(unit) + "' is not a supertype or self type of '" + 
+                                td.getName(unit) + "'" + help);
                     }
                 }
             }
@@ -5767,8 +5774,8 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (types.isEmpty()) {
-                        that.addError("not a subtype of any case of enumerated supertype: " + 
-                                d.getName(unit) + " is a subtype of " + std.getName(unit));
+                        that.addError("not a subtype of any case of enumerated supertype: '" + 
+                                d.getName(unit) + "' is a subtype of '" + std.getName(unit) + "'");
                     }
                     else if (types.size()>1) {
                         StringBuilder sb = new StringBuilder();
@@ -5776,8 +5783,8 @@ public class ExpressionVisitor extends Visitor {
                             sb.append("'").append(pt.getProducedTypeName(unit)).append("' and ");
                         }
                         sb.setLength(sb.length()-5);
-                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
-                                d.getName(unit) + " is a subtype of " + sb);
+                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype: '" + 
+                                d.getName(unit) + "' is a subtype of " + sb);
                     }
                 }
             }
@@ -5832,14 +5839,14 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                that.addError("argument to type parameter of enumerated supertype must be a type parameter of " +
-                        d.getName() + ": " + typeDescription(p, unit));
+                that.addError("argument to type parameter of enumerated supertype must be a type parameter of '" +
+                        d.getName() + "': " + typeDescription(p, unit));
             }
         }
         else if (p.isCovariant()) {
             if (!(td instanceof NothingType)) {
                 //TODO: let it be the union of the lower bounds on p
-                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Nothing: " + 
+                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or 'Nothing': " + 
                         typeDescription(p, unit));
             }
         }
@@ -6002,16 +6009,16 @@ public class ExpressionVisitor extends Visitor {
             		return;
             	}
             	//checkNonlocalType(that.getType(), qtd);
-            	String container = "type " + qtd.getName(unit);
+            	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
-            			that.addError("method or attribute is ambiguous: " +
-            					name + " for " + container);
+            			that.addError("method or attribute is ambiguous: '" +
+            					name + "' for " + container);
             		}
             		else {
-            			that.addError("method or attribute does not exist: " +
-            					name + " in " + container);
+            			that.addError("method or attribute does not exist: '" +
+            					name + "' in " + container);
             		}
             	}
             	else {
@@ -6027,8 +6034,8 @@ public class ExpressionVisitor extends Visitor {
                     setMemberMetatype(that, result);
                 }
                 else {
-                    that.addError("function or value does not exist: " +
-                            name(that.getIdentifier()), 100);
+                    that.addError("function or value does not exist: '" +
+                            name(that.getIdentifier()) + "'", 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
             }
@@ -6124,14 +6131,14 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.addError("missing type arguments to: " + method.getName(unit));
+                    that.addError("missing type arguments to: '" + method.getName(unit) + "'");
                 }
             }
         }
         else if (result instanceof Value) {
             Value value = (Value) result;
             if (that.getTypeArgumentList() != null) {
-                that.addError("does not accept type arguments: " + result.getName(unit));
+                that.addError("does not accept type arguments: '" + result.getName(unit) + "'");
             }
             else {
                 ProducedTypedReference pr = value.getProducedTypedReference(outerType, 

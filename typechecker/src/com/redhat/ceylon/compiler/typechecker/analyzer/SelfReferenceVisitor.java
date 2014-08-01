@@ -36,9 +36,10 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = that.getDeclaration();
         if (member!=null && !typeDeclaration.isAlias()) {
             if ( !declarationSection && isInherited(that, member) ) {
-                that.addError("inherited member class may not be extended in initializer of " +
-                    		typeDeclaration.getName() + ": " + member.getName() + 
-                    		" is inherited from " + ((Declaration) member.getContainer()).getName());
+                that.addError("inherited member class may not be extended in initializer of '" +
+                    		typeDeclaration.getName() + "': '" + member.getName() + 
+                    		"' is inherited from '" + 
+                    		((Declaration) member.getContainer()).getName() + "'");
             }
         }
     }
@@ -48,9 +49,10 @@ public class SelfReferenceVisitor extends Visitor {
             Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
             if (member!=null) {
                 if (!declarationSection && isInherited(that, member)) {
-                    that.addError("inherited member may not be used in initializer of " +
-                    		typeDeclaration.getName() + ": " + member.getName() + 
-                    		" is inherited from " + ((Declaration) member.getContainer()).getName());
+                    that.addError("inherited member may not be used in initializer of '" +
+                    		typeDeclaration.getName() + "': '" + member.getName() + 
+                    		"' is inherited from '" + 
+                    		((Declaration) member.getContainer()).getName() + "'");
                 }
             }
         }
@@ -114,12 +116,12 @@ public class SelfReferenceVisitor extends Visitor {
                     term.addError("narrows super");
                 }
                 else if (mayNotLeakThis() && term instanceof Tree.This) {
-                    term.addError("narrows this in initializer: " + 
-                            typeDeclaration.getName());
+                    term.addError("narrows this in initializer: '" + 
+                            typeDeclaration.getName() + "'");
                 }
                 else if (mayNotLeakOuter() && term instanceof Tree.Outer) {
-                    term.addError("narrows outer in initializer: " + 
-                            typeDeclaration.getName());
+                    term.addError("narrows outer in initializer: '" + 
+                            typeDeclaration.getName() + "'");
                 }
             }
         }
@@ -237,24 +239,24 @@ public class SelfReferenceVisitor extends Visitor {
     private void checkSelfReference(Node that, Tree.Term term) {
         Tree.Term t = eliminateParensAndWidening(term);
         if (directlyInBody() && t instanceof Tree.Super) {
-            that.addError("leaks super reference in body: " + 
-                    typeDeclaration.getName());
+            that.addError("leaks super reference in body: '" + 
+                    typeDeclaration.getName() + "'");
         }    
         if (mayNotLeakThis() && t instanceof Tree.This) {
-            that.addError("leaks this reference in initializer: " + 
-                    typeDeclaration.getName());
+            that.addError("leaks this reference in initializer: '" + 
+                    typeDeclaration.getName() + "'");
         }    
         if (mayNotLeakOuter() && t instanceof Tree.Outer) {
-            that.addError("leaks outer reference in initializer: " + 
-                    typeDeclaration.getName());
+            that.addError("leaks outer reference in initializer: '" + 
+                    typeDeclaration.getName() + "'");
         }
         if (typeDeclaration.isAnonymous() && mayNotLeakAnonymousClass() && 
         		t instanceof Tree.BaseMemberExpression) {
         	Declaration declaration = ((Tree.BaseMemberExpression)t).getDeclaration();
         	if (declaration instanceof TypedDeclaration) {
         		if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
-                    that.addError("object leaks self reference in initializer: " + 
-                            typeDeclaration.getName());
+                    that.addError("object leaks self reference in initializer: '" + 
+                            typeDeclaration.getName() + "'");
         		}
         	}
         }
@@ -265,8 +267,8 @@ public class SelfReferenceVisitor extends Visitor {
         		Declaration declaration = qme.getDeclaration();
         		if (declaration instanceof TypedDeclaration) {
         			if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
-        				that.addError("object leaks self reference in initializer: " + 
-        						typeDeclaration.getName());
+        				that.addError("object leaks self reference in initializer: '" + 
+        						typeDeclaration.getName() + "'");
         			}
         		}
         	}

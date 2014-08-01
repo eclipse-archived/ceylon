@@ -156,12 +156,13 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!isMemberNameOnAncestor) {
                             TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
                         	if (!mixedInBySupertype(currentType.declaration, otherType, classOrInterface)) {
-                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
+                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: '");
                                 sb.append(name)
-                                  .append(" is defined by supertypes ")
+                                  .append("' is defined by supertypes '")
                         		  .append(currentType.declaration.getName())
-                        		  .append(" and ")
-                        		  .append(otherType.getName());
+                        		  .append("' and '")
+                        		  .append(otherType.getName())
+                        		  .append("'");
                         		that.addError(sb.toString());
                         	}
                         }
@@ -196,12 +197,13 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!isMemberRefined && isMemberNameOnAncestor) {
                             TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
                         	if (!mixedInBySupertype(currentType.declaration, otherType, classOrInterface)) {
-                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
+                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: '");
                                 sb.append(name)
-                                  .append(" is defined by supertypes ")
+                                  .append("' is defined by supertypes '")
                         		  .append(currentType.declaration.getName())
-                        		  .append(" and ")
-                        		  .append(otherType.getName());
+                        		  .append("' and '")
+                        		  .append(otherType.getName())
+                        		  .append("'");
                         		that.addError(sb.toString());
                         	}
                         }
@@ -290,9 +292,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 Declaration declaringType = 
                         (Declaration) members.formals.iterator().next().getContainer();
                 if (!declaration.equals(declaringType)) {
-                    that.addError("formal member " + members.name + 
-                            " of " + declaringType.getName() +
-                            " not implemented in class hierarchy", 300);
+                    that.addError("formal member '" + members.name + 
+                            "' of '" + declaringType.getName() +
+                            "' not implemented in class hierarchy", 300);
                 }
             }
             /*if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
@@ -466,10 +468,10 @@ public class TypeHierarchyVisitor extends Visitor {
                                 //TODO: figure out which other declaration causes the
                                 //      problem and display it to the user!
                                 if (r==null) {
-                                    that.addError("member " + d.getName() +
-                                            " is inherited ambiguously by " + td.getName() +
-                                            " from " + std.getName() +  
-                                            " and another unrelated supertype");
+                                    that.addError("member '" + d.getName() +
+                                            "' is inherited ambiguously by '" + td.getName() +
+                                            "' from '" + std.getName() +  
+                                            "' and another unrelated supertype");
                                 }
                                 else {
                                     //TODO: I'm not really certain that the following
@@ -480,12 +482,12 @@ public class TypeHierarchyVisitor extends Visitor {
                                             r.getUnit().getPackage().getModule().isJava() &&
                                             r.isInterfaceMember() &&
                                             d.isClassMember())) {
-                                        that.addError("member " + d.getName() + 
-                                                " is inherited ambiguously by " + td.getName() +
-                                                " from " + std.getName() +  
-                                                " and another subtype of " + 
+                                        that.addError("member '" + d.getName() + 
+                                                "' is inherited ambiguously by '" + td.getName() +
+                                                "' from '" + std.getName() +  
+                                                "' and another subtype of '" + 
                                                 ((TypeDeclaration) r.getContainer()).getName() + 
-                                                " and so must be refined by " + td.getName(), 
+                                                "' and so must be refined by '" + td.getName() + "'", 
                                                 350);
                                     }
                                 }

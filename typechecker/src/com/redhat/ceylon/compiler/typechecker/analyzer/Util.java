@@ -219,23 +219,23 @@ public class Util {
         else if (!unit.isCallableType(type)) {
             if (!hasError(node)) {
                 String extra = message(type, 
-                        " is not a subtype of Callable", unit);
+                        " is not a subtype of 'Callable'", unit);
                 if (node instanceof Tree.StaticMemberOrTypeExpression) {
                     Declaration d = 
                             ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
                     if (d instanceof Interface) {
-                        extra = ": " + d.getName() + " is an interface";
+                        extra = ": '" + d.getName() + "' is an interface";
                     }
                     else if (d instanceof TypeAlias) {
-                        extra = ": " + d.getName() + " is a type alias";
+                        extra = ": '" + d.getName() + "' is a type alias";
                     }
                     else if (d instanceof TypeParameter) {
-                        extra = ": " + d.getName() + " is a type parameter";
+                        extra = ": '" + d.getName() + "' is a type parameter";
                     }
                     else if (d instanceof Value) {
-                        extra = ": value " + d.getName() + " has type '" + 
+                        extra = ": value '" + d.getName() + "' has type '" + 
                                 type.getProducedTypeName(unit) + 
-                                "' which is not a subtype of Callable";
+                                "' which is not a subtype of 'Callable'";
                     }
                 }
                 node.addError(message + extra);
@@ -257,7 +257,7 @@ public class Util {
             ProducedType supertype = pt.getSupertype(td);
             if (supertype==null) {
                 node.addError(message + 
-                        message(pt, " is not a subtype of " + td.getName(), 
+                        message(pt, " is not a subtype of '" + td.getName() + "'", 
                 		node.getUnit()));
             }
             return supertype;
@@ -516,11 +516,11 @@ public class Util {
     static String typeDescription(TypeDeclaration td, Unit unit) {
         if (td instanceof TypeParameter) {
             Declaration container = (Declaration) td.getContainer();
-            return "type parameter " + td.getName() + " of " + 
-                    container.getName(unit);
+            return "type parameter '" + td.getName() + "' of '" + 
+                    container.getName(unit) + "'";
         }
         else {
-            return "type " + td.getName();
+            return "type '" + td.getName() + "'";
         }
     }
 
@@ -702,13 +702,13 @@ public class Util {
     static String message(Declaration refined) {
         String container;
         if (refined.getContainer() instanceof Declaration) {
-            container = " in " + 
-                ((Declaration) refined.getContainer()).getName();
+            String name = ((Declaration) refined.getContainer()).getName();
+            container = " in '" + name + "'";
         }
         else {
             container = "";
         }
-        return refined.getName() + container;
+        return "'" + refined.getName() + "'" + container;
     }
 
 }

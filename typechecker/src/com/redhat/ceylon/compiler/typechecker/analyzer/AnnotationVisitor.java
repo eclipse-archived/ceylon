@@ -92,8 +92,8 @@ public class AnnotationVisitor extends Visitor {
     		if (pt!=null && isIllegalAnnotationParameterType(pt)) {
     			Node errorNode = pn instanceof Tree.ValueParameterDeclaration ?
     					((Tree.ValueParameterDeclaration) pn).getTypedDeclaration().getType() : pn;
-    			errorNode.addError("illegal annotation parameter type: " + 
-    					pt.getProducedTypeName());
+    			errorNode.addError("illegal annotation parameter type: '" + 
+    					pt.getProducedTypeName() + "'");
     		}
     		Tree.SpecifierOrInitializerExpression se = null;
     		if (pn instanceof Tree.InitializerParameter) {
@@ -270,7 +270,7 @@ public class AnnotationVisitor extends Visitor {
         if (c.getExtendedTypeDeclaration() != null
                 && !c.getExtendedTypeDeclaration()
                 .equals(that.getUnit().getBasicDeclaration())) {
-            that.addError("annotation class must directly extend Basic");
+            that.addError("annotation class must directly extend 'Basic'");
         }
         for (Tree.Parameter pn: that.getParameterList().getParameters()) {
             checkAnnotationParameter(c, pn);
@@ -291,7 +291,7 @@ public class AnnotationVisitor extends Visitor {
                 if (t.getDeclaration().isAnnotation()) {
                     TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
                     if (!t.getDeclaration().inherits(annotationDec)) {
-                        that.addError("annotation constructor must return a subtype of Annotation");
+                        that.addError("annotation constructor must return a subtype of 'Annotation'");
                     }
                     if (!that.getUnit().getPackage().getQualifiedNameString()
                             .equals(LANGUAGE_MODULE_NAME)) {
@@ -607,8 +607,8 @@ public class AnnotationVisitor extends Visitor {
                 for (int j=0; j<i; j++) {
                     ProducedType ot = anns.get(j).getTypeModel();
                     if (ot!=null && ot.getDeclaration().equals(t.getDeclaration())) {
-                        anns.get(i).addError("duplicate annotation: there are multiple annotations of type " + 
-                                t.getDeclaration().getName());
+                        anns.get(i).addError("duplicate annotation: there are multiple annotations of type '" + 
+                                t.getDeclaration().getName() + "'");
                         break;
                     }
                 }
@@ -628,14 +628,14 @@ public class AnnotationVisitor extends Visitor {
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
             if (that.getStaticMethodReference() && !dec.isStaticallyImportable()) {
-                that.addError("ambiguous static reference to overloaded method or class: " +
-                        dec.getName(that.getUnit()) + " is overloaded");
+                that.addError("ambiguous static reference to overloaded method or class: '" +
+                        dec.getName(that.getUnit()) + "' is overloaded");
             }
             else {
                 List<ProducedType> sig = that.getSignature();
                 if (sig==null) {
-                    that.addError("ambiguous callable reference to overloaded method or class: " +
-                            dec.getName(that.getUnit()) + " is overloaded");
+                    that.addError("ambiguous callable reference to overloaded method or class: '" +
+                            dec.getName(that.getUnit()) + "' is overloaded");
                 }
                 else {
                     StringBuilder sb = new StringBuilder();
@@ -651,9 +651,9 @@ public class AnnotationVisitor extends Visitor {
                     }
                     sb.append("'");
                     that.addError("ambiguous invocation of overloaded method or class: " +
-                            "there must be exactly one overloaded declaration of " + 
+                            "there must be exactly one overloaded declaration of '" + 
                             dec.getName(that.getUnit()) + 
-                            " that accepts the given argument types" + sb);
+                            "' that accepts the given argument types" + sb);
                 }
             }
         }

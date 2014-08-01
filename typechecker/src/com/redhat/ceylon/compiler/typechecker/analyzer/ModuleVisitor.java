@@ -115,10 +115,10 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                importPath.addError("reserved module name: default");
+                importPath.addError("reserved module name: 'default'");
             }
             else if (name.size()==1 && name.get(0).equals("ceylon")) {
-                importPath.addError("reserved module name: ceylon");
+                importPath.addError("reserved module name: 'ceylon'");
             }
             else {
                 if (name.get(0).equals("ceylon")) {
@@ -136,8 +136,8 @@ public class ModuleVisitor extends Visitor {
                 String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     importPath
-                        .addError("module name does not match descriptor location: " + 
-                        		nameString + " should be " + pkg.getNameAsString(), 
+                        .addError("module name does not match descriptor location: '" + 
+                        		nameString + "' should be '" + pkg.getNameAsString() + "'", 
                         		8000);
                 }
                 if (!completeOnlyAST) {
@@ -154,7 +154,7 @@ public class ModuleVisitor extends Visitor {
                     if (ip!=null) {
                         String mp = formatPath(ip.getIdentifiers());
                         if (!set.add(mp)) {
-                            ip.addError("duplicate module import: " + mp);
+                            ip.addError("duplicate module import: '" + mp + "'");
                         }
                     }
                 }
@@ -175,10 +175,10 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing package name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                importPath.addError("reserved module name: default");
+                importPath.addError("reserved module name: 'default'");
             }
             else if (name.size()==1 && name.get(0).equals("ceylon")) {
-                importPath.addError("reserved module name: ceylon");
+                importPath.addError("reserved module name: 'ceylon'");
             }
             else {
                 if (name.get(0).equals("ceylon")) {
@@ -194,8 +194,8 @@ public class ModuleVisitor extends Visitor {
                 String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     importPath
-                        .addError("package name does not match descriptor location: " + 
-                        		nameString + " should be " + pkg.getNameAsString(), 
+                        .addError("package name does not match descriptor location: '" + 
+                        		nameString + "' should be '" + pkg.getNameAsString() + "'", 
                                 8000);
                 }
                 if (!completeOnlyAST) {
@@ -239,12 +239,12 @@ public class ModuleVisitor extends Visitor {
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
             	if (that.getImportPath()!=null) {
-            		node.addError("reserved module name: default");
+            		node.addError("reserved module name: 'default'");
             	}
             }
             else if (name.size()==1 && name.get(0).equals("ceylon")) {
                 if (that.getImportPath()!=null) {
-                    node.addError("reserved module name: ceylon");
+                    node.addError("reserved module name: 'ceylon'");
                 }
             }
             else if (name.size()>1 && name.get(0).equals("ceylon")
