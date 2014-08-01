@@ -318,7 +318,7 @@ public class InteropTest extends CompilerTest {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
+                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''")
         );
     }
 
@@ -329,9 +329,9 @@ public class InteropTest extends CompilerTest {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
-                new CompilerError(27, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg is visible: JavaDefaultAccessClass involves an unshared type declaration"),
+                new CompilerError(27, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg is visible: 'JavaDefaultAccessClass' involves an unshared type declaration"),
                 new CompilerError(27, "type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg2 is visible: JavaDefaultAccessClass2 involves an unshared type declaration"),
+                new CompilerError(29, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg2 is visible: 'JavaDefaultAccessClass2' involves an unshared type declaration"),
                 new CompilerError(29, "type is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(31, "package private constructor is not visible: JavaDefaultAccessClass3")
         );
@@ -348,7 +348,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
+                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''")
         );
     }
 
@@ -369,7 +369,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()"),
+                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''"),
                 new CompilerError(27, "type constructor is not visible: JavaDefaultAccessClass4"),
                 new CompilerError(28, "protected constructor is not visible: JavaDefaultAccessClass4")
         );
@@ -379,8 +379,8 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessMethodInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("CallsDefaultAccessMethodInAnotherPkg",
-                new CompilerError(25, "protected method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"),
-                new CompilerError(27, "package private method or attribute is not visible: defaultAccessMethod of type JavaAccessModifiers"),
+                new CompilerError(25, "protected method or attribute is not visible: protectedAccessMethod of type 'JavaAccessModifiers'"),
+                new CompilerError(27, "package private method or attribute is not visible: defaultAccessMethod of type 'JavaAccessModifiers'"),
                 new CompilerError(36, "package private function or value is not visible: defaultAccessMethod"));
     }
 
@@ -426,8 +426,8 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testBannedAnnotation(){
       assertErrors("BannedAnnotation",
-              new CompilerError(13, "inappropiate java annotation: interoperation with @Target is not supported"),
-              new CompilerError(14, "inappropiate java annotation: interoperation with @Retention is not supported"),
+              new CompilerError(12, "inappropiate java annotation: interoperation with @Target is not supported"),
+              new CompilerError(13, "inappropiate java annotation: interoperation with @Retention is not supported"),
               new CompilerError(16, "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated"),
               new CompilerError(17, "inappropiate java annotation: interoperation with @Override is not supported: use actual"));
     }

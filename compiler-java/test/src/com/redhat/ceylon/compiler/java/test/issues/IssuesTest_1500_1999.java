@@ -461,8 +461,8 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1664() {
         assertErrors("bug16xx/Bug1664",
-                new CompilerError(30, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: UnitType"),
-                new CompilerError(37, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: UnitType"),
+                new CompilerError(30, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
+                new CompilerError(37, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
                 new CompilerError(-1, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
                 new CompilerError(44, "method convertTo in class com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime<UnitType> cannot be applied to given types;\n"
                         +"  required: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
