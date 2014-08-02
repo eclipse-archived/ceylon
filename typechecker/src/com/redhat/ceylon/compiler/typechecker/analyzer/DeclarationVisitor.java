@@ -1861,9 +1861,12 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        ProducedType type = that.getType().getTypeModel();
-        if (type!=null) {
-            td.setExtendedType(type);
+        Tree.SimpleType t = that.getType();
+        if (t!=null) {
+            ProducedType type = t.getTypeModel();
+            if (type!=null) {
+                td.setExtendedType(type);
+            }
         }
     }
     
@@ -1874,9 +1877,11 @@ public class DeclarationVisitor extends Visitor {
         inExtends = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         for (Tree.StaticType t: that.getTypes()) {
-            ProducedType type = t.getTypeModel();
-            if (type!=null) {
-                td.getSatisfiedTypes().add(type);
+            if (t!=null) {
+                ProducedType type = t.getTypeModel();
+                if (type!=null) {
+                    td.getSatisfiedTypes().add(type);
+                }
             }
         }
     }
