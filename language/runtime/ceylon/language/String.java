@@ -1019,11 +1019,26 @@ public final class String
         return value.substring(start, end);
     }
     
+    @Ignore
+    public static List<? extends Character> sublist(java.lang.String value, long from, long to) {
+        return instance(value).sublist(from, to);
+    }
+    
+    @Ignore
+    public static List<? extends Character> sublistTo(java.lang.String value, long to) {
+        return instance(value).sublistTo(to);
+    }
+    
+    @Ignore
+    public static List<? extends Character> sublistFrom(java.lang.String value, long from) {
+        return instance(value).sublistFrom(from);
+    }
+    
     @Override
     public String spanTo(@Name("to") final Integer to) {
         return instance(spanTo(value, to.longValue()));
     }
-     
+    
     @Ignore
     public static java.lang.String spanTo(java.lang.String value, 
             final long to) {
