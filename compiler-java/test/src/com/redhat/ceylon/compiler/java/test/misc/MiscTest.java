@@ -270,19 +270,23 @@ public class MiscTest extends CompilerTest {
                 "net",
                 "process",
                 "promise",
-                "test",
                 "time",
                 "unicode"
         };
         String[] extraModules = {
+                "ceylon.test",
                 "com.redhat.ceylon.test",
                 "com.redhat.ceylon.testjvm",
+        };
+        String[] extraTestModules = {
+                "test.ceylon.test.suite",
+                "test.ceylon.test.stubs",
         };
 //        System.out.println("Press enter to continue");
 //        System.in.read();
 //        System.out.println("Test started");
         compileSDKOnly(modules, extraModules);
-        compileSDKTests(modules);
+        compileSDKTests(modules, extraTestModules);
 //        System.out.println("Done: Press enter to exit");
 //        System.in.read();
 //        System.out.println("Test finished");
@@ -320,7 +324,7 @@ public class MiscTest extends CompilerTest {
         Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
     }
 
-    private void compileSDKTests(String[] modules){
+    private void compileSDKTests(String[] modules, String[] extraModules){
         String sourceDir = "../ceylon-sdk/test-source";
         String depsDir = "../ceylon-sdk/test-deps";
         // don't run this if the SDK is not checked out
@@ -331,6 +335,9 @@ public class MiscTest extends CompilerTest {
         java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
         for(String module : modules){
             moduleNames.add("test.ceylon." + module);
+        }
+        for(String module : extraModules){
+            moduleNames.add(module);
         }
         
         CeyloncTool compiler;
