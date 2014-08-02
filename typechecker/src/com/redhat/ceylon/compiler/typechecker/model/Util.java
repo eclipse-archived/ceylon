@@ -343,9 +343,7 @@ public class Util {
      * Match the name of the given declaration to the given
      * pattern. A name matches if:
      * 
-     * - it starts with the pattern
-     * - the pattern is all lowercase and its lowercased 
-     *   form matches the pattern, or
+     * - it starts with the pattern, ignoring case, or
      * - the pattern consists of all uppercase after the
      *   first character, and its uppercase "humps" match 
      *   the pattern.
@@ -360,8 +358,7 @@ public class Util {
                 name.length()<startingWith.length()) {
             return false;
         }
-        if (name.startsWith(startingWith) ||
-            name.toLowerCase().startsWith(startingWith)) {
+        if (name.regionMatches(true,0,startingWith,0,startingWith.length())) {
             return true;
         }
         if (startingWith.charAt(0)!=name.charAt(0)) {
