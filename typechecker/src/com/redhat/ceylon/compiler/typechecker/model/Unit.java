@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -118,11 +119,20 @@ public class Unit {
     public String getAliasedName(Declaration dec) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		i.getDeclaration().equals(dec)) {
+            		(i.getDeclaration().equals(getAbstraction(dec)))) {
                 return i.getAlias();
             }
         }
 		return dec.getName();
+    }
+
+    public static Declaration getAbstraction(Declaration dec){
+        if (isOverloadedVersion(dec)) {
+            return dec.getContainer().getDirectMember(dec.getName(), null, false);
+        }
+        else {
+            return dec;
+        }
     }
     
     /**
