@@ -7,14 +7,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -24,7 +21,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
+import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -200,7 +197,12 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() throws IOException {
+        SourceArgumentsResolver resolver = new SourceArgumentsResolver(roots, resources, Constants.CEYLON_SUFFIX, Constants.JS_SUFFIX);
+        resolver
+            .cwd(cwd)
+            .expandSingleSources(true)
+            .expandAndParse(files);
     }
 
     @Override
@@ -211,6 +213,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .cwd(cwd)
                 .repos(getRepositoryAsStrings())
                 .sources(getFilesAsStrings(roots))
+                .resourceDirs(getFilesAsStrings(resources))
+                .resourceRootName(resourceRootName)
                 .systemRepo(systemRepo)
                 .outDir(getOut())
                 .user(user)
@@ -232,11 +236,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             newline();
         }
         final RepositoryManager repoman = getRepositoryManager();
-        final List<String> onlyFiles = new ArrayList<>();
-        final List<File> onlyRes   = new ArrayList<>();
         long t0, t1, t2, t3, t4;
         final TypeCheckerBuilder tcb;
-        final List<File> resrcs = FileUtil.applyCwd(cwd, resources);
+        List<File> onlySources = null;
+        List<File> onlyResources = null;
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -279,128 +282,23 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         } else {
             t0=System.nanoTime();
             tcb = new TypeCheckerBuilder();
-            final Set<String> modfilters = new HashSet<>();
             
-            final List<File> srcs = FileUtil.applyCwd(cwd, roots);
-            final List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , files);
-            for (String filedir : expandedModulesOrFiles) {
-                File f = new File(filedir);
-                boolean once=false;
-                if (f.exists() && f.isFile()) {
-                    for (File root : roots) {
-                        if (f.getAbsolutePath().startsWith(root.getAbsolutePath() + File.separatorChar)) {
-                            if (opts.isVerbose()) {
-                                append("Adding "+filedir+" to compilation set");
-                                newline();
-                            }
-                            onlyFiles.add(normalizePath(filedir));
-                            once=true;
-                            break;
-                        }
-                    }
-                    if (!once) {
-                        for (File r : resrcs) {
-                            if (f.getAbsolutePath().startsWith(r.getAbsolutePath() + File.separatorChar)) {
-                                if (opts.isVerbose()) {
-                                    append("Adding "+filedir+" to resource set");
-                                    newline();
-                                }
-                                onlyRes.add(f);
-                                once=true;
-                                break;
-                            }
-                        }
-                        if (!once) {
-                            throw new CompilerErrorException(String.format("%s is not in any source path: %n", f.getAbsolutePath()));
-                        }
-                    }
-                } else if ("default".equals(filedir)) {
-                    //Default module: load every file in the source directories recursively,
-                    //except any file that exists in directories and subdirectories where we find a module.ceylon file
-                    //Typechecker takes care of all that if we add default to module filters
-                    if (opts.isVerbose()) {
-                        append("Adding default module filter"); newline();
-                    }
-                    for (File root : roots) {
-                        addFilesToCompilationSet(opts.isVerbose(), root, onlyFiles, true);
-                    }
-                    for (File r : resources) {
-                        addFilesToResourceSet(opts.isVerbose(), r, onlyRes);
-                    }
-                    modfilters.add("default");
-                    f = null;
-                } else {
-                    //Parse, may be a module name
-                    String[] modpath = filedir.split("\\.");
-                    f = null;
-                    for (File root : roots) {
-                        File _f = root;
-                        for (String pe : modpath) {
-                            _f = new File(_f, pe);
-                            if (!(_f.exists() && _f.isDirectory())) {
-                                _f=null;
-                                break;
-                            }
-                        }
-                        if (_f != null) {
-                            f = _f;
-                            if (opts.isVerbose()) {
-                                append("Adding dir to module filters: " + f.getAbsolutePath()); newline();
-                            }
-                            addFilesToCompilationSet(opts.isVerbose(), f, onlyFiles, false);
-                            modfilters.add(filedir);
-                        }
-                        //TODO mirror resource dir?
-                    }
-                    if (f == null) {
-                        String msg;
-                        if (ModuleWildcardsHelper.isModuleName(filedir)) {
-                            msg = String.format("ceylonc-js: Could not find source files for module: %s%n", filedir);
-                        } else {
-                            msg = String.format("ceylonc-js: file not found: %s%n", filedir);
-                        }
-                        throw new CompilerErrorException(msg);
-                    }
-                }
-                if (f != null) {
-                    if (Constants.MODULE_DESCRIPTOR.equals(f.getName().toLowerCase())) {
-                        String _f = f.getParentFile().getAbsolutePath();
-                        for (File root : roots) {
-                            if (root.getAbsolutePath().startsWith(_f)) {
-                                _f = _f.substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
-                                modfilters.add(_f);
-                                if (opts.isVerbose()) {
-                                    append("Adding file to module filters: " + _f);newline();
-                                }
-                            }
-                        }
-                    } else {
-                        for (File root : roots) {
-                            File middir = f.getParentFile();
-                            while (middir != null && !middir.getAbsolutePath().equals(root.getAbsolutePath())) {
-                                if (new File(middir, Constants.MODULE_DESCRIPTOR).exists()) {
-                                    String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(
-                                            File.separatorChar, '.');
-                                    modfilters.add(_f);
-                                    if (opts.isVerbose()) {
-                                        append("Adding file to module filters: " + _f);newline();
-                                    }
-                                }
-                                middir = middir.getParentFile();
-                            }
-                        }
-                    }
-                } //f!= null
-            } //loop over files
-
+            SourceArgumentsResolver resolver = new SourceArgumentsResolver(roots, resources, Constants.CEYLON_SUFFIX, Constants.JS_SUFFIX);
+            resolver
+                .cwd(cwd)
+                .expandSingleSources(true)
+                .expandAndParse(files);
+            onlySources = resolver.getSourceFiles();
+            onlyResources = resolver.getResourceFiles();
+            
             if (opts.isVerbose()) {
-                append("Adding source directories to typechecker:" + roots);newline();
+                append("Adding source directories to typechecker:" + roots).newline();
             }
             for (File root : roots) {
                 tcb.addSrcDirectory(root);
             }
-            if (!modfilters.isEmpty()) {
-                tcb.setModuleFilters(new ArrayList<>(modfilters));
+            if (!resolver.getSourceModules().isEmpty()) {
+                tcb.setModuleFilters(resolver.getSourceModules());
             }
             tcb.statistics(opts.isProfile());
             JsModuleManagerFactory.setVerbose(opts.isVerbose());
@@ -411,11 +309,11 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         tcb.usageWarnings(false).encoding(encoding);
 
         typeChecker = tcb.getTypeChecker();
-        if (!onlyFiles.isEmpty()) {
+        if (onlySources != null) {
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
-                if (!onlyFiles.contains(normalizePath(pu.getUnitFile().getPath()))) {
+                if (!onlySources.contains(new File(pu.getUnitFile().getPath()))) {
                     if (opts.isVerbose()) {
-                        append("Removing phased unit " + pu);newline();
+                        append("Removing phased unit " + pu).newline();
                     }
                     typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
                 }
@@ -426,23 +324,14 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
-        if (!onlyFiles.isEmpty()) {
+        if (onlySources != null) {
             if (opts.isVerbose()) {
-                append("Only these files will be compiled: " + onlyFiles);newline();
+                append("Only these files will be compiled: " + onlySources).newline();
             }
-            jsc.setFiles(onlyFiles);
+            jsc.setFiles(getFilesAsStrings(onlySources));
         }
-        if (onlyRes.isEmpty()) {
-            for (File f : resrcs) {
-                if (f.exists() && f.isDirectory()) {
-                    addFilesToResourceSet(opts.isVerbose(), f, onlyRes);
-                }
-            }
-        }
-        if (!onlyRes.isEmpty()) {
-            opts.resources(getFilesAsStrings(onlyRes))
-                .resourceDirs(getFilesAsStrings(resrcs))
-                .resourceRootName(resourceRootName);
+        if (onlyResources != null) {
+            opts.resources(getFilesAsStrings(onlyResources));
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {
@@ -464,50 +353,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             System.err.printf("JS compilation:         %6d nanos%n", t4-t3);
             System.out.println("Compilation finished.");
         }
-    }
-
-    private static void addFilesToCompilationSet(boolean verbose, File dir, List<String> onlyFiles, boolean skipModules) {
-        if (skipModules) {
-            File module = new File(dir, Constants.MODULE_DESCRIPTOR);
-            if (module.isFile()) {
-                // Seems this folder contains a module, so we skip it
-                return;
-            }
-        }
-        for (File e : dir.listFiles()) {
-            String n = e.getName().toLowerCase();
-            if (e.isFile() && (n.endsWith(Constants.CEYLON_SUFFIX) || n.endsWith(Constants.JS_SUFFIX))) {
-                String path = normalizePath(e.getPath());
-                if (verbose) {
-                    System.out.println("Adding to compilation set: " + path);
-                }
-                if (!onlyFiles.contains(path)) {
-                    onlyFiles.add(path);
-                }
-            } else if (e.isDirectory()) {
-                addFilesToCompilationSet(verbose, e, onlyFiles, skipModules);
-            }
-        }
-    }
-
-    private static void addFilesToResourceSet(boolean verbose, File dir, List<File> onlyFiles) {
-        for (File e : dir.listFiles()) {
-            if (e.isFile()) {
-                String path = normalizePath(e.getPath());
-                if (verbose) {
-                    System.out.println("Adding to resource set: " + path);
-                }
-                if (!onlyFiles.contains(path)) {
-                    onlyFiles.add(new File(path));
-                }
-            } else if (e.isDirectory()) {
-                addFilesToResourceSet(verbose, e, onlyFiles);
-            }
-        }
-    }
-
-    private static String normalizePath(String path) {
-    	return path.replace('\\', '/');
     }
 
     /**
