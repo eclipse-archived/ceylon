@@ -10,7 +10,7 @@ void switchPrint(Integer|String x) {
   }
 }
 
-void run() {
+void runx() {
   switchPrint("hi");
   for (i in 4..6) {
     switchPrint(i);
