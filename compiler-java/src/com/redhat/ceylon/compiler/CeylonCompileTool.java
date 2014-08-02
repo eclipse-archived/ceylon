@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
+import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -284,7 +286,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     @Override
-    public void initialize() {
+    public void initialize() throws IOException {
         setSystemProperties();
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());
@@ -405,54 +407,22 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         addJavacArguments(arguments);
         
-        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
-        
         List<File> srcs = applyCwd(this.sources);
-        List<File> resrcs = applyCwd(this.resources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
         if (expandedModulesOrFiles.isEmpty()) {
             throw new IllegalArgumentException("No modules or source files to compile");
         }
-        for (String moduleOrFile : expandedModulesOrFiles) {
-            if (sourceFileOpt != null) {
+        
+        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
+        if (sourceFileOpt != null) {
+            for (String moduleOrFile : expandedModulesOrFiles) {
                 validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
             }
-            File file = new File(moduleOrFile);
-            if (file.isFile()) {
-                // It's a single (re)source file instead of a module name, so let's check
-                // if it's really located in one of the defined (re)source folders
-                if (moduleOrFile.endsWith(Constants.CEYLON_SUFFIX)
-                        || moduleOrFile.endsWith(Constants.JAVA_SUFFIX)
-                        || moduleOrFile.endsWith(Constants.JS_SUFFIX)) {
-                    if (FileUtil.selectPath(srcs, moduleOrFile) == null) {
-                        String srcPath = this.sources.toString();
-                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
-                    }
-                } else {
-                    if (FileUtil.selectPath(resrcs, moduleOrFile) == null) {
-                        String resrcPath = this.resources.toString();
-                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
-                    }
-                }
-            } else if(!moduleOrFile.equals(Module.DEFAULT_MODULE_NAME)) {
-                boolean hasDescriptor = false;
-                File modDir = ModuleUtil.moduleToPath(moduleOrFile);
-                for (File src : srcs) {
-                    File fullModDir = new File(src, modDir.getPath());
-                    if (fullModDir != null && fullModDir.isDirectory() && fullModDir.canRead()) {
-                        File moduleDescriptor = new File(fullModDir, Constants.MODULE_DESCRIPTOR);
-                        if (moduleDescriptor.isFile()) {
-                            hasDescriptor = true;
-                            break;
-                        }
-                    }
-                }
-                if (!hasDescriptor) {
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg("error.not.module", moduleOrFile));
-                }
-            }
-            arguments.add(moduleOrFile);
         }
+        
+        validateSourceArguments(expandedModulesOrFiles);
+        
+        arguments.addAll(expandedModulesOrFiles);
         
         if (verbose != null) {
             System.out.println(arguments);
@@ -460,6 +430,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
+    private void validateSourceArguments(List<String> modulesOrFiles) throws IOException {
+        SourceArgumentsResolver resolver = new SourceArgumentsResolver(this.sources, this.resources, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
+        resolver.cwd(cwd).parse(modulesOrFiles);
+    }
+    
     private static JavacOption getJavacOpt(String optionName) {
         for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
             if (optionName.equals(o.getName().toString())) {

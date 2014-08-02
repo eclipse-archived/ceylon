@@ -35,24 +35,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.MissingResourceException;
-import java.util.Set;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
-import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.EnvironmentException;
-import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -716,167 +709,24 @@ public class Main extends com.sun.tools.javac.main.Main {
     }
 
     // Now add the files for each of the modules that were given on the command line
+    @SuppressWarnings("unchecked")
     private List<File> addModuleFiles(List<File> filenames) throws IOException {
-        for (String moduleName : classnames) {
-            Iterable<JavaFileObject> files;
-            if (!ModuleUtil.isDefaultModule(moduleName)) {
-                Iterable<JavaFileObject> files1 = fileManager.list(StandardLocation.SOURCE_PATH, moduleName, EnumSet.of(Kind.SOURCE), true);
-                Iterable<JavaFileObject> files2 = fileManager.list(CeylonLocation.RESOURCE_PATH, moduleName, EnumSet.allOf(Kind.class), true);
-                files = chain(files1, files2);
-            } else {
-                Iterable<JavaFileObject> files1 = fileManager.list(StandardLocation.SOURCE_PATH, "", EnumSet.of(Kind.SOURCE), true);
-                Iterable<JavaFileObject> files2 = fileManager.list(CeylonLocation.RESOURCE_PATH, "", EnumSet.allOf(Kind.class), true);
-                files = filterModuleFiles(chain(files1, files2));
-            }
-            List<File> moduleFiles = List.nil();
-            boolean isProperModule = "default".equals(moduleName);
-            String moduleFilePath = moduleName.replace('.', File.separatorChar) + File.separatorChar + Constants.MODULE_DESCRIPTOR;
-            for (JavaFileObject file : files) {
-                File f = new File(file.toUri().getPath());
-                if (!filenames.contains(f) && !moduleFiles.contains(f)) {
-                    moduleFiles = moduleFiles.append(f);
-                }
-                if (!isProperModule) {
-                    String relPath = relativeSourcePath(file);
-                    isProperModule = moduleFilePath.equals(relPath);
-                }
-            }
-            if (isProperModule) {
-                filenames = filenames.appendList(moduleFiles);
-            } else {
-                warning("ceylon", "Missing module descriptor or is not a module: "+moduleName);
-            }
-        }
+        Iterable<File> srcdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
+        Iterable<File> resdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(CeylonLocation.RESOURCE_PATH);
+        SourceArgumentsResolver resolver = new SourceArgumentsResolver(srcdirs, resdirs, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
+        resolver.parse(classnames.toList());
+        filenames = appendAll(filenames, resolver.getSourceFiles());
+        filenames = appendAll(filenames, resolver.getResourceFiles());
         return filenames;
     }
-
-    // Chains together two or more Iterables
-    @SafeVarargs
-    private static <T> Iterable<T> chain(final Iterable<T>... it) {
-        assert(it != null && it.length > 0);
-        if (it.length == 1) {
-            return it[0];
+    
+    private List<File> appendAll(List<File> target, java.util.List<File> source) {
+        for (File f : source) {
+            target = target.append(f);
         }
-        return new Iterable<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private int idx = 0;
-                    private Iterator<T> i;
-                    
-                    private Iterator<T> iter() {
-                        while (i == null || (!i.hasNext() && idx < it.length)) {
-                            i = it[idx++].iterator();
-                        }
-                        return i;
-                    }
-                    
-                    @Override
-                    public boolean hasNext() {
-                        return iter().hasNext();
-                    }
-
-                    @Override
-                    public T next() {
-                        return iter().next();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iter().remove();
-                    }
-                    
-                };
-            }
-            
-        };
+        return target;
     }
-
-    // Given an Iterable of files returns an Iterable that filters out
-    // the files from the original that are part of modules
-    private Iterable<JavaFileObject> filterModuleFiles(final Iterable<JavaFileObject> files) {
-        final Set<String> moduleDirs = collectModuleDirs(files);
-        return new Iterable<JavaFileObject>() {
-            @Override
-            public Iterator<JavaFileObject> iterator() {
-                return new Iterator<JavaFileObject>() {
-                    private Iterator<JavaFileObject> i = files.iterator();
-                    private JavaFileObject next;
-                    
-                    private boolean include(JavaFileObject f) {
-                        String path = f.toUri().getPath();
-                        return !isInModuleDir(moduleDirs, path);
-                    }
-                    
-                    @Override
-                    public boolean hasNext() {
-                        while (next == null && i.hasNext()) {
-                            JavaFileObject candidate = i.next();
-                            if (include(candidate)) {
-                                next = candidate;
-                            }
-                        }
-                        return (next != null);
-                    }
-
-                    @Override
-                    public JavaFileObject next() {
-                        if (!hasNext()) {
-                            // This is here just to generate the same
-                            // error as the original iterator
-                            return i.next();
-                        }
-                        JavaFileObject result = next;
-                        next = null;
-                        return result;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException();
-                    }
-                };
-            }
-        };
-    }
-
-    // Returns the set of module names (in the form some/module, not some.module)
-    // that were found in the list of files that was passed
-    private Set<String> collectModuleDirs(Iterable<JavaFileObject> files) {
-        Set<String> dirs = new HashSet<String>();
-        String modDesc = "/" + Constants.MODULE_DESCRIPTOR;
-        Iterable<? extends File> paths = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
-        for (JavaFileObject f : files) {
-            String path = f.toUri().getPath();
-            if (f instanceof CeylonFileObject && path.endsWith(modDesc)) {
-                path = path.substring(0, path.length() - 14);
-                path = FileUtil.relativeFile(paths, path);
-                dirs.add(path);
-            }
-        }
-        return dirs;
-    }
-
-    private boolean isInModuleDir(Set<String> moduleDirs, String path) {
-        Iterable paths1 = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
-        Iterable paths2 = ((JavacFileManager)fileManager).getLocation(CeylonLocation.RESOURCE_PATH);
-        Iterable<? extends File> paths = chain(paths1, paths2);
-        String relPath = FileUtil.relativeFile(paths, path);
-        for (String dir : moduleDirs) {
-            if (relPath.startsWith(dir + "/")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String relativeSourcePath(JavaFileObject file) {
-        String path = new File(file.toUri()).getPath();
-        Iterable<? extends File> paths = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
-        String relPath = FileUtil.relativeFile(paths, path);
-        return relPath;
-    }
-
+    
     /**
      * Print a message reporting an internal error.
      */
