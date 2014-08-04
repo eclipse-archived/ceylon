@@ -20,13 +20,13 @@ public class TestMultipackages {
 
     @BeforeClass
     public static void sharedSetup() {
-        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
-                .addSrc("multi/1.0.0").addSrc("src/test/resources/loader");
+        Options options = new Options().addRepo("build/test/test_modules").outRepo("build/test/test_modules")
+                .addSrcDir("multi/1.0.0").addSrcDir("src/test/resources/loader");
         repoman = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())
                 .userRepos(options.getRepos())
-                .outRepo(options.getOutDir())
+                .outRepo(options.getOutRepo())
                 .buildManager();
     }
 
@@ -39,8 +39,8 @@ public class TestMultipackages {
         tcb.setRepositoryManager(repoman);
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
-        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
-                .addSrc("src/test/resources/multi/pass1");
+        Options options = new Options().addRepo("build/test/test_modules").outRepo("build/test/test_modules")
+                .addSrcDir("src/test/resources/multi/pass1");
         JsCompiler compiler = new JsCompiler(tc, options);
         compiler.stopOnErrors(false);
         compiler.generate();
@@ -56,8 +56,8 @@ public class TestMultipackages {
         tcb.setRepositoryManager(repoman);
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
-        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
-                .addSrc("src/test/resources/multi/pass2").verbose("");
+        Options options = new Options().addRepo("build/test/test_modules").outRepo("build/test/test_modules")
+                .addSrcDir("src/test/resources/multi/pass2").verbose("");
         JsCompiler compiler = new JsCompiler(tc, options);
         compiler.stopOnErrors(false);
         compiler.generate();

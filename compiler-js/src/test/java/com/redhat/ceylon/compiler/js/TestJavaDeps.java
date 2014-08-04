@@ -18,8 +18,8 @@ public class TestJavaDeps {
         final TypeChecker tc = builder.getTypeChecker();
         tc.process();
         final Options opts = new Options()
-                .addSrc("src/test/resources/javadeps")
-                .outDir("./build")
+                .addSrcDir("src/test/resources/javadeps")
+                .outRepo("./build")
                 .indent(false)
                 .comment(false)
                 .generateSourceArchive(false)

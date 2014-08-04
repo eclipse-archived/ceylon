@@ -24,20 +24,20 @@ import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 public class TestSiteVariance {
 
     private Options options(String srcdir) {
-        return new Options().outDir("modules").addRepo("build/runtime")
+        return new Options().outRepo("modules").addRepo("build/runtime")
                 .optimize(true).generateSourceArchive(false)
-                .addSrc(srcdir);
+                .addSrcDir(srcdir);
     }
 
     private TypeChecker typeChecker(Options opts) {
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .userRepos(opts.getRepos())
-                .outRepo(opts.getOutDir())
+                .outRepo(opts.getOutRepo())
                 .buildManager();
         final TypeCheckerBuilder builder = new TypeCheckerBuilder()
             .moduleManagerFactory(new JsModuleManagerFactory("UTF-8"));
-        for (String sd : opts.getSrcDirs()) {
-            builder.addSrcDirectory(new File(sd));
+        for (File sd : opts.getSrcDirs()) {
+            builder.addSrcDirectory(sd);
         }
         builder.setRepositoryManager(repoman);
         final TypeChecker tc = builder.getTypeChecker();

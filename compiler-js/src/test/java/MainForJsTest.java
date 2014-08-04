@@ -19,12 +19,12 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 public class MainForJsTest {
     
     public static void main(String[] args) throws Exception {
-        final Options opts = new Options().addRepo("build/runtime").outDir("build/test/proto");
+        final Options opts = new Options().addRepo("build/runtime").outRepo("build/test/proto");
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .cwd(opts.getCwd())
                 .systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos())
-                .outRepo(opts.getOutDir())
+                .outRepo(opts.getOutRepo())
                 .buildManager();
         System.out.println("Typechecking Ceylon test code...");
         JsModuleManagerFactory.setVerbose(true);
@@ -61,7 +61,7 @@ public class MainForJsTest {
             jsc.printErrorsAndCount(writer);
         }
         System.out.println("Compiling in lexical scope style");
-        jsc = new JsCompiler(typeChecker, opts.optimize(false).outDir("build/test/lexical")).stopOnErrors(false);
+        jsc = new JsCompiler(typeChecker, opts.optimize(false).outRepo("build/test/lexical")).stopOnErrors(false);
         if (!jsc.generate()) {
             jsc.printErrors(writer);
         }

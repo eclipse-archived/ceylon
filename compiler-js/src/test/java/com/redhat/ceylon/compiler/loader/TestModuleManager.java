@@ -53,14 +53,14 @@ public class TestModuleManager {
         }
         lmreader.close();
         lmwriter.close();
-        options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
-                .addSrc("src/test/resources/loader/pass1/m1/test.ceylon")
-                .addSrc("src/test/resources/loader/pass1");
+        options = new Options().addRepo("build/test/test_modules").outRepo("build/test/test_modules")
+                .addSrcDir("src/test/resources/loader/pass1/m1/test.ceylon")
+                .addSrcDir("src/test/resources/loader/pass1");
         repoman = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())
                 .userRepos(options.getRepos())
-                .outRepo(options.getOutDir())
+                .outRepo(options.getOutRepo())
                 .buildManager();
         //Create a typechecker to compile the test module
         System.out.println("Compiling pass 1");
@@ -86,7 +86,7 @@ public class TestModuleManager {
                     .cwd(options.getCwd())
                     .systemRepo(options.getSystemRepo())
                     .userRepos(options.getRepos())
-                    .outRepo(options.getOutDir())
+                    .outRepo(options.getOutRepo())
                     .buildManager();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);//.verbose(true);
             tcb.moduleManagerFactory(new JsModuleManagerFactory((String)null));
