@@ -348,9 +348,10 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
     
     private Collection<ModuleVersionDetails> findCompiledVersions(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
-        File outDir = DefaultToolOptions.getCompilerOutDir();
-        if(outDir != null){
-            Repository outDirRepository = null;
+        String outRepo = DefaultToolOptions.getCompilerOutputRepo();
+        if(outRepo != null){
+            File outDir = new File(outRepo);
+            Repository rep = null;
             List<Repository> repositories = repoMgr.getRepositories();
             for(Repository repository : repositories){
                 OpenNode root = repository.getRoot();
@@ -366,14 +367,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     continue;
                 File repoFile = content.getContentAsFile();
                 if(repoFile != null && FileUtil.sameFile(repoFile, outDir)){
-                    outDirRepository = repository;
+                    rep = repository;
                     break;
                 }
             }
-            if(outDirRepository != null && outDirRepository.isSearchable()){
+            if(rep != null && rep.isSearchable()){
                 ModuleVersionQuery query = getModuleVersionQuery(name, version, type, binaryMajor, binaryMinor);
                 ModuleVersionResult result = new ModuleVersionResult(query.getName());
-                outDirRepository.completeVersions(query, result);
+                rep.completeVersions(query, result);
                 NavigableMap<String, ModuleVersionDetails> outRepoVersions = result.getVersions();
                 if (!outRepoVersions.isEmpty()) {
                     return outRepoVersions.values();
