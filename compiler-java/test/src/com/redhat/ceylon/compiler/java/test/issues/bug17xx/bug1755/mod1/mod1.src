@@ -1,0 +1,143 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder.class)})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface Charset {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$impl();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder Decoder$new$();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Charset$impl {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Charset$impl(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset $this) {
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    public abstract class Decoder implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Decoder() {
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.ceylon.language.FormalAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+                @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+                @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                value = "ceylon.language::Anything",
+                declaredVoid = true)
+        public abstract .java.lang.Object decode();
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder.class));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Name("utf8")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset"})
+public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset {
+    
+    private utf8_() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl(this);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder Decoder$new$() {
+        return new Decoder();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "<ceylon.language::Basic&com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset>.Decoder")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    public class Decoder extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder {
+        
+        protected Decoder() {
+            $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$.super();
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.ceylon.language.ActualAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+                @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+                @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                value = "ceylon.language::Anything",
+                declaredVoid = true)
+        public final .java.lang.Object decode() {
+            return null;
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder.class));
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::utf8")
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'utf8\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class);
+    }
+}

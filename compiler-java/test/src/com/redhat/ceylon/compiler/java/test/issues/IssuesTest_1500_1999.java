@@ -596,4 +596,10 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1748() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1748", "bug17xx/Bug1748.ceylon");
     }
+    
+    @Test
+    public void testBug1755() {
+        compareWithJavaSource("bug17xx/bug1755/mod1/mod1.src", "bug17xx/bug1755/mod1/mod1.ceylon", "bug17xx/bug1755/mod1/module.ceylon", "bug17xx/bug1755/mod1/package.ceylon");
+        compareWithJavaSource("bug17xx/bug1755/mod2/mod2");
+    }
 }
