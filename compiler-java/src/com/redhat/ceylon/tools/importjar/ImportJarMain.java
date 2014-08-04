@@ -32,7 +32,7 @@ public class ImportJarMain {
     private static final int SC_ERROR = 2;
 
     public static void main(String[] args) throws IOException {
-        String destDir = null;
+        String destRepo = null;
         String user = null,pass = null;
         String moduleSpec = null;
         String jarFile = null;
@@ -58,7 +58,7 @@ public class ImportJarMain {
                 if (argsLeft <= 0) {
                     optionMissingArgument(arg);
                 }
-                destDir = args[++i];
+                destRepo = args[++i];
             } else if ("-user".equals(arg)) {
                 if (argsLeft <= 0) {
                     optionMissingArgument(arg);
@@ -91,12 +91,12 @@ public class ImportJarMain {
             System.err.println(ImportJarMessages.msg("error.noJarFileSpecified"));
             printUsage(SC_ARGS);
         }
-        if (destDir == null) {
-            destDir = DefaultToolOptions.getCompilerOutDir().getPath();
+        if (destRepo == null) {
+            destRepo = DefaultToolOptions.getCompilerOutputRepo();
         }
 
         try{
-            CeylonImportJarTool importJar = new CeylonImportJarTool(moduleSpec, destDir, user, pass, new File(jarFile), verbose);
+            CeylonImportJarTool importJar = new CeylonImportJarTool(moduleSpec, destRepo, user, pass, new File(jarFile), verbose);
             importJar.publish();
         }catch(ImportJarException x){
             System.err.println(ImportJarMessages.msg("error", x.getLocalizedMessage()));
