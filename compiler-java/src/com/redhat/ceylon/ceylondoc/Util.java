@@ -329,15 +329,6 @@ public class Util {
         return false;
     }  
 
-    public static void delete(File f){
-        if (f.isDirectory()) {
-            for (File c : f.listFiles())
-                delete(c);
-        }
-        if (!f.delete())
-            throw new RuntimeException(CeylondMessages.msg("error.failedDeleteFile", f));
-    }
-
     public static String getUnitPackageName(PhasedUnit unit) {
         // WARNING: TypeChecker VFS alyways uses '/' chars and not platform-dependent ones
         String path = unit.getPathRelativeToSrcDir();
