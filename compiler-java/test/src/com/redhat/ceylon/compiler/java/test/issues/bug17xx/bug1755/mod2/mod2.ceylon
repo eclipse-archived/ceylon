@@ -22,8 +22,5 @@ import com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1 { utf8 }
 @nomodel
 shared void bug1755() {
     value x = utf8.Decoder();
-    // If you comment the following line everything will compile just fine
-    // but if you leave it you get an error from the TypeParser while parsing
-    // the import statement in the module file!?!?!?!
     x.decode();
 }
