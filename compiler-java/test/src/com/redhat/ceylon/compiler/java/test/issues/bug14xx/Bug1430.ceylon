@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error:"satisfies a sealed interface in a different module: Sequence in ceylon.language"
+@error:"satisfies a sealed interface in a different module: 'Sequence' in 'ceylon.language'"
 class Bug1430() satisfies Sequence<Integer> {
     shared actual Integer lastIndex => 0;
     shared actual Integer first => 1;

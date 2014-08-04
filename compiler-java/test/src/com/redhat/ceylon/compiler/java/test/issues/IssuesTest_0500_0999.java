@@ -694,8 +694,8 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     @Test
     public void testBug950() {
         assertErrors("bug09xx/Bug950",
-                new CompilerError(34, "member foo is inherited ambiguously by Bug950_Bottom from Bug950_Left and another subtype of Bug950_Top and so must be refined by Bug950_Bottom"),
-                new CompilerError(34, "may not inherit two declarations with the same name unless redefined in subclass: foo is defined by supertypes Bug950_Left and Bug950_Right"));
+                new CompilerError(34, "member 'foo' is inherited ambiguously by 'Bug950_Bottom' from 'Bug950_Left' and another subtype of 'Bug950_Top' and so must be refined by 'Bug950_Bottom'"),
+                new CompilerError(34, "may not inherit two declarations with the same name unless redefined in subclass: 'foo' is defined by supertypes 'Bug950_Left' and 'Bug950_Right'"));
 
     }
 

@@ -244,7 +244,7 @@ public class IssuesTest_0000_0499 extends CompilerTest {
     @Test
     public void testBug407(){
         // make sure we don't get an NPE error
-        assertErrors("bug04xx/Bug407", new CompilerError(25, "expression is not iterable: 'Set<Map<String,Integer>.Entry<String,Integer>>' is not a subtype of Iterable"));
+        assertErrors("bug04xx/Bug407", new CompilerError(25, "expression is not iterable: 'Set<Map<String,Integer>.Entry<String,Integer>>' is not a subtype of 'Iterable'"));
     }
 
     @Test

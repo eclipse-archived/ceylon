@@ -285,14 +285,14 @@ public class InteropTest extends CompilerTest {
     public void testIopRefinesDefaultAccessMethodWithShared(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithShared",
-                new CompilerError(22, "non-actual member refines an inherited member: defaultAccessMethod in JavaAccessModifiers"));
+                new CompilerError(22, "non-actual member refines an inherited member: 'defaultAccessMethod' in 'JavaAccessModifiers'"));
     }
 
     @Test
     public void testIopRefinesDefaultAccessMethodWithActual(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithActual",
-                new CompilerError(22, "actual declaration must be shared: defaultAccessMethod"));
+                new CompilerError(22, "actual declaration must be shared: 'defaultAccessMethod'"));
     }
     
     @Test
@@ -318,7 +318,7 @@ public class InteropTest extends CompilerTest {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''")
+                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
         );
     }
 
@@ -327,13 +327,13 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
-                new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
-                new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
-                new CompilerError(27, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg is visible: 'JavaDefaultAccessClass' involves an unshared type declaration"),
-                new CompilerError(27, "type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "supertype is not visible everywhere type ExtendsDefaultAccessClassInAnotherPkg2 is visible: 'JavaDefaultAccessClass2' involves an unshared type declaration"),
-                new CompilerError(29, "type is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(31, "package private constructor is not visible: JavaDefaultAccessClass3")
+                new CompilerError(21, "imported declaration is not shared: 'JavaDefaultAccessClass'"),
+                new CompilerError(22, "imported declaration is not shared: 'JavaDefaultAccessClass2'"),
+                new CompilerError(27, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg' is visible: 'JavaDefaultAccessClass' involves an unshared type declaration"),
+                new CompilerError(27, "type is not visible: 'JavaDefaultAccessClass'"),
+                new CompilerError(29, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg2' is visible: 'JavaDefaultAccessClass2' involves an unshared type declaration"),
+                new CompilerError(29, "type is not visible: 'JavaDefaultAccessClass2'"),
+                new CompilerError(31, "package private constructor is not visible: 'JavaDefaultAccessClass3'")
         );
     }
 
@@ -348,7 +348,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''")
+                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
         );
     }
 
@@ -357,11 +357,11 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkg",
-                new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
-                new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
-                new CompilerError(28, "type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "type is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(30, "type constructor is not visible: JavaDefaultAccessClass3")
+                new CompilerError(21, "imported declaration is not shared: 'JavaDefaultAccessClass'"),
+                new CompilerError(22, "imported declaration is not shared: 'JavaDefaultAccessClass2'"),
+                new CompilerError(28, "type is not visible: 'JavaDefaultAccessClass'"),
+                new CompilerError(29, "type is not visible: 'JavaDefaultAccessClass2'"),
+                new CompilerError(30, "type constructor is not visible: 'JavaDefaultAccessClass3'")
         );
     }
 
@@ -369,9 +369,9 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ''"),
-                new CompilerError(27, "type constructor is not visible: JavaDefaultAccessClass4"),
-                new CompilerError(28, "protected constructor is not visible: JavaDefaultAccessClass4")
+                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''"),
+                new CompilerError(27, "type constructor is not visible: 'JavaDefaultAccessClass4'"),
+                new CompilerError(28, "protected constructor is not visible: 'JavaDefaultAccessClass4'")
         );
     }
 
@@ -379,30 +379,30 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessMethodInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("CallsDefaultAccessMethodInAnotherPkg",
-                new CompilerError(25, "protected method or attribute is not visible: protectedAccessMethod of type 'JavaAccessModifiers'"),
-                new CompilerError(27, "package private method or attribute is not visible: defaultAccessMethod of type 'JavaAccessModifiers'"),
-                new CompilerError(36, "package private function or value is not visible: defaultAccessMethod"));
+                new CompilerError(25, "protected method or attribute is not visible: 'protectedAccessMethod' of type 'JavaAccessModifiers'"),
+                new CompilerError(27, "package private method or attribute is not visible: 'defaultAccessMethod' of type 'JavaAccessModifiers'"),
+                new CompilerError(36, "package private function or value is not visible: 'defaultAccessMethod'"));
     }
 
     @Test
     public void testIopRefinesDefaultAccessMethodInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("RefinesDefaultAccessMethodInAnotherPkg",
-                new CompilerError(27, "refined declaration is not visible: defaultAccessMethod in JavaAccessModifiers"));
+                new CompilerError(27, "refined declaration is not visible: 'defaultAccessMethod' in 'JavaAccessModifiers'"));
     }
 
     @Test
     public void testIopNamedInvocations(){
         assertErrors("NamedInvocations",
-                new CompilerError(30, "could not determine type of function or value reference: createTempFile"),
-                new CompilerError(30, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(30, "ambiguous callable reference to overloaded method or class: createTempFile is overloaded"),
+                new CompilerError(30, "could not determine type of function or value reference: 'createTempFile'"),
+                new CompilerError(30, "overloaded declarations may not be called using named arguments: 'createTempFile'"),
+                new CompilerError(30, "ambiguous callable reference to overloaded method or class: 'createTempFile' is overloaded"),
                 new CompilerError(30, "named invocations of Java methods not supported"),
                 new CompilerError(32, "named invocations of Java methods not supported"),
                 new CompilerError(35, "named invocations of Java methods not supported"),
-                new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
-                new CompilerError(35, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(35, "ambiguous callable reference to overloaded method or class: createTempFile is overloaded"),
+                new CompilerError(35, "could not determine type of method or attribute reference: 'createTempFile' of 'File'"),
+                new CompilerError(35, "overloaded declarations may not be called using named arguments: 'createTempFile'"),
+                new CompilerError(35, "ambiguous callable reference to overloaded method or class: 'createTempFile' is overloaded"),
                 new CompilerError(37, "named invocations of Java methods not supported")
         );
     }
@@ -411,8 +411,8 @@ public class InteropTest extends CompilerTest {
     public void testIopOverrideStaticMethods(){
         compile("JavaWithStaticMembers.java");
         assertErrors("OverrideStaticMethods",
-                new CompilerError(26, "member refines a non-default, non-formal member: topMethod in JavaWithStaticMembers"),
-                new CompilerError(28, "member refines a non-default, non-formal member: topField in JavaWithStaticMembers")
+                new CompilerError(26, "member refines a non-default, non-formal member: 'topMethod' in 'JavaWithStaticMembers'"),
+                new CompilerError(28, "member refines a non-default, non-formal member: 'topField' in 'JavaWithStaticMembers'")
         );
     }
     
@@ -436,10 +436,10 @@ public class InteropTest extends CompilerTest {
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
-                new CompilerError(27, "package private constructor is not visible: JavaSealed"),
-                new CompilerError(29, "invokes or references a sealed class in a different module: Runtime in java.base"),
-                new CompilerError(29, "type constructor is not visible: Runtime"),
-                new CompilerError(30, "type constructor is not visible: JavaSealed"));
+                new CompilerError(27, "package private constructor is not visible: 'JavaSealed'"),
+                new CompilerError(29, "invokes or references a sealed class in a different module: 'Runtime' in 'java.base'"),
+                new CompilerError(29, "type constructor is not visible: 'Runtime'"),
+                new CompilerError(30, "type constructor is not visible: 'JavaSealed'"));
     }
     
     @Test

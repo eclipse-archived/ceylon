@@ -31,7 +31,7 @@ shared class Bug844_Bottom<out Element, out First>(firstAttribute) extends Bug84
 }
 
 // full error report
-@error:"satisfies a sealed interface in a different module: Sequence in ceylon.language"
+@error:"satisfies a sealed interface in a different module: 'Sequence' in 'ceylon.language'"
 @noanno
 shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()

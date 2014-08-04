@@ -145,7 +145,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1083() {
         assertErrors("bug10xx/Bug1083",
-                new CompilerError(24, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of BigInteger that accepts the given argument types ''"));
+                new CompilerError(24, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'BigInteger' that accepts the given argument types ''"));
     }
     
     @Test
@@ -313,7 +313,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1180() {
         compile("bug11xx/Bug1180_1.ceylon");
         assertErrors("bug11xx/Bug1180_2",
-                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of ArrayList that accepts the given argument types '{Bug1180Person*}'"),
+                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ArrayList' that accepts the given argument types '{Bug1180Person*}'"),
                 new CompilerError(25, "class alias may not alias overloaded class")
         );
     }
@@ -458,7 +458,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1255() {
         assertErrors("bug12xx/Bug1255",
-                new CompilerError(29, "spread argument is not iterable: '{String*}?' is not a subtype of Iterable"),
+                new CompilerError(29, "spread argument is not iterable: '{String*}?' is not a subtype of 'Iterable'"),
                 new CompilerError(29, "iterable element type could not be inferred")
                 );
     }
@@ -560,7 +560,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1328() {
         // disabled because although we can compile them, we can't invoke them: https://github.com/ceylon/ceylon-compiler/issues/1664
         assertErrors("bug13xx/Bug1328",
-                new CompilerError(29, "refined member type parameter Thing of make in Bug1328_Factory with upper bound which member type parameter Thing2 does not satisfy not yet supported: 'Things'"),
+                new CompilerError(29, "refined member type parameter Thing of 'make' in 'Bug1328_Factory' with upper bound which member type parameter Thing2 does not satisfy not yet supported: 'Things'"),
                 new CompilerError(-1, "com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328 is not abstract and does not override abstract method <Thing>make(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor,Thing) in com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory"));
     }
 
@@ -684,9 +684,9 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1392() {
         assertErrors("bug13xx/Bug1392",
-                new CompilerError(25, "protected constructor is not visible: LogManager"),
-                new CompilerError(26, "invokes or references a sealed class in a different module: Class in java.base"),
-                new CompilerError(26, "type constructor is not visible: Class")
+                new CompilerError(25, "protected constructor is not visible: 'LogManager'"),
+                new CompilerError(26, "invokes or references a sealed class in a different module: 'Class' in 'java.base'"),
+                new CompilerError(26, "type constructor is not visible: 'Class'")
         );
     }
 
@@ -713,8 +713,8 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1405() {
         assertErrors("bug14xx/Bug1405",
-                new CompilerError(24, "member type constructor is not visible: State of type Thread"),
-                new CompilerError(24, "invokes or references a sealed class in a different module: State in java.base")
+                new CompilerError(24, "member type constructor is not visible: 'State' of type 'Thread'"),
+                new CompilerError(24, "invokes or references a sealed class in a different module: 'State' in 'java.base'")
         );
     }
 

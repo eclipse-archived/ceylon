@@ -627,7 +627,7 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadVariadic(){
         compile("Variadic.ceylon");
         assertErrors("variadictest",
-                new CompilerError(7, "missing argument to required parameter seq of VariadicPlus")
+                new CompilerError(7, "missing argument to required parameter 'seq' of 'VariadicPlus'")
         );
     }
     
@@ -1299,9 +1299,9 @@ public class ModelLoaderTest extends CompilerTest {
                         +"   Error while resolving toplevel attribute com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeNoGetter: getter method missing"),
                 new CompilerError(-1, "Error while resolving type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeMissingType: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Error while parsing type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeInvalidType: Expecting word but got AND"),
-                new CompilerError(3, "could not determine type of function or value reference: bogusTopLevelAttributeNoGetter"),
-                new CompilerError(4, "could not determine type of function or value reference: bogusTopLevelAttributeMissingType"),
-                new CompilerError(5, "could not determine type of function or value reference: bogusTopLevelAttributeInvalidType")
+                new CompilerError(3, "could not determine type of function or value reference: 'bogusTopLevelAttributeNoGetter'"),
+                new CompilerError(4, "could not determine type of function or value reference: 'bogusTopLevelAttributeMissingType'"),
+                new CompilerError(5, "could not determine type of function or value reference: 'bogusTopLevelAttributeInvalidType'")
                 );
     }
 
@@ -1320,13 +1320,13 @@ public class ModelLoaderTest extends CompilerTest {
                         +"   Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType:\n"
                         +"   Expecting word but got AND"),
                 // FIXME: this is not great
-                new CompilerError(3, "function has no parameter list: bogusTopLevelMethodNoMethod"),
-                new CompilerError(3, "could not determine type of function or value reference: bogusTopLevelMethodNoMethod"),
+                new CompilerError(3, "function has no parameter list: 'bogusTopLevelMethodNoMethod'"),
+                new CompilerError(3, "could not determine type of function or value reference: 'bogusTopLevelMethodNoMethod'"),
                 // FIXME: this is not great
-                new CompilerError(4, "function has no parameter list: bogusTopLevelMethodNotStatic"),
-                new CompilerError(4, "could not determine type of function or value reference: bogusTopLevelMethodNotStatic"),
-                new CompilerError(5, "could not determine type of function or value reference: bogusTopLevelMethodMissingType"),
-                new CompilerError(6, "could not determine type of function or value reference: bogusTopLevelMethodInvalidType")
+                new CompilerError(4, "function has no parameter list: 'bogusTopLevelMethodNotStatic'"),
+                new CompilerError(4, "could not determine type of function or value reference: 'bogusTopLevelMethodNotStatic'"),
+                new CompilerError(5, "could not determine type of function or value reference: 'bogusTopLevelMethodMissingType'"),
+                new CompilerError(6, "could not determine type of function or value reference: 'bogusTopLevelMethodInvalidType'")
         );
 
     }

@@ -687,7 +687,7 @@ public class CMRTest extends CompilerTest {
         new CompilerError(5, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
                 +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
                 +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
-        new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?'"),
+        new CompilerError(10, "argument must be assignable to parameter 'arg1' of 'addComponent' in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?'"),
         };
 
         ErrorCollector collector = new ErrorCollector();
@@ -721,7 +721,7 @@ public class CMRTest extends CompilerTest {
                 new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n"
                         +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
                         +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
-                new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?'")
+                new CompilerError(10, "argument must be assignable to parameter 'arg1' of 'addComponent' in 'DefaultCamelContext': 'JettyHttpComponent' is not assignable to 'Component?'")
         );
     }
 
@@ -801,9 +801,9 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version \"1\" and version \"2\""),
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' and version '2'"),
                 new CompilerError(20, "source code imports two different versions of module 'a': version \"1\" and version \"2\""),
-                new CompilerError(22, "duplicate module import: a")
+                new CompilerError(22, "duplicate module import: 'a'")
         );
     }
 
@@ -855,7 +855,7 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version \"1\" and version \"2\""),
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' and version '2'"),
                 new CompilerError(20, "source code imports two different versions of module 'a': version \"1\" and version \"2\"")
         );
     }
@@ -926,7 +926,7 @@ public class CMRTest extends CompilerTest {
     public void testMdlUsesJavaWithoutImportingIt() throws IOException{
         assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.usesJavaWithoutImportingIt')"),
-                new CompilerError(23, "function or value does not exist: nanoTime"));
+                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
     }
 
     @Test
@@ -937,8 +937,8 @@ public class CMRTest extends CompilerTest {
         options.addAll(defaultOptions);
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
-                new CompilerError(20, "package not found in imported modules: java.lang (define a module and add module import to its module descriptor)"),
-                new CompilerError(23, "function or value does not exist: nanoTime"));
+                new CompilerError(20, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
+                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
     }
 
     @Test
@@ -976,8 +976,8 @@ public class CMRTest extends CompilerTest {
         
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
-                new CompilerError(5, "parameter type could not be determined: arg0 of method")
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB'"),
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method'")
                 );
     }
 
@@ -1009,8 +1009,8 @@ public class CMRTest extends CompilerTest {
         // JavaB/1 imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath(), "-cp", getClassPathAsPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
-                new CompilerError(5, "parameter type could not be determined: arg0 of method")
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB'"),
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method'")
                 );
     }
 
@@ -1042,7 +1042,7 @@ public class CMRTest extends CompilerTest {
         // JavaB/1 shared imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(1, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version \"1\" and version \"2\""),
+                new CompilerError(1, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version '1' and version '2'"),
                 new CompilerError(1, "source code imports two different versions of module 'bug1062.javaA': version \"1\" and version \"2\"")
                 );
     }
@@ -1059,8 +1059,8 @@ public class CMRTest extends CompilerTest {
                 },
                 defaultOptions,
                 null,
-                new CompilerError( 1, "package not found in imported modules: doesnotExist (define a module and add module import to its module descriptor)"),
-                new CompilerError( 2, "package not found in imported modules: com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule (define a module and add module import to its module descriptor)")
+                new CompilerError( 1, "package not found in imported modules: 'doesnotExist' (define a module and add module import to its module descriptor)"),
+                new CompilerError( 2, "package not found in imported modules: 'com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule' (define a module and add module import to its module descriptor)")
             );
         }
     }

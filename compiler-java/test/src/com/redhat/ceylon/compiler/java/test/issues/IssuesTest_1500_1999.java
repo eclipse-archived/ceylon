@@ -241,7 +241,7 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new String[] { "bug15xx/bug1580/Bug1580.ceylon", "bug15xx/bug1580/module.ceylon" },
                 defaultOptions,
                 null,
-                new CompilerError(24, "could not determine type of method or attribute reference: instance of NioXnioProvider"));
+                new CompilerError(24, "could not determine type of method or attribute reference: 'instance' of 'NioXnioProvider'"));
     }
 
     @Test
@@ -250,14 +250,14 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new String[] { "bug15xx/bug1581/Bug1581Java.java", "bug15xx/bug1581/Bug1581.ceylon", "bug15xx/bug1581/module.ceylon" },
                 defaultOptions,
                 null,
-                new CompilerError(22, "package not found in imported modules: 'java.util' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581')"),
+                new CompilerError(22, "package not found in imported modules: java.util (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581)"),
                 new CompilerError(25, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(27, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(29, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(32, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(20, "Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n   Failed to find declaration for Properties"),
-                new CompilerError(22, "parameter type could not be determined: props of Bug1581Java"),
-                new CompilerError(23, "could not determine type of method or attribute reference: props of Bug1581Java"));
+                new CompilerError(22, "parameter type could not be determined: 'props' of 'Bug1581Java'"),
+                new CompilerError(23, "could not determine type of method or attribute reference: 'props' of 'Bug1581Java'"));
     }
     
     @Test
@@ -461,8 +461,8 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1664() {
         assertErrors("bug16xx/Bug1664",
-                new CompilerError(30, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
-                new CompilerError(37, "refined member type parameter NewUnitType of convertTo in Bug1664UnitOfTime with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
+                new CompilerError(30, "refined member type parameter NewUnitType of 'convertTo' in 'Bug1664UnitOfTime' with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
+                new CompilerError(37, "refined member type parameter NewUnitType of 'convertTo' in 'Bug1664UnitOfTime' with upper bound which member type parameter NewUnitType does not satisfy not yet supported: 'UnitType'"),
                 new CompilerError(-1, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
                 new CompilerError(44, "method convertTo in class com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime<UnitType> cannot be applied to given types;\n"
                         +"  required: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
