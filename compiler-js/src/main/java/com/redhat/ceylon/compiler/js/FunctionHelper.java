@@ -94,9 +94,11 @@ public class FunctionHelper {
     static void attributeArgument(final Tree.AttributeArgument that, final GenerateJsVisitor gen) {
         gen.out("(function()");
         gen.beginBlock();
-        gen.out("//AttributeArgument ", that.getParameter().getName());
-        gen.location(that);
-        gen.endLine();
+        if (gen.opts.isVerbose() && that.getParameter() != null) {
+            gen.out("//AttributeArgument ", that.getParameter().getName());
+            gen.location(that);
+            gen.endLine();
+        }
         
         Tree.Block block = that.getBlock();
         Tree.SpecifierExpression specExpr = that.getSpecifierExpression();
