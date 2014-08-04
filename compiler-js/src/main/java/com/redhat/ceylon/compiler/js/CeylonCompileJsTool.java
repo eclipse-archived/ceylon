@@ -286,7 +286,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             SourceArgumentsResolver resolver = new SourceArgumentsResolver(roots, resources, Constants.CEYLON_SUFFIX, Constants.JS_SUFFIX);
             resolver
                 .cwd(cwd)
-                .expandSingleSources(true)
                 .expandAndParse(files);
             onlySources = resolver.getSourceFiles();
             onlyResources = resolver.getResourceFiles();
