@@ -929,14 +929,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     private void copy(InputStream resource, File file)
             throws FileNotFoundException, IOException {
-        OutputStream os = new FileOutputStream(file);
-        byte[] buf = new byte[1024];
-        int read;
-        while ((read = resource.read(buf)) > -1) {
-            os.write(buf, 0, read);
+        try (OutputStream os = new FileOutputStream(file)) {
+            byte[] buf = new byte[1024];
+            int read;
+            while ((read = resource.read(buf)) > -1) {
+                os.write(buf, 0, read);
+            }
+            os.flush();
         }
-        os.flush();
-        os.close();
     }
 
     public void doc(Declaration decl) throws IOException {
