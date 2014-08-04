@@ -105,12 +105,12 @@ public class DefaultToolOptions {
         }
     }
 
-    public static File getCompilerOutDir() {
-        return getCompilerOutDir(CeylonConfig.get());
+    public static String getCompilerOutputRepo() {
+        return getCompilerOutputRepo(CeylonConfig.get());
     }
 
-    public static File getCompilerOutDir(CeylonConfig config) {
-        return new File(Repositories.withConfig(config).getOutputRepository().getUrl());
+    public static String getCompilerOutputRepo(CeylonConfig config) {
+        return Repositories.withConfig(config).getOutputRepository().getUrl();
     }
     
     public static boolean getCompilerNoOsgi() {
