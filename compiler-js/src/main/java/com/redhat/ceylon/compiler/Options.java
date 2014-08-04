@@ -22,11 +22,10 @@ public class Options {
     private String systemRepo;
     private String user;
     private String pass;
-    private List<String> srcDirs = new ArrayList<String>();
-    private List<String> resourceDirs = new ArrayList<String>();
-    private List<String> resources = new ArrayList<String>();
+    private List<File> srcDirs = new ArrayList<File>();
+    private List<File> resourceDirs = new ArrayList<File>();
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
-    private String outDir = DefaultToolOptions.getCompilerOutputRepo();
+    private String outRepo = DefaultToolOptions.getCompilerOutputRepo();
     private boolean optimize = true;
     private boolean modulify = true;
     private boolean indent = true;
@@ -165,26 +164,31 @@ public class Options {
     }
 
     /** Returns a list of the source directories. By default it's just one, "source". */
-    public List<String> getSrcDirs() {
+    public List<File> getSrcDirs() {
         return srcDirs;
     }
     
-    public Options addSrc(String src) {
+    public Options addSrcDir(String src) {
+        srcDirs.add(new File(src));
+        return this;
+    }
+
+    public Options addSrcDir(File src) {
         srcDirs.add(src);
         return this;
     }
 
-    public Options sources(List<String> srcs) {
+    public Options sourceDirs(List<File> srcs) {
         srcDirs.addAll(srcs);
         return this;
     }
 
-    public String getOutDir() {
-        return outDir;
+    public String getOutRepo() {
+        return outRepo;
     }
     
-    public Options outDir(String outDir) {
-        this.outDir = outDir;
+    public Options outRepo(String outRepo) {
+        this.outRepo = outRepo;
         return this;
     }
 
@@ -340,23 +344,13 @@ public class Options {
     }
 
     /** Sets the list of directories where the resources come from. This is to properly pack the paths. */
-    public Options resourceDirs(List<String> value) {
+    public Options resourceDirs(List<File> value) {
         resourceDirs.clear();
         resourceDirs.addAll(value);
         return this;
     }
-    public List<String> getResourceDirs() {
+    public List<File> getResourceDirs() {
         return resourceDirs;
-    }
-
-    /** Sets the list of resources to pack next to the compiled modules. */
-    public Options resources(List<String> value) {
-        resources.clear();
-        resources.addAll(value);
-        return this;
-    }
-    public List<String> getResources() {
-        return resources;
     }
 
     public Logger getLogger() {
