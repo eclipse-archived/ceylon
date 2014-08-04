@@ -35,10 +35,6 @@ public class Stitcher {
     public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
     public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
 
-    private static String normalizePath(String path) {
-    	return path.replace('\\', '/');
-    }
-
     private static void compileLanguageModule(final String line, Writer writer)
             throws IOException {
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
@@ -50,7 +46,7 @@ public class Stitcher {
         tmpout.mkdir();
         tmpout.deleteOnExit();
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
-                .outDir(tmpout.getAbsolutePath()).modulify(false).minify(true);
+                .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true);
 
         //Typecheck the whole language module
         if (langmodtc == null) {
@@ -58,7 +54,7 @@ public class Stitcher {
                     .addSrcDirectory(LANGMOD_JS_SRC)
                     .encoding("UTF-8");
             langmodtc.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
-                    .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+                    .userRepos(opts.getRepos()).outRepo(opts.getOutRepo()).buildManager());
         }
         final File mod2 = new File(LANGMOD_JS_SRC2, "module.ceylon");
         if (!mod2.exists()) {
@@ -81,18 +77,18 @@ public class Stitcher {
         }
 
         //Compile these files
-        final List<String> includes = new ArrayList<String>();
+        final List<File> includes = new ArrayList<File>();
         for (String filename : line.split(",")) {
             final boolean isJsSrc = filename.trim().endsWith(".js");
             final File src = new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
                     isJsSrc ? filename.trim() :
                     String.format("%s.ceylon", filename.trim()));
             if (src.exists() && src.isFile() && src.canRead()) {
-                includes.add(normalizePath(src.getPath()));
+                includes.add(src);
             } else {
                 final File src2 = new File(LANGMOD_JS_SRC2, String.format("%s.ceylon", filename.trim()));
                 if (src2.exists() && src2.isFile() && src2.canRead()) {
-                    includes.add(normalizePath(src2.getPath()));
+                    includes.add(src2);
                 } else {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
                 }
@@ -102,7 +98,7 @@ public class Stitcher {
         //Set this before typechecking to share some decls that otherwise would be private
         JsCompiler.compilingLanguageModule=true;
         JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
-        jsc.setFiles(includes);
+        jsc.setSourceFiles(includes);
         jsc.generate();
         JsCompiler.compilingLanguageModule=false;
         File compsrc = new File(tmpout, "delete/me/delete-me.js");

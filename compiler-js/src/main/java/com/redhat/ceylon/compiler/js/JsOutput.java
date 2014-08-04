@@ -21,7 +21,7 @@ public class JsOutput {
     private File outfile;
     private File modfile;
     private Writer writer;
-    private final Set<String> s = new HashSet<String>();
+    private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
     final MetamodelVisitor mmg;
     final String encoding;
@@ -46,10 +46,10 @@ public class JsOutput {
         return modfile;
     }
 
-    void addSource(String src) {
+    void addSource(File src) {
         s.add(src);
     }
-    Set<String> getSources() { return s; }
+    Set<File> getSources() { return s; }
 
     public void encodeModel(final Module mod) throws IOException {
         if (modfile == null) {

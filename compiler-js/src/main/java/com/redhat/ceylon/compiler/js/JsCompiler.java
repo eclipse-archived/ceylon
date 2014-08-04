@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,6 +25,7 @@ import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -54,7 +54,8 @@ public class JsCompiler {
 
     protected Set<Message> errors = new HashSet<Message>();
     protected Set<Message> unitErrors = new HashSet<Message>();
-    protected List<String> files;
+    protected List<File> srcFiles;
+    protected List<File> resFiles;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
@@ -131,14 +132,14 @@ public class JsCompiler {
         opts = options;
         outRepo = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
-                .outRepo(options.getOutDir())
+                .outRepo(options.getOutRepo())
                 .user(options.getUser())
                 .password(options.getPass())
                 .buildOutputManager();
         logger = opts.getLogger();
         if(logger == null)
             logger = new JsLogger(opts);
-        String outDir = options.getOutDir();
+        String outDir = options.getOutRepo();
         if(!isURL(outDir)){
             File root = new File(outDir);
             if (root.exists()) {
@@ -173,8 +174,13 @@ public class JsCompiler {
 
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
-    public void setFiles(List<String> files) {
-        this.files = files;
+    public void setSourceFiles(List<File> files) {
+        this.srcFiles = files;
+    }
+
+    /** Sets the names of the resources to pack with the compiler output. */
+    public void setResourceFiles(List<File> resFiles) {
+        this.resFiles = resFiles;
     }
 
     public Set<Message> listErrors() {
@@ -235,8 +241,8 @@ public class JsCompiler {
             
             //First generate the metamodel
             for (PhasedUnit pu: phasedUnits) {
-                String path = pu.getUnitFile().getPath();
-                if (files == null || files.contains(path)) {
+                File path = new File(pu.getUnitFile().getPath());
+                if (srcFiles == null || srcFiles.contains(path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
                         logger.debug(pu.getCompilationUnit().toString());
@@ -252,7 +258,7 @@ public class JsCompiler {
 
             //Then generate the JS code
             JsIdentifierNames names = new JsIdentifierNames();
-            if (files == null && !phasedUnits.isEmpty()) {
+            if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
                     compileUnit(pu, names);
                     generatedCode = true;
@@ -265,15 +271,14 @@ public class JsCompiler {
                     }
                     getOutput(pu).addSource(getFullPath(pu));
                 }
-            } else if(!phasedUnits.isEmpty() && !files.isEmpty()){
+            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
                 final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
                 PhasedUnit lastUnit = units.get(0);
-                for (String path : files) {
-                    if (path.endsWith(".js")) {
+                for (File path : srcFiles) {
+                    if (path.getPath().endsWith(".js")) {
                         //Just output the file
-                        File f = new File(path);
                         final JsOutput lastOut = getOutput(lastUnit);
-                        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+                        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
                                 if (!opts.isIndent() || opts.isMinify()) {
@@ -295,8 +300,8 @@ public class JsCompiler {
                     } else {
                         //Find the corresponding compilation unit
                         for (PhasedUnit pu : units) {
-                            String unitPath = pu.getUnitFile().getPath();
-                            if (path.equals(unitPath)) {
+                            File unitFile = new File(pu.getUnitFile().getPath());
+                            if (path.equals(unitFile)) {
                                 compileUnit(pu, names);
                                 generatedCode = true;
                                 if (exitCode != 0) {
@@ -325,8 +330,8 @@ public class JsCompiler {
         return errCount == 0 && exitCode == 0;
     }
 
-    public String getFullPath(PhasedUnit pu) {
-        return pu.getUnit().getFullPath();
+    public File getFullPath(PhasedUnit pu) {
+        return new File(pu.getUnit().getFullPath());
     }
 
     /** Creates a JsOutput if needed, for the PhasedUnit.
@@ -393,13 +398,9 @@ public class JsCompiler {
                 outRepo.putArtifact(sha1Context, sha1File);
                 //Create the src archive
                 if (opts.isGenerateSourceArchive()) {
-                    Set<File> sourcePaths = new HashSet<File>();
-                    for (String sp : opts.getSrcDirs()) {
-                        sourcePaths.add(new File(sp));
-                    }
-                    SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
+                    SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, opts.getSrcDirs(),
                             moduleName, moduleVersion, opts.isVerbose(), logger);
-                    sac.copySourceFiles(jsout.getSources());
+                    sac.copySourceFiles(FileUtil.filesToPathList(jsout.getSources()));
                 }
                 sha1File.deleteOnExit();
                 createResourcesFile(moduleName, moduleVersion);
@@ -502,11 +503,11 @@ public class JsCompiler {
         final String altRoot = root.endsWith("/"+altRootName) ?
                 root.substring(0,root.length()-altRootName.length()-1) : null;
         String parent = resource.getParentFile().getPath();
-        for (String f : opts.getResourceDirs()) {
-            if (!rrp.isEmpty() && !(parent.startsWith(f+"/"+root) || (altRoot!=null&&parent.startsWith(f+"/"+altRoot)))) {
+        for (File rd : opts.getResourceDirs()) {
+            String p = rd.getPath();
+            if (!rrp.isEmpty() && !(parent.startsWith(p+"/"+root) || (altRoot!=null&&parent.startsWith(p+"/"+altRoot)))) {
                 continue;
             }
-            String p = new File(f).getPath();
             if (parent.startsWith(p)) {
                 String entry = resource.getPath().substring(p.length()+1);
                 if (!rrp.isEmpty() && entry.startsWith(rrp)) {
@@ -521,17 +522,16 @@ public class JsCompiler {
     }
 
     private void createResourcesFile(final String moduleName, final String moduleVersion) throws IOException {
-        if (opts.getResources() == null  || opts.getResources().isEmpty()) {
+        if (resFiles == null  || resFiles.isEmpty()) {
             return;
         }
         final String rrp = resourceRootPath(moduleName);
-        final List<File> files = new ArrayList<>(opts.getResources().size());
-        final List<ZipEntry> entries = new ArrayList<>(opts.getResources().size());
-        for (String res : opts.getResources()) {
-            final File _f = new File(res);
-            final ZipEntry e = getZipEntry(rrp, _f);
+        final List<File> files = new ArrayList<>(resFiles.size());
+        final List<ZipEntry> entries = new ArrayList<>(resFiles.size());
+        for (File res : resFiles) {
+            final ZipEntry e = getZipEntry(rrp, res);
             if (e != null) {
-                files.add(_f);
+                files.add(res);
                 entries.add(e);
             }
         }

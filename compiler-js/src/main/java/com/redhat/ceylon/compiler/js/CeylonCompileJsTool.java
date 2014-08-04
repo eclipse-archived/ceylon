@@ -212,11 +212,11 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         final Options opts = new Options()
                 .cwd(cwd)
                 .repos(getRepositoryAsStrings())
-                .sources(getFilesAsStrings(roots))
-                .resourceDirs(getFilesAsStrings(resources))
+                .sourceDirs(roots)
+                .resourceDirs(resources)
                 .resourceRootName(resourceRootName)
                 .systemRepo(systemRepo)
-                .outDir(getOut())
+                .outRepo(getOut())
                 .user(user)
                 .pass(pass)
                 .optimize(optimize)
@@ -327,10 +327,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             if (opts.isVerbose()) {
                 append("Only these files will be compiled: " + onlySources).newline();
             }
-            jsc.setFiles(getFilesAsStrings(onlySources));
+            jsc.setSourceFiles(onlySources);
         }
         if (onlyResources != null) {
-            opts.resources(getFilesAsStrings(onlyResources));
+            jsc.setResourceFiles(onlyResources);
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {
