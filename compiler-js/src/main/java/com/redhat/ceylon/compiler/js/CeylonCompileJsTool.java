@@ -179,7 +179,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
     
     public String getOut() {
-        return (out != null) ? out : DefaultToolOptions.getCompilerOutDir().getPath();
+        return (out != null) ? out : DefaultToolOptions.getCompilerOutputRepo();
     }
 
     @Option

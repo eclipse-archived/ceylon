@@ -26,7 +26,7 @@ public class Options {
     private List<String> resourceDirs = new ArrayList<String>();
     private List<String> resources = new ArrayList<String>();
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
-    private String outDir = DefaultToolOptions.getCompilerOutDir().getPath();
+    private String outDir = DefaultToolOptions.getCompilerOutputRepo();
     private boolean optimize = true;
     private boolean modulify = true;
     private boolean indent = true;
