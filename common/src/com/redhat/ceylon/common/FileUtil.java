@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -245,7 +246,7 @@ public class FileUtil {
     private static final String[] EMPTY_STRINGS = new String[0];
     private static final File[] EMPTY_FILES = new File[0];
     
-    public static List<File> pathsToFileList(List<String> paths) {
+    public static List<File> pathsToFileList(Collection<String> paths) {
         if (paths != null) {
             List<File> result = new ArrayList<File>(paths.size());
             for (String s : paths) {
@@ -272,7 +273,7 @@ public class FileUtil {
         
     }
     
-    public static List<String> filesToPathList(List<File> files) {
+    public static List<String> filesToPathList(Collection<File> files) {
         if (files != null) {
             List<String> result = new ArrayList<String>(files.size());
             for (File f : files) {
