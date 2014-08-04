@@ -144,7 +144,7 @@ public class CompileJsToolTest {
         checkResources("build/test-modules/default/default-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
         checkExcludedResources("build/test-modules/default/default-resources.zip",
-                "m1res.txt");
+                "m1res.txt", "m1/m1res.txt", "m1/ROOT/m1root.txt", "ROOT/m1root.txt", "m1/ALTROOT/altrootm1.txt");
     }
 
     @Test
@@ -162,7 +162,7 @@ public class CompileJsToolTest {
         checkResources("build/test-modules/default/default-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
         checkExcludedResources("build/test-modules/default/default-resources.zip",
-                "m1res.txt");
+                "m1res.txt", "m1/m1res.txt", "m1/ROOT/m1root.txt", "ROOT/m1root.txt", "m1/ALTROOT/altrootm1.txt");
     }
 
     @Test(expected=OptionArgumentException.ToolInitializationException.class)
@@ -194,10 +194,10 @@ public class CompileJsToolTest {
                 "src/test/resources/res_test/m1/m1res.txt"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip", "m1res.txt");
+        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip", "m1/m1res.txt");
         checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
-                "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/m1root.txt",
-                "ROOT/inroot.txt", "ALTROOT/altroot.txt");
+                "test.txt", "another_test.txt", "subdir/third.txt", "m1root.txt", 
+                "ROOT/m1root.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
 
     @Test
@@ -247,9 +247,9 @@ public class CompileJsToolTest {
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
         checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
-                "m1root.txt", "m1res.txt", "ALTROOT/altrootm1.txt");
+                "m1root.txt", "m1/m1res.txt", "m1/ALTROOT/altrootm1.txt");
         checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
-                "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/m1root.txt",
+                "test.txt", "another_test.txt", "subdir/third.txt",
                 "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
 
@@ -266,7 +266,7 @@ public class CompileJsToolTest {
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
         checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
-                "altrootm1.txt", "m1res.txt");
+                "altrootm1.txt", "m1/m1res.txt");
         checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
     }
