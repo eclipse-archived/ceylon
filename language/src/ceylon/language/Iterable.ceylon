@@ -121,9 +121,9 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Boolean empty 
             => iterator().next() is Finished;
     
-    "The number of elements returned by the iterator of this 
-     stream, if the iterator terminates. In the case of an 
-     infinite stream, this operation never terminates."
+    "The number of elements returned by the [[iterator]] of 
+     this stream, if the iterator terminates. In the case of 
+     an infinite stream, this operation never terminates."
     shared default Integer size 
             => count((Element e) => true);
     
