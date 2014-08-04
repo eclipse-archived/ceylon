@@ -582,7 +582,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
             }
         } finally {
-            Util.delete(tempDestDir);
+            FileUtil.delete(tempDestDir);
         }
     }
 

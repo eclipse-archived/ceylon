@@ -62,10 +62,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
-import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -94,7 +94,7 @@ public class CeylonDocToolTest {
         tool.setHaltOnError(haltOnError);
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (deleteDestDir && dir.exists()) {
-            Util.delete(dir);
+            FileUtil.delete(dir);
         }
         tool.setOut(dir.getAbsolutePath());
         tool.initialize();
@@ -275,7 +275,11 @@ public class CeylonDocToolTest {
     
     @Test
     public void externalLinksToLocalRepoPathWithModuleNamePattern() throws Exception {
-        String repoUrl = new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+        String root = new File("").getAbsolutePath().replace('\\', '/');
+        if (!root.startsWith("/")) {
+            root = "/" + root;
+        }
+        String repoUrl = root + "/build/CeylonDocToolTest/" + name.getMethodName();
         // note that even though we pass a path, the links are created as URIs, which must include the file: scheme
         // but the // for authority is not required and will in fact not be generated, as per URI RFC
         externalLinks("file:"+repoUrl, "com.redhat=" + repoUrl);
@@ -514,7 +518,7 @@ public class CeylonDocToolTest {
         // put it all in a special folder
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
-            Util.delete(dir);
+            FileUtil.delete(dir);
         }
         dir.mkdirs();
 
