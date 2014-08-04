@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 
@@ -108,20 +107,24 @@ public class SourceArgumentsResolver {
                     // Determine the module path from the file path
                     srcMods.add(moduleName(srcs, path, file));
                 } else {
-                    path = FileUtil.selectPath(resrcs, moduleOrFile);
-                    if (path == null) {
-                        String resrcPath = resourceDirs.toString();
-                        throw new IllegalStateException(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
+                    if (resrcs != null) {
+                        path = FileUtil.selectPath(resrcs, moduleOrFile);
+                        if (path == null) {
+                            String resrcPath = resourceDirs.toString();
+                            throw new IllegalStateException(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
+                        }
+                        resFiles.add(file);
+                        // Determine the module path from the file path
+                        resMods.add(moduleName(srcs, path, file));
                     }
-                    resFiles.add(file);
-                    // Determine the module path from the file path
-                    resMods.add(moduleName(srcs, path, file));
                 }
             } else {
                 visitModuleFiles(srcFiles, srcs, moduleOrFile, sourceSuffixes);
-                visitModuleFiles(resFiles, resrcs, moduleOrFile, null);
                 srcMods.add(moduleOrFile);
-                resMods.add(moduleOrFile);
+                if (resrcs != null) {
+                    visitModuleFiles(resFiles, resrcs, moduleOrFile, null);
+                    resMods.add(moduleOrFile);
+                }
             }
         }
         // Now expand the sources of any single source modules we encountered
