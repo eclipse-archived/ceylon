@@ -90,11 +90,11 @@ public class JavaScriptCompilerImpl implements Compiler {
         // FIXME: support other options
         Options jsCompilerOptions = new Options();
         for(File sourcePath : options.getSourcePath())
-            jsCompilerOptions.addSrc(sourcePath.getPath());
+            jsCompilerOptions.addSrcDir(sourcePath.getPath());
         if(options.isVerbose())
             jsCompilerOptions.verbose("");
         if(options.getOutputRepository() != null)
-            jsCompilerOptions.outDir(options.getOutputRepository());
+            jsCompilerOptions.outRepo(options.getOutputRepository());
         return jsCompilerOptions;
     }
 }
