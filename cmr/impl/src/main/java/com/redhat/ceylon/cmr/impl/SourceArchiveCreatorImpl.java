@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarOutputStream;
@@ -48,10 +49,11 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
         srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile));
     }
 
-    public Set<String> copySourceFiles(Set<String> sources) throws IOException {
+    public Set<String> copySourceFiles(Collection<String> sources) throws IOException {
+        final Set<String> uniqueSources = new HashSet<String>(sources);
         final Set<String> copiedFiles = new HashSet<String>();
         final Set<String> folders = new HashSet<String>();
-        for (String prefixedSourceFile : sources) {
+        for (String prefixedSourceFile : uniqueSources) {
             // must remove the prefix first
             String sourceFile = JarUtils.toPlatformIndependentPath(sourcePaths, prefixedSourceFile);
             if (!copiedFiles.contains(sourceFile)) {
