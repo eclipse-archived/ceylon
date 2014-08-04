@@ -77,11 +77,15 @@ public class FileUtil {
      * @return A list of absolute files
      */
     public static List<File> applyCwd(File cwd, List<File> files) {
-        List<File> result = new ArrayList<>(files.size());
-        for (File f : files) {
-            result.add(applyCwd(cwd, f));
+        if (files != null) {
+            List<File> result = new ArrayList<>(files.size());
+            for (File f : files) {
+                result.add(applyCwd(cwd, f));
+            }
+            return result;
+        } else {
+            return null;
         }
-        return result;
     }
 
     /**
@@ -95,11 +99,15 @@ public class FileUtil {
      * @return An Iterable of absolute files
      */
     public static Iterable<File> applyCwd(File cwd, Iterable<File> files) {
-        List<File> result = new ArrayList<>();
-        for (File f : files) {
-            result.add(applyCwd(cwd, f));
+        if (files != null) {
+            List<File> result = new ArrayList<>();
+            for (File f : files) {
+                result.add(applyCwd(cwd, f));
+            }
+            return result;
+        } else {
+            return null;
         }
-        return result;
     }
 
     /**
