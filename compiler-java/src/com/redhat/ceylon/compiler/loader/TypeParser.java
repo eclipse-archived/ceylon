@@ -141,9 +141,46 @@ public class TypeParser {
     }
 
     /*
-     * qualifiedType: [packageName (. packageName)* ::] typeNameWithArguments (. typeNameWithArguments)*
+     * qualifiedType: compoundQualifiedType | simpleQualifiedType
      */
     private ProducedType parseQualifiedType() {
+        if (lexer.lookingAt(TypeLexer.LT)) {
+            return parseCompoundQualifiedType();
+        } else {
+            return parseSimpleQualifiedType();
+        }
+    }
+
+    /*
+     * qualifiedType: < unionType > . typeNameWithArguments (. typeNameWithArguments)*
+     */
+    private ProducedType parseCompoundQualifiedType() {
+        lexer.eat(TypeLexer.LT);
+        ProducedType unionType = parseUnionType();
+        lexer.eat(TypeLexer.GT);
+        lexer.eat(TypeLexer.DOT);
+        Part part = parseTypeNameWithArguments();
+        String fullName = part.name;
+        ProducedType qualifyingType = loadType("", fullName, part, unionType);
+        while(lexer.lookingAt(TypeLexer.DOT)){
+            lexer.eat();
+            part = parseTypeNameWithArguments();
+            fullName = fullName + '.' + part.name;
+            qualifyingType = loadType("", fullName, part, qualifyingType);
+        }
+        if(qualifyingType == null){
+            throw new ModelResolutionException("Could not find type '"+fullName+"'");
+        }
+        if(qualifyingType instanceof ProducedType == false){
+            throw new ModelResolutionException("Type is a declaration (should be a ProducedType): '"+fullName+"'");
+        }
+        return (ProducedType) qualifyingType;
+    }
+
+    /*
+     * qualifiedType: [packageName (. packageName)* ::] typeNameWithArguments (. typeNameWithArguments)*
+     */
+    private ProducedType parseSimpleQualifiedType() {
         String pkg;
         
         if (hasPackage()) {
@@ -208,9 +245,13 @@ public class TypeParser {
             }else{
                 // look it up via its qualifying type or decl
                 Declaration qualifyingDeclaration = qualifyingType.getDeclaration();
-                if(qualifyingDeclaration instanceof FunctionOrValueInterface)
-                    qualifyingDeclaration = ((FunctionOrValueInterface)qualifyingDeclaration).getUnderlyingDeclaration();
-                newDeclaration = AbstractModelLoader.getDirectMember((Scope) qualifyingDeclaration, part.name);
+                if (qualifyingDeclaration instanceof UnionType || qualifyingDeclaration instanceof IntersectionType) {
+                    newDeclaration = qualifyingDeclaration.getMember(part.name, null, false);
+                } else {
+                    if(qualifyingDeclaration instanceof FunctionOrValueInterface)
+                        qualifyingDeclaration = ((FunctionOrValueInterface)qualifyingDeclaration).getUnderlyingDeclaration();
+                    newDeclaration = AbstractModelLoader.getDirectMember((Scope) qualifyingDeclaration, part.name);
+                }
                 if(newDeclaration == null)
                     throw new ModelResolutionException("Failed to resolve inner type or declaration "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
             }
