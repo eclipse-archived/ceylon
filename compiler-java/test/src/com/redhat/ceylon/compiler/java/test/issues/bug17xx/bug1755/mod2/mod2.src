@@ -1,17 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod2;
 
-public final class bug1701_ {
+public final class bug1755_ {
     
-    private bug1701_() {
+    private bug1755_() {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    public static void bug1701() {
+    public static void bug1755() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder x = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.get_().Decoder$new$();
+        x.decode();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod2.bug1701_.bug1701();
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod2.bug1755_.bug1755();
     }
 }
