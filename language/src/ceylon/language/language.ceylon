@@ -1,5 +1,6 @@
 "Contains information about the Ceylon language version."
-see (`value process`, `value runtime`, `value system`)
+see (`value process`, `value runtime`, `value system`,
+     `value operatingSystem`)
 shared native object language {
     
     "The Ceylon language version."

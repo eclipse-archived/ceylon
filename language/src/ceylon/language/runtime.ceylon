@@ -4,7 +4,8 @@
  Holds information about runtime name, version and about 
  inherent limitations like minimum/maximum values that can 
  be represented by the runtime."
-see (`value process`, `value language`, `value system`)
+see (`value process`, `value language`, `value system`,
+     `value operatingSystem`)
 shared native object runtime  {
     
     "The name of the runtime / virtual machine this process 

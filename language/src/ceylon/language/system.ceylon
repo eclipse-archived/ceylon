@@ -2,7 +2,8 @@
  executing.
  
  Holds information about system time and locale."
-see (`value process`, `value runtime`, `value language`)
+see (`value process`, `value runtime`, `value language`,
+     `value operatingSystem`)
 shared native object system {
     
     "The elapsed time in milliseconds since midnight, 

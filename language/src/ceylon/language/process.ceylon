@@ -1,7 +1,8 @@
 "Represents the current process (instance of the virtual
  machine)."
 by ("Gavin", "Tako")
-see (`value language`, `value runtime`, `value system`)
+see (`value language`, `value runtime`, `value system`,
+     `value operatingSystem`)
 shared native object process {
     
     "The command line arguments to the virtual machine."
