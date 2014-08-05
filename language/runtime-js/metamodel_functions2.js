@@ -19,7 +19,7 @@ function retpl$(t) { //receives {t:'T',l:[...]}
   return r;
 }
 function validate$params(ps,t,msg,nothrow) {
-  if (t.t===Nothing)return;
+  if (t.t===Nothing)return true;
   if (!ps || ps.length==0) {
     if (t.t===Empty)return true;
   } else if (t.t==='T') {
