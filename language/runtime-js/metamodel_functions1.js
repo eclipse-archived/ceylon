@@ -89,3 +89,37 @@ function lmp$(x,p) {
   return Modulo$jsint(x).findPackage(p);
 }
 ex$.lmp$=lmp$;
+//Some type arithmetic for metamodel queries
+//rt=real type, ta=Container type argument
+function mmfca$(rt, ta) {
+  if (!ta.t.$$)return rt;
+  ta=ta.t;
+  if (extendsType({t:rt},{t:ta}))return ta;
+  if (extendsType({t:ta},{t:rt}))return rt;
+  var mm=getrtmm$$(ta);
+  if (mm) {
+    //Supertypes
+    var st;while((st=mm['super'])) {
+      if (extendsType({t:rt},st)){
+        return st.t;
+      }
+      mm=getrtmm$$(st.t);
+    }
+    //Satisfied types
+    mm=getrtmm$(ta);
+    var sts=mm['sts'];
+    if (sts) for(var i=0;i<sts.length;i++) {
+      st=sts[i];
+      if (st.t.$$ && extendsType({t:rt},st))return st.t;
+      //TODO recurse st?
+    }
+  }
+  return rt;
+}
+ex$.mmfca$=mmfca$;
+//Retrieve a prototype's member, UNLESS it's a property
+function getnpmem$(proto,n) {
+  if (n.substring(0,6)==='$prop$')return undefined;
+  if (proto['$prop$get'+n[0].toUpperCase()+n.substring(1)])return undefined;
+  return proto[n];
+}
