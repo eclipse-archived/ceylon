@@ -7,9 +7,7 @@ import ceylon.language.meta.declaration {
 import ceylon.language.meta.model {
     Class, ClassOrInterface,
     MemberClass, Member,
-    AppliedType = Type,
-    IncompatibleTypeException,
-    TypeApplicationException
+    AppliedType = Type
 }
 
 shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {

@@ -15,7 +15,7 @@ function members($$$mptypes){
       } else if (mt==='c') {
         r.push(OpenClass$jsint(this, m));
       } else if (mt==='i') {
-        r.push(OpenInterface(this, m));
+        r.push(OpenInterface$jsint(this, m));
       } else if (mt==='a'||mt==='g'||mt==='o') {
         r.push(OpenValue(this, m));
       } else if (mt==='s') {

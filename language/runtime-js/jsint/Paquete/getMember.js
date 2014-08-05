@@ -10,7 +10,7 @@ function getMember(name$3,$$$mptypes){
     } else if (mt==='c'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
       return OpenClass$jsint(this, m);
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
-      return OpenInterface(this, m);
+      return OpenInterface$jsint(this, m);
     } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){
       return OpenAlias$jsint(_findTypeFromModel(this,m));
     } else {

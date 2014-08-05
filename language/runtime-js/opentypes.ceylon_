@@ -79,41 +79,6 @@ class OpenSetter(shared actual VariableDeclaration variable) satisfies SetterDec
 
 
 
-class OpenInterface(shared actual String name, shared actual Package containingPackage) satisfies InterfaceDeclaration {
-  shared actual AppliedInterface<Type> interfaceApply<Type=Anything>(AppliedType<Anything>* typeArguments) { throw Exception("unimplemented"); }
-  shared actual MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments) { throw Exception("unimplemented"); }
-  shared actual AppliedInterface<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments) { throw Exception("Unimplemented"); }
-  shared actual AppliedMember<Container, AppliedClassOrInterface<Type>> & AppliedClassOrInterface<Type> 
-    memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments) { throw Exception("Unimplemented"); }
-
-  shared actual Kind[] memberDeclarations<Kind>() 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
-  shared actual Kind? getMemberDeclaration<Kind>(String name) 
-            given Kind satisfies NestableDeclaration { throw Exception("Unimplemented"); }
-  shared actual OpenType openType { throw Exception("Unimplemented"); }
-  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("Unimplemented"); }
-  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("Unimplemented"); }
-
-  shared actual OpenClassType? extendedType { throw Exception("Unimplemented"); }
-  shared actual OpenInterfaceType[] satisfiedTypes { throw Exception("Unimplemented"); }
-
-  shared actual Boolean actual { throw Exception("Unimplemented"); }
-  shared actual Boolean formal { throw Exception("Unimplemented"); }
-  shared actual Boolean default { throw Exception("Unimplemented"); }
-  shared actual Boolean shared { throw Exception("Unimplemented"); }
-  shared actual Boolean toplevel  { throw Exception("Unimplemented"); }
-  shared actual String qualifiedName { return "``containingPackage.name``::``name``"; }
-  shared actual NestableDeclaration|Package container { throw Exception("unimplemented"); }
-  shared actual Module containingModule => containingPackage.container;
-
-  shared actual OpenType[] caseTypes { throw Exception("Unimplemented"); }
-
-  shared actual Boolean isAlias { throw Exception("Unimplemented"); }
-}
 
 
 class FreeClass(declaration)

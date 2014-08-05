@@ -75,7 +75,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
       if ((wantsClass && _mdl.mt!=='c') || (wantsIface && _mdl.mt!=='i'))return null;
-      _m=(_mdl.mt==='c'?OpenClass$jsint:OpenInterface)(this.containingPackage, _d);
+      _m=(_mdl.mt==='c'?OpenClass$jsint:OpenInterface$jsint)(this.containingPackage, _d);
     }
   }
   if (_m) {

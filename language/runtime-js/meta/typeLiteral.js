@@ -54,7 +54,7 @@ function typeLiteral$meta($$targs$$) {
     if (mdl.mt==='c' || mdl.mt==='o') {
       return OpenClass$jsint(_pkg, t);
     } else if (mdl['mt'] === 'i') {
-      return OpenInterface(_pkg, t);
+      return OpenInterface$jsint(_pkg, t);
     } else if (mdl['mt'] === 'm') {
       return OpenFunction(_pkg, t);
     } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g') {
