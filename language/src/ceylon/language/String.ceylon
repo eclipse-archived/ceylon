@@ -118,9 +118,26 @@ shared native final class String(characters)
     "Split the string into lines of text, discarding line
      breaks. Recognized line break sequences are `\\n` and 
      `\\r\\n`."
+    see (`value linesWithBreaks`)
     shared native {String*} lines 
             => split('\n'.equals, true, false)
                .spread(String.trimTrailing)('\r'.equals);
+    
+    "Split the string into lines of text with line breaks.
+     Each line will be terminated by a line break sequence,
+     `\\n` or `\\r\\n`."
+    see (`value lines`)
+    shared native {String*} linesWithBreaks
+            => split('\n'.equals, false, false)
+            .partition(2)
+            .map(([String+] lineWithBreak) {
+        value line = lineWithBreak[0];
+        if (exists br = lineWithBreak[1]) {
+            return line + br;
+        }
+        else {
+            return line;
+        }});
     
     "A string containing the characters of this string, 
      after discarding [[whitespace|Character.whitespace]] 

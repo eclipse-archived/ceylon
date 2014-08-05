@@ -1354,6 +1354,26 @@ public final class String
         }
     };
     
+    private static Callable<String> CONCAT_LINES_WITH_BREAKS =
+    new AbstractCallable<String>($TypeDescriptor$,
+            TypeDescriptor.klass(Tuple.class, 
+                    TypeDescriptor.klass(Sequence.class,$TypeDescriptor$), 
+                    TypeDescriptor.klass(Sequence.class,$TypeDescriptor$), 
+                    Empty.$TypeDescriptor$),
+                "", (short)-1) {
+        @Override
+        public String $call$(java.lang.Object seq) {
+            @SuppressWarnings("unchecked")
+            Sequence<? extends String> strings = 
+                    (Sequence<? extends String>) seq;
+            java.lang.String str = strings.getFirst().value;
+            if (strings.getSize()>1) {
+                str +=  strings.getFromFirst(1).value;
+            }
+            return instance(str);
+        }
+    };
+    
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     @Transient
     public Iterable<? extends String, ?> getLines() {
@@ -1365,7 +1385,21 @@ public final class String
     getLines(java.lang.String value) {
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
-    
+
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    @Transient
+    public Iterable<? extends String, ?> getLinesWithBreaks() {
+        return split(NEWLINES, false, false).partition(2)
+                .map($TypeDescriptor$, CONCAT_LINES_WITH_BREAKS);
+    }
+
+    @Ignore
+    public static Iterable<? extends String, ?> 
+    getLinesWithBreaks(java.lang.String value) {
+        return split(value, NEWLINES, false, false).partition(2)
+                .map($TypeDescriptor$, CONCAT_LINES_WITH_BREAKS);
+    }
+
     @Ignore
     public static Iterable<? extends Integer, ?> 
     occurrences(java.lang.String value, java.lang.Object element) {
