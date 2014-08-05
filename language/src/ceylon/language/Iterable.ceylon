@@ -1083,20 +1083,18 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in the stream `{ ['h','e'], ['l','l'], ['o'] }.`
      
-     For any `stream` and for any positive integer 
+     For any `stream` and for any strictly positive integer 
      [[length]]:
      
          expand { stream.partition(length) } == stream"
     throws (`class AssertionError`,
-            "if `length<0`")
+            "if `length<=0`")
     shared default 
-    Iterable<Element[],Absent> partition(Integer length) {
-        assert (length>=0);
-        if (length==0) {
-            return {[]}.cycled;
-        }
+    Iterable<[Element+],Absent> partition(Integer length) {
+        "length must be strictly positive"
+        assert (length>0);
         object chunks 
-                satisfies Iterable<Element[],Absent> {
+                satisfies Iterable<[Element+],Absent> {
             shared actual Integer size {
                 value outerSize = outer.size;
                 return length.divides(outerSize) 
@@ -1104,10 +1102,10 @@ shared interface Iterable<out Element, out Absent=Null>
                         else outerSize/length+1;
             }
             empty => outer.empty;
-            shared actual Iterator<Element[]> iterator() {
+            shared actual Iterator<[Element+]> iterator() {
                 value iter = outer.iterator();
-                object iterator satisfies Iterator<Element[]> {
-                    shared actual Element[]|Finished next() {
+                object iterator satisfies Iterator<[Element+]> {
+                    shared actual [Element+]|Finished next() {
                         if (!is Finished next = iter.next()) {
                             value array = arrayOfSize(length, next);
                             variable value index = 0;
