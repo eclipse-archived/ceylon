@@ -1346,22 +1346,11 @@ public final class String
     private static Callable<String> TRIM_RETURNS =
     new AbstractCallable<String>($TypeDescriptor$,
             TypeDescriptor.klass(Tuple.class, $TypeDescriptor$, 
-                $TypeDescriptor$, Empty.$TypeDescriptor$),
-                "", (short)-1) {
+                    $TypeDescriptor$, Empty.$TypeDescriptor$),
+            "", (short)-1) {
         @Override
         public String $call$(java.lang.Object str) {
             return instance(trimTrailing(((String)str).value, RETURNS));
-        }
-    };
-    
-    private static Callable<String> WITH_NEWLINES =
-    new AbstractCallable<String>($TypeDescriptor$,
-            TypeDescriptor.klass(Tuple.class, $TypeDescriptor$, 
-                $TypeDescriptor$, Empty.$TypeDescriptor$),
-                "", (short)-1) {
-        @Override
-        public String $call$(java.lang.Object str) {
-            return instance(((String)str).value + '\n');
         }
     };
     
@@ -1376,19 +1365,7 @@ public final class String
     getLines(java.lang.String value) {
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
-
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    @Transient
-    public Iterable<? extends String, ?> getLinesWithBreaks() {
-        return split(NEWLINES, true, false).map($TypeDescriptor$, WITH_NEWLINES);
-    }
-
-    @Ignore
-    public static Iterable<? extends String, ?> 
-    getLinesWithBreaks(java.lang.String value) {
-        return split(value, NEWLINES, true, false).map($TypeDescriptor$, WITH_NEWLINES);
-    }
-
+    
     @Ignore
     public static Iterable<? extends Integer, ?> 
     occurrences(java.lang.String value, java.lang.Object element) {
