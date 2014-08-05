@@ -72,6 +72,10 @@ public class JsIdentifierNames {
                 "concat", "indexOf", "lastIndexOf", "slice", "get"));
     }
 
+    public boolean isReservedWord(String token) {
+        return reservedWords.contains(token);
+    }
+
     /**
      * Determine the identifier name to be used in the generated JavaScript code
      * to represent the given declaration.

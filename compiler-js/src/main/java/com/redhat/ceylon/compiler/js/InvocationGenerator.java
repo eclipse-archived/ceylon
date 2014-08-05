@@ -480,7 +480,11 @@ public class InvocationGenerator {
             boolean first = true;
             for (Tree.NamedArgument arg : argList.getNamedArguments()) {
                 if (first) { first = false; } else { gen.out(","); }
-                gen.out(arg.getIdentifier().getText(), ":");
+                String argName = arg.getIdentifier().getText();
+                if (gen.getNames().isReservedWord(argName)) {
+                    gen.out("$_");
+                }
+                gen.out(argName, ":");
                 arg.visit(gen);
             }
             gen.out("}");
