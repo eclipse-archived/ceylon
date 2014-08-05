@@ -39,10 +39,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
   if (types===undefined)types=getEmpty();
-  var _tipo=this.tipo;
-  if (!extendsType($$$mptypes.Container$getMethod,{t:_tipo}) && $$$mptypes.Container$getMethod.t.$$){
-    _tipo=$$$mptypes.Container$getMethod.t;
-  }
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getMethod);
   var fun = _tipo.$$.prototype[name];
   if (!fun) return null;
   var mm=getrtmm$$(fun);
@@ -82,10 +79,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   if (!extendsType({t:this.tipo},$$$mptypes.Container$getAttribute && $$$mptypes.Container$getAttribute.t!==Nothing)) {
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
-  var _tipo=this.tipo;
-  if (!extendsType($$$mptypes.Container$getAttribute,{t:_tipo}) && $$$mptypes.Container$getAttribute.t.$$){
-    _tipo=$$$mptypes.Container$getAttribute.t;
-  }
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getAttribute);
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = _tipo.$$.prototype[nom];
   if (!at) {
@@ -138,8 +132,7 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'container',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
-  var _tipo=this.tipo;
-  if (!extendsType($$$mptypes.Container$getClassOrInterface,{t:_tipo}) && $$$mptypes.Container$getClassOrInterface.t.$$)_tipo=$$$mptypes.Container$getClassOrInterface.t;
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getClassOrInterface);
   var $$clase=this;
   if(types$3===undefined){types$3=getEmpty();}
   var mm = getrtmm$$(_tipo);
@@ -344,15 +337,13 @@ ClassOrInterface$meta$model.$$.prototype.getClasses=function getClasses(anntypes
   var mems=[];
   if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
-  var _tipo=$$$mptypes.Container$getClasses.t;
-  if (!(_tipo && _tipo.$$))_tipo=this.tipo;
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getClasses);
   for (m in _tipo.$$.prototype) {
-    var mem=_tipo.$$.prototype[m];
+    var mem=getnpmem$(_tipo.$$.prototype,m);
     if (mem && mem.$$) {
       var mm=getrtmm$$(mem);
       if (mm && mm.d && mm.d[mm.d.length-2]==='$c') {
-        if (noInherit && mm.$cont!==$$$mptypes.Container$getClasses.t)continue;
-        if (!extendsType({t:_tipo},$$$mptypes.Container$getClasses))continue;
+        if (noInherit && mm.$cont!==this.tipo)continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getClasses))continue;
         if (typeof(mm.an)==='function')mm.an=mm.an();
         var a2=getAnnotationsForBitmask(mm.pa);
@@ -382,15 +373,13 @@ ClassOrInterface$meta$model.$$.prototype.getInterfaces=function getInterfaces(an
   var mems=[];
   if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
-  var _tipo=$$$mptypes.Container$getInterfaces.t;
-  if (!(_tipo && _tipo.$$))_tipo=this.tipo;
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getInterfaces);
   for (m in _tipo.$$.prototype) {
-    var mem=_tipo.$$.prototype[m];
+    var mem=getnpmem$(_tipo.$$.prototype,m);
     if (mem && mem.$$) {
       var mm=getrtmm$$(mem);
       if (mm && mm.d && mm.d[mm.d.length-2]==='$i') {
-        if (noInherit && mm.$cont!==$$$mptypes.Container$getInterfaces.t)continue;
-        if (!extendsType({t:_tipo},$$$mptypes.Container$getInterfaces))continue;
+        if (noInherit && mm.$cont!==this.tipo)continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getInterfaces))continue;
         if (typeof(mm.an)==='function')mm.an=mm.an();
         var a2=getAnnotationsForBitmask(mm.pa);
@@ -420,17 +409,15 @@ ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(an
   var mems=[];
   if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
-  var _tipo=$$$mptypes.Container$getAttributes.t;
-  if (!(_tipo && _tipo.$$))_tipo=this.tipo;
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getAttributes);
   for (m in _tipo.$$.prototype) {
     if (m.substring(0,6)==='$prop$') {
       var mm=getrtmm$$(_tipo.$$.prototype[m]);
       if (mm) {
-        if (noInherit && mm.$cont!==_tipo)continue;
+        if (noInherit && mm.$cont!==this.tipo)continue;
         if (!extendsType(mm.$t,$$$mptypes.Get$getAttributes))continue;
         var setter=_tipo.$$.prototype[m].set && extendsType($$$mptypes.Set$getAttributes,mm.$t);
         if ($$$mptypes.Set$getAttributes.t!==Nothing && !setter)continue;
-        if (!extendsType({t:_tipo},$$$mptypes.Container$getAttributes))continue;
         if (typeof(mm.an)==='function')mm.an=mm.an();
         var a2=getAnnotationsForBitmask(mm.pa);
         if (a2) {
@@ -461,15 +448,13 @@ ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes
   var mems=[];
   if (anntypes===undefined)anntypes=getEmpty();
   var ats=coi$get$anns(anntypes);
-  var _tipo=$$$mptypes.Container$getMethods.t;
-  if (!(_tipo && _tipo.$$))_tipo=this.tipo;
+  var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getMethods);
   for (m in _tipo.$$.prototype) {
-    if (m.substring(0,6)==='$prop$' || _tipo.$$.prototype['$prop$get'+m[0].toUpperCase()+m.substring(1)])continue;
-    var mem=_tipo.$$.prototype[m];
+    var mem=getnpmem$(_tipo.$$.prototype,m);
     if (mem && mem.$$===undefined) {
       var mm=getrtmm$$(mem);
       if (mm && mm.d && mm.d[mm.d.length-2]=='$m') {
-        if (noInherit && mm.$cont!==$$$mptypes.Container$getMethods.t)continue;
+        if (noInherit && mm.$cont!==this.tipo)continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         if (typeof(mm.an)==='function')mm.an=mm.an();
         var a2=getAnnotationsForBitmask(mm.pa);
