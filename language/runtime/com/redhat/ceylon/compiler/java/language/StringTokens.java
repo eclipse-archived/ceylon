@@ -75,7 +75,7 @@ extends BaseIterable<String,java.lang.Object> {
                     // do we return them?
                     if (keepSeparators) {
                         lastTokenWasSeparator = true;
-                        return String.instance(str.substring(start, index-start));
+                        return String.instance(str.substring(start, index));
                     }
                     // keep going and eat the next word
                     start = index;
@@ -85,7 +85,7 @@ extends BaseIterable<String,java.lang.Object> {
                     eatChar();
                 }
                 lastTokenWasSeparator = false;
-                return String.instance(str.substring(start, index-start));
+                return String.instance(str.substring(start, index));
             }
             else if (lastTokenWasSeparator) {
                 // we're missing a last empty token before 
