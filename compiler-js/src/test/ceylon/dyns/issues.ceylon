@@ -51,7 +51,7 @@ void issue366() {
     try {
         f366_2();
     } catch (Throwable ex) {
-        check("dynamic" in ex.message, "Issue 366 #2");
+        check("xpected ceylon.language::Object" in ex.message, "Issue 366 #2 msg ``ex.message``");
     }
     try {
         dynamic {
@@ -59,7 +59,7 @@ void issue366() {
         }
         fail("Issue 366 #3");
     } catch (Throwable ex) {
-        check("dynamic" in ex.message, "Issue 366 #3.2");
+        check("xpected ceylon.language::Anything" in ex.message, "Issue 366 #3.2 msg ``ex.message``");
     }
     dynamic {
         check({1,2,*f366_3()}.sequence().size == 4, "Issue 366 #4");
@@ -113,4 +113,13 @@ shared void issues() {
     issue366();
     issue369();
     dynamicNumbers();
+    try {
+        dynamic {
+            dynamic test381 = 1;
+            dynamic check381 = Singleton<String>(test381);
+            fail("Singleton<String>(dynamic) should throw");
+        }
+    } catch (Throwable ex) {
+        check("xpected ceylon.language::String" in ex.message, "Issue #381 [1] msg ``ex.message``");
+    }
 }

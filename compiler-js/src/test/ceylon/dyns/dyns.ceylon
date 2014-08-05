@@ -147,7 +147,7 @@ shared void test() {
         leakTest(false);
         fail("leaking objects outside dynamic blocks...");
     } catch (Throwable ex) {
-        check("dynamic" in ex.message, "leak test 2");
+        check("xpected ceylon.language::Object" in ex.message, "leak test 2 msg ``ex.message``");
     }
     value tuple = [1,"2", '3'];
     dynamic {
