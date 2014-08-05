@@ -50,7 +50,6 @@ extends BaseIterable<String,java.lang.Object> {
             super(String.$TypeDescriptor$);
         }
 
-        protected final char[] chars = str.toCharArray();
         protected int index = 0;
         private boolean first = true;
         private boolean lastTokenWasSeparator = false;
@@ -76,8 +75,7 @@ extends BaseIterable<String,java.lang.Object> {
                     // do we return them?
                     if (keepSeparators) {
                         lastTokenWasSeparator = true;
-                        return String.instance(new java.lang.String(chars, 
-                                start, index-start));
+                        return String.instance(str.substring(start, index-start));
                     }
                     // keep going and eat the next word
                     start = index;
@@ -87,8 +85,7 @@ extends BaseIterable<String,java.lang.Object> {
                     eatChar();
                 }
                 lastTokenWasSeparator = false;
-                return String.instance(new java.lang.String(chars, 
-                        start, index-start));
+                return String.instance(str.substring(start, index-start));
             }
             else if (lastTokenWasSeparator) {
                 // we're missing a last empty token before 
@@ -103,7 +100,7 @@ extends BaseIterable<String,java.lang.Object> {
         }
         
         protected boolean eof() {
-            return index >= chars.length;
+            return index >= str.length();
         }
 
         private boolean eatSeparator() {
@@ -113,7 +110,7 @@ extends BaseIterable<String,java.lang.Object> {
         }
 
         private void eatChar() {
-            if (java.lang.Character.isHighSurrogate(chars[index])) {
+            if (java.lang.Character.isHighSurrogate(str.charAt(index))) {
                 index += 2;
             }
             else {
@@ -136,7 +133,7 @@ extends BaseIterable<String,java.lang.Object> {
         return new TokenIterator() {
             protected final boolean peekSeparator() {
                 if (eof()) return false;
-                int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                int charCodePoint = java.lang.Character.codePointAt(str, index);
                 return separator.$call$(Character.instance(charCodePoint)).booleanValue();
             }
         };
