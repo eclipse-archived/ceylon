@@ -39,8 +39,11 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
   if (types===undefined)types=getEmpty();
-  var fun = this.tipo[name];
-  if (!fun) fun = this.tipo.$$.prototype[name];
+  var _tipo=this.tipo;
+  if (!extendsType($$$mptypes.Container$getMethod,{t:_tipo}) && $$$mptypes.Container$getMethod.t.$$){
+    _tipo=$$$mptypes.Container$getMethod.t;
+  }
+  var fun = _tipo.$$.prototype[name];
   if (!fun) return null;
   var mm=getrtmm$$(fun);
   var _t=$$$mptypes.Type$getMethod;
@@ -53,7 +56,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
         if (this.$targs && this.$targs[_t])_t=this.$targs[_t];
         else if ($$$mptypes.Container$getMethod && $$$mptypes.Container$getMethod.a && $$$mptypes.Container$getMethod.a[_t])_t=$$$mptypes.Container$getMethod.a[_t];
         else if (mm.tp && mm.tp[_t])_ta=mm.tp[_t];
-        else if (this.tipo.$crtmm$.tp && this.tipo.$crtmm$.tp[_t])_ta=this.tipo.$crtmm$.tp[_t];
+        else if (_tipo.$crtmm$.tp && _tipo.$crtmm$.tp[_t])_ta=_tipo.$crtmm$.tp[_t];
         if (_ta && _ta.sts)_t=_ta.sts.length===1?_ta.sts[0]:{t:'i',l:_ta.sts};
         if (typeof(_t)==='string')_t={t:Anything};
       }
@@ -62,7 +65,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
     validate$params(mm.ps,_a,"Wrong number of Arguments for getMethod");
     _a=tupleize$params(mm.ps);
   }
-  return AppliedMethod(fun, types, {Container$Method:{t:this.tipo},Type$Method:_t,Arguments$Method:_a});
+  return AppliedMethod(fun, types, {Container$Method:{t:_tipo},Type$Method:_t,Arguments$Method:_a});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethod.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}},{nm:'types',mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container:{},Type:{},Arguments:{sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod=function(name,types,$$$mptypes) {
@@ -79,11 +82,15 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   if (!extendsType({t:this.tipo},$$$mptypes.Container$getAttribute && $$$mptypes.Container$getAttribute.t!==Nothing)) {
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
+  var _tipo=this.tipo;
+  if (!extendsType($$$mptypes.Container$getAttribute,{t:_tipo}) && $$$mptypes.Container$getAttribute.t.$$){
+    _tipo=$$$mptypes.Container$getAttribute.t;
+  }
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
-  var at = this.tipo.$$.prototype[nom];
+  var at = _tipo.$$.prototype[nom];
   if (!at) {
     nom = '$prop$get$_' + name$15;
-    at = this.tipo.$$.prototype[nom];
+    at = _tipo.$$.prototype[nom];
     if (!at)return null;
   }
   var mm=getrtmm$$(at);
@@ -93,7 +100,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
     if (!extendsType($$$mptypes.Set$getAttribute,at.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
     _t=mm.$t;
   }
-  var rv=AppliedAttribute(name$15, at, {Get$Attribute:_t,Set$Attribute:at.set?_t:{t:Nothing}, Container$Attribute:{t:this.tipo}});
+  var rv=AppliedAttribute(name$15, at, {Get$Attribute:_t,Set$Attribute:at.set?_t:{t:Nothing}, Container$Attribute:{t:_tipo}});
   if (this.$targs)rv.$$targs$$.Container$Attribute.a=this.$targs;
   rv.$parent=this;
   return rv;
@@ -131,19 +138,20 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'container',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
-  if (!extendsType($$$mptypes.Container$getClassOrInterface,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible type specified in Container");
+  var _tipo=this.tipo;
+  if (!extendsType($$$mptypes.Container$getClassOrInterface,{t:_tipo}) && $$$mptypes.Container$getClassOrInterface.t.$$)_tipo=$$$mptypes.Container$getClassOrInterface.t;
   var $$clase=this;
   if(types$3===undefined){types$3=getEmpty();}
-  var mm = getrtmm$$($$clase.tipo);
+  var mm = getrtmm$$(_tipo);
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
-  var ic = $$clase.tipo.$$.prototype[nom];
+  var ic = _tipo.$$.prototype[nom];
   if (!ic) {
     if (noInherit)return null;
     var pere=mm['super'];
     while (!ic && pere) {
       mm=getrtmm$$(pere.t);
       nom=mm&&mm.d?name$2+'$'+mm.d[mm.d.length-1]:undefined;
-      if (nom)ic=$$clase.tipo.$$.prototype[nom];
+      if (nom)ic=_tipo.$$.prototype[nom];
       if (!ic)pere=mm['super'];
     }
   }
@@ -152,7 +160,7 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     var md = get_model(mm);
     var rv;
     var ict={t:ic};
-    var _cont={t:this.tipo};
+    var _cont={t:_tipo};
     if (this.$targs)_cont.a=this.$targs;
     if (md.mt==='i') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
