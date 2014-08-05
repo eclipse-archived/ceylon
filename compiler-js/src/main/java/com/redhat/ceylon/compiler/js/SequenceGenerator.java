@@ -32,7 +32,8 @@ public class SequenceGenerator {
                         && Util.isTypeUnknown(expr.getTypeModel())) {
                     //TODO should we remove this check and just let it blow up anyway?
                     TypeUtils.generateDynamicCheck(((Tree.SpreadArgument)expr).getExpression(),
-                            node.getUnit().getAnythingDeclaration().getType(), gen, true);
+                            node.getUnit().getAnythingDeclaration().getType(), gen, true,
+                            seqType.getTypeArguments());
                 } else {
                     expr.visit(gen);
                 }
@@ -74,7 +75,7 @@ public class SequenceGenerator {
                         && expr.getParameter() != null && !Util.isTypeUnknown(expr.getParameter().getType())) {
                     //TODO find out how to test this, if at all possible
                     TypeUtils.generateDynamicCheck(((Tree.ListedArgument)expr).getExpression(),
-                            expr.getParameter().getType(), gen, false);
+                            expr.getParameter().getType(), gen, false, that.getTypeModel().getTypeArguments());
                 } else {
                     expr.visit(gen);
                 }

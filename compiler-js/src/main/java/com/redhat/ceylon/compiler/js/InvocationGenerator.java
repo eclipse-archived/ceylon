@@ -336,7 +336,11 @@ public class InvocationGenerator {
                     }
                     final int boxType = pd==null?0:gen.boxUnboxStart(expr.getTerm(), pd.getModel());
                     if (dyncheck) {
-                        TypeUtils.generateDynamicCheck(expr, pd.getType(), gen, false);
+                        Map<TypeParameter,ProducedType> targs = null;
+                        if (primary instanceof Tree.MemberOrTypeExpression) {
+                            targs = ((Tree.MemberOrTypeExpression)primary).getTarget().getTypeArguments();
+                        }
+                        TypeUtils.generateDynamicCheck(expr, pd.getType(), gen, false, targs);
                     } else {
                         arg.visit(gen);
                     }

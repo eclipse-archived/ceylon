@@ -2085,7 +2085,8 @@ public class GenerateJsVisitor extends Visitor
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
                             if (dynblock > 0 && !Util.isTypeUnknown(moval.getType())
                                     && Util.isTypeUnknown(expr.getTypeModel())) {
-                                TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false);
+                                TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
+                                        expr.getTypeModel().getTypeArguments());
                             } else {
                                 expr.visit(GenerateJsVisitor.this);
                             }
@@ -2152,7 +2153,8 @@ public class GenerateJsVisitor extends Visitor
                     out(names.name(bmeDecl), "=");
                     if (dynblock > 0 && Util.isTypeUnknown(expr.getTypeModel())
                             && !Util.isTypeUnknown(((MethodOrValue) bmeDecl).getType())) {
-                        TypeUtils.generateDynamicCheck(expr, ((MethodOrValue) bmeDecl).getType(), this, false);
+                        TypeUtils.generateDynamicCheck(expr, ((MethodOrValue) bmeDecl).getType(), this, false,
+                                expr.getTypeModel().getTypeArguments());
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
                     }
@@ -2351,7 +2353,8 @@ public class GenerateJsVisitor extends Visitor
             if (cont instanceof Declaration) {
                 final ProducedType dectype = ((Declaration)cont).getReference().getType();
                 if (!Util.isTypeUnknown(dectype)) {
-                    TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false);
+                    TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
+                            that.getExpression().getTypeModel().getTypeArguments());
                     endLine(true);
                     return;
                 }

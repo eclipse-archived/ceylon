@@ -54,7 +54,8 @@ public class AttributeGenerator {
             int boxType = gen.boxStart(expr.getExpression().getTerm());
             if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getExpression().getTypeModel())
                     && !Util.isTypeUnknown(decl.getType())) {
-                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false);
+                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,
+                        expr.getExpression().getTypeModel().getTypeArguments());
             } else {
                 expr.visit(gen);
             }
