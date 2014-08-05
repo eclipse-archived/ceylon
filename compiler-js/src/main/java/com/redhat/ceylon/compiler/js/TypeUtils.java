@@ -329,8 +329,9 @@ public class TypeUtils {
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    static void generateDynamicCheck(final Tree.Term term, final ProducedType t,
-            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    static void generateDynamicCheck(final Tree.Term term, ProducedType t,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl,
+            final Map<TypeParameter,ProducedType> typeArguments) {
         if (t.getDeclaration().isDynamic()) {
             gen.out(GenerateJsVisitor.getClAlias(), "dre$$(");
             term.visit(gen);
@@ -343,16 +344,24 @@ public class TypeUtils {
             String tmp = gen.getNames().createTempVariable();
             gen.out("(", tmp, "=");
             term.visit(gen);
+            String errmsg = "dynamic value cannot be used here";
             if (checkFloat) {
                 gen.out(",typeof(", tmp, ")==='number'?", GenerateJsVisitor.getClAlias(), "Float(", tmp, ")");
+                errmsg = "Expected Float";
             } else if (checkInt) {
                 gen.out(",typeof(", tmp, ")==='number'?Math.floor(", tmp, ")");
+                errmsg = "Expected Integer";
             } else {
                 gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
+                if (t.getDeclaration() instanceof TypeParameter && typeArguments != null
+                        && typeArguments.containsKey(t.getDeclaration())) {
+                    t = typeArguments.get(t.getDeclaration());
+                }
+                errmsg = "Expected " + t.getProducedTypeQualifiedName();
                 TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
                 gen.out(")?", tmp);
             }
-            gen.out(":function(){throw new Error('dynamic objects cannot be used here (",
+            gen.out(":function(){throw new TypeError('", errmsg, " (",
                     term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
         }
     }
