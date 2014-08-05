@@ -115,9 +115,21 @@ shared native final class String(characters)
      the given [[objects]], using this string as a separator."
     shared native String join({Object*} objects);
     
-    "Split the string into lines of text."
+    "Split the string into lines of text, discarding line
+     breaks. Recognized line break sequences are `\\n` and 
+     `\\r\\n`."
+    see (`value linesWithBreaks`)
     shared native {String*} lines 
-            => split('\n'.equals, true, false);
+            => split('\n'.equals, true, false)
+               .spread(String.trimTrailing)('\r'.equals);
+    
+    "Split the string into lines of text with line breaks.
+     Each line will be terminated by a line break sequence,
+     `\\n` or `\\r\\n`."
+    see (`value lines`)
+    shared native {String*} linesWithBreaks
+            => split('\n'.equals, true, false)
+               .spread(String.plus)("\n");
     
     "A string containing the characters of this string, 
      after discarding [[whitespace|Character.whitespace]] 

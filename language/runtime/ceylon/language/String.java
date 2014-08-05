@@ -1324,23 +1324,69 @@ public final class String
     new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
             TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
                     Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
-            "whitespace", (short)-1) {
+            "newlines", (short)-1) {
         @Override
         public Boolean $call$(java.lang.Object ch) {
             return Boolean.instance(((Character) ch).intValue()=='\n');
         }
     };
     
+    @Ignore
+    private static Callable<Boolean> RETURNS = 
+    new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+            TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
+                    Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
+            "returns", (short)-1) {
+        @Override
+        public Boolean $call$(java.lang.Object ch) {
+            return Boolean.instance(((Character) ch).intValue()=='\r');
+        }
+    };
+    
+    private static Callable<String> TRIM_RETURNS =
+    new AbstractCallable<String>($TypeDescriptor$,
+            TypeDescriptor.klass(Tuple.class, $TypeDescriptor$, 
+                $TypeDescriptor$, Empty.$TypeDescriptor$),
+                "", (short)-1) {
+        @Override
+        public String $call$(java.lang.Object str) {
+            return instance(trimTrailing(((String)str).value, RETURNS));
+        }
+    };
+    
+    private static Callable<String> WITH_NEWLINES =
+    new AbstractCallable<String>($TypeDescriptor$,
+            TypeDescriptor.klass(Tuple.class, $TypeDescriptor$, 
+                $TypeDescriptor$, Empty.$TypeDescriptor$),
+                "", (short)-1) {
+        @Override
+        public String $call$(java.lang.Object str) {
+            return instance(((String)str).value + '\n');
+        }
+    };
+    
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     @Transient
     public Iterable<? extends String, ?> getLines() {
-        return split(NEWLINES, true, false);
+        return split(NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
 
     @Ignore
     public static Iterable<? extends String, ?> 
     getLines(java.lang.String value) {
-        return split(value, NEWLINES, true, false);
+        return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
+    }
+
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    @Transient
+    public Iterable<? extends String, ?> getLinesWithBreaks() {
+        return split(NEWLINES, true, false).map($TypeDescriptor$, WITH_NEWLINES);
+    }
+
+    @Ignore
+    public static Iterable<? extends String, ?> 
+    getLinesWithBreaks(java.lang.String value) {
+        return split(value, NEWLINES, true, false).map($TypeDescriptor$, WITH_NEWLINES);
     }
 
     @Ignore
