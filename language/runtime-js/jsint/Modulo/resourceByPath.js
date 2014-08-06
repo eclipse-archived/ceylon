@@ -12,7 +12,7 @@ function resourceByPath(_path) {
     mpath += sep + _path;
   }
   if (getRuntime().name === 'node.js') {
-    var _fr=require;//this is so that requirejs leaves us the fuck alone
+    var _fr=require;//this is so that requirejs leaves us alone
     var pm=_fr('path');
     var mods=process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
     var fs=_fr('fs');
