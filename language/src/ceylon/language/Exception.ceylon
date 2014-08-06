@@ -14,7 +14,13 @@
  of problem, and may define additional attributes which 
  propagate information about problems of that kind."
 by ("Gavin", "Tom")
-shared native class Exception(String? description=null, Throwable? cause=null) 
+shared native class Exception(description=null, cause=null) 
         extends Throwable(description, cause) {
+    
+    "A description of the problem."
+    String? description;
+    
+    "The underlying cause of this exception."
+    Throwable? cause;
     
 }
