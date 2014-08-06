@@ -149,6 +149,7 @@ public class Stitcher {
             writer.write(";\n");
             compileLanguageModule("MODEL.js", writer);
         } finally {
+            ShaSigner.sign(file, new JsJULLogger(), true);
         }
     }
 
