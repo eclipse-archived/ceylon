@@ -6,6 +6,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -442,12 +443,27 @@ public class FileUtil {
                         throw new IOException("Failed to create dir "+childDest.getPath());
                     copyAll(child, childDest);
                 }else{
-                    Files.copy(child.toPath(), childDest.toPath());
+                    Files.copy(child.toPath(), childDest.toPath(), StandardCopyOption.COPY_ATTRIBUTES);
                 }
             }
         }else{
             File childDest = new File(dest, root.getName());
-            Files.copy(root.toPath(), childDest.toPath());
+            Files.copy(root.toPath(), childDest.toPath(), StandardCopyOption.COPY_ATTRIBUTES);
         }
+    }
+    
+    /**
+     * Copy the specified source file given relative to the specified source folder
+     * to the specified destination file relative to the specified destination folder
+     */
+    public static void copy(File srcDir, File relSrcFile, File destDir, File relDestFile) throws IOException {
+        File finalSrcFile = (srcDir != null) ? new File(srcDir, relSrcFile.getPath()) : relSrcFile;
+        File relDestDir = relDestFile.getParentFile();
+        if (relDestDir != null) {
+            File finalDestDir = (destDir != null) ? new File(destDir, relDestDir.getPath()) : relDestDir;
+            finalDestDir.mkdirs();
+        }
+        File finalDestFile = new File(destDir, relDestFile.getPath());
+        Files.copy(finalSrcFile.toPath(), finalDestFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
 }
