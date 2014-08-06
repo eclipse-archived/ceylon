@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -45,7 +46,8 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     private void visitLocalDeclarationModel(Declaration model) {
         if(model != null 
                 && !model.isToplevel()
-                && !model.isMember()){
+                && !model.isMember()
+                && !(model instanceof Method && model.isParameter())){
             Integer counter = localNames.get(model.getName());
             if(counter == null)
                 counter = 1;
