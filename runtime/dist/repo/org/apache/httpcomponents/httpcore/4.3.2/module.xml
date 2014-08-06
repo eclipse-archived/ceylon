@@ -22,9 +22,9 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.apache.commons.codec" slot="1.4">
+<module xmlns="urn:jboss:module:1.0" name="org.apache.httpcomponents.httpcore" slot="4.3.2">
     <resources>
-        <resource-root path="org.apache.commons.codec-1.4.jar"/>
+        <resource-root path="org.apache.httpcomponents.httpcore-4.3.2.jar"/>
     </resources>
 
     <dependencies>

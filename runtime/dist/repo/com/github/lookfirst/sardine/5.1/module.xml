@@ -22,20 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.apache.httpcomponents.httpclient" slot="4.1.1">
+<module xmlns="urn:jboss:module:1.0" name="com.github.lookfirst.sardine" slot="5.1">
     <resources>
-        <resource-root path="org.apache.httpcomponents.httpclient-4.1.1.jar"/>
+        <resource-root path="com.github.lookfirst.sardine-5.1.jar"/>
     </resources>
 
     <dependencies>
-        <module name="org.apache.httpcomponents.httpcore" slot="4.1.1" export="true"/>
-        <module name="org.apache.commons.logging" slot="1.1.1"/>
-        <module name="org.apache.commons.codec" slot="1.4"/>
-        <system export="true">
-            <paths>
-                <path name="javax/net"/>
-                <path name="javax/net/ssl"/>
-            </paths>
-        </system>
+        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="org.slf4j.api" slot="1.6.1"/>
     </dependencies>
 </module>

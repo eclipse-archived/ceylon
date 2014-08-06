@@ -22,11 +22,20 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.apache.httpcomponents.httpcore" slot="4.1.1">
+<module xmlns="urn:jboss:module:1.0" name="org.apache.httpcomponents.httpclient" slot="4.3.2">
     <resources>
-        <resource-root path="org.apache.httpcomponents.httpcore-4.1.1.jar"/>
+        <resource-root path="org.apache.httpcomponents.httpclient-4.3.2.jar"/>
     </resources>
 
     <dependencies>
+        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2" export="true"/>
+        <module name="org.apache.commons.logging" slot="1.1.1"/>
+        <module name="org.apache.commons.codec" slot="1.8"/>
+        <system export="true">
+            <paths>
+                <path name="javax/net"/>
+                <path name="javax/net/ssl"/>
+            </paths>
+        </system>
     </dependencies>
 </module>
