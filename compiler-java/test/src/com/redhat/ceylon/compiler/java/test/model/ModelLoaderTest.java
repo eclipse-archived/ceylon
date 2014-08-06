@@ -325,6 +325,7 @@ public class ModelLoaderTest extends CompilerTest {
             compareAnnotations(validDeclaration, modelDeclaration);
             // check containers
             compareContainers(validDeclaration, modelDeclaration);
+            compareScopes(validDeclaration, modelDeclaration);
             // full check
             if(validDeclaration instanceof ClassOrInterface){
                 Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
@@ -353,6 +354,18 @@ public class ModelLoaderTest extends CompilerTest {
             }
         }
     
+        protected void compareScopes(Declaration validDeclaration, Declaration modelDeclaration) {
+            String name = validDeclaration.getQualifiedNameString();
+            Scope validContainer = validDeclaration.getScope();
+            Scope modelContainer = modelDeclaration.getScope();
+            if(validContainer instanceof Declaration){
+                Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
+                compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
+            }else{
+                Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
+            }
+        }
+        
         protected void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
             // let's not compare setter annotations
             if(validDeclaration instanceof Setter)

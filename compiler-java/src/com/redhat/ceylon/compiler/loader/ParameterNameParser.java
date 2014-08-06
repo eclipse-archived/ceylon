@@ -140,6 +140,7 @@ class ParameterNameParser {
         result.setName(identifier);
         result.setUnit(unit);
         result.setContainer(container);
+        result.setScope(container);
         Parameter p = new Parameter();
         p.setName(identifier);
         p.setSequenced(sequenced);

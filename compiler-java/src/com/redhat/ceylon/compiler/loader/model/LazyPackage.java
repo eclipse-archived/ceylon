@@ -223,6 +223,7 @@ public class LazyPackage extends Package {
     private void makeInteropAnnotation(LazyInterface iface) {
         Class klass = new AnnotationProxyClass(iface);
         klass.setContainer(this);
+        klass.setScope(this);
         klass.setName(iface.getName()+"$Proxy");
         klass.setShared(iface.isShared());
         klass.setAnnotation(true);
@@ -236,6 +237,7 @@ public class LazyPackage extends Package {
         
         Method ctor = new AnnotationProxyMethod();
         ctor.setContainer(this);
+        klass.setScope(this);
         ctor.setAnnotation(true);
         ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
         ctor.setShared(iface.isShared());
@@ -268,6 +270,7 @@ public class LazyPackage extends Package {
                     value.setInitializerParameter(klassParam);
                     klassParam.setDeclaration(klass);
                     value.setContainer(klass);
+                    value.setScope(klass);
                     value.setName(member.getName());
                     klassParam.setName(member.getName());
                     value.setType(annotationParameterType(iface.getUnit(), m));
@@ -283,6 +286,7 @@ public class LazyPackage extends Package {
                     value.setInitializerParameter(ctorParam);
                     ctorParam.setDeclaration(ctor);
                     value.setContainer(klass);
+                    value.setScope(klass);
                     ctorParam.setDefaulted(m.isDefaultedAnnotation());
                     value.setName(member.getName());
                     ctorParam.setName(member.getName());

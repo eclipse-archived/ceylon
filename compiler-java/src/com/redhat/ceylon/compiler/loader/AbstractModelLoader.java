@@ -620,6 +620,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // add it to its package if it's not an inner class
         if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
             d.setContainer(pkg);
+            d.setScope(pkg);
             pkg.addCompiledMember(d);
             if(d instanceof LazyInterface && ((LazyInterface) d).isCeylon()){
                 setInterfaceCompanionClass(d, null, pkg);
@@ -630,9 +631,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Scope localContainer = getLocalContainer(pkg, classMirror, d);
             if(localContainer != null){
                 d.setContainer(localContainer);
+                d.setScope(localContainer);
                 // do not add it as member, it has already been registered by getLocalContainer
             }else{
                 d.setContainer(pkg);
+                d.setScope(pkg);
             }
             ((LazyElement)d).setLocal(true);
         }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
@@ -641,6 +644,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(d instanceof Class == false || !((Class)d).isOverloaded()){
                 ClassOrInterface container = getContainer(pkg.getModule(), classMirror);
                 d.setContainer(container);
+                d.setScope(container);
                 if(d instanceof LazyInterface && ((LazyInterface) d).isCeylon()){
                     setInterfaceCompanionClass(d, container, pkg);
                 }
@@ -651,6 +655,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(d instanceof Class && ((Class)d).getOverloads() != null){
                     for(Declaration overload : ((Class)d).getOverloads()){
                         overload.setContainer(container);
+                        overload.setScope(container);
                         // let's not trigger lazy-loading
                         ((LazyContainer)container).addMember(overload);
                         DeclarationVisitor.setVisibleScope(overload);
@@ -2210,6 +2215,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String methodName = methodMirror.getName();
         
         method.setContainer(klass);
+        method.setScope(klass);
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
@@ -2357,6 +2363,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setInitializerParameter(parameter);
         value.setUnit(decl.getUnit());
         value.setContainer((Scope) decl);
+        value.setScope((Scope) decl);
         parameter.setName("that");
         value.setName("that");
         value.setType(getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
@@ -2397,6 +2404,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure it's a FieldValue so we can figure it out in the backend
         Value value = new FieldValue(fieldMirror.getName());
         value.setContainer(klass);
+        value.setScope(klass);
         // use the name annotation if present (used by Java arrays)
         String nameAnnotation = getAnnotationStringValue(fieldMirror, CEYLON_NAME_ANNOTATION);
         value.setName(nameAnnotation != null ? nameAnnotation : ceylonName);
@@ -2425,6 +2433,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             enumValueType.setAnonymous(true);
             enumValueType.setExtendedType(type);
             enumValueType.setContainer(value.getContainer());
+            enumValueType.setScope(value.getContainer());
             enumValueType.setDeprecated(value.isDeprecated());
             enumValueType.setName(value.getName());
             enumValueType.setFinal(true);
@@ -2523,6 +2532,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         JavaBeanValue value = new JavaBeanValue(methodMirror);
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
+        value.setScope(klass);
         value.setUnit(klass.getUnit());
         ProducedType type = null;
         try{
@@ -2783,6 +2793,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
                 
                 value.setContainer((Scope) decl);
+                value.setScope((Scope) decl);
                 DeclarationVisitor.setVisibleScope(value);
                 value.setUnit(((Element)decl).getUnit());
                 value.setName(paramName);
@@ -2836,6 +2847,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 v.setName(name);
                 v.setType(pt);
                 v.setContainer(method);
+                v.setScope(method);
                 p.setModel(v);
                 pl.getParameters().add(p);
             }
@@ -3103,6 +3115,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private SetterWithLocalDeclarations makeSetter(Value value, ClassMirror classMirror) {
         SetterWithLocalDeclarations setter = new SetterWithLocalDeclarations(classMirror);
         setter.setContainer(value.getContainer());
+        setter.setScope(value.getContainer());
         setter.setType(value.getType());
         setter.setName(value.getName());
         value.setSetter(setter);
@@ -3641,6 +3654,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
+            param.setScope(scope);
             DeclarationVisitor.setVisibleScope(param);
             param.setDeclaration((Declaration) scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
@@ -3727,6 +3741,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
+            param.setScope(scope);
             DeclarationVisitor.setVisibleScope(param);
             param.setDeclaration((Declaration) scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
