@@ -80,7 +80,7 @@ public class ToolsTest {
 
         // add the override
         String override = "foo.user-1-module.xml";
-        FileUtil.copy(new File(MainTest.getCurrentPackagePath(), override), overridesRepo);
+        FileUtil.copyAll(new File(MainTest.getCurrentPackagePath(), override), overridesRepo);
         
         // now make the flat repo with Vertx lib (mockup)
         File flatRepo2 = new File(FlatRepoLib);
