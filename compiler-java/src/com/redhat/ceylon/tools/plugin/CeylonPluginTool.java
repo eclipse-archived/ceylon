@@ -236,7 +236,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             extractScripts(zipSource, moduleScriptDir);
         else{
             for(File root : existingScriptFolders){
-                FileUtil.copy(root, moduleScriptDir);
+                FileUtil.copyAll(root, moduleScriptDir);
             }
         }
         msg("success.installed", module.getName(), moduleScriptDir);

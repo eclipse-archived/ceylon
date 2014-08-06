@@ -81,7 +81,7 @@ public class CompilerToolTest extends CompilerTest {
         File destDir = destFile("compilecwdtest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
-        FileUtil.copy(new File("test/src/com/redhat/ceylon/tools/test/cwdtest"), destDir);
+        FileUtil.copyAll(new File("test/src/com/redhat/ceylon/tools/test/cwdtest"), destDir);
         
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);

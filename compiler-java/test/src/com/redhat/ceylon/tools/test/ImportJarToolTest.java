@@ -316,8 +316,8 @@ public class ImportJarToolTest {
         File destDir = destFile("importtest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
-        FileUtil.copy(new File("test/src/com/redhat/ceylon/tools/test/test-descriptor.properties"), destDir);
-        FileUtil.copy(new File("test/src/com/redhat/ceylon/tools/test/test.jar"), destDir);
+        FileUtil.copyAll(new File("test/src/com/redhat/ceylon/tools/test/test-descriptor.properties"), destDir);
+        FileUtil.copyAll(new File("test/src/com/redhat/ceylon/tools/test/test.jar"), destDir);
         
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);

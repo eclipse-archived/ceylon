@@ -142,7 +142,7 @@ public class NewProjectToolTest {
         
         File srcTemplates = new File("../ceylon-dist/templates");
         File dstTemplates = new File(tmpDir, "templates");
-        FileUtil.copy(srcTemplates, dstTemplates);
+        FileUtil.copyAll(srcTemplates, dstTemplates);
         
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, 
