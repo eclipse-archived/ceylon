@@ -130,11 +130,11 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.11"));
         // For the --out http:// functionality of the compiler
-        archives.add(getRepoJar(ceylonRepo, "com.googlecode.sardine", "314"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.1.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.1.1"));
+        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1"));
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2"));
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2"));
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.4"));
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8"));
         archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1"));
         archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.6.1")); // optional
 
