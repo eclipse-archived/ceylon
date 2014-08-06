@@ -433,14 +433,14 @@ public class FileUtil {
     /**
      * Recursively copy every file/folder from root to dest
      */
-    public static void copy(File root, File dest) throws IOException {
+    public static void copyAll(File root, File dest) throws IOException {
         if(root.isDirectory()){
             for(File child : root.listFiles()){
                 File childDest = new File(dest, child.getName());
                 if(child.isDirectory()){
                     if(!childDest.mkdirs())
                         throw new IOException("Failed to create dir "+childDest.getPath());
-                    copy(child, childDest);
+                    copyAll(child, childDest);
                 }else{
                     Files.copy(child.toPath(), childDest.toPath());
                 }
