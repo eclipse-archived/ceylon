@@ -1,1 +1,1 @@
-return properties["user.locale"] || "Unknown";
+return properties["user.locale"] || "en";
