@@ -78,7 +78,7 @@ TypeConstraints?
         <para>Any compilation unit may begin with a list of imported types, values, 
         and functions.</para>
         
-        <programlisting>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</programlisting>
+        <synopsis>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</synopsis>
         
         <section id="topleveldeclarations">
             <title>Toplevel and nested declarations</title>
