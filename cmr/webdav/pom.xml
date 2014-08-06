@@ -22,7 +22,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.sardine</groupId>
+            <groupId>com.github.lookfirst</groupId>
             <artifactId>sardine</artifactId>
         </dependency>
 

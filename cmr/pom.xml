@@ -29,7 +29,7 @@
         <version.ceylon.common>1.1.0</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.jboss.modules>1.3.3.Final</version.jboss.modules>
-        <version.sardine.webdav>314</version.sardine.webdav>
+        <version.sardine.webdav>5.1</version.sardine.webdav>
         <version.shrinkwrap.resolver>2.1.1</version.shrinkwrap.resolver>
         <version.net.minidev.json-smart>1.1.1</version.net.minidev.json-smart>
         <version.junit>4.10</version.junit>
@@ -85,14 +85,6 @@
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
-        </repository>
-        <repository>
-            <id>sardine-google-svn-repo</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <name>Sardine maven repo at Google Code</name>
-            <url>http://sardine.googlecode.com/svn/maven/</url>
         </repository>
         <repository>
             <id>jboss-public-repository-group</id>
@@ -198,7 +190,7 @@
             <!-- WebDAV -->
 
             <dependency>
-                <groupId>com.googlecode.sardine</groupId>
+                <groupId>com.github.lookfirst</groupId>
                 <artifactId>sardine</artifactId>
                 <version>${version.sardine.webdav}</version>
             </dependency>
