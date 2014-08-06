@@ -1,7 +1,7 @@
 function resourceByPath(_path) {
   var mpath;
   var sep = getOperatingSystem().fileSeparator;
-  if (this.name === 'default' && this.version=='unversioned') {
+  if (this.name==='default' && this.version==='unversioned') {
     mpath = this.name;
   } else {
     mpath = this.name.replace(/\./g,sep) + sep + this.version;
@@ -11,7 +11,7 @@ function resourceByPath(_path) {
   } else {
     mpath += sep + _path;
   }
-  if (getRuntime().name === 'node.js') {
+  if (getRuntime().name==='node.js') {
     var _fr=require;//this is so that requirejs leaves us alone
     var pm=_fr('path');
     var mods=process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
@@ -25,10 +25,10 @@ function resourceByPath(_path) {
         }
       }
     }
-  } else if (getRuntime().name === 'Browser') {
+    return null;
+  } else if (getRuntime().name==='Browser') {
     return JsResource$jsint(require.toUrl(mpath));
   } else {
-    print("Resources unsupported in this environment.");
+    throw AssertionError("resources loading not yet supported in this environment: " + getRuntime().name);
   }
-  return null;
 }
