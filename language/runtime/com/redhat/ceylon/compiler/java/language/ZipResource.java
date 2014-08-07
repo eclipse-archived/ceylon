@@ -42,7 +42,12 @@ public class ZipResource implements Resource {
 
     @Override
     public java.lang.String getName() {
-        return $ceylon$language$Resource$this.getName();
+        String name = $ceylon$language$Resource$this.getName();
+        int p = name.lastIndexOf('!');
+        if (p >= 0) {
+            name = name.substring(p + 1);
+        }
+        return name;
     }
 
     @Override
