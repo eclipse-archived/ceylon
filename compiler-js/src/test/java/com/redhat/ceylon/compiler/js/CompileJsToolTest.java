@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -111,8 +109,8 @@ public class CompileJsToolTest {
                 "src/test/resources/res_test/test.txt"));
         jsc.run();
         checkCompilerResult("build/test-modules/default", "default");
-        checkResources("build/test-modules/default/default-resources.zip", "test.txt");
-        checkExcludedResources("build/test-modules/default/default-resources.zip", "m1res.txt",
+        checkResources("build/test-modules/default", "default", "test.txt");
+        checkExcludedResources("build/test-modules/default", "default", "m1res.txt",
                 "m1/m1res.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
 
@@ -127,7 +125,7 @@ public class CompileJsToolTest {
                 "src/test/resources/doc/calls.ceylon"));
         jsc.run();
         checkCompilerResult("build/test-modules/default", "default");
-        checkNoResources("build/test-modules/default/default-resources.zip");
+        checkNoResources("build/test-modules/default", "default");
     }
 
     @Test
@@ -141,9 +139,9 @@ public class CompileJsToolTest {
                 "default"));
         jsc.run();
         checkCompilerResult("build/test-modules/default", "default");
-        checkResources("build/test-modules/default/default-resources.zip",
+        checkResources("build/test-modules/default", "default",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
-        checkExcludedResources("build/test-modules/default/default-resources.zip",
+        checkExcludedResources("build/test-modules/default", "default",
                 "m1res.txt", "m1/m1res.txt", "m1/ROOT/m1root.txt", "ROOT/m1root.txt", "m1/ALTROOT/altrootm1.txt");
     }
 
@@ -159,9 +157,9 @@ public class CompileJsToolTest {
                 "default"));
         jsc.run();
         checkCompilerResult("build/test-modules/default", "default");
-        checkResources("build/test-modules/default/default-resources.zip",
+        checkResources("build/test-modules/default", "default",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
-        checkExcludedResources("build/test-modules/default/default-resources.zip",
+        checkExcludedResources("build/test-modules/default", "default",
                 "m1res.txt", "m1/m1res.txt", "m1/ROOT/m1root.txt", "ROOT/m1root.txt", "m1/ALTROOT/altrootm1.txt");
     }
 
@@ -194,8 +192,8 @@ public class CompileJsToolTest {
                 "src/test/resources/res_test/m1/m1res.txt"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip", "m1/m1res.txt");
-        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
+        checkResources("build/test-modules/m1/0.1", "m1-0.1", "m1/m1res.txt");
+        checkExcludedResources("build/test-modules/m1/0.1", "m1-0.1",
                 "test.txt", "another_test.txt", "subdir/third.txt", "m1root.txt", 
                 "ROOT/m1root.txt", "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
@@ -214,9 +212,9 @@ public class CompileJsToolTest {
                 "src/test/resources/res_test/test.txt"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkNoResources("build/test-modules/m1/0.1/m1-0.1-resources.zip");
-        checkResources("build/test-modules/default/default-resources.zip", "test.txt");
-        checkExcludedResources("build/test-modules/default/default-resources.zip", "another_test.txt");
+        checkNoResources("build/test-modules/m1/0.1", "m1-0.1");
+        checkResources("build/test-modules/default", "default", "test.txt");
+        checkExcludedResources("build/test-modules/default", "default", "another_test.txt");
     }
 
     @Test
@@ -232,7 +230,7 @@ public class CompileJsToolTest {
                 "src/test/resources/loader/pass1/m1/package.ceylon"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkNoResources("build/test-modules/default/default-resources.zip");
+        checkNoResources("build/test-modules/default", "default");
     }
 
     @Test
@@ -246,9 +244,9 @@ public class CompileJsToolTest {
                 "m1"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
+        checkResources("build/test-modules/m1/0.1", "m1-0.1",
                 "m1root.txt", "m1/m1res.txt", "m1/ALTROOT/altrootm1.txt");
-        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
+        checkExcludedResources("build/test-modules/m1/0.1", "m1-0.1",
                 "test.txt", "another_test.txt", "subdir/third.txt",
                 "ROOT/inroot.txt", "ALTROOT/altroot.txt");
     }
@@ -265,9 +263,9 @@ public class CompileJsToolTest {
                 "m1"));
         jsc.run();
         checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
-        checkResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
+        checkResources("build/test-modules/m1/0.1", "m1-0.1",
                 "altrootm1.txt", "m1/m1res.txt");
-        checkExcludedResources("build/test-modules/m1/0.1/m1-0.1-resources.zip",
+        checkExcludedResources("build/test-modules/m1/0.1", "m1-0.1",
                 "test.txt", "another_test.txt", "subdir/third.txt", "ALTROOT/altroot.txt", "ROOT/inroot.txt");
     }
 
@@ -286,34 +284,26 @@ public class CompileJsToolTest {
         }
     }
 
-    void checkNoResources(String path) throws IOException {
-        File res = new File(path);
+    void checkNoResources(String path, String moduleAndVersion) throws IOException {
+        File res = new File(path, moduleAndVersion);
         Assert.assertFalse("No resource should exist", res.exists());
     }
 
-    void checkResources(String path, String... paths) throws IOException {
-        File res = new File(path);
-        Assert.assertTrue("Resources file missing", res.exists() && res.isFile());
-        try (ZipFile zip = new ZipFile(res)) {
-            for (String r : paths) {
-                ZipEntry e = zip.getEntry(r);
-                Assert.assertTrue("Missing resource " + r, e != null);
-            }
-        } finally {
-            //nothing
+    void checkResources(String path, String moduleAndVersion, String... paths) throws IOException {
+        File res = new File(path, "module-resources");
+        Assert.assertTrue("Resources directory missing", res.exists() && res.isDirectory());
+        for (String name : paths) {
+            File f = new File(res, name);
+            Assert.assertTrue("Missing resource " + name, f.isFile());
         }
     }
 
-    void checkExcludedResources(String path, String... paths) throws IOException {
-        File res = new File(path);
-        Assert.assertTrue("Resources file missing", res.exists() && res.isFile());
-        try (ZipFile zip = new ZipFile(res)) {
-            for (String r : paths) {
-                ZipEntry e = zip.getEntry(r);
-                Assert.assertNull("Resource should NOT be in resources file: " + r, e);
-            }
-        } finally {
-            //nothing
+    void checkExcludedResources(String path, String moduleAndVersion, String... paths) throws IOException {
+        File res = new File(path, "module-resources");
+        Assert.assertTrue("Resources directory missing", res.exists() && res.isDirectory());
+        for (String name : paths) {
+            File f = new File(res, name);
+            Assert.assertFalse("Resource should NOT be in resources file: " + name, f.exists());
         }
     }
 
