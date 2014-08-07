@@ -405,7 +405,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> partition(final long length) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
     

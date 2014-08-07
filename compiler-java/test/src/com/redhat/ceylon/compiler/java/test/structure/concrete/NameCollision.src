@@ -183,7 +183,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> partition(final long length) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
     

@@ -483,7 +483,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends Element>, ? extends .java.lang.Object> partition(final long length) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
     

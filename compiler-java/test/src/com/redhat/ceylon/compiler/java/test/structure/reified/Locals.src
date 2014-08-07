@@ -3004,7 +3004,7 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>>, ? extends .java.lang.Object> partition(final long length) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends Key, ? extends Item>>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
     
@@ -3518,7 +3518,7 @@ public final class MyIterable$impl<Element, Absent> {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object> partition(final long length) {
+            public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object> partition(final long length) {
                 return $ceylon$language$Iterable$this$.partition(length);
             }
             

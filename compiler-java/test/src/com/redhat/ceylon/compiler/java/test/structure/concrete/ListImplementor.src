@@ -393,7 +393,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends X>, ? extends .java.lang.Object> partition(final long length) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends X>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
     
