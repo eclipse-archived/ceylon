@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
  * @author tom
  */
 @RunWith(CeylonModuleRunner.class)
-@TestModule(srcDirectory="test/satisfaction", errorIfNoTests=false)
+@TestModule(srcDirectory="test/satisfaction", resDirectory="test-resource/satisfaction", errorIfNoTests=false)
 public class LanguageSatisfactionSuite {
 
 }

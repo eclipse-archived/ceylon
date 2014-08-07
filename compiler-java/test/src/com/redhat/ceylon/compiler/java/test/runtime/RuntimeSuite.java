@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
  * @author tom
  */
 @RunWith(CeylonModuleRunner.class)
-@TestModule(srcDirectory="test/runtime")
+@TestModule(srcDirectory="test/runtime", resDirectory="test-resource/runtime")
 public class RuntimeSuite {
 
 }

@@ -34,7 +34,8 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
 @RunWith(CeylonModuleRunner.class)
 @TestModule(
     srcDirectory="../ceylon.language/test",
-    modules={"default", "jvm", "metamodel", "annotations"},
+    resDirectory="../ceylon.language/test-resource",
+    modules={"default", "jvm", "metamodel", "annotations", "resmod"},
     dependencies={"check", "modules.imported", "modules.optional", "modules.required"},
     removeAtRuntime={"modules.optional"},
     runModulesInNewJvm = { 
