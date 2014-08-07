@@ -37,10 +37,6 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         super(log, offline);
     }
 
-    public void addSuffix(String suffix) {
-        suffixes.add(suffix);
-    }
-
     public OpenNode createRoot() {
         final RemoteNode node = new RemoteRootNode();
         node.addService(ContentStore.class, this);
@@ -76,6 +72,7 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         // remote content stores do not participate in search for speed reasons
     }
     
+    @SuppressWarnings("serial")
     protected static class RemoteNode extends DefaultNode {
         private String cachedString;
 
@@ -99,6 +96,7 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         }
     }
 
+    @SuppressWarnings("serial")
     protected static class RemoteRootNode extends RemoteNode {
         public RemoteRootNode() {
             super("");
