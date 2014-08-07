@@ -12,6 +12,7 @@ public class DefaultToolOptions {
     
     public final static String DEFAULTS_ENCODING = "defaults.encoding";
     public final static String DEFAULTS_OFFLINE = "defaults.offline";
+    public final static String DEFAULTS_MAVENOVERRIDES = "defaults.mavenoverrides";
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
@@ -21,7 +22,6 @@ public class DefaultToolOptions {
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
     public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_PACK200 = "compiler.pack200";
-    public final static String COMPILER_MAVENOVERRIDES = "compiler.mavenoverrides";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -43,6 +43,14 @@ public class DefaultToolOptions {
     
     public static boolean getDefaultOffline(CeylonConfig config) {
         return config.getBoolOption(DEFAULTS_OFFLINE, false);
+    }
+    
+    public static String getDefaultMavenOverrides() {
+        return getDefaultMavenOverrides(CeylonConfig.get());
+    }
+    
+    public static String getDefaultMavenOverrides(CeylonConfig config) {
+        return config.getOption(DEFAULTS_MAVENOVERRIDES);
     }
     
     public static List<File> getCompilerSourceDirs() {
@@ -135,14 +143,6 @@ public class DefaultToolOptions {
     
     public static boolean getCompilerPack200(CeylonConfig config) {
         return config.getBoolOption(COMPILER_PACK200, false);
-    }
-    
-    public static String getCompilerMavenOverrides() {
-        return getCompilerMavenOverrides(CeylonConfig.get());
-    }
-    
-    public static String getCompilerMavenOverrides(CeylonConfig config) {
-        return config.getOption(COMPILER_MAVENOVERRIDES);
     }
     
     public static String getRunToolCompileFlags() {
