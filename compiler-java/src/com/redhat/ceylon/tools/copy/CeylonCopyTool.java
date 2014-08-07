@@ -170,7 +170,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null, null);
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
-                msg("copying.module", module).newline();
+                msg("copying.module", module).newline().flush();
                 boolean foundCar = true;
                 for (String suffix : artifacts) {
                     // if we found a car we can skip the jar and module descriptors
@@ -204,7 +204,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private void copyArtifact(ArtifactContext ac, File archive) throws RepositoryException, IOException {
         if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
-            msg("copying.artifact", archive).newline();
+            append("    ").msg("copying.artifact", archive.getName()).newline().flush();
         }
         getOutputRepositoryManager().putArtifact(ac, archive);
         // SHA1 it if required
