@@ -18,6 +18,9 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -32,10 +35,9 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
-    public static final String JS = ".js";
     public static final String JS_MODEL = "-model.js";
-    public static final String JS_RESOURCES = "-resources.zip";
-    public static final String ZIP = ".zip";
+    public static final String JS = ".js";
+    public static final String RESOURCES = "module-resources";
     public static final String SRC = ".src";
     public static final String MAVEN_SRC = "-sources.jar";
     public static final String DOCS = "module-doc";
@@ -45,6 +47,31 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String SHA1 = ".sha1";
     public static final String INFO = ".info";
     public static final String SCRIPTS_ZIPPED = ".scripts.zip";
+    public static final String ZIP = ".zip";
+
+    // IMPORTANT: Makes sure the elements in this array are ordered in such
+    // a way that no ambiguities can occur when matching them one at a time.
+    // So for example DOCS_ZIPPED must appear before ZIP
+    private static final String fileSuffixes[] = {
+        CAR, JAR, JS_MODEL, JS, RESOURCES, SRC, MAVEN_SRC, DOCS,
+        DOCS_ZIPPED, SHA1, INFO, SCRIPTS_ZIPPED, ZIP
+    };
+    
+    private static final String fileNames[] = {
+        MODULE_PROPERTIES, MODULE_XML
+    };
+    
+    private static final String directoryNames[] = {
+        RESOURCES, DOCS
+    };
+    
+    public static final List<String> allSuffixes() {
+        ArrayList<String> all =  new ArrayList<String>(fileSuffixes.length + fileNames.length + directoryNames.length);
+        all.addAll(Arrays.asList(fileNames));
+        all.addAll(Arrays.asList(directoryNames));
+        all.addAll(Arrays.asList(fileSuffixes));
+        return all;
+    }
     
     private String name;
     private String version;
@@ -81,6 +108,10 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public ArtifactContext getDocsContext() {
         return new ArtifactContext(name, version, new String[]{DOCS});
+    }
+
+    public ArtifactContext getResourcesContext() {
+        return new ArtifactContext(name, version, new String[]{RESOURCES});
     }
 
     public ArtifactContext getModuleProperties() {
@@ -148,20 +179,63 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return getSuffixFromFilename(fileName);
     }
 
+    /**
+     * Returns the artifact "suffix" of the file name that gets passed.
+     * The word "suffix" is in quotes because it can also return one
+     * of the "full name" results like "module-docs" or "module.properties"
+     */
     public static String getSuffixFromFilename(String fileName) {
-        if (fileName.endsWith(CAR)) {
-            return CAR;
-        } else if (fileName.endsWith(JAR)) {
-            return JAR;
-        } else if (fileName.endsWith(JS)) {
-            return JS;
-        } else if (fileName.endsWith(ZIP)) {
-            return ZIP;
-        } else if (fileName.endsWith(SRC)) {
-            return SRC;
-        } else {
-            throw new RepositoryException("Unknown suffix in " + fileName);
+        for (String suffix : fileNames) {
+            if (fileName.equals(suffix)) {
+                return suffix;
+            }
         }
+        for (String suffix : directoryNames) {
+            if (fileName.equals(suffix)) {
+                return suffix;
+            }
+        }
+        for (String suffix : fileSuffixes) {
+            if (fileName.endsWith(suffix)) {
+                return suffix;
+            }
+        }
+        throw new RepositoryException("Unknown suffix in " + fileName);
+    }
+
+    public static String getArtifactName(String name, String version, String suffix) {
+        if (isDirectoryName(suffix) || isFullName(suffix))
+            return suffix;
+        else if (RepositoryManager.DEFAULT_MODULE.equals(name))
+            return name + suffix;
+        else
+            return name + "-" + version + suffix;
+    }
+
+    /**
+     * Returns true if the filename that was passed is one of the
+     * directory artifact names. Eg. "module-docs"
+     */
+    public static boolean isDirectoryName(String fileName) {
+        for (String suffix : directoryNames) {
+            if (fileName.equals(suffix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the filename that was passed is one of the
+     * non-suffix artifact names. Eg. "module.properties"
+     */
+    private static boolean isFullName(String fileName) {
+        for (String suffix : fileNames) {
+            if (fileName.equals(suffix)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isLocalOnly() {
