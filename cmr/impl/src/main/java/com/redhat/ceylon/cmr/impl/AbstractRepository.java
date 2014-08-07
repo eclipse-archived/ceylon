@@ -89,20 +89,7 @@ public abstract class AbstractRepository implements Repository {
     }
 
     private static String getArtifactName(String name, String version, String suffix) {
-        if (ArtifactContext.DOCS.equals(suffix))
-            return ArtifactContext.DOCS;
-        else if (ArtifactContext.MODULE_PROPERTIES.equals(suffix))
-            return ArtifactContext.MODULE_PROPERTIES;
-        else if (ArtifactContext.MODULE_XML.equals(suffix))
-            return ArtifactContext.MODULE_XML;
-        else if (RepositoryManager.DEFAULT_MODULE.equals(name))
-            return name + suffix;
-        else
-            return buildArtifactNames(name, version, suffix);
-    }
-
-    protected static String buildArtifactNames(String name, String version, String suffix) {
-        return name + "-" + version + suffix;
+        return ArtifactContext.getArtifactName(name, version, suffix);
     }
 
     public OpenNode getRoot() {
@@ -193,7 +180,7 @@ public abstract class AbstractRepository implements Repository {
         // Winner of the less aptly-named method
         boolean isFolder = !node.hasBinaries();
         if (isFolder) {
-            if (node.getLabel().equals(ArtifactContext.DOCS))
+            if (ArtifactContext.isDirectoryName(node.getLabel()))
                 return;
             Ret ret = new Ret();
             if (hasChildrenContainingArtifact(node, lookup, ret)) {
@@ -229,7 +216,7 @@ public abstract class AbstractRepository implements Repository {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, lookup, ret)){
+            if (isFolder && !ArtifactContext.isDirectoryName(name) && containsArtifact(node, child, lookup, ret)){
                 // stop if we found the right type
                 if(ret.foundRightType)
                     return true;
@@ -326,7 +313,7 @@ public abstract class AbstractRepository implements Repository {
             // Winner of the less aptly-named method
             boolean isFolder = !versionNode.hasBinaries();
             if (isFolder
-                    && !name.equals(ArtifactContext.DOCS)
+                    && !ArtifactContext.isDirectoryName(name)
                     && containsAnyArtifact(moduleNode, versionNode, query, ret))
                 return true;
         }
@@ -547,7 +534,7 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // is it a module? does it contains artifacts?
             ret.foundRightType = false;
-            if (!child.getLabel().equals(ArtifactContext.DOCS)) { // safety check
+            if (!ArtifactContext.isDirectoryName(child.getLabel())) { // safety check
                 if (hasChildrenContainingAnyArtifact(child, query, ret)) {
                     // does it contain an artifact of the type we're looking for?
                     if (ret.foundRightType) {
