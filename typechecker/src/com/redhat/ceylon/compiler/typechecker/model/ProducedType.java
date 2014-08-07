@@ -105,12 +105,14 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isExactlyInternal(ProducedType type) {
-        if (getDeclaration() instanceof NothingType) {
+        TypeDeclaration d = getDeclaration();
+        TypeDeclaration td = type.getDeclaration();
+        if (d instanceof NothingType) {
             return type.isNothing();
         }
-        else if (getDeclaration() instanceof UnionType) {
+        else if (d instanceof UnionType) {
             List<ProducedType> cases = getCaseTypes();
-            if (type.getDeclaration() instanceof UnionType) {
+            if (td instanceof UnionType) {
                 List<ProducedType> otherCases = type.getCaseTypes();
                 if (cases.size()!=otherCases.size()) {
                     return false;
@@ -139,9 +141,9 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (getDeclaration() instanceof IntersectionType) {
+        else if (d instanceof IntersectionType) {
             List<ProducedType> types = getSatisfiedTypes();
-            if (type.getDeclaration() instanceof IntersectionType) {
+            if (td instanceof IntersectionType) {
                 List<ProducedType> otherTypes = type.getSatisfiedTypes();
                 if (types.size()!=otherTypes.size()) {
                     return false;
@@ -186,7 +188,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (type.getDeclaration() instanceof UnionType) {
+        else if (td instanceof UnionType) {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
@@ -196,7 +198,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-        else if (type.getDeclaration() instanceof IntersectionType) {
+        else if (td instanceof IntersectionType) {
             List<ProducedType> otherTypes = type.getSatisfiedTypes();
             if (otherTypes.size()==1) {
                 ProducedType st = otherTypes.get(0);
@@ -207,38 +209,35 @@ public class ProducedType extends ProducedReference {
             }
         }
         else {
-            if (!type.getDeclaration().equals(getDeclaration())) {
+            if (!td.equals(d)) {
                 return false;
             }
             else {
+                //for Java's static inner types, ignore the
+                //qualifying type
                 ProducedType qt = 
-                        getDeclaration().isStaticallyImportable() ?
+                        d.isStaticallyImportable() ?
                                 null : getQualifyingType();
                 ProducedType tqt = 
-                        type.getDeclaration().isStaticallyImportable() ? 
+                        td.isStaticallyImportable() ? 
                                 null : type.getQualifyingType();
-                if (qt==null) {
-                    if (tqt!=null) {
+                if (qt==null || tqt==null) {
+                    if (qt!=tqt) {
                         return false;
                     }
                 }
                 else {
-                    if (tqt==null) {
+                    TypeDeclaration totd = 
+                            (TypeDeclaration) td.getContainer();
+                    ProducedType tqts = tqt.getSupertypeInternal(totd);
+                    TypeDeclaration otd = 
+                            (TypeDeclaration) d.getContainer();
+                    ProducedType qts = qt.getSupertypeInternal(otd);
+                    if (!qts.isExactlyInternal(tqts)) {
                         return false;
                     }
-                    else {
-                        TypeDeclaration totd = 
-                                (TypeDeclaration) type.getDeclaration().getContainer();
-                        ProducedType tqts = tqt.getSupertypeInternal(totd);
-                        TypeDeclaration otd = 
-                                (TypeDeclaration) getDeclaration().getContainer();
-                        ProducedType qts = qt.getSupertypeInternal(otd);
-                        if (!qts.isExactlyInternal(tqts)) {
-                            return false;
-                        }
-                    }
                 }
-                for (TypeParameter p: getDeclaration().getTypeParameters()) {
+                for (TypeParameter p: d.getTypeParameters()) {
                     ProducedType arg = getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
                     if (arg==null || otherArg==null) {
