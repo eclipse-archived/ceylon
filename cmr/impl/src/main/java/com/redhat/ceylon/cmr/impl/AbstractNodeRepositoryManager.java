@@ -202,7 +202,6 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return cs != null && cs.isHerd();
     }
 
-    @SuppressWarnings("UnusedParameters")
     private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
         log.debug(String.format("Not uploading folder [%s] to Herd: module-doc zip will be used instead", folder));
     }

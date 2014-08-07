@@ -492,6 +492,7 @@ public abstract class AbstractRepository implements Repository {
         public boolean stopSearching;
     }
 
+    @SuppressWarnings("serial")
     private static class GetOut extends Exception {
     }
 
