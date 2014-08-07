@@ -14,34 +14,46 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * A Ceylon schema for a Java <code>T[]</code>
- *
- * This type is never instantiated, it is completely erased to 
+ * A type representing Java object arrays of type 
  * <code>T[]</code>.
- * 
- * The {@link #get(int)}, {@link #set(int,T)}, {@link #length size} 
- * methods and the constructor are also completely erased to Java 
- * array operators, or {@link Util#fillArray(T[],T)} in the case of 
- * the constructor if the initial element is specified.
- * 
- * Only the value type static methods are really invoked.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
+// This type is never instantiated, it is completely erased 
+// to <code>T[]</code>.
+// 
+// The {@link #get(int)}, {@link #set(int,T)}, {@link #length size} 
+// methods and the constructor are also completely erased to 
+// Java array operators, or {@link Util#fillArray(T[],T)} in 
+// the case of the constructor if the initial element is 
+// specified.
+// 
+// Only the value type static methods are really invoked.
 @Ceylon(major = 7)
 @Class
 @ValueType
 public final class ObjectArray<T> implements ReifiedType {
     
     public ObjectArray(@Ignore TypeDescriptor $reifiedT, 
+            /**
+             * The size of the array.
+             */
     		@Name("size") int size, 
-    		@TypeInfo("T|ceylon.language::Null") @Defaulted 
-    		@Name("element") T element){
+            /**
+             * The initial value of the array elements.
+             */
+    		@TypeInfo("T|ceylon.language::Null") 
+            @Defaulted @Name("element") 
+            T element){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public ObjectArray(@Name("size") int size){
+    public ObjectArray(
+            /**
+             * The size of the array.
+             */
+            @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -51,20 +63,23 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Get the element with the given {@link index}.
+     */
     @TypeInfo(value = "T", uncheckedNull = true) //for consistency with other Java methods
-    public T get(
-            @Name("index")
-            int index) {
+    public T get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public static <T> T get(
-            T[] value,
-            int index) {
+    public static <T> T get(T[] value, int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Set the element with the given {@link index} to the
+     * given {@link element} value.
+     */
     public void set(
             @Name("index")
             int index,
@@ -82,16 +97,33 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * The size of this Java object array.
+     */
     @Name("size")
     public final int length = 0;
     
+    /**
+     * A view of this array as a Ceylon <code>Array&lt;T&gt;</code>.
+     */
+    @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
+    public ceylon.language.Array<T> getArray(){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
     @Ignore
     public static <T> ceylon.language.Array<T> getArray(T[] array){
         return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
-    public ceylon.language.Array<T> getArray(){
+    /**
+     * Efficiently copy a measure of this Java object array 
+     * to the given Java object array.
+     */
+    public void copyTo(@Name("destination") T[] destination, 
+            @Name("sourcePosition") @Defaulted int sourcePosition, 
+            @Name("destinationPosition") @Defaulted int destinationPosition, 
+            @Name("length") @Defaulted int length){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -101,18 +133,25 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination, 0, array.length-sourcePosition);
+    public static <T> void copyTo(T[] array, T[] destination, 
+            int sourcePosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                0, array.length-sourcePosition);
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, int sourcePosition, int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length-sourcePosition);
+    public static <T> void copyTo(T[] array, T[] destination, 
+            int sourcePosition, int destinationPosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, int sourcePosition, int destinationPosition, int length){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, length);
+    public static <T> void copyTo(T[] array, T[] destination, 
+            int sourcePosition, int destinationPosition, 
+            int length){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, length);
     }
 
     @Ignore
@@ -121,12 +160,14 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     @Ignore
-    public int copyTo$destinationPosition(T[] destination, int sourcePosition){
+    public int copyTo$destinationPosition(T[] destination, 
+            int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(T[] destination, int sourcePosition, int destinationPosition){
+    public int copyTo$length(T[] destination, 
+            int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -145,13 +186,6 @@ public final class ObjectArray<T> implements ReifiedType {
     public void copyTo(T[] destination, 
                        int sourcePosition, 
                        int destinationPosition){
-        throw Util.makeJavaArrayWrapperException();
-    }
-
-    public void copyTo(@Name("destination") T[] destination, 
-                       @Name("sourcePosition") @Defaulted int sourcePosition, 
-                       @Name("destinationPosition") @Defaulted int destinationPosition, 
-                       @Name("length") @Defaulted int length){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -191,6 +225,9 @@ public final class ObjectArray<T> implements ReifiedType {
         return value.toString();
     }
     
+    /**
+     * A clone of this Java object array.
+     */
     @TypeInfo("java.lang::ObjectArray<T>")
     public Object[] $clone() {
         throw Util.makeJavaArrayWrapperException();
@@ -201,6 +238,10 @@ public final class ObjectArray<T> implements ReifiedType {
         return value.clone();
     }
     
+    /**
+     * A Ceylon <code>Iterable&lt;T&gt;<code> containing 
+     * the elements of this Java object array.
+     */
     @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
     public ObjectArrayIterable<T> getIterable() {
         throw Util.makeJavaArrayWrapperException();
@@ -213,14 +254,17 @@ public final class ObjectArray<T> implements ReifiedType {
     
     /* Implement Iterable */
 
-    public static final class ObjectArrayIterable<T> extends AbstractArrayIterable<T, T[]> {
+    public static final class ObjectArrayIterable<T> 
+    extends AbstractArrayIterable<T, T[]> {
 
         public ObjectArrayIterable(T[] array, int start, int len, int step) {
-            super(TypeDescriptor.klass(array.getClass().getComponentType()), array, start, len, step);
+            super(TypeDescriptor.klass(array.getClass().getComponentType()), 
+                    array, start, len, step);
         }
 
         public ObjectArrayIterable(T[] array, int length) {
-            super(TypeDescriptor.klass(array.getClass().getComponentType()), array, length);
+            super(TypeDescriptor.klass(array.getClass().getComponentType()),
+                    array, length);
         }
         
         public ObjectArrayIterable(TypeDescriptor reifiedElement, T[] array) {

@@ -34,23 +34,24 @@ import ceylon.language.impl.BaseIterable;
  * THIS IS A GENERATED FILE - DO NOT EDIT 
  */
 /**
- * A Ceylon schema for a Java <code>short[]</code>.
- *
- * This type is never instantiated, it is completely erased to 
+ * A type representing Java primitive arrays of type 
  * <code>short[]</code>.
- * 
- * The {@link #get(int)}, {@link #set(int,short)}, {@link #length size} 
- * methods and the constructor are also completely erased to Java array 
- * operators, or {@link Util#fillArray(short[],short)} in the case 
- * that an initial element is specified.
- * 
- * Only the value type static methods are really invoked.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 /*
  * THIS IS A GENERATED FILE - DO NOT EDIT 
  */
+// This type is never instantiated, it is completely erased to 
+// <code>short[]</code>.
+// 
+// The {@link #get(int)}, {@link #set(int,short)}, 
+// {@link #length size} methods and the constructor are also 
+// completely erased to Java array operators, or 
+// {@link Util#fillArray(short[],short)} 
+// in the case that an initial element is specified.
+// 
+// Only the value type static methods are really invoked.
 @Ceylon(major = 7)
 @Class
 @ValueType
@@ -58,14 +59,29 @@ import ceylon.language.impl.BaseIterable;
 public final class ShortArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(ShortArray.class);
-
-    public ShortArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") short element){
+    public final static TypeDescriptor $TypeDescriptor$ = 
+    TypeDescriptor.klass(ShortArray.class);
+    
+    public ShortArray(
+            /**
+             * The size of the array.
+             */
+            @Name("size") int size, 
+            /**
+             * The initial value of the array elements.
+             */
+            @TypeInfo("ceylon.language::Integer") 
+            @Defaulted @Name("element") 
+            short element){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public ShortArray(@Name("size") int size){
+    public ShortArray(
+            /**
+             * The size of the array.
+             */
+            @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -75,6 +91,9 @@ public final class ShortArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Get the element with the given {@link index}.
+     */
     public short get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -84,56 +103,106 @@ public final class ShortArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
-    public void set(@Name("index") int index, @Name("element") short element) {
+    /**
+     * Set the element with the given {@link index} to the
+     * given {@link element} value.
+     */
+    public void set(@Name("index") int index, 
+            @Name("element") short element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public static void set(short[] value, int index, short element) {
+    public static void set(short[] value, int index, 
+            short element) {
         throw Util.makeJavaArrayWrapperException();
     }
-
+    
+    /**
+     * The size of this Java primitive array.
+     */
     @Name("size")
     public final int length = 0;
 
-    @Ignore
-    public static ceylon.language.Array<java.lang.Short> getArray(short[] array){
-        return Array.instance(array);
-    }
-
+    /**
+     * A view of this array as a Ceylon 
+     * <code>Array&lt;java.lang::Short&gt;</code>
+     * where <code>java.lang::Short</code> is the Java 
+     * wrapper type corresponding to the primitive type 
+     * <code>short</code> of elements of this 
+     * Java array.
+     */
     @TypeInfo("ceylon.language::Array<java.lang::Short>")
     public ceylon.language.Array<java.lang.Short> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
-    /*
+    
     @Ignore
-    public static ceylon.language.Array<@CeylonArrayGetterType@> NOTUSED(short[] array){
-        return Array.NOTUSED(array);
+    public static ceylon.language.Array<java.lang.Short> 
+    getArray(short[] array){
+        return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
-    public ceylon.language.Array<@CeylonArrayGetterType@> NOTUSED(){
+    ///**
+    // * A view of this array as a Ceylon 
+    // * <code>Array&lt;@CeylonArrayGetterTypeName@&gt;</code>
+    // * where <code>java.lang::Short</code> is the Ceylon 
+    // * type corresponding to the primitive type 
+    // * <code>short</code> of elements of this 
+    // * Java array.
+    // */
+    /*@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
+    public ceylon.language.Array<@CeylonArrayGetterType@> 
+    NOTUSED(){
         throw Util.makeJavaArrayWrapperException();
     }
-    */
+    
     @Ignore
-    public static void copyTo(short[] array, short[] destination){
+    public static ceylon.language.Array<@CeylonArrayGetterType@> 
+    NOTUSED(short[] array){
+        return Array.NOTUSED(array);
+    }*/
+    
+    /**
+     * Efficiently copy a measure of this Java primitive 
+     * array to the given Java primitive array.
+     */
+    public void copyTo(@Name("destination") short[] destination, 
+                       @Name("sourcePosition") @Defaulted int sourcePosition, 
+                       @Name("destinationPosition") @Defaulted int destinationPosition, 
+                       @Name("length") @Defaulted int length){
+        throw Util.makeJavaArrayWrapperException();
+    }
+    
+    @Ignore
+    public static void copyTo(short[] array, 
+            short[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
     }
 
     @Ignore
-    public static void copyTo(short[] array, short[] destination, int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination, 0, array.length-sourcePosition);
+    public static void copyTo(short[] array, 
+            short[] destination, 
+            int sourcePosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                0, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(short[] array, short[] destination, int sourcePosition, int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length-sourcePosition);
+    public static void copyTo(short[] array, 
+            short[] destination, 
+            int sourcePosition, int destinationPosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(short[] array, short[] destination, int sourcePosition, int destinationPosition, int length){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, length);
+    public static void copyTo(short[] array, 
+            short[] destination, 
+            int sourcePosition, int destinationPosition, 
+            int length){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, length);
     }
 
     @Ignore
@@ -142,12 +211,14 @@ public final class ShortArray implements ReifiedType {
     }
 
     @Ignore
-    public int copyTo$destinationPosition(short[] destination, int sourcePosition){
+    public int copyTo$destinationPosition(short[] destination, 
+            int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(short[] destination, int sourcePosition, int destinationPosition){
+    public int copyTo$length(short[] destination, 
+            int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -168,13 +239,6 @@ public final class ShortArray implements ReifiedType {
                        int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
-
-    public void copyTo(@Name("destination") short[] destination, 
-                       @Name("sourcePosition") @Defaulted int sourcePosition, 
-                       @Name("destinationPosition") @Defaulted int destinationPosition, 
-                       @Name("length") @Defaulted int length){
-        throw Util.makeJavaArrayWrapperException();
-    }
     
     @Ignore
     @Override
@@ -188,7 +252,8 @@ public final class ShortArray implements ReifiedType {
     }
 
     @Ignore
-    public static boolean equals(short[] value, java.lang.Object that) {
+    public static boolean equals(short[] value, 
+            java.lang.Object that) {
         return value.equals(that);
     }
 
@@ -212,6 +277,9 @@ public final class ShortArray implements ReifiedType {
         return value.toString();
     }
     
+    /**
+     * A clone of this primitive Java array.
+     */
     public short[] $clone() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -221,6 +289,10 @@ public final class ShortArray implements ReifiedType {
         return value.clone();
     }
     
+    /**
+     * A Ceylon <code>Iterable<code> containing the
+     * elements of this primitive Java array.
+     */
     public ShortArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -232,7 +304,8 @@ public final class ShortArray implements ReifiedType {
     
     /* Implement Iterable */
 
-    public static class ShortArrayIterable extends BaseIterable<ceylon.language.Integer, ceylon.language.Null> {
+    public static class ShortArrayIterable 
+    extends BaseIterable<ceylon.language.Integer, ceylon.language.Null> {
         
         /** The array over which we iterate */
         private final short[] array;
@@ -249,7 +322,8 @@ public final class ShortArray implements ReifiedType {
         }
         
         @Ignore
-        private ShortArrayIterable(short[] array, int start, int end, int step) {
+        private ShortArrayIterable(short[] array, 
+                int start, int end, int step) {
         	super(ceylon.language.Integer.$TypeDescriptor$, Null.$TypeDescriptor$);
             if (start < 0) {
                 throw new ceylon.language.AssertionError("start must be positive");

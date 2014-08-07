@@ -198,6 +198,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
             <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
             <filter token="CeylonArrayGetter" value="NOTUSED"/>
           </filterset>
@@ -222,6 +223,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
             <filter token="ArrayInstanceWrapper" value="instanceForCodePoints"/>
             <filter token="CeylonArrayGetter" value="getCodePointArray"/>
             <filter token="CeylonArrayGetterType" value="ceylon.language.Character"/>
@@ -245,6 +247,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
             <filter token="ArrayInstanceWrapper" value="instanceForIntegers"/>
             <filter token="CeylonArrayGetter" value="getIntegerArray"/>
             <filter token="CeylonArrayGetterType" value="ceylon.language.Integer"/>
@@ -267,6 +270,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
             <filter token="ArrayInstanceWrapper" value="instanceForBytes"/>
             <filter token="CeylonArrayGetter" value="getByteArray"/>
             <filter token="CeylonArrayGetterType" value="ceylon.language.Byte"/>
@@ -289,6 +293,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
             <filter token="ArrayInstanceWrapper" value="instanceForBooleans"/>
             <filter token="CeylonArrayGetter" value="getBooleanArray"/>
             <filter token="CeylonArrayGetterType" value="ceylon.language.Boolean"/>
@@ -311,6 +316,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
             <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
             <filter token="CeylonArrayGetter" value="NOTUSED"/>
           </filterset>
@@ -331,6 +337,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
             <filter token="ArrayInstanceWrapper" value="NOT USED"/>
             <filter token="CeylonArrayGetter" value="NOT USED"/>
             <filter token="CeylonArrayGetterType" value="NOT USED"/>
@@ -353,6 +360,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
             <filter token="ArrayInstanceWrapper" value="instanceForFloats"/>
             <filter token="CeylonArrayGetter" value="getFloatArray"/>
             <filter token="CeylonArrayGetterType" value="ceylon.language.Float"/>
@@ -374,6 +382,7 @@
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
+            <filter token="Optional" value="//"/>
             <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
             <filter token="CeylonArrayGetter" value="NOTUSED"/>
           </filterset>

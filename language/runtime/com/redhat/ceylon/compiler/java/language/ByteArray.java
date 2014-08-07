@@ -34,23 +34,24 @@ import ceylon.language.impl.BaseIterable;
  * THIS IS A GENERATED FILE - DO NOT EDIT 
  */
 /**
- * A Ceylon schema for a Java <code>byte[]</code>.
- *
- * This type is never instantiated, it is completely erased to 
+ * A type representing Java primitive arrays of type 
  * <code>byte[]</code>.
- * 
- * The {@link #get(int)}, {@link #set(int,byte)}, {@link #length size} 
- * methods and the constructor are also completely erased to Java array 
- * operators, or {@link Util#fillArray(byte[],byte)} in the case 
- * that an initial element is specified.
- * 
- * Only the value type static methods are really invoked.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 /*
  * THIS IS A GENERATED FILE - DO NOT EDIT 
  */
+// This type is never instantiated, it is completely erased to 
+// <code>byte[]</code>.
+// 
+// The {@link #get(int)}, {@link #set(int,byte)}, 
+// {@link #length size} methods and the constructor are also 
+// completely erased to Java array operators, or 
+// {@link Util#fillArray(byte[],byte)} 
+// in the case that an initial element is specified.
+// 
+// Only the value type static methods are really invoked.
 @Ceylon(major = 7)
 @Class
 @ValueType
@@ -58,14 +59,29 @@ import ceylon.language.impl.BaseIterable;
 public final class ByteArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(ByteArray.class);
-
-    public ByteArray(@Name("size") int size, @TypeInfo("ceylon.language::Byte") @Defaulted @Name("element") byte element){
+    public final static TypeDescriptor $TypeDescriptor$ = 
+    TypeDescriptor.klass(ByteArray.class);
+    
+    public ByteArray(
+            /**
+             * The size of the array.
+             */
+            @Name("size") int size, 
+            /**
+             * The initial value of the array elements.
+             */
+            @TypeInfo("ceylon.language::Byte") 
+            @Defaulted @Name("element") 
+            byte element){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public ByteArray(@Name("size") int size){
+    public ByteArray(
+            /**
+             * The size of the array.
+             */
+            @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -75,6 +91,9 @@ public final class ByteArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    /**
+     * Get the element with the given {@link index}.
+     */
     public byte get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -84,56 +103,106 @@ public final class ByteArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
-    public void set(@Name("index") int index, @Name("element") byte element) {
+    /**
+     * Set the element with the given {@link index} to the
+     * given {@link element} value.
+     */
+    public void set(@Name("index") int index, 
+            @Name("element") byte element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public static void set(byte[] value, int index, byte element) {
+    public static void set(byte[] value, int index, 
+            byte element) {
         throw Util.makeJavaArrayWrapperException();
     }
-
+    
+    /**
+     * The size of this Java primitive array.
+     */
     @Name("size")
     public final int length = 0;
 
-    @Ignore
-    public static ceylon.language.Array<java.lang.Byte> getArray(byte[] array){
-        return Array.instance(array);
-    }
-
+    /**
+     * A view of this array as a Ceylon 
+     * <code>Array&lt;java.lang::Byte&gt;</code>
+     * where <code>java.lang::Byte</code> is the Java 
+     * wrapper type corresponding to the primitive type 
+     * <code>byte</code> of elements of this 
+     * Java array.
+     */
     @TypeInfo("ceylon.language::Array<java.lang::Byte>")
     public ceylon.language.Array<java.lang.Byte> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Byte> getByteArray(byte[] array){
-        return Array.instanceForBytes(array);
+    public static ceylon.language.Array<java.lang.Byte> 
+    getArray(byte[] array){
+        return Array.instance(array);
     }
 
+    /**
+     * A view of this array as a Ceylon 
+     * <code>Array&lt;ceylon.language::Byte&gt;</code>
+     * where <code>java.lang::Byte</code> is the Ceylon 
+     * type corresponding to the primitive type 
+     * <code>byte</code> of elements of this 
+     * Java array.
+     */
     @TypeInfo("ceylon.language::Array<ceylon.language::Byte>")
-    public ceylon.language.Array<ceylon.language.Byte> getByteArray(){
+    public ceylon.language.Array<ceylon.language.Byte> 
+    getByteArray(){
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static void copyTo(byte[] array, byte[] destination){
+    public static ceylon.language.Array<ceylon.language.Byte> 
+    getByteArray(byte[] array){
+        return Array.instanceForBytes(array);
+    }
+    
+    /**
+     * Efficiently copy a measure of this Java primitive 
+     * array to the given Java primitive array.
+     */
+    public void copyTo(@Name("destination") byte[] destination, 
+                       @Name("sourcePosition") @Defaulted int sourcePosition, 
+                       @Name("destinationPosition") @Defaulted int destinationPosition, 
+                       @Name("length") @Defaulted int length){
+        throw Util.makeJavaArrayWrapperException();
+    }
+    
+    @Ignore
+    public static void copyTo(byte[] array, 
+            byte[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
     }
 
     @Ignore
-    public static void copyTo(byte[] array, byte[] destination, int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination, 0, array.length-sourcePosition);
+    public static void copyTo(byte[] array, 
+            byte[] destination, 
+            int sourcePosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                0, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(byte[] array, byte[] destination, int sourcePosition, int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length-sourcePosition);
+    public static void copyTo(byte[] array, 
+            byte[] destination, 
+            int sourcePosition, int destinationPosition){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(byte[] array, byte[] destination, int sourcePosition, int destinationPosition, int length){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, length);
+    public static void copyTo(byte[] array, 
+            byte[] destination, 
+            int sourcePosition, int destinationPosition, 
+            int length){
+        System.arraycopy(array, sourcePosition, destination, 
+                destinationPosition, length);
     }
 
     @Ignore
@@ -142,12 +211,14 @@ public final class ByteArray implements ReifiedType {
     }
 
     @Ignore
-    public int copyTo$destinationPosition(byte[] destination, int sourcePosition){
+    public int copyTo$destinationPosition(byte[] destination, 
+            int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(byte[] destination, int sourcePosition, int destinationPosition){
+    public int copyTo$length(byte[] destination, 
+            int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -168,13 +239,6 @@ public final class ByteArray implements ReifiedType {
                        int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
-
-    public void copyTo(@Name("destination") byte[] destination, 
-                       @Name("sourcePosition") @Defaulted int sourcePosition, 
-                       @Name("destinationPosition") @Defaulted int destinationPosition, 
-                       @Name("length") @Defaulted int length){
-        throw Util.makeJavaArrayWrapperException();
-    }
     
     @Ignore
     @Override
@@ -188,7 +252,8 @@ public final class ByteArray implements ReifiedType {
     }
 
     @Ignore
-    public static boolean equals(byte[] value, java.lang.Object that) {
+    public static boolean equals(byte[] value, 
+            java.lang.Object that) {
         return value.equals(that);
     }
 
@@ -212,6 +277,9 @@ public final class ByteArray implements ReifiedType {
         return value.toString();
     }
     
+    /**
+     * A clone of this primitive Java array.
+     */
     public byte[] $clone() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -221,6 +289,10 @@ public final class ByteArray implements ReifiedType {
         return value.clone();
     }
     
+    /**
+     * A Ceylon <code>Iterable<code> containing the
+     * elements of this primitive Java array.
+     */
     public ByteArrayIterable getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -232,7 +304,8 @@ public final class ByteArray implements ReifiedType {
     
     /* Implement Iterable */
 
-    public static class ByteArrayIterable extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
+    public static class ByteArrayIterable 
+    extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
         
         /** The array over which we iterate */
         private final byte[] array;
@@ -249,7 +322,8 @@ public final class ByteArray implements ReifiedType {
         }
         
         @Ignore
-        private ByteArrayIterable(byte[] array, int start, int end, int step) {
+        private ByteArrayIterable(byte[] array, 
+                int start, int end, int step) {
         	super(ceylon.language.Byte.$TypeDescriptor$, Null.$TypeDescriptor$);
             if (start < 0) {
                 throw new ceylon.language.AssertionError("start must be positive");
