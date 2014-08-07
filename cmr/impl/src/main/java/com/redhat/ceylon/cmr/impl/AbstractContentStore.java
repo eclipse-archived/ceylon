@@ -16,13 +16,12 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Abstract content store.
@@ -31,36 +30,14 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
  */
 public abstract class AbstractContentStore implements ContentStore, StructureBuilder {
 
-    private static final String CAR = ".car";
-    private static final String JAR = ".jar";
-    private static final String JS = ".js";
-    private static final String PROPERTIES = ".properties";
-    private static final String SHA1 = ".sha1";
-    private static final String SRC = ".src";
-    private static final String XML = ".xml";
-    private static final String ZIP = ".zip";
-
     protected static final String SEPARATOR = "/";
 
-    protected final Set<String> suffixes = new HashSet<String>();
     protected boolean offline;
     protected Logger log;
 
     protected AbstractContentStore(Logger log, boolean offline) {
         this.log = log;
         this.offline = offline;
-        addSuffix(CAR);
-        addSuffix(JAR);
-        addSuffix(JS);
-        addSuffix(PROPERTIES);
-        addSuffix(SHA1);
-        addSuffix(SRC);
-        addSuffix(XML);
-        addSuffix(ZIP);
-    }
-
-    public void addSuffix(String suffix) {
-        suffixes.add(suffix);
     }
 
     protected static String getFullPath(Node parent, String child) {
@@ -72,10 +49,12 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
     }
 
     protected boolean hasContent(String child) {
-        for (String suffix : suffixes)
-            if (child.endsWith(suffix))
-                return true;
-        return false;
+        try {
+            ArtifactContext.getSuffixFromFilename(child);
+            return true;
+        } catch (RepositoryException ex) {
+            return false;
+        }
     }
     
     @Override
