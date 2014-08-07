@@ -12,9 +12,9 @@ public final class identityHash_ {
     private identityHash_() {
     }
     
-    public static long identityHash(@Name("x")
+    public static long identityHash(@Name("identifiable")
     @TypeInfo("ceylon.language::Identifiable")
-    final java.lang.Object x) {
-        return System.identityHashCode(x);
+    final java.lang.Object identifiable) {
+        return System.identityHashCode(identifiable);
     }
 }
