@@ -173,7 +173,7 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <synopsis>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)?</synopsis>
+        <synopsis>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)</synopsis>
         
         <synopsis>ImportElement: ImportTypeElement | ImportFunctionValueElement</synopsis>
         
@@ -215,7 +215,7 @@ TypeConstraints?
             <para>An import element that specifies a type name imports the toplevel type 
             with that name from the given package.</para>
             
-            <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</synopsis>
+            <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements "}")?</synopsis>
             
             <para>A compilation unit may not import two types with the same name.</para>
             
