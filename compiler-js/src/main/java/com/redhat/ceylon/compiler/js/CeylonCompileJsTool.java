@@ -12,6 +12,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -310,7 +311,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         typeChecker = tcb.getTypeChecker();
         if (onlySources != null) {
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
-                if (!onlySources.contains(new File(pu.getUnitFile().getPath()))) {
+                File unitFile = new File(pu.getUnitFile().getPath());
+                if (!FileUtil.containsFile(onlySources, unitFile)) {
                     if (opts.isVerbose()) {
                         append("Removing phased unit " + pu).newline();
                     }
