@@ -15,6 +15,13 @@ public class BooleanUtil {
     }
 
     /**
+     * @return true if b is not null and is false
+     */
+    public static boolean isFalse(Boolean b){
+        return b != null && !b.booleanValue();
+    }
+
+    /**
      * @return true if b is null or is true
      */
     public static boolean isNotFalse(Boolean b){
