@@ -117,20 +117,41 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 && src == null
                 && docs == null
                 && all == null;
-        if(BooleanUtil.isTrue(js) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)) || defaults)
+        if (BooleanUtil.isTrue(all)) {
+            artifacts.addAll(ArtifactContext.allSuffixes());
+        }
+        if (BooleanUtil.isTrue(js) || defaults) {
             artifacts.add(ArtifactContext.JS);
-        if(BooleanUtil.isTrue(jvm) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)) || defaults){
+            artifacts.add(ArtifactContext.JS_MODEL);
+            artifacts.add(ArtifactContext.RESOURCES);
+        } else if (BooleanUtil.isFalse(js)) {
+            artifacts.remove(ArtifactContext.JS);
+            artifacts.remove(ArtifactContext.JS_MODEL);
+            artifacts.remove(ArtifactContext.RESOURCES);
+        }
+        if (BooleanUtil.isTrue(jvm) || defaults) {
             // put the CAR first since its presence will shortcut the other three
             artifacts.add(ArtifactContext.CAR);
             artifacts.add(ArtifactContext.JAR);
             artifacts.add(ArtifactContext.MODULE_PROPERTIES);
             artifacts.add(ArtifactContext.MODULE_XML);
+        } else if (BooleanUtil.isFalse(jvm)) {
+            artifacts.remove(ArtifactContext.CAR);
+            artifacts.remove(ArtifactContext.JAR);
+            artifacts.remove(ArtifactContext.MODULE_PROPERTIES);
+            artifacts.remove(ArtifactContext.MODULE_XML);
         }
-        if(BooleanUtil.isTrue(src) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)))
+        if (BooleanUtil.isTrue(src)) {
             artifacts.add(ArtifactContext.SRC);
-        if(BooleanUtil.isTrue(docs) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js))){
+        } else if (BooleanUtil.isFalse(src)) {
+            artifacts.remove(ArtifactContext.SRC);
+        }
+        if (BooleanUtil.isTrue(docs)) {
             artifacts.add(ArtifactContext.DOCS_ZIPPED);
             artifacts.add(ArtifactContext.DOCS);
+        } else if (BooleanUtil.isFalse(docs)) {
+            artifacts.remove(ArtifactContext.DOCS_ZIPPED);
+            artifacts.remove(ArtifactContext.DOCS);
         }
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
@@ -187,7 +208,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         }
         getOutputRepositoryManager().putArtifact(ac, archive);
         // SHA1 it if required
-        if(!ac.getSingleSuffix().equals(ArtifactContext.DOCS)){
+        if(!ArtifactContext.isDirectoryName(ac.getSingleSuffix())) {
             signArtifact(ac, archive);
         }
     }
