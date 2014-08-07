@@ -383,11 +383,9 @@ public class FileUtil {
         if(b == null)
             return false;
         try {
-            String aPath = a.getCanonicalPath();
-            String bPath = b.getCanonicalPath();
-            return aPath.equals(bPath);
+            return Files.isSameFile(a.toPath(), b.toPath());
         } catch (IOException e) {
-            return a.equals(b);
+            return absoluteFile(a).equals(absoluteFile(b));
         }
     }
 
