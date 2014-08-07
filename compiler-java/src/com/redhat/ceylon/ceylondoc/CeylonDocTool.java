@@ -99,8 +99,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
 @Summary("Generates Ceylon API documentation from Ceylon source files")
-@Description("The default module repositories are `modules` and " +
-        Constants.REPO_URL_CEYLON+", and the default source directory is `source`. " +
+@Description("The default module repositories are `modules` and `" +
+        Constants.REPO_URL_CEYLON+"`, and the default source directory is `source`. " +
         "The default output module repository is `modules`." +
         "\n\n"+
         "The `<modules>` are the names (with an optional version) of the modules " +
