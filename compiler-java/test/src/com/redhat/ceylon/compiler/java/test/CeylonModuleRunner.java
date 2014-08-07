@@ -113,6 +113,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             this.children = new LinkedHashMap<Runner, Description>();
             
             File srcDir = new File(testModule.srcDirectory());
+            File resDir = new File(testModule.resDirectory());
             outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
             
             String[] modules = testModule.modules();
@@ -121,7 +122,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             Set<String> removeAtRuntime = new HashSet<String>();
             Collections.addAll(removeAtRuntime, testModule.removeAtRuntime());
-            compileAndRun(srcDir, outRepo, modules, testModule.dependencies(), removeAtRuntime);
+            compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), removeAtRuntime);
             
             for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
                 makeModuleRunnerInNewJvm(module);
@@ -191,7 +192,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.assertTrue(exit == 0);
     }
 
-    private void compileAndRun(File srcDir, File outRepo, String[] modules, String[] dependencies, Set<String> removeAtRuntime) throws Exception {
+    private void compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, Set<String> removeAtRuntime) throws Exception {
         // Compile all the .ceylon files into a .car
         Context context = new Context();
         final ErrorCollector listener = new ErrorCollector();
@@ -206,6 +207,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         args.add("-g");
         args.add("-src"); 
         args.add(srcDir.getCanonicalPath());
+        args.add("-res"); 
+        args.add(resDir.getCanonicalPath());
         args.add("-out");
         args.add(outRepo.getAbsolutePath());
         for(String module : modules)
