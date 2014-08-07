@@ -17,6 +17,7 @@
     <property name="runtime-js.src" location="runtime-js"/> 
 
     <property name="test.src" location="test"/>
+    <property name="test.res" location="test-resource"/>
     <property name="test.java.src" location="test-java"/>
     <property name="test-jvm.src" location="test-jvm"/>
     <property name="test-js.src" location="test-js"/>
@@ -537,11 +538,13 @@
             executable="${ceylon.compiler.loc}"
             fork="true"
             src="${test.src}:${test.java.src}"
+            resource="${test.res}"
             sysrep="${build.test.repo}"
             encoding="UTF-8"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
+                <include name="**/*.txt"/>
             </files>
             <rep url="aether"/>
         </ceylon-compile>
@@ -646,10 +649,12 @@
             fork="true"
             encoding="UTF-8"
             src="${test.src}"
+            resource="${test.res}"
             sysrep="${build.test.repo}"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
+                <include name="**/*.txt"/>
                 <exclude name="jvm/**"/>
             </files>
         </ceylon-compile-js>
