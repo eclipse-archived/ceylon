@@ -106,21 +106,28 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Override
     @TypeInfo("ceylon.language::Resource")
     public Resource resourceByPath(@Name("path") String path) {
-        final File car = new File(declaration.getUnit().getFullPath());
-        //First let's look in the car's dir...
-        final File target = new File(car.getParentFile(), path);
-        if (target.exists() && target.isFile() && target.canRead()) {
-            return new FileResource(target);
+        String fullPath = path;
+        if (!fullPath.startsWith("/")) {
+            String modPath = ("default".equals(getName())) ? "" : getName().replace('.', '/') + "/";
+            fullPath = modPath + path;
+        } else {
+            fullPath = fullPath.substring(1);
         }
-        //Then let's look inside the car
+        final File car = new File(declaration.getUnit().getFullPath());
+        //First let's look inside the car
         try (ZipFile zip = new ZipFile(car)) {
-            ZipEntry e = zip.getEntry(path);
+            ZipEntry e = zip.getEntry(fullPath);
             if (e != null && !e.isDirectory()) {
-                return new ZipResource(car, path);
+                return new ZipResource(car, fullPath);
             }
         } catch (IOException ex) {
             throw new ceylon.language.Exception(new ceylon.language.String(
                     "Searching for resource " + path), ex);
+        }
+        //Then as a fall-back let's look in the module's resource dir...
+        final File target = new File(new File(car.getParentFile(), "module-resources"), fullPath);
+        if (target.exists() && target.isFile() && target.canRead()) {
+            return new FileResource(target);
         }
         return null;
     }
