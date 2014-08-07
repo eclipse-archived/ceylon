@@ -146,10 +146,10 @@ public final class LongArray implements ReifiedType {
     /**
      * A view of this array as a Ceylon 
      * <code>Array&lt;ceylon.language::Integer&gt;</code>
-     * where <code>java.lang::Long</code> is the Ceylon 
-     * type corresponding to the primitive type 
-     * <code>long</code> of elements of this 
-     * Java array.
+     * where <code>ceylon.language::Integer</code>  
+     * is the Ceylon type corresponding to the 
+     * primitive type <code>long</code> 
+     * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Integer>")
     public ceylon.language.Array<ceylon.language.Integer> 

@@ -146,10 +146,10 @@ public final class IntArray implements ReifiedType {
     /**
      * A view of this array as a Ceylon 
      * <code>Array&lt;ceylon.language::Character&gt;</code>
-     * where <code>java.lang::Integer</code> is the Ceylon 
-     * type corresponding to the primitive type 
-     * <code>int</code> of elements of this 
-     * Java array.
+     * where <code>ceylon.language::Character</code>  
+     * is the Ceylon type corresponding to the 
+     * primitive type <code>int</code> 
+     * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Character>")
     public ceylon.language.Array<ceylon.language.Character> 

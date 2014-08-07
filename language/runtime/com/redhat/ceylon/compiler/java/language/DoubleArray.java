@@ -146,10 +146,10 @@ public final class DoubleArray implements ReifiedType {
     /**
      * A view of this array as a Ceylon 
      * <code>Array&lt;ceylon.language::Float&gt;</code>
-     * where <code>java.lang::Double</code> is the Ceylon 
-     * type corresponding to the primitive type 
-     * <code>double</code> of elements of this 
-     * Java array.
+     * where <code>ceylon.language::Float</code>  
+     * is the Ceylon type corresponding to the 
+     * primitive type <code>double</code> 
+     * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Float>")
     public ceylon.language.Array<ceylon.language.Float> 

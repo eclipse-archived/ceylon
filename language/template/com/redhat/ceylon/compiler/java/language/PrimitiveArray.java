@@ -146,10 +146,10 @@ public final class @Classname@ implements ReifiedType {
     @Optional@/**
     @Optional@ * A view of this array as a Ceylon 
     @Optional@ * <code>Array&lt;@CeylonArrayGetterTypeName@&gt;</code>
-    @Optional@ * where <code>@JavaBoxedTypeName@</code> is the Ceylon 
-    @Optional@ * type corresponding to the primitive type 
-    @Optional@ * <code>@PrimitiveType@</code> of elements of this 
-    @Optional@ * Java array.
+    @Optional@ * where <code>@CeylonArrayGetterTypeName@</code>  
+    @Optional@ * is the Ceylon type corresponding to the 
+    @Optional@ * primitive type <code>@PrimitiveType@</code> 
+    @Optional@ * of elements of this Java array.
     @Optional@ */
     @OptionalStart@@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
     public ceylon.language.Array<@CeylonArrayGetterType@> 

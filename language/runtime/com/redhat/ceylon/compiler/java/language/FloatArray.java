@@ -146,10 +146,10 @@ public final class FloatArray implements ReifiedType {
     ///**
     // * A view of this array as a Ceylon 
     // * <code>Array&lt;NOT USED&gt;</code>
-    // * where <code>java.lang::Float</code> is the Ceylon 
-    // * type corresponding to the primitive type 
-    // * <code>float</code> of elements of this 
-    // * Java array.
+    // * where <code>NOT USED</code>  
+    // * is the Ceylon type corresponding to the 
+    // * primitive type <code>float</code> 
+    // * of elements of this Java array.
     // */
     /*@TypeInfo("ceylon.language::Array<NOT USED>")
     public ceylon.language.Array<NOT USED> 

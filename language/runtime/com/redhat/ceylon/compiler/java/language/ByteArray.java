@@ -146,10 +146,10 @@ public final class ByteArray implements ReifiedType {
     /**
      * A view of this array as a Ceylon 
      * <code>Array&lt;ceylon.language::Byte&gt;</code>
-     * where <code>java.lang::Byte</code> is the Ceylon 
-     * type corresponding to the primitive type 
-     * <code>byte</code> of elements of this 
-     * Java array.
+     * where <code>ceylon.language::Byte</code>  
+     * is the Ceylon type corresponding to the 
+     * primitive type <code>byte</code> 
+     * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Byte>")
     public ceylon.language.Array<ceylon.language.Byte> 

@@ -146,10 +146,10 @@ public final class BooleanArray implements ReifiedType {
     /**
      * A view of this array as a Ceylon 
      * <code>Array&lt;ceylon.language::Boolean&gt;</code>
-     * where <code>java.lang::Boolean</code> is the Ceylon 
-     * type corresponding to the primitive type 
-     * <code>boolean</code> of elements of this 
-     * Java array.
+     * where <code>ceylon.language::Boolean</code>  
+     * is the Ceylon type corresponding to the 
+     * primitive type <code>boolean</code> 
+     * of elements of this Java array.
      */
     @TypeInfo("ceylon.language::Array<ceylon.language::Boolean>")
     public ceylon.language.Array<ceylon.language.Boolean> 

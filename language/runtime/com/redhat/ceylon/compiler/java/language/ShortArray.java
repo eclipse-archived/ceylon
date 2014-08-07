@@ -146,10 +146,10 @@ public final class ShortArray implements ReifiedType {
     ///**
     // * A view of this array as a Ceylon 
     // * <code>Array&lt;@CeylonArrayGetterTypeName@&gt;</code>
-    // * where <code>java.lang::Short</code> is the Ceylon 
-    // * type corresponding to the primitive type 
-    // * <code>short</code> of elements of this 
-    // * Java array.
+    // * where <code>@CeylonArrayGetterTypeName@</code>  
+    // * is the Ceylon type corresponding to the 
+    // * primitive type <code>short</code> 
+    // * of elements of this Java array.
     // */
     /*@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
     public ceylon.language.Array<@CeylonArrayGetterType@> 
