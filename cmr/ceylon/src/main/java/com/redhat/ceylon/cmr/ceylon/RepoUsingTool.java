@@ -103,7 +103,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
-            "(default: `modules`, `~/.ceylon/repo`, "+Constants.REPO_URL_CEYLON+")")
+            "(default: `modules`, `~/.ceylon/repo`, `"+Constants.REPO_URL_CEYLON+"`)")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
     }
