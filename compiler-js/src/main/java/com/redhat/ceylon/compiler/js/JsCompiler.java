@@ -2,22 +2,18 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -180,8 +176,8 @@ public class JsCompiler {
     }
 
     /** Sets the names of the resources to pack with the compiler output. */
-    public void setResourceFiles(List<File> resFiles) {
-        this.resFiles = resFiles;
+    public void setResourceFiles(List<File> files) {
+        this.resFiles = files;
     }
 
     public Set<Message> listErrors() {
@@ -404,7 +400,7 @@ public class JsCompiler {
                     sac.copySourceFiles(FileUtil.filesToPathList(jsout.getSources()));
                 }
                 sha1File.deleteOnExit();
-                createResourcesFile(moduleName, moduleVersion);
+                createResources(moduleName, moduleVersion);
             }
             jsart.deleteOnExit();
             if (modart!=null)modart.deleteOnExit();
@@ -498,56 +494,60 @@ public class JsCompiler {
         return compilingLanguageModule;
     }
 
-    private ZipEntry getZipEntry(final String moduleName, File resource) {
-        String entry = FileUtil.relativeFile(opts.getResourceDirs(), resource.getPath()).replace(File.separatorChar, '/');
-        String modulePath = ModuleUtil.moduleToPath(moduleName).getPath().replace(File.separatorChar, '/');
-        if (moduleName.isEmpty() || "default".equals(moduleName) || entry.startsWith(modulePath + '/')) {
-            String rootName = opts.getResourceRootName();
-            if (rootName == null) {
-                rootName = Constants.DEFAULT_RESOURCE_ROOT;
+    private void createResources(final String moduleName, final String moduleVersion) throws IOException {
+        if (resFiles == null  || resFiles.isEmpty()) {
+            return;
+        }
+        final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
+        ac.setThrowErrorIfMissing(false);
+        boolean isTemp = false;
+        File resDir = outRepo.getArtifact(ac);
+        if (resDir == null || !resDir.exists()) {
+            resDir = Files.createTempDirectory(moduleName + "-" + moduleVersion + "-resources").toFile();
+            isTemp = true;
+        }
+        
+        for (File res : resFiles) {
+            File relRes = getDestinationFile(moduleName, res);
+            if (relRes != null) {
+                // Copy the file to the resource dir
+                FileUtil.copy(null, res, resDir, relRes);
             }
-            String rrp = modulePath + "/" + rootName + "/";
-            if (!rrp.isEmpty() && entry.startsWith(rrp)) {
-                entry = entry.substring(rrp.length());
-            }
-            return new ZipEntry(entry);
-        } else {
+        }
+        
+        outRepo.putArtifact(ac, resDir);
+        
+        if (isTemp) {
+            resDir.deleteOnExit();
+            FileUtil.deleteQuietly(resDir);
+        }
+    }
+
+    private File getDestinationFile(String moduleName, File file) {
+        File relRes = new File(FileUtil.relativeFile(opts.getResourceDirs(), file.getPath()));
+        // Check if the resource should be added for this module
+        String resModName = ModuleUtil.moduleName(opts.getSrcDirs(), relRes);
+        if (resModName.equals(moduleName)) {
+            return handleRoot(moduleName, relRes);
+        } else  {
             return null;
         }
     }
 
-    private void createResourcesFile(final String moduleName, final String moduleVersion) throws IOException {
-        if (resFiles == null  || resFiles.isEmpty()) {
-            return;
-        }
-        final List<ZipEntry> entries = new ArrayList<>(resFiles.size());
-        for (File res : resFiles) {
-            final ZipEntry e = getZipEntry(moduleName, res);
-            if (e != null) {
-                entries.add(e);
+    private File handleRoot(String moduleName, File relRes) {
+        if (!ModuleUtil.isDefaultModule(moduleName)) {
+            String rootName = opts.getResourceRootName();
+            if (rootName == null) {
+                rootName = Constants.DEFAULT_RESOURCE_ROOT;
+            }
+            if (!rootName.isEmpty()) {
+                File modulePath = ModuleUtil.moduleToPath(moduleName);
+                File rrp = new File(modulePath, rootName);
+                if (relRes.toPath().startsWith(rrp.toPath())) {
+                    relRes = rrp.toPath().relativize(relRes.toPath()).toFile();
+                }
             }
         }
-        if (entries.isEmpty()) {
-            return;
-        }
-        //Filter the resources for the current module
-        final File resfile = File.createTempFile("jsres", "zip");
-        try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(resfile))) {
-            for (int i = 0; i < resFiles.size(); i++) {
-                //Add to the stream
-                zip.putNextEntry(entries.get(i));
-                //Copy the file
-                Files.copy(resFiles.get(i).toPath(), zip);
-            }
-        }
-        final ArtifactContext rsartifact = new ArtifactContext(moduleName,
-                moduleVersion, ArtifactContext.JS_RESOURCES);
-        outRepo.putArtifact(rsartifact, resfile);
-        final ArtifactContext sha1Context = rsartifact.getSha1Context();
-        sha1Context.setForceOperation(true);
-        final File sha1File = ShaSigner.sign(resfile, new JsJULLogger(), opts.isVerbose());
-        outRepo.putArtifact(sha1Context, sha1File);
-        resfile.deleteOnExit();
+        return relRes;
     }
-
 }
