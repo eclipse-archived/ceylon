@@ -180,6 +180,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                                     || suffix.equals(ArtifactContext.MODULE_XML)))
                         continue;
                     ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), suffix);
+                    ac.setThrowErrorIfMissing(false);
                     ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(ac);
                     if (srcArchive != null) {
                         copyArtifact(ac, srcArchive.artifact());
