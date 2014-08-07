@@ -389,6 +389,15 @@ public class FileUtil {
         }
     }
 
+    public static boolean containsFile(Collection<File> files, File file) {
+        for (File f : files) {
+            if (sameFile(f, file)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // duplicated in /ceylon-compiler/src/com/redhat/ceylon/ant/Util.java because FileUtil is not in Ant's ClassPath
     public static boolean isChildOfOrEquals(File parent, File child){
         // doing a single comparison is likely cheaper than walking up to the root
