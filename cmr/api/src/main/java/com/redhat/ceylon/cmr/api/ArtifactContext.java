@@ -106,20 +106,26 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return new ArtifactContext(name, version, sha1Suffixes);
     }
 
+    public ArtifactContext getSuffixContext(String... suffixes) {
+        ArtifactContext ac = copy();
+        ac.setSuffixes(suffixes);
+        return ac;
+    }
+
     public ArtifactContext getDocsContext() {
-        return new ArtifactContext(name, version, new String[]{DOCS});
+        return getSuffixContext(DOCS);
     }
 
     public ArtifactContext getResourcesContext() {
-        return new ArtifactContext(name, version, new String[]{RESOURCES});
+        return getSuffixContext(RESOURCES);
     }
 
     public ArtifactContext getModuleProperties() {
-        return new ArtifactContext(name, version, new String[]{MODULE_PROPERTIES});
+        return getSuffixContext(MODULE_PROPERTIES);
     }
 
     public ArtifactContext getModuleXml() {
-        return new ArtifactContext(name, version, new String[]{MODULE_XML});
+        return getSuffixContext(MODULE_XML);
     }
 
     public void toNode(Node node) {
@@ -329,5 +335,18 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public boolean forceDescriptorCheck() {
         return isForceDescriptorCheck();
+    }
+    
+    private ArtifactContext copy() {
+        ArtifactContext ac = new ArtifactContext(name, version, suffixes);
+        ac.localOnly = localOnly;
+        ac.ignoreSHA = ignoreSHA;
+        ac.ignoreCache = ignoreCache;
+        ac.throwErrorIfMissing = throwErrorIfMissing;
+        ac.forceOperation = forceOperation;
+        ac.forceDescriptorCheck = forceDescriptorCheck;
+        ac.fetchSingleArtifact = fetchSingleArtifact;
+        ac.callback = callback;
+        return ac;
     }
 }
