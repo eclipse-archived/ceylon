@@ -84,6 +84,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean forceDescriptorCheck;
     private boolean fetchSingleArtifact;
     private ArtifactCallback callback;
+    private Repository repository;
 
     public ArtifactContext(String name, String version) {
         this.name = name;
@@ -308,6 +309,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.callback = callback;
     }
 
+    public Repository getSearchRepository() {
+        return repository;
+    }
+
+    public void setSearchRepository(Repository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -347,6 +356,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         ac.forceDescriptorCheck = forceDescriptorCheck;
         ac.fetchSingleArtifact = fetchSingleArtifact;
         ac.callback = callback;
+        ac.repository = repository;
         return ac;
     }
 }

@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -123,6 +124,19 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
         }
         return allRoots;
+    }
+    
+    private List<Repository> getRepositoriesForContext(ArtifactContext context) {
+        List<Repository> reps = getRepositories();
+        Repository rep = context.getSearchRepository();
+        if (rep != null) {
+            if (reps.contains(rep)) {
+                return Collections.singletonList(rep);
+            } else {
+                return Collections.emptyList();
+            }
+        }
+        return reps;
     }
     
     public List<String> getRepositoriesDisplayString() {
@@ -321,7 +335,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected Node getFromAllRoots(ArtifactContext context, boolean addLeaf) {
         LookupCaching.enable();
         try {
-            return fromRepositories(getRepositories(), context, addLeaf);
+            return fromRepositories(getRepositoriesForContext(context), context, addLeaf);
         } finally {
             LookupCaching.disable();
         }
