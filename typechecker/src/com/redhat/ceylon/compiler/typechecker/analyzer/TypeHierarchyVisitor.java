@@ -18,7 +18,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -60,27 +59,37 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectDefinition that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = (Class) value.getType().getDeclaration();
+        Class anonymousClass = 
+                (Class) value.getType().getDeclaration();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
-        List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
-        checkForFormalsNotImplemented(that, orderedTypes, anonymousClass);
-        checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, anonymousClass);
-        checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, anonymousClass);
+        List<Type> orderedTypes = 
+                sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+        checkForFormalsNotImplemented(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceNotOverridden(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, 
+                orderedTypes, anonymousClass);
     }
 
     @Override
     public void visit(Tree.ObjectArgument that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = (Class) value.getType().getDeclaration();
+        Class anonymousClass = 
+                (Class) value.getType().getDeclaration();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
-        List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
-        checkForFormalsNotImplemented(that, orderedTypes, anonymousClass);
-        checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, anonymousClass);
-        checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, anonymousClass);
+        List<Type> orderedTypes = 
+                sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+        checkForFormalsNotImplemented(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceNotOverridden(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, 
+                orderedTypes, anonymousClass);
     }
 
     @Override
@@ -89,21 +98,26 @@ public class TypeHierarchyVisitor extends Visitor {
         validateMemberRefinement(that, classOrInterface);
         super.visit(that);
         if (!classOrInterface.isAlias()) {
-            boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
-            List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
+            boolean concrete = 
+                    !classOrInterface.isAbstract() && 
+                    !classOrInterface.isFormal();
+            List<Type> orderedTypes = 
+                    sortDAGAndBuildMetadata(classOrInterface, that);
             if (concrete) {
-                checkForFormalsNotImplemented(that, orderedTypes, classOrInterface);
+                checkForFormalsNotImplemented(that, 
+                        orderedTypes, classOrInterface);
             }
-            checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes, classOrInterface);
-            checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes, classOrInterface);
+            checkForDoubleMemberInheritanceNotOverridden(that, 
+                    orderedTypes, classOrInterface);
+            checkForDoubleMemberInheritanceWoCommonAncestor(that, 
+                    orderedTypes, classOrInterface);
         }
     }
 
     @Override
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        final TypeParameter typeParameter = that.getDeclarationModel();
-        sortDAGAndBuildMetadata(typeParameter, that);
+        sortDAGAndBuildMetadata(that.getDeclarationModel(), that);
     }
     
     @Override
@@ -126,7 +140,10 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private static void checkForShortcutRefinement(Node that, Declaration dec) {
-        for (Declaration im: ((ClassOrInterface) dec.getContainer()).getInheritedMembers(dec.getName())) {
+        ClassOrInterface classOrInterface = 
+                (ClassOrInterface) dec.getContainer();
+        for (Declaration im: 
+                classOrInterface.getInheritedMembers(dec.getName())) {
             if (im instanceof MethodOrValue && 
                     ((MethodOrValue) im).isShortcutRefinement()) {
                 that.addError("refines a non-formal, non-default member: " + 
@@ -138,10 +155,12 @@ public class TypeHierarchyVisitor extends Visitor {
     private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.StatementOrArgument that, 
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
-        for(Type currentType : orderedTypes) {
-            for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
+        for(Type currentType: orderedTypes) {
+            for (Type.Members currentTypeMembers: 
+                    currentType.membersByName.values()) {
                 String name = currentTypeMembers.name;
-                Type.Members aggregateMembers = aggregateType.membersByName.get(name);
+                Type.Members aggregateMembers = 
+                        aggregateType.membersByName.get(name);
                 if (aggregateMembers==null) {
                     //not accumulated yet, no need to check
                     aggregateMembers = new Type.Members();
@@ -149,13 +168,18 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-                    boolean superMemberIsShared = !aggregateMembers.shared.isEmpty();
-                    boolean currentMemberIsShared = !currentTypeMembers.shared.isEmpty();
+                    boolean superMemberIsShared = 
+                            !aggregateMembers.shared.isEmpty();
+                    boolean currentMemberIsShared = 
+                            !currentTypeMembers.shared.isEmpty();
                     if (superMemberIsShared && currentMemberIsShared) {
-                        boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
+                        boolean isMemberNameOnAncestor = 
+                                isMemberNameOnAncestor(currentType, name);
                         if (!isMemberNameOnAncestor) {
-                            TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
-                        	if (!mixedInBySupertype(currentType.declaration, otherType, classOrInterface)) {
+                            TypeDeclaration otherType = 
+                                    getTypeDeclarationFor(aggregateMembers);
+                        	if (!mixedInBySupertype(currentType.declaration, 
+                        	        otherType, classOrInterface)) {
                         		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: '");
                                 sb.append(name)
                                   .append("' is defined by supertypes '")
@@ -168,7 +192,8 @@ public class TypeHierarchyVisitor extends Visitor {
                         }
                     }
                 }
-                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, aggregateMembers);
+                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, 
+                        aggregateMembers);
             }
         }
     }
@@ -177,11 +202,13 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
-        for(int index = size-1;index>=0;index--) {
+        for(int index = size-1; index>=0; index--) {
             Type currentType = orderedTypes.get(index);
-            for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
+            for (Type.Members currentTypeMembers: 
+                    currentType.membersByName.values()) {
                 String name = currentTypeMembers.name;
-                Type.Members aggregateMembers = aggregateType.membersByName.get(name);
+                Type.Members aggregateMembers = 
+                        aggregateType.membersByName.get(name);
                 if (aggregateMembers==null) {
                     //not accumulated yet, no need to check
                     aggregateMembers = new Type.Members();
@@ -189,14 +216,20 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-                    boolean subtypeMemberIsShared = !aggregateMembers.shared.isEmpty();
-                    boolean currentMemberIsShared = !currentTypeMembers.shared.isEmpty();
+                    boolean subtypeMemberIsShared = 
+                            !aggregateMembers.shared.isEmpty();
+                    boolean currentMemberIsShared = 
+                            !currentTypeMembers.shared.isEmpty();
                     if (subtypeMemberIsShared && currentMemberIsShared) {
-                        boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
-                        boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
+                        boolean isMemberRefined = 
+                                isMemberRefined(orderedTypes,index,name,currentTypeMembers);
+                        boolean isMemberNameOnAncestor = 
+                                isMemberNameOnAncestor(currentType, name);
                         if (!isMemberRefined && isMemberNameOnAncestor) {
-                            TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
-                        	if (!mixedInBySupertype(currentType.declaration, otherType, classOrInterface)) {
+                            TypeDeclaration otherType = 
+                                    getTypeDeclarationFor(aggregateMembers);
+                        	if (!mixedInBySupertype(currentType.declaration, 
+                        	        otherType, classOrInterface)) {
                         		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: '");
                                 sb.append(name)
                                   .append("' is defined by supertypes '")
@@ -209,12 +242,14 @@ public class TypeHierarchyVisitor extends Visitor {
                         }
                     }
                 }
-                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, aggregateMembers);
+                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, 
+                        aggregateMembers);
             }
         }
     }
 
-    private void pourCurrentTypeInfoIntoAggregatedType(Type.Members currentTypeMembers, Type.Members aggregateMembers) {
+    private void pourCurrentTypeInfoIntoAggregatedType(Type.Members currentTypeMembers, 
+            Type.Members aggregateMembers) {
         aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
         aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
         aggregateMembers.formals.addAll(currentTypeMembers.formals);
@@ -229,15 +264,16 @@ public class TypeHierarchyVisitor extends Visitor {
         return !currentType.declaration.getInheritedMembers(name).isEmpty();
     }
 
-    private boolean mixedInBySupertype(TypeDeclaration currentType, TypeDeclaration otherType, 
-            ClassOrInterface classOrInterface) {
+    private boolean mixedInBySupertype(TypeDeclaration currentType, 
+            TypeDeclaration otherType, ClassOrInterface classOrInterface) {
         TypeDeclaration et = classOrInterface.getExtendedTypeDeclaration();
         if (et!=null && 
                 et.inherits(currentType) && 
                 et.inherits(otherType)) {
             return true;
         }
-        for (TypeDeclaration st: classOrInterface.getSatisfiedTypeDeclarations()) {
+        for (TypeDeclaration st: 
+                classOrInterface.getSatisfiedTypeDeclarations()) {
             if (st!=null && 
                     st.inherits(currentType) && 
                     st.inherits(otherType)) {
@@ -247,15 +283,21 @@ public class TypeHierarchyVisitor extends Visitor {
         return false;
     }
 
-    private boolean isMemberRefined(List<Type> orderedTypes, int index, String name, Type.Members currentTypeMembers) {
+    private boolean isMemberRefined(List<Type> orderedTypes, int index, 
+            String name, Type.Members currentTypeMembers) {
         int size = orderedTypes.size();
-        Declaration declarationOfSupertypeMember = getMemberDeclaration(currentTypeMembers);
+        Declaration declarationOfSupertypeMember = 
+                getMemberDeclaration(currentTypeMembers);
         for (int subIndex = size-1 ; subIndex>index;subIndex--) {
             Type type = orderedTypes.get(subIndex);
             //has a direct member and supertype as inherited members
-            Declaration directMember = type.declaration.getDirectMember(name, null, false);
-            boolean isMemberRefined = directMember!=null && directMember.isShared(); //&& !(directMember instanceof Parameter);
-            isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);
+            Declaration directMember = 
+                    type.declaration.getDirectMember(name, null, false);
+            boolean isMemberRefined = 
+                    directMember!=null && directMember.isShared(); //&& !(directMember instanceof Parameter);
+            isMemberRefined = isMemberRefined && 
+                    type.declaration.getInheritedMembers(name)
+                        .contains(declarationOfSupertypeMember);
             if (isMemberRefined) {
                 return true;
             }
@@ -264,8 +306,10 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private TypeDeclaration getTypeDeclarationFor(Type.Members aggregateMembers) {
-        Declaration memberDeclaration = getMemberDeclaration(aggregateMembers);
-        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration();
+        Declaration memberDeclaration = 
+                getMemberDeclaration(aggregateMembers);
+        return memberDeclaration == null ? null : 
+            memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration();
     }
 
     private Declaration getMemberDeclaration(Type.Members aggregateMembers) {
@@ -287,7 +331,7 @@ public class TypeHierarchyVisitor extends Visitor {
     private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, 
             List<Type> orderedTypes, Declaration declaration) {
         Type aggregation = buildAggregatedType(orderedTypes);
-        for (Type.Members members:aggregation.membersByName.values()) {
+        for (Type.Members members: aggregation.membersByName.values()) {
             if (!members.formals.isEmpty() && members.actualsNonFormals.isEmpty()) {
                 Declaration declaringType = 
                         (Declaration) members.formals.iterator().next().getContainer();
@@ -310,10 +354,12 @@ public class TypeHierarchyVisitor extends Visitor {
     private Type buildAggregatedType(List<Type> orderedTypes) {
         int size = orderedTypes.size();
         Type aggregation = new Type();
-        for (int index = size-1;index>=0;index--) {
+        for (int index = size-1; index>=0; index--) {
             Type current = orderedTypes.get(index);
-            for (Type.Members currentMembers:current.membersByName.values()) {
-                Type.Members aggregateMembers = aggregation.membersByName.get(currentMembers.name);
+            for (Type.Members currentMembers:
+                    current.membersByName.values()) {
+                Type.Members aggregateMembers = 
+                        aggregation.membersByName.get(currentMembers.name);
                 if (aggregateMembers==null) {
                     aggregateMembers = new Type.Members();
                     aggregateMembers.name = currentMembers.name;
@@ -322,8 +368,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 pourCurrentTypeInfoIntoAggregatedType(currentMembers, aggregateMembers);
                 //if an actual implementation high in the hierarchy is overridden as formal => do not add
                 //remember we go from most specific to most generic type
-                for (Declaration actualNonFormal : currentMembers.actualsNonFormals) {
-                    for (Declaration formal : aggregateMembers.formals) {
+                for (Declaration actualNonFormal: 
+                        currentMembers.actualsNonFormals) {
+                    for (Declaration formal: aggregateMembers.formals) {
                         if (formal.getName().equals(actualNonFormal.getName())) {
                             if (!formal.getUnit().getPackage().getModule().isJava() ||
                                     !formal.isInterfaceMember()) {
@@ -339,25 +386,30 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     //sort type hierarchy from most abstract to most concrete
-    private List<Type> sortDAGAndBuildMetadata(TypeDeclaration declaration, Node errorReporter) {
+    private List<Type> sortDAGAndBuildMetadata(TypeDeclaration declaration, 
+            Node errorReporter) {
         //Apply a partial sort on the class hierarchy which is a Directed Acyclic Graph (DAG)
         // with subclasses pointing to superclasses or interfaces
         //use depth-first plus a stack fo processed nodes to detect non DAG
         //http://en.wikipedia.org/wiki/Topological_sorting
         List<Type> sortedDag = new ArrayList<Type>();
-        List<TypeDeclaration> visitedDeclarationPerBranch = new ArrayList<TypeDeclaration>();
+        List<TypeDeclaration> visitedDeclarationPerBranch = 
+                new ArrayList<TypeDeclaration>();
         Set<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
-        visitDAGNode(declaration, sortedDag, visited, visitedDeclarationPerBranch, errorReporter);
+        visitDAGNode(declaration, sortedDag, visited, 
+                visitedDeclarationPerBranch, errorReporter);
         return sortedDag;
     }
 
-    private void visitDAGNode(TypeDeclaration declaration, List<Type> sortedDag, 
-            Set<TypeDeclaration> visited, List<TypeDeclaration> stackOfProcessedType, 
+    private void visitDAGNode(TypeDeclaration declaration, 
+            List<Type> sortedDag, Set<TypeDeclaration> visited, 
+            List<TypeDeclaration> stackOfProcessedType, 
             Node errorReporter) {
         if (declaration == null) {
             return;
         }
-        if (checkCyclicInheritance(declaration, stackOfProcessedType, errorReporter)) {
+        if (checkCyclicInheritance(declaration, 
+                stackOfProcessedType, errorReporter)) {
             return; //stop the cycle here but try and process the rest
         }
 
@@ -368,12 +420,19 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        visitDAGNode(declaration.getExtendedTypeDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
-        for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
-            visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
+        visitDAGNode(declaration.getExtendedTypeDeclaration(), 
+                sortedDag, visited, stackOfProcessedType, 
+                errorReporter);
+        for (TypeDeclaration superSatisfiedType: 
+                declaration.getSatisfiedTypeDeclarations()) {
+            visitDAGNode(superSatisfiedType, sortedDag, visited, 
+                    stackOfProcessedType, errorReporter);
         }
-        for (ProducedType superSatisfiedType : declaration.getBrokenSupertypes()) {
-            visitDAGNode(superSatisfiedType.getDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
+        for (ProducedType superSatisfiedType: 
+                declaration.getBrokenSupertypes()) {
+            visitDAGNode(superSatisfiedType.getDeclaration(), 
+                    sortedDag, visited, stackOfProcessedType, 
+                    errorReporter);
         }
         stackOfProcessedType.remove(stackOfProcessedType.size()-1);
         sortedDag.add(type);
@@ -456,7 +515,9 @@ public class TypeHierarchyVisitor extends Visitor {
                         !((ClassOrInterface) td).isAbstract() &&
                         !((ClassOrInterface) td).isAlias()) {
                     for (Declaration d: std.getMembers()) {
-                        if (d.isShared() && !isOverloadedVersion(d) && isResolvable(d) && 
+                        if (d.isShared() && 
+                                !isOverloadedVersion(d) && 
+                                isResolvable(d) && 
                                 !errors.contains(d.getName())) {
                             Declaration r = td.getMember(d.getName(), null, false);
                             if (r==null || !r.refines(d) && 
