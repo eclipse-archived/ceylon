@@ -76,7 +76,12 @@ public class ImportList implements Scope {
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity) {
         if (importedScope!=null) {
-            return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+            if (unit.getPackage().equals(importedScope)) {
+                return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity);
+            }
+            else {
+                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+            }
         }
         else {
             return Collections.emptyMap();
