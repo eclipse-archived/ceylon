@@ -230,7 +230,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                 putFiles(current, f, options);
         } else {
             log.debug(" Adding file " + file.getPath() + " at " + NodeUtils.getFullPath(current));
-            current.addContent(file.getName(), new FileInputStream(file), options);
+            try (InputStream in = new FileInputStream(file)) {
+                current.addContent(file.getName(), in, options);
+            }
             log.debug("  -> [done]");
         }
     }
