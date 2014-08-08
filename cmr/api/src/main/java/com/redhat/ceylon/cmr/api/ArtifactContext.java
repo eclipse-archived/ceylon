@@ -67,9 +67,9 @@ public class ArtifactContext implements Serializable, ContentOptions {
     
     public static final List<String> allSuffixes() {
         ArrayList<String> all =  new ArrayList<String>(fileSuffixes.length + fileNames.length + directoryNames.length);
+        all.addAll(Arrays.asList(fileSuffixes));
         all.addAll(Arrays.asList(fileNames));
         all.addAll(Arrays.asList(directoryNames));
-        all.addAll(Arrays.asList(fileSuffixes));
         return all;
     }
     
