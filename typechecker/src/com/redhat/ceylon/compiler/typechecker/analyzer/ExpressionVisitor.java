@@ -5766,7 +5766,8 @@ public class ExpressionVisitor extends Visitor {
                             std.getCaseTypeDeclarations().get(0).isSelfType()) {
                         continue;
                     }
-                    List<ProducedType> types=new ArrayList<ProducedType>(std.getCaseTypes().size());
+                    List<ProducedType> types =
+                            new ArrayList<ProducedType>(std.getCaseTypes().size());
                     for (ProducedType ct: std.getCaseTypes()) {
                         ProducedType cst = type.getSupertype(ct.getDeclaration());
                         if (cst!=null) {
@@ -5783,8 +5784,8 @@ public class ExpressionVisitor extends Visitor {
                             sb.append("'").append(pt.getProducedTypeName(unit)).append("' and ");
                         }
                         sb.setLength(sb.length()-5);
-                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype: '" + 
-                                d.getName(unit) + "' is a subtype of " + sb);
+                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype '" +
+                                std.getName(unit) + "': '" + d.getName(unit) + "' is a subtype of " + sb);
                     }
                 }
             }
