@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+
 import java.util.List;
 import java.util.Map;
 
@@ -267,7 +269,7 @@ public class CodegenUtil {
                 decl = c.getParameterList().getParameters().get(index).getModel();
             }
             if (decl.isShared()) {
-                Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
+                Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??
                 if(refinedDecl != null && refinedDecl != decl) {
                     return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
                 }
