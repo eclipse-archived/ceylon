@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler;
 
 import com.redhat.ceylon.common.tool.FatalToolError;
-import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 
 /**
