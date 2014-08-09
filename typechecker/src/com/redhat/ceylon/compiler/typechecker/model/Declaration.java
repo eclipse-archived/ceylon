@@ -401,6 +401,7 @@ public abstract class Declaration
     
     /**
      * Does this declaration refine the given declaration?
+     * @deprecated does not take overloading into account
      */
     public boolean refines(Declaration other) {
         if (equals(other)) {

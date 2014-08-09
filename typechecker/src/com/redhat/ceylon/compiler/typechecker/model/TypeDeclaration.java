@@ -268,9 +268,9 @@ public abstract class TypeDeclaration extends Declaration
                     members.add(d);
                 }
             }
-//            if (members.isEmpty()) {
+            if (members.isEmpty()) {
                 members.addAll(getInheritedMembers(name, visited));
-//            }
+            }
             return members;
         }
     }
@@ -280,6 +280,9 @@ public abstract class TypeDeclaration extends Declaration
      * with the given name. Do not include members declared
      * directly by this type. Do not include declarations 
      * refined by a supertype.
+     * 
+     * @deprecated I think we can remove this now and use
+     *             getRefinedMember()
      */
     public List<Declaration> getInheritedMembers(String name) {
         return getInheritedMembers(name, 
