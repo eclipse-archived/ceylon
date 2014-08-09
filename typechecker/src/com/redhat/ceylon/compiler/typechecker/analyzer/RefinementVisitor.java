@@ -14,10 +14,12 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescripti
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.areConsistentSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
@@ -56,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -123,42 +126,17 @@ public class RefinementVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        Method m = that.getDeclarationModel();
-        Declaration refined = m.getRefinedDeclaration();
-        if (m.isOverloaded()) { 
-            if (refined==m || 
-                    !(refined instanceof Method) || 
-                    !((Method) refined).isOverloaded()) {
-                //TODO: hrm this is too heavy-handed, since
-                //      inherited overloads might not come
-                //      from the same Java supertype
-                that.addError("overloaded method does not refine an overloaded method: " +
-                    message(refined) + " is not overloaded");
-            }
-            //the Java model loader does not do this:
-            /*if (!isTypeUnknown(m.getType())) {
-                Method abstraction = (Method) 
-                        m.getContainer().getDirectMember(m.getName(), null, false);
-                if (abstraction.getType().isUnknown()) {
-                    abstraction.setType(m.getType());
-                }
-                else {
-                    abstraction.setType(unionType(m.getType(), 
-                            abstraction.getType(), that.getUnit()));
-                }
-            }*/
-        }
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {
                     Parameter p = tp.getParameterModel();
                     if (p.getModel()!=null) {
-                        checkParameterVisibility(that, m, tp, p);
+                        checkParameterVisibility(that, that.getDeclarationModel(), tp, p);
                     }
                 }
             }
         }
-        inheritDefaultedArguments(m);
+        inheritDefaultedArguments(that.getDeclarationModel());
     }
 
     @Override
@@ -491,6 +469,9 @@ public class RefinementVisitor extends Visitor {
                 if (refined==null) refined = dec;
                 dec.setRefinedDeclaration(refined);
             }
+            else if (isOverloadedVersion(dec)) {
+                that.addError("name is not unique in scope: " + dec.getName());
+            }
             
         }
         
@@ -507,24 +488,24 @@ public class RefinementVisitor extends Visitor {
         List<ProducedType> signature = getSignature(dec);
         Declaration top = ci.getRefinedMember(dec.getName(), 
                 signature, false);
+        boolean legallyOverloaded = !isOverloadedVersion(dec);
         if (top == null || top.equals(dec)) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 
                         dec.getName(), 1300);
             }
+            else if (!legallyOverloaded) {
+                that.addError("overloaded member does not refine an inherited overloaded member");
+            }
         }
         else {
             boolean found = false;
             TypeDeclaration rc = (TypeDeclaration) top.getContainer();
-            for (TypeDeclaration td: ci.getSupertypeDeclarations()) {
-                if (ci.equals(td) || !td.inherits(rc)) continue;
-                Declaration refined = td.getMember(dec.getName(), 
-                        signature, false);
-                if (isAbstraction(refined) ||
-                		!rc.getRefinedMember(dec.getName(), 
-                		        signature, false)
-                		            .equals(top)) {
-                    continue;
+            for (Declaration refined: 
+                    getInterveningRefinements(dec.getName(), 
+                            signature, ci, rc)) {
+                if (isOverloadedVersion(refined)) {
+                    legallyOverloaded = true;
                 }
                 found = true;
                 if (dec instanceof Method) {
@@ -573,6 +554,9 @@ public class RefinementVisitor extends Visitor {
             }
             if (!found) {
                 that.addError("actual member does not exactly refine any overloaded inherited member");
+            }
+            else if (!legallyOverloaded) {
+                that.addError("overloaded member does not refine an inherited overloaded member");
             }
         }
     }

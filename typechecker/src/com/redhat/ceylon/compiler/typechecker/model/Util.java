@@ -1368,6 +1368,25 @@ public class Util {
             module.clearCache(decl);
         }
     }
+    
+    public static List<Declaration> getInterveningRefinements(String name,
+            List<ProducedType> signature,
+            TypeDeclaration bottom, TypeDeclaration top) {
+        List<Declaration> result = new ArrayList<Declaration>(2);
+        for (TypeDeclaration std: bottom.getSupertypeDeclarations()) {
+            if (std.inherits(top) && !std.equals(bottom)) {
+                Declaration member = std.getDirectMember(name, signature, false);
+                if (member!=null && !isAbstraction(member)) {
+                    TypeDeclaration td = (TypeDeclaration) member.getContainer();
+                    Declaration refined = td.getRefinedMember(name, signature, false);
+                    if (refined!=null && refined.getContainer().equals(top)) {
+                        result.add(member);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
     static final Map<TypeParameter, ProducedType> EMPTY_TYPE_ARG_MAP = 
             Collections.<TypeParameter,ProducedType>emptyMap();
