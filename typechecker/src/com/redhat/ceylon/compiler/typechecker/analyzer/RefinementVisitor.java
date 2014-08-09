@@ -131,7 +131,11 @@ public class RefinementVisitor extends Visitor {
             if (refined==m || 
                     !(refined instanceof Method) || 
                     !((Method) refined).isOverloaded()) {
-                that.addError("overloaded method does not refine an overloaded method");
+                //TODO: hrm this is too heavy-handed, since
+                //      inherited overloads might not come
+                //      from the same Java supertype
+                that.addError("overloaded method does not refine an overloaded method: " +
+                    message(refined) + " is not overloaded");
             }
             //the Java model loader does not do this:
             /*if (!isTypeUnknown(m.getType())) {
@@ -479,7 +483,6 @@ public class RefinementVisitor extends Visitor {
                 Declaration refined = 
                 		declaringType.getRefinedMember(dec.getName(), 
                 				getSignature(dec), false);
-                dec.setRefinedDeclaration(refined);
                 if (refined!=null) {
                     if (refined.isPackageVisibility() && 
                             !declaredInPackage(refined, that.getUnit())) {
@@ -487,6 +490,8 @@ public class RefinementVisitor extends Visitor {
                                 message(refined));
                     }
                 }
+                if (refined==null) refined = dec;
+                dec.setRefinedDeclaration(refined);
             }
             
         }
@@ -501,24 +506,29 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-        List<Declaration> others = 
-        		ci.getInheritedMembers(dec.getName());
-        if (others.isEmpty()) {
+//        List<Declaration> others = 
+//        		ci.getInheritedMembers(dec.getName());
+        Declaration refined = ci.getRefinedMember(dec.getName(), getSignature(dec), false);
+//        if (others.isEmpty()) {
+        if (refined == null || refined.equals(dec)) {
             if (dec.isActual()) {
-                that.addError("actual member does not refine any inherited member", 1300);
+                that.addError("actual member does not refine any inherited member: " + 
+                        dec.getName(), 1300);
             }
         }
         else {
-            boolean found = false;
-            for (Declaration refined: others) {
+//            boolean found = false;
+//            for (Declaration refined: others) {
             	ProducedType st = ci.getType()
             			.getSupertype((TypeDeclaration) refined.getContainer());
                 if (isAbstraction(refined) || st==null ||
                 		isOverloadedVersion(refined) && 
                 		!refinesOverloaded(dec, refined, st)) {
-                    continue;
+//                    continue;
+                    that.addError("actual member does not exactly refine any overloaded inherited member: " + 
+                            dec.getName());
                 }
-                found = true;
+//                found = true;
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
                         that.addError("refined declaration is not a method: " + 
@@ -562,10 +572,10 @@ public class RefinementVisitor extends Visitor {
                 if (!ci.isInconsistentType()) {
                     checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
                 }
-            }
-            if (!found) {
-                that.addError("actual member does not exactly refine any overloaded inherited member");
-            }
+//            }
+//            if (!found) {
+//                that.addError("actual member does not exactly refine any overloaded inherited member");
+//            }
         }
     }
 

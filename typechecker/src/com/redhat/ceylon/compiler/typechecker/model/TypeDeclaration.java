@@ -268,9 +268,9 @@ public abstract class TypeDeclaration extends Declaration
                     members.add(d);
                 }
             }
-            if (members.isEmpty()) {
+//            if (members.isEmpty()) {
                 members.addAll(getInheritedMembers(name, visited));
-            }
+//            }
             return members;
         }
     }
@@ -390,12 +390,12 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis) {
         return getRefinedMember(name, signature, ellipsis,
-                new HashSet<TypeDeclaration>(), true);
+                        new HashSet<TypeDeclaration>());
     }
 
     private Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis, 
-            Set<TypeDeclaration> visited, boolean first) {
+            Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
             return null;
         }
@@ -405,32 +405,26 @@ public abstract class TypeDeclaration extends Declaration
             if (et!=null) {
                 Declaration ed = 
                         et.getRefinedMember(name, signature, 
-                                ellipsis, visited, false);
-                if (ed!=null && !ed.isActual()) {
-                    if (isBetterRefinement(signature, 
-                            ellipsis, result, ed)) {
-                        result = ed;
-                    }
+                                ellipsis, visited);
+                if (isBetterRefinement(signature, 
+                        ellipsis, result, ed)) {
+                    result = ed;
                 }
             }
             for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
                 Declaration sd = 
                         st.getRefinedMember(name, signature, 
-                                ellipsis, visited, false);
-                if (sd!=null && !sd.isActual()) {
-                    if (isBetterRefinement(signature, 
-                            ellipsis, result, sd)) {
-                        result = sd;
-                    }
+                                ellipsis, visited);
+                if (isBetterRefinement(signature, 
+                        ellipsis, result, sd)) {
+                    result = sd;
                 }
             }
             Declaration dd = 
                     getDirectMember(name, signature, ellipsis);
-            if (dd!=null && (!dd.isActual()||first&&result==null)) {
-                if (isBetterRefinement(signature, 
-                        ellipsis, result, dd)) {
-                    result = dd;
-                }
+            if (isBetterRefinement(signature, 
+                    ellipsis, result, dd)) {
+                result = dd;
             }
             return result;
         }
@@ -438,6 +432,12 @@ public abstract class TypeDeclaration extends Declaration
 
     public boolean isBetterRefinement(List<ProducedType> signature,
             boolean ellipsis, Declaration result, Declaration candidate) {
+        if (candidate==null ||
+                candidate.isActual() && 
+                !candidate.getNameAsString().equals("ceylon.language::Object") || 
+                !candidate.isShared()) {
+            return false;
+        }
         if (result==null) {
             return true;
         }
