@@ -406,7 +406,7 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration ed = 
                         et.getRefinedMember(name, signature, 
                                 ellipsis, visited, false);
-                if (ed!=null) {
+                if (ed!=null && !ed.isActual()) {
                     if (isBetterRefinement(signature, 
                             ellipsis, result, ed)) {
                         result = ed;
@@ -417,21 +417,19 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration sd = 
                         st.getRefinedMember(name, signature, 
                                 ellipsis, visited, false);
-                if (sd!=null) {
+                if (sd!=null && !sd.isActual()) {
                     if (isBetterRefinement(signature, 
                             ellipsis, result, sd)) {
                         result = sd;
                     }
                 }
             }
-            if (!first || result==null) { //TODO: this condition needs to be removed!
-                Declaration dd = 
-                        getDirectMember(name, signature, ellipsis);
-                if (dd!=null) {
-                    if (isBetterRefinement(signature, 
-                            ellipsis, result, dd)) {
-                        result = dd;
-                    }
+            Declaration dd = 
+                    getDirectMember(name, signature, ellipsis);
+            if (dd!=null && (!dd.isActual()||first&&result==null)) {
+                if (isBetterRefinement(signature, 
+                        ellipsis, result, dd)) {
+                    result = dd;
                 }
             }
             return result;
@@ -450,7 +448,7 @@ public abstract class TypeDeclaration extends Declaration
             return true;
         }
         if (signature==null) {
-            throw new RuntimeException();
+            throw new RuntimeException("missing signature");
         }
         if (isAbstraction(candidate) && !isAbstraction(result)) {
             return false;
