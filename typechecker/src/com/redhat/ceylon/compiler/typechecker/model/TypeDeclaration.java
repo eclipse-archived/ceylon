@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.strictlyBetterMatch;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -423,7 +424,7 @@ public abstract class TypeDeclaration extends Declaration
                     }
                 }
             }
-            if (!first || result==null) {
+            if (!first || result==null) { //TODO: this condition needs to be removed!
                 Declaration dd = 
                         getDirectMember(name, signature, ellipsis);
                 if (dd!=null) {
@@ -442,14 +443,14 @@ public abstract class TypeDeclaration extends Declaration
         if (result==null) {
             return true;
         }
-        if (signature==null) {
-            return false;
-        }
         if (!(result instanceof Functional)) {
             return false;
         }
         if (!(candidate instanceof Functional)) {
             return true;
+        }
+        if (signature==null) {
+            throw new RuntimeException();
         }
         if (isAbstraction(candidate) && !isAbstraction(result)) {
             return false;
@@ -459,7 +460,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         if (hasMatchingSignature(signature, ellipsis, candidate)) {
             return !hasMatchingSignature(signature, ellipsis, result) || 
-                    Util.betterMatch(candidate, result);
+                    strictlyBetterMatch(candidate, result);
         }
         return false; //asymmetric!!
     }

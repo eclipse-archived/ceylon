@@ -533,7 +533,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 if (member.isDefault()) {
                     members.defaults.add(member);
                 }
-                if (!member.isFormal()&&!member.isDefault()) {
+                if (!member.isFormal() && !member.isDefault()) {
                     members.nonFormalsNonDefaults.add(member);
                 }
                 if (member.isShared()) {

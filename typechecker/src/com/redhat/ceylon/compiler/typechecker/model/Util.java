@@ -240,18 +240,13 @@ public class Util {
         }
         if (!erase(defArgType.getDeclaration())
                 .inherits(erase(defParamType.getDeclaration())) &&
-                underlyingTypesUnequal(defParamType, defArgType)) {
-            return false;
-        }
-        if (paramType.getUnderlyingType()!=null && 
-                defParamType.getDeclaration().equals(unit.getIntegerDeclaration()) &&
-                !defArgType.getDeclaration().equals(defParamType.getDeclaration())) {
+                notUnderlyingTypesEqual(defParamType, defArgType)) {
             return false;
         }
         return true;
     }
 
-    private static boolean underlyingTypesUnequal(ProducedType paramType,
+    private static boolean notUnderlyingTypesEqual(ProducedType paramType,
             ProducedType sigType) {
         String sut = sigType.getUnderlyingType();
         String put = paramType.getUnderlyingType();
@@ -289,9 +284,10 @@ public class Util {
                         ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
                         ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
-                        if (!erase(paramType.getDeclaration())
-                                    .inherits(erase(otherType.getDeclaration())) &&
-                                underlyingTypesUnequal(paramType, otherType)) {
+                        TypeDeclaration ptd = erase(paramType.getDeclaration());
+                        TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if (!ptd.inherits(otd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
                             return false;
                         }
                     }
@@ -303,13 +299,84 @@ public class Util {
                         paramType = unit.getIteratedType(paramType);
                         otherType = unit.getIteratedType(otherType);
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
-                        if (!erase(paramType.getDeclaration())
-                                .inherits(erase(otherType.getDeclaration())) &&
-                            underlyingTypesUnequal(paramType, otherType)) {
+                        TypeDeclaration ptd = erase(paramType.getDeclaration());
+                        TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if (!ptd.inherits(otd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
                             return false;
                         }
                     }
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    static boolean strictlyBetterMatch(Declaration d, Declaration r) {
+        if (d instanceof Functional && r instanceof Functional) {
+            List<ParameterList> dpls = ((Functional) d).getParameterLists();
+            List<ParameterList> rpls = ((Functional) r).getParameterLists();
+            if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
+                List<Parameter> dpl = dpls.get(0).getParameters();
+                List<Parameter> rpl = rpls.get(0).getParameters();
+                int dplSize = dpl.size();
+                int rplSize = rpl.size();
+                //ignore sequenced parameters
+                boolean dhsp = dpls.get(0).hasSequencedParameter();
+                boolean rhsp = rpls.get(0).hasSequencedParameter();
+                //always prefer a signature without varargs 
+                //over one with a varargs parameter
+                if (!dhsp && rhsp) {
+                    return true;
+                }
+                if (dhsp && !rhsp) {
+                    return false;
+                }
+                //ignore sequenced parameters
+                if (dhsp) { dplSize--; }
+                if (rhsp) { rplSize--; }
+                if (dplSize==rplSize) {
+                    //if all parameters are of more specific
+                    //or equal type, prefer it
+                    boolean atLeastOneBetter = false;
+                    Unit unit = d.getUnit();
+                    for (int i=0; i<dplSize; i++) {
+                        ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
+                        ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        TypeDeclaration ptd = erase(paramType.getDeclaration());
+                        TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if (!ptd.inherits(otd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
+                            return false;
+                        }
+                        if (ptd.inherits(otd) && !otd.inherits(ptd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
+                            atLeastOneBetter = true;
+                        }
+                        
+                    }
+                    // check sequenced parameters last
+                    if (dhsp && rhsp) {
+                        ProducedType paramType = unit.getDefiniteType(dpl.get(dplSize).getModel().getType());
+                        ProducedType otherType = unit.getDefiniteType(rpl.get(dplSize).getModel().getType());
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        paramType = unit.getIteratedType(paramType);
+                        otherType = unit.getIteratedType(otherType);
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        TypeDeclaration ptd = erase(paramType.getDeclaration());
+                        TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if (!ptd.inherits(otd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
+                            return false;
+                        }
+                        if (ptd.inherits(otd) && !otd.inherits(ptd) &&
+                                notUnderlyingTypesEqual(paramType, otherType)) {
+                            atLeastOneBetter = true;
+                        }
+                    }
+                    return atLeastOneBetter;
                 }
             }
         }
