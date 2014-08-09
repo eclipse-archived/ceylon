@@ -280,6 +280,11 @@ public abstract class TypeDeclaration extends Declaration
      * with the given name. Do not include members declared
      * directly by this type. Do not include declarations 
      * refined by a supertype.
+     * 
+     * @deprecated This does not handle Java's inheritance
+     *             model where overloads can be inherited 
+     *             from different supertypes ... I think we  
+     *             can remove this now and use getRefinedMember()
      */
     public List<Declaration> getInheritedMembers(String name) {
         return getInheritedMembers(name, 

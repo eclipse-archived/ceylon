@@ -18,8 +18,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.matches;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
@@ -506,7 +504,9 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-        Declaration top = ci.getRefinedMember(dec.getName(), getSignature(dec), false);
+        List<ProducedType> signature = getSignature(dec);
+        Declaration top = ci.getRefinedMember(dec.getName(), 
+                signature, false);
         if (top == null || top.equals(dec)) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 
@@ -515,14 +515,15 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             boolean found = false;
-            List<Declaration> others = 
-                    ci.getInheritedMembers(dec.getName());
-            for (Declaration refined: others) {
-            	ProducedType st = ci.getType()
-            			.getSupertype((TypeDeclaration) refined.getContainer());
-                if (isAbstraction(refined) || st==null ||
-                		isOverloadedVersion(refined) && 
-                		!refinesOverloaded(dec, refined, st)) {
+            TypeDeclaration rc = (TypeDeclaration) top.getContainer();
+            for (TypeDeclaration td: ci.getSupertypeDeclarations()) {
+                if (ci.equals(td) || !td.inherits(rc)) continue;
+                Declaration refined = td.getMember(dec.getName(), 
+                        signature, false);
+                if (isAbstraction(refined) ||
+                		!rc.getRefinedMember(dec.getName(), 
+                		        signature, false)
+                		            .equals(top)) {
                     continue;
                 }
                 found = true;
@@ -576,7 +577,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private boolean refinesOverloaded(Declaration dec, 
+    /*private boolean refinesOverloaded(Declaration dec, 
     		Declaration refined, ProducedType st) {
         Functional fun1 = (Functional) dec;
         Functional fun2 = (Functional) refined;
@@ -608,7 +609,7 @@ public class RefinementVisitor extends Visitor {
             }
         }
         return true;
-    }
+    }*/
     
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
             Declaration dec, ClassOrInterface ci, Declaration refined) {
