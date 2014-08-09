@@ -500,6 +500,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         for (Declaration d : coi.getMembers()) {
             if (d.isActual()) {
                 Declaration refined = coi.getRefinedMember(d.getName(), getSignature(d), false);
+                if (refined==null) refined = d;
                 d.setRefinedDeclaration(refined);
             }
             if (d instanceof ClassOrInterface) {
