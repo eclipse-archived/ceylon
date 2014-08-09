@@ -21,11 +21,9 @@
 package com.redhat.ceylon.compiler.loader.impl.reflect;
 
 import java.lang.reflect.Member;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -38,7 +36,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
 
 /**
  * A model loader which uses Java reflection.
@@ -146,6 +143,11 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     @Override
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         final Member method = ((ReflectionMethod)methodSymbol).method;
+        if (method.getDeclaringClass().getName().contentEquals("ceylon.language.Identifiable")) {
+            if (method.getName().contentEquals("equals") || method.getName().contentEquals("hashCode")) {
+                return true;
+            }
+        }
         if (method.getDeclaringClass().getName().contentEquals("ceylon.language.Object")) {
             if (method.getName().contentEquals("equals") || method.getName().contentEquals("hashCode") || method.getName().contentEquals("toString")) {
                 return false;
