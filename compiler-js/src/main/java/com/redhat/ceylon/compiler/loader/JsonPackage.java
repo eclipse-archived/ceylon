@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -497,7 +499,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         //fill refined declarations
         for (Declaration d : coi.getMembers()) {
             if (d.isActual()) {
-                Declaration refined = coi.getRefinedMember(d.getName(), null, false);
+                Declaration refined = coi.getRefinedMember(d.getName(), getSignature(d), false);
                 d.setRefinedDeclaration(refined);
             }
             if (d instanceof ClassOrInterface) {
