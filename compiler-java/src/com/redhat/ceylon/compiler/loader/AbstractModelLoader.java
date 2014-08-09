@@ -2279,13 +2279,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return result;
     }
     
-    private Declaration findRefinedDeclaration(ClassOrInterface decl, String name, List<ProducedType> signature, boolean ellipsis) {
-        Declaration refinedDeclaration = decl.getRefinedMember(name, signature, ellipsis);
-        if(refinedDeclaration == null)
-            throw new ModelResolutionException("Failed to find refined declaration for "+name);
-        return refinedDeclaration;
-    }
-
     private boolean isStartOfJavaBeanPropertyName(char c){
         return Character.isUpperCase(c) || c == '_'; 
     }
@@ -2609,6 +2602,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(container instanceof ClassOrInterface){
             ClassOrInterface klass = (ClassOrInterface) container;
             
+            decl.setRefinedDeclaration(decl);
             // we never consider Interface and other stuff, since we never register the actualCompleter for them
             if(decl instanceof Class){
                 // Java member classes are never actual 
@@ -2616,7 +2610,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     return;
                 // we already set the actual bit for member classes, we just need the refined decl
                 if(decl.isActual()){
-                    decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                    Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                    decl.setRefinedDeclaration(refined);
                 }
             }else{ // Method or Value
                 MethodMirror methodMirror;
@@ -2626,19 +2621,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     methodMirror = ((JavaMethod) decl).mirror;
                 else
                     throw new ModelResolutionException("Unknown type of declaration: "+decl+": "+decl.getClass().getName());
-
+                
+                decl.setRefinedDeclaration(decl);
                 // For Ceylon interfaces we rely on annotation
                 if(klass instanceof LazyInterface
                         && ((LazyInterface)klass).isCeylon()){
                     boolean actual = methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
                     decl.setActual(actual);
                     if(actual){
-                        decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        decl.setRefinedDeclaration(refined);
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
                         decl.setActual(true);
-                        decl.setRefinedDeclaration(findRefinedDeclaration(klass, decl.getName(), getSignature(decl), false));
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        decl.setRefinedDeclaration(refined);
                     }
                 }
                 
