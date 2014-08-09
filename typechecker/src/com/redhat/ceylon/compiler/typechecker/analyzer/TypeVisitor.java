@@ -1441,8 +1441,7 @@ public class TypeVisitor extends Visitor {
         if (a==null) {
             that.addError("parameter declaration does not exist: '" + p.getName() + "'");
         }
-        else if (!(a instanceof Value && !((Value) a).isTransient()) && 
-                !(a instanceof Method)) {
+        else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + p.getName() + "'");
         }
         else {
@@ -1471,6 +1470,21 @@ public class TypeVisitor extends Visitor {
         }
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);
+        }
+    }
+
+    public boolean isLegalParameter(Declaration a) {
+        if (a instanceof Value) {
+            Value v = (Value) a;
+            return !v.isTransient() && 
+                    (v.getTypeDeclaration()==null ||
+                    !v.getTypeDeclaration().isAnonymous());
+        }
+        else if (a instanceof Method) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
     

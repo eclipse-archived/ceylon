@@ -210,6 +210,17 @@ void runxxx(foo) {
         print("foo");
     }
 }
+
 void runyyy(foo) {
     @error void foo() => print("foo");
+}
+
+void runzzzz(Bar b) {
+    @error shared class Bar() {}
+} 
+
+class FooSuper(){}
+
+@error class BarSub(foo){
+    shared object foo extends FooSuper(){}
 }
