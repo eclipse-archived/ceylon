@@ -1155,6 +1155,17 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.MethodDefinition that) {
+        super.visit(that);
+        Method dec = that.getDeclarationModel();
+        if (dec!=null && dec.isParameter() && 
+                dec.getInitializerParameter().isHidden()) {
+            that.getBlock().addError("function is an initializer parameter and may not have a body: '" + 
+                    dec.getName() + "'");
+        }
+    }
+    
+    @Override
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
@@ -1170,6 +1181,17 @@ public class TypeVisitor extends Visitor {
                 sie.addError("value is an initializer parameter and may not have an initial value: '" + 
                         dec.getName() + "'");
             }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AttributeGetterDefinition that) {
+        super.visit(that);
+        Value dec = that.getDeclarationModel();
+        if (dec!=null && dec.isParameter() && 
+                dec.getInitializerParameter().isHidden()) {
+            that.getBlock().addError("value is an initializer parameter and may not have a body: '" + 
+                    dec.getName() + "'");
         }
     }
     
