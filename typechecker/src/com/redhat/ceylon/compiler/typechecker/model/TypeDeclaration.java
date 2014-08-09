@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.hasMatchingSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
@@ -388,35 +389,79 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis) {
         return getRefinedMember(name, signature, ellipsis,
-                new HashSet<TypeDeclaration>());
+                new HashSet<TypeDeclaration>(), true);
     }
 
     private Declaration getRefinedMember(String name, 
             List<ProducedType> signature, boolean ellipsis, 
-            Set<TypeDeclaration> visited) {
+            Set<TypeDeclaration> visited, boolean first) {
         if (!visited.add(this)) {
             return null;
         }
         else {
+            Declaration result = null;
             TypeDeclaration et = getExtendedTypeDeclaration();
             if (et!=null) {
                 Declaration ed = 
                         et.getRefinedMember(name, signature, 
-                                ellipsis, visited);
+                                ellipsis, visited, false);
                 if (ed!=null) {
-                    return ed;
+                    if (isBetterRefinement(signature, 
+                            ellipsis, result, ed)) {
+                        result = ed;
+                    }
                 }
             }
             for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
                 Declaration sd = 
                         st.getRefinedMember(name, signature, 
-                                ellipsis, visited);
+                                ellipsis, visited, false);
                 if (sd!=null) {
-                    return sd;
+                    if (isBetterRefinement(signature, 
+                            ellipsis, result, sd)) {
+                        result = sd;
+                    }
                 }
             }
-            return getDirectMember(name, signature, ellipsis);
+            if (!first || result==null) {
+                Declaration dd = 
+                        getDirectMember(name, signature, ellipsis);
+                if (dd!=null) {
+                    if (isBetterRefinement(signature, 
+                            ellipsis, result, dd)) {
+                        result = dd;
+                    }
+                }
+            }
+            return result;
         }
+    }
+
+    public boolean isBetterRefinement(List<ProducedType> signature,
+            boolean ellipsis, Declaration result, Declaration candidate) {
+        if (result==null) {
+            return true;
+        }
+        if (signature==null) {
+            return false;
+        }
+        if (!(result instanceof Functional)) {
+            return false;
+        }
+        if (!(candidate instanceof Functional)) {
+            return true;
+        }
+        if (isAbstraction(candidate) && !isAbstraction(result)) {
+            return false;
+        }
+        if (!isAbstraction(candidate) && isAbstraction(result)) {
+            return true;
+        }
+        if (hasMatchingSignature(signature, ellipsis, candidate)) {
+            return !hasMatchingSignature(signature, ellipsis, result) || 
+                    Util.betterMatch(candidate, result);
+        }
+        return false; //asymmetric!!
     }
     
     /**

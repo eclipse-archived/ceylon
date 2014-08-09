@@ -130,7 +130,7 @@ public class Util {
     
     public static boolean isOverloadedVersion(Declaration decl) {
         return (decl instanceof Functional) &&
-                ((Functional)decl).isOverloaded();
+                ((Functional) decl).isOverloaded();
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 
@@ -241,6 +241,11 @@ public class Util {
         if (!erase(defArgType.getDeclaration())
                 .inherits(erase(defParamType.getDeclaration())) &&
                 underlyingTypesUnequal(defParamType, defArgType)) {
+            return false;
+        }
+        if (paramType.getUnderlyingType()!=null && 
+                defParamType.getDeclaration().equals(unit.getIntegerDeclaration()) &&
+                !defArgType.getDeclaration().equals(defParamType.getDeclaration())) {
             return false;
         }
         return true;

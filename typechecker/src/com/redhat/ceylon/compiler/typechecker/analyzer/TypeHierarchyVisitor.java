@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,10 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -332,13 +337,46 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes, Declaration declaration) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
-            if (!members.formals.isEmpty() && members.actualsNonFormals.isEmpty()) {
-                Declaration declaringType = 
-                        (Declaration) members.formals.iterator().next().getContainer();
-                if (!declaration.equals(declaringType)) {
-                    that.addError("formal member '" + members.name + 
-                            "' of '" + declaringType.getName() +
-                            "' not implemented in class hierarchy", 300);
+            if (!members.formals.isEmpty()) {
+                if (members.actualsNonFormals.isEmpty()) {
+                    Declaration example = members.formals.iterator().next();
+                    Declaration declaringType = (Declaration) example.getContainer();
+                    if (!declaration.equals(declaringType)) {
+                        that.addError("formal member '" + example.getName() + 
+                                "' of '" + declaringType.getName() +
+                                "' not implemented in class hierarchy", 300);
+                        continue;
+                    }
+                }
+                for (Declaration f: members.formals) {
+                    if (isOverloadedVersion(f)) {
+                        boolean found = false;
+                        for (Declaration a: members.actualsNonFormals) {
+                            if (a.getRefinedDeclaration().equals(f.getRefinedDeclaration())) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            StringBuilder paramTypes = new StringBuilder();
+                            List<ParameterList> parameterLists = 
+                                    ((Functional)f).getParameterLists();
+                            if (!parameterLists.isEmpty()) {
+                                for (Parameter p: parameterLists.get(0).getParameters()) {
+                                    if (paramTypes.length()>0) {
+                                        paramTypes.append(", ");
+                                    }
+                                    if (!isTypeUnknown(p.getType())) {
+                                        paramTypes.append(p.getType().getProducedTypeName());
+                                    }
+                                }
+                            }
+                            Declaration declaringType = (Declaration) f.getContainer();
+                            that.addError("overloaded formal member '" + f.getName() + 
+                                    "(" + paramTypes + ")' of '" + declaringType.getName() +
+                                    "' not implemented in class hierarchy"/*, 300*/);
+                        }
+                    }
                 }
             }
             /*if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
@@ -469,7 +507,8 @@ public class TypeHierarchyVisitor extends Visitor {
             for (Declaration member: declaration.getMembers()) {
                 if (!(member instanceof MethodOrValue || 
                       member instanceof Class) || 
-                        member.isStaticallyImportable()) {
+                        member.isStaticallyImportable() ||
+                        isAbstraction(member)) {
                     continue;
                 }
                 final String name = member.getName();

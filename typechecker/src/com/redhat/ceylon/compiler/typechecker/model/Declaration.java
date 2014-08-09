@@ -116,7 +116,7 @@ public abstract class Declaration
     }
 
     public boolean isActual() {
-        if(actualCompleter != null){
+        if (actualCompleter != null) {
             completeActual();
         }
         return actual;
@@ -151,7 +151,7 @@ public abstract class Declaration
     }
     
     public Declaration getRefinedDeclaration() {
-        if(actualCompleter != null){
+        if (actualCompleter != null) {
             completeActual();
         }
 		return refinedDeclaration;
@@ -293,7 +293,7 @@ public abstract class Declaration
             return true;
         }
         
-        if(object == null) {
+        if (object == null) {
             return false;
         }
         
@@ -318,9 +318,54 @@ public abstract class Declaration
             }
             else if (this instanceof Functional && 
                     that instanceof Functional) {
-                boolean thisIsAbstraction = ((Functional) this).isAbstraction();
-                boolean thatIsAbstraction = ((Functional) that).isAbstraction();
-                return thisIsAbstraction==thatIsAbstraction;
+                Functional thisFunction = (Functional) this;
+                Functional thatFunction = (Functional) that;
+                boolean thisIsAbstraction = thisFunction.isAbstraction();
+                boolean thatIsAbstraction = thatFunction.isAbstraction();
+                boolean thisIsOverloaded = thisFunction.isOverloaded();
+                boolean thatIsOverloaded = thatFunction.isOverloaded();
+                if (thisIsAbstraction!=thatIsAbstraction ||
+                    thisIsOverloaded!=thatIsOverloaded) {
+                    return false;
+                }
+                if (thisIsAbstraction && thatIsAbstraction ||
+                   !thisIsOverloaded && !thatIsOverloaded) {
+                    return true;
+                }
+                List<ParameterList> thisParamLists = thisFunction.getParameterLists();
+                List<ParameterList> thatParamLists = thatFunction.getParameterLists();
+                if (thisParamLists.size()!=thatParamLists.size()) {
+                    return false;
+                }
+                for (int i=0; i<thisParamLists.size(); i++) {
+                    List<Parameter> thisParams = thisParamLists.get(i).getParameters();
+                    List<Parameter> thatParams = thatParamLists.get(i).getParameters();
+                    if (thisParams.size()!=thatParams.size()) {
+                        return false;
+                    }
+                    for (int j=0; j<thisParams.size(); j++) {
+                        Parameter thisParam = thisParams.get(j);
+                        Parameter thatParam = thatParams.get(j);
+                        if (thisParam!=thatParam) {
+                            if (thisParam!=null && thatParam!=null) {
+                                ProducedType thisParamType = thisParam.getType();
+                                ProducedType thatParamType = thatParam.getType();
+                                if (thisParamType!=null && thatParamType!=null) {
+                                    if (!thisParamType.isExactly(thatParamType)) {
+                                        return false;
+                                    }
+                                }
+                                else if (thisParamType!=thatParamType) {
+                                    return false;
+                                }
+                            }
+                            else if (thisParam!=thatParam) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
             }
             else {
                 return true;

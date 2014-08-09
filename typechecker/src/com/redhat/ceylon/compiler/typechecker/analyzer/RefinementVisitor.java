@@ -177,9 +177,10 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void inheritDefaultedArguments(Declaration d) {
-        if (d.getRefinedDeclaration()!=d) {
+        Declaration rd = d.getRefinedDeclaration();
+        if (rd!=d && rd!=null) {
             List<ParameterList> tdpls = ((Functional) d).getParameterLists();
-            List<ParameterList> rdpls = ((Functional) d.getRefinedDeclaration()).getParameterLists();
+            List<ParameterList> rdpls = ((Functional) rd).getParameterLists();
             if (!tdpls.isEmpty() && !rdpls.isEmpty()) {
                 List<Parameter> tdps = tdpls.get(0).getParameters();
                 List<Parameter> rdps = rdpls.get(0).getParameters();
@@ -271,7 +272,8 @@ public class RefinementVisitor extends Visitor {
             }
             // try to find a direct import first
             for (ModuleImport imp: thisModule.getImports()) {
-                if (imp.isExport() && imp.getModule() == typeModule) {
+                if (imp.isExport() && 
+                        imp.getModule() == typeModule) {
                     // found it
                     return true;
                 }
@@ -282,7 +284,8 @@ public class RefinementVisitor extends Visitor {
             for (ModuleImport imp : thisModule.getImports()) {
                 // now try implicit dependencies
                 if (imp.isExport() && 
-                		includedImplicitly(imp.getModule(), typeModule, visited)) {
+                		includedImplicitly(imp.getModule(), 
+                		        typeModule, visited)) {
                     // found it
                     return true;
                 }
