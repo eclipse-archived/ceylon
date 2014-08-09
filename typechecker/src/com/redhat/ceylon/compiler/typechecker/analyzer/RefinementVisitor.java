@@ -506,29 +506,26 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-//        List<Declaration> others = 
-//        		ci.getInheritedMembers(dec.getName());
-        Declaration refined = ci.getRefinedMember(dec.getName(), getSignature(dec), false);
-//        if (others.isEmpty()) {
-        if (refined == null || refined.equals(dec)) {
+        Declaration top = ci.getRefinedMember(dec.getName(), getSignature(dec), false);
+        if (top == null || top.equals(dec)) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 
                         dec.getName(), 1300);
             }
         }
         else {
-//            boolean found = false;
-//            for (Declaration refined: others) {
+            boolean found = false;
+            List<Declaration> others = 
+                    ci.getInheritedMembers(dec.getName());
+            for (Declaration refined: others) {
             	ProducedType st = ci.getType()
             			.getSupertype((TypeDeclaration) refined.getContainer());
                 if (isAbstraction(refined) || st==null ||
                 		isOverloadedVersion(refined) && 
                 		!refinesOverloaded(dec, refined, st)) {
-//                    continue;
-                    that.addError("actual member does not exactly refine any overloaded inherited member: " + 
-                            dec.getName());
+                    continue;
                 }
-//                found = true;
+                found = true;
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
                         that.addError("refined declaration is not a method: " + 
@@ -572,10 +569,10 @@ public class RefinementVisitor extends Visitor {
                 if (!ci.isInconsistentType()) {
                     checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
                 }
-//            }
-//            if (!found) {
-//                that.addError("actual member does not exactly refine any overloaded inherited member");
-//            }
+            }
+            if (!found) {
+                that.addError("actual member does not exactly refine any overloaded inherited member");
+            }
         }
     }
 
