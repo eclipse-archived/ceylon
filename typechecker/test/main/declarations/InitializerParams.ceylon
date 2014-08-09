@@ -204,3 +204,12 @@ class WithGoodFunParam2(Boolean eq(Object that) => true) {}
     Boolean eq(Object that);
 }
 class WithBadFunParam2(@error Boolean eq(Object that) => 1) {}
+
+void runxxx(foo) {
+    @error void foo() {
+        print("foo");
+    }
+}
+void runyyy(foo) {
+    @error void foo() => print("foo");
+}
