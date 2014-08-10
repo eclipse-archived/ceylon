@@ -449,23 +449,7 @@ public class RefinementVisitor extends Visitor {
             }*/
             
             if (member) {
-                if (!(dec instanceof Setter)) {
-                    checkMember(that, dec);
-                }
-                ClassOrInterface declaringType = 
-                		(ClassOrInterface) dec.getContainer();
-                Declaration refined = 
-                		declaringType.getRefinedMember(dec.getName(), 
-                				getSignature(dec), false);
-                if (refined!=null) {
-                    if (refined.isPackageVisibility() && 
-                            !declaredInPackage(refined, that.getUnit())) {
-                        that.addError("refined declaration is not visible: " + 
-                                message(refined));
-                    }
-                }
-                if (refined==null) refined = dec;
-                dec.setRefinedDeclaration(refined);
+                checkMember(that, dec);
             }
             else if (isOverloadedVersion(dec)) {
                 that.addError("name is not unique in scope: " + dec.getName());
@@ -476,18 +460,24 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkMember(Tree.Declaration that, Declaration dec) {
-        ClassOrInterface ci = (ClassOrInterface) dec.getContainer();
-        if (dec.isFormal() && ci instanceof Class) {
-            Class c = (Class) ci;
+        if (dec instanceof Setter) {
+            Value getter = ((Setter) dec).getGetter();
+            dec.setRefinedDeclaration(getter.getRefinedDeclaration());
+            return;
+        }
+        ClassOrInterface type = (ClassOrInterface) dec.getContainer();
+        if (dec.isFormal() && type instanceof Class) {
+            Class c = (Class) type;
             if (!c.isAbstract() && !c.isFormal()) {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
         List<ProducedType> signature = getSignature(dec);
-        Declaration root = ci.getRefinedMember(dec.getName(), 
+        Declaration root = type.getRefinedMember(dec.getName(), 
                 signature, false);
         boolean legallyOverloaded = !isOverloadedVersion(dec);
         if (root == null || root.equals(dec)) {
+            dec.setRefinedDeclaration(dec);
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 
                         dec.getName(), 1300);
@@ -497,11 +487,17 @@ public class RefinementVisitor extends Visitor {
             }
         }
         else {
+            dec.setRefinedDeclaration(root);
+            if (root.isPackageVisibility() && 
+                    !declaredInPackage(root, that.getUnit())) {
+                that.addError("refined declaration is not visible: " + 
+                        message(root));
+            }
             boolean found = false;
-            TypeDeclaration rc = (TypeDeclaration) root.getContainer();
+            TypeDeclaration rootType = (TypeDeclaration) root.getContainer();
             for (Declaration refined: 
                     getInterveningRefinements(dec.getName(), 
-                            signature, root, ci, rc)) {
+                            signature, root, type, rootType)) {
                 if (isOverloadedVersion(refined)) {
                     legallyOverloaded = true;
                 }
@@ -546,8 +542,8 @@ public class RefinementVisitor extends Visitor {
                     that.addError("member refines a non-default, non-formal member: " + 
                             message(refined), 500);
                 }
-                if (!ci.isInconsistentType()) {
-                    checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
+                if (!type.isInconsistentType()) {
+                    checkRefinedTypeAndParameterTypes(that, dec, type, refined);
                 }
             }
             if (!found) {
