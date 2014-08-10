@@ -1370,7 +1370,7 @@ public class Util {
     }
     
     public static List<Declaration> getInterveningRefinements(String name,
-            List<ProducedType> signature,
+            List<ProducedType> signature, Declaration root,
             TypeDeclaration bottom, TypeDeclaration top) {
         List<Declaration> result = new ArrayList<Declaration>(2);
         for (TypeDeclaration std: bottom.getSupertypeDeclarations()) {
@@ -1379,7 +1379,7 @@ public class Util {
                 if (member!=null && !isAbstraction(member)) {
                     TypeDeclaration td = (TypeDeclaration) member.getContainer();
                     Declaration refined = td.getRefinedMember(name, signature, false);
-                    if (refined!=null && refined.getContainer().equals(top)) {
+                    if (refined!=null && refined.equals(root)) {
                         result.add(member);
                     }
                 }

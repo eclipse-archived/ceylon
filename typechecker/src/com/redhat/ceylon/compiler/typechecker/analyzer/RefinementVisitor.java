@@ -17,7 +17,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.areConsistentSup
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -58,7 +57,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -486,10 +484,10 @@ public class RefinementVisitor extends Visitor {
             }
         }
         List<ProducedType> signature = getSignature(dec);
-        Declaration top = ci.getRefinedMember(dec.getName(), 
+        Declaration root = ci.getRefinedMember(dec.getName(), 
                 signature, false);
         boolean legallyOverloaded = !isOverloadedVersion(dec);
-        if (top == null || top.equals(dec)) {
+        if (root == null || root.equals(dec)) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 
                         dec.getName(), 1300);
@@ -500,10 +498,10 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             boolean found = false;
-            TypeDeclaration rc = (TypeDeclaration) top.getContainer();
+            TypeDeclaration rc = (TypeDeclaration) root.getContainer();
             for (Declaration refined: 
                     getInterveningRefinements(dec.getName(), 
-                            signature, ci, rc)) {
+                            signature, root, ci, rc)) {
                 if (isOverloadedVersion(refined)) {
                     legallyOverloaded = true;
                 }
