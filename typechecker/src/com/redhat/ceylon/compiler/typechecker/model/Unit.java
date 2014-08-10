@@ -424,6 +424,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
     
+    public Interface getUsableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Usable");
+    }
+    
     public Interface getDestroyableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Destroyable");
     }
@@ -741,6 +745,10 @@ public class Unit {
     
     public boolean isIterableType(ProducedType pt) {
         return pt.getDeclaration().inherits(getIterableDeclaration());
+    }
+    
+    public boolean isUsableType(ProducedType pt) {
+        return pt.getDeclaration().inherits(getUsableDeclaration());
     }
     
     public boolean isSequentialType(ProducedType pt) {
