@@ -24,7 +24,7 @@ public class JavaScriptRunnerImpl implements Runner {
                 for (Map.Entry<String,String> extraModule : options.getExtraModules().entrySet()) {
                     String modName = extraModule.getKey();
                     String modVersion = extraModule.getValue();
-                    File artifact = getArtifact(modName, modVersion, repoman);
+                    File artifact = getArtifact(repoman, modName, modVersion, true);
                     localRepos.add(getRepoDir(modName, artifact));
                     loadDependencies(localRepos, repoman, artifact);
                 }
