@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -111,7 +112,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         // FIXME: copying is currently very inefficient!
         // All possible suffix types are tried which will result in numerous
         // unnecessary roundtrips to external servers
-        Set<String> artifacts = new HashSet<String>();
+        Set<String> artifacts = new LinkedHashSet<String>();
         boolean defaults = js == null 
                 && jvm == null
                 && src == null
@@ -171,22 +172,44 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
                 msg("copying.module", module).newline().flush();
-                boolean foundCar = true;
-                for (String suffix : artifacts) {
-                    // if we found a car we can skip the jar and module descriptors
-                    if(foundCar 
-                            && (suffix.equals(ArtifactContext.JAR)
-                                    || suffix.equals(ArtifactContext.MODULE_PROPERTIES)
-                                    || suffix.equals(ArtifactContext.MODULE_XML)))
-                        continue;
-                    ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), suffix);
+                ArtifactResult result = null;
+                Set<String> suffixes = new LinkedHashSet<String>(artifacts);
+                while (!suffixes.isEmpty()) {
+                    // Try to get one of the artifacts
+                    String[] sfx = new String[suffixes.size()];
+                    sfx = suffixes.toArray(sfx);
+                    ArtifactContext ac;
+                    if (result == null) {
+                        ac = new ArtifactContext(module.getName(), module.getVersion(), sfx);
+                    } else {
+                        // We re-use the previous result so we can efficiently
+                        // retrieve further artifacts from the same module
+                        ac = result.getSiblingArtifact(sfx);
+                    }
                     ac.setThrowErrorIfMissing(false);
-                    ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(ac);
-                    if (srcArchive != null) {
-                        copyArtifact(ac, srcArchive.artifact());
+                    result = getRepositoryManager().getArtifactResult(ac);
+                    
+                    if (result != null) {
+                        // Set the proper suffix for the copy operation
+                        String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
+                        ac.setSuffixes(suffix);
+                        
+                        // Perform the actual copying
+                        copyArtifact(ac, result.artifact());
+                        
+                        // make sure we don't try to get the same artifact twice
+                        suffixes.remove(suffix);
+                        
                         // if we found a car we can skip the jar and module descriptors
-                        if(suffix.equals(ArtifactContext.CAR))
-                            foundCar = true;
+                        if (suffix.equals(ArtifactContext.CAR)) {
+                            suffixes.remove(ArtifactContext.JAR);
+                            suffixes.remove(ArtifactContext.MODULE_PROPERTIES);
+                            suffixes.remove(ArtifactContext.MODULE_XML);
+                        }
+                    } else {
+                        // We didn't find anything (this time),
+                        // we can stop trying more artifact types
+                        break;
                     }
                 }
                 if (recursive) {
