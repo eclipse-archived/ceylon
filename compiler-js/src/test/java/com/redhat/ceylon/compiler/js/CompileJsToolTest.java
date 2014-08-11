@@ -273,6 +273,32 @@ public class CompileJsToolTest {
     }
 
     @Test
+    public void testModuleTwiceAgain() throws Exception {
+        FileUtil.delete(new File("build/test-modules"));
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, args(
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "m1"));
+        jsc.run();
+        jsc = pluginFactory.bindArguments(tool, args(
+                "--source=src/test/resources/loader/pass1",
+                "--resource=src/test/resources/res_test",
+                "src/test/resources/loader/pass1/m1/test.ceylon",
+                "src/test/resources/loader/pass1/m1/module.ceylon",
+                "src/test/resources/loader/pass1/m1/package.ceylon",
+                "src/test/resources/res_test/m1/m1res.txt"));
+        jsc.run();
+        checkCompilerResult("build/test-modules/m1/0.1", "m1-0.1");
+        checkResources("build/test-modules/m1/0.1", "m1-0.1",
+                "m1root.txt", "m1/m1res.txt", "m1/ALTROOT/altrootm1.txt");
+        checkExcludedResources("build/test-modules/m1/0.1", "m1-0.1",
+                "test.txt", "another_test.txt", "subdir/third.txt",
+                "ROOT/inroot.txt", "ALTROOT/altroot.txt");
+    }
+
+    @Test
     public void testModuleWithAltRoot() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
