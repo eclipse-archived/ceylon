@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -374,13 +376,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
             int idx = depname.indexOf('/');
             final String modname = depname.substring(0, idx);
             final String modvers = depname.substring(idx+1);
-            ArtifactContext ac = new ArtifactContext(modname, modvers,
-                    ArtifactContext.JS_MODEL, ArtifactContext.JS);
-            ac.setFetchSingleArtifact(true);
-            ac.setThrowErrorIfMissing(!optional);
-            File other = repoman.getArtifact(ac);
+            File other = getArtifact(repoman, modname, modvers, optional);
             if (other != null) {
-                repos.add(getRepoDir(ac.getName(), other));
+                repos.add(getRepoDir(modname, other));
                 loadDependencies(repos, repoman, other);
             }
         }
@@ -427,7 +425,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
             return;
         }
         
-        File jsmod = getArtifact(modname, version, repoman);
+        File jsmod = getArtifact(repoman, modname, version, true);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         Set<File> localRepos = new HashSet<File>();
@@ -452,27 +450,34 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     // Make sure JS and JS_MODEL artifacts exist and try to obtain the RESOURCES as well
-    protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
+    protected File getArtifact(RepositoryManager repoman, String modName, String modVersion, boolean optional) {
         // TODO We should try to do this more efficiently!
         // Right now we're doing 3 different global artifact retrieval calls
         // while we know they should all come from the same place
-        File code = getSingleArtifact(modName, modVersion, ArtifactContext.JS, repoman);
-        File model = null;
+        ArtifactResult code = getSingleArtifact(repoman, modName, modVersion, ArtifactContext.JS);
+        ArtifactResult model = null;
         if (code != null) {
-            model = getSingleArtifact(modName, modVersion, ArtifactContext.JS_MODEL, repoman);
+            model = getSingleArtifact(repoman, code.getSiblingArtifact(ArtifactContext.JS_MODEL));
         }
         if (code == null || model == null) {
+            if (optional) {
+                return null;
+            }
             throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
         }
-        getSingleArtifact(modName, modVersion, ArtifactContext.RESOURCES, repoman);
-        return model;
+        getSingleArtifact(repoman, code.getSiblingArtifact(ArtifactContext.RESOURCES));
+        return model.artifact();
     }
 
-    protected File getSingleArtifact(String modName, String modVersion, String suffix, RepositoryManager repoman) {
+    protected ArtifactResult getSingleArtifact(RepositoryManager repoman, String modName, String modVersion, String suffix) {
         ArtifactContext ac = new ArtifactContext(modName, modVersion, suffix);
+        return getSingleArtifact(repoman, ac);
+    }
+
+    protected ArtifactResult getSingleArtifact(RepositoryManager repoman, ArtifactContext ac) {
         ac.setFetchSingleArtifact(true);
         ac.setThrowErrorIfMissing(false);
-        return repoman.getArtifact(ac);
+        return repoman.getArtifactResult(ac);
     }
 
     protected File getRepoDir(String modname, File file) {
