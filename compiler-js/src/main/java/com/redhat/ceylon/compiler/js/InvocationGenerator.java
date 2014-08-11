@@ -95,7 +95,18 @@ public class InvocationGenerator {
                 return;
             } else {
                 if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
-                    BmeGenerator.generateBme((Tree.BaseMemberExpression)that.getPrimary(), gen, true);
+                    final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)that.getPrimary();
+                    if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
+                            "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
+                        Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
+                        if (printArg.getTypeModel().isUnknown()) {
+                            gen.out(GenerateJsVisitor.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
+                            printArg.visit(gen);
+                            gen.out(")");
+                            return;
+                        }
+                    }
+                    BmeGenerator.generateBme(_bme, gen, true);
                 } else {
                     that.getPrimary().visit(gen);
                 }
