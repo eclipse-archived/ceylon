@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.erase;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
@@ -328,8 +329,10 @@ public abstract class Declaration
                     thisIsOverloaded!=thatIsOverloaded) {
                     return false;
                 }
-                if (thisIsAbstraction && thatIsAbstraction ||
-                   !thisIsOverloaded && !thatIsOverloaded) {
+                if (!thisIsOverloaded && !thatIsOverloaded) {
+                    return true;
+                }
+                if (thisIsAbstraction && thatIsAbstraction) {
                     return true;
                 }
                 List<ParameterList> thisParamLists = thisFunction.getParameterLists();
@@ -351,7 +354,8 @@ public abstract class Declaration
                                 ProducedType thisParamType = thisParam.getType();
                                 ProducedType thatParamType = thatParam.getType();
                                 if (thisParamType!=null && thatParamType!=null) {
-                                    if (!thisParamType.isExactly(thatParamType)) {
+                                    if (!erase(thisParamType.getDeclaration())
+                                            .equals(erase(thatParamType.getDeclaration()))) {
                                         return false;
                                     }
                                 }

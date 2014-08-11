@@ -37,8 +37,8 @@ public abstract class ProducedReference {
         return declaration;
     }
     
-    void setDeclaration(Declaration type) {
-        this.declaration = type;
+    void setDeclaration(Declaration declaration) {
+        this.declaration = declaration;
     }
     
     public Map<TypeParameter, ProducedType> getTypeArguments() {

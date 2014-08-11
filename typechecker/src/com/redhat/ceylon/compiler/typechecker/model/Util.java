@@ -388,9 +388,9 @@ public class Util {
         return dname!=null && dname.equals(name);
     }
     
-    private static TypeDeclaration erase(TypeDeclaration paramType) {
+    static TypeDeclaration erase(TypeDeclaration paramType) {
         if (paramType instanceof TypeParameter) {
-            if ( paramType.getSatisfiedTypes().isEmpty() ) {
+            if (paramType.getSatisfiedTypes().isEmpty()) {
                 return paramType.getExtendedTypeDeclaration();
             }
             else {

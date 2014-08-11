@@ -2,10 +2,12 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
+import static com.redhat.ceylon.compiler.typechecker.model.Unit.getAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -43,6 +45,19 @@ public class ProducedType extends ProducedReference {
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             Collections.emptyMap();
+    
+    @Override
+    void setDeclaration(Declaration declaration) {
+        if (isOverloadedVersion(declaration)) {
+            declaration = getAbstraction(declaration);
+        }
+        if (declaration instanceof TypeDeclaration) {
+            super.setDeclaration(declaration);
+        }
+        else {
+            throw new RuntimeException("not a TypeDeclaration");
+        }
+    }
     
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
@@ -105,189 +120,198 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isExactlyInternal(ProducedType type) {
-        TypeDeclaration d = getDeclaration();
-        TypeDeclaration td = type.getDeclaration();
-        if (d instanceof NothingType) {
-            return type.isNothing();
+        if (depth.get()>50) {
+            throw new RuntimeException("undecidable subtyping");
         }
-        else if (d instanceof UnionType) {
-            List<ProducedType> cases = getCaseTypes();
-            if (td instanceof UnionType) {
-                List<ProducedType> otherCases = type.getCaseTypes();
-                if (cases.size()!=otherCases.size()) {
-                    return false;
-                }
-                else {
-                    for (ProducedType c: cases) {
-                        boolean found = false;
-                        for (ProducedType oc: otherCases) {
-                            if (c.isExactlyInternal(oc)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            return false;
-                        }
+        depth.set(depth.get()+1);
+        try {
+            TypeDeclaration d = getDeclaration();
+            TypeDeclaration td = type.getDeclaration();
+            if (d instanceof NothingType) {
+                return type.isNothing();
+            }
+            else if (d instanceof UnionType) {
+                List<ProducedType> cases = getCaseTypes();
+                if (td instanceof UnionType) {
+                    List<ProducedType> otherCases = type.getCaseTypes();
+                    if (cases.size()!=otherCases.size()) {
+                        return false;
                     }
-                    return true;
-                }
-            }
-            else if (cases.size()==1) {
-                ProducedType st = cases.get(0);
-                return st.isExactlyInternal(type);
-            }
-            else {
-                return false;
-            }
-        }
-        else if (d instanceof IntersectionType) {
-            List<ProducedType> types = getSatisfiedTypes();
-            if (td instanceof IntersectionType) {
-                List<ProducedType> otherTypes = type.getSatisfiedTypes();
-                if (types.size()!=otherTypes.size()) {
-                    return false;
-                }
-                else {
-                    for (ProducedType c: types) {
-                        boolean found = false;
-                        for (ProducedType oc: otherTypes) {
-                            if (c.getDeclaration().equals(oc.getDeclaration())) {
+                    else {
+                        for (ProducedType c: cases) {
+                            boolean found = false;
+                            for (ProducedType oc: otherCases) {
                                 if (c.isExactlyInternal(oc)) {
                                     found = true;
                                     break;
                                 }
-                                //given a covariant type Co, and interfaces
-                                //A satisfies Co<B&Co<A>> and 
-                                //B satisfies Co<A&Co<B>>, then
-                                //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
-                                //consequence of principal instantiation 
-                                //inheritance
-                                ProducedType cst = 
-                                        getSupertypeInternal(c.getDeclaration());
-                                ProducedType ocst = 
-                                        type.getSupertypeInternal(oc.getDeclaration());
-                                if (cst.isExactlyInternal(ocst)) {
-                                    found = true;
-                                    break;
-                                }
+                            }
+                            if (!found) {
+                                return false;
                             }
                         }
-                        if (!found) {
+                        return true;
+                    }
+                }
+                else if (cases.size()==1) {
+                    ProducedType st = cases.get(0);
+                    return st.isExactlyInternal(type);
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (d instanceof IntersectionType) {
+                List<ProducedType> types = getSatisfiedTypes();
+                if (td instanceof IntersectionType) {
+                    List<ProducedType> otherTypes = type.getSatisfiedTypes();
+                    if (types.size()!=otherTypes.size()) {
+                        return false;
+                    }
+                    else {
+                        for (ProducedType c: types) {
+                            boolean found = false;
+                            for (ProducedType oc: otherTypes) {
+                                if (c.getDeclaration().equals(oc.getDeclaration())) {
+                                    if (c.isExactlyInternal(oc)) {
+                                        found = true;
+                                        break;
+                                    }
+                                    //given a covariant type Co, and interfaces
+                                    //A satisfies Co<B&Co<A>> and 
+                                    //B satisfies Co<A&Co<B>>, then
+                                    //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
+                                    //consequence of principal instantiation 
+                                    //inheritance
+                                    ProducedType cst = 
+                                            getSupertypeInternal(c.getDeclaration());
+                                    ProducedType ocst = 
+                                            type.getSupertypeInternal(oc.getDeclaration());
+                                    if (cst.isExactlyInternal(ocst)) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!found) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+                else if (types.size()==1) {
+                    ProducedType st = types.get(0);
+                    return st.isExactlyInternal(type);
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (td instanceof UnionType) {
+                List<ProducedType> otherCases = type.getCaseTypes();
+                if (otherCases.size()==1) {
+                    ProducedType st = otherCases.get(0);
+                    return this.isExactlyInternal(st);
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (td instanceof IntersectionType) {
+                List<ProducedType> otherTypes = type.getSatisfiedTypes();
+                if (otherTypes.size()==1) {
+                    ProducedType st = otherTypes.get(0);
+                    return this.isExactlyInternal(st);
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                if (!td.equals(d)) {
+                    return false;
+                }
+                else {
+                    //for Java's static inner types, ignore the
+                    //qualifying type
+                    ProducedType qt = 
+                            d.isStaticallyImportable() ?
+                                    null : getQualifyingType();
+                    ProducedType tqt = 
+                            td.isStaticallyImportable() ? 
+                                    null : type.getQualifyingType();
+                    if (qt==null || tqt==null) {
+                        if (qt!=tqt) {
                             return false;
+                        }
+                    }
+                    else {
+                        TypeDeclaration totd = 
+                                (TypeDeclaration) td.getContainer();
+                        ProducedType tqts = tqt.getSupertypeInternal(totd);
+                        TypeDeclaration otd = 
+                                (TypeDeclaration) d.getContainer();
+                        ProducedType qts = qt.getSupertypeInternal(otd);
+                        if (!qts.isExactlyInternal(tqts)) {
+                            return false;
+                        }
+                    }
+                    for (TypeParameter p: d.getTypeParameters()) {
+                        ProducedType arg = getTypeArguments().get(p);
+                        ProducedType otherArg = type.getTypeArguments().get(p);
+                        if (arg==null || otherArg==null) {
+                            return false;
+                        }
+                        else {
+                            boolean contravariant = isContravariant(p);
+                            boolean covariant = isCovariant(p);
+                            boolean invariant = !covariant && !contravariant;
+                            boolean otherCovariant = type.isCovariant(p);
+                            boolean otherContravariant = type.isContravariant(p);
+                            boolean otherInvariant = !otherCovariant && !otherContravariant;
+                            if (contravariant && otherCovariant) {
+                                //Inv<in Nothing> == Inv<out Anything> 
+                                if (!arg.isNothing() ||
+                                        !getUpperBoundIntersection(p).isSubtypeOf(otherArg)) {
+                                    return false;
+                                }
+                            }
+                            else if (covariant && otherContravariant) {
+                                //Inv<out Anything> == Inv<in Nothing>
+                                if (!otherArg.isNothing() ||
+                                        !getUpperBoundIntersection(p).isSubtypeOf(arg)) {
+                                    return false;
+                                }
+                            }
+                            else if (contravariant && otherInvariant ||
+                                    invariant && otherContravariant) {
+                                //Inv<in Anything> == Inv<Anything> 
+                                if (!arg.isAnything() || !otherArg.isAnything()) {
+                                    return false;
+                                }
+                            }
+                            else if (covariant && otherInvariant ||
+                                    invariant && otherCovariant) {
+                                //Inv<out nothing> == Inv<Nothing>
+                                if (!arg.isNothing() || !otherArg.isNothing()) {
+                                    return false;
+                                }
+                            }
+                            else {
+                                //variances are same!
+                                if (!arg.isExactlyInternal(otherArg)) {
+                                    return false;
+                                }
+                            }
                         }
                     }
                     return true;
                 }
             }
-            else if (types.size()==1) {
-                ProducedType st = types.get(0);
-                return st.isExactlyInternal(type);
-            }
-            else {
-                return false;
-            }
         }
-        else if (td instanceof UnionType) {
-            List<ProducedType> otherCases = type.getCaseTypes();
-            if (otherCases.size()==1) {
-                ProducedType st = otherCases.get(0);
-                return this.isExactlyInternal(st);
-            }
-            else {
-                return false;
-            }
-        }
-        else if (td instanceof IntersectionType) {
-            List<ProducedType> otherTypes = type.getSatisfiedTypes();
-            if (otherTypes.size()==1) {
-                ProducedType st = otherTypes.get(0);
-                return this.isExactlyInternal(st);
-            }
-            else {
-                return false;
-            }
-        }
-        else {
-            if (!td.equals(d)) {
-                return false;
-            }
-            else {
-                //for Java's static inner types, ignore the
-                //qualifying type
-                ProducedType qt = 
-                        d.isStaticallyImportable() ?
-                                null : getQualifyingType();
-                ProducedType tqt = 
-                        td.isStaticallyImportable() ? 
-                                null : type.getQualifyingType();
-                if (qt==null || tqt==null) {
-                    if (qt!=tqt) {
-                        return false;
-                    }
-                }
-                else {
-                    TypeDeclaration totd = 
-                            (TypeDeclaration) td.getContainer();
-                    ProducedType tqts = tqt.getSupertypeInternal(totd);
-                    TypeDeclaration otd = 
-                            (TypeDeclaration) d.getContainer();
-                    ProducedType qts = qt.getSupertypeInternal(otd);
-                    if (!qts.isExactlyInternal(tqts)) {
-                        return false;
-                    }
-                }
-                for (TypeParameter p: d.getTypeParameters()) {
-                    ProducedType arg = getTypeArguments().get(p);
-                    ProducedType otherArg = type.getTypeArguments().get(p);
-                    if (arg==null || otherArg==null) {
-                        return false;
-                    }
-                    else {
-                        boolean contravariant = isContravariant(p);
-                        boolean covariant = isCovariant(p);
-                        boolean invariant = !covariant && !contravariant;
-                        boolean otherCovariant = type.isCovariant(p);
-                        boolean otherContravariant = type.isContravariant(p);
-                        boolean otherInvariant = !otherCovariant && !otherContravariant;
-                        if (contravariant && otherCovariant) {
-                            //Inv<in Nothing> == Inv<out Anything> 
-                            if (!arg.isNothing() ||
-                                    !getUpperBoundIntersection(p).isSubtypeOf(otherArg)) {
-                                return false;
-                            }
-                        }
-                        else if (covariant && otherContravariant) {
-                            //Inv<out Anything> == Inv<in Nothing>
-                            if (!otherArg.isNothing() ||
-                                    !getUpperBoundIntersection(p).isSubtypeOf(arg)) {
-                                return false;
-                            }
-                        }
-                        else if (contravariant && otherInvariant ||
-                                invariant && otherContravariant) {
-                            //Inv<in Anything> == Inv<Anything> 
-                            if (!arg.isAnything() || !otherArg.isAnything()) {
-                                return false;
-                            }
-                        }
-                        else if (covariant && otherInvariant ||
-                                invariant && otherCovariant) {
-                            //Inv<out nothing> == Inv<Nothing>
-                            if (!arg.isNothing() || !otherArg.isNothing()) {
-                                return false;
-                            }
-                        }
-                        else {
-                            //variances are same!
-                            if (!arg.isExactlyInternal(otherArg)) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                return true;
-            }
+        finally {
+            depth.set(depth.get()-1);
         }
     }
 
