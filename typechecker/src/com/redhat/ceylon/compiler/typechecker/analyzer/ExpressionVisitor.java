@@ -1747,7 +1747,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary().getTypeModel(),
                         tp, parameters);
                 if (it.containsUnknowns()) {
-                    that.addError("could not infer type argument from given arguments: type parameter'" + 
+                    that.addError("could not infer type argument from given arguments: type parameter '" + 
                             tp.getName() + "' could not be inferred");
                 }
                 else {
