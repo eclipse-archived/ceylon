@@ -518,7 +518,6 @@ public class JsCompiler {
         outRepo.putArtifact(ac, resDir);
         
         if (isTemp) {
-            resDir.deleteOnExit();
             FileUtil.deleteQuietly(resDir);
         }
     }
