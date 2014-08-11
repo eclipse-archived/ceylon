@@ -1,1 +1,1 @@
-Resource for m1 in alternate root
+altrootm1.txt

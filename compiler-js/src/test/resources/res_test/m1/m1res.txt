@@ -1,1 +1,1 @@
-Resource in module m1
+m1res.txt
