@@ -76,8 +76,9 @@ shared void test() {
         } catch (Throwable e) {
             fail("typed should be assignable to typed");
         }
+        print(n); //this must now pass because of #397
         try {
-            print(n);
+            process.writeLine(n);
             fail("dynamic should not be passed to typed methods");
         } catch (Throwable e) {
             check(true);
