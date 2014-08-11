@@ -180,7 +180,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
 
         CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
             @Override
-            protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
                 for (String moduleAndVersion : moduleAndVersionList) {
                     String modName = ModuleUtil.moduleName(moduleAndVersion);
                     String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);

@@ -6,16 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -257,7 +255,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
      * @param repos The list of repository paths (used as module paths for node.js)
      * @param output An optional PrintStream to write the output of the node.js process to. */
     private ProcessBuilder buildProcess(final String module, final String version, String func, List<String> args,
-            String exepath, Set<File> repos, PrintStream output) {
+            String exepath, final List<File> repos, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
             File _f = new File(exepath);
@@ -331,6 +329,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
         for (File repo : repos) {
             appendToNodePath(nodePath, repo.getPath());
         }
+        if (debug) {
+            System.out.println("NODE_PATH=" + nodePath);
+        }
         proc.environment().put("NODE_PATH", nodePath.toString());
         if (output != null) {
             proc.redirectErrorStream();
@@ -357,7 +358,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return deps;
     }
 
-    protected void loadDependencies(Set<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
+    protected void loadDependencies(List<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
         final List<Object> deps = getDependencies(jsmod);
         if (deps == null) {
             return;
@@ -378,7 +379,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
             final String modvers = depname.substring(idx+1);
             File other = getArtifact(repoman, modname, modvers, optional);
             if (other != null) {
-                repos.add(getRepoDir(modname, other));
+                final File f = getRepoDir(modname, other);
+                if (!repos.contains(f)) {
+                    repos.add(f);
+                }
                 loadDependencies(repos, repoman, other);
             }
         }
@@ -424,15 +428,29 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (version == null) {
             return;
         }
-        
         File jsmod = getArtifact(repoman, modname, version, true);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
-        Set<File> localRepos = new HashSet<File>();
-        localRepos.add(getRepoDir(modname, jsmod));
+        List<File> localRepos = new ArrayList<>();
+        if (repo == null) {
+            localRepos.add(new File("modules").getAbsoluteFile());
+        } else {
+            for (java.net.URI u : repo) {
+                if ("file".equals(u.getScheme())) {
+                    File f = new File(u);
+                    if (!localRepos.contains(f)) {
+                        localRepos.add(f);
+                    }
+                }
+            }
+        }
+        File rd = getRepoDir(modname, jsmod);
+        if (!localRepos.contains(rd)) {
+            localRepos.add(rd);
+        }
         loadDependencies(localRepos, repoman, jsmod);
         customizeDependencies(localRepos, repoman);
-        
+
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
@@ -492,7 +510,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return file;
     }
 
-    protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+    protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
     }
 
     // use to test and debug:
