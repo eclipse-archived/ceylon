@@ -498,26 +498,22 @@ public class JsCompiler {
         if (resFiles == null  || resFiles.isEmpty()) {
             return;
         }
+        
         final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
         ac.setThrowErrorIfMissing(false);
-        boolean isTemp = false;
-        File resDir = outRepo.getArtifact(ac);
-        if (resDir == null || !resDir.exists()) {
-            resDir = Files.createTempDirectory(moduleName + "-" + moduleVersion + "-resources").toFile();
-            isTemp = true;
-        }
         
-        for (File res : resFiles) {
-            File relRes = getDestinationFile(moduleName, res);
-            if (relRes != null) {
-                // Copy the file to the resource dir
-                FileUtil.copy(null, res, resDir, relRes);
+        File resDir = Files.createTempDirectory(moduleName + "-" + moduleVersion + "-resources").toFile();
+        try {
+            for (File res : resFiles) {
+                File relRes = getDestinationFile(moduleName, res);
+                if (relRes != null) {
+                    // Copy the file to the resource dir
+                    FileUtil.copy(null, res, resDir, relRes);
+                }
             }
-        }
-        
-        outRepo.putArtifact(ac, resDir);
-        
-        if (isTemp) {
+            
+            outRepo.putArtifact(ac, resDir);
+        } finally {
             FileUtil.deleteQuietly(resDir);
         }
     }
