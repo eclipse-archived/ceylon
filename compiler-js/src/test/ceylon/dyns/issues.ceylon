@@ -69,26 +69,36 @@ void issue366() {
 void issue369() {
   Float r;
   Integer f;
+  Float r2;
   dynamic {
     r = \iMath.random();
     f = \iMath.floor(1.5);
+    r2 = \iMath.floor(1.1);
   }
   Object x = r;
   Object y = f;
+  Object z = r2;
   check(x is Float, "Issue 369 #1");
   check(x is Number<Float>, "Issue 369 #1.1");
+  check(z is Float, "Issue 369 #1.2");
+  check(z is Number<Float>, "Issue 369 #1.3");
   check(!x is Integer, "Issue 369 #2");
   check(!x is Number<Integer>, "Issue 369 #2.1");
+  check(!z is Integer, "Issue 369 #2.2");
+  check(!z is Number<Integer>, "Issue 369 #2.3");
   check(y is Integer, "Issue 369 #3");
   check(y is Number<Integer>, "Issue 369 #3.1");
   check(!y is Float, "Issue 369 #4");
   check(!y is Number<Float>, "Issue 369 #4.1");
   //Check it has methods
   check(!r.undefined, "Issue 369 #5");
+  check(!r2.undefined, "Issue 369 #5.1");
   check(r.largerThan(-1.0), "Issue 369 #6");
+  check(!r2.largerThan(1.0), "Issue 369 #6.1");
   check(f.negated.sign!=f.sign, "Issue 369 #7");
   check(f.largerThan(-1), "Issue 369 #8");
   check(r.fractionalPart>0.0, "Issue 369 #9");
+  check(r2.fractionalPart==0.0, "Issue 369 #9.1");
 }
 
 void dynamicNumbers() {
