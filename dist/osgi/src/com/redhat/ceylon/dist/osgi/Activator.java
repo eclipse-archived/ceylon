@@ -19,6 +19,7 @@ import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
@@ -48,6 +49,11 @@ public class Activator implements BundleActivator {
 			return null;
 		}
 		
+        @Override
+        public ArtifactContext getSiblingArtifact(String... suffixes) {
+            return null;
+        }
+        
 		@Override
 		public String version() {
 			return wiring.getBundle().getVersion().toString();
