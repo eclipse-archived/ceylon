@@ -39,7 +39,7 @@ public class FileUtil {
      * @param f The file or directory to be deleted
      * @throws RuntimeException if the file or directory could not be deleted
      */
-    public static void delete(File f){
+    public static void delete(File f) {
         delete_(f, false);
     }
     
@@ -48,28 +48,35 @@ public class FileUtil {
      * Doesn't throw any errors
      * @param f The file or directory to be deleted
      */
-    public static void deleteQuietly(File f){
-        delete_(f, true);
+    public static void deleteQuietly(File f) {
+        if (!delete_(f, true)) {
+            // As a last resort
+            f.deleteOnExit();
+        }
     }
     
-    private static void delete_(File f, boolean silent){
+    private static boolean delete_(File f, boolean silent) {
+        boolean ok = true;
         if (f.exists()) {
             if (f.isDirectory()) {
                 for (File c : f.listFiles()) {
-                    delete(c);
+                    ok = ok && delete_(c, silent);
                 }
             }
             try {
                 boolean deleted = f.delete();
+                ok = ok && deleted;
                 if (!deleted && !silent) {
                     throw new RuntimeException("Failed to delete file or directory: " + f.getPath());
                 }
             } catch (Exception ex) {
+                ok = false;
                 if (!silent) {
                     throw new RuntimeException("Failed to delete file or directory: " + f.getPath(), ex);
                 }
             }
         }
+        return ok;
     }
     
     /**
