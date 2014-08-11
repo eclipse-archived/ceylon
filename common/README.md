@@ -20,7 +20,7 @@ Build the module
 ----------------
 
 For setting up the development environment and compiling and building the distribution
-take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-dist#ceylon-distribution).
 
 If after having built the distribution you want to build the module run
 
