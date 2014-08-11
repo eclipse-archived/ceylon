@@ -414,15 +414,17 @@ public class ClassDoc extends ClassOrPackageDoc {
             superTypes.add(0, type);
             type = type.getDeclaration().getExtendedType();
         }
-        int i = 0;
+        int level = 0;
         for (ProducedType superType : superTypes) {
-            writeTypeHierarchyLevel(superType.getDeclaration(), i, true);
+            writeTypeHierarchyLevel(superType.getDeclaration(), level < superTypes.size() - 1);
             if (!isEmpty(superType.getSatisfiedTypes())) {
                 write("<a class='hint' title='Go to the Supertype Hierarchy' onClick='$(\"#tabSupertypeHierarchyNav\").tab(\"show\");'> ...and other supertypes</a>");
             }
-            i++;
+            open("div class='subhierarchy'");
+            level++;
         }
-        while (i-- > 0) {
+        while (level-- > 0) {
+            close("div"); // subhierarchy
             close("li", "ul");
         }
     }
@@ -432,8 +434,11 @@ public class ClassDoc extends ClassOrPackageDoc {
             Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
         }
         for (TypeDeclaration type : types) {
-            writeTypeHierarchyLevel(type, level, false);
-            writeSuperTypeHierarchy(collectSupertypes(type), level + 1);
+            List<TypeDeclaration> supertypes = collectSupertypes(type);
+            writeTypeHierarchyLevel(type, !supertypes.isEmpty());
+            open("div class='subhierarchy'");
+            writeSuperTypeHierarchy(supertypes, level + 1);
+            close("div"); // subhierarchy
             close("li", "ul");
         }
     }
@@ -443,23 +448,24 @@ public class ClassDoc extends ClassOrPackageDoc {
             Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
         }
         for (TypeDeclaration type : types) {
-            writeTypeHierarchyLevel(type, level, true);
+            List<TypeDeclaration> subtypes = collectSubtypes(type);
+            writeTypeHierarchyLevel(type, !subtypes.isEmpty());
             if(level == 0 && Util.isEnumerated(type)){
                 around("span class='keyword'", " of");
             }
-            writeSubtypesHierarchy(collectSubtypes(type), level + 1);
+            open("div class='subhierarchy'");
+            writeSubtypesHierarchy(subtypes, level + 1);
+            close("div"); // subhierarchy
             close("li", "ul");
         }
     }
     
-    private void writeTypeHierarchyLevel(TypeDeclaration type, int level, boolean arrowUp) throws IOException {
-        open("ul class='inheritance inheritance-" + level + "'", "li");
-        if (level > 0) {
-            if( arrowUp ) {
-                around("i class='icon-indentation-arrow-up'");
-            } else {
-                around("i class='icon-indentation-arrow-right'");
-            }
+    private void writeTypeHierarchyLevel(TypeDeclaration type, boolean hasSublevels) throws IOException {
+        open("ul class='hierarchy-level'", "li");
+        if( hasSublevels ) {
+            write("<span class='hierarchy-arrow-down' title='Click for expand/collapse'></span>");
+        } else {
+            write("<span class='hierarchy-arrow-none'></span>");
         }
         writeIcon(type);
         linkRenderer().to(type).printTypeParameters(false).printAbbreviated(false).write();

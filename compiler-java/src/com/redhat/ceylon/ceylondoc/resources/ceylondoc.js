@@ -58,6 +58,23 @@ $(function(){
 
 
 /*
+ * COLLAPSIBLE TYPE HIERARCHY
+ */
+$(".hierarchy-arrow-down").each(function() {
+	var hierarchyArrow = $(this);
+	var hierarchyLevel = hierarchyArrow.parent();
+	var subhierarchy = $(".subhierarchy", hierarchyLevel);
+
+	hierarchyArrow.click(function() {
+		hierarchyArrow.toggleClass("hierarchy-arrow-down");
+		hierarchyArrow.toggleClass("hierarchy-arrow-right");
+		subhierarchy.toggle();    
+    });
+});
+
+
+
+/*
  * COLLAPSIBLE TABLE
  */
 $("table").each(function() {
@@ -653,13 +670,6 @@ $(document).ready(function() {
             if (tbody.is(':visible') != expand ) {
                 thead.click();
             }
-        });
-        $('.subtypes-hierarchy').each(function() {
-        	var title = $('.title', this);
-        	var tree = $('.inheritance-0', this);
-        	if(tree.is(':visible') != expand) {
-        		title.click();
-        	}
         });
     };
 });
