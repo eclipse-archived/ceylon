@@ -99,5 +99,11 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     public Repository repository() {
         return repository;
     }
+
+    @Override
+    public ArtifactContext getSiblingArtifact(String... suffixes) {
+        return new ArtifactContext(name, version, repository, suffixes);
+    }
+    
 }
 
