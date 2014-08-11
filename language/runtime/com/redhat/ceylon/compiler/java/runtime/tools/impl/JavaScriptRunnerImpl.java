@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -20,7 +20,7 @@ public class JavaScriptRunnerImpl implements Runner {
     public JavaScriptRunnerImpl(final RunnerOptions options, String module, String version) {
         tool = new CeylonRunJsTool() {
             @Override
-            protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
                 for (Map.Entry<String,String> extraModule : options.getExtraModules().entrySet()) {
                     String modName = extraModule.getKey();
                     String modVersion = extraModule.getValue();
