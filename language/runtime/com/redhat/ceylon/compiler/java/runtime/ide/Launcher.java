@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
@@ -171,7 +172,14 @@ public class Launcher {
             public Repository repository() {
                 // TODO Auto-generated method stub
                 return null;
-            }};
+            }
+
+            @Override
+            public ArtifactContext getSiblingArtifact(String... suffixes) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        };
     }
 
     private static void error(String string) throws LauncherException {
