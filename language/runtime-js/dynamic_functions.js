@@ -24,3 +24,14 @@ function dre$$(object, type, loc) {
   return object;
 }
 ex$.dre$$=dre$$;
+//print native dynamic object
+function pndo$(o) {
+  if (o === undefined)print("<undefined>");
+  else if (o === null)print("<null>");
+  else if (is$(o,{t:Anything}))print(o);
+  else if (o.string)print(o.string);
+  else {
+    console.log(o);
+  }
+}
+ex$.pndo$=pndo$;
