@@ -96,6 +96,11 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.suffixes = suffixes;
     }
 
+    public ArtifactContext(String name, String version, Repository repository, String... suffixes) {
+        this(name, version);
+        this.suffixes = suffixes;
+    }
+
     public ArtifactContext() {
     }
 
@@ -311,10 +316,6 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public Repository getSearchRepository() {
         return repository;
-    }
-
-    public void setSearchRepository(Repository repository) {
-        this.repository = repository;
     }
 
     @Override
