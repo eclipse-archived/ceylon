@@ -48,6 +48,7 @@ import javax.tools.JavaFileObject;
 import org.junit.Assert;
 import org.junit.Before;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
@@ -583,6 +584,12 @@ public abstract class CompilerTest {
 
             @Override
             public Repository repository() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public ArtifactContext getSiblingArtifact(String... suffixes) {
                 // TODO Auto-generated method stub
                 return null;
             }
