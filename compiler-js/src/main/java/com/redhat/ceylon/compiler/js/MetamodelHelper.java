@@ -31,7 +31,7 @@ public class MetamodelHelper {
             }
         }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-            gen.out("Interface");
+            gen.out("Interface$jsint");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             gen.out("Class$jsint");
         } else if (d instanceof Method) {
