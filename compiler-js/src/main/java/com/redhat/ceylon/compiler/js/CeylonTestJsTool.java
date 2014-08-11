@@ -184,7 +184,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
                 for (String moduleAndVersion : moduleAndVersionList) {
                     String modName = ModuleUtil.moduleName(moduleAndVersion);
                     String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
-                    File artifact = getArtifact(modName, modVersion, repoman);
+                    File artifact = getArtifact(repoman, modName, modVersion, true);
                     localRepos.add(getRepoDir(modName, artifact));
                     loadDependencies(localRepos, repoman, artifact);
                 }
