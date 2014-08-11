@@ -370,8 +370,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 //it's a mandatory dependency
                 depname = (String)dep;
             } else {
-                depname = (String)((Map)dep).get("path");
-                optional = new Integer(1).equals(((Map)dep).get("opt"));
+                @SuppressWarnings("unchecked")
+                final Map<String,Object> depmap = (Map<String,Object>)dep;
+                depname = depmap.get("path").toString();
+                optional = new Integer(1).equals(depmap.get("opt"));
             }
             //Module names have escaped forward slashes due to JSON encoding
             int idx = depname.indexOf('/');

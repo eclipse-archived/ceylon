@@ -157,9 +157,11 @@ public class JsModuleManager extends ModuleManager {
                 boolean optional = false;
                 boolean export = false;
                 if (dep instanceof Map) {
-                    s = (String)((Map)dep).get("path");
-                    optional = ((Map)dep).containsKey("opt");
-                    export = ((Map)dep).containsKey("exp");
+                    @SuppressWarnings("unchecked")
+                    final Map<String,Object> depmap = (Map<String,Object>)dep;
+                    s = (String)depmap.get("path");
+                    optional = depmap.containsKey("opt");
+                    export = depmap.containsKey("exp");
                 } else {
                     s = (String)dep;
                 }
