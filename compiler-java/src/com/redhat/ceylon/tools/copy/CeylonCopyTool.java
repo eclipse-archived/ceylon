@@ -15,6 +15,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.tool.Argument;
@@ -205,6 +206,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         if(!ArtifactContext.isDirectoryName(ac.getSingleSuffix())) {
             signArtifact(ac, archive);
         }
+    }
+
+    @Override
+    protected CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
+        return createRepositoryManagerBuilderNoOut();
     }
 
 }
