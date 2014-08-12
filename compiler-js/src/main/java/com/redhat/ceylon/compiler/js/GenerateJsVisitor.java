@@ -2528,6 +2528,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.NegativeOp that) {
+        if (that.getTerm() instanceof Tree.NaturalLiteral) {
+            long t = parseNaturalLiteral((Tree.NaturalLiteral)that.getTerm());
+            out("(");
+            if (t > 0) {
+                out("-");
+            }
+            out(Long.toString(t));
+            out(")");
+            return;
+        }
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
         final boolean isint = d.inherits(that.getUnit().getIntegerDeclaration());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
