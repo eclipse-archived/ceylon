@@ -14,6 +14,7 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -434,15 +435,11 @@ public class CeylonRunJsTool extends RepoUsingTool {
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         List<File> localRepos = new ArrayList<>();
-        if (repo == null) {
-            localRepos.add(new File("modules").getAbsoluteFile());
-        } else {
-            for (java.net.URI u : repo) {
-                if ("file".equals(u.getScheme())) {
-                    File f = new File(u);
-                    if (!localRepos.contains(f)) {
-                        localRepos.add(f);
-                    }
+        for (Repository r : repoman.getRepositories()) {
+            if (!r.getRoot().isRemote()) {
+                File f = new File(r.getDisplayString());
+                if (!localRepos.contains(f)) {
+                    localRepos.add(f);
                 }
             }
         }
