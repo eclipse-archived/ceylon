@@ -57,7 +57,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
     return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
-    return ifcmoddcl$(this);
+    return coimoddcl$(that);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   atr$(that,'typeArguments',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);

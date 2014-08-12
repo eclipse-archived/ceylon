@@ -32,11 +32,11 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   that.equals=function(o){
     var eq=is$(o,{t:AppliedMemberClass}) && o.tipo===tipo;
     if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
-    return eq;
+    return eq && this.typeArguments.equals(o.typeArguments);
   };
   that.$targs=myTargs;
   atr$(that,'parameterTypes',function(){
-    return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+    return clsparamtypes(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
   atr$(that,'extendedType',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
@@ -48,7 +48,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
   atr$(that,'declaration',function(){
-    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+    return coimoddcl$(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
   atr$(that,'string',function(){

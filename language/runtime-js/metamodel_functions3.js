@@ -62,10 +62,28 @@ function _openTypeFromTarg(targ,o) {
   console.log("Don't know WTF to return for " + lit + " metatype " + mdl.mt);
 }
 //used to be InterfaceModel.declaration
-function ifcmoddcl$(ifc) {
+function coimoddcl$(ifc) {
   if (ifc._decl)return ifc._decl;
   var mm = getrtmm$$(ifc.tipo);
   var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
-  ifc._decl = OpenInterface$jsint(getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), ifc.tipo);
+  var cls = is$(ifc,{t:ClassModel$meta$model});
+  var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
+  ifc._decl = (cls?OpenClass$jsint:OpenInterface$jsint)(_mod.findPackage(mm.d[0]), ifc.tipo);
   return ifc._decl;
+}
+function clsparamtypes(cls) {
+  var ps=cls.tipo.$crtmm$.ps;
+  if (!ps || ps.length==0)return getEmpty();
+  var r=[];
+  for (var i=0; i < ps.length; i++) {
+    var pt=ps[i].$t;
+    if (typeof(pt)==='string'){
+      if (!cls.$targs)throw TypeApplicationException$meta$model("This class model needs type parameters " + cls.string);
+      pt=cls.$targs[pt];
+      if (!pt)throw TypeApplicationException$meta$model("Class model is missing type argument for "
+        + cls.string + "<" + ps[i].$t + ">");
+    }
+    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
+  }
+  return r.length===0?getEmpty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
 }

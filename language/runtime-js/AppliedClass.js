@@ -57,10 +57,10 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
   atr$(that,'declaration',function(){
-    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+    return coimoddcl$(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   atr$(that,'parameterTypes',function(){
-    return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+    return clsparamtypes(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
   atr$(that,'caseValues',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
@@ -83,7 +83,9 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
   that.getInterfaces=ClassOrInterface$meta$model.$$.prototype.getInterfaces;
   that.getDeclaredInterfaces=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces;
-  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.equals=function(o) {
+    return is$(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
+  };
   that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
