@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
 import com.redhat.ceylon.compiler.java.runtime.tools.Compiler;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilerOptions;
@@ -86,7 +85,7 @@ public class JavaScriptCompilerImpl implements Compiler {
         return ret;
     }
 
-    private Options convertOptions(CompilerOptions options) {
+    /*private Options convertOptions(CompilerOptions options) {
         // FIXME: support other options
         Options jsCompilerOptions = new Options();
         for(File sourcePath : options.getSourcePath())
@@ -96,5 +95,5 @@ public class JavaScriptCompilerImpl implements Compiler {
         if(options.getOutputRepository() != null)
             jsCompilerOptions.outRepo(options.getOutputRepository());
         return jsCompilerOptions;
-    }
+    }*/
 }
