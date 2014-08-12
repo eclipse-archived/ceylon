@@ -64,9 +64,16 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
                 .password(pass);
     }
     
+    protected CeylonUtils.CeylonRepoManagerBuilder createOutputRepositoryManagerBuilder() {
+        return super.createRepositoryManagerBuilder()
+                .outRepo(out)
+                .user(user)
+                .password(pass);
+    }
+    
     protected synchronized RepositoryManager getOutputRepositoryManager() {
         if (outrm == null) {
-            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
+            CeylonUtils.CeylonRepoManagerBuilder rmb = createOutputRepositoryManagerBuilder();
             outrm = rmb.buildOutputManager();
         }
         return outrm;
