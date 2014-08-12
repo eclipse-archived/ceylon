@@ -152,19 +152,25 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         
         ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
             @Override
-            public void copyModule(String moduleName, String moduleVersion) throws IOException {
-                String module = ModuleUtil.makeModuleName(moduleName, moduleVersion);
-                msg("copying.module", module).newline().flush();
+            public void beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
+                String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
+                msg("copying.module", module, count+1, max).newline().flush();
             }
             @Override
-            public void copyArtifact(ArtifactContext ac, File archive) throws IOException {
+            public void afterCopyModule(ArtifactContext ac, int count, int max) throws IOException {
+            }
+            @Override
+            public void beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
                 if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
-                    append("    ").msg("copying.artifact", archive.getName()).newline().flush();
+                    append("    ").msg("copying.artifact", archive.getName(), count+1, max).newline().flush();
                 }
             }
             @Override
-            public void notFound(String moduleName, String moduleVersion) throws IOException {
-                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), moduleName, moduleVersion);
+            public void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
+            }
+            @Override
+            public void notFound(ArtifactContext ac) throws IOException {
+                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), ac.getName(), ac.getVersion());
                 errorAppend(err);
                 errorNewline();
             }
