@@ -92,6 +92,10 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
     @Override
     public String toString() {
+        try {
+            String suffix = ArtifactContext.getSuffixFromFilename(artifact().getName());
+            return "[Artifact result: " + name + "/" + version + " (" + suffix + ")]";
+        } catch (RepositoryException ex) {}
         return "[Artifact result: " + name + "/" + version + "]";
     }
 
