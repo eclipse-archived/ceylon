@@ -159,11 +159,12 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }
-            copyModule(module, artifacts);
+            String[] tmp = new String[artifacts.size()];
+            copyModule(module, artifacts.toArray(tmp));
         }
     }
 
-    private void copyModule(ModuleSpec module, Set<String> artifacts) throws IOException {
+    private void copyModule(ModuleSpec module, String... artifacts) throws IOException {
         if (!copiedModules.add(module)) {
             return;
         }
@@ -172,45 +173,10 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
                 msg("copying.module", module).newline().flush();
-                ArtifactResult result = null;
-                Set<String> suffixes = new LinkedHashSet<String>(artifacts);
-                while (!suffixes.isEmpty()) {
-                    // Try to get one of the artifacts
-                    String[] sfx = new String[suffixes.size()];
-                    sfx = suffixes.toArray(sfx);
-                    ArtifactContext ac;
-                    if (result == null) {
-                        ac = new ArtifactContext(module.getName(), module.getVersion(), sfx);
-                    } else {
-                        // We re-use the previous result so we can efficiently
-                        // retrieve further artifacts from the same module
-                        ac = result.getSiblingArtifact(sfx);
-                    }
-                    ac.setThrowErrorIfMissing(false);
-                    result = getRepositoryManager().getArtifactResult(ac);
-                    
-                    if (result != null) {
-                        // Set the proper suffix for the copy operation
-                        String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
-                        ac.setSuffixes(suffix);
-                        
-                        // Perform the actual copying
-                        copyArtifact(ac, result.artifact());
-                        
-                        // make sure we don't try to get the same artifact twice
-                        suffixes.remove(suffix);
-                        
-                        // if we found a car we can skip the jar and module descriptors
-                        if (suffix.equals(ArtifactContext.CAR)) {
-                            suffixes.remove(ArtifactContext.JAR);
-                            suffixes.remove(ArtifactContext.MODULE_PROPERTIES);
-                            suffixes.remove(ArtifactContext.MODULE_XML);
-                        }
-                    } else {
-                        // We didn't find anything (this time),
-                        // we can stop trying more artifact types
-                        break;
-                    }
+                ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts);
+                ArtifactResult results[] = getRepositoryManager().getArtifactResults(ac);
+                for (ArtifactResult r : results) {
+                    copyArtifact(ac, r.artifact());
                 }
                 if (recursive) {
                     for (ModuleInfo dep : ver.getDependencies()) {
@@ -230,6 +196,10 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
             append("    ").msg("copying.artifact", archive.getName()).newline().flush();
         }
+        // Make sure we set the correct suffix for the put
+        String suffix = ArtifactContext.getSuffixFromFilename(archive.getName());
+        ac.setSuffixes(suffix);
+        // Store the artifact
         getOutputRepositoryManager().putArtifact(ac, archive);
         // SHA1 it if required
         if(!ArtifactContext.isDirectoryName(ac.getSingleSuffix())) {
