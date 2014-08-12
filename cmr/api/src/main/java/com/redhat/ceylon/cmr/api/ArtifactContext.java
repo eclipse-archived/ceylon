@@ -99,6 +99,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public ArtifactContext(String name, String version, Repository repository, String... suffixes) {
         this(name, version);
         this.suffixes = suffixes;
+        this.repository = repository;
     }
 
     public ArtifactContext() {
