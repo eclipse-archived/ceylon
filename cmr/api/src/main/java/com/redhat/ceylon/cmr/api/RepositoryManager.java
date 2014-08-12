@@ -93,6 +93,18 @@ public interface RepositoryManager {
     ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException;
 
     /**
+     * Returns ArtifactResult objects, looked up by context. This allows
+     * you to specify several artifact types.
+     * 
+     * @param context the artifact lookup info
+     * @return the list of ArtifactResult objects found. Can be empty of none of the
+     * specified types was found or null if the artifact wasn't found at all
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
+    ArtifactResult[] getArtifactResults(ArtifactContext context) throws RepositoryException;
+
+    /**
      * Publishes an artifact by name/version as an InputStream
      * 
      * @param name the artifact name

@@ -19,7 +19,10 @@ package com.redhat.ceylon.cmr.api;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.common.log.Logger;
 
@@ -85,6 +88,56 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         context.setName(name);
         context.setVersion(version);
         return getArtifactResult(context);
+    }
+
+    public ArtifactResult[] getArtifactResults(ArtifactContext context) throws RepositoryException {
+        List<ArtifactResult> results = new ArrayList<ArtifactResult>();
+        ArtifactResult result = null;
+        Set<String> suffixes = new LinkedHashSet<String>(Arrays.asList(context.getSuffixes()));
+        while (!suffixes.isEmpty()) {
+            // Try to get one of the artifacts
+            String[] sfx = new String[suffixes.size()];
+            sfx = suffixes.toArray(sfx);
+            ArtifactContext ac;
+            if (result == null) {
+                ac = context;
+            } else {
+                // We re-use the previous result so we can efficiently
+                // retrieve further artifacts from the same module
+                ac = result.getSiblingArtifact(sfx);
+                // TODO can't we do this any better?
+                ac.copySettingsFrom(context);
+            }
+            result = getArtifactResult(ac);
+            
+            if (result != null) {
+                results.add(result);
+                
+                // make sure we don't try to get the same artifact twice
+                String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
+                suffixes.remove(suffix);
+                
+                // TODO this shouldn't be hard-coded here but is to prevent
+                // unnecessary queries to remote repositories
+                if (suffix.equals(ArtifactContext.CAR)) {
+                    // if we found a car we can skip the jar and module descriptors
+                    suffixes.remove(ArtifactContext.JAR);
+                    suffixes.remove(ArtifactContext.MODULE_PROPERTIES);
+                    suffixes.remove(ArtifactContext.MODULE_XML);
+                } else if (suffix.equals(ArtifactContext.JAR)
+                        || suffix.equals(ArtifactContext.MODULE_PROPERTIES)
+                        || suffix.equals(ArtifactContext.MODULE_XML)) {
+                    // or the exact opposite
+                    suffixes.remove(ArtifactContext.CAR);
+                }
+            } else {
+                // We didn't find anything (this time),
+                // we can stop trying more artifact types
+                break;
+            }
+        }
+        ArtifactResult[] tmp = new ArtifactResult[results.size()];
+        return results.toArray(tmp);
     }
 
     public void putArtifact(String name, String version, InputStream content) throws RepositoryException {

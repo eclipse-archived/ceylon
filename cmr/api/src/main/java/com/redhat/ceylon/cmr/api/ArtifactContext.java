@@ -349,6 +349,13 @@ public class ArtifactContext implements Serializable, ContentOptions {
     
     private ArtifactContext copy() {
         ArtifactContext ac = new ArtifactContext(name, version, suffixes);
+        ac.copySettingsFrom(this);
+        ac.repository = repository;
+        return ac;
+    }
+    
+    // TODO can't we do this any better?
+    public ArtifactContext copySettingsFrom(ArtifactContext ac) {
         ac.localOnly = localOnly;
         ac.ignoreSHA = ignoreSHA;
         ac.ignoreCache = ignoreCache;
@@ -357,7 +364,6 @@ public class ArtifactContext implements Serializable, ContentOptions {
         ac.forceDescriptorCheck = forceDescriptorCheck;
         ac.fetchSingleArtifact = fetchSingleArtifact;
         ac.callback = callback;
-        ac.repository = repository;
         return ac;
     }
 }
