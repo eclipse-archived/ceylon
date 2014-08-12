@@ -61,3 +61,11 @@ function _openTypeFromTarg(targ,o) {
   }
   console.log("Don't know WTF to return for " + lit + " metatype " + mdl.mt);
 }
+//used to be InterfaceModel.declaration
+function ifcmoddcl$(ifc) {
+  if (ifc._decl)return ifc._decl;
+  var mm = getrtmm$$(ifc.tipo);
+  var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
+  ifc._decl = OpenInterface$jsint(getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), ifc.tipo);
+  return ifc._decl;
+}

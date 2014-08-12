@@ -39,7 +39,6 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
   that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
   that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
-  that.equals=InterfaceModel$meta$model.$$.prototype.equals;
   that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
@@ -52,14 +51,17 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   that.equals=function(o){
     var eq=is$(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
     if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
-    return eq;
+    return eq && this.typeArguments.equals(o.typeArguments);
   };
   atr$(that,'string',function(){
     return qname$(mm);
   },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
   atr$(that,'declaration',function(){
-    return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+    return ifcmoddcl$(this);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  atr$(that,'typeArguments',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
   that.$_bind=function(x){return AppliedMemberInterface.$$.prototype.$_bind.call(that,x);}
   return that;
 }
