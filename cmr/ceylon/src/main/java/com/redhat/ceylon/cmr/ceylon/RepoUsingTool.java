@@ -145,6 +145,10 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
     
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
+        return createRepositoryManagerBuilderNoOut();
+    }
+    
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut() {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
                 .mavenOverrides(mavenOverrides)
