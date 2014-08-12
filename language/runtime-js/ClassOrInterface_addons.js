@@ -109,27 +109,6 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute=function getDeclar
   }
   return rv;
 };ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}]},ps:[{nm:'name',mt:'prm',$t:{t:$_String},an:function(){return[];}}],$cont:ClassOrInterface$meta$model,tp:{Container:{},Type:{}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttribute']};};
-atr$(ClassOrInterface$meta$model.$$.prototype,'container',function(){
-  if (this.$parent)return this.$parent;
-  var cont = getrtmm$$(this.tipo).$cont;
-  if (cont === undefined)return null;
-  var cmm=getrtmm$$(cont);
-  var _t={t:cont};
-  var _out=undefined;
-  if (this.src$ && this.src$.outer$) {
-    _out=this.src$.outer$;
-    if (_out.$$targs$$) {
-      _t.a=_out.$$targs$$;
-    }
-  }
-  var rv;
-  if (get_model(cmm).mt === 'i')
-    rv=AppliedInterface(cont,{Type$Interface:_t});
-  //TODO tipos de parametros
-  rv=AppliedClass(cont,{Type$Class:_t,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
-  if (_out)rv.src$=_out;
-  return rv;
-},undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
   var _tipo=mmfca$(this.tipo,$$$mptypes.Container$getClassOrInterface);
@@ -253,57 +232,6 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   }
   throw Exception("ClassOrInterface.typeArguments-we don't have a metamodel!");
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-atr$(ClassOrInterface$meta$model.$$.prototype,'string',function(){
-    var mm = getrtmm$$(this.tipo);
-    var qn=this.tipo.$$ && this.tipo.$$.prototype && this.tipo.$$.prototype.getT$name ? this.tipo.$$.prototype.getT$name() : qname$(mm);
-    if (mm.tp) {
-      qn+="<";
-      var first=true;
-      for (var tp in mm.tp) {
-        var targ;
-        if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
-          var _targ=this.$$targs$$.Type$ClassOrInterface.a[tp];
-          if (typeof(_targ)==='string') {
-            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
-            _targ={t:Anything};
-          }
-          targ=typeLiteral$meta({Type$typeLiteral:_targ});
-        } else {
-          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
-        }
-        if (first)first=false; else qn+=",";
-        if (targ.declaration) {
-          qn+=targ.declaration.qualifiedName;
-        } else {
-          qn+=targ.string;
-        }
-      }
-      qn+=">";
-    }
-    return qn;
-},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
-atr$(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
-  var mm = getrtmm$$(this.tipo);
-  var h=qname$(mm).hash;
-  if (mm.tp) {
-    for (var tp in mm.tp) {
-      var targ;
-      if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
-        var _targ=this.$$targs$$.Type$ClassOrInterface.a[tp];
-        if (typeof(_targ)==='string') {
-          console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
-          _targ={t:Anything};
-        }
-        targ=typeLiteral$meta({Type$typeLiteral:_targ});
-      } else {
-        targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
-      }
-      h+=targ.hash;
-    }
-  }
-  if (this.$bound)h+=this.$bound.hash;
-  return h;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
 atr$(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
   var sc = this.tipo.$crtmm$['super'];
   if (sc === undefined)return null;

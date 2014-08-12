@@ -51,12 +51,9 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
     return coimoddcl$(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
-  atr$(that,'string',function(){
-    return qname$(mm);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
-  atr$(that,'container',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
-  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
+  atr$(that,'container',function(){return coicont$(that); },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
   that.tipo=tipo;

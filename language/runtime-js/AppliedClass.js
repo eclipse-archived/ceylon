@@ -42,14 +42,10 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
   atr$(that,'container',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
+    return coicont$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-  atr$(that,'string',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getString.get.call(that);
-  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getString.$crtmm$);
-  atr$(that,'hash',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getHash.get.call(that);
-  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getHash.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'typeArguments',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);

@@ -39,15 +39,15 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
     if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
     return eq && this.typeArguments.equals(o.typeArguments);
   };
-  atr$(that,'string',function(){
-    return qname$(mm);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string']};});
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'declaration',function(){
     return coimoddcl$(that);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   atr$(that,'typeArguments',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
+  atr$(that,'container',function(){return coicont$(that); },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
   that.tipo=tipo;
   return that;
 }

@@ -162,3 +162,75 @@ function funtypearg$(fun) {
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+function coicont$(coi) {
+  if (coi.$parent)return coi.$parent;
+  var cont = getrtmm$$(coi.tipo).$cont;
+  if (cont === undefined)return null;
+  var cmm=getrtmm$$(cont);
+  var _t={t:cont};
+  var _out=undefined;
+  if (coi.src$ && coi.src$.outer$) {
+    _out=coi.src$.outer$;
+    if (_out.$$targs$$) {
+      _t.a=_out.$$targs$$;
+    }
+  }
+  var rv;
+  if (get_model(cmm).mt === 'i')
+    rv=AppliedInterface(cont,{Type$Interface:_t});
+  //TODO tipos de parametros
+  rv=AppliedClass(cont,{Type$Class:_t,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  if (_out)rv.src$=_out;
+  return rv;
+}
+function coistr$(coi) {
+  var mm = getrtmm$$(coi.tipo);
+  var qn=coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name ? coi.tipo.$$.prototype.getT$name() : qname$(mm);
+  if (mm.tp) {
+    qn+="<";
+    var first=true;
+    for (var tp in mm.tp) {
+      var targ;
+      if (coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface && coi.$$targs$$.Type$ClassOrInterface.a && coi.$$targs$$.Type$ClassOrInterface.a[tp]) {
+        var _targ=coi.$$targs$$.Type$ClassOrInterface.a[tp];
+        if (typeof(_targ)==='string') {
+          console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
+          _targ={t:Anything};
+        }
+        targ=typeLiteral$meta({Type$typeLiteral:_targ});
+      } else {
+        targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
+      }
+      if (first)first=false; else qn+=",";
+      if (targ.declaration) {
+        qn+=targ.declaration.qualifiedName;
+      } else {
+        qn+=targ.string;
+      }
+    }
+    qn+=">";
+  }
+  return qn;
+}
+function coihash$(coi) {
+  var mm = getrtmm$$(coi.tipo);
+  var h=qname$(mm).hash;
+  if (mm.tp) {
+    for (var tp in mm.tp) {
+      var targ;
+      if (coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface && coi.$$targs$$.Type$ClassOrInterface.a && coi.$$targs$$.Type$ClassOrInterface.a[tp]) {
+        var _targ=coi.$$targs$$.Type$ClassOrInterface.a[tp];
+        if (typeof(_targ)==='string') {
+          console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
+          _targ={t:Anything};
+        }
+        targ=typeLiteral$meta({Type$typeLiteral:_targ});
+      } else {
+        targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
+      }
+      h+=targ.hash;
+    }
+  }
+  if (coi.$bound)h+=coi.$bound.hash;
+  return h;
+}
