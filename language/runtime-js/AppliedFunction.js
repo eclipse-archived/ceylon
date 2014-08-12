@@ -37,16 +37,16 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   f.$targs=ttargs;
   if (o)f.$bound=o;
   atr$(f,'typeArguments',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call(f);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key$Map:{t:TypeParameter$meta$declaration},Item$Map:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}}},$cont:AppliedFunction,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+    return funtypearg$(f);
+  },undefined,FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
   f.equals=function(oo){
     return is$(oo,{t:AppliedFunction}) && oo.tipo===m && oo.typeArguments.equals(this.typeArguments) && (o?o.equals(oo.$bound):oo.$bound===o);
   }
   atr$(f,'string',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedFunction};});
+    return funmodstr$(f);
+  },undefined,$_Object({}).$prop$getString.$crtmm$);
   atr$(f,'parameterTypes',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
+    return funparamtypes(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
 atr$(f,'declaration',function(){
   if (f._decl)return f._decl;

@@ -49,10 +49,10 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Type'}},$cont:AppliedMethod,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
   atr$($$appliedMethod,'typeArguments',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call($$appliedMethod);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}}},$cont:AppliedMethod,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+    return funtypearg$($$appliedMethod);
+  },undefined,FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
   atr$($$appliedMethod,'parameterTypes',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call($$appliedMethod);
+    return funparamtypes($$appliedMethod);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
 
   $$appliedMethod.equals=function(o){
@@ -63,8 +63,8 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     return $$appliedMethod(o);
   }
   atr$($$appliedMethod,'string',function(){
-    return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:$_String},d:['$','Object','$at','string'],$cont:AppliedMethod};});
+    return funmodstr$($$appliedMethod);
+  },undefined,$_Object({}).$prop$getString.$crtmm$);
   atr$($$appliedMethod,'container',function(){
     if (this.toplevel)return this.containingPackage;
     if (this.$parent===undefined)this.$parent=typeLiteral$meta({Type$typeLiteral:getrtmm$$(this.tipo).$cont});
