@@ -20,6 +20,12 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
+/**
+ * Class that can be used to copy modules from one repository to another.
+ * Specific artifact types can be selected for copying while others 
+ * will be skipped. It's also possible to recursively copy all dependencies.
+ * @author Tako Schotanus
+ */
 public class ModuleCopycat {
     private RepositoryManager srcRepoman;
     private RepositoryManager dstRepoman;
@@ -34,15 +40,38 @@ public class ModuleCopycat {
         void notFound(String moduleName, String moduleVersion) throws Exception;
     }
     
+    /**
+     * Set up the object with the given source and destination repositories
+     * @param srcRepoman The source repository to copy from
+     * @param dstRepoman The destination repository to copy to
+     */
     public ModuleCopycat(RepositoryManager srcRepoman, RepositoryManager dstRepoman) {
         this(srcRepoman, dstRepoman, null);
     }
     
+    /**
+     * Set up the object with the given source and destination repositories and callback
+     * interface to receive feedback on progress and errors
+     * @param srcRepoman The source repository to copy from
+     * @param dstRepoman The destination repository to copy to
+     * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
+     */
     public ModuleCopycat(RepositoryManager srcRepoman, RepositoryManager dstRepoman, CopycatFeedback feedback) {
         this(srcRepoman, dstRepoman, new CMRJULLogger(), feedback);
     }
     
+    /**
+     * Set up the object with the given source and destination repositories and callback
+     * interface to receive feedback on progress and errors
+     * @param srcRepoman The source repository to copy from
+     * @param dstRepoman The destination repository to copy to
+     * @param log The logger to use
+     * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
+     */
     public ModuleCopycat(RepositoryManager srcRepoman, RepositoryManager dstRepoman, Logger log, CopycatFeedback feedback) {
+        assert(srcRepoman != null);
+        assert(dstRepoman != null);
+        assert(log != null);
         this.srcRepoman = srcRepoman;
         this.dstRepoman = dstRepoman;
         this.feedback = feedback;
@@ -50,7 +79,17 @@ public class ModuleCopycat {
         this.copiedModules = new HashSet<String>();
     }
     
+    /**
+     * Method to copy the given module from the source repository to the destination repository.
+     * The context's "suffixes" will be used to determine which artifact types will be copied.
+     * If the `isFetchSingleArtifact` is not set all the module's dependencies will also be copied.
+     * Repeated call to this method with the same module/version will only result in a single copy!  
+     * @param context The ArtifactContext containing the information on the module to copy
+     * @throws Exception Can throw RepositoryException or any exception that was thrown by code
+     * in the "feedback" callback interface
+     */
     public void copyModule(ArtifactContext context) throws Exception {
+        assert(context != null);
         String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
         if (!copiedModules.add(module)) {
             return;
