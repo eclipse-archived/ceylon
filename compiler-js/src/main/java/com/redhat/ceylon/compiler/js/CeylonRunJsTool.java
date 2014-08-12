@@ -471,33 +471,29 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     // Make sure JS and JS_MODEL artifacts exist and try to obtain the RESOURCES as well
     protected File getArtifact(RepositoryManager repoman, String modName, String modVersion, boolean optional) {
-        // TODO We should try to do this more efficiently!
-        // Right now we're doing 3 different global artifact retrieval calls
-        // while we know they should all come from the same place
-        ArtifactResult code = getSingleArtifact(repoman, modName, modVersion, ArtifactContext.JS);
-        ArtifactResult model = null;
-        if (code != null) {
-            model = getSingleArtifact(repoman, code.getSiblingArtifact(ArtifactContext.JS_MODEL));
-        }
+        ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
+        ac.setFetchSingleArtifact(true);
+        ac.setThrowErrorIfMissing(false);
+        ArtifactResult[] results = repoman.getArtifactResults(ac);
+        ArtifactResult code = getArtifactType(results, ArtifactContext.JS);
+        ArtifactResult model = getArtifactType(results, ArtifactContext.JS_MODEL);
         if (code == null || model == null) {
             if (optional) {
                 return null;
             }
             throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
         }
-        getSingleArtifact(repoman, code.getSiblingArtifact(ArtifactContext.RESOURCES));
         return model.artifact();
     }
 
-    protected ArtifactResult getSingleArtifact(RepositoryManager repoman, String modName, String modVersion, String suffix) {
-        ArtifactContext ac = new ArtifactContext(modName, modVersion, suffix);
-        return getSingleArtifact(repoman, ac);
-    }
-
-    protected ArtifactResult getSingleArtifact(RepositoryManager repoman, ArtifactContext ac) {
-        ac.setFetchSingleArtifact(true);
-        ac.setThrowErrorIfMissing(false);
-        return repoman.getArtifactResult(ac);
+    protected ArtifactResult getArtifactType(ArtifactResult[] results, String suffix) {
+        for (ArtifactResult r : results) {
+            String s = ArtifactContext.getSuffixFromFilename(r.artifact().getName());
+            if (s.equals(suffix)) {
+                return r;
+            }
+        }
+        return null;
     }
 
     protected File getRepoDir(String modname, File file) {
