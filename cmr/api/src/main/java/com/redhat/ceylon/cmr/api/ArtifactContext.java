@@ -356,14 +356,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
     
     // TODO can't we do this any better?
     public ArtifactContext copySettingsFrom(ArtifactContext ac) {
-        ac.localOnly = localOnly;
-        ac.ignoreSHA = ignoreSHA;
-        ac.ignoreCache = ignoreCache;
-        ac.throwErrorIfMissing = throwErrorIfMissing;
-        ac.forceOperation = forceOperation;
-        ac.forceDescriptorCheck = forceDescriptorCheck;
-        ac.fetchSingleArtifact = fetchSingleArtifact;
-        ac.callback = callback;
+        localOnly = ac.localOnly;
+        ignoreSHA = ac.ignoreSHA;
+        ignoreCache = ac.ignoreCache;
+        throwErrorIfMissing = ac.throwErrorIfMissing;
+        forceOperation = ac.forceOperation;
+        forceDescriptorCheck = ac.forceDescriptorCheck;
+        fetchSingleArtifact = ac.fetchSingleArtifact;
+        callback = ac.callback;
         return ac;
     }
 }
