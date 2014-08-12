@@ -347,7 +347,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return isForceDescriptorCheck();
     }
     
-    private ArtifactContext copy() {
+    public ArtifactContext copy() {
         ArtifactContext ac = new ArtifactContext(name, version, suffixes);
         ac.copySettingsFrom(this);
         ac.repository = repository;
