@@ -62,7 +62,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   that.tipo=tipo;
   return that;
 }
-AppliedMemberClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberClass:{dv:'in'},Type$MemberClass:{dv:'out','def':{t:Anything}},Arguments$MemberClass:{dv:'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$MemberClass',Type$MemberClass:'Type$MemberClass',Container$MemberClass:'Container$MemberClass'}}],an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
+AppliedMemberClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberClass:{dv:'in'},Type$MemberClass:{dv:'out','def':{t:Anything}},Arguments$MemberClass:{dv:'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$MemberClass',Type$MemberClass:'Type$MemberClass',Container$MemberClass:'Container$MemberClass'}}],an:function(){return[shared(),$_abstract()];},d:['','AppliedMemberClass']};};
 ex$.AppliedMemberClass=AppliedMemberClass;
 function $init$AppliedMemberClass(){
   if (AppliedMemberClass.$$===undefined){

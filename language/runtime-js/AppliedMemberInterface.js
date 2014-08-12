@@ -63,7 +63,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   that.$_bind=function(x){return AppliedMemberInterface.$$.prototype.$_bind.call(that,x);}
   return that;
 }
-AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberInterface:{dv:'in'},Type$MemberInterface:{dv:'out','def':{t:Anything}}},sts:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
+AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},ps:[],tp:{Container$MemberInterface:{dv:'in'},Type$MemberInterface:{dv:'out','def':{t:Anything}}},sts:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],an:function(){return[shared(),$_abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
 ex$.AppliedMemberInterface=AppliedMemberInterface;
 function $init$AppliedMemberInterface(){
   if (AppliedMemberInterface.$$===undefined){

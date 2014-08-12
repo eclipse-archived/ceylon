@@ -1,6 +1,6 @@
 function $_Boolean(value) {return Boolean(value)}
 initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
-$_Boolean.$crtmm$={ps:[],an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
+$_Boolean.$crtmm$={ps:[],an:function(){return[shared(),$_abstract()]},mod:$CCMM$,d:['$','Boolean']};
 ex$.$_Boolean=$_Boolean;
 function trueClass() {}
 initType(trueClass, "ceylon.language::true", $_Boolean);

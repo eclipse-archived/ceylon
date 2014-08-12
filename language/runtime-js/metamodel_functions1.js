@@ -61,7 +61,7 @@ function getAnnotationsForBitmask(bits) {
   if (bits&32)ans.push($_final());
   if (bits&64)ans.push($_native());
   if (bits&128)ans.push(late());
-  if (bits&256)ans.push(abstract());
+  if (bits&256)ans.push($_abstract());
   if (bits&512)ans.push(annotation());
   if (bits&1024)ans.push(variable());
   return ans;
