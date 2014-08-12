@@ -2,22 +2,17 @@ package com.redhat.ceylon.tools.copy;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.ModuleCopycat;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -37,7 +32,6 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     private List<ModuleSpec> modules;
     private boolean recursive;
     
-    private HashSet<ModuleSpec> copiedModules = new HashSet<ModuleSpec>();
     private Boolean jvm;
     private Boolean js;
     private Boolean docs;
@@ -155,56 +149,35 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             artifacts.remove(ArtifactContext.DOCS_ZIPPED);
             artifacts.remove(ArtifactContext.DOCS);
         }
+        
+        ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
+            @Override
+            public void copyModule(String moduleName, String moduleVersion) throws IOException {
+                String module = ModuleUtil.makeModuleName(moduleName, moduleVersion);
+                msg("copying.module", module).newline().flush();
+            }
+            @Override
+            public void copyArtifact(ArtifactContext ac, File archive) throws IOException {
+                if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
+                    append("    ").msg("copying.artifact", archive.getName()).newline().flush();
+                }
+            }
+            @Override
+            public void notFound(String moduleName, String moduleVersion) throws IOException {
+                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), moduleName, moduleVersion);
+                errorAppend(err);
+                errorNewline();
+            }
+        });
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }
             String[] tmp = new String[artifacts.size()];
-            copyModule(module, artifacts.toArray(tmp));
-        }
-    }
-
-    private void copyModule(ModuleSpec module, String... artifacts) throws IOException {
-        if (!copiedModules.add(module)) {
-            return;
-        }
-        if (!JDKUtils.isJDKModule(module.getName()) && !JDKUtils.isOracleJDKModule(module.getName())) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null, null);
-            if (!versions.isEmpty()) {
-                ModuleVersionDetails ver = versions.iterator().next();
-                msg("copying.module", module).newline().flush();
-                ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts);
-                ArtifactResult results[] = getRepositoryManager().getArtifactResults(ac);
-                for (ArtifactResult r : results) {
-                    copyArtifact(ac, r.artifact());
-                }
-                if (recursive) {
-                    for (ModuleInfo dep : ver.getDependencies()) {
-                        ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
-                        copyModule(depModule, artifacts);
-                    }
-                }
-            } else {
-                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
-                errorAppend(err);
-                errorNewline();
-            }
-        }
-    }
-    
-    private void copyArtifact(ArtifactContext ac, File archive) throws RepositoryException, IOException {
-        if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
-            append("    ").msg("copying.artifact", archive.getName()).newline().flush();
-        }
-        // Make sure we set the correct suffix for the put
-        String suffix = ArtifactContext.getSuffixFromFilename(archive.getName());
-        ac.setSuffixes(suffix);
-        // Store the artifact
-        getOutputRepositoryManager().putArtifact(ac, archive);
-        // SHA1 it if required
-        if(!ArtifactContext.isDirectoryName(ac.getSingleSuffix())) {
-            signArtifact(ac, archive);
+            ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts.toArray(tmp));
+            ac.setFetchSingleArtifact(!recursive);
+            copier.copyModule(ac);
         }
     }
 
