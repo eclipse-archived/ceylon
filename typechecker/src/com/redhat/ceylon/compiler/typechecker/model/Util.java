@@ -421,11 +421,18 @@ public class Util {
      *   the pattern.
      */
     public static boolean isNameMatching(String startingWith, Declaration d) {
+        return isNameMatching(startingWith, d.getName());
+    }
+    
+    public static boolean isNameMatching(String startingWith, Import i) {
+        return isNameMatching(startingWith, i.getAlias());
+    }
+    
+    public static boolean isNameMatching(String startingWith, String name) {
         if (startingWith==null ||
                 startingWith.isEmpty()) {
             return true;
         }
-        String name = d.getName();
         if (name==null || name.isEmpty() || 
                 name.length()<startingWith.length()) {
             return false;

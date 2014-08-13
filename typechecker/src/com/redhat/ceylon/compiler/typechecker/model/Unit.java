@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
@@ -187,10 +188,9 @@ public class Unit {
     	Map<String, DeclarationWithProximity> result = 
     	        new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
-            if (i.getAlias()!=null && !i.isAmbiguous() &&
-                    //TODO: use Util.isNameMatching()
-                    i.getAlias().toLowerCase()
-                        .startsWith(startingWith.toLowerCase())) {
+            if (i.getAlias()!=null && 
+                    !i.isAmbiguous() &&
+                    isNameMatching(startingWith, i)) {
                 Declaration d = i.getDeclaration();
                 if (d.isToplevel() || d.isStaticallyImportable()) {
                     result.put(i.getAlias(), 
@@ -209,11 +209,10 @@ public class Unit {
                 new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
             TypeDeclaration itd = i.getTypeDeclaration();
-            if (i.getAlias()!=null && !i.isAmbiguous() &&
+            if (i.getAlias()!=null && 
+                    !i.isAmbiguous() &&
                     itd!=null && itd.equals(td) &&
-                    //TODO: use Util.isNameMatching()
-                    i.getAlias().toLowerCase()
-                        .startsWith(startingWith.toLowerCase())) {
+                    isNameMatching(startingWith, i)) {
                 result.put(i.getAlias(), 
                         new DeclarationWithProximity(i, 
                                 proximity));
