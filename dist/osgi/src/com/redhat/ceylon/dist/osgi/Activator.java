@@ -49,11 +49,6 @@ public class Activator implements BundleActivator {
 			return null;
 		}
 		
-        @Override
-        public ArtifactContext getSiblingArtifact(String... suffixes) {
-            return null;
-        }
-        
 		@Override
 		public String version() {
 			return wiring.getBundle().getVersion().toString();
