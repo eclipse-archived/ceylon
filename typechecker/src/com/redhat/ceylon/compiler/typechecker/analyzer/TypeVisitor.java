@@ -144,24 +144,24 @@ public class TypeVisitor extends Visitor {
     
     private void addWildcardImport(ImportList il, Declaration dec, Import i) {
         if (notOverloaded(dec)) {
-        	String alias = i.getAlias();
-    		if (alias!=null) {
-        		Import o = unit.getImport(dec.getName());
-        		if (o!=null && o.isWildcardImport()) {
+            String alias = i.getAlias();
+            if (alias!=null) {
+                Import o = unit.getImport(dec.getName());
+                if (o!=null && o.isWildcardImport()) {
                     if (o.getDeclaration().equals(dec)) {
-        				//this case only happens in the IDE,
-        				//due to reuse of the Unit
-        				unit.getImports().remove(o);
-        				il.getImports().remove(o);
-        			}
+                        //this case only happens in the IDE,
+                        //due to reuse of the Unit
+                        unit.getImports().remove(o);
+                        il.getImports().remove(o);
+                    }
                     else {
                         i.setAmbiguous(true);
                         o.setAmbiguous(true);
                     }
-        		}
-        		unit.getImports().add(i);
-        		il.getImports().add(i);
-        	}
+                }
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
         }
     }
     
@@ -224,7 +224,7 @@ public class TypeVisitor extends Visitor {
                 Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
                     if (findModuleInTransitiveImports(mi.getModule(), 
-                    		pkg.getModule(), visited)) {
+                            pkg.getModule(), visited)) {
                         return pkg; 
                     }
                 }
@@ -236,7 +236,7 @@ public class TypeVisitor extends Visitor {
                 help = " (add module import to module descriptor of '" +
                         module.getNameAsString() + "')";
             path.addError("package not found in imported modules: '" + 
-            		nameToImport + "'" + help, 7000);
+                    nameToImport + "'" + help, 7000);
         }
         return null;
     }
@@ -302,14 +302,14 @@ public class TypeVisitor extends Visitor {
     private void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
-        	if (d instanceof TypeDeclaration) {
+            if (d instanceof TypeDeclaration) {
                 Set<String> names = new HashSet<String>();
                 ImportList til = imtl.getImportList();
                 TypeDeclaration td = (TypeDeclaration) d;
                 til.setImportedScope(td);
-        		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
-        			names.add(importMember(submember, td, til));
-            	}
+                for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
+                    names.add(importMember(submember, td, til));
+                }
                 if (imtl.getImportWildcard()!=null) {
                     importAllMembers(td, names, til);
                 }
@@ -317,16 +317,16 @@ public class TypeVisitor extends Visitor {
                     imtl.addError("empty import list");
                 }
             }
-        	else {
-        		imtl.addError("member alias list must follow a type");
-        	}
+            else {
+                imtl.addError("member alias list must follow a type");
+            }
         }
     }
     
     private void checkAliasCase(Tree.Alias alias, Declaration d) {
         if (alias!=null) {
             Tree.Identifier id = alias.getIdentifier();
-			int tt = id.getToken().getType();
+            int tt = id.getToken().getType();
             if (d instanceof TypeDeclaration &&
                     tt!=CeylonLexer.UIDENTIFIER) {
                 id.addError("imported type should have uppercase alias: '" +
@@ -397,8 +397,8 @@ public class TypeVisitor extends Visitor {
     
     private String importMember(Tree.ImportMemberOrType member, 
             TypeDeclaration td, ImportList il) {
-    	Tree.Identifier id = member.getIdentifier();
-		if (id==null) {
+        Tree.Identifier id = member.getIdentifier();
+        if (id==null) {
             return null;
         }
         Import i = new Import();
@@ -440,8 +440,8 @@ public class TypeVisitor extends Visitor {
                             name + "' of '" + td.getName() + "'");
                 }
             }
+            i.setTypeDeclaration(td);
             if (!m.isStaticallyImportable()) {
-                i.setTypeDeclaration(td);
                 if (alias==null) {
                     member.addError("does not specify an alias");
                 }
@@ -502,21 +502,21 @@ public class TypeVisitor extends Visitor {
     
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
-    	String alias = i.getAlias();
-		if (alias!=null) {
-    		if (il.getImport(alias)==null) {
-    			unit.getImports().add(i);
-    			il.getImports().add(i);
-    		}
-    		else {
-    			member.addError("duplicate member import alias: '" + alias + "'");
-    		}
-    	}
+        String alias = i.getAlias();
+        if (alias!=null) {
+            if (il.getImport(alias)==null) {
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
+            else {
+                member.addError("duplicate member import alias: '" + alias + "'");
+            }
+        }
     }
     
     private boolean isNonimportable(Package pkg, String name) {
         return pkg.getQualifiedNameString().equals("java.lang") &&
-        		("Object".equals(name) ||
+                ("Object".equals(name) ||
                  "Throwable".equals(name) ||
                  "Exception".equals(name));
     }
@@ -525,7 +525,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.StaticType type = that.getType();
         if (type!=null) {
-        	that.setTypeModel(type.getTypeModel());
+            that.setTypeModel(type.getTypeModel());
         }
     }
     
@@ -536,8 +536,8 @@ public class TypeVisitor extends Visitor {
                 new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToUnion( types, st.getTypeModel() );
-        	ProducedType t = st.getTypeModel();
-			if (t!=null) types.add(t);
+            ProducedType t = st.getTypeModel();
+            if (t!=null) types.add(t);
         }
         UnionType ut = new UnionType(unit);
         ut.setCaseTypes(types);
@@ -552,8 +552,8 @@ public class TypeVisitor extends Visitor {
                 new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToIntersection(types, st.getTypeModel(), unit);
-        	ProducedType t = st.getTypeModel();
-			if (t!=null) types.add(t);
+            ProducedType t = st.getTypeModel();
+            if (t!=null) types.add(t);
         }
         IntersectionType it = new IntersectionType(unit);
         it.setSatisfiedTypes(types);
@@ -603,25 +603,25 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.IterableType that) {
         super.visit(that);
         Tree.Type elem = that.getElementType();
-		if (elem==null) {
-			that.setTypeModel(unit.getIterableType(unit.getNothingDeclaration().getType()));
-			that.addError("iterable type must have an element type");
-		}
-		else {
-        	if (elem instanceof Tree.SequencedType) {
-        		ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
-        		if (et!=null) {
-        			if (((Tree.SequencedType) elem).getAtLeastOne()) {
-        				that.setTypeModel(unit.getNonemptyIterableType(et));
-        			}
-        			else {
-        				that.setTypeModel(unit.getIterableType(et));
-        			}
-        		}
-        	}
-        	else {
-        		that.addError("malformed iterable type");
-        	}
+        if (elem==null) {
+            that.setTypeModel(unit.getIterableType(unit.getNothingDeclaration().getType()));
+            that.addError("iterable type must have an element type");
+        }
+        else {
+            if (elem instanceof Tree.SequencedType) {
+                ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
+                if (et!=null) {
+                    if (((Tree.SequencedType) elem).getAtLeastOne()) {
+                        that.setTypeModel(unit.getNonemptyIterableType(et));
+                    }
+                    else {
+                        that.setTypeModel(unit.getIterableType(et));
+                    }
+                }
+            }
+            else {
+                that.addError("malformed iterable type");
+            }
         }
     }
     
@@ -650,92 +650,92 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-		that.setTypeModel(producedType(unit.getCallableDeclaration(),
-        		that.getReturnType().getTypeModel(),
-        		getTupleType(that.getArgumentTypes(), unit)));
+        that.setTypeModel(producedType(unit.getCallableDeclaration(),
+                that.getReturnType().getTypeModel(),
+                getTupleType(that.getArgumentTypes(), unit)));
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-		that.setTypeModel(getTupleType(that.getElementTypes(), unit));
+        that.setTypeModel(getTupleType(that.getElementTypes(), unit));
     }
 
-	static ProducedType getTupleType(List<Tree.Type> ets, Unit unit) {
-		List<ProducedType> args = new ArrayList<ProducedType>(ets.size());
+    static ProducedType getTupleType(List<Tree.Type> ets, Unit unit) {
+        List<ProducedType> args = new ArrayList<ProducedType>(ets.size());
         boolean sequenced = false;
         boolean atleastone = false;
-		int firstDefaulted = -1;
-		for (int i=0; i<ets.size(); i++) {
-			Tree.Type st = ets.get(i);
-			ProducedType arg = st==null ? null : st.getTypeModel();
-			if (arg==null) {
-				arg = new UnknownType(unit).getType();
-			}
-			else if (st instanceof Tree.DefaultedType) {
-				if (firstDefaulted==-1) {
-					firstDefaulted = i;
-				}
-			}
-			else if (st instanceof Tree.SequencedType) {
-				if (i!=ets.size()-1) {
-					st.addError("variant element must occur last in a tuple type");
-				}
-				else {
-					sequenced = true;
-					atleastone = ((Tree.SequencedType) st).getAtLeastOne();
-					arg = ((Tree.SequencedType) st).getType().getTypeModel();
-				}
-				if (firstDefaulted!=-1 && atleastone) {
-					st.addError("nonempty variadic element must occur after defaulted elements in a tuple type");
-				}
-			}
-			else {
-				if (firstDefaulted!=-1) {
-					st.addError("required element must occur after defaulted elements in a tuple type");
-				}
-			}
-			args.add(arg);
+        int firstDefaulted = -1;
+        for (int i=0; i<ets.size(); i++) {
+            Tree.Type st = ets.get(i);
+            ProducedType arg = st==null ? null : st.getTypeModel();
+            if (arg==null) {
+                arg = new UnknownType(unit).getType();
+            }
+            else if (st instanceof Tree.DefaultedType) {
+                if (firstDefaulted==-1) {
+                    firstDefaulted = i;
+                }
+            }
+            else if (st instanceof Tree.SequencedType) {
+                if (i!=ets.size()-1) {
+                    st.addError("variant element must occur last in a tuple type");
+                }
+                else {
+                    sequenced = true;
+                    atleastone = ((Tree.SequencedType) st).getAtLeastOne();
+                    arg = ((Tree.SequencedType) st).getType().getTypeModel();
+                }
+                if (firstDefaulted!=-1 && atleastone) {
+                    st.addError("nonempty variadic element must occur after defaulted elements in a tuple type");
+                }
+            }
+            else {
+                if (firstDefaulted!=-1) {
+                    st.addError("required element must occur after defaulted elements in a tuple type");
+                }
+            }
+            args.add(arg);
         }
         return getTupleType(args, sequenced, atleastone, firstDefaulted, unit);
-	}
+    }
 
-	//TODO: big copy/paste from Unit.getTupleType(), to eliminate
-	//      the canonicalization (since aliases are not yet 
-	//      resolvable in this phase)
+    //TODO: big copy/paste from Unit.getTupleType(), to eliminate
+    //      the canonicalization (since aliases are not yet 
+    //      resolvable in this phase)
     public static ProducedType getTupleType(List<ProducedType> elemTypes, 
-    		boolean variadic, boolean atLeastOne, int firstDefaulted,
-    		Unit unit) {
-    	ProducedType result = unit.getType(unit.getEmptyDeclaration());
-    	ProducedType union = unit.getType(unit.getNothingDeclaration());
-    	int last = elemTypes.size()-1;
-    	for (int i=last; i>=0; i--) {
-    		ProducedType elemType = elemTypes.get(i);
-    		List<ProducedType> pair = new ArrayList<ProducedType>();
-    		pair.add(elemType);
-    		pair.add(union);
-    		UnionType ut = new UnionType(unit);
-    		ut.setCaseTypes(pair);
-    		union = ut.getType();
-    		if (variadic && i==last) {
-    			result = atLeastOne ? 
-    					unit.getSequenceType(elemType) : 
-    					unit.getSequentialType(elemType);
-    		}
-    		else {
-    			result = producedType(unit.getTupleDeclaration(), 
-    					union, elemType, result);
-    			if (firstDefaulted>=0 && i>=firstDefaulted) {
-        			pair = new ArrayList<ProducedType>();
-            		pair.add(unit.getType(unit.getEmptyDeclaration()));
-            		pair.add(result);
-            		ut = new UnionType(unit);
-            		ut.setCaseTypes(pair);
-            		result = ut.getType();
-    			}
-    		}
-    	}
-    	return result;
+            boolean variadic, boolean atLeastOne, int firstDefaulted,
+            Unit unit) {
+        ProducedType result = unit.getType(unit.getEmptyDeclaration());
+        ProducedType union = unit.getType(unit.getNothingDeclaration());
+        int last = elemTypes.size()-1;
+        for (int i=last; i>=0; i--) {
+            ProducedType elemType = elemTypes.get(i);
+            List<ProducedType> pair = new ArrayList<ProducedType>();
+            pair.add(elemType);
+            pair.add(union);
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(pair);
+            union = ut.getType();
+            if (variadic && i==last) {
+                result = atLeastOne ? 
+                        unit.getSequenceType(elemType) : 
+                        unit.getSequentialType(elemType);
+            }
+            else {
+                result = producedType(unit.getTupleDeclaration(), 
+                        union, elemType, result);
+                if (firstDefaulted>=0 && i>=firstDefaulted) {
+                    pair = new ArrayList<ProducedType>();
+                    pair.add(unit.getType(unit.getEmptyDeclaration()));
+                    pair.add(result);
+                    ut = new UnionType(unit);
+                    ut.setCaseTypes(pair);
+                    result = ut.getType();
+                }
+            }
+        }
+        return result;
     }
     
     @Override 
@@ -796,7 +796,7 @@ public class TypeVisitor extends Visitor {
                         .addError("qualifying type does not fully-specify type arguments");
             }
             TypeDeclaration d = pt.getDeclaration();
-			String name = name(that.getIdentifier());
+            String name = name(that.getIdentifier());
             TypeDeclaration type = getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
@@ -854,7 +854,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.VoidModifier that) {
         Class vtd = unit.getAnythingDeclaration();
         if (vtd!=null) {
-		    that.setTypeModel(vtd.getType());
+            that.setTypeModel(vtd.getType());
         }
     }
 
@@ -862,9 +862,9 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-        	ProducedType et = that.getAtLeastOne() ? 
-        			unit.getSequenceType(type) : 
-        			unit.getSequentialType(type);
+            ProducedType et = that.getAtLeastOne() ? 
+                    unit.getSequenceType(type) : 
+                    unit.getSequentialType(type);
             that.setTypeModel(et);
         }
     }
@@ -881,12 +881,12 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
         TypedDeclaration dec = that.getDeclarationModel();
-		setType(that, that.getType(), dec);
-		if (dec instanceof MethodOrValue) {
-			if (dec.isLate() && ((MethodOrValue) dec).isParameter()) {
-				that.addError("parameter may not be annotated late");
-			}
-		}
+        setType(that, that.getType(), dec);
+        if (dec instanceof MethodOrValue) {
+            if (dec.isLate() && ((MethodOrValue) dec).isParameter()) {
+                that.addError("parameter may not be annotated late");
+            }
+        }
     }
 
     @Override 
@@ -918,7 +918,7 @@ public class TypeVisitor extends Visitor {
         if (et==null) {
             Class bd = unit.getBasicDeclaration();
             if (bd!=null) {
-			    cd.setExtendedType(bd.getType());
+                cd.setExtendedType(bd.getType());
             }
         }
     }
@@ -1037,20 +1037,20 @@ public class TypeVisitor extends Visitor {
                 that.addError("malformed aliased class");
             }
             else if (!(ct instanceof Tree.StaticType)) {
-            	cs.addError("aliased type must be a class");
+                cs.addError("aliased type must be a class");
             }
             /*else if (ct instanceof Tree.QualifiedType) {
-            	cs.addError("aliased class may not be a qualified type");
-        	}*/
+                cs.addError("aliased class may not be a qualified type");
+            }*/
             else {
                 ProducedType type = ct.getTypeModel();
                 if (type!=null) {
-                	/*if (type.containsTypeAliases()) {
-                		et.addError("aliased type involves type aliases: " +
-                				type.getProducedTypeName());
-                	}
-                	else*/ if (type.getDeclaration() instanceof Class) {
-                    	that.getDeclarationModel().setExtendedType(type);
+                    /*if (type.containsTypeAliases()) {
+                        et.addError("aliased type involves type aliases: " +
+                                type.getProducedTypeName());
+                    }
+                    else*/ if (type.getDeclaration() instanceof Class) {
+                        that.getDeclarationModel().setExtendedType(type);
                     } 
                     else {
                         ct.addError("not a class: '" + 
@@ -1087,17 +1087,17 @@ public class TypeVisitor extends Visitor {
                 that.addError("malformed aliased interface");
             }
             else if (!(et instanceof Tree.StaticType)) {
-            	that.getTypeSpecifier()
-            			.addError("aliased type must be an interface");
+                that.getTypeSpecifier()
+                        .addError("aliased type must be an interface");
             }
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                	/*if (type.containsTypeAliases()) {
-                		et.addError("aliased type involves type aliases: " +
-                				type.getProducedTypeName());
-                	}
-                	else*/ if (type.getDeclaration() instanceof Interface) {
+                    /*if (type.containsTypeAliases()) {
+                        et.addError("aliased type involves type aliases: " +
+                                type.getProducedTypeName());
+                    }
+                    else*/ if (type.getDeclaration() instanceof Interface) {
                         id.setExtendedType(type);
                     } 
                     else {
@@ -1128,13 +1128,13 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                	/*if (type.containsTypeAliases()) {
-                		et.addError("aliased type involves type aliases: " +
-                				type.getProducedTypeName());
-                	}
-                	else {*/
-                		ta.setExtendedType(type);
-                	//}
+                    /*if (type.containsTypeAliases()) {
+                        et.addError("aliased type involves type aliases: " +
+                                type.getProducedTypeName());
+                    }
+                    else {*/
+                        ta.setExtendedType(type);
+                    //}
                 }
             }
         }
@@ -1265,55 +1265,55 @@ public class TypeVisitor extends Visitor {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
-				if (std==td) {
+                if (std==td) {
                     //TODO: handle indirect circularities!
                     st.addError("directly extends itself: '" + td.getName() + "'");
                     continue;
                 }
                 if (std instanceof TypeAlias) {
                     st.addError("satisfies a type alias: '" + 
-                    		type.getDeclaration().getName(unit) + "'");
+                            type.getDeclaration().getName(unit) + "'");
                     continue;
                 }
                 if (td instanceof TypeParameter) {
-            		if (foundTypeParam) {
-            			st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
-            		}
-            		else if (std instanceof TypeParameter) {
-                		if (foundClass||foundInterface) {
-                			st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
-                		}
-                		foundTypeParam = true;
-                	}
-            		else if (std instanceof Class) {
-                		if (foundClass) {
+                    if (foundTypeParam) {
+                        st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+                    }
+                    else if (std instanceof TypeParameter) {
+                        if (foundClass||foundInterface) {
+                            st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+                        }
+                        foundTypeParam = true;
+                    }
+                    else if (std instanceof Class) {
+                        if (foundClass) {
                             st.addUnsupportedError("multiple class upper bounds are not yet supported");
-                		}
-                		foundClass = true;
-                	}
-            		else if (std instanceof Interface) {
-                		foundInterface = true;
-                	}
-            		else {
-            			st.addError("upper bound must be a class, interface, or type parameter");
-            			continue;
-            		}
+                        }
+                        foundClass = true;
+                    }
+                    else if (std instanceof Interface) {
+                        foundInterface = true;
+                    }
+                    else {
+                        st.addError("upper bound must be a class, interface, or type parameter");
+                        continue;
+                    }
                 } 
                 else {
                     if (std instanceof TypeParameter) {
                         st.addError("directly satisfies type parameter: '" + 
-                        		type.getDeclaration().getName(unit) + "'");
+                                type.getDeclaration().getName(unit) + "'");
                         continue;
                     }
                     else if (std instanceof Class) {
                         st.addError("satisfies a class: '" + 
-                        		type.getDeclaration().getName(unit) + "'");
+                                type.getDeclaration().getName(unit) + "'");
                         continue;
                     }
-            		else if (!(std instanceof Interface)) {
-            			st.addError("satisfied type must be an interface");
-            			continue;
-            		}
+                    else if (!(std instanceof Interface)) {
+                        st.addError("satisfied type must be an interface");
+                        continue;
+                    }
                 }
                 list.add(type);
             }
@@ -1345,90 +1345,90 @@ public class TypeVisitor extends Visitor {
         List<Tree.StaticType> cts = that.getTypes();
         List<ProducedType> list = new ArrayList<ProducedType>(bmes.size()+cts.size());
         if (td instanceof TypeParameter) {
-        	if (!bmes.isEmpty()) {
-        		that.addError("cases of type parameter must be a types");
-        	}
+            if (!bmes.isEmpty()) {
+                that.addError("cases of type parameter must be a types");
+            }
         }
         else {
-        	for (Tree.BaseMemberExpression bme: bmes) {
-        		//bmes have not yet been resolved
-        		TypedDeclaration od = getTypedDeclaration(bme.getScope(), 
-        		        name(bme.getIdentifier()), null, false, bme.getUnit());
-        		if (od!=null) {
-        			ProducedType type = od.getType();
-        			if (type!=null) {
-        			    list.add(type);
-        			}
-        		}
-        	}
+            for (Tree.BaseMemberExpression bme: bmes) {
+                //bmes have not yet been resolved
+                TypedDeclaration od = getTypedDeclaration(bme.getScope(), 
+                        name(bme.getIdentifier()), null, false, bme.getUnit());
+                if (od!=null) {
+                    ProducedType type = od.getType();
+                    if (type!=null) {
+                        list.add(type);
+                    }
+                }
+            }
         }
         for (Tree.StaticType st: cts) {
-        	ProducedType type = st.getTypeModel();
-        	if (type!=null) {
-        		TypeDeclaration ctd = type.getDeclaration();
-        		if (ctd!=null) {
-        			if (ctd instanceof UnionType || ctd instanceof IntersectionType) {
-        			    //union/intersection types don't have equals()
-        			    if (td instanceof TypeParameter) {
-        			        st.addError("enumerated bound must be a class or interface type");
-        			    }
-        			    else {
-        			        st.addError("case type must be a class, interface, or self type");
-        			    }
-        			}
-        			else if (ctd.equals(td)) {
-        				st.addError("directly enumerates itself: '" + td.getName() + "'");
-        				continue;
-        			}
-        			else if (ctd instanceof TypeParameter) {
-        				if (!(td instanceof TypeParameter)) {
-        					TypeParameter tp = (TypeParameter) ctd;
-        					td.setSelfType(type);
-        					if (tp.isSelfType()) {
-        						st.addError("type parameter may not act as self type for two different types");
-        					}
-        					else {
-        						tp.setSelfTypedDeclaration(td);
-        					}
-        					if (cts.size()>1) {
-        						st.addError("a type may not have more than one self type");
-        					}
-        				}
-        				else {
-        					//TODO: error?!
-        				}
-        			}
-        			else if (ctd instanceof ClassOrInterface) {
-        			    //nothing special to do
-        			}
-        			else {
+            ProducedType type = st.getTypeModel();
+            if (type!=null) {
+                TypeDeclaration ctd = type.getDeclaration();
+                if (ctd!=null) {
+                    if (ctd instanceof UnionType || ctd instanceof IntersectionType) {
+                        //union/intersection types don't have equals()
                         if (td instanceof TypeParameter) {
                             st.addError("enumerated bound must be a class or interface type");
                         }
                         else {
                             st.addError("case type must be a class, interface, or self type");
                         }
-        				continue;
-        			}
-        			list.add(type);
-        		}
-        	}
+                    }
+                    else if (ctd.equals(td)) {
+                        st.addError("directly enumerates itself: '" + td.getName() + "'");
+                        continue;
+                    }
+                    else if (ctd instanceof TypeParameter) {
+                        if (!(td instanceof TypeParameter)) {
+                            TypeParameter tp = (TypeParameter) ctd;
+                            td.setSelfType(type);
+                            if (tp.isSelfType()) {
+                                st.addError("type parameter may not act as self type for two different types");
+                            }
+                            else {
+                                tp.setSelfTypedDeclaration(td);
+                            }
+                            if (cts.size()>1) {
+                                st.addError("a type may not have more than one self type");
+                            }
+                        }
+                        else {
+                            //TODO: error?!
+                        }
+                    }
+                    else if (ctd instanceof ClassOrInterface) {
+                        //nothing special to do
+                    }
+                    else {
+                        if (td instanceof TypeParameter) {
+                            st.addError("enumerated bound must be a class or interface type");
+                        }
+                        else {
+                            st.addError("case type must be a class, interface, or self type");
+                        }
+                        continue;
+                    }
+                    list.add(type);
+                }
+            }
         }
         if (!list.isEmpty()) {
-        	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
-        		Scope s = list.get(0).getDeclaration().getContainer();
-        		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
-        			that.addError("non-abstract class parameterized by self type: '" + 
-        			        td.getName() + "'", 905);
-        		}
-        	}
-        	else {
-        		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-        			that.addError("non-abstract class has enumerated subtypes: '" +
-        			        td.getName() + "'", 905);
-        		}
-        	}
-        	td.setCaseTypes(list);
+            if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
+                Scope s = list.get(0).getDeclaration().getContainer();
+                if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
+                    that.addError("non-abstract class parameterized by self type: '" + 
+                            td.getName() + "'", 905);
+                }
+            }
+            else {
+                if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+                    that.addError("non-abstract class has enumerated subtypes: '" +
+                            td.getName() + "'", 905);
+                }
+            }
+            td.setCaseTypes(list);
         }
     }
 
@@ -1490,26 +1490,26 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AnyAttribute that) {
-    	super.visit(that);
-    	if (that.getType() instanceof Tree.SequencedType) {
-    		Value v = (Value) that.getDeclarationModel();
-			Parameter p = v.getInitializerParameter();
-			if (p==null) {
-				that.getType().addError("value is not a parameter, so may not be variadic: '" +
-						v.getName() + "'");
-			}
-			else {
-				p.setSequenced(true);
-			}
-    	}
+        super.visit(that);
+        if (that.getType() instanceof Tree.SequencedType) {
+            Value v = (Value) that.getDeclarationModel();
+            Parameter p = v.getInitializerParameter();
+            if (p==null) {
+                that.getType().addError("value is not a parameter, so may not be variadic: '" +
+                        v.getName() + "'");
+            }
+            else {
+                p.setSequenced(true);
+            }
+        }
     }
 
     @Override
     public void visit(Tree.AnyMethod that) {
-    	super.visit(that);
-    	if (that.getType() instanceof Tree.SequencedType) {
-    		that.getType().addError("function type may not be variadic");
-    	}
+        super.visit(that);
+        if (that.getType() instanceof Tree.SequencedType) {
+            that.getType().addError("function type may not be variadic");
+        }
     }
     
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
