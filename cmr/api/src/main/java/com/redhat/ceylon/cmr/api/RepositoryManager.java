@@ -102,7 +102,7 @@ public interface RepositoryManager {
      * 
      * @throws RepositoryException if anything went wrong
      */
-    ArtifactResult[] getArtifactResults(ArtifactContext context) throws RepositoryException;
+    List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException;
 
     /**
      * Publishes an artifact by name/version as an InputStream

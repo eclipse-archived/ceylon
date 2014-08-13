@@ -96,15 +96,8 @@ public interface ArtifactResult {
     
     /**
      * Get the repository this result was resolved from.
+     *
      * @return the repository this result was resolved from.
      */
     Repository repository();
-    
-    /**
-     * Get an ArtifactContext for retrieving an artifact with the
-     * same name and version but with the given suffix(es) from
-     * the same repository as the current result.
-     * @return a new ArtifactContext.
-     */
-    ArtifactContext getSiblingArtifact(String... suffixes);
 }

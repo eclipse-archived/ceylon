@@ -45,9 +45,9 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private Repository repository;
 
     protected AbstractArtifactResult(Repository repository, String name, String version) {
+        this.repository = repository;
         this.name = name;
         this.version = version;
-        this.repository = repository;
     }
 
     public String name() {
@@ -95,7 +95,8 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         try {
             String suffix = ArtifactContext.getSuffixFromFilename(artifact().getName());
             return "[Artifact result: " + name + "/" + version + " (" + suffix + ")]";
-        } catch (RepositoryException ex) {}
+        } catch (RepositoryException ignored) {
+        }
         return "[Artifact result: " + name + "/" + version + "]";
     }
 
@@ -103,11 +104,5 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     public Repository repository() {
         return repository;
     }
-
-    @Override
-    public ArtifactContext getSiblingArtifact(String... suffixes) {
-        return new ArtifactContext(name, version, repository, suffixes);
-    }
-    
 }
 

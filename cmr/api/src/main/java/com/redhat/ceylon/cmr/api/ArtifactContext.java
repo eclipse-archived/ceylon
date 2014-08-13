@@ -64,9 +64,10 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private static final String directoryNames[] = {
         RESOURCES, DOCS
     };
-    
+
+    @SuppressWarnings("FinalStaticMethod")
     public static final List<String> allSuffixes() {
-        ArrayList<String> all =  new ArrayList<String>(fileSuffixes.length + fileNames.length + directoryNames.length);
+        ArrayList<String> all = new ArrayList<>(fileSuffixes.length + fileNames.length + directoryNames.length);
         all.addAll(Arrays.asList(fileSuffixes));
         all.addAll(Arrays.asList(fileNames));
         all.addAll(Arrays.asList(directoryNames));
@@ -96,7 +97,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.suffixes = suffixes;
     }
 
-    public ArtifactContext(String name, String version, Repository repository, String... suffixes) {
+    private ArtifactContext(String name, String version, Repository repository, String... suffixes) {
         this(name, version);
         this.suffixes = suffixes;
         this.repository = repository;
@@ -133,6 +134,12 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public ArtifactContext getModuleXml() {
         return getSuffixContext(MODULE_XML);
+    }
+
+    public ArtifactContext getSibling(ArtifactResult result, String... suffixes) {
+        ArtifactContext sibling = new ArtifactContext(result.name(), result.version(), result.repository(), suffixes);
+        sibling.copySettingsFrom(this);
+        return sibling;
     }
 
     public void toNode(Node node) {
@@ -354,9 +361,8 @@ public class ArtifactContext implements Serializable, ContentOptions {
         ac.repository = repository;
         return ac;
     }
-    
-    // TODO can't we do this any better?
-    public ArtifactContext copySettingsFrom(ArtifactContext ac) {
+
+    protected ArtifactContext copySettingsFrom(ArtifactContext ac) {
         localOnly = ac.localOnly;
         ignoreSHA = ac.ignoreSHA;
         ignoreCache = ac.ignoreCache;

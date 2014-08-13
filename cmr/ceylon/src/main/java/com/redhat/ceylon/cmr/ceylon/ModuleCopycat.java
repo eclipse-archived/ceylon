@@ -3,6 +3,7 @@ package com.redhat.ceylon.cmr.ceylon;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -88,7 +89,7 @@ public class ModuleCopycat {
         this.dstRepoman = dstRepoman;
         this.feedback = feedback;
         this.log = log;
-        this.copiedModules = new HashSet<String>();
+        this.copiedModules = new HashSet<>();
     }
     
     /**
@@ -126,15 +127,15 @@ public class ModuleCopycat {
                 if (feedback != null) {
                     feedback.beforeCopyModule(context, count++, maxCount);
                 }
-                ArtifactResult results[] = srcRepoman.getArtifactResults(context);
+                List<ArtifactResult> results = srcRepoman.getArtifactResults(context);
                 int artCnt = 0;
                 for (ArtifactResult r : results) {
                     if (feedback != null) {
-                        feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.length);
+                        feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
                     }
                     copyArtifact(context, r.artifact());
                     if (feedback != null) {
-                        feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.length);
+                        feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size());
                     }
                 }
                 if (feedback != null) {
@@ -203,6 +204,7 @@ public class ModuleCopycat {
                     ArtifactContext sha1Context = context.getSha1Context();
                     dstRepoman.putArtifact(sha1Context, shaFile);
                 }finally{
+                    //noinspection ResultOfMethodCallIgnored
                     shaFile.delete();
                 }
             }

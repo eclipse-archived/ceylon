@@ -50,7 +50,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         if (result == null)
             return null;
 
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         recurse(files, result);
         return files.toArray(new File[files.size()]);
     }
@@ -90,23 +90,20 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         return getArtifactResult(context);
     }
 
-    public ArtifactResult[] getArtifactResults(ArtifactContext context) throws RepositoryException {
-        List<ArtifactResult> results = new ArrayList<ArtifactResult>();
+    public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
+        final List<ArtifactResult> results = new ArrayList<>();
         ArtifactResult result = null;
-        Set<String> suffixes = new LinkedHashSet<String>(Arrays.asList(context.getSuffixes()));
+        Set<String> suffixes = new LinkedHashSet<>(Arrays.asList(context.getSuffixes()));
         while (!suffixes.isEmpty()) {
             // Try to get one of the artifacts
-            String[] sfx = new String[suffixes.size()];
-            sfx = suffixes.toArray(sfx);
+            String[] sfx = suffixes.toArray(new String[suffixes.size()]);
             ArtifactContext ac;
             if (result == null) {
                 ac = context;
             } else {
                 // We re-use the previous result so we can efficiently
                 // retrieve further artifacts from the same module
-                ac = result.getSiblingArtifact(sfx);
-                // TODO can't we do this any better?
-                ac.copySettingsFrom(context);
+                ac = context.getSibling(result, sfx);
             }
             result = getArtifactResult(ac);
             
@@ -136,8 +133,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 break;
             }
         }
-        ArtifactResult[] tmp = new ArtifactResult[results.size()];
-        return results.toArray(tmp);
+        return results;
     }
 
     public void putArtifact(String name, String version, InputStream content) throws RepositoryException {
