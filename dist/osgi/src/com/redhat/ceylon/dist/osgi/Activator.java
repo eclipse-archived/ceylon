@@ -32,63 +32,63 @@ import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 
 public class Activator implements BundleActivator {
 
-	private class BundleArtifactResult implements ContentAwareArtifactResult {
-		BundleWiring wiring;
-		
-		public BundleArtifactResult(BundleWiring bundle) {
-			this.wiring = bundle;
-		}
-		
-		@Override
-		public VisibilityType visibilityType() {
-			return VisibilityType.STRICT;
-		}
-		
-		@Override
-		public Repository repository() {
-			return null;
-		}
-		
-		@Override
-		public String version() {
-			return wiring.getBundle().getVersion().toString();
-		}
-		@Override
-		public ArtifactResultType type() {
-			return ArtifactResultType.CEYLON;
-		}
-		@Override
-		public String repositoryDisplayString() {
-			return null;
-		}
-		@Override
-		public String name() {
-			return wiring.getBundle().getSymbolicName();
-		}
-		@Override
-		public ImportType importType() {
-			return ImportType.UNDEFINED;
-		}
-		@Override
-		public List<ArtifactResult> dependencies() throws RepositoryException {
-			List<ArtifactResult> results = new ArrayList<>();
-			for (BundleWire dep : wiring.getRequiredWires(null)) {
-				if (! "com.redhat.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
-					results.add(new BundleArtifactResult(dep.getProviderWiring()));
-				}
-			}
-			return results;
-		}
-		
-		@Override
-		public File artifact() throws RepositoryException {
-			return null;
-		}
+    private class BundleArtifactResult implements ContentAwareArtifactResult {
+        BundleWiring wiring;
+        
+        public BundleArtifactResult(BundleWiring bundle) {
+            this.wiring = bundle;
+        }
+        
+        @Override
+        public VisibilityType visibilityType() {
+            return VisibilityType.STRICT;
+        }
+        
+        @Override
+        public Repository repository() {
+            return null;
+        }
+        
+        @Override
+        public String version() {
+            return wiring.getBundle().getVersion().toString();
+        }
+        @Override
+        public ArtifactResultType type() {
+            return ArtifactResultType.CEYLON;
+        }
+        @Override
+        public String repositoryDisplayString() {
+            return null;
+        }
+        @Override
+        public String name() {
+            return wiring.getBundle().getSymbolicName();
+        }
+        @Override
+        public ImportType importType() {
+            return ImportType.UNDEFINED;
+        }
+        @Override
+        public List<ArtifactResult> dependencies() throws RepositoryException {
+            List<ArtifactResult> results = new ArrayList<>();
+            for (BundleWire dep : wiring.getRequiredWires(null)) {
+                if (! "com.redhat.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
+                    results.add(new BundleArtifactResult(dep.getProviderWiring()));
+                }
+            }
+            return results;
+        }
+        
+        @Override
+        public File artifact() throws RepositoryException {
+            return null;
+        }
 
-		@Override
-		public PathFilter filter(){
-			return null;
-		}
+        @Override
+        public PathFilter filter(){
+            return null;
+        }
 
         private String getPackageName(String name) {
             int lastSlash = name.lastIndexOf('/');
@@ -103,7 +103,7 @@ public class Activator implements BundleActivator {
             for (String resource : wiring.listResources("/", "*", 
                     BundleWiring.LISTRESOURCES_RECURSE | BundleWiring.LISTRESOURCES_LOCAL)) {
                 if (! resource.endsWith("/")) {
-	            	packages.add(getPackageName(resource));
+                    packages.add(getPackageName(resource));
                 }
             }
             return packages;
@@ -115,7 +115,7 @@ public class Activator implements BundleActivator {
             for (String resource : wiring.listResources("/", "*", 
                     BundleWiring.LISTRESOURCES_RECURSE | BundleWiring.LISTRESOURCES_LOCAL)) {
                 if (! resource.endsWith("/")) {
-	                entries.add(resource);
+                    entries.add(resource);
                 }
             }
             return entries;
@@ -158,11 +158,11 @@ public class Activator implements BundleActivator {
             path += "/";
             return Arrays.asList(wiring.listResources(path, "*", BundleWiring.LISTRESOURCES_LOCAL).toArray(new String[]{}));
         }
-	}
+    }
 
-	
-	@Override
-	public void start(BundleContext context) throws Exception {
+    
+    @Override
+    public void start(BundleContext context) throws Exception {
         Bundle bundle = context.getBundle();
         BundleWiring wiring = bundle.adapt(BundleWiring.class);
         String symbolicName = bundle.getSymbolicName();
@@ -178,11 +178,11 @@ public class Activator implements BundleActivator {
         
         final ClassLoader  bundleClassLoader = wiring.getClassLoader();
         Metamodel.loadModule(symbolicName, versionString, 
-        		new BundleArtifactResult(wiring), bundleClassLoader);
-	}
+                new BundleArtifactResult(wiring), bundleClassLoader);
+    }
 
-	@Override
-	public void stop(BundleContext context) throws Exception {
-	}
+    @Override
+    public void stop(BundleContext context) throws Exception {
+    }
 
 }
