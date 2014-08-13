@@ -274,9 +274,9 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity) {
         load();
-        return super.getMatchingMemberDeclarations(scope, startingWith, proximity);
+        return super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity);
     }
 
     @Override
