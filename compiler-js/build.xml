@@ -163,6 +163,9 @@
             <arg value="src/test/ceylon"/>
             <arg value="../ceylon.language/test"/>
             <arg value="X:../ceylon.language/test/jvm"/>
+            <arg value="R:../ceylon.language/test-resource" />
+            <arg value="r:../ceylon.language/test-resource/resource.txt" />
+            <arg value="r:../ceylon.language/test-resource/resmod/modres.txt" />
         </java>
     </target>
 

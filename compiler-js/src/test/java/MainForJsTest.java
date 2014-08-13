@@ -32,10 +32,16 @@ public class MainForJsTest {
             .moduleManagerFactory(new JsModuleManagerFactory(null))
             .usageWarnings(false);
         final ArrayList<File> excludes = new ArrayList<>();
+        final ArrayList<File> resfiles = new ArrayList<>();
+        final ArrayList<File> resdirs = new ArrayList<>();
         for (String dir : args) {
-            final File d = new File(dir.startsWith("X:")?dir.substring(2):dir);
+            final File d = new File(dir.charAt(1)==':'?dir.substring(2):dir);
             if (dir.startsWith("X:")) {
                 excludes.add(d);
+            } else if (dir.startsWith("R:")) {
+                resdirs.add(d);
+            } else if (dir.startsWith("r:")) {
+                resfiles.add(d);
             } else {
                 tcb.addSrcDirectory(d);
             }
@@ -55,13 +61,16 @@ public class MainForJsTest {
             System.exit(1);
         }
         System.out.println("Compiling in prototype style");
+        opts.resourceDirs(resdirs);
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(true);
+        jsc.setResourceFiles(resfiles);
         PrintWriter writer = new PrintWriter(System.out);
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(writer);
         }
         System.out.println("Compiling in lexical scope style");
         jsc = new JsCompiler(typeChecker, opts.optimize(false).outRepo("build/test/lexical")).stopOnErrors(false);
+        jsc.setResourceFiles(resfiles);
         if (!jsc.generate()) {
             jsc.printErrors(writer);
         }
