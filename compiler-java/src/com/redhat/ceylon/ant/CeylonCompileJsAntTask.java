@@ -28,6 +28,7 @@ package com.redhat.ceylon.ant;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -36,11 +37,14 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
+
+import com.redhat.ceylon.common.Constants;
 
 public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
 
 // TODO Resources not implemented yet for the JS compiler
-//    private Path res;
+    private Path res;
     
     private ModuleSet moduleset = new ModuleSet();
     private FileSet files;
@@ -67,25 +71,25 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
      * Set the resource directories to find the resource files.
      * @param res the resource directories as a path
      */
-//    public void setResource(Path res) {
-//        if (this.res == null) {
-//            this.res = res;
-//        } else {
-//            this.res.append(res);
-//        }
-//    }
-//
-//    public List<File> getResource() {
-//        if (this.res == null) {
-//            return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));
-//        }
-//        String[] paths = this.res.list();
-//        ArrayList<File> result = new ArrayList<File>(paths.length);
-//        for (String path : paths) {
-//            result.add(getProject().resolveFile(path));
-//        }
-//        return result;
-//    }
+    public void setResource(Path res) {
+        if (this.res == null) {
+            this.res = res;
+        } else {
+            this.res.append(res);
+        }
+    }
+
+    public List<File> getResource() {
+        if (this.res == null) {
+            return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));
+        }
+        String[] paths = this.res.list();
+        ArrayList<File> result = new ArrayList<File>(paths.length);
+        for (String path : paths) {
+            result.add(getProject().resolveFile(path));
+        }
+        return result;
+    }
     
     /** Tells the JS compiler whether to wrap the generated code in CommonJS module format. */
     public void setWrapModule(boolean flag){
