@@ -191,7 +191,7 @@ public class Package
             if (isResolvable(d) && 
                     !isOverloadedVersion(d) && 
                     isNameMatching(startingWith, d) ) {
-                result.put(d.getName(), 
+                result.put(d.getName(unit), 
                         new DeclarationWithProximity(d, 
                                 proximity+1));
             }

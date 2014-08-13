@@ -788,8 +788,9 @@ public abstract class TypeDeclaration extends Declaration
                     }
                 }
                 if (!already) {
-                    result.put(d.getName(), 
-                            new DeclarationWithProximity(d, proximity));
+                    result.put(d.getName(unit), 
+                            new DeclarationWithProximity(d, 
+                                    proximity));
                 }
             }
         }
@@ -801,47 +802,55 @@ public abstract class TypeDeclaration extends Declaration
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity) {
         Map<String, DeclarationWithProximity> result = 
-                super.getMatchingDeclarations(unit, startingWith, proximity);
+                super.getMatchingDeclarations(unit, 
+                        startingWith, proximity);
         //Inherited declarations hide outer and imported declarations
-        result.putAll(getMatchingMemberDeclarations(null, startingWith, proximity));
+        result.putAll(getMatchingMemberDeclarations(unit, null, 
+                startingWith, proximity));
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d) &&
             		isNameMatching(startingWith, d)) {
-                result.put(d.getName(), 
-                		new DeclarationWithProximity(d, proximity));
+                result.put(d.getName(unit), 
+                		new DeclarationWithProximity(d, 
+                		        proximity));
             }
         }
         return result;
     }
 
     public Map<String, DeclarationWithProximity> 
-    getMatchingMemberDeclarations(Scope scope, String startingWith, 
-            int proximity) {
+    getMatchingMemberDeclarations(Unit unit, Scope scope, 
+            String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
         for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
             mergeMembers(result, 
-                    st.getMatchingMemberDeclarations(scope, 
+                    st.getMatchingMemberDeclarations(unit, scope, 
                             startingWith, proximity+1));
         }
         TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
             mergeMembers(result, 
-                    et.getMatchingMemberDeclarations(scope, 
+                    et.getMatchingMemberDeclarations(unit, scope, 
                             startingWith, proximity+1));
         }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && 
                     !isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {
-                if( d.isShared() || Util.contains(d.getScope(), scope) ) {
-                    result.put(d.getName(), 
-                            new DeclarationWithProximity(d, proximity));
+                if( d.isShared() || 
+                        Util.contains(d.getScope(), scope) ) {
+                    result.put(d.getName(unit), 
+                            new DeclarationWithProximity(d, 
+                                    proximity));
                 }
             }
         }
-        //TODO: self type?
+        //premature optimization so that we don't have to 
+        //call d.getName(unit) on *every* member
+        result.putAll(unit.getMatchingImportedDeclarations(this, 
+                startingWith, proximity));
         return result;
     }
 

@@ -119,7 +119,7 @@ public class Unit {
     public String getAliasedName(Declaration dec) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		(i.getDeclaration().equals(getAbstraction(dec)))) {
+            		i.getDeclaration().equals(getAbstraction(dec))) {
                 return i.getAlias();
             }
         }
@@ -128,7 +128,8 @@ public class Unit {
 
     public static Declaration getAbstraction(Declaration dec){
         if (isOverloadedVersion(dec)) {
-            return dec.getContainer().getDirectMember(dec.getName(), null, false);
+            return dec.getContainer()
+                    .getDirectMember(dec.getName(), null, false);
         }
         else {
             return dec;
@@ -149,7 +150,9 @@ public class Unit {
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
                 if (d.isToplevel() || d.isStaticallyImportable()) {
-                    return d.getContainer().getMember(d.getName(), signature, ellipsis);
+                    return d.getContainer()
+                            .getMember(d.getName(), 
+                                    signature, ellipsis);
                 }
             }
         }
@@ -171,7 +174,9 @@ public class Unit {
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                return d.getContainer().getMember(d.getName(), signature, ellipsis);
+                return d.getContainer()
+                        .getMember(d.getName(), 
+                                signature, ellipsis);
             }
         }
         return null;
@@ -183,13 +188,35 @@ public class Unit {
     	        new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null && !i.isAmbiguous() &&
+                    //TODO: use Util.isNameMatching()
                     i.getAlias().toLowerCase()
                         .startsWith(startingWith.toLowerCase())) {
                 Declaration d = i.getDeclaration();
                 if (d.isToplevel() || d.isStaticallyImportable()) {
                     result.put(i.getAlias(), 
-                            new DeclarationWithProximity(i, proximity));
+                            new DeclarationWithProximity(i, 
+                                    proximity));
                 }
+            }
+        }
+        return result;
+    }
+    
+    public Map<String, DeclarationWithProximity> 
+    getMatchingImportedDeclarations(TypeDeclaration td, 
+            String startingWith, int proximity) {
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
+        for (Import i: new ArrayList<Import>(getImports())) {
+            TypeDeclaration itd = i.getTypeDeclaration();
+            if (i.getAlias()!=null && !i.isAmbiguous() &&
+                    itd!=null && itd.equals(td) &&
+                    //TODO: use Util.isNameMatching()
+                    i.getAlias().toLowerCase()
+                        .startsWith(startingWith.toLowerCase())) {
+                result.put(i.getAlias(), 
+                        new DeclarationWithProximity(i, 
+                                proximity));
             }
         }
         return result;
@@ -232,7 +259,8 @@ public class Unit {
                         languageModule.getPackage(LANGUAGE_MODULE_NAME);
             }
             if (languagePackage != null) {
-                Declaration d = languagePackage.getMember(name, null, false);
+                Declaration d = 
+                        languagePackage.getMember(name, null, false);
                 if (d != null && d.isShared()) {
                     return d;
                 }

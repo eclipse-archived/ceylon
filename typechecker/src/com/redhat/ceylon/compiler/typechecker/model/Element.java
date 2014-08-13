@@ -68,7 +68,8 @@ public abstract class Element {
      */
     public Declaration getDirectMember(String name, 
             List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis);
+        return lookupMember(getMembers(), 
+                name, signature, ellipsis);
     }
     
     /**
@@ -91,13 +92,15 @@ public abstract class Element {
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
             List<ProducedType> signature, boolean ellipsis) {
-        Declaration d = getMemberOrParameter(name, signature, ellipsis);
+        Declaration d = 
+                getMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
         else if (getScope()!=null) {
-            return getScope().getMemberOrParameter(unit, name, 
-                    signature, ellipsis);
+            return getScope()
+                    .getMemberOrParameter(unit, name, 
+                            signature, ellipsis);
         }
         else {
             //union type or bottom type 
@@ -156,7 +159,7 @@ public abstract class Element {
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d) && 
                     isNameMatching(startingWith, d)) {
-                result.put(d.getName(), 
+                result.put(d.getName(unit), 
                         new DeclarationWithProximity(d, proximity));
             }
         }
