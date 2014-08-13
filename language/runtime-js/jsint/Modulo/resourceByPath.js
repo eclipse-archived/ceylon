@@ -1,4 +1,4 @@
-function resourceByPath(_path) {
+function(_path) {
   var mpath;
   if (this.name==='default' && this.version==='unversioned') {
     mpath = this.name;
@@ -19,7 +19,7 @@ function resourceByPath(_path) {
   }
   if (getRuntime().name==='node.js') {
     var sep = getOperatingSystem().fileSeparator;
-    path = mpath + '/' + this.version + '/' + path;
+    path = mpath + '/' + path;
     path = path.replace(/\\/g,sep);
     var _fr=require;//this is so that requirejs leaves us alone
     var pm=_fr('path');
