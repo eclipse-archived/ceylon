@@ -471,7 +471,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
         ac.setFetchSingleArtifact(true);
         ac.setThrowErrorIfMissing(false);
-        ArtifactResult[] results = repoman.getArtifactResults(ac);
+        List<ArtifactResult> results = repoman.getArtifactResults(ac);
         ArtifactResult code = getArtifactType(results, ArtifactContext.JS);
         ArtifactResult model = getArtifactType(results, ArtifactContext.JS_MODEL);
         if (code == null || model == null) {
@@ -483,7 +483,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return model.artifact();
     }
 
-    protected ArtifactResult getArtifactType(ArtifactResult[] results, String suffix) {
+    protected ArtifactResult getArtifactType(List<ArtifactResult> results, String suffix) {
         for (ArtifactResult r : results) {
             String s = ArtifactContext.getSuffixFromFilename(r.artifact().getName());
             if (s.equals(suffix)) {
