@@ -17,6 +17,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.redhat.ceylon</groupId>
+            <artifactId>ceylon-common</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.redhat.ceylon.cmr</groupId>
             <artifactId>cmr-spi</artifactId>
         </dependency>
