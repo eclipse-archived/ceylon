@@ -73,6 +73,13 @@
                             <exclude>*:cmr-*:*</exclude>
                             <exclude>*:jandex:*</exclude>
                             <exclude>*:jboss-modules:*</exclude>
+                            <exclude>*:json-smart:*</exclude>
+                            <exclude>*:sardine:*</exclude>
+                            <exclude>*:httpclient:*</exclude>
+                            <exclude>*:httpcore:*</exclude>
+                            <exclude>*:commons-codec:*</exclude>
+                            <exclude>*:commons-logging:*</exclude>
+                            <exclude>*:slf4j-api:*</exclude>
                         </excludes>
                     </artifactSet>
                     <transformers>
