@@ -324,7 +324,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <programlisting>(String string) {
     value mid = string.size / 2;
-    return [string[0..mid],string[mid+1...]];
+    return [string[...mid],string[mid+1...]];
 }</programlisting>
             
             <para>An anonymous function occurring in an <literal>extends</literal>
