@@ -462,7 +462,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
             if(throwOnError)
                 throw new RuntimeException("Node process exited with non-zero exit code: "+exitCode);
             else
-                System.exit(exitCode);
+                System.exit(exitCode==11?2:exitCode);
         }
     }
 
