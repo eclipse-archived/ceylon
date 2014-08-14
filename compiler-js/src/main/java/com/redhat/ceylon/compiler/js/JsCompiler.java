@@ -66,19 +66,17 @@ public class JsCompiler {
 
     private final Visitor unitVisitor = new Visitor() {
         private boolean hasErrors(Node that) {
+            boolean r=false;
             for (Message m: that.getErrors()) {
-                if (m instanceof AnalysisError) {
-                    return true;
-                }
+                unitErrors.add(m);
+                r |= m instanceof AnalysisError;
             }
-            return false;
+            return r;
         }
         @Override
         public void visitAny(Node that) {
             super.visitAny(that);
-            for (Message err: that.getErrors()) {
-                unitErrors.add(err);
-            }
+            hasErrors(that);
         }
         @Override
         public void visit(Tree.ImportMemberOrType that) {
