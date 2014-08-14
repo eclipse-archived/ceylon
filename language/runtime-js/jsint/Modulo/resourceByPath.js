@@ -1,6 +1,7 @@
 function(_path) {
+  var isdefmod=this.name==='default' && this.version==='unversioned';
   var mpath;
-  if (this.name==='default' && this.version==='unversioned') {
+  if (isdefmod) {
     mpath = this.name;
   } else {
     mpath = this.name.replace(/\./g, '/');
@@ -9,7 +10,7 @@ function(_path) {
   if (_path[0]==='/') {
     path += _path;
   } else {
-    if (this.name==='default' && this.version==='unversioned') {
+    if (isdefmod) {
       path += '';
     } else {
       path += '/';
@@ -19,7 +20,7 @@ function(_path) {
   }
   if (getRuntime().name==='node.js') {
     var sep = getOperatingSystem().fileSeparator;
-    path = mpath + '/' + path;
+    path = mpath + (isdefmod?'/':'/'+this.version+'/') + path;
     path = path.replace(/\\/g,sep);
     var _fr=require;//this is so that requirejs leaves us alone
     var pm=_fr('path');
