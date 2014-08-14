@@ -41,6 +41,10 @@ public abstract class ModuleUtil {
         return new File(moduleName.replace('.', File.separatorChar));
     }
 
+    public static File moduleToPath(File dir, String moduleName) {
+        return new File(dir, moduleName.replace('.', File.separatorChar));
+    }
+
     public static String pathToModule(File modulePath) {
         return modulePath.getPath().replace('/', '.').replace('\\', '.');
     }
