@@ -44,6 +44,7 @@ public class MainForJsTest {
                 resfiles.add(d);
             } else {
                 tcb.addSrcDirectory(d);
+                opts.addSrcDir(d);
             }
         }
         tcb.setRepositoryManager(repoman);
