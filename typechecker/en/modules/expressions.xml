@@ -323,7 +323,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <programlisting>void (String name) => print(name)</programlisting>
             
             <programlisting>(String string) {
-    value mid = string.size % 2;
+    value mid = string.size / 2;
     return [string[0..mid],string[mid+1...]];
 }</programlisting>
             
