@@ -20,7 +20,6 @@ package com.redhat.ceylon.cmr.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -65,13 +64,13 @@ public class ArtifactContext implements Serializable, ContentOptions {
         RESOURCES, DOCS
     };
 
-    @SuppressWarnings("FinalStaticMethod")
-    public static final List<String> allSuffixes() {
+    public static final String[] allSuffixes() {
         ArrayList<String> all = new ArrayList<>(fileSuffixes.length + fileNames.length + directoryNames.length);
         all.addAll(Arrays.asList(fileSuffixes));
         all.addAll(Arrays.asList(fileNames));
         all.addAll(Arrays.asList(directoryNames));
-        return all;
+        String[] tmp = new String[all.size()];
+        return all.toArray(tmp);
     }
     
     private String name;
