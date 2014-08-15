@@ -101,7 +101,7 @@ public class ModuleVersionArtifact implements Comparable<ModuleVersionArtifact> 
             str.append(minorBinaryVersion);
         }
         if (majorBinaryVersion != null || minorBinaryVersion != null) {
-            str.append(" )");
+            str.append(")");
         }
         return str.toString();
     }
