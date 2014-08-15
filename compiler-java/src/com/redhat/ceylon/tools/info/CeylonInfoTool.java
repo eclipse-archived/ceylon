@@ -9,6 +9,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -301,15 +302,17 @@ public class CeylonInfoTool extends RepoUsingTool {
     private RepoUsingTool outputArtifacts(Set<ModuleVersionArtifact> types) throws IOException {
         if(!types.isEmpty()) {
             msg("module.artifacts");
-            boolean first = true;
+            boolean skipComma = true;
+            boolean js = false;
+            boolean docs = false;
             for (ModuleVersionArtifact type : types) {
-                if (!first) {
+                if (!skipComma) {
                     append(", ");
                 }
                 String suffix = type.getSuffix();
                 int major = (type.getMajorBinaryVersion() != null) ? type.getMajorBinaryVersion() : 0;
                 int minor = (type.getMinorBinaryVersion() != null) ? type.getMinorBinaryVersion() : 0;
-                if (suffix.equalsIgnoreCase(".car")) {
+                if (suffix.equalsIgnoreCase(ArtifactContext.CAR)) {
                     append("JVM (#");
                     append(major);
                     if (minor != 0) {
@@ -320,9 +323,13 @@ public class CeylonInfoTool extends RepoUsingTool {
                         append(" *incompatible*");
                     }
                     append(")");
-                } else if (suffix.equalsIgnoreCase(".jar")) {
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.JAR)) {
                     append("JVM (legacy)");
-                } else if (suffix.equalsIgnoreCase(".js") || suffix.equalsIgnoreCase("-model.js")) {
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.JS) || suffix.equalsIgnoreCase(ArtifactContext.JS_MODEL)) {
+                    if (js) {
+                        skipComma = true;
+                        continue;
+                    }
                     append("JavaScript (#");
                     append(major);
                     if (minor != 0) {
@@ -333,7 +340,19 @@ public class CeylonInfoTool extends RepoUsingTool {
                         append(" *incompatible*");
                     }
                     append(")");
-                } else if (suffix.equalsIgnoreCase(".src")) {
+                    js = true;
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.RESOURCES)) {
+                    append("JS Resources");
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.DOCS) || suffix.equalsIgnoreCase(ArtifactContext.DOCS_ZIPPED)) {
+                    if (docs) {
+                        skipComma = true;
+                        continue;
+                    }
+                    append("Documentation");
+                    docs = true;
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.SCRIPTS_ZIPPED)) {
+                    append("Script Plugins");
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.SRC)) {
                     append("Sources");
                 } else if (suffix.startsWith(".")) {
                     append(suffix.substring(1).toUpperCase());
@@ -342,7 +361,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     // for these in the above list
                     append(type);
                 }
-                first = false;
+                skipComma = false;
             }
             newline();
         }
