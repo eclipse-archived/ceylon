@@ -2,6 +2,7 @@ package com.redhat.ceylon.tools.copy;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,7 +115,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 && docs == null
                 && all == null;
         if (BooleanUtil.isTrue(all)) {
-            artifacts.addAll(ArtifactContext.allSuffixes());
+            artifacts.addAll(Arrays.asList(ArtifactContext.allSuffixes()));
         }
         if (BooleanUtil.isTrue(js) || defaults) {
             artifacts.add(ArtifactContext.JS);
