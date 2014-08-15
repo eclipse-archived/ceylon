@@ -236,6 +236,18 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
 
     private static Map<String,Object> loadJsonModel(File jsFile) {
         try {
+            // If what we have is a plain .js file (not a -model.js file)
+            // we first check if a model file exists and if so we use that
+            // one instead of the given file
+            String name = jsFile.getName().toLowerCase();
+            if (!name.endsWith(ArtifactContext.JS_MODEL) && name.endsWith(ArtifactContext.JS)) {
+                name = jsFile.getName();
+                name = name.substring(0, name.length() - 3) + ArtifactContext.JS_MODEL;
+                File modelFile = new File(jsFile.getParentFile(), name);
+                if (modelFile.isFile()) {
+                    jsFile = modelFile;
+                }
+            }
             Map<String, Object> model = readJsonModel(jsFile);
             if (model == null) {
                 throw new RuntimeException("Unable to read meta model from file " + jsFile);
