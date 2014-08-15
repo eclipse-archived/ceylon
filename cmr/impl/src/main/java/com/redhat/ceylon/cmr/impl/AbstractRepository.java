@@ -250,22 +250,16 @@ public abstract class AbstractRepository implements Repository {
     }
 
     private boolean isArtifactOfType(String name, Node node, String module, String version, ModuleQuery lookup) {
-        switch (lookup.getType()) {
-            case ALL:
+        if (lookup.getType() == ModuleQuery.Type.ALL) {
+            return true;
+        }
+        for (String suffix : lookup.getType().getSuffixes()) {
+            if (getArtifactName(module, version, suffix).equals(name)) {
+                if (suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS)) {
+                    return checkBinaryVersion(module, node, lookup);
+                }
                 return true;
-            case CODE:
-                return ((getArtifactName(module, version, ArtifactContext.CAR).equals(name) || getArtifactName(module, version, ArtifactContext.JS).equals(name))
-                        && checkBinaryVersion(module, node, lookup))
-                        || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
-            case JS:
-                return getArtifactName(module, version, ArtifactContext.JS).equals(name)
-                        && checkBinaryVersion(module, node, lookup);
-            case JVM:
-                return (getArtifactName(module, version, ArtifactContext.CAR).equals(name)
-                        && checkBinaryVersion(module, node, lookup))
-                        || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
-            case SRC:
-                return getArtifactName(module, version, ArtifactContext.SRC).equals(name);
+            }
         }
         return false;
     }
