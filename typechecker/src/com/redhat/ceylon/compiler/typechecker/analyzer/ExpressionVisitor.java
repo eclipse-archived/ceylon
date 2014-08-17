@@ -18,6 +18,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInv
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.compiler.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -763,24 +764,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    /*boolean isVoidMethodReference(Tree.Expression e) {
-        //TODO: correctly handle multiple parameter lists!
-        Tree.Term term = e.getTerm();
-        ProducedType tm = term.getTypeModel();
-        if (tm!=null && tm.isExactly(unit.getType(unit.getAnythingDeclaration()))) {
-            if (term instanceof Tree.InvocationExpression) {
-                Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-                if (ie.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) ie.getPrimary();
-                    if (mte.getDeclaration() instanceof Functional) {
-                        return ((Functional) mte.getDeclaration()).isDeclaredVoid();
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
-
     private ProducedType eraseDefaultedParameters(ProducedType t) {
         ProducedType ct = t.getSupertype(unit.getCallableDeclaration());
         if (ct!=null) {
@@ -1616,17 +1599,6 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InvocationExpression that) {
         
-        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if (pal!=null) {
-            pal.visit(this);
-            visitInvocationPositionalArgs(that);
-        }
-        
-        Tree.NamedArgumentList nal = that.getNamedArgumentList();
-        if (nal!=null) {
-            nal.visit(this);
-        }
-        
         Tree.Primary p = that.getPrimary();
         if (p==null) {
             //TODO: can this actually occur??
@@ -1634,7 +1606,23 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             p.visit(this);
-            visitInvocationPrimary(that, p);
+        }
+        
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        if (pal!=null) {
+            pal.visit(this);
+        }
+        
+        Tree.NamedArgumentList nal = 
+                that.getNamedArgumentList();
+        if (nal!=null) {
+            nal.visit(this);
+        }
+        
+        if (p!=null) {
+            visitInvocationPositionalArgs(that);
+            visitInvocationPrimary(that);
             if (isIndirectInvocation(that)) {
                 visitIndirectInvocation(that);
             }
@@ -1648,7 +1636,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitInvocationPositionalArgs(Tree.InvocationExpression that) {
         Tree.Primary p = that.getPrimary();
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if (p instanceof Tree.MemberOrTypeExpression) {
+        if (pal!=null && p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             //set up the "signature" on the primary
             //so that we can resolve the correct 
@@ -1693,70 +1681,111 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitInvocationPrimary(Tree.InvocationExpression that,
-            Tree.Primary pr) {
-        Tree.Term term = Util.unwrapExpressionUntilTerm(pr);
+    private void visitInvocationPrimary(Tree.InvocationExpression that) {
+        Tree.Primary primary = that.getPrimary();
+        Tree.Term term = unwrapExpressionUntilTerm(primary);
         if (term instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) term;
-            Declaration dec = mte.getDeclaration();
-            if ( mte.getTarget()==null && dec instanceof Functional && 
-                    mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
-                List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
-                mte.getTypeArguments().setTypeModels(typeArgs);
-                if (term instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) term,
-                            (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+            Tree.StaticMemberOrTypeExpression mte = 
+                    (Tree.StaticMemberOrTypeExpression) term;
+            Tree.TypeArguments tas = mte.getTypeArguments();
+            
+            if (term instanceof Tree.BaseTypeExpression) {
+                Tree.BaseTypeExpression bte = 
+                        (Tree.BaseTypeExpression) term;
+                TypeDeclaration type = 
+                        resolveBaseTypeExpression(bte, true);
+                List<ProducedType> typeArgs = 
+                        inferTypeArguments(that, type, tas, null);
+                visitBaseTypeExpression(bte, type, typeArgs, tas);
+            }
+            
+            else if (term instanceof Tree.QualifiedTypeExpression) {
+                Tree.QualifiedTypeExpression qte = 
+                        (Tree.QualifiedTypeExpression) term;
+                TypeDeclaration type = 
+                        resolveQualifiedTypeExpression(qte, true);
+                ProducedType qt = 
+                        qte.getPrimary().getTypeModel().resolveAliases();
+                List<ProducedType> typeArgs = 
+                        inferTypeArguments(that, type, tas, qt);
+                if (qte.getPrimary() instanceof Tree.Package) {
+                    visitBaseTypeExpression(qte, type, typeArgs, tas);
                 }
-                else if (term instanceof Tree.QualifiedTypeExpression) {
-                    Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression) term;
-                    if (qte.getPrimary() instanceof Tree.Package) {
-                        visitBaseTypeExpression(qte, (TypeDeclaration) dec, 
-                                typeArgs, mte.getTypeArguments());
-                    }
-                    else {
-                        visitQualifiedTypeExpression(qte, qte.getPrimary().getTypeModel(),
-                                (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
-                    }
-                }
-                else if (term instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) term,
-                            (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
-                }
-                else if (term instanceof Tree.QualifiedMemberExpression) {
-                    Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
-                    if (qme.getPrimary() instanceof Tree.Package) {
-                        visitBaseMemberExpression(qme, (TypedDeclaration) dec, 
-                                typeArgs, mte.getTypeArguments());
-                    }
-                    else {
-                        visitQualifiedMemberExpression(qme, qme.getPrimary().getTypeModel(),
-                                (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
-                    }
+                else {
+                    visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
                 }
             }
+            
+            else if (term instanceof Tree.BaseMemberExpression) {
+                Tree.BaseMemberExpression bme = 
+                        (Tree.BaseMemberExpression) term;
+                TypedDeclaration base = 
+                        resolveBaseMemberExpression(bme, true);
+                List<ProducedType> typeArgs = 
+                        inferTypeArguments(that, base, tas, null);
+                visitBaseMemberExpression(bme, base, typeArgs, tas);
+            }
+            
+            else if (term instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qme = 
+                        (Tree.QualifiedMemberExpression) term;
+                TypedDeclaration member = 
+                        resolveQualifiedMemberExpression(qme, true);
+                ProducedType qt = 
+                        qme.getPrimary().getTypeModel().resolveAliases();
+                List<ProducedType> typeArgs = 
+                        inferTypeArguments(that, member, tas, qt);
+                if (qme.getPrimary() instanceof Tree.Package) {
+                    visitBaseMemberExpression(qme, member, typeArgs, tas);
+                }
+                else {
+                    visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
+                }
+            }
+            
         }
+        if (primary instanceof Tree.ExtendedTypeExpression) {
+            visitExtendedTypePrimary((Tree.ExtendedTypeExpression) primary);
+        }
+    }
+
+    private List<ProducedType> inferTypeArguments(
+            Tree.InvocationExpression that, Declaration dec,
+            Tree.TypeArguments tas, ProducedType qt) {
+        List<ProducedType> typeArgs = 
+                tas instanceof Tree.InferredTypeArguments ?
+                        getInferedTypeArguments(that, dec) :
+                        getTypeArguments(tas, getTypeParameters(dec), qt);
+        tas.setTypeModels(typeArgs);
+        return typeArgs;
     }
     
     private List<ProducedType> getInferedTypeArguments(Tree.InvocationExpression that, 
-            Functional dec) {
-        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-        if (!dec.getParameterLists().isEmpty()) {
-            ParameterList parameters = dec.getParameterLists().get(0);
-            for (TypeParameter tp: dec.getTypeParameters()) {
-                ProducedType it = inferTypeArgument(that, 
-                        that.getPrimary().getTypeModel(),
-                        tp, parameters);
-                if (it.containsUnknowns()) {
-                    that.addError("could not infer type argument from given arguments: type parameter '" + 
-                            tp.getName() + "' could not be inferred");
+            Declaration dec) {
+        if (dec instanceof Functional) {
+            Functional fun = (Functional) dec;
+            List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+            if (!fun.getParameterLists().isEmpty()) {
+                ParameterList parameters = fun.getParameterLists().get(0);
+                for (TypeParameter tp: fun.getTypeParameters()) {
+                    ProducedType it = inferTypeArgument(that, 
+                            that.getPrimary().getTypeModel(),
+                            tp, parameters);
+                    if (it.containsUnknowns()) {
+                        that.addError("could not infer type argument from given arguments: type parameter '" + 
+                                tp.getName() + "' could not be inferred");
+                    }
+                    else {
+                        it = constrainInferredType(fun, tp, it);
+                    }
+                    typeArgs.add(it);
                 }
-                else {
-                    it = constrainInferredType(dec, tp, it);
-                }
-                typeArgs.add(it);
             }
+            return typeArgs;
         }
-        return typeArgs;
+        else {
+            return emptyList();
+        }
     }
 
     private ProducedType constrainInferredType(Functional dec,
@@ -2151,7 +2180,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitDirectInvocation(Tree.InvocationExpression that) {
-        Tree.Term p = Util.unwrapExpressionUntilTerm(that.getPrimary());
+        Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
         Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
@@ -3961,26 +3990,13 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.BaseMemberExpression that) {
-        /*if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        String name = name(that.getIdentifier());
-        TypedDeclaration member = getTypedDeclaration(that.getScope(), 
-                name, that.getSignature(), that.getEllipsis(),
-                that.getUnit());
-        if (member==null) {
-            if (!dynamic) {
-                that.addError("function or value does not exist: '" +
-                        name + "'", 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
-            }
-        }
-        else {
-            member = (TypedDeclaration) handleAbstraction(member, that);
-            that.setDeclaration(member);
-            checkBaseVisibility(that, member, name);
+        boolean notDirectlyInvoked = !that.getDirectlyInvoked();
+        TypedDeclaration member = 
+                resolveBaseMemberExpression(that, notDirectlyInvoked);
+        if (member!=null && !that.getDirectlyInvoked()) {
             Tree.TypeArguments tal = that.getTypeArguments();
-            if (explicitTypeArguments(member, tal, that)) {
+            if (explicitTypeArguments(member, tal)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
                         getTypeParameters(member), null);
                 tal.setTypeModels(ta);
@@ -3990,13 +4006,31 @@ public class ExpressionVisitor extends Visitor {
             else  {
                 typeArgumentsImplicit(that);
             }
-            /*if (defaultArgument) {
-                if (member.isClassOrInterfaceMember()) {
-                    that.addWarning("references to this from default argument expressions not yet supported");
-                }
-            }*/
-//            checkOverloadedReference(that);
         }
+    }
+
+    private TypedDeclaration resolveBaseMemberExpression(
+            Tree.BaseMemberExpression that,
+            boolean error) {
+        String name = name(that.getIdentifier());
+        TypedDeclaration member = getTypedDeclaration(that.getScope(), 
+                name, that.getSignature(), that.getEllipsis(),
+                that.getUnit());
+        if (member==null) {
+            if (!dynamic && error) {
+                that.addError("function or value does not exist: '" +
+                        name + "'", 100);
+                unit.getUnresolvedReferences().add(that.getIdentifier());
+            }
+        }
+        else {
+            member = (TypedDeclaration) handleAbstraction(member, that);
+            that.setDeclaration(member);
+            if (error) {
+                checkBaseVisibility(that, member, name);
+            }
+        }
+        return member;
     }
 
     private List<TypeParameter> getTypeParameters(Declaration member) {
@@ -4006,15 +4040,41 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.QualifiedMemberExpression that) {
-        /*that.getPrimary().visit(this);
-        if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);*/
         super.visit(that);
+        boolean notDirectlyInvoked = !that.getDirectlyInvoked();
+        TypedDeclaration member = 
+                resolveQualifiedMemberExpression(that, notDirectlyInvoked);
+        if (member!=null && notDirectlyInvoked) {
+            Tree.TypeArguments tal = that.getTypeArguments();
+            if (explicitTypeArguments(member, tal)) {
+                ProducedType pt = 
+                        that.getPrimary().getTypeModel()
+                        .resolveAliases(); //TODO: probably not necessary
+                List<ProducedType> ta = getTypeArguments(tal,
+                        getTypeParameters(member), pt);
+                tal.setTypeModels(ta);
+                if (that.getPrimary() instanceof Tree.Package) {
+                    visitBaseMemberExpression(that, member, ta, tal);
+                }
+                else {
+                    visitQualifiedMemberExpression(that, pt, member, ta, tal);
+                }
+                //otherwise infer type arguments later
+            }
+            else {
+                typeArgumentsImplicit(that);
+            }
+        }
+    }
+
+    private TypedDeclaration resolveQualifiedMemberExpression(
+            Tree.QualifiedMemberExpression that, 
+            boolean error) {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
         boolean check = packageQualified ||
-//                that.getStaticMethodReference() ||
+                //that.getStaticMethodReference() ||
                 pt!=null &&
                 //account for dynamic blocks
                 (!pt.getType().isUnknown() || 
@@ -4044,9 +4104,11 @@ public class ExpressionVisitor extends Visitor {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
-                ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                ClassOrInterface ci = 
+                        getContainingClassOrInterface(that.getScope());
                 if (ci!=null && d.inherits(ci)) {
-                    Declaration direct = ci.getDirectMember(name, signature, ellipsis);
+                    Declaration direct = 
+                            ci.getDirectMember(name, signature, ellipsis);
                     if (direct instanceof TypedDeclaration) {
                         member = (TypedDeclaration) direct;
                     }
@@ -4057,48 +4119,39 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     member = getTypedMember(d, name, signature, ellipsis, unit);
                 }
-                ambiguous = member==null && d.isMemberAmbiguous(name, unit, 
-                        signature, ellipsis);
+                ambiguous = member==null && 
+                        d.isMemberAmbiguous(name, unit, signature, ellipsis);
             }
             if (member==null) {
-                if (ambiguous) {
-                    that.addError("method or attribute is ambiguous: '" +
-                            name + "' for " + container);
-                }
-                else {
-                    that.addError("method or attribute does not exist: '" +
-                            name + "' in " + container, 100);
-                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                if (error) {
+                    if (ambiguous) {
+                        that.addError("method or attribute is ambiguous: '" +
+                                name + "' for " + container);
+                    }
+                    else {
+                        that.addError("method or attribute does not exist: '" +
+                                name + "' in " + container, 100);
+                        unit.getUnresolvedReferences().add(that.getIdentifier());
+                    }
                 }
             }
             else {
                 member = (TypedDeclaration) handleAbstraction(member, that);
                 that.setDeclaration(member);
                 boolean selfReference = isSelfReference(p);
-                checkQualifiedVisibility(that, member, name, container,
-                        selfReference);
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
                 }
-                Tree.TypeArguments tal = that.getTypeArguments();
-                if (explicitTypeArguments(member, tal, that)) {
-                    List<ProducedType> ta = getTypeArguments(tal,
-                            getTypeParameters(member), pt);
-                    tal.setTypeModels(ta);
-                    if (packageQualified) {
-                        visitBaseMemberExpression(that, member, ta, tal);
-                    }
-                    else {
-                        visitQualifiedMemberExpression(that, pt, member, ta, tal);
-                    }
-                    //otherwise infer type arguments later
+                if (error) {
+                    checkQualifiedVisibility(that, member, name, container,
+                            selfReference);
                 }
-                else {
-                    typeArgumentsImplicit(that);
-                }
-//                checkOverloadedReference(that);
             }
             checkSuperMember(that);
+            return member;
+        }
+        else {
+            return null;
         }
     }
 
@@ -4117,16 +4170,14 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
-        if (!that.getDirectlyInvoked()) {
-            Functional dec = (Functional) that.getDeclaration();
-            StringBuilder params = new StringBuilder();
-            for (TypeParameter tp: dec.getTypeParameters()) {
-                if (params.length()>0) params.append(", ");
-                params.append("'").append(tp.getName()).append("'");
-            }
-            that.addError("missing type arguments to generic declaration: '" + 
-                    dec.getName(unit) + "' declares type parameters " + params);
+        Functional dec = (Functional) that.getDeclaration();
+        StringBuilder params = new StringBuilder();
+        for (TypeParameter tp: dec.getTypeParameters()) {
+            if (params.length()>0) params.append(", ");
+            params.append("'").append(tp.getName()).append("'");
         }
+        that.addError("missing type arguments to generic declaration: '" + 
+                dec.getName(unit) + "' declares type parameters " + params);
     }
     
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
@@ -4223,25 +4274,12 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
-        /*if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);*/
-        String name = name(that.getIdentifier());
-        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
-                name, that.getSignature(), that.getEllipsis(), 
-                that.getUnit());
-        if (type==null) {
-            if (!dynamic) {
-                that.addError("type does not exist: '" + name + "'", 102);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
-            }
-        }
-        else {
-            type = (TypeDeclaration) handleAbstraction(type, that);
-            that.setDeclaration(type);
-            checkBaseTypeAndConstructorVisibility(that, name, type);
-            checkConcreteClass(type, that);
+        boolean notDirectlyInvoked = !that.getDirectlyInvoked();
+        TypeDeclaration type = 
+                resolveBaseTypeExpression(that, notDirectlyInvoked);
+        if (type!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
-            if (explicitTypeArguments(type, tal, that)) {
+            if (explicitTypeArguments(type, tal)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
                         type.getTypeParameters(), null);
                 tal.setTypeModels(ta);
@@ -4251,9 +4289,32 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgumentsImplicit(that);
             }
-//            checkOverloadedReference(that);
-        	checkSealedReference(type, that);
         }
+    }
+
+    private TypeDeclaration resolveBaseTypeExpression(
+            Tree.BaseTypeExpression that,
+            boolean error) {
+        String name = name(that.getIdentifier());
+        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
+                name, that.getSignature(), that.getEllipsis(), 
+                that.getUnit());
+        if (type==null) {
+            if (!dynamic && error) {
+                that.addError("type does not exist: '" + name + "'", 102);
+                unit.getUnresolvedReferences().add(that.getIdentifier());
+            }
+        }
+        else {
+            type = (TypeDeclaration) handleAbstraction(type, that);
+            that.setDeclaration(type);
+            if (error) {
+                checkBaseTypeAndConstructorVisibility(that, name, type);
+                checkConcreteClass(type, that);
+                checkSealedReference(type, that);
+            }
+        }
+        return type;
     }
 
     private void checkConcreteClass(TypeDeclaration type,
@@ -4294,16 +4355,17 @@ public class ExpressionVisitor extends Visitor {
 	    }
     }
     
-    @Override public void visit(Tree.ExtendedTypeExpression that) {
-        super.visit(that);
+   void visitExtendedTypePrimary(Tree.ExtendedTypeExpression that) {
         Declaration dec = that.getDeclaration();
         if (dec instanceof Class) {
             Class c = (Class) dec;
             if (c.isAbstraction()) { 
                 //if the constructor is overloaded
                 //resolve the right overloaded version
-                Declaration result = findMatchingOverloadedClass(c, that.getSignature(), 
-                        that.getEllipsis());
+                Declaration result = 
+                        findMatchingOverloadedClass(c, 
+                                that.getSignature(), 
+                                that.getEllipsis());
                 if (result!=null && result!=dec) {
                     //patch the reference, which was already
                     //initialized to the abstraction
@@ -4320,7 +4382,6 @@ public class ExpressionVisitor extends Visitor {
                 //else report to user that we could not
                 //find a matching overloaded constructor
             }
-//            checkOverloadedReference(that);
         }
     }
     
@@ -4340,9 +4401,35 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
-        /*that.getPrimary().visit(this);
-        if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);*/
+        boolean notDirectlyInvoked = !that.getDirectlyInvoked();
+        TypeDeclaration type = 
+                resolveQualifiedTypeExpression(that, notDirectlyInvoked);
+        if (type!=null && notDirectlyInvoked) {
+            Tree.TypeArguments tal = that.getTypeArguments();
+            if (explicitTypeArguments(type, tal)) {
+                ProducedType pt = 
+                        that.getPrimary().getTypeModel()
+                        .resolveAliases(); //TODO: probably not necessary
+                List<ProducedType> ta = getTypeArguments(tal,
+                        type.getTypeParameters(), pt);
+                tal.setTypeModels(ta);
+                if (that.getPrimary() instanceof Tree.Package) {
+                    visitBaseTypeExpression(that, type, ta, tal);
+                }
+                else {
+                    visitQualifiedTypeExpression(that, pt, type, ta, tal);
+                }
+                //otherwise infer type arguments later
+            }
+            else {
+                typeArgumentsImplicit(that);
+            }
+        }
+    }
+
+    private TypeDeclaration resolveQualifiedTypeExpression(
+            Tree.QualifiedTypeExpression that,
+            boolean error) {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
@@ -4375,9 +4462,11 @@ public class ExpressionVisitor extends Visitor {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
-                ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                ClassOrInterface ci = 
+                        getContainingClassOrInterface(that.getScope());
                 if (ci!=null && d.inherits(ci)) {
-                    Declaration direct = ci.getDirectMember(name, signature, ellipsis);
+                    Declaration direct = 
+                            ci.getDirectMember(name, signature, ellipsis);
                     if (direct instanceof TypeDeclaration) {
                         type = (TypeDeclaration) direct;
                     }
@@ -4392,55 +4481,37 @@ public class ExpressionVisitor extends Visitor {
                         signature, ellipsis);
             }
             if (type==null) {
-                if (ambiguous) {
-                    that.addError("member type is ambiguous: '" +
-                            name + "' for " + container);
-                }
-                else {
-                    that.addError("member type does not exist: '" +
-                            name + "' in " + container, 100);
-                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                if (error) {
+                    if (ambiguous) {
+                        that.addError("member type is ambiguous: '" +
+                                name + "' for " + container);
+                    }
+                    else {
+                        that.addError("member type does not exist: '" +
+                                name + "' in " + container, 100);
+                        unit.getUnresolvedReferences().add(that.getIdentifier());
+                    }
                 }
             }
             else {
                 type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
-                checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
                 if (!isSelfReference(p) && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
-                checkConcreteClass(type, that);
-                Tree.TypeArguments tal = that.getTypeArguments();
-                if (explicitTypeArguments(type, tal, that)) {
-                    List<ProducedType> ta = getTypeArguments(tal,
-                            type.getTypeParameters(), pt);
-                    tal.setTypeModels(ta);
-                    if (packageQualified) {
-                        visitBaseTypeExpression(that, type, ta, tal);
-                    }
-                    else {
-                        visitQualifiedTypeExpression(that, pt, type, ta, tal);
-                    }
-                    //otherwise infer type arguments later
+                if (error) {
+                    checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
+                    checkConcreteClass(type, that);
+                    checkSealedReference(type, that);
                 }
-                else {
-                    typeArgumentsImplicit(that);
-                }
-//                checkOverloadedReference(that);
-            	checkSealedReference(type, that);
             }
-            //TODO: this is temporary until we get metamodel reference expressions!
-            /*if (p instanceof Tree.BaseTypeExpression ||
-                    p instanceof Tree.QualifiedTypeExpression) {
-                ProducedReference target = that.getTarget();
-                if (target!=null) {
-                    checkTypeBelongsToContainingScope(target.getType(), 
-                            that.getScope(), that);
-                }
-            }*/
             if (!inExtendsClause) {
                 checkSuperMember(that);
             }
+            return type;
+        }
+        else {
+            return null;
         }
     }
     
@@ -4455,14 +4526,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal, 
-            Tree.MemberOrTypeExpression that) {
-        return !dec.isParameterized() || 
-                tal instanceof Tree.TypeArgumentList;
-                //TODO: enable this line to enable
-                //      typechecking of references
-                //      without type arguments
-                //|| !that.getDirectlyInvoked();
+    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
+        return !dec.isParameterized() || tal instanceof Tree.TypeArgumentList;
     }
     
     @Override public void visit(Tree.SimpleType that) {
@@ -6117,7 +6182,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();
-                if (explicitTypeArguments(method, tal, null)) {
+                if (explicitTypeArguments(method, tal)) {
                     List<ProducedType> ta = getTypeArguments(tal, 
                     		getTypeParameters(method), outerType);
                     if (tal != null) {
@@ -6184,8 +6249,9 @@ public class ExpressionVisitor extends Visitor {
         //      we're not actually calling the constructor
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            //first handle the case where it's not _really_ overloaded,
+            //handle the case where it's not _really_ overloaded,
             //it's just a constructor with a different visibility
+            //to the class itself
         	List<Declaration> overloads = ((Functional) dec).getOverloads();
         	if (overloads.size()==1) {
         		return overloads.get(0);
