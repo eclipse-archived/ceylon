@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import ceylon.language.ArraySequence;
@@ -1621,5 +1624,38 @@ public class Util {
         throw new OverflowException();
     }
     
-    
+    /** 
+     * <p>Typecast a {@code long} to a {@code byte}, or throw if the {@code long} 
+     * cannot be safely converted.</p>
+     *   
+     * <p>We need to do this:</p>
+     *  <ul>
+     *  <li>when creating or indexing into an array,</li>
+     *  <li>when invoking a Java method which takes a {@code byte},</li>
+     *  <li>when assigning to a Java {@code byte} field.</li>
+     *  <ul>
+     *  @throws ceylon.language.OverflowException
+     */
+    public static byte toByte(long value) {
+        if (value <= java.lang.Byte.MAX_VALUE
+                && value >= java.lang.Byte.MIN_VALUE) {
+            return (byte)value;
+        }
+        throw new OverflowException();
+    }
+
+    /**
+     * Used during deserialization to obtain a MethodHandle used for resetting final fields.
+     * @param lookup The lookup on the class containing the field
+     * @param fieldName The name of the field whose value is to be set 
+     * @return The method handle
+     * @throws ReflectiveOperationException
+     */
+    public static MethodHandle setter(MethodHandles.Lookup lookup, String fieldName) throws ReflectiveOperationException {
+        // Should this be an instance method of some thing passed to the derserialize method
+        Field field = lookup.lookupClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        MethodHandle handle = lookup.unreflectSetter(field);
+        return handle;
+    }
 }
