@@ -258,3 +258,16 @@ shared final annotation class SuppressWarningsAnnotation([String*] warnings)
 "Annotation to suppress the given warnings when typechecking the annotated element"
 shared annotation SuppressWarningsAnnotation suppressWarnings(String* warnings) 
         => SuppressWarningsAnnotation(warnings);
+
+"The annotation class for serializable classes."
+shared final annotation class SerializableAnnotation()
+        satisfies OptionalAnnotation<SerializableAnnotation,ClassDeclaration> {
+}
+
+"Annotation to specify that a class is potentially serializable.
+  
+ A serializable class may have instances that cannot be serialized 
+ if those instances have reachable references to instances of 
+ non-serializable classes."
+shared annotation SerializableAnnotation serializable() => SerializableAnnotation();
+
