@@ -4145,9 +4145,9 @@ public class ExpressionVisitor extends Visitor {
                 if (error) {
                     checkQualifiedVisibility(that, member, name, container,
                             selfReference);
+                    checkSuperMember(that);
                 }
             }
-            checkSuperMember(that);
             return member;
         }
         else {
@@ -4503,10 +4503,10 @@ public class ExpressionVisitor extends Visitor {
                     checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
                     checkConcreteClass(type, that);
                     checkSealedReference(type, that);
+                    if (!inExtendsClause) {
+                        checkSuperMember(that);
+                    }
                 }
-            }
-            if (!inExtendsClause) {
-                checkSuperMember(that);
             }
             return type;
         }
