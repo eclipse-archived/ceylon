@@ -15,7 +15,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
           if (!nt.a)nt.a={};
           for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
         }
-        rv=AppliedInterface(rv,{Type$Interface:nt});
+        rv=AppliedInterface$jsint(rv,{Type$Interface:nt});
         if (nt.a)rv.$targs=nt.a;
         rv.$bound=x;
         return rv;

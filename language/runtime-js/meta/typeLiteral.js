@@ -30,7 +30,7 @@ function typeLiteral$meta($$targs$$) {
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['mt'] === 'i') {
-        var r=AppliedInterface(t,{Type$Interface:$$targs$$.Type$typeLiteral});
+        var r=AppliedInterface$jsint(t,{Type$Interface:$$targs$$.Type$typeLiteral});
         if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['mt'] === 'm') {

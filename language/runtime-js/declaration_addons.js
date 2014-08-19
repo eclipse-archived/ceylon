@@ -217,7 +217,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types
   validate$typeparams(_t,_m.tp,types);
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this);
-  var rv=this.meta.mt==='i'?AppliedInterface(_t.t, {Type$Interface:$mptypes.Type$apply}):
+  var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$Interface:$mptypes.Type$apply}):
     AppliedClass(_t.t, {Type$Class:$mptypes.Type$apply,Arguments$Class:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
