@@ -583,11 +583,11 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null) {
         	ProducedType t = type.getTypeModel();
         	if (type instanceof Tree.LocalModifier) {
-        		/*if (dec.isParameter()) {
+        		if (dec.isParameter()) {
         			type.addError("parameter may not have inferred type: '" + 
         					dec.getName() + "' must declare an explicit type");
         		}
-        		else*/ if (isTypeUnknown(t)) {
+        		else if (isTypeUnknown(t)) {
         		    if (sie==null) {
         		        type.addError("value must specify an explicit type or definition", 200);
         		    }
@@ -857,13 +857,20 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        MethodOrValue model = that.getParameterModel().getModel();
+        Parameter p = that.getParameterModel();
+        MethodOrValue model = p.getModel();
         if (model!=null) {
         	ProducedType type = 
         	        model.getTypedReference().getFullType();
         	if (type!=null && !isTypeUnknown(type)) {
         		checkType(type, that.getSpecifierExpression());
         	}
+        }
+        else {
+            Declaration a = that.getScope().getDirectMember(p.getName(), null, false);
+            if (a==null) {
+                that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+            }
         }
     }
     
@@ -1040,12 +1047,12 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (type instanceof Tree.LocalModifier) {
-            /*Method dec = that.getDeclarationModel();
+            Method dec = that.getDeclarationModel();
             if (dec.isParameter()) {
                 type.addError("parameter may not have inferred type: '" + 
                         dec.getName() + "' must declare an explicit type");
             }
-            else*/ if (isTypeUnknown(type.getTypeModel())) {
+            else if (isTypeUnknown(type.getTypeModel())) {
                 if (se==null) {
                     type.addError("function must specify an explicit return type or definition", 200);
                 }
@@ -1641,21 +1648,25 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.QualifiedMemberOrTypeExpression) p;
                         ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
                         ProducedType qt = unwrap(pt, qmte);
-                        pr = qt.getTypedReference(dec, Collections.<ProducedType>emptyList());
+                        pr = qt.getTypedReference(dec, 
+                                Collections.<ProducedType>emptyList());
                     }
                     else {
                         ProducedType qt = p.getScope().getDeclaringType(dec);
-                        pr = dec.getProducedReference(qt, Collections.<ProducedType>emptyList());
+                        pr = dec.getProducedReference(qt, 
+                                Collections.<ProducedType>emptyList());
                     }
                 }
                 else {
                     return;
                 }
-                List<ParameterList> pls = ((Functional) dec).getParameterLists();
+                List<ParameterList> pls = 
+                        ((Functional) dec).getParameterLists();
                 if (!pls.isEmpty()) {
                     ParameterList pl = pls.get(0);
                     List<Parameter> params = pl.getParameters();
-                    List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+                    List<Tree.PositionalArgument> args = 
+                            pal.getPositionalArguments();
                     for (int i=0; i<params.size() && i<args.size(); i++) {
                         Parameter param = params.get(i);
                         Tree.PositionalArgument arg = args.get(i);
@@ -1663,8 +1674,10 @@ public class ExpressionVisitor extends Visitor {
                                 arg instanceof Tree.ListedArgument) {
                             Tree.ListedArgument la = (Tree.ListedArgument) arg;
                             Tree.Expression e = la.getExpression();
-                            if (e!=null && e.getTerm() instanceof Tree.FunctionArgument) {
-                                Tree.FunctionArgument anon = (Tree.FunctionArgument) e.getTerm();
+                            if (e!=null && 
+                                    e.getTerm() instanceof Tree.FunctionArgument) {
+                                Tree.FunctionArgument anon = 
+                                        (Tree.FunctionArgument) e.getTerm();
                                 Functional f = (Functional) param.getModel();
                                 List<ParameterList> fpls = f.getParameterLists();
                                 List<Tree.ParameterList> apls = anon.getParameterLists();
@@ -1674,13 +1687,21 @@ public class ExpressionVisitor extends Visitor {
                                     for (int j=0; j<fps.size() && j<aps.size(); j++) {
                                         Parameter fp = fps.get(j);
                                         Tree.Parameter ap = aps.get(j);
-                                        if (ap instanceof Tree.ParameterDeclaration) {
-                                            Tree.ParameterDeclaration pd = (Tree.ParameterDeclaration) ap;
-                                            Tree.Type type = pd.getTypedDeclaration().getType();
-                                            if (type instanceof Tree.LocalModifier) {
-                                                ProducedType t = pr.getTypedParameter(fp).getType();
-                                                type.setTypeModel(t);
-                                                ap.getParameterModel().getModel().setType(t);
+                                        if (ap instanceof Tree.InitializerParameter) {
+                                            Tree.InitializerParameter pd = 
+                                                    (Tree.InitializerParameter) ap;
+                                            Parameter parameter = ap.getParameterModel();
+                                            if (parameter.getModel()==null) {
+                                                ProducedType t = 
+                                                        pr.getTypedParameter(fp).getType();
+                                                Value model = new Value();
+                                                model.setType(t);
+                                                model.setName(parameter.getName());
+                                                parameter.setModel(model);
+                                                model.setInitializerParameter(parameter);
+                                                Method fun = anon.getDeclarationModel();
+                                                model.setContainer(fun);
+                                                fun.addMember(model);
                                             }
                                         }
                                     }
@@ -1692,7 +1713,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     private void visitInvocationPositionalArgs(Tree.InvocationExpression that) {
         Tree.Primary p = that.getPrimary();
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();

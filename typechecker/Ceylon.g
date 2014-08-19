@@ -1805,7 +1805,12 @@ spreadArgument returns [SpreadArgument positionalArgument]
     ;
 
 anonParametersStart
-    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN)
+    : LPAREN 
+    ( 
+      RPAREN
+    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE)) 
+    | compilerAnnotations annotatedDeclarationStart 
+    )
     ;
 
 nonemptyParametersStart
