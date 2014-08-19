@@ -124,7 +124,7 @@ public class MetamodelHelper {
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             if (td.isToplevel()) {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedInterface$meta$model()(");
+                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedInterface$jsint()(");
             } else {
                 gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedMemberInterface$meta$model()(");
             }
