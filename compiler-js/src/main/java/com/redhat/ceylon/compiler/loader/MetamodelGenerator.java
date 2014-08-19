@@ -225,6 +225,7 @@ public class MetamodelGenerator {
      * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
      * that compose it. */
     private Map<String, Object> typeParameterMap(ProducedType pt, Declaration from) {
+        if (pt == null)return null;
         final Map<String, Object> m = new HashMap<>();
         final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);

@@ -81,6 +81,7 @@ public class JsCompiler {
         @Override
         public void visit(Tree.ImportMemberOrType that) {
             if (hasErrors(that)) return;
+            if (that.getImportModel() == null || that.getImportModel().getDeclaration() == null)return;
             Unit u = that.getImportModel().getDeclaration().getUnit();
             if (nonCeylonUnit(u)) {
                 that.addUnexpectedError("cannot import Java declarations in Javascript");
