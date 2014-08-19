@@ -55,7 +55,7 @@ function _openTypeFromTarg(targ,o) {
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);
   if (mdl.mt==='i') {
-    return FreeInterface(lit);
+    return FreeInterface$jsint(lit);
   } else if (mdl.mt==='c' || mdl.mt==='o') {
     return FreeClass$jsint(lit);
   }

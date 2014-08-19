@@ -1,1 +1,1 @@
-return FreeInterface(this);
+return FreeInterface$jsint(this);

@@ -77,28 +77,6 @@ class OpenVariable(shared actual String name, shared actual Package containingPa
 }
 class OpenSetter(shared actual VariableDeclaration variable) satisfies SetterDeclaration {}
 
-
-
-
-
-class FreeClass(declaration)
-        satisfies OpenClassType {
-
-    shared actual ClassDeclaration declaration;
-    shared actual OpenClassType? extendedType { throw Exception("unimplemented"); }
-    shared actual OpenInterfaceType[] satisfiedTypes { throw Exception("unimplemented"); }
-    shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
-}
-
-class FreeInterfaceType(declaration)
-        satisfies OpenInterfaceType {
-
-    shared actual InterfaceDeclaration declaration;
-    shared actual OpenClassType? extendedType { throw Exception("unimplemented"); }
-    shared actual OpenInterfaceType[] satisfiedTypes { throw Exception("unimplemented"); }
-    shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
-}
-
 class FunParamDecl() satisfies FunctionDeclaration {
   shared actual Boolean parameter=true;
   shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }
