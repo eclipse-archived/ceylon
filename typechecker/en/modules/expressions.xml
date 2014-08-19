@@ -449,7 +449,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The receiver expression produces the instance upon which the member 
             is invoked or evaluated. When a member expression is executed, the receiver 
-            expresson is evaluated to produce the receiving instance which is held 
+            expression is evaluated to produce the receiving instance which is held 
             until the member is invoked or evaluated, as defined in 
             <xref linkend="evaluationinvocationandassignment"/>.</para>
             
@@ -1406,7 +1406,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         prefix operators, and prefix operators have a higher precedence than 
         binary operators.</para>
         
-        <para>There is a single exception to this principal: the binary 
+        <para>There is a single exception to this principle: the binary 
         exponentiation operator <literal>^</literal> has a higher precedence than 
         the prefix operators <literal>+</literal> and <literal>-</literal>. The 
         reason for this is that the following expressions should be equivalent:</para>

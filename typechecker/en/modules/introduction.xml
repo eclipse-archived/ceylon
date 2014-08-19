@@ -466,7 +466,7 @@
             </para> 
             
             <para>
-            This restrictions allows a much cleaner syntax for program element 
+            These restrictions allows a much cleaner syntax for program element 
             annotations than the syntax found in either Java or C#. Declaration 
             "modifiers" like <literal>shared</literal>, <literal>abstract</literal>, 
             and <literal>variable</literal> aren't keywords in Ceylon, they're ordinary 
@@ -546,7 +546,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             supported by C and Java. True operator overloading is not supported. 
             However, each operator is defined to act upon a certain class or interface 
             type, allowing application of the operator to any class which extends or 
-            satisfies that type. For example, the <literal>+</literal> operater may be
+            satisfies that type. For example, the <literal>+</literal> operator may be
             applied to any class that satisfies the interface <literal>Summable</literal>. 
             This approach is called <emphasis>operator polymorphism</emphasis>.
             </para>

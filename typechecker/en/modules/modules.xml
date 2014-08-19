@@ -67,7 +67,7 @@
         <section id="classloaders">
             <title>Module isolation for the Java platform</title>
         
-            <para>In the JVM environment, Each version of each module is loaded 
+            <para>In the JVM environment, each version of each module is loaded 
             using a different class loader. Classes inside a module have access 
             to other classes in the same module and to classes belonging to 
             modules that are explicitly imported in the module descriptor. 
