@@ -1,0 +1,53 @@
+function ocoitarg$(coi) {
+  var tps=coi.declaration.tipo.$crtmm$.tp;
+  if (tps) {
+    var rtps = coi.declaration._targs;
+    var targs={};
+    for (var tpn in tps) {
+      var rtp=rtps&&rtps[tpn];
+      var otp=OpenTypeParam$jsint(coi.declaration.tipo,tpn);
+      var targ;
+      if (rtp===undefined) {
+        targ = OpenTvar$jsint(otp);
+      } else if (typeof(rtp)==='string') {
+        targ = OpenTvar$jsint(OpenTypeParam$jsint(coi.declaration.tipo,rtp));
+      } else {
+        if (rtp.t==='i'||rtp.t==='u') {
+          //resolve case types
+          var nrtp={t:rtp.t,l:[]};
+          for (var i=0;i<rtp.l.length;i++) {
+            var _ct=rtp.l[i];
+            nrtp.l.push(typeof(_ct)==='string'?OpenTvar$jsint(OpenTypeParam$jsint(coi.declaration.tipo,_ct)):_ct);
+          }
+          rtp=nrtp;
+        }
+        targ = _openTypeFromTarg(rtp,coi.declaration);
+      }
+      targs[otp.qualifiedName]=[otp,targ];
+    }
+    return TpMap$jsint(targs,{V$TpMap:{t:OpenType$meta$declaration}});
+  }
+  return getEmpty();
+}
+function ocoistr$(coi){
+  var s=coi.declaration.qualifiedName;
+  var tps=coi.declaration.tipo.$crtmm$.tp;
+  if (tps) {
+    var rtps=coi.declaration._targs;
+    s+="<";
+    var first=true;
+    for (var t in tps) {
+      var rtp=rtps&&rtps[t];
+      if (first)first=false;else s+=",";
+      if (rtp===undefined||typeof(rtp)==='string') {
+        if(typeof(rtp)==='string')t=rtp;
+        if (t.indexOf('$')>0)t=t.substring(0,t.indexOf('$'));
+        s+=t;
+      } else {
+        s+=_openTypeFromTarg(rtp).string;
+      }
+    }
+    s+=">";
+  }
+  return s;
+}

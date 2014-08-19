@@ -57,7 +57,7 @@ function _openTypeFromTarg(targ,o) {
   if (mdl.mt==='i') {
     return FreeInterface(lit);
   } else if (mdl.mt==='c' || mdl.mt==='o') {
-    return FreeClass(lit);
+    return FreeClass$jsint(lit);
   }
   console.log("Don't know WTF to return for " + lit + " metatype " + mdl.mt);
 }

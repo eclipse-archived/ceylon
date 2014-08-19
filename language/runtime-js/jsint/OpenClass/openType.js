@@ -1,1 +1,1 @@
-return FreeClass(this);
+return FreeClass$jsint(this);
