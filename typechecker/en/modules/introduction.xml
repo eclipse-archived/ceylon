@@ -466,7 +466,7 @@
             </para> 
             
             <para>
-            These restrictions allows a much cleaner syntax for program element 
+            These restrictions allow a much cleaner syntax for program element 
             annotations than the syntax found in either Java or C#. Declaration 
             "modifiers" like <literal>shared</literal>, <literal>abstract</literal>, 
             and <literal>variable</literal> aren't keywords in Ceylon, they're ordinary 
