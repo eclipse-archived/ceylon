@@ -584,17 +584,15 @@ public class ExpressionVisitor extends Visitor {
         	if (type instanceof Tree.LocalModifier) {
         		if (dec.isParameter()) {
         			type.addError("parameter may not have inferred type: '" + 
-        					dec.getName() + "'");
+        					dec.getName() + "' must declare an explicit type");
         		}
-        		else {
-        			if (sie==null) {
-        				type.addError("value must specify an explicit type or definition", 200);
-        			}
-        			else if (isTypeUnknown(t)) {
-        			    if (!hasError(sie)) {
-        			        type.addError("value type could not be inferred");
-        			    }
-        			}
+        		else if (isTypeUnknown(t)) {
+        		    if (sie==null) {
+        		        type.addError("value must specify an explicit type or definition", 200);
+        		    }
+        		    else if (!hasError(sie)) {
+        		        type.addError("value type could not be inferred");
+        		    }
         		}
         	}
         	if (!isTypeUnknown(t)) {
@@ -856,17 +854,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.ParameterDeclaration that) {
-        super.visit(that);
-        Tree.Type type = that.getTypedDeclaration().getType();
-        if (type instanceof Tree.LocalModifier) {
-            Parameter p = that.getParameterModel();
-            type.setTypeModel(new UnknownType(unit).getType());
-            type.addError("parameter may not have inferred type: '" + 
-                    p.getName() + "' must declare an explicit type");
-        }
-    }
-    
     @Override public void visit(Tree.InitializerParameter that) {
         super.visit(that);
         MethodOrValue model = that.getParameterModel().getModel();
@@ -1052,7 +1039,12 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (type instanceof Tree.LocalModifier) {
-            if (isTypeUnknown(type.getTypeModel())) {
+            Method dec = that.getDeclarationModel();
+            if (dec.isParameter()) {
+                type.addError("parameter may not have inferred type: '" + 
+                        dec.getName() + "' must declare an explicit type");
+            }
+            else if (isTypeUnknown(type.getTypeModel())) {
                 if (se==null) {
                     type.addError("function must specify an explicit return type or definition", 200);
                 }
