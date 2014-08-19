@@ -1686,9 +1686,11 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.BaseTypeExpression) term;
                 TypeDeclaration type = 
                         resolveBaseTypeExpression(bte, true);
-                List<ProducedType> typeArgs = 
-                        inferTypeArguments(that, type, tas, null);
-                visitBaseTypeExpression(bte, type, typeArgs, tas);
+                if (type!=null) {
+                    List<ProducedType> typeArgs = 
+                            inferTypeArguments(that, type, tas, null);
+                    visitBaseTypeExpression(bte, type, typeArgs, tas);
+                }
             }
             
             else if (term instanceof Tree.QualifiedTypeExpression) {
@@ -1696,15 +1698,17 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.QualifiedTypeExpression) term;
                 TypeDeclaration type = 
                         resolveQualifiedTypeExpression(qte, true);
-                ProducedType qt = 
-                        qte.getPrimary().getTypeModel().resolveAliases();
-                List<ProducedType> typeArgs = 
-                        inferTypeArguments(that, type, tas, qt);
-                if (qte.getPrimary() instanceof Tree.Package) {
-                    visitBaseTypeExpression(qte, type, typeArgs, tas);
-                }
-                else {
-                    visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
+                if (type!=null) {
+                    ProducedType qt = 
+                            qte.getPrimary().getTypeModel().resolveAliases();
+                    List<ProducedType> typeArgs = 
+                            inferTypeArguments(that, type, tas, qt);
+                    if (qte.getPrimary() instanceof Tree.Package) {
+                        visitBaseTypeExpression(qte, type, typeArgs, tas);
+                    }
+                    else {
+                        visitQualifiedTypeExpression(qte, qt, type, typeArgs, tas);
+                    }
                 }
             }
             
@@ -1713,9 +1717,11 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.BaseMemberExpression) term;
                 TypedDeclaration base = 
                         resolveBaseMemberExpression(bme, true);
-                List<ProducedType> typeArgs = 
-                        inferTypeArguments(that, base, tas, null);
-                visitBaseMemberExpression(bme, base, typeArgs, tas);
+                if (base!=null) {
+                    List<ProducedType> typeArgs = 
+                            inferTypeArguments(that, base, tas, null);
+                    visitBaseMemberExpression(bme, base, typeArgs, tas);
+                }
             }
             
             else if (term instanceof Tree.QualifiedMemberExpression) {
@@ -1723,15 +1729,17 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.QualifiedMemberExpression) term;
                 TypedDeclaration member = 
                         resolveQualifiedMemberExpression(qme, true);
-                ProducedType qt = 
-                        qme.getPrimary().getTypeModel().resolveAliases();
-                List<ProducedType> typeArgs = 
-                        inferTypeArguments(that, member, tas, qt);
-                if (qme.getPrimary() instanceof Tree.Package) {
-                    visitBaseMemberExpression(qme, member, typeArgs, tas);
-                }
-                else {
-                    visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
+                if (member!=null) {
+                    ProducedType qt = 
+                            qme.getPrimary().getTypeModel().resolveAliases();
+                    List<ProducedType> typeArgs = 
+                            inferTypeArguments(that, member, tas, qt);
+                    if (qme.getPrimary() instanceof Tree.Package) {
+                        visitBaseMemberExpression(qme, member, typeArgs, tas);
+                    }
+                    else {
+                        visitQualifiedMemberExpression(qme, qt, member, typeArgs, tas);
+                    }
                 }
             }
             
