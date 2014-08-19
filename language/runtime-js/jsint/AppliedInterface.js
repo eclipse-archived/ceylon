@@ -32,7 +32,7 @@ function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
       that.getMethod=dummy.getMethod;
       that.getDeclaredMethod=dummy.getDeclaredMethod;
       that.equals=dummy.equals;
-      that.$$=dummy;
+      that.$$=AppliedInterface$jsint.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       atr$(that,'string',function(){return coistr$(that); },undefined,dummy.$prop$getString.$crtmm$);
