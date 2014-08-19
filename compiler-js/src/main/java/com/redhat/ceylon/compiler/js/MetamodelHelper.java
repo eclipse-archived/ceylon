@@ -216,7 +216,7 @@ public class MetamodelHelper {
                 gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedAttribute$meta$model()('");
                 gen.out(d.getName(), "',");
             } else {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedValue$meta$model()(");
+                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedValue$jsint()(");
                 if (anonClass == null) {
                     gen.out("undefined");
                 } else {
