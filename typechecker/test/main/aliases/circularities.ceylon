@@ -10,3 +10,6 @@ class Yb() => Zb();
 @error alias Xc => Yc;
 @error alias Yc => Zc;
 @error alias Zc => Xc;
+
+@error interface ReallyBrokenInterface satisfies ReallyBrokenInterface;
+@error class ReallyBrokenClass() extends ReallyBrokenClass();

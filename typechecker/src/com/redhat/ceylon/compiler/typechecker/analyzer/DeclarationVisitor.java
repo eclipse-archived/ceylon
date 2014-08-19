@@ -1861,6 +1861,9 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            return;
+        }
         Tree.SimpleType t = that.getType();
         if (t!=null) {
             ProducedType type = t.getTypeModel();
@@ -1876,6 +1879,9 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            return;
+        }
         for (Tree.StaticType t: that.getTypes()) {
             if (t!=null) {
                 ProducedType type = t.getTypeModel();

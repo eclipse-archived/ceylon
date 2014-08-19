@@ -5495,6 +5495,9 @@ public class ExpressionVisitor extends Visitor {
         inExtendsClause = false;
                 
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            return;
+        }
         Tree.SimpleType et = that.getType();
         if (et!=null) {
             ProducedType type = et.getTypeModel();
@@ -5551,6 +5554,9 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            return;
+        }
         Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
         if (td.getSatisfiedTypes().isEmpty()) return; //handle undecidability case
         for (Tree.StaticType t: that.getTypes()) {
