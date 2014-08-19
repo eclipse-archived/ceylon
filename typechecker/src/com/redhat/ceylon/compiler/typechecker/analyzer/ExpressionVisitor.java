@@ -74,6 +74,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -582,11 +583,11 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null) {
         	ProducedType t = type.getTypeModel();
         	if (type instanceof Tree.LocalModifier) {
-        		if (dec.isParameter()) {
+        		/*if (dec.isParameter()) {
         			type.addError("parameter may not have inferred type: '" + 
         					dec.getName() + "' must declare an explicit type");
         		}
-        		else if (isTypeUnknown(t)) {
+        		else*/ if (isTypeUnknown(t)) {
         		    if (sie==null) {
         		        type.addError("value must specify an explicit type or definition", 200);
         		    }
@@ -1039,12 +1040,12 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (type instanceof Tree.LocalModifier) {
-            Method dec = that.getDeclarationModel();
+            /*Method dec = that.getDeclarationModel();
             if (dec.isParameter()) {
                 type.addError("parameter may not have inferred type: '" + 
                         dec.getName() + "' must declare an explicit type");
             }
-            else if (isTypeUnknown(type.getTypeModel())) {
+            else*/ if (isTypeUnknown(type.getTypeModel())) {
                 if (se==null) {
                     type.addError("function must specify an explicit return type or definition", 200);
                 }
@@ -1603,6 +1604,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         if (pal!=null) {
+            inferParameterTypes(p, pal);
             pal.visit(this);
         }
         
@@ -1623,6 +1625,72 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
+    }
+
+    private void inferParameterTypes(Tree.Primary p,
+            Tree.PositionalArgumentList pal) {
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            //TODO: unwrap parens?
+            Declaration dec = ((Tree.MemberOrTypeExpression) p).getDeclaration();
+            if (dec instanceof Functional) {
+                ProducedReference pr;
+                if (p instanceof Tree.MemberOrTypeExpression) {
+                    if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
+                            !(((Tree.QualifiedMemberOrTypeExpression) p).getPrimary() instanceof Tree.Package)) {
+                        QualifiedMemberOrTypeExpression qmte = 
+                                (Tree.QualifiedMemberOrTypeExpression) p;
+                        ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
+                        ProducedType qt = unwrap(pt, qmte);
+                        pr = qt.getTypedReference(dec, Collections.<ProducedType>emptyList());
+                    }
+                    else {
+                        ProducedType qt = p.getScope().getDeclaringType(dec);
+                        pr = dec.getProducedReference(qt, Collections.<ProducedType>emptyList());
+                    }
+                }
+                else {
+                    return;
+                }
+                List<ParameterList> pls = ((Functional) dec).getParameterLists();
+                if (!pls.isEmpty()) {
+                    ParameterList pl = pls.get(0);
+                    List<Parameter> params = pl.getParameters();
+                    List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+                    for (int i=0; i<params.size() && i<args.size(); i++) {
+                        Parameter param = params.get(i);
+                        Tree.PositionalArgument arg = args.get(i);
+                        if (param.getModel() instanceof Functional && 
+                                arg instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument la = (Tree.ListedArgument) arg;
+                            Tree.Expression e = la.getExpression();
+                            if (e!=null && e.getTerm() instanceof Tree.FunctionArgument) {
+                                Tree.FunctionArgument anon = (Tree.FunctionArgument) e.getTerm();
+                                Functional f = (Functional) param.getModel();
+                                List<ParameterList> fpls = f.getParameterLists();
+                                List<Tree.ParameterList> apls = anon.getParameterLists();
+                                if (!fpls.isEmpty() && !apls.isEmpty()) {
+                                    List<Parameter> fps = fpls.get(0).getParameters();
+                                    List<Tree.Parameter> aps = apls.get(0).getParameters();
+                                    for (int j=0; j<fps.size() && j<aps.size(); j++) {
+                                        Parameter fp = fps.get(j);
+                                        Tree.Parameter ap = aps.get(j);
+                                        if (ap instanceof Tree.ParameterDeclaration) {
+                                            Tree.ParameterDeclaration pd = (Tree.ParameterDeclaration) ap;
+                                            Tree.Type type = pd.getTypedDeclaration().getType();
+                                            if (type instanceof Tree.LocalModifier) {
+                                                ProducedType t = pr.getTypedParameter(fp).getType();
+                                                type.setTypeModel(t);
+                                                ap.getParameterModel().getModel().setType(t);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void visitInvocationPositionalArgs(Tree.InvocationExpression that) {
@@ -4175,8 +4243,9 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
             ProducedType receivingType, TypedDeclaration member, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = accountForStaticReferenceReceiverType(that, 
-                unwrap(receivingType, that));
+        ProducedType receiverType = 
+                accountForStaticReferenceReceiverType(that, 
+                        unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that, false)) {
             ProducedTypedReference ptr = 
                     receiverType.getTypedMember(member, typeArgs, 
@@ -4577,8 +4646,9 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
             ProducedType receivingType, TypeDeclaration type, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType =  accountForStaticReferenceReceiverType(that, 
-                unwrap(receivingType, that));
+        ProducedType receiverType = 
+                accountForStaticReferenceReceiverType(that, 
+                        unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that, false)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
             boolean abs = isAbstractType(t) || isAbstraction(type);
@@ -4600,8 +4670,10 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitBaseTypeExpression(Tree.StaticMemberOrTypeExpression that, 
             TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType outerType = that.getScope().getDeclaringType(type);
-        ProducedType t = type.getProducedType(outerType, typeArgs);
+        ProducedType outerType = 
+                that.getScope().getDeclaringType(type);
+        ProducedType t = 
+                type.getProducedType(outerType, typeArgs);
 //        if (!type.isAlias()) {
             //TODO: remove this awful hack which means
             //      we can't define aliases for types
