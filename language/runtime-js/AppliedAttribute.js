@@ -1,7 +1,7 @@
 function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   $init$AppliedAttribute();
   if ($$appliedAttribute===undefined) {
-    $$appliedAttribute=function(x){return AppliedValue(x,atr, {Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
+    $$appliedAttribute=function(x){return AppliedValue$jsint(x,atr, {Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
       Container$Value:$$targs$$.Container$Attribute});};
     $$appliedAttribute.$$=AppliedAttribute.$$;
     var dummy=new AppliedAttribute.$$;
@@ -26,7 +26,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return OpenValue(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   $$appliedAttribute.$_bind=function(cont){
-    return AppliedValue(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
+    return AppliedValue$jsint(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
       Container$Value:$$targs$$.Container$Attribute});
   }
   atr$($$appliedAttribute,'string',function(){

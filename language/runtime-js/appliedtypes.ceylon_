@@ -50,16 +50,6 @@ shared class AppliedClass<out Type=Anything, in Arguments=Nothing>() satisfies C
 
 }
 
-shared class AppliedValue<out Get=Anything, in Set=Nothing>() satisfies Value<Get,Set> {
-  shared actual Get get() { throw Exception("AppliedValue.get"); }
-  shared actual void set(Set newValue) { throw Exception("AppliedValue.set"); }
-  shared actual void setIfAssignable(Anything newValue) { throw Exception("AppliedValue.setIfAssignable"); }
-  shared actual default ValueDeclaration declaration {throw Exception("AppliedValue.declaration"); }
-  shared actual ClosedType<Get> type { throw Exception("AppliedValue.type"); }
-
-  shared actual ClosedType<Anything>? container { throw Exception("AppliedValue.container"); }
-}
-
 shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,Arguments>
     given Arguments satisfies Anything[] {
   shared actual ClosedType<Anything>[] parameterTypes => [];

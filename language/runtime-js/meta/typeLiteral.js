@@ -36,7 +36,7 @@ function typeLiteral$meta($$targs$$) {
       } else if (mdl['mt'] === 'm') {
         return AppliedFunction(t,{Type$Function:$$targs$$.Type$typeLiteral,Arguments$Function:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
       } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g' || mdl.mt==='s') {
-        return AppliedValue(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
+        return AppliedValue$jsint(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
       } else {
         console.log("WTF is a metatype " + mdl['mt'] + " on a closed type???????");
       }
