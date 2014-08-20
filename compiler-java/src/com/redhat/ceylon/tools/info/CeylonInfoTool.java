@@ -53,6 +53,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     private String findPackage;
     private boolean showNames;
     private boolean exactMatch;
+    private boolean requireAll;
     
     private Integer binaryMajor = null;
     private Integer binaryMinor = null;
@@ -87,6 +88,12 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Description("Also show versions incompatible with the current Ceylon installation")
     public void setShowIncompatible(boolean showIncompatible) {
         this.showIncompatible = showIncompatible;
+    }
+    
+    @Option(longName="require-all")
+    @Description("Only show those results that have all the requested artifact types")
+    public void setRequireAll(boolean requireAll) {
+        this.requireAll = requireAll;
     }
     
     @OptionArgument(argumentName = "type")
@@ -227,6 +234,9 @@ public class CeylonInfoTool extends RepoUsingTool {
             query.setMemberSearchPackageOnly(true);
         }
         query.setMemberSearchExact(exactMatch);
+        if (requireAll) {
+            query.setRetrieval(ModuleQuery.Retrieval.ALL);
+        }
         return query;
     }
     
