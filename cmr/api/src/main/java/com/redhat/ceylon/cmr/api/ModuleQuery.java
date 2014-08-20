@@ -18,6 +18,7 @@ public class ModuleQuery {
         JVM(ArtifactContext.CAR, ArtifactContext.JAR), 
         JS(ArtifactContext.JS),
         CODE(ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS),
+        CEYLON_CODE(ArtifactContext.CAR, ArtifactContext.JS),
         ALL(ArtifactContext.allSuffixes());
         
         private String[] suffixes;
