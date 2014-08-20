@@ -18,7 +18,7 @@ public class ModuleQuery {
         JVM(ArtifactContext.CAR, ArtifactContext.JAR), 
         JS(ArtifactContext.JS),
         CODE(ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS),
-        ALL(ArtifactContext.SRC, ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS_MODEL, ArtifactContext.JS);
+        ALL(ArtifactContext.allSuffixes());
         
         private String[] suffixes;
 
