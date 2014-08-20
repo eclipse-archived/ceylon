@@ -74,7 +74,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1638,27 +1637,28 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal) {
         if (p instanceof Tree.MemberOrTypeExpression) {
             //TODO: unwrap parens?
-            Declaration dec = ((Tree.MemberOrTypeExpression) p).getDeclaration();
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) p;
+            Declaration dec = mte.getDeclaration();
             if (dec instanceof Functional) {
+                Tree.TypeArguments tas = 
+                        mte instanceof Tree.StaticMemberOrTypeExpression ?
+                                ((Tree.StaticMemberOrTypeExpression) mte).getTypeArguments() : null;
+                List<TypeParameter> tps = ((Functional) dec).getTypeParameters();
                 ProducedReference pr;
-                if (p instanceof Tree.MemberOrTypeExpression) {
-                    if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
-                            !(((Tree.QualifiedMemberOrTypeExpression) p).getPrimary() instanceof Tree.Package)) {
-                        QualifiedMemberOrTypeExpression qmte = 
-                                (Tree.QualifiedMemberOrTypeExpression) p;
-                        ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
-                        ProducedType qt = unwrap(pt, qmte);
-                        pr = qt.getTypedReference(dec, 
-                                Collections.<ProducedType>emptyList());
-                    }
-                    else {
-                        ProducedType qt = p.getScope().getDeclaringType(dec);
-                        pr = dec.getProducedReference(qt, 
-                                Collections.<ProducedType>emptyList());
-                    }
+                if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
+                        !(((Tree.QualifiedMemberOrTypeExpression) p).getPrimary() instanceof Tree.Package)) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) p;
+                    ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
+                    ProducedType qt = unwrap(pt, qmte);
+                    pr = qt.getTypedReference(dec,
+                            getTypeArguments(tas, tps, qt));
                 }
                 else {
-                    return;
+                    ProducedType qt = p.getScope().getDeclaringType(dec);
+                    pr = dec.getProducedReference(qt,
+                            getTypeArguments(tas, tps, qt));
                 }
                 List<ParameterList> pls = 
                         ((Functional) dec).getParameterLists();

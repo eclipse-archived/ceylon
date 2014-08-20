@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,9 +82,9 @@ public class Util {
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        List<ProducedType> typeArguments = 
-                new ArrayList<ProducedType>(typeParameters.size());
         if (tal instanceof Tree.TypeArgumentList) {
+            List<ProducedType> typeArguments = 
+                    new ArrayList<ProducedType>(typeParameters.size());
             Map<TypeParameter, ProducedType> typeArgMap = 
                     new HashMap<TypeParameter, ProducedType>();
             if (qt!=null) {
@@ -115,8 +116,11 @@ public class Util {
             		typeArgMap.put(tp, da);
             	}
             }
+            return typeArguments;
         }
-        return typeArguments;
+        else {
+            return Collections.<ProducedType>emptyList();
+        }
     }
     
     /*static List<ProducedType> getParameterTypes(Tree.ParameterTypes pts) {
