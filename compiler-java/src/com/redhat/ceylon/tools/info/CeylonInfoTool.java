@@ -184,7 +184,12 @@ public class CeylonInfoTool extends RepoUsingTool {
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
                 Collection<ModuleDetails> modules = getModules(getRepositoryManager(), name, queryType, binaryMajor, binaryMinor);
                 if (modules.isEmpty()) {
-                    String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                    String err;
+                    if (name.startsWith("*") || name.endsWith("*")) {
+                        err = CeylonInfoMessages.msg("no.match", name);
+                    } else {
+                        err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                    }
                     errorAppend(err);
                     errorNewline();
                     continue;
