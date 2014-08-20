@@ -362,6 +362,21 @@ public class StructureTest extends CompilerTest {
     public void testKlsKlassHiding(){
         compareWithJavaSource("klass/KlassHiding");
     }
+
+    @Test
+    public void testKlsSerializableClass() {
+        compareWithJavaSource("klass/SerializableClass");
+    }
+    
+    @Test
+    public void testKlsSerializableGenericClass() {
+        compareWithJavaSource("klass/SerializableGenericClass");
+    }
+    
+    @Test
+    public void testKlsSerializableInterfaceSatisfier() {
+        compareWithJavaSource("klass/SerializableInterfaceSatisfier");
+    }
     
     @Test
     public void testKlsSharedParameter(){
