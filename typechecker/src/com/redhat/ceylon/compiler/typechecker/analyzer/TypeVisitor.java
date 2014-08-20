@@ -1439,7 +1439,8 @@ public class TypeVisitor extends Visitor {
         Parameter p = that.getParameterModel();
         Declaration a = that.getScope().getDirectMember(p.getName(), null, false);
         if (a==null) {
-            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+            //Now done in ExpressionVisitor!
+//            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + p.getName() + "'");
