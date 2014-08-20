@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -400,7 +402,6 @@ public abstract class AbstractRepository implements Repository {
         Node namePart = NodeUtils.getNode(root, Arrays.asList(name.split("\\.")));
         if (namePart == null)
             return;
-        String[] suffixes = lookup.getType().getSuffixes();
         String memberName = lookup.getMemberName();
         // now each child is supposed to be a version part, let's verify that
         for (Node child : namePart.getChildren()) {
@@ -421,16 +422,33 @@ public abstract class AbstractRepository implements Repository {
             boolean found = false;
             boolean foundInfo = false;
             ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+            String[] suffixes = lookup.getType().getSuffixes();
+            // When we need to find ALL requested suffixes we maintain a set of those not found yet
+            HashSet<String> suffixesToFind = null;
+            if (lookup.getRetrieval() == Retrieval.ALL) {
+                suffixesToFind = new HashSet<String>(Arrays.asList(suffixes));
+            }
+            // Now try to retrieve information for each of the suffixes
             for (String suffix : suffixes) {
                 String artifactName = getArtifactName(name, version, suffix);
                 Node artifact = child.getChild(artifactName);
-                if (artifact == null)
-                    continue;
-                // is it the right version?
-                if ((suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS_MODEL) || suffix.equals(ArtifactContext.JS)) && !checkBinaryVersion(name, artifact, lookup))
-                    continue;
+                if (artifact == null
+                        // is it the right version?
+                        || (suffix.equals(ArtifactContext.CAR)
+                                || suffix.equals(ArtifactContext.JS_MODEL) 
+                                || suffix.equals(ArtifactContext.JS))
+                                && !checkBinaryVersion(name, artifact, lookup)) {
+                    if (lookup.getRetrieval() == Retrieval.ALL) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
                 // we found the artifact: let's notify
                 found = true;
+                if (lookup.getRetrieval() == Retrieval.ALL) {
+                    suffixesToFind.remove(suffix);
+                }
                 // let's see if we can extract some information
                 try {
                     File file = artifact.getContent(File.class);
@@ -471,8 +489,9 @@ public abstract class AbstractRepository implements Repository {
             }
             // NB: When searching for members it's not enough to have found
             // just any artifact, we need to make sure we were able to
-            // read the artifac's information
-            if ((found && memberName == null) || foundInfo) {
+            // read the artifact's information
+            if (((found && memberName == null) || foundInfo)
+                    && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
@@ -574,15 +593,28 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // now make sure at least one of the artifacts we're looking for is in there
             String version = child.getLabel();
-            // try every known suffix
+            // When we need to find ALL requested suffixes we maintain a set of those not found yet
+            HashSet<String> suffixesToFind = null;
+            if (query.getRetrieval() == Retrieval.ALL) {
+                suffixesToFind = new HashSet<String>(Arrays.asList(suffixes));
+            }
+            // try every requested suffix
             for (String suffix : suffixes) {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact != null) {
-                    // we found the artifact: store it
-                    versions.add(version);
-                    break;
+                    if (query.getRetrieval() == Retrieval.ANY) {
+                        // we found the artifact: store it
+                        versions.add(version);
+                        break;
+                    } else { // Retrieval.ALL
+                        suffixesToFind.remove(suffix);
+                    }
                 }
+            }
+            if (query.getRetrieval() == Retrieval.ALL && suffixesToFind.isEmpty()) {
+                // we found the artifact and all of the requested suffixes: store it
+                versions.add(version);
             }
         }
         // sanity check
