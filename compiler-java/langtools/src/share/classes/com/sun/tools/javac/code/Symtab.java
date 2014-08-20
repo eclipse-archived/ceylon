@@ -273,6 +273,11 @@ public class Symtab {
     public final Type ceylonMetamodelType;
     public final Type ceylonTypeDescriptorType;
     public final Type ceylonReifiedTypeType;
+    public final Type ceylonSerializationType;
+    public final Type ceylonInstanceLeakerType;
+    public final Type ceylonSerializableType;
+    public final Type ceylonDeconstructedType;
+    public final Type ceylonDeconstructorType;
 
     /** The symbol representing the length field of an array.
      */
@@ -675,6 +680,11 @@ public class Symtab {
         ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");
         ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
         ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+        ceylonSerializationType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$");
+        ceylonInstanceLeakerType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$");
+        ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
+        ceylonDeconstructorType = enterClass("ceylon.language.serialization.Deconstructor");
+        ceylonDeconstructedType = enterClass("ceylon.language.serialization.Deconstructed");
 
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);

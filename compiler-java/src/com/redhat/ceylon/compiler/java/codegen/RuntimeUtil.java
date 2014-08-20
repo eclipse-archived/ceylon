@@ -198,4 +198,8 @@ class RuntimeUtil {
     public JCExpression toInt(JCExpression expr) {
         return makeUtilInvocation(null, "toInt", List.of(expr));
     }
+    
+    public JCExpression setter(JCExpression lookup, JCExpression fieldName) {
+        return makeUtilInvocation(null, "setter", List.of(lookup, fieldName));
+    }
 }

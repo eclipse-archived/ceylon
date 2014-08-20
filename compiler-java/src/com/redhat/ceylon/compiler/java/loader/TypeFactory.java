@@ -168,4 +168,15 @@ public class TypeFactory extends Unit {
     public TypeDeclaration getAssertionErrorDeclaration() {
         return (TypeDeclaration)getLanguageModuleDeclaration("AssertionError");
     }
+    
+    public ProducedType getReferenceType(ProducedType value) {
+        final ProducedType serializedValueType;
+        TypeDeclaration referenceTypeDecl = (TypeDeclaration)getLanguageModuleSerializationDeclaration("Reference");
+        serializedValueType = referenceTypeDecl.getProducedType(null, Collections.singletonList(value));
+        return serializedValueType;
+    }
+    
+    public ProducedType getDeconstructorType() {
+        return ((TypeDeclaration)getLanguageModuleSerializationDeclaration("Deconstructor")).getType();
+    }
 }
