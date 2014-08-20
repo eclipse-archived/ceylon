@@ -1656,7 +1656,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             
             <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
             
-            <programlisting>class Named&lt;Value&gt;(String name, Value val) => Entry&lt;String,Value&gt;(name, val);</programlisting>
+            <programlisting>class Named&lt;Value&gt;(String name, Value val) 
+        given Value satisfies Object
+        => Entry&lt;String,Value&gt;(name, val);</programlisting>
             
             <para>Arguments to the initializer parameters of the aliased class must be
             specified.</para>
