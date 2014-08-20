@@ -3,6 +3,7 @@ package com.redhat.ceylon.cmr.api;
 public class ModuleQuery {
     protected String name;
     protected Type type;
+    protected Retrieval retrieval;
     private Long start;
     private Long count;
     private long[] pagingInfo;
@@ -30,9 +31,18 @@ public class ModuleQuery {
         }
     }
     
-    public ModuleQuery(String name, Type type){
+    public enum Retrieval {
+        ANY, ALL
+    }
+    
+    public ModuleQuery(String name, Type type) {
+        this(name, type, Retrieval.ANY);
+    }
+    
+    public ModuleQuery(String name, Type type, Retrieval retrieval) {
         this.name = name.toLowerCase();
         this.type = type;
+        this.retrieval = retrieval;
     }
     
     public String getName() {
@@ -49,6 +59,14 @@ public class ModuleQuery {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Retrieval getRetrieval() {
+        return retrieval;
+    }
+
+    public void setRetrieval(Retrieval retrieval) {
+        this.retrieval = retrieval;
     }
 
     public Long getStart() {
