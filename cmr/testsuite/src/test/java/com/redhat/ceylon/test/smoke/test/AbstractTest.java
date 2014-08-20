@@ -45,6 +45,7 @@ import org.junit.Before;
 
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -184,6 +185,11 @@ public class AbstractTest {
         return testSearchResults(q, type, expected, null, null);
     }
 
+    protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected) throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        return testSearchResults(q, type, retrieval, expected, null, null, manager, null, null, null);
+    }
+
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, RepositoryManager manager) throws Exception {
         return testSearchResults(q, type, expected, null, null, manager);
     }
@@ -204,10 +210,16 @@ public class AbstractTest {
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
+            Long start, Long count, RepositoryManager manager, long[] pagingInfo,
+            Integer binaryMajor, Integer binaryMinor) throws Exception {
+        return testSearchResults(q, type, Retrieval.ANY, expected, start, count, manager, pagingInfo, binaryMajor, binaryMinor);
+    }
+    
+    protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected,
                                                    Long start, Long count, RepositoryManager manager, long[] pagingInfo,
                                                    Integer binaryMajor, Integer binaryMinor) throws Exception {
 
-        ModuleQuery query = new ModuleQuery(q, type);
+        ModuleQuery query = new ModuleQuery(q, type, retrieval);
         query.setStart(start);
         query.setCount(count);
         query.setPagingInfo(pagingInfo);

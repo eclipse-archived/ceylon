@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -531,6 +532,16 @@ public class SmokeTestCase extends AbstractTest {
         };
 
         testSearchResults("", Type.JVM, expected);
+    }
+
+    @Test
+    public void testSearchModulesAll() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello,
+                moduletest
+        };
+
+        testSearchResults("", Type.CEYLON_CODE, Retrieval.ALL, expected);
     }
 
     @Test
