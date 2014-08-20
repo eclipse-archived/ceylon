@@ -233,8 +233,6 @@ public class AbstractTest {
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
             Assert.assertEquals(expectedResult.getDependencies(), result.getDependencies());
             Assert.assertEquals(expectedResult.getArtifactTypes(), result.getArtifactTypes());
-            Assert.assertEquals(expectedResult.getMajorBinaryVersion(), result.getMajorBinaryVersion());
-            Assert.assertEquals(expectedResult.getMinorBinaryVersion(), result.getMinorBinaryVersion());
         }
     }
 
@@ -254,6 +252,14 @@ public class AbstractTest {
         SortedSet<ModuleVersionArtifact> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
+    }
+
+    protected static ModuleVersionArtifact art(String suffix) {
+        return art(suffix, null, null);
+    }
+
+    protected static ModuleVersionArtifact art(String suffix, Integer majorBinaryVersion, Integer minorBinaryVersion) {
+        return new ModuleVersionArtifact(suffix, majorBinaryVersion, minorBinaryVersion);
     }
 
     protected static Manifest mockManifest(String version) {

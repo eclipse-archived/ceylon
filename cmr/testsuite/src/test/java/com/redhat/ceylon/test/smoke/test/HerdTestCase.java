@@ -69,15 +69,15 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdCompleteEmpty() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
         };
         testComplete("", expected, getRepositoryManager());
     }
@@ -86,7 +86,7 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdCompleteBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
         };
         testComplete("", expected, getRepositoryManager(), Type.JVM, 1234, 0);
     }
@@ -95,8 +95,8 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdCompleteCeyl() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testComplete("ceyl", expected, getRepositoryManager());
     }
@@ -105,8 +105,8 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylon() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testComplete("ceylon", expected, getRepositoryManager());
     }
@@ -117,14 +117,14 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails jsonModuleDetails0_5 =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
                               deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
-                              set(".car", ".js", ".src"), 4, 0, true, "The Herd");
+                              types(art(".car", 4, 0), art(".js", 4, 0), art(".src")), true, "The Herd");
     public final static ModuleDetails jsonModuleDetails0_5_Api1 =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
-                              deps(), set(), null, null, true, "The Herd");
+                              deps(), types(), true, "The Herd");
     public final static ModuleDetails jsonModuleDetails0_5_js =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.5"), 
                               deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
-                              set(".car", ".js", ".src"), 4, 0, true, "The Herd");
+                              types(art(".car", 4, 0), art(".js", 4, 0), art(".src")), true, "The Herd");
 
     
     @Test
@@ -184,8 +184,8 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonDot() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testComplete("ceylon.", expected, getRepositoryManager());
     }
@@ -267,15 +267,15 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected);
     }
@@ -284,7 +284,7 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdSearchBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);
     }
@@ -293,8 +293,8 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdSearchFiltered() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("cey", Type.JVM, expected);
     }
@@ -321,8 +321,8 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdSearchPaged() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, 1l, 2l);
     }
@@ -331,19 +331,19 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, getDualRepositoryManager());
     }
@@ -352,9 +352,9 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, 0L, 3L, getDualRepositoryManager());
     }
@@ -364,8 +364,8 @@ public class HerdTestCase extends AbstractTest {
     public void testHerdAndRepoSearchPaged2() throws Exception {
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0L, 2L, getDualRepositoryManager());
 
@@ -378,12 +378,12 @@ public class HerdTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         results = testSearchResults("", Type.JVM, expected, 2L, 6L, getDualRepositoryManager(), pagingInfo);
 
@@ -396,11 +396,11 @@ public class HerdTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
-                new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, true, "The Herd"),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), true, "The Herd"),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), types(), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, 8L, null, getDualRepositoryManager(), pagingInfo);
     }

@@ -24,9 +24,7 @@ public class ModuleSearchResult {
                 SortedSet<String> authors,
                 SortedSet<String> versions,
                 SortedSet<ModuleInfo> dependencies,
-                SortedSet<String> types,
-                Integer majorBinaryVersion,
-                Integer minorBinaryVersion,
+                SortedSet<ModuleVersionArtifact> artifacts,
                 boolean remote,
                 String origin) {
             this.name = name;
@@ -36,10 +34,7 @@ public class ModuleSearchResult {
                 mvd.setLicense(toNull(license));
                 mvd.getAuthors().addAll(authors);
                 mvd.getDependencies().addAll(dependencies);
-                for (String t : types) {
-                    ModuleVersionArtifact mva = new ModuleVersionArtifact(t, majorBinaryVersion, minorBinaryVersion);
-                    mvd.getArtifactTypes().add(mva);
-                }
+                mvd.getArtifactTypes().addAll(artifacts);
                 mvd.setRemote(remote);
                 mvd.setOrigin(origin);
                 this.versions.add(mvd);
@@ -75,22 +70,6 @@ public class ModuleSearchResult {
             return (getLastVersion() != null) ? getLastVersion().getDoc() : null;
         }
 
-        public Integer getMajorBinaryVersion() {
-            if (getLastVersion() != null && !getLastVersion().getArtifactTypes().isEmpty()) {
-                return getLastVersion().getArtifactTypes().first().getMajorBinaryVersion();
-            } else {
-                return null;
-            }
-        }
-
-        public Integer getMinorBinaryVersion() {
-            if (getLastVersion() != null && !getLastVersion().getArtifactTypes().isEmpty()) {
-                return getLastVersion().getArtifactTypes().first().getMinorBinaryVersion();
-            } else {
-                return null;
-            }
-        }
-
         public boolean isRemote() {
             return (getLastVersion() != null) ? getLastVersion().isRemote() : false;
         }
@@ -120,9 +99,6 @@ public class ModuleSearchResult {
                     +", authors: "+getAuthors()
                     +", versions: "+getVersions()
                     +", deps: "+getDependencies()
-                    +", bin version: "
-                        +((getMajorBinaryVersion() != null) ? getMajorBinaryVersion() : "")
-                        +((getMinorBinaryVersion() != null) ? "." + getMinorBinaryVersion() : "")
                     +", remote: "+isRemote()
                     +", origin: "+getOrigin()
                     +"]";
