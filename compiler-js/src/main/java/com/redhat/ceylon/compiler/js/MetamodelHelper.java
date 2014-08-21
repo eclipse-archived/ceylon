@@ -37,7 +37,7 @@ public class MetamodelHelper {
         } else if (d instanceof Method) {
             gen.out("Function");
         } else if (d instanceof Value) {
-            gen.out("Value");
+            gen.out("Value$jsint");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
             gen.out("Intersection");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
