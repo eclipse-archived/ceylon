@@ -9,7 +9,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
         var mm=getrtmm$$(_d);
         if (mm.$cont!==this.tipo)return null;
       }
-      _m=OpenValue(this.containingPackage, _d);
+      _m=OpenValue$jsint(this.containingPackage, _d);
     }
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
@@ -241,7 +241,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',funct
   var _c=mm.$cont;
   if (_c) {
     if (_c.t === undefined && _c.get && _c.$crtmm$) {
-      return OpenValue(this.containingPackage, _c);
+      return OpenValue$jsint(this.containingPackage, _c);
     }
     return typeLiteral$meta({Type$typeLiteral:_c});
   }

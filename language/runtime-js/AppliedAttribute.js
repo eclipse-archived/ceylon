@@ -23,7 +23,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     var mm = getrtmm$$(atr);
     var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
     var pkg = getModules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]);
-    return OpenValue(pkg, atr);
+    return OpenValue$jsint(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   $$appliedAttribute.$_bind=function(cont){
     return AppliedValue$jsint(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,

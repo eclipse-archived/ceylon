@@ -17,9 +17,9 @@ function members($$$mptypes){
       } else if (mt==='i') {
         r.push(OpenInterface$jsint(this, m));
       } else if (mt==='a'||mt==='g'||mt==='o') {
-        r.push(OpenValue(this, m));
+        r.push(OpenValue$jsint(this, m));
       } else if (mt==='s') {
-        r.push(OpenSetter(OpenValue(this, m)));
+        r.push(OpenSetter(OpenValue$jsint(this, m)));
       } else if (mt==='als') {
         r.push(OpenAlias$jsint(_findTypeFromModel(this,m)));
       }

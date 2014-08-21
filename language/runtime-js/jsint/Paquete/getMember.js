@@ -4,7 +4,7 @@ function getMember(name$3,$$$mptypes){
     var mt = m['mt'];
     //There's a member alright, but check its type
     if ((mt==='a'||mt==='g'||mt==='o'||mt==='s')&&extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-      return mt==='s'?OpenSetter(OpenValue(this, m)):OpenValue(this, m);
+      return mt==='s'?OpenSetter(OpenValue$jsint(this, m)):OpenValue$jsint(this, m);
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
       return OpenFunction(this, m);
     } else if (mt==='c'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){

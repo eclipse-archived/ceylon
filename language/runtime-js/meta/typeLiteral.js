@@ -10,7 +10,7 @@ function typeLiteral$meta($$targs$$) {
         var mm = getrtmm$$(t);
         var _m=typeof(mm.mod)==='function'?mm.mod():mm.mod;
         var _mod = getModules$meta().find(_m['$mod-name'],_m['$mod-version']);
-        return OpenSetter(OpenValue(_mod.findPackage(mm.d[0]), t));
+        return OpenSetter(OpenValue$jsint(_mod.findPackage(mm.d[0]), t));
       }
       throw new Error("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
@@ -58,9 +58,9 @@ function typeLiteral$meta($$targs$$) {
     } else if (mdl['mt'] === 'm') {
       return OpenFunction(_pkg, t);
     } else if (mdl['mt'] === 'a' || mdl['mt'] === 'g') {
-      return OpenValue(_pkg, t);
+      return OpenValue$jsint(_pkg, t);
     } else if (mdl.mt==='s') {
-      return OpenSetter(OpenValue(_pkg, t));
+      return OpenSetter(OpenValue$jsint(_pkg, t));
     } else {
       console.log("WTF is a metatype " + mdl['mt'] + " on an open type???????");
     }
