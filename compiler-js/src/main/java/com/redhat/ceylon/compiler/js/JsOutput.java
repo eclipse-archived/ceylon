@@ -62,7 +62,7 @@ public class JsOutput {
             }
             writer.write("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
             writer.write(GenerateJsVisitor.scriptPath(mod));
-            writer.write(ArtifactContext.JS_MODEL);
+            writer.write("-model");
             writer.write("').$CCMM$;return _CTM$;}\n");
             writer.write("ex$.$CCMM$=$CCMM$;\n");
         }
