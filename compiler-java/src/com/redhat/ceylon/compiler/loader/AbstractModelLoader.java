@@ -4267,18 +4267,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // ignore declarations which we do not cache, like member method/attributes
                 String key = cacheKeyByModule(module, fqn);
                 if(firstCache != null) {
-                    if (firstCache.remove(key) == null) {
-                        firstCache.remove(key + "_");
+                    firstCache.remove(key);
+                    firstCache.remove(key + "_");
+
+                    if(secondCache != null) {
+                        secondCache.remove(key);
+                        secondCache.remove(key + "_");
                     }
-                    if(secondCache != null)
-                        if (secondCache.remove(key) == null) {
-                            secondCache.remove(key + "_");
-                        }
                 }
 
-                if (classMirrorCache.remove(key) == null) {
-                    classMirrorCache.remove(key + "_");
-                }
+                classMirrorCache.remove(key);
+                classMirrorCache.remove(key + "_");
             }
         }
     }
