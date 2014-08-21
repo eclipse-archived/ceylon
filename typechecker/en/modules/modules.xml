@@ -236,7 +236,7 @@
             <title>Module names and version identifiers</title>
             
             <para>A module <emphasis>name</emphasis> is a period-separated
-            list of lowercase identifiers, for example:</para>
+            list of initial lowercase identifiers, for example:</para>
             
             <screen>ceylon.language</screen>
             <screen>org.hibernate</screen>
