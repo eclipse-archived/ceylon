@@ -166,7 +166,7 @@ public class Stitcher {
                         writer.write(version);
                         writer.write("/ceylon.language-");
                         writer.write(version);
-                        writer.write(ArtifactContext.JS_MODEL);
+                        writer.write("-model");
                         writer.write("').$CCMM$;return _CTM$;}\n");
                         writer.write("ex$.$CCMM$=$CCMM$;");
                     } else if (line.startsWith("//#COMPILE ")) {
