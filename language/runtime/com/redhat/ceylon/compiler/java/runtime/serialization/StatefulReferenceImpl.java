@@ -81,6 +81,7 @@ class DeserializingStatefulReference<Instance>
     private final TypeDescriptor reified$Instance;
     private final DeserializationContextImpl context;
     private final Object id;
+    private final ClassModel classModel;
     private final Instance instance;
     private Deconstructed deconstructed;
     static enum State {
@@ -106,11 +107,13 @@ class DeserializingStatefulReference<Instance>
      */
     DeserializingStatefulReference(TypeDescriptor reified$Instance, 
             DeserializationContextImpl context, Object id, 
+            ClassModel classModel,
             Instance instance, 
             Deconstructed deconstructed) {
         this.reified$Instance = reified$Instance;
         this.context = context;
         this.id = id;
+        this.classModel = classModel;
         this.instance = instance;
         this.deconstructed = deconstructed;
         this.state = State.UNINITIALIZED;
@@ -255,7 +258,10 @@ class DeserializingStatefulReference<Instance>
     @SuppressWarnings("rawtypes")
     @Override
     public ClassModel getClazz() {
-        return type_.type(reified$Instance, instance);
+        // note: we cannot call type() because the instance might not have 
+        // had it's reified type arguments set yet.
+        return classModel;
+        //type_.type(reified$Instance, instance);
     }
     
     @Override

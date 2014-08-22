@@ -42,6 +42,20 @@
    of an instance (including its reachable references) 
    before attempting to obtain the instance  
  
+ ## Serializability
+ 
+ The serializability of an instance depends on:
+ 
+ * the class of the instance, and its super classes
+ * the serializability of the outer instance(s), if the object is an 
+   instance of a member class.  
+ * the serialization library's support for serializing generic classes, 
+   and member classes
+   
+ The deserializability of an instance depends on:
+ 
+ * The runtime availability and compatibility of the class of the instances, 
+   and its super classes, for each instance in the object graph 
 "
 by ("Gavin", "Tom")
 shared package ceylon.language.serialization;

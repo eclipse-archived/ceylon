@@ -77,7 +77,7 @@ class StatelessReferenceImpl<Instance>
     @SuppressWarnings("rawtypes")
     @Override
     public StatefulReference<Instance> deserialize(Deconstructed deconstructed) {
-        DeserializingStatefulReference result = new DeserializingStatefulReference<Instance>(reified$Instance, context, id, instance, deconstructed);
+        DeserializingStatefulReference result = new DeserializingStatefulReference<Instance>(reified$Instance, context, id, classModel, instance, deconstructed);
         context.update(id, result);
         return result;
     }
