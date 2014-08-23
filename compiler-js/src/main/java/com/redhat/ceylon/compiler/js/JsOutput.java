@@ -55,9 +55,11 @@ public class JsOutput {
         if (modfile == null) {
             modfile = File.createTempFile("jsmod", ".tmp");
             try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
-                fw.write("exports.$CCMM$=");
+                JsCompiler.beginWrapper(fw);
+                fw.write("ex$.$CCMM$=");
                 ModelEncoder.encodeModel(mmg.getModel(), fw);
                 fw.write(";\n");
+                JsCompiler.endWrapper(fw);
             } finally {
             }
             writer.write("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");

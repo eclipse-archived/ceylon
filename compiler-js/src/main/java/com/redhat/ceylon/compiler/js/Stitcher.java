@@ -144,10 +144,12 @@ public class Stitcher {
             pu.getCompilationUnit().visit(mmg);
         }
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write("exports.$CCMM$=");
+            JsCompiler.beginWrapper(writer);
+            writer.write("ex$.$CCMM$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
             compileLanguageModule("MODEL.js", writer);
+            JsCompiler.endWrapper(writer);
         } finally {
             ShaSigner.sign(file, new JsJULLogger(), true);
         }
