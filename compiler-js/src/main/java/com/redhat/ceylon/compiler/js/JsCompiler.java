@@ -469,12 +469,12 @@ public class JsCompiler {
     }
 
     /** Writes the beginning of the wrapper function for a JS module. */
-    public void beginWrapper(Writer writer) throws IOException {
+    public static void beginWrapper(Writer writer) throws IOException {
         writer.write("(function(define) { define(function(require, ex$, module) {\n");
     }
 
     /** Writes the ending of the wrapper function for a JS module. */
-    public void endWrapper(Writer writer) throws IOException {
+    public static void endWrapper(Writer writer) throws IOException {
         //Finish the wrapper
         writer.write("});\n");
         writer.write("}(typeof define==='function' && define.amd ? define : function (factory) {\n");
