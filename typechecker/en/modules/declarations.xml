@@ -836,6 +836,17 @@ TypeConstraints?
          
         </section>
         
+        <section id="sealedinterfaces">
+            <title>Sealed interfaces</title>
+            
+            <para>A toplevel or nested interface may be annotated <literal>sealed</literal>
+            and is called a <literal>sealed</literal> interface.</para>
+                    
+            <para>An interface annotated <literal>sealed</literal> may not be satisfied 
+            by a class or interface outside the module in which it is defined.</para>
+            
+        </section>
+        
         <section id="interfaceswithcases">
             <title>Interfaces with enumerated cases</title>
             
@@ -1326,13 +1337,16 @@ TypeConstraints?
         </section>
         
         <section id="abstractandformalclasses">
-            <title>Abstract, final, formal, and default classes</title>
+            <title>Abstract, final, sealed, formal, and default classes</title>
             
             <para>A toplevel or nested class may be annotated <literal>abstract</literal>
             and is called an <literal>abstract</literal> class.</para>
                     
             <para>A toplevel or nested class may be annotated <literal>final</literal>
-            and is called an <literal>final</literal> class.</para>
+            and is called a <literal>final</literal> class.</para>
+                    
+            <para>A toplevel or nested class may be annotated <literal>sealed</literal>
+            and is called a <literal>sealed</literal> class.</para>
                     
             <para>If a class annotated <literal>shared</literal> is a member of a containing 
             class or interface, then the class may be annotated <literal>formal</literal>
@@ -1366,7 +1380,13 @@ TypeConstraints?
             
             <para>An un-<literal>shared</literal> class may not be annotated 
             <literal>formal</literal> or <literal>default</literal>.</para>
-    
+            
+            <para>A class annotated <literal>sealed</literal> may not be instantiated or
+            extended outside the module in which it is defined.</para>
+            
+            <para>A member class annotated <literal>sealed formal</literal> must belong to
+            a <literal>sealed</literal> class or interface.</para>
+            
             <comment><para>Note: a <literal>formal</literal> member class would be a
             reasonably syntax for declaring virtual types. We think we don't need 
             virtual types because they don't offer much that type parameters don't

@@ -1232,13 +1232,20 @@ public class DeclarationVisitor extends Visitor {
 
     private static void checkFormalMember(Tree.Declaration that, Declaration d) {
         
+        Scope container = d.getContainer();
         if (d.isFormal()) {
-            if (d.getContainer() instanceof ClassOrInterface) {
+            if (container instanceof ClassOrInterface) {
                 //handled in RefinementVisitor
 //                ClassOrInterface ci = (ClassOrInterface) d.getContainer();
 //                if (!ci.isAbstract() && !ci.isFormal()) {
 //                    that.addError("formal member belongs to a concrete class", 900);
 //                }
+                if (d instanceof Class) {
+                    if (((Class) d).isSealed() && 
+                            !((ClassOrInterface) container).isSealed()) {
+                        that.addError("sealed formal member class does not belong to a sealed type");
+                    }
+                }
             } 
             else {
                 that.addError("formal member does not belong to an interface or abstract class", 1100);
@@ -1251,8 +1258,8 @@ public class DeclarationVisitor extends Visitor {
         }
         
         if (d.isNative()) {
-            if (d.getContainer() instanceof Declaration) {
-                Declaration ci = (Declaration) d.getContainer();
+            if (container instanceof Declaration) {
+                Declaration ci = (Declaration) container;
                 if (!ci.isNative()) {
                     that.addError("native member belongs to a non-native declaration: '" + 
                             d.getName() + "' of '" + ci.getName());
