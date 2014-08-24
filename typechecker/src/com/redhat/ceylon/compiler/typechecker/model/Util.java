@@ -755,7 +755,7 @@ public class Util {
         }
         if (qd instanceof IntersectionType) {
             for (ProducedType t: qd.getSatisfiedTypes()) {
-                if (emptyMeet(p,t, unit)) {
+                if (emptyMeet(p,t,unit)) {
                     return true;
                 }
             }
@@ -763,7 +763,7 @@ public class Util {
         }
         if (pd instanceof IntersectionType) {
             for (ProducedType t: pd.getSatisfiedTypes()) {
-                if (emptyMeet(q,t, unit)) {
+                if (emptyMeet(q,t,unit)) {
                     return true;
                 }
             }
@@ -771,7 +771,7 @@ public class Util {
         }
         if (qd instanceof UnionType) {
             for (ProducedType t: qd.getCaseTypes()) {
-                if (!emptyMeet(p,t, unit)) {
+                if (!emptyMeet(p,t,unit)) {
                     return false;
                 }
             }
@@ -779,7 +779,7 @@ public class Util {
         }
         if (pd instanceof UnionType) {
             for (ProducedType t: pd.getCaseTypes()) {
-                if (!emptyMeet(q,t, unit)) {
+                if (!emptyMeet(q,t,unit)) {
                     return false;
                 }
             }
@@ -819,6 +819,21 @@ public class Util {
                 return true;
             }
         }
+        if (unit.isSequenceType(p) && unit.isSequenceType(q)) {
+            ProducedType pet = unit.getSequentialElementType(p);
+            ProducedType qet = unit.getSequentialElementType(q);
+            if (emptyMeet(pet, qet, unit)) {
+                return true;
+            }
+        }
+        /*if (!unit.isTupleLengthUnbounded(p) &&
+                unit.getTupleMinimumLength(p)<unit.getTupleMinimumLength(q)) {
+            return true;
+        }
+        if (!unit.isTupleLengthUnbounded(q) &&
+                unit.getTupleMinimumLength(q)<unit.getTupleMinimumLength(p)) {
+            return true;
+        }*/
         return false;
     }
 

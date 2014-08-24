@@ -390,3 +390,20 @@ class Union2() {
     Union2.ContravariantAll<String|Integer> call3 = call2;
     @type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
 }
+
+void disjointSequences(String[]|Integer[] x, 
+    [String]|[String,Integer]|[Integer,String]|[Integer+] y,
+    [String+]|[Integer+] z) {
+    switch (x)
+    case (is Empty) {}
+    case (is [String+]) {}
+    case (is [Integer+]) {}
+    @error switch (y)
+    case (is [String]) {}
+    case (is [String,Integer]) {}
+    case (is [Integer,String]) {}
+    case (is [Integer+]) {}
+    switch (z)
+    case (is [String+]) {}
+    case (is [Integer+]) {}
+}

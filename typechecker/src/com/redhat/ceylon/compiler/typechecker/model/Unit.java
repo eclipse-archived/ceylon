@@ -806,7 +806,7 @@ public class Unit {
         //and non-empty intersection with Sequence<Nothing>
                !intersectionType(getType(getEmptyDeclaration()), pt, this)
                         .isNothing() &&
-               !intersectionType(getSequenceType(getNothingDeclaration().getType()), pt, this)
+               !intersectionType(getSequentialType(getNothingDeclaration().getType()), pt, this)
                         .isNothing();
     }
     
@@ -850,7 +850,7 @@ public class Unit {
     }
     
     public ProducedType nonemptyArgs(ProducedType args) {
-        return isPossiblyEmptyType(args) ? 
+        return getType(getEmptyDeclaration()).isSubtypeOf(args) ? 
                 getNonemptyType(args) : args;
     }
     
@@ -858,7 +858,7 @@ public class Unit {
         if (args!=null) {
             List<ProducedType> simpleResult = 
                     getSimpleTupleElementTypes(args, 0);
-            if(simpleResult != null){
+            if (simpleResult != null){
                 return simpleResult;
             }
             ProducedType tst = nonemptyArgs(args)
@@ -1030,8 +1030,9 @@ public class Unit {
         if (args!=null) {
             Boolean simpleTupleVariantAtLeastOne = 
                     isSimpleTupleVariantAtLeastOne(args);
-            if (simpleTupleVariantAtLeastOne != null)
+            if (simpleTupleVariantAtLeastOne != null) {
                 return simpleTupleVariantAtLeastOne.booleanValue();
+            }
             ProducedType tst = nonemptyArgs(args)
                     .getSupertype(getTupleDeclaration());
             if (tst!=null) {
@@ -1105,9 +1106,10 @@ public class Unit {
         if (args!=null) {
             int simpleMinimumLength = 
                     getSimpleTupleMinimumLength(args);
-            if(simpleMinimumLength != -1)
+            if (simpleMinimumLength != -1) {
                 return simpleMinimumLength;
-            if (isPossiblyEmptyType(args)) {
+            }
+            if (getType(getEmptyDeclaration()).isSubtypeOf(args)) {
                 return 0;
             }
             ProducedType tst = nonemptyArgs(args)
