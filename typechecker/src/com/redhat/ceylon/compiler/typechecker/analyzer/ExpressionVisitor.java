@@ -5151,12 +5151,14 @@ public class ExpressionVisitor extends Visitor {
             t.visit(this);
         }
         Tree.Variable v = that.getVariable();
-        if (v!=null) {
-            v.visit(this);
-            initOriginalDeclaration(v);
-        }
         if (switchExpression!=null) {
             ProducedType st = switchExpression.getTypeModel();
+            if (v!=null) {
+                if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
+                    v.visit(this);
+                }
+                initOriginalDeclaration(v);
+            }
             if (t!=null) {
                 ProducedType pt = t.getTypeModel();
                 ProducedType it = intersectionType(pt, st, unit);
