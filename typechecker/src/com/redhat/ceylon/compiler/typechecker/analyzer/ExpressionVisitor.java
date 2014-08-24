@@ -1524,19 +1524,24 @@ public class ExpressionVisitor extends Visitor {
             that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
             String name = returnDeclaration.getName();
-            if (name==null) name = "anonymous function";
+            if (name==null || name.startsWith("anonymous#")) {
+                name = "anonymous function";
+            }
+            else {
+                name = "'" + name + "'";
+            }
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
-                    that.addError("non-void function or getter must return a value: '" +
-                            name + "' is not a void function");
+                    that.addError("non-void function or getter must return a value: " +
+                            name + " is not a void function");
                 }
             }
             else {
                 ProducedType et = returnType.getTypeModel();
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
-                    that.addError("void function, setter, or class initializer may not return a value: '" +
-                            name + "' is declared void");
+                    that.addError("void function, setter, or class initializer may not return a value: " +
+                            name + " is declared void");
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     inferReturnType(et, at);
@@ -1544,8 +1549,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     if (!isTypeUnknown(et) && !isTypeUnknown(at)) {
                         checkAssignable(at, et, e, 
-                                "returned expression must be assignable to return type of '" +
-                                        name + "'", 2100);
+                                "returned expression must be assignable to return type of " +
+                                        name, 2100);
                     }
                 }
             }
