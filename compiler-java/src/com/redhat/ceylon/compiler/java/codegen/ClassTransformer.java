@@ -1095,86 +1095,89 @@ public class ClassTransformer extends AbstractTransformer {
             if (member instanceof Method) {
                 Method method = (Method)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
-                Method subMethod = (Method)model.getMember(method.getName(), null, false);
-                java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = producedTypeParameterBounds(
-                        typedMember, subMethod);
-                final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<ProducedType>emptyList());
-                final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
-                final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
-                boolean hasOverloads = false;
-                if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
-                    
-                    for (Parameter param : parameters) {
-                        if (Strategy.hasDefaultParameterValueMethod(param)
-                                && CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getContainer().equals(member)) {
-                            final ProducedTypedReference typedParameter = refinedTypedMember.getTypedParameter(param);
-                            // If that method has a defaulted parameter, 
-                            // we need to generate a default value method
-                            // which also delegates to the $impl
-                            final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
-                                    typedParameter,
-                                    model.getType(),
-                                    PUBLIC | FINAL, 
-                                    typeParameters, producedTypeParameterBounds,
-                                    typedParameter.getType(), 
-                                    Naming.getDefaultedParamMethodName(method, param), 
-                                    parameters.subList(0, parameters.indexOf(param)),
-                                    param.getModel().getTypeErased(),
-                                    null);
-                            classBuilder.method(defaultValueDelegate);
-                        }
-                        
-                        if (Strategy.hasDefaultParameterOverload(param)) {
-                            if ((method.isDefault() || method.isShared() && !method.isFormal())
-                                    && (method == subMethod)) {
-                                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
-                                MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(daoThis, typedMember)
-                                    .makeOverload(
-                                        overloadBuilder, 
-                                        subMethod.getParameterLists().get(0),
-                                        param,
-                                        typeParameters);
-                                classBuilder.method(overload);
+                Declaration sub = (Declaration)model.getMember(method.getName(), null, false);
+                if (sub instanceof Method) {
+                    Method subMethod = (Method)sub;
+                    java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = producedTypeParameterBounds(
+                            typedMember, subMethod);
+                    final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<ProducedType>emptyList());
+                    final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
+                    final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
+                    boolean hasOverloads = false;
+                    if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
+
+                        for (Parameter param : parameters) {
+                            if (Strategy.hasDefaultParameterValueMethod(param)
+                                    && CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getContainer().equals(member)) {
+                                final ProducedTypedReference typedParameter = refinedTypedMember.getTypedParameter(param);
+                                // If that method has a defaulted parameter, 
+                                // we need to generate a default value method
+                                // which also delegates to the $impl
+                                final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
+                                        typedParameter,
+                                        model.getType(),
+                                        PUBLIC | FINAL, 
+                                        typeParameters, producedTypeParameterBounds,
+                                        typedParameter.getType(), 
+                                        Naming.getDefaultedParamMethodName(method, param), 
+                                        parameters.subList(0, parameters.indexOf(param)),
+                                        param.getModel().getTypeErased(),
+                                        null);
+                                classBuilder.method(defaultValueDelegate);
                             }
-                            
-                            hasOverloads = true;
+
+                            if (Strategy.hasDefaultParameterOverload(param)) {
+                                if ((method.isDefault() || method.isShared() && !method.isFormal())
+                                        && (method == subMethod)) {
+                                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
+                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(daoThis, typedMember)
+                                        .makeOverload(
+                                            overloadBuilder, 
+                                            subMethod.getParameterLists().get(0),
+                                            param,
+                                            typeParameters);
+                                    classBuilder.method(overload);
+                                }
+
+                                hasOverloads = true;
+                            }
                         }
                     }
-                }
-                // if it has the *most refined* default concrete member, 
-                // then generate a method on the class
-                // delegating to the $impl instance
-                if (needsCompanionDelegate(model, member)) {
-                    
-                    final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
-                            typedMember,
-                            model.getType(),
-                            PUBLIC | (method.isDefault() ? 0 : FINAL),
-                            typeParameters, 
-                            producedTypeParameterBounds, 
-                            typedMember.getType(), 
-                            naming.selector(method), 
-                            method.getParameterLists().get(0).getParameters(),
-                            ((Method) member).getTypeErased(),
-                            null);
-                    classBuilder.method(concreteMemberDelegate);
-                }
-                
-                if (hasOverloads
-                        && (method.isDefault() || method.isShared() && !method.isFormal())
-                        && (method == subMethod)) {
-                    final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
-                            typedMember,
-                            model.getType(),
-                            PRIVATE,
-                            subMethod.getTypeParameters(), 
-                            producedTypeParameterBounds,
-                            typedMember.getType(), 
-                            Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
-                            method.getParameterLists().get(0).getParameters(),
-                            ((Method) member).getTypeErased(),
-                            naming.selector(method));
-                    classBuilder.method(canonicalMethod);
+                    // if it has the *most refined* default concrete member, 
+                    // then generate a method on the class
+                    // delegating to the $impl instance
+                    if (needsCompanionDelegate(model, member)) {
+
+                        final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
+                                typedMember,
+                                model.getType(),
+                                PUBLIC | (method.isDefault() ? 0 : FINAL),
+                                typeParameters, 
+                                producedTypeParameterBounds, 
+                                typedMember.getType(), 
+                                naming.selector(method), 
+                                method.getParameterLists().get(0).getParameters(),
+                                ((Method) member).getTypeErased(),
+                                null);
+                        classBuilder.method(concreteMemberDelegate);
+                    }
+
+                    if (hasOverloads
+                            && (method.isDefault() || method.isShared() && !method.isFormal())
+                            && (method == subMethod)) {
+                        final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
+                                typedMember,
+                                model.getType(),
+                                PRIVATE,
+                                subMethod.getTypeParameters(), 
+                                producedTypeParameterBounds,
+                                typedMember.getType(), 
+                                Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
+                                method.getParameterLists().get(0).getParameters(),
+                                ((Method) member).getTypeErased(),
+                                naming.selector(method));
+                        classBuilder.method(canonicalMethod);
+                    }
                 }
             } else if (member instanceof Value
                     || member instanceof Setter) {
