@@ -830,16 +830,52 @@ public class Util {
         if (pd.inherits(td) && qd.inherits(td)) {
             int pml = unit.getTupleMinimumLength(p);
             int qml = unit.getTupleMinimumLength(q);
-            if (!unit.isTupleLengthUnbounded(p) && pml<qml) {
-                return true;
-            }
-            if (!unit.isTupleLengthUnbounded(q) && qml<pml) {
+            boolean plu = unit.isTupleLengthUnbounded(p);
+            boolean qlu = unit.isTupleLengthUnbounded(q);
+            if (!plu && pml<qml ||
+                !qlu && qml<pml) {
                 return true;
             }
             List<ProducedType> pets = unit.getTupleElementTypes(p);
             List<ProducedType> qets = unit.getTupleElementTypes(q);
             for (int i=0; i<pml && i<qml; i++) {
                 if (emptyMeet(pets.get(i), qets.get(i), unit)) {
+                    return true;
+                }
+            }
+            if (plu) {
+                ProducedType pvt = pets.get(pets.size()-1);
+                for (int j=pml; j<qml; j++) {
+                    if (emptyMeet(pvt, qets.get(j), unit)) {
+                        return true;
+                    }
+                }
+            }
+            if (qlu) {
+                ProducedType qvt = qets.get(qets.size()-1);
+                for (int j=qml; j<pml; j++) {
+                    if (emptyMeet(qvt, pets.get(j), unit)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        if (pd.inherits(td) && unit.isSequentialType(q)) {
+            List<ProducedType> pets = unit.getTupleElementTypes(p);
+            int pml = unit.getTupleMinimumLength(p);
+            ProducedType qet = unit.getSequentialElementType(q);
+            for (int i=0; i<pml; i++) {
+                if (emptyMeet(pets.get(i), qet, unit)) {
+                    return true;
+                }
+            }
+        }
+        if (qd.inherits(td) && unit.isSequentialType(p)) {
+            List<ProducedType> qets = unit.getTupleElementTypes(q);
+            int qml = unit.getTupleMinimumLength(q);
+            ProducedType pet = unit.getSequentialElementType(p);
+            for (int i=0; i<qml; i++) {
+                if (emptyMeet(qets.get(i), pet, unit)) {
                     return true;
                 }
             }

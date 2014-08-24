@@ -405,8 +405,7 @@ void disjointSequences(String[]|Integer[] x,
     case (is [Integer, String]) {}
     case (is [Integer]) {}
     case (is [String, String]) {}
-    //TODO: make it work!
-    @error switch (y)
+    switch (y)
     case (is [String]) {}
     case (is [String,Integer]) {}
     case (is [Integer,String]) {}
