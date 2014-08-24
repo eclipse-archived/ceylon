@@ -457,7 +457,7 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(t)) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.getProducedTypeName(unit) + "' is not a subtype of Sequence");
+                        t.getProducedTypeName(unit) + "' is not a subtype of 'Sequential'");
             }
             else if (!unit.isPossiblyEmptyType(t)) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
