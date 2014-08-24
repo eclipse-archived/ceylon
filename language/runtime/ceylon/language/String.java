@@ -338,20 +338,14 @@ public final class String
     }
     
     @Ignore
-    public static Sequential<? extends Character> 
-    items(java.lang.String value, 
-            Sequential<? extends Integer> keys) {
+    public static <Absent extends Null> 
+    Iterable<? extends Character, ? extends Absent>
+    getAll(TypeDescriptor $reifiedAbsent, java.lang.String value, 
+            Iterable<? extends Integer, Absent> keys) {
         // TODO We're still boxing here!
-        return instance(value).items(keys);
+        return instance(value).getAll($reifiedAbsent,keys);
     }
-
-    @Ignore 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static Sequential<? extends Character> 
-    items(java.lang.String value) {
-        return (Sequential) empty_.get_();
-    }
-
+    
     @Ignore
     public static boolean occurs(java.lang.String value, 
             java.lang.Object element) {

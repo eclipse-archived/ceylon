@@ -102,8 +102,8 @@ shared interface Map<out Key,out Item>
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
-    shared default Collection<Item> values {
-        object values
+    shared default Collection<Item> items {
+        object items
                 satisfies Collection<Item> {
             shared actual Boolean contains(Object item) {
                 for (k->v in outer) {
@@ -117,7 +117,7 @@ shared interface Map<out Key,out Item>
             clone() => [*this];
             size => outer.size;
         }
-        return values;
+        return items;
     }
     
     "Produces a map with the same [[keys]] as this map. 
@@ -262,8 +262,10 @@ shared object emptyMap
         satisfies Map<Nothing, Nothing> {
     
     shared actual Null get(Object key) => null;
-    shared actual Collection<Nothing> keys => emptySet;
-    shared actual Collection<Nothing> values => [];
+    shared actual Collection<Nothing> keys
+            => emptySet;
+    shared actual Collection<Nothing> items
+            => emptySet;
     
     clone() => this;
     iterator() => emptyIterator;

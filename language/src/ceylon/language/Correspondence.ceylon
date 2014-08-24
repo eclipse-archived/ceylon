@@ -25,7 +25,7 @@ shared interface Correspondence<in Key, out Item>
     
     "Returns the value defined for the given key, or `null` 
      if there is no value defined for the given key."
-    see (`function Correspondence.items`)
+    see (`function Correspondence.getAll`)
     shared formal Item? get(Key key);
     
     "Determines if there is a value defined for the given 
@@ -76,10 +76,12 @@ shared interface Correspondence<in Key, out Item>
     
     "Returns the items defined for the given keys, in the 
      same order as the corresponding keys. For any key which 
-     does not have an item defined, the resulting sequence 
+     does not have an item defined, the resulting stream 
      contains the value `null`."
     see (`function Correspondence.get`)
-    shared default Item?[] items({Key*} keys) 
-            => [ for (key in keys) get(key) ];
+    shared default Iterable<Item?,Absent> getAll<Absent>
+            (Iterable<Key,Absent> keys) 
+            given Absent satisfies Null
+            => { for (key in keys) get(key) };
     
 }
