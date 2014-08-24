@@ -1776,7 +1776,8 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>if the condition declares a variable, the declared type of the variable 
                     must be a supertype of <literal>T&amp;Object</literal>, where the specifier 
-                    expression is of type <literal>T</literal>, or</para>
+                    expression is of type <literal>T</literal>, and must be a subtype of
+                    <literal>Object</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated by 
@@ -1793,7 +1794,8 @@ if (is Usable tx) { ... }</programlisting>
                     <para>if the condition declares a variable, the declared type of the variable 
                     must be a supertype of <literal>T&amp;[E+]</literal>, where the specifier 
                     expression is of type <literal>T</literal> and <literal>T</literal> has the 
-                    principal instantiation <literal>E[]?</literal>, or</para>
+                    principal instantiation <literal>E[]?</literal>, and must be a subtype of
+                    <literal>[Anything+]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated by 

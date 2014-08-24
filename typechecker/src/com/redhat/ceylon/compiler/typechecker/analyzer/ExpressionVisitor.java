@@ -909,6 +909,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
+            if (!isTypeUnknown(vt)) {
+                checkAssignable(vt, unit.getType(unit.getObjectDeclaration()), 
+                        var.getType(), "specified type may not be optional");
+            }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
@@ -926,6 +930,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
+            if (!isTypeUnknown(vt)) {
+                checkAssignable(vt, unit.getSequenceType(unit.getType(unit.getAnythingDeclaration())), 
+                        var.getType(), "specified type must be a nonempty sequence type");
+            }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
