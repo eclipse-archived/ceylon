@@ -790,8 +790,8 @@ public class Util {
                     qd.equals(nd) ||
             qd instanceof Interface && pd instanceof Class &&
                     pd.equals(nd)) {
-            if (!q.getDeclaration().inherits(pd) &&
-                !p.getDeclaration().inherits(qd)) {
+            if (!qd.inherits(pd) &&
+                !pd.inherits(qd)) {
                 return true;
             }
         }
@@ -803,7 +803,7 @@ public class Util {
                 return true;
             }
             if (qd instanceof ClassOrInterface &&
-                    !p.getDeclaration().inherits(qd)) {
+                    !pd.inherits(qd)) {
                 return true;
             }
         }
@@ -815,11 +815,12 @@ public class Util {
                 return true;
             }
             if (pd instanceof ClassOrInterface &&
-                    !q.getDeclaration().inherits(pd)) {
+                    !qd.inherits(pd)) {
                 return true;
             }
         }
-        if (unit.isSequenceType(p) && unit.isSequenceType(q)) {
+        Interface nst = unit.getSequenceDeclaration();
+        if (pd.inherits(nst) && qd.inherits(nst)) {
             ProducedType pet = unit.getSequentialElementType(p);
             ProducedType qet = unit.getSequentialElementType(q);
             if (emptyMeet(pet, qet, unit)) {
@@ -837,7 +838,8 @@ public class Util {
                 }
             }
         }
-        if (pd.inherits(td) && unit.isSequentialType(q)) {
+        Interface st = unit.getSequentialDeclaration();
+        if (pd.inherits(td) && qd.inherits(st)) {
             List<ProducedType> pal = p.getTypeArgumentList();
             ProducedType qet = unit.getSequentialElementType(q);
             if (pal.size()>=3) {
@@ -847,7 +849,7 @@ public class Util {
                 }
             }
         }
-        if (qd.inherits(td) && unit.isSequentialType(p)) {
+        if (qd.inherits(td) && pd.inherits(st)) {
             List<ProducedType> qal = q.getTypeArgumentList();
             ProducedType pet = unit.getSequentialElementType(p);
             if (qal.size()>=3) {
