@@ -1421,9 +1421,37 @@ interface NumberLiteral
                     <para><literal>X</literal> and <literal>Y</literal> inherit disjoint
                     instantiations of a generic type <literal>Z</literal>, that is, two 
                     instantiations of <literal>Z</literal> that have the intersection
-                    <literal>Nothing</literal>, as defined below, in <xref linkend="principalinstantiationinheritance"/>.</para>
+                    <literal>Nothing</literal>, as defined below, in 
+                    <xref linkend="principalinstantiationinheritance"/>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>Furthermore, as a special case, the types <literal>X</literal> and 
+            <literal>Y</literal> are disjoint if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>X</literal> is an invariant subtype of <literal>Sequence&lt;A&gt;</literal>, 
+                    <literal>Y</literal> is an invariant subtype of <literal>Sequence&lt;B&gt;</literal>,
+                    and <literal>A</literal> and <literal>B</literal> are disjoint,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X</literal> is an invariant subtype of <literal>Sequential&lt;A&gt;</literal>, 
+                    <literal>Y</literal> is an invariant subtype of <literal>Tuple&lt;J,B,V&gt;</literal>,
+                    and <literal>A</literal> and <literal>B</literal> are disjoint or <literal>X</literal> and
+                    <literal>V</literal> are disjoint, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X</literal> is an invariant subtype of <literal>Tuple&lt;I,A,U&gt;</literal>,
+                    <literal>Y</literal> is an invariant subtype of <literal>Tuple&lt;J,B,V&gt;</literal>,
+                    and <literal>A</literal> and <literal>B</literal> are disjoint or <literal>U</literal> and
+                    <literal>C</literal> are disjoint.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: the soundness of these rules is guaranteed by the implementations of the
+            <literal>sealed</literal> types <literal>Sequence</literal>, <literal>Sequential</literal>, and
+            <literal>Tuple</literal> in the module <literal>ceylon.language</literal>.</para></comment>
             
         </section>
         
