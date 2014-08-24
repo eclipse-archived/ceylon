@@ -34,3 +34,8 @@ class Conditions(String* elems) {
     }
 
 }
+
+void bogusExistsNonempty(String? name, String[] names) {
+    if (exists @error String? name1 = name) {}
+    if (nonempty @error String[] names1 = names) {}
+}
