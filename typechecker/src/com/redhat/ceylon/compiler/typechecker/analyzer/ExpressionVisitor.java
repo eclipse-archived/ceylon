@@ -366,7 +366,10 @@ public class ExpressionVisitor extends Visitor {
             //v.getType().visit(this);
             defaultTypeToAnything(v);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
-            if (se!=null && se.getExpression()!=null) {
+            if (se==null) {
+                v.addError("missing specifier");
+            }
+            else if (se.getExpression()!=null) {
                 se.visit(this);
                 if (that instanceof Tree.ExistsCondition) {
                     inferDefiniteType(v, se);

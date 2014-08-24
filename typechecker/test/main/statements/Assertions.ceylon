@@ -23,6 +23,8 @@ void assertions() {
     assert (exists int0 = ints[0], is Integer int1 = ints[1]);
     print(int0+1);
     print(int1-1);
+    if (exists @error String szsq) {}
+    assert (exists @error String swsq);
 }
 
 class Assertions(String? nameOrNull) {
