@@ -453,9 +453,16 @@ public class ExpressionVisitor extends Visitor {
         /*if (t==null) {
             n.addError("expression must be a type with fixed size: type not known");
         }
-        else*/ if (!isTypeUnknown(t) && !unit.isPossiblyEmptyType(t)) {
-            term.addError("expression must be a possibly-empty sequential type: '" + 
-                    t.getProducedTypeName(unit) + "' is not possibly-empty");
+        else*/ 
+        if (!isTypeUnknown(t)) {
+            if (!unit.isSequentialType(t)) {
+                term.addError("expression must be a possibly-empty sequential type: '" + 
+                        t.getProducedTypeName(unit) + "' is not a subtype of Sequence");
+            }
+            else if (!unit.isPossiblyEmptyType(t)) {
+                term.addError("expression must be a possibly-empty sequential type: '" + 
+                        t.getProducedTypeName(unit) + "' is not possibly-empty");
+            }
         }
     }
     
