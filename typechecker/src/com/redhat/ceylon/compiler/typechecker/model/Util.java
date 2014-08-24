@@ -826,14 +826,24 @@ public class Util {
                 return true;
             }
         }
-        /*if (!unit.isTupleLengthUnbounded(p) &&
-                unit.getTupleMinimumLength(p)<unit.getTupleMinimumLength(q)) {
-            return true;
+        Class td = unit.getTupleDeclaration();
+        if (pd.inherits(td) && qd.inherits(td)) {
+            int pml = unit.getTupleMinimumLength(p);
+            int qml = unit.getTupleMinimumLength(q);
+            if (!unit.isTupleLengthUnbounded(p) && pml<qml) {
+                return true;
+            }
+            if (!unit.isTupleLengthUnbounded(q) && qml<pml) {
+                return true;
+            }
+            List<ProducedType> pets = unit.getTupleElementTypes(p);
+            List<ProducedType> qets = unit.getTupleElementTypes(q);
+            for (int i=0; i<pml && i<qml; i++) {
+                if (emptyMeet(pets.get(i), qets.get(i), unit)) {
+                    return true;
+                }
+            }
         }
-        if (!unit.isTupleLengthUnbounded(q) &&
-                unit.getTupleMinimumLength(q)<unit.getTupleMinimumLength(p)) {
-            return true;
-        }*/
         return false;
     }
 

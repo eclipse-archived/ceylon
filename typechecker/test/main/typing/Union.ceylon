@@ -393,11 +393,19 @@ class Union2() {
 
 void disjointSequences(String[]|Integer[] x, 
     [String]|[String,Integer]|[Integer,String]|[Integer+] y,
-    [String+]|[Integer+] z) {
+    [String+]|[Integer+] z,
+    [String]|[String,Integer]|[Integer,String]|[Integer]|[String,String] w) {
     switch (x)
     case (is Empty) {}
     case (is [String+]) {}
     case (is [Integer+]) {}
+    switch (w)
+    case (is [String]) {}
+    case (is [String, Integer]) {}
+    case (is [Integer, String]) {}
+    case (is [Integer]) {}
+    case (is [String, String]) {}
+    //TODO: make it work!
     @error switch (y)
     case (is [String]) {}
     case (is [String,Integer]) {}
