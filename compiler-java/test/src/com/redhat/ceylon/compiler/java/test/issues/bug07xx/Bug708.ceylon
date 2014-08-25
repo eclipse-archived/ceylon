@@ -62,7 +62,7 @@ shared class Bug708Map<T>() extends Object()
     shared actual Bug708Map<T> clone() { return this; }
     shared actual Iterator<Entry<Integer, String|T>> iterator() { return nothing; }
     shared actual Set<Integer> keys { return nothing; }
-    shared actual Collection<String|T> values { return nothing; }    
+    shared actual Collection<String|T> items { return nothing; }    
 }
 
 Bug708Map<String> bug708_cache = Bug708Map<String>();   

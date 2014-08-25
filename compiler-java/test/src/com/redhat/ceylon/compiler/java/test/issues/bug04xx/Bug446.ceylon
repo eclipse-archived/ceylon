@@ -19,7 +19,8 @@
  */
 @noanno
 abstract class Bug446<T>() satisfies List<T>{
-    shared actual T?[] items({Integer*} keys) {
+    shared actual Iterable<T?,Absent> getAll<Absent>(Iterable<Integer,Absent> keys) 
+            given Absent satisfies Null {
         return nothing;
     }
 

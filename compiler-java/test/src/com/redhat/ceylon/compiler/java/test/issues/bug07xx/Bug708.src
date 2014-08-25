@@ -546,8 +546,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Sequential items(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> keys) {
-        return $ceylon$language$Correspondence$this$.items(keys);
+    public <Absent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends Absent> keys) {
+        return $ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -661,7 +661,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             value = "ceylon.language::Collection<ceylon.language::String|T>",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public final .ceylon.language.Collection getValues() {
+    public final .ceylon.language.Collection getItems() {
         return (.ceylon.language.Collection).ceylon.language.nothing_.get_();
     }
     
