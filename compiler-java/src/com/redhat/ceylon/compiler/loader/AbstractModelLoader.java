@@ -2300,7 +2300,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && !"isString".equals(name) && !"isHash".equals(name) && !"isEquals".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
-        return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
+        boolean hasBooleanReturn = (methodMirror.getReturnType().getKind() == TypeKind.BOOLEAN);
+        return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
     }
     
     private boolean isSetter(MethodMirror methodMirror) {
