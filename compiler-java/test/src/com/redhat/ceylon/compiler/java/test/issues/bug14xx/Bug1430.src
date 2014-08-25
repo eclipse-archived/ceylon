@@ -487,8 +487,8 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
-        return $ceylon$language$Correspondence$this$.items(keys);
+    public <Absent>.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
+        return $ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
     }
     
     @.java.lang.Override

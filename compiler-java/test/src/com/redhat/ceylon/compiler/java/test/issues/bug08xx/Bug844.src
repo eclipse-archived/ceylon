@@ -565,8 +565,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
-        return $ceylon$language$Correspondence$this$.items(keys);
+    public <Absent>.ceylon.language.Iterable<? extends Element, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
+        return $ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
     }
     private final First first;
     
