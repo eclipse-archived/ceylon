@@ -19,7 +19,7 @@ void testCorrespondence() {
   check(!t.definesEvery{2,4,6,8,10,12}, "!Correspondence.definesEvery");
   check(t.definesAny{30,20,10,0}, "Correspondence.definesAny");
   check(!t.definesAny{20,30,40,50}, "!Correspondence.definesAny");
-  value items = t.items{1,3,5,7,9};
+  value items = t.getAll{1,3,5,7,9}.sequence();
   check(items.size == 5, "Correspondence.items 1");
   check(items.defines(4), "Correspondence.items 2");
   //TODO  keys
