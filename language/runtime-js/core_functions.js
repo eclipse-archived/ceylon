@@ -206,9 +206,9 @@ function is$(obj,type){
         for(var i in type.a) {
           var cmptype=type.a[i];
           var tmpobj=obj;
-          var iance=null;
+          var iance=cmptype.uv||null;
           var _mm=getrtmm$$(type.t);
-          if(_mm&&_mm.tp&&_mm.tp[i])iance=_mm.tp[i].dv;
+          if(!iance&&_mm&&_mm.tp&&_mm.tp[i])iance=_mm.tp[i].dv;
           if(iance===null) {
             //null means no i in _mm.tp
             //Type parameter may be in the outer type
