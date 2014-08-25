@@ -789,7 +789,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>A spread argument is an expression prefixed by the 
             <emphasis>spread operator</emphasis> <literal>*</literal>.</para>
             
-            <synopsis>SpreadArgument: "*" Expression</synopsis>
+            <synopsis>SpreadArgument: "*" ValueExpression</synopsis>
             
             <para>The spread operator is parsed with a precedence just lower than 
             the multiplication operator <literal>*</literal> and just higher than 
