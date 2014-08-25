@@ -409,9 +409,9 @@ shared void sequences() {
     check(!result.definesEvery {1,2}, "sequence definesEvery 1,2");
     check(result.definesAny {1,2}, "sequence definesAny 1,2");
     check(!result.definesAny {2,3}, "sequence definesAny 2,3");
-    check(result.items {0,1,2,3}.string=="[hello, world, <null>, <null>]", "sequence.items 1");
-    check(result.items {1,0}.string=="[world, hello]", "sequence.items 2");
-    check(result.items {5,6,7}.string=="[<null>, <null>, <null>]", "sequence.items 3");
+    check(result.getAll {0,1,2,3}.sequence().string=="[hello, world, <null>, <null>]", "sequence.getAll 1");
+    check(result.getAll {1,0}.sequence().string=="[world, hello]", "sequence.getAll 2");
+    check(result.getAll {5,6,7}.sequence().string=="[<null>, <null>, <null>]", "sequence.getAll 3");
 
     if (nonempty result) {
         value rest = result.rest;

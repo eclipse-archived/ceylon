@@ -41,9 +41,9 @@ shared void testMaps() {
     check(!m1[5] exists, "Map.item 2");
     check(!m1["hi"] exists, "Map.item 3");
     check(!m1.iterator().next() is Finished, "Map.iterator");
-    check(m1.values.size==m1.size, "Map.values 1");
+    check(m1.items.size==m1.size, "Map.items 1");
     for (e in m1) {
-        check(e.item in m1.values, "Map.values 2");
+        check(e.item in m1.items, "Map.items 2");
     }
     check(m1.keys.size==m1.size, "Map.keys 1");
     for (e in m1) {

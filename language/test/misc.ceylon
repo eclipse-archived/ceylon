@@ -36,7 +36,7 @@ shared void misc() {
     ",".join{};
     //StringBuilder().appendAll{};
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();
-    [1,2,3].items([]);
+    [1,2,3].getAll([]);
     [1,2,3].definesAny([]);
     [1,2,3].definesEvery([]);
     [1,2,3].containsAny([]);
