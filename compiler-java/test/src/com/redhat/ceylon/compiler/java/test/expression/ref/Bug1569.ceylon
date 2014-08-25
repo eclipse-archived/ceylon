@@ -21,7 +21,7 @@
 class Bug1569() {
     void m(){}
     void callsite() {
-        value x = (Bug1569.m)(this);
-        value y= (Bug1569.m)(this)();
+        value x = Bug1569.m(this);
+        value y = Bug1569.m(this)();
     }
 }
