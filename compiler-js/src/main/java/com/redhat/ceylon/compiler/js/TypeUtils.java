@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -54,7 +55,7 @@ public class TypeUtils {
 
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, final Map<TypeParameter,ProducedType> targs,
-            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+            final GenerateJsVisitor gen, final boolean skipSelfDecl, final Map<TypeParameter, SiteVariance> overrides) {
         gen.out("{");
         boolean first = true;
         for (Map.Entry<TypeParameter,ProducedType> e : targs.entrySet()) {
@@ -82,7 +83,16 @@ public class TypeUtils {
                 }
                 if (hasParams) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl);
+                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                }
+                SiteVariance siteVariance = overrides == null ? null : overrides.get(e.getKey());
+                if (siteVariance != null) {
+                    gen.out(",", MetamodelGenerator.KEY_US_VARIANCE, ":");
+                    if (siteVariance == SiteVariance.IN) {
+                        gen.out("'in'");
+                    } else {
+                        gen.out("'out'");
+                    }
                 }
                 if (closeBracket) {
                     gen.out("}");
@@ -172,7 +182,7 @@ public class TypeUtils {
                         }
                     }
                     gen.out(",a:");
-                    printTypeArguments(node, targs, gen, skipSelfDecl);
+                    printTypeArguments(node, targs, gen, skipSelfDecl, pt.getVarianceOverrides());
                 }
                 gen.out("}");
             }
