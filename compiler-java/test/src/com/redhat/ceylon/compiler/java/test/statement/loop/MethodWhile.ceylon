@@ -32,8 +32,8 @@ class MethodWhile(){
         }
     }
     shared void whileNonEmpty(){
-        variable Integer[] seq = [1];
-        while (nonempty Integer[] s = seq) {
+        variable Integer[] seq = [];
+        while (nonempty [Integer+] s = seq) {
             seq = [];
         }
     }

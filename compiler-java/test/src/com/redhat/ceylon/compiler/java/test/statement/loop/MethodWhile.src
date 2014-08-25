@@ -26,11 +26,11 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         loop_2: while (true) {
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$2;
             if ((s$2 = seq) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$3 = s$2;
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$2;
                 seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
             } else break loop_2;
         }
