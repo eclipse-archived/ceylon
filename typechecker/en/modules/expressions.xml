@@ -791,9 +791,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>SpreadArgument: "*" Expression</synopsis>
             
+            <para>The spread operator is parsed with a precedence just lower than 
+            the multiplication operator <literal>*</literal> and just higher than 
+            the set union and complement operators <literal>|</literal> and
+            <literal>~</literal>, and is not associative.</para>
+            
+            <comment><para>Note: this restriction means that the symbol <literal>*</literal>
+            always has the same precedence, wherever it occurs in the language.</para></comment>
+            
             <para>The expression type <literal>T</literal> must have the principal 
-            instantiation <literal>{X*}</literal> for some type <literal>X</literal>. We 
-            form the <emphasis>sequential type of a spread argument</emphasis> as 
+            instantiation <literal>{X*}</literal> for some type <literal>X</literal>. 
+            We form the <emphasis>sequential type of a spread argument</emphasis> as 
             follows:</para>
             
             <itemizedlist>
