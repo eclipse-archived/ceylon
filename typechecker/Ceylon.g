@@ -3360,6 +3360,11 @@ metaLiteral returns [MetaLiteral meta]
       vm=memberName
       { v.setIdentifier($vm.identifier); 
         v.setEndToken(null); }
+      (
+        //recognize type argument list here even though illegal 
+        ta6=typeArguments
+        { v.setTypeArgumentList($ta6.typeArgumentList); }
+      )?
     |
       FUNCTION_MODIFIER
       { f = new FunctionLiteral($d1);
@@ -3384,6 +3389,11 @@ metaLiteral returns [MetaLiteral meta]
       fm=memberName
       { f.setIdentifier($fm.identifier); 
         f.setEndToken(null); }
+      (
+        //recognize type argument list here even though illegal 
+        ta5=typeArguments
+        { f.setTypeArgumentList($ta5.typeArgumentList); }
+      )?
     |
       (abbreviatedType MEMBER_OP) =>
       { ml = new MemberLiteral($d1);

@@ -6106,9 +6106,30 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(unit.getModuleDeclarationType());
     }
     
+    private boolean declarationLiteral = false;
+    
+    @Override
+    public void visit(Tree.TypeArgumentList that) {
+        if (declarationLiteral) {
+            that.addError("declaration reference may not specify type arguments");
+        }
+        super.visit(that);
+    }
+    
     @Override
     public void visit(Tree.TypeLiteral that) {
-        super.visit(that);
+        if (that instanceof Tree.InterfaceLiteral||
+            that instanceof Tree.ClassLiteral||
+            that instanceof Tree.AliasLiteral||
+            that instanceof Tree.TypeParameterLiteral) {
+            declarationLiteral = true;
+        }
+        try {
+            super.visit(that);
+        }
+        finally {
+            declarationLiteral = false;
+        }
         ProducedType t = null;
         TypeDeclaration d = null;
         Tree.StaticType type = that.getType();
@@ -6130,13 +6151,14 @@ public class ExpressionVisitor extends Visitor {
             that.setWantsDeclaration(true);
             if (that instanceof Tree.ClassLiteral) {
                 if (!(d instanceof Class)) {
-                    if(type != null)
+                    if (type != null) {
                         type.addError("referenced declaration is not a class" +
                                 getDeclarationReferenceSuggestion(d));
+                    }
                 }
-                else {
-//                        checkNonlocal(that, d);
-                }
+//                else {
+//                    checkNonlocal(that, d);
+//                }
                 that.setTypeModel(unit.getClassDeclarationType());
             }
             else if (that instanceof Tree.InterfaceLiteral) {
@@ -6165,7 +6187,7 @@ public class ExpressionVisitor extends Visitor {
                 t = t.resolveAliases();
                 //checkNonlocalType(that.getType(), t.getDeclaration());
                 if (d instanceof Class) {
-//                        checkNonlocal(that, t.getDeclaration());
+//                    checkNonlocal(that, t.getDeclaration());
                     if (((Class) d).isAbstraction()) {
                         that.addError("class constructor is overloaded");
                     }
@@ -6185,7 +6207,16 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MemberLiteral that) {
-        super.visit(that);
+        if (that instanceof Tree.FunctionLiteral||
+            that instanceof Tree.ValueLiteral) {
+            declarationLiteral = true;
+        }
+        try {
+            super.visit(that);
+        }
+        finally {
+            declarationLiteral = false;
+        }
         if (that.getIdentifier() != null) {
             String name = name(that.getIdentifier());
             ProducedType qt = null;
