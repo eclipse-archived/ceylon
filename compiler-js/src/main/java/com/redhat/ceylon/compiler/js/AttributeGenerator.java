@@ -71,7 +71,8 @@ public class AttributeGenerator {
                     TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(expr.getExpression().getTypeModel(), gen);
                 }
                 gen.out(",");
-                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false);
+                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), gen, false,
+                        expr.getExpression().getTypeModel().getVarianceOverrides());
             }
             gen.boxUnboxEnd(boxType);
             if (initVal) {

@@ -213,7 +213,7 @@ public class InvocationGenerator {
                         Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
                                 ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
                         if (invargs != null) {
-                            TypeUtils.printTypeArguments(typeArgSource, invargs, gen, false);
+                            TypeUtils.printTypeArguments(typeArgSource, invargs, gen, false, null);
                         } else {
                             gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
                         }
@@ -286,7 +286,7 @@ public class InvocationGenerator {
                 Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
                         func.getTypeParameters(), targs.getTypeModels());
                 if (!first) gen.out(",");
-                TypeUtils.printTypeArguments(argList, invargs, gen, false);
+                TypeUtils.printTypeArguments(argList, invargs, gen, false, null);
             }
             gen.out(")");
             firstList = false;
@@ -360,7 +360,8 @@ public class InvocationGenerator {
                         //Add parameters
                         describeMethodParameters(expr.getTerm());
                         gen.out(",");
-                        TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false);
+                        TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
+                                arg.getTypeModel().getVarianceOverrides());
                     }
                     gen.boxUnboxEnd(boxType);
                 } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
@@ -385,7 +386,8 @@ public class InvocationGenerator {
                             gen.out(",");
                             describeMethodParameters(expr.getTerm());
                             gen.out(",");
-                            TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false);
+                            TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
+                                    arg.getTypeModel().getVarianceOverrides());
                         } else if (pd == null) {
                             if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
                                     && ((Tree.MemberOrTypeExpression)primary).getDeclaration() == null
@@ -461,7 +463,7 @@ public class InvocationGenerator {
                         if (expr == null) {
                             //it's a comprehension
                             TypeUtils.printTypeArguments(that,
-                                    gen.getTypeUtils().wrapAsIterableArguments(arg.getTypeModel()), gen, false);
+                                    gen.getTypeUtils().wrapAsIterableArguments(arg.getTypeModel()), gen, false, null);
                         } else {
                             ProducedType spreadType = TypeUtils.findSupertype(gen.getTypeUtils().sequential,
                                     expr.getTypeModel());
@@ -469,7 +471,8 @@ public class InvocationGenerator {
                                 //Go directly to Iterable
                                 spreadType = TypeUtils.findSupertype(gen.getTypeUtils().iterable, expr.getTypeModel());
                             }
-                            TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen, false);
+                            TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen, false,
+                                    spreadType.getVarianceOverrides());
                         }
                         gen.out(")");
                     }

@@ -107,6 +107,7 @@ public class MetamodelHelper {
     static void generateClosedTypeLiteral(final Tree.TypeLiteral that, final GenerateJsVisitor gen) {
         final ProducedType ltype = that.getType().getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
+        final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
                 gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedClass$meta$model()(");
@@ -115,11 +116,12 @@ public class MetamodelHelper {
             }
             TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
-            final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                    that.getTypeModel().getVarianceOverrides());
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, targs, gen, false);
+                TypeUtils.printTypeArguments(that, targs, gen, false,
+                        that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
@@ -130,11 +132,12 @@ public class MetamodelHelper {
             }
             TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
-            final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                    that.getTypeModel().getVarianceOverrides());
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, targs, gen, false);
+                TypeUtils.printTypeArguments(that, targs, gen, false,
+                        that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
@@ -193,9 +196,11 @@ public class MetamodelHelper {
                 } else {
                     gen.out("undefined,");
                 }
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                        that.getTypeModel().getVarianceOverrides());
             } else {
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                        that.getTypeModel().getVarianceOverrides());
                 if (anonClass != null) {
                     gen.out(",");
                     gen.qualify(that, anonClass);
@@ -206,7 +211,8 @@ public class MetamodelHelper {
                         gen.out(",undefined");
                     }
                     gen.out(",");
-                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), gen, false);
+                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), gen, false,
+                            ref.getType().getVarianceOverrides());
                 }
             }
             gen.out(")");
@@ -242,7 +248,8 @@ public class MetamodelHelper {
             } else {
                 gen.out(gen.getNames().name(d),",");
             }
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
+                    that.getTypeModel().getVarianceOverrides());
             gen.out(")");
         } else {
             gen.out(GenerateJsVisitor.getClAlias(), "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
@@ -261,7 +268,8 @@ public class MetamodelHelper {
             }
             if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                 gen.out(",a:");
-                TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), gen, false);
+                TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), gen, false,
+                        ltype.getVarianceOverrides());
             }
             gen.out("}})");
         }

@@ -258,7 +258,7 @@ public class TypeGenerator {
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
                             gen.out(gen.getNames().self(d), ".$$targs$$=");
-                            TypeUtils.printTypeArguments(that, targs, gen, false);
+                            TypeUtils.printTypeArguments(that, targs, gen, false, null);
                             gen.endLine(true);
                             first = false;
                         } else {
@@ -339,7 +339,7 @@ public class TypeGenerator {
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
                 extendedType.getType().getTypeArgumentList().getTypeModels();
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getType().getTypeArgumentList().getTypeModels()), gen, false);
+                        extendedType.getType().getTypeArgumentList().getTypeModels()), gen, false, null);
                 gen.out(",");
             }
             gen.out(gen.getNames().self(d), ")");
@@ -361,7 +361,7 @@ public class TypeGenerator {
                 gen.qualify(that, typeDecl);
                 gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
                 if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), gen, d.isToplevel());
+                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), gen, d.isToplevel(), null);
                     gen.out(",");
                 }
                 gen.out(gen.getNames().self(d), ")");

@@ -601,7 +601,8 @@ public class GenerateJsVisitor extends Visitor
         qualify(that,aliased);
         out(names.name(aliased), "(");
         if (!pt.getTypeArguments().isEmpty()) {
-            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this, true);
+            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this, true,
+                    pt.getVarianceOverrides());
             out(",");
         }
         out(names.self(d), ");}");
@@ -642,7 +643,8 @@ public class GenerateJsVisitor extends Visitor
         }
         Map<TypeParameter, ProducedType> invargs = ext.getType().getTypeModel().getTypeArguments();
         if (invargs != null && !invargs.isEmpty()) {
-            TypeUtils.printTypeArguments(that, invargs, this, true);
+            TypeUtils.printTypeArguments(that, invargs, this, true,
+                    ext.getType().getTypeModel().getVarianceOverrides());
             out(",");
         }
         out(names.self(d), ");}");
@@ -929,7 +931,7 @@ public class GenerateJsVisitor extends Visitor
             if (defineAsProperty(d)) {
                 out("=", names.name(c), "(");
                 if (!targs.isEmpty()) {
-                    TypeUtils.printTypeArguments(that, targs, this, false);
+                    TypeUtils.printTypeArguments(that, targs, this, false, null);
                 }
                 out(")");
             }
@@ -946,7 +948,7 @@ public class GenerateJsVisitor extends Visitor
             if (!oname.endsWith("()"))out("()");
             out("(");
             if (!targs.isEmpty()) {
-                TypeUtils.printTypeArguments(that, targs, this, false);
+                TypeUtils.printTypeArguments(that, targs, this, false, null);
             }
             out(");", objvar, ".$crtmm$=", names.getter(d), ".$crtmm$;}");
             endLine();
@@ -2102,7 +2104,7 @@ public class GenerateJsVisitor extends Visitor
                                     out("[/*VALUE Callable params", moval.getClass().getName(), "*/],");
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
-                                        GenerateJsVisitor.this, false);
+                                        GenerateJsVisitor.this, false, expr.getTypeModel().getVarianceOverrides());
                             }
                             boxUnboxEnd(boxType);
                         }
@@ -2475,7 +2477,7 @@ public class GenerateJsVisitor extends Visitor
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
-                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
+                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false, null);
                         }
                         out(")");
                     }
@@ -2763,7 +2765,8 @@ public class GenerateJsVisitor extends Visitor
 
    @Override public void visit(final Tree.EntryOp that) {
        out(clAlias, "Entry(");
-       Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(), this);
+       Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(),
+               that.getTypeModel().getVarianceOverrides(), this);
    }
 
    @Override public void visit(final Tree.RangeOp that) {
@@ -2838,19 +2841,22 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.UnionOp that) {
         Operators.genericBinaryOp(that, ".union(",
-                TypeUtils.mapTypeArgument(that, "union", "Element", "Other"), this);
+                TypeUtils.mapTypeArgument(that, "union", "Element", "Other"),
+                that.getTypeModel().getVarianceOverrides(), this);
     }
 
     @Override
     public void visit(final Tree.IntersectionOp that) {
         Operators.genericBinaryOp(that, ".intersection(",
-                TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"), this);
+                TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"),
+                that.getTypeModel().getVarianceOverrides(), this);
     }
 
     @Override
     public void visit(final Tree.ComplementOp that) {
         Operators.genericBinaryOp(that, ".complement(",
-                TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"), this);
+                TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"),
+                that.getTypeModel().getVarianceOverrides(), this);
     }
 
    @Override public void visit(final Tree.Exists that) {

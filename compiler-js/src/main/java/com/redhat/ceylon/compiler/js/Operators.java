@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -30,7 +31,8 @@ public class Operators {
     }
 
     static void genericBinaryOp(final Tree.BinaryOperatorExpression exp, final String op,
-            final Map<TypeParameter, ProducedType> targs, final GenerateJsVisitor gen) {
+            final Map<TypeParameter, ProducedType> targs, final Map<TypeParameter, SiteVariance> overrides,
+            final GenerateJsVisitor gen) {
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
             gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm())));
         } else {
@@ -44,7 +46,7 @@ public class Operators {
         }
         if (targs != null) {
             gen.out(",");
-            TypeUtils.printTypeArguments(exp, targs, gen, false);
+            TypeUtils.printTypeArguments(exp, targs, gen, false, overrides);
         }
         gen.out(")");
     }

@@ -88,7 +88,8 @@ public class BmeGenerator {
         final String tmpargs = gen.getNames().createTempVariable();
         gen.out("function(){var ", tmpargs, "=[].slice.call(arguments,0);",
                 tmpargs, ".push(");
-        TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true);
+        TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true,
+                expr.getTypeModel().getVarianceOverrides());
         gen.out(");return ", member, ".apply(", who==null?"null":who, ",", tmpargs, ");}");
     }
 

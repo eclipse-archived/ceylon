@@ -48,7 +48,7 @@ public class SequenceGenerator {
         if (seqarg == null) {
             gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},undefined,");
         }
-        TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false);
+        TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false, seqType.getVarianceOverrides());
         gen.out(")");
     }
 
