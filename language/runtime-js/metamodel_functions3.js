@@ -364,17 +364,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
       if (mm && mm.d && mm.d[mm.d.length-2]==='$c') {
         if (noInherit && mm.$cont!==coi.tipo)continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getClasses))continue;
-        if (typeof(mm.an)==='function')mm.an=mm.an();
-        var a2=getAnnotationsForBitmask(mm.pa);
-        if (a2) {
-          mm.pa=0;
-          if (mm.an) {
-            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
-          } else {
-            mm.an=a2;
-          }
-        }
-        var anns=mm.an;
+        var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getClasses,'',1)) {
           mems.push(AppliedMemberClass(mem, {Container$MemberClass:_tipo,Type$MemberClass:{t:mem}, Arguments$MemberClass:$$$mptypes.Arguments$getClasses}));
         }
@@ -403,17 +393,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
       if (mm && mm.d && mm.d[mm.d.length-2]==='$i') {
         if (noInherit && mm.$cont!==coi.tipo)continue;
         if (!extendsType({t:mem},$$$mptypes.Type$getInterfaces))continue;
-        if (typeof(mm.an)==='function')mm.an=mm.an();
-        var a2=getAnnotationsForBitmask(mm.pa);
-        if (a2) {
-          mm.pa=0;
-          if (mm.an) {
-            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
-          } else {
-            mm.an=a2;
-          }
-        }
-        var anns=mm.an;
+        var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats)) {
           mems.push(AppliedMemberInterface(mem, {Container$MemberInterface:_tipo,Type$MemberInterface:{t:mem}}));
         }
@@ -471,17 +451,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType(mm.$t,$$$mptypes.Get$getAttributes))continue;
         var setter=_tipo.$$.prototype[m].set && extendsType($$$mptypes.Set$getAttributes,mm.$t);
         if ($$$mptypes.Set$getAttributes.t!==Nothing && !setter)continue;
-        if (typeof(mm.an)==='function')mm.an=mm.an();
-        var a2=getAnnotationsForBitmask(mm.pa);
-        if (a2) {
-          mm.pa=0;
-          if (mm.an) {
-            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
-          } else {
-            mm.an=a2;
-          }
-        }
-        var anns=mm.an;
+        var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats)) {
           var atname=mm.d[mm.d.length-1];
           if (atname.indexOf('$')>0)atname=atname.substring(0,atname.indexOf('$'));
@@ -538,17 +508,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
       if (mm && mm.d && mm.d[mm.d.length-2]=='$m') {
         if (noInherit && mm.$cont!==coi.tipo)continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
-        if (typeof(mm.an)==='function')mm.an=mm.an();
-        var a2=getAnnotationsForBitmask(mm.pa);
-        if (a2) {
-          mm.pa=0;
-          if (mm.an) {
-            for (var i=0;i<a2.length;i++)mm.an.push(a2[i]);
-          } else {
-            mm.an=a2;
-          }
-        }
-        var anns=mm.an;
+        var anns=allann$(mm);
         if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
           var types=[].rt$({t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
@@ -573,4 +533,16 @@ function coicase$(coi){
     return rv.length===0?getEmpty():ArraySequence(rv,{Element$ArraySequence:{t:coi.tipo}});
   }
   return getEmpty();
+}
+function allann$(mm) {
+  if (typeof(mm.an)==='function')mm.an=mm.an();
+  var a=getAnnotationsForBitmask(mm.pa);
+  if (a) {
+    if (mm.an) {
+      for (var i=0;i<mm.an.length;i++)a.push(mm.an[i]);
+    }
+  } else {
+    a=mm.an;
+  }
+  return a||[];
 }

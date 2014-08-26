@@ -1,18 +1,8 @@
 //Add-on to AnnotatedDeclaration
 AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mptypes) {
   var mdl = getrtmm$$(this.tipo);
-  var ans = [];
-  var _ans = getAnnotationsForBitmask(mdl.pa);
-  if (typeof(mdl.an)==='function')mdl.an=mdl.an();
-  if (_ans) {
-    mdl.pa=0;
-    if (mdl.an) {
-      for (var i=0; i < _ans.length; i++)mdl.an.push(_ans[i]);
-    } else {
-      mdl.an=_ans;
-    }
-  }
-  _ans=mdl.an;
+  var _ans = allann$(mdl);
+  var ans=[];
   for (var i=0; i<_ans.length;i++) {
     if (is$(_ans[i], $$$mptypes.Annotation$annotations)) {
       ans.push(_ans[i]);

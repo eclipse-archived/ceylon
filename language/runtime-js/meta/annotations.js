@@ -9,18 +9,8 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
   else if (progelem._anns)mm={an:typeof(progelem._anns)==='function'?progelem._anns():progelem._anns};
   if (!mm)return null;
   //get the bitset annotations
-  var anns=getAnnotationsForBitmask(mm.pa);
-  if (typeof(mm.an)==='function')mm.an=mm.an();
+  var anns=allann$(mm);
   if (anns) {
-    mm.pa=0;
-    if (mm.an) {
-      for (var i=0;i<anns.length;i++)mm.an.push(anns[i]);
-    } else {
-      mm.an=anns;
-    }
-  }
-  if (mm.an) {
-    anns=mm.an;
     if (anntype.tipo.$$.T$all['ceylon.language::OptionalAnnotation'] !== undefined) {
       //find the first one and return it
       for (var i=0; i < anns.length; i++) {
