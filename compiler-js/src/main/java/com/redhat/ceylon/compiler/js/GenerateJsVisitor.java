@@ -835,7 +835,7 @@ public class GenerateJsVisitor extends Visitor
         out("if(", names.self(d), "===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
             out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(");
-            out("\"Cannot instantiate abstract class\"),'?','?')");
+            out("\"Cannot instantiate abstract class ", d.getQualifiedNameString(), "\"),'?','?')");
         } else {
             out(names.self(d), "=new ");
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
