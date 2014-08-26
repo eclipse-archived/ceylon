@@ -3,7 +3,7 @@ function getMember(name$3,$$$mptypes){
   if (m) {
     var mt = m['mt'];
     //There's a member alright, but check its type
-    if ((mt==='a'||mt==='g'||mt==='o'||mt==='s')&&extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
+    if ((mt==='a'||mt==='g'||mt==='o'||mt==='s')&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})) {
       return mt==='s'?OpenSetter(OpenValue$jsint(this, m)):OpenValue$jsint(this, m);
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
       return OpenFunction(this, m);
