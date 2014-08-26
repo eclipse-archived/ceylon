@@ -1142,7 +1142,7 @@ public class GenerateJsVisitor extends Visitor
                     // function parameter defaulted using "=>"
                     FunctionHelper.singleExprFunction(
                             ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                            expr.getExpression(), null, true, this);
+                            expr.getExpression(), null, true, true, this);
                 } else if (!isNaturalLiteral(expr.getExpression().getTerm())) {
                     expr.visit(this);
                 }
@@ -1179,7 +1179,7 @@ public class GenerateJsVisitor extends Visitor
                             // function parameter defaulted using "=>"
                             FunctionHelper.singleExprFunction(
                                     ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                                    expr.getExpression(), m, true, this);
+                                    expr.getExpression(), m, true, true, this);
                         } else {
                             expr.visit(this);
                         }
@@ -2179,7 +2179,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out(names.name(bmeDecl), "=");
                 FunctionHelper.singleExprFunction(paramExpr.getParameterLists(), expr,
-                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null, true, this);
+                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null, true, true, this);
                 out(";");
             }
         }

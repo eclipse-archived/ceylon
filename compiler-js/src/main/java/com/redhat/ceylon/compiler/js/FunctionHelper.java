@@ -30,11 +30,11 @@ public class FunctionHelper {
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
             }
-        }, gen);
+        }, true, gen);
     }
     static void singleExprFunction(final List<Tree.ParameterList> paramLists,
-                                    final Tree.Expression expr, final Scope scope,
-                                    final boolean initSelf, final GenerateJsVisitor gen) {
+                                    final Tree.Expression expr, final Scope scope, final boolean initSelf,
+                                    final boolean emitFunctionKeyword, final GenerateJsVisitor gen) {
         generateParameterLists(expr, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
@@ -47,14 +47,16 @@ public class FunctionHelper {
                 }
                 gen.out(";");
             }
-        }, gen);
+        }, emitFunctionKeyword, gen);
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
     static void generateParameterLists(final Node context, final List<Tree.ParameterList> plist, final Scope scope,
-                final ParameterListCallback callback, final GenerateJsVisitor gen) {
+                final ParameterListCallback callback, final boolean emitFunctionKeyword, final GenerateJsVisitor gen) {
         if (plist.size() == 1) {
-            gen.out("function");
+            if (emitFunctionKeyword) {
+                gen.out("function");
+            }
             Tree.ParameterList paramList = plist.get(0);
             paramList.visit(gen);
             gen.beginBlock();
@@ -68,7 +70,9 @@ public class FunctionHelper {
                 metas.add(mpl);
                 mpl.n=context;
                 if (metas.size()==1) {
-                    gen.out("function");
+                    if (emitFunctionKeyword) {
+                        gen.out("function");
+                    }
                 } else {
                     mpl.name=gen.getNames().createTempVariable();
                     mpl.params=paramList;
@@ -177,13 +181,13 @@ public class FunctionHelper {
                     block.visit(gen);
                 }
             }
-        }, gen);
+        }, true, gen);
     }
 
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope(), false, gen);
+            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope(), false, true, gen);
         } else {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), false, gen);
         }
@@ -200,7 +204,7 @@ public class FunctionHelper {
                 if (gen.opts.isOptimize() && m.isMember()) { return; }
                 gen.comment(that);
                 gen.initDefaultedParameters(that.getParameterLists().get(0), m);
-                gen.out("var ");
+                gen.out(m.isToplevel() ? GenerateJsVisitor.function : "var ");
             }
             else {
                 // prototype definition
@@ -208,9 +212,10 @@ public class FunctionHelper {
                 gen.initDefaultedParameters(that.getParameterLists().get(0), m);
                 gen.out(gen.getNames().self(outer), ".");
             }
-            gen.out(gen.getNames().name(m), "=");            
+            gen.out(gen.getNames().name(m));
+            if (!m.isToplevel())gen.out("=");
             singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), that.getDeclarationModel(), true, gen);
+                    that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
             gen.endLine(true);
             if (outer != null) {
                 gen.out(gen.getNames().self(outer), ".");
