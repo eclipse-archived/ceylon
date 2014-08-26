@@ -1722,13 +1722,12 @@ public class ExpressionVisitor extends Visitor {
                                         Parameter fp = fps.get(j);
                                         Tree.Parameter ap = aps.get(j);
                                         if (ap instanceof Tree.InitializerParameter) {
-                                            Tree.InitializerParameter pd = 
-                                                    (Tree.InitializerParameter) ap;
                                             Parameter parameter = ap.getParameterModel();
                                             if (parameter.getModel()==null) {
                                                 ProducedType t = 
                                                         pr.getTypedParameter(fp).getType();
                                                 Value model = new Value();
+                                                model.setUnit(unit);
                                                 model.setType(t);
                                                 model.setName(parameter.getName());
                                                 parameter.setModel(model);
