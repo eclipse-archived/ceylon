@@ -1,9 +1,15 @@
 //Addendum to model.declaration.ClassOrInterfaceDeclaration
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function(name$20,$$$mptypes,noInherit){
   var _m=undefined;
+  var raiz;
+  if (this.tipo.$$ && this.tipo.$$.prototype) {
+    raiz=this.tipo.$$.prototype;
+  } else {
+    raiz = this.tipo();
+  }
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
     var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
-    var _d = this.tipo.$$.prototype[propname];
+    var _d = raiz[propname];
     if (_d){
       if (noInherit) {
         var mm=getrtmm$$(_d);
@@ -15,23 +21,23 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
     var nom=name$20;
     if (['hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'call', 'arguments', 'caller', 'apply', 'bind', 'toFixed', 'valueOf', 'toPrecision', 'toExponential', "charAt", "strike", "fixed", "sub", "charCodeAt", "trimLeft", "toLocaleUpperCase", "toUpperCase", "fontsize", "search", "toLocaleLowerCase", "small", "big", "fontcolor", "blink", "trim", "bold", "match", "substr", "trimRight", "replace", "split", "sup", "link", "localeCompare", "valueOf", "substring", "toLowerCase", "italics", "anchor", "toLocaleString", "splice", "map", "forEach", "reverse", "join", "push", "shift", "pop", "sort", "unshift", "reduceRight", "reduce", "every", "filter", "length", "toString", "constructor", "prototype", "concat", "indexOf", "lastIndexOf", "slice", "get"].indexOf(nom)>=0)nom='$_'+nom;
-    var _d = this.tipo.$$.prototype[nom];
+    var _d = raiz[nom];
     if (_d===undefined) {
       //Let's just look for this thing everywhere
-      for (var $k in this.tipo.$$.prototype) {
+      for (var $k in raiz) {
         var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
-        if (!$k.startsWith("$prop$get") && this.tipo.$$.prototype[propname]===undefined && typeof(this.tipo.$$.prototype[$k])==='function') {
-          var lafun=this.tipo.$$.prototype[$k];
+        if (!$k.startsWith("$prop$get") && raiz[propname]===undefined && typeof(raiz[$k])==='function') {
+          var lafun=raiz[$k];
           var mm=getrtmm$$(lafun);
           var mod=mm&&get_model(mm);
           if (mod && mod.nm===nom) {
             _d=lafun; break;
           }
         }
-        var m$ = this.tipo.$$.prototype[propname] ? undefined: this.tipo.$$.prototype[$k];
+        var m$ = raiz[propname] ? undefined: raiz[$k];
         _d = typeof(m$)==='function' && m$.$$===undefined ? getrtmm$$(m$) : undefined;
         if (_d && _d.d && _d.d[_d.d.length-1]===nom){
-          _d = this.tipo.$$.prototype[$k];
+          _d = raiz[$k];
           break;
         }else _d=undefined;
       }
@@ -46,15 +52,15 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ClassOrInterfaceDeclaration$meta$declaration})) {
     var nom=name$20+'$'+this.name;
-    var _d = this.tipo.$$.prototype[nom];
+    var _d = raiz[nom];
     if (_d===undefined) {
       //Let's just look for this thing everywhere
-      for (var $k in this.tipo.$$.prototype) {
+      for (var $k in raiz) {
         var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
-        var m$ = this.tipo.$$.prototype[propname] ? undefined: this.tipo.$$.prototype[$k];
+        var m$ = raiz[propname] ? undefined: raiz[$k];
         _d = typeof(m$)==='function' && m$.$$ ? getrtmm$$(m$) : undefined;
         if (_d && _d.d && _d.d[_d.d.length-1]===nom){
-          _d = this.tipo.$$.prototype[$k];
+          _d = raiz[$k];
           break;
         }else _d=undefined;
       }
@@ -65,7 +71,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       while (!_d && pere) {
         var mm=getrtmm$$(pere.t);
         nom=mm&&mm.d?name$20+'$'+mm.d[mm.d.length-1]:undefined;
-        if(nom)_d=this.tipo.$$.prototype[nom];
+        if(nom)_d=raiz[nom];
         if (!_d)pere=mm['super'];
       }
     }
