@@ -176,6 +176,8 @@ class LazyExprTest4() extends LazyExprTest2() {
     assign s1 { assigned = s1; }
 }
 
+Integer test404 = issue404_1() + issue404_2();
+
 void testLazyExpressions() {
     value tst = LazyExprTest();
     tst.x = 1;
@@ -221,7 +223,11 @@ void testLazyExpressions() {
     check(tst.f1{i=>++x;}=="11:11.2", "=> named arg");
     check(tst.f1{i=>++x; f()=>(++x).string;}=="12:13", "=> named arg function");
     check(tst.f3{f(Integer i)=>"``i``-``++x``";}=="2-14", "=> named arg function with param");
+    check(test404 == 3, "Forward top-level method definitions (issue #404)");
 }
+
+Integer issue404_1() => 1;
+Integer issue404_2() { return 2; }
 
 shared void test() {
     helloWorld();
