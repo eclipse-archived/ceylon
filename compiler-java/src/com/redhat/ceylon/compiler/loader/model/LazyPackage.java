@@ -278,6 +278,7 @@ public class LazyPackage extends Package {
                     value.setUnit(iface.getUnit());
                     classpl.getParameters().add(klassParam);
                     argument.setParameter(klassParam);
+                    klass.addMember(value);
                 }
                 {
                     Parameter ctorParam = new Parameter();
@@ -295,6 +296,7 @@ public class LazyPackage extends Package {
                     value.setUnit(iface.getUnit());
                     ctorpl.getParameters().add(ctorParam);
                     term.setSourceParameter(ctorParam);
+                    ctor.addMember(value);
                     
                     AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
                     acp.setParameter(ctorParam);

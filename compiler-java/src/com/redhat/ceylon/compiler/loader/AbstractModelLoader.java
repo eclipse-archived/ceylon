@@ -2363,6 +2363,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setType(getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
+        decl.addMember(value);
     }
 
     private String getJavaAttributeName(String getterName) {
@@ -2817,6 +2818,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setDeclaration((Declaration) decl);
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
+            parameter.getDeclaration().getMembers().add(parameter.getModel());
             
             parameterIndex++;
         }
@@ -2849,6 +2851,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 v.setScope(method);
                 p.setModel(v);
                 pl.getParameters().add(p);
+                method.addMember(v);
             }
             method.addParameterList(pl);
         } else {
