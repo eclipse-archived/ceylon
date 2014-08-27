@@ -188,7 +188,10 @@ public class JsCompiler {
     public void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
-        if (exitCode != 0)return;
+        if (exitCode != 0) {
+            errors.addAll(unitErrors);
+            return;
+        }
         if (errCount == 0 || !stopOnErrors) {
             if (opts.isVerbose()) {
                 logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
@@ -305,7 +308,7 @@ public class JsCompiler {
                                 }
                                 if (stopOnError()) {
                                     logger.error("Errors found. Compilation stopped.");
-                                    break;
+                                    return false;
                                 }
                                 getOutput(pu).addSource(getFullPath(pu));
                                 lastUnit = pu;
@@ -465,7 +468,7 @@ public class JsCompiler {
 
     public void printErrorsAndCount(Writer out) throws IOException {
         int count = printErrors(out);
-        out.write(String.format("%d errors.%n", count));
+        out.write(String.format("%d %s.%n", count, count==1?"error":"errors"));
     }
 
     /** Writes the beginning of the wrapper function for a JS module. */

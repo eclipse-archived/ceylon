@@ -339,8 +339,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             if (jsc.getExitCode() != 0) {
                 if(throwOnError)
                     throw new RuntimeException("Compiler exited with non-zero exit code: "+jsc.getExitCode());
-                else
+                else {
+                    jsc.printErrorsAndCount(writer);
                     System.exit(jsc.getExitCode());
+                }
             }
             int count = jsc.printErrors(writer);
             throw new CompilerErrorException(String.format("%d errors.", count));
