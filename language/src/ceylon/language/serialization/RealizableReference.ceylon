@@ -1,10 +1,10 @@
 "A reference with sufficient state to realize an instance."
 shared sealed
-interface StatefulReference<Instance> satisfies Reference<Instance> {
+interface RealizableReference<Instance> satisfies Reference<Instance> {
     
-    "Get the flattened state of the instance."
+    /*"Get the flattened state of the instance."
     shared formal
-    /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor);
+    /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor);*/
     
     "Get the instance. During deserialization, could force 
      reconstruction."

@@ -10,12 +10,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 import ceylon.language.AssertionError;
 import ceylon.language.meta.model.ClassModel;
-import ceylon.language.serialization.StatefulReference;
-import ceylon.language.serialization.StatelessReference;
+import ceylon.language.serialization.DeserializableReference;
+import ceylon.language.serialization.RealizableReference;
 import ceylon.language.serialization.Deconstructed;
 
-class StatelessReferenceImpl<Instance> 
-        implements StatelessReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
+class DeserializableReferenceImpl<Instance> 
+        implements DeserializableReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
     
     private final TypeDescriptor reified$Instance;
     private final DeserializationContextImpl context;
@@ -23,7 +23,7 @@ class StatelessReferenceImpl<Instance>
     private final Instance instance;
     private final ClassModel classModel;
     
-    StatelessReferenceImpl(TypeDescriptor reified$Instance, 
+    DeserializableReferenceImpl(TypeDescriptor reified$Instance, 
             DeserializationContextImpl context, 
             Object id, 
             @SuppressWarnings("rawtypes") ClassModel classModel) {
@@ -46,7 +46,7 @@ class StatelessReferenceImpl<Instance>
             Constructor<Instance> ctor = clazz.getDeclaredConstructor($Serialization$.class);
             ctor.setAccessible(true);
             instance = ctor.newInstance(new Object[]{null});// Pass a null $Serialization$
-            context.put(id, (StatelessReferenceImpl)this);
+            context.put(id, (DeserializableReferenceImpl)this);
         } catch (NoSuchMethodException e) {
             throw new AssertionError("class is not serializable " + classModel);
         } catch (InvocationTargetException e) {
@@ -76,8 +76,8 @@ class StatelessReferenceImpl<Instance>
      */
     @SuppressWarnings("rawtypes")
     @Override
-    public StatefulReference<Instance> deserialize(Deconstructed deconstructed) {
-        DeserializingStatefulReference result = new DeserializingStatefulReference<Instance>(reified$Instance, context, id, classModel, instance, deconstructed);
+    public RealizableReference<Instance> deserialize(Deconstructed deconstructed) {
+        RealizableReferenceImpl result = new RealizableReferenceImpl<Instance>(reified$Instance, context, id, classModel, instance, deconstructed);
         context.update(id, result);
         return result;
     }
@@ -88,7 +88,7 @@ class StatelessReferenceImpl<Instance>
 
     @Override
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(StatelessReferenceImpl.class, reified$Instance);
+        return TypeDescriptor.klass(DeserializableReferenceImpl.class, reified$Instance);
     }
 
     @Override

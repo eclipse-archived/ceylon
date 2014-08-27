@@ -11,6 +11,7 @@ import ceylon.language.impl.BaseIterable;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.DeserializationContext;
 import ceylon.language.serialization.Reference;
+import ceylon.language.serialization.RealizableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -52,7 +53,7 @@ public class DeserializationContextImpl
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);
         }
-        return new StatelessReferenceImpl<Instance>(reified$Instance, this, id, classModel);
+        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel);
     }
 
     boolean containsId(Object id) {
@@ -62,11 +63,11 @@ public class DeserializationContextImpl
     /**
      * Registers a reference to against its id.
      */
-    void put(Object id, StatelessReferenceImpl<Object> reference) {
+    void put(Object id, DeserializableReferenceImpl<Object> reference) {
         idToReference.put(id, reference);
     }
     
-    void update(Object id, DeserializingStatefulReference<Object> reference) {
+    void update(Object id, RealizableReference<Object> reference) {
         idToReference.put(id, reference);
     }
 

@@ -7,7 +7,7 @@ import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.serialization.SerializationContext;
-import ceylon.language.serialization.StatefulReference;
+import ceylon.language.serialization.SerializableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -22,13 +22,13 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @SatisfiedTypes("ceylon.language.serialization::SerializationContext")
 public class SerializationContextImpl 
-        extends BaseIterable<StatefulReference<Object>, Object> 
+        extends BaseIterable<SerializableReference<Object>, Object> 
         implements SerializationContext, ReifiedType {
     
     private final IdentityHashMap<Object, Object> instanceToId = new IdentityHashMap<>();
     
     public SerializationContextImpl() {
-        super(TypeDescriptor.klass(SerializingStatefulReference.class, ceylon.language.Object.$TypeDescriptor$), Null.$TypeDescriptor$);
+        super(TypeDescriptor.klass(SerializableReferenceImpl.class, ceylon.language.Object.$TypeDescriptor$), Null.$TypeDescriptor$);
     }
     
     @Override
@@ -52,19 +52,19 @@ public class SerializationContextImpl
          identifier"
      */
     @Override
-    public <Instance> StatefulReference<Instance> reference(TypeDescriptor reified$Instance, Object id, Instance instance) {
+    public <Instance> SerializableReference<Instance> reference(TypeDescriptor reified$Instance, Object id, Instance instance) {
         Object otherInstance = instanceToId.put(instance, id);
         if (otherInstance != null
                 && instance != null
                 && otherInstance != instance) {
             throw new ceylon.language.AssertionError("A different instance has already been registered with id "+id+": \"" + otherInstance +"\", \""+ instance+"\"");
         }
-        return new SerializingStatefulReference(reified$Instance, this, id, instance);
+        return new SerializableReferenceImpl(reified$Instance, this, id, instance);
     }
 
     @Override
-    public Iterator<? extends StatefulReference<Object>> iterator() {
-        return new Iterator<StatefulReference<Object>>() {
+    public Iterator<? extends SerializableReference<Object>> iterator() {
+        return new Iterator<SerializableReference<Object>>() {
             private final java.util.Iterator<Object> iter = instanceToId.keySet().iterator();
             @Override
             public Object next() {

@@ -6,7 +6,7 @@ import ceylon.language.meta.model {
  [[identifer|id]]."
 shared sealed
 interface Reference<Instance>
-        of StatelessReference<Instance> | StatefulReference<Instance> {
+        of SerializableReference<Instance> | RealizableReference<Instance> | DeserializableReference<Instance> {
     
     "The unique identifier of the instance."
     shared formal Object id;

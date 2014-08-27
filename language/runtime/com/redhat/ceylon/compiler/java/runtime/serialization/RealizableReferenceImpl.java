@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import ceylon.language.AssertionError;
+import ceylon.language.Callable;
 import ceylon.language.Finished;
 import ceylon.language.Tuple;
 import ceylon.language.meta.type_;
@@ -11,72 +12,17 @@ import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.Reference;
-import ceylon.language.serialization.StatefulReference;
-import ceylon.language.serialization.StatelessReference;
+import ceylon.language.serialization.DeserializableReference;
+import ceylon.language.serialization.RealizableReference;
 
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-class SerializingStatefulReference<Instance> 
-        implements StatefulReference<Instance>, ReifiedType {
-    private final TypeDescriptor reified$Instance;
-    private final Object id;
-    private final Instance instance;
-    
-    SerializingStatefulReference(TypeDescriptor reified$Instance, SerializationContextImpl context, Object id, Instance instance) {
-        this.reified$Instance = reified$Instance;
-        this.id = id;
-        this.instance = instance;
-    }
-    
-    public String toString() {
-        return id +"=>" + instance;
-    }
-    
-    @Override
-    public /*Deconstructed<Instance>*/ Object serialize(Deconstructor deconstructor) {
-        ((Serializable)this.instance).$serialize$(deconstructor);
-        return null;
-    }
-
-    @Override
-    public Instance instance() {
-        return instance;
-    }
-    
-    /** 
-     * Construct the instance (by calling its constructor) and set 
-     * its value-typed attributes. 
-     * Does not set the reference-typed attributes
-     */
-    @Override
-    public Object reconstruct() {
-        // XXX no op because we're for serialization and this only makes sense for deserialization?
-        return null;
-    }
-    
-
-    @Override
-    public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(SerializingStatefulReference.class, reified$Instance);
-    }
-
-    @Override
-    public Object getId() {
-        return id;
-    }
-    
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public ClassModel getClazz() {
-        return type_.type(reified$Instance, instance);
-    }
-}
 
 
-class DeserializingStatefulReference<Instance> 
-        implements StatefulReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
+
+class RealizableReferenceImpl<Instance> 
+        implements RealizableReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
     
     private final TypeDescriptor reified$Instance;
     private final DeserializationContextImpl context;
@@ -105,7 +51,7 @@ class DeserializingStatefulReference<Instance>
      * @param clazz
      * @param deconstructed
      */
-    DeserializingStatefulReference(TypeDescriptor reified$Instance, 
+    RealizableReferenceImpl(TypeDescriptor reified$Instance, 
             DeserializationContextImpl context, Object id, 
             ClassModel classModel,
             Instance instance, 
@@ -131,12 +77,12 @@ class DeserializingStatefulReference<Instance>
         throw new AssertionError("Illegal state");
     }
     
-    
+    /*
     @Override
-    public /*Deconstructed<Instance>*/ Object serialize(Deconstructor deconstructor) {
+    public / *Deconstructed<Instance>* / Object serialize(Deconstructor deconstructor) {
         // TODO What does this mean in the context of derserialization?
         throw new AssertionError("WTF?");
-    }
+    }*/
     
     @Override
     public Instance instance() {
@@ -157,20 +103,20 @@ class DeserializingStatefulReference<Instance>
     @Override
     public Object reconstruct() {
         if (state != State.INITIALIZED) {
-            LinkedList<DeserializingStatefulReference<?>> queue = new LinkedList<DeserializingStatefulReference<?>>();
+            LinkedList<RealizableReferenceImpl<?>> queue = new LinkedList<RealizableReferenceImpl<?>>();
             queue.addLast(this);
             while (!queue.isEmpty()) {
-                DeserializingStatefulReference<?> r = queue.removeFirst();
+                RealizableReferenceImpl<?> r = queue.removeFirst();
                 if (r.state == State.UNINITIALIZED) {
                     ((Serializable)r.instance).$deserialize$(r.deconstructed);
                     r.state = State.UNINITIALIZED_REFS;
                 }
                 if (r.state == State.UNINITIALIZED_REFS) {
                     for (Reference<Object> referred : r.references()) {
-                        if (referred instanceof StatelessReference) {
+                        if (referred instanceof DeserializableReference) {
                             throw new AssertionError("reference " + referred.getId() + " has not been deserialized");
                         }
-                        DeserializingStatefulReference<?> statefulReferred = (DeserializingStatefulReference<?>)referred;
+                        RealizableReferenceImpl<?> statefulReferred = (RealizableReferenceImpl<?>)referred;
                         if (statefulReferred.state != State.INITIALIZED) {
                             queue.addLast(statefulReferred);
                         }
@@ -266,7 +212,7 @@ class DeserializingStatefulReference<Instance>
     
     @Override
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(DeserializingStatefulReference.class, reified$Instance);
+        return TypeDescriptor.klass(RealizableReferenceImpl.class, reified$Instance);
     }
 
     @Override
