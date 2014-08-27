@@ -5,7 +5,12 @@
     }
   } else if ((typeof console !== "undefined") && (console.log !== undefined)) {
     return function(line) {
-        console.log(line?line.valueOf():'');
+      if (line==getOperatingSystem().newline) {
+        console.log(ex$.p$w$stdout||'');
+        ex$.p$w$stdout='';
+      } else {
+        ex$.p$w$stdout=(ex$.p$w$stdout||'')+line;
+      }
     }
   }
   return function(){};
