@@ -267,7 +267,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = null;
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("ex$.$CCMM$=") || line.startsWith("exports.$CCMM$=")
+                if ((line.startsWith("ex$.$CCMM$=")
                         || line.startsWith("var $CCMM$=")
                         || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
