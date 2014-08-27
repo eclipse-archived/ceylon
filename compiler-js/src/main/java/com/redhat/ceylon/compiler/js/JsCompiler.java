@@ -240,7 +240,7 @@ public class JsCompiler {
             
             //First generate the metamodel
             for (PhasedUnit pu: phasedUnits) {
-                File path = new File(pu.getUnitFile().getPath());
+                File path = getFullPath(pu);
                 if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
@@ -299,7 +299,7 @@ public class JsCompiler {
                     } else {
                         //Find the corresponding compilation unit
                         for (PhasedUnit pu : units) {
-                            File unitFile = new File(pu.getUnitFile().getPath());
+                            File unitFile = getFullPath(pu);
                             if (FileUtil.sameFile(path, unitFile)) {
                                 compileUnit(pu, names);
                                 generatedCode = true;
@@ -310,7 +310,7 @@ public class JsCompiler {
                                     logger.error("Errors found. Compilation stopped.");
                                     return false;
                                 }
-                                getOutput(pu).addSource(getFullPath(pu));
+                                getOutput(pu).addSource(unitFile);
                                 lastUnit = pu;
                             }
                         }
