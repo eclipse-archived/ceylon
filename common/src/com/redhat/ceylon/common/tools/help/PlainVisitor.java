@@ -85,6 +85,8 @@ public class PlainVisitor implements Visitor {
         out.setIndentRestLines(indent + invocation.length() + 1);
         if (!hasSubTools || firstSynopsis) {
             out.append(invocation);
+        } else {
+            out.append("*");
         }
         skipInvocation = hasSubTools && !firstSynopsis;
         hadFirstArgument = false;
@@ -94,6 +96,9 @@ public class PlainVisitor implements Visitor {
     @Override
     public void endSynopsis(Synopsis synopsis) {
         out.newline();
+        if (hasSubTools) {
+            out.newline();
+        }
     }
 
     @Override
@@ -133,7 +138,9 @@ public class PlainVisitor implements Visitor {
                 out.append(CeylonHelpToolMessages.msg("synopsis.subtool.list"));
                 out.newline();
                 out.newline();
+                out.append("*");
             }
+            out.append(" ");
         } else {
             out.append(" ");
         }
