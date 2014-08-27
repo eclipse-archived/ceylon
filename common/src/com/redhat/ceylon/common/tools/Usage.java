@@ -296,7 +296,7 @@ class Usage {
         // rootTool's toolName, which we need when printing option suggestions
         CeylonHelpTool r = new CeylonHelpTool();
         r.setToolLoader(rootTool.getPluginLoader());
-        r.setOptions(option);
+        r.setOptions(option != null ? option : "");
         r.run();
     }
     
