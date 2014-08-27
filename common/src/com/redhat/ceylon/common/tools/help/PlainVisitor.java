@@ -43,6 +43,9 @@ public class PlainVisitor implements Visitor {
     boolean hadFirstArgument = false;
     private boolean hadOptions;
     private boolean suboptions;
+    private boolean hasSubTools;
+    private boolean skipInvocation;
+    private boolean firstSynopsis;
 
     public PlainVisitor(WordWrap wrap) {
         super();
@@ -57,6 +60,9 @@ public class PlainVisitor implements Visitor {
     @Override
     public void start(Doc doc) {
         ceylonName = doc.getInvocation();
+        // Make sure this is initialized even when startSynopses() never gets called
+        hasSubTools = doc.getSynopses().getSynopses().size() > 1;
+        firstSynopsis = true;
     }
 
     @Override
@@ -77,7 +83,10 @@ public class PlainVisitor implements Visitor {
         int indent = out.getIndentFirstLine();
         String invocation = synopsis.getInvocation();
         out.setIndentRestLines(indent + invocation.length() + 1);
-        out.append(invocation);
+        if (!hasSubTools || firstSynopsis) {
+            out.append(invocation);
+        }
+        skipInvocation = hasSubTools && !firstSynopsis;
         hadFirstArgument = false;
         hadOptions = false;
     }
@@ -89,6 +98,9 @@ public class PlainVisitor implements Visitor {
 
     @Override
     public void visitSynopsisArgument(ArgumentModel<?> argument) {
+        if (skipInvocation) {
+            return;
+        }
         if (hadOptions && !hadFirstArgument) {
             out.append(" [--]");
             hadFirstArgument = true;
@@ -111,11 +123,30 @@ public class PlainVisitor implements Visitor {
 
     @Override
     public void visitSynopsisSubtool(SubtoolVisitor.ToolModelAndSubtoolModel option) {
-        out.append(" " + option.getModel().getName());
+        String name = option.getModel().getName();
+        if (hasSubTools) {
+            if (firstSynopsis) {
+                out.append(" ");
+                out.append(CeylonHelpToolMessages.msg("synopsis.subtool.commands"));
+                out.newline();
+                out.newline();
+                out.append(CeylonHelpToolMessages.msg("synopsis.subtool.list"));
+                out.newline();
+                out.newline();
+            }
+        } else {
+            out.append(" ");
+        }
+        out.append(name);
+        firstSynopsis = false;
+        skipInvocation = false;
     }
     
     @Override
     public void visitSynopsisOption(OptionModel<?> option) {
+        if (skipInvocation) {
+            return;
+        }
         hadOptions = true;
         out.append(" ");
         final ArgumentModel<?> argument = option.getArgument();
@@ -149,6 +180,8 @@ public class PlainVisitor implements Visitor {
     public void startSynopses(SynopsesSection synopsesSection) {
         out.append(synopsesSection.getTitle().toUpperCase()).newline().newline();
         out.setIndent(8);
+        hasSubTools = synopsesSection.getSynopses().size() > 1;
+        firstSynopsis = true;
     }
     
     @Override
