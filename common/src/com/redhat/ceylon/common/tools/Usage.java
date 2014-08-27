@@ -20,7 +20,6 @@
 package com.redhat.ceylon.common.tools;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -165,8 +164,6 @@ class Usage {
         return ld <= Math.min(given.length() / 2, 4);
     }
     
-    private static final int LD_SUGGEST = 4;
-
     private final CeylonTool rootTool;
     private final String toolName;
     private final Exception t;
