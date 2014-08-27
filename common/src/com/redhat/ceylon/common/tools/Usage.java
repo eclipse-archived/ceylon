@@ -33,13 +33,13 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValu
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionMultiplicityException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionWithoutArgumentException;
-import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
+import com.redhat.ceylon.common.tools.help.CeylonHelpTool;
 
 /**
  * Responsible for generating usage messages, trying hard to be helpful
@@ -275,22 +275,16 @@ class Usage {
         if (!validToolName()) {
             return;
         }
-        String name = toolName;
-        while (toolModel != null) {
-            name = toolModel.getName();
-            toolModel = toolModel.getParentTool();
-        }
         // Call the help tool to generate the usage
         out.newline();
         out.append(CeylonToolMessages.msg("usage")).newline();
         out.flush();
         // Can't call rootTool.bootstrap() because that would replace the 
         // rootTool's toolName, which we need when printing option suggestions
-        CeylonTool r = new CeylonTool();
+        CeylonHelpTool r = new CeylonHelpTool();
         r.setToolLoader(rootTool.getPluginLoader());
-        r.setCommand("help");
-        
-        r.setCommandArguments(Arrays.asList("--synopsis", name));
+        r.setSynopsis(true);
+        r.setTool(toolModel);
         r.run();
         out.newline();
     }
@@ -303,12 +297,9 @@ class Usage {
         
         // Can't call rootTool.bootstrap() because that would replace the 
         // rootTool's toolName, which we need when printing option suggestions
-        CeylonTool r = new CeylonTool();
+        CeylonHelpTool r = new CeylonHelpTool();
         r.setToolLoader(rootTool.getPluginLoader());
-        r.setCommand("help");
-        r.setCommandArguments(Arrays.asList(
-                option == null ? "--options" :"--options=" + option, 
-                toolName));
+        r.setOptions(option);
         r.run();
     }
     
