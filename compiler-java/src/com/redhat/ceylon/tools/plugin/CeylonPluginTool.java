@@ -23,6 +23,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -96,7 +97,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         this.mode = mode;
     }
 
-
+    @Option
     @Description("Force installation even if a previous version exists")
     public void setForce(boolean force) {
         this.force = force;
