@@ -196,9 +196,9 @@ public class FileUtil {
      * The OS-specific directory where global application data can be stored.
      * As given by the {@code ceylon.config.dir} system property or the default
      * OS-dependent directory if the property doesn't exist. (/etc/ceylon on
-     * Unix-like systems and %ALLUSERSPROFILE%/ceylon on WIndows)
+     * Unix-like systems and %ALLUSERSPROFILE%/ceylon on Windows)
      */
-    public static File getSystemConfigDir() throws IOException {
+    public static File getSystemConfigDir() {
         File configDir = null;
         String ceylonConfigDir = System.getProperty(Constants.PROP_CEYLON_CONFIG_DIR);
         if (ceylonConfigDir != null) {
