@@ -6,6 +6,20 @@ interface Issue150 {
 class C150(String arg(Integer i)) satisfies Issue150 {
     f = arg;
 }
+
+interface Root409<out T> {}
+interface MutableRoot409_1<T>
+    satisfies Root409Mutator<T> &
+              Root409<T> {}
+interface MutableRoot409_2<T>
+    satisfies Root409<T> &
+              Root409Mutator<T> {}
+interface Root409Mutator<in T>
+  satisfies Root409<Anything> {}
+
+class Issue409_1<T>(T t) satisfies MutableRoot409_1<T> {}
+class Issue409_2<T>(T t) satisfies MutableRoot409_2<T> {}
+
 void testIssues() {
     check(C150((Integer i) => "i=``i``").f()=="i=100", "issue 150");
     check(Issue231_1("Hola").string == "Hola", "Issue 231 [1]");
@@ -34,6 +48,10 @@ void testIssues() {
     check(e3 is Integer, "number literal should be Integer");
     check(!e3 is Float, "number literal shouldn't be Float");
     check(e3 is Number<Integer>, "number literal should be Number<Integer>");
+    Object i409_1 = Issue409_1("1");
+    Object i409_2 = Issue409_2("2");
+    check(i409_1 is Root409<String>, "Issue 409.1");
+    check(i409_2 is Root409<String>, "Issue 409.2");
 }
 
 class Issue231_1(shared actual String string) {}
