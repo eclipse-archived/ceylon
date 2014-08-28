@@ -24,6 +24,7 @@ rem REPLACE THE CODE BELOW THIS LINE WITH YOUR OWN CODE
 
 rem Just showing some variables that the script can use
 echo Ceylon home: %CEYLON_HOME%
+echo Ceylon executable: %CEYLON%
 echo Ceylon version major: %CEYLON_VERSION_MAJOR%
 echo Ceylon version minor: %CEYLON_VERSION_MINOR%
 echo Ceylon version release: %CEYLON_VERSION_RELEASE%
