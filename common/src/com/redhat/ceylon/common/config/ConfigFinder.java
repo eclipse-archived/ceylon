@@ -11,6 +11,9 @@ import com.redhat.ceylon.common.FileUtil;
  * This class' main function is to locate configuration files, parse them
  * using ConfigParser and return CeylonConfig objects containing the
  * information contained in those files.
+ * A "transformer" can be specified that will allow a configuration to
+ * be adjusted in any way just after it was read and before it will be
+ * returned, merged or otherwise used.
  * 
  * Several static helper functions exist that implement several of Ceylon's
  * configuration lookup strategies.
@@ -20,15 +23,41 @@ import com.redhat.ceylon.common.FileUtil;
 public class ConfigFinder {
     private String configName;
     private String systemPropertyOverride;
+    private ConfigTransformer transformer;
+    
+    public static interface ConfigTransformer {
+        CeylonConfig transform(File file, CeylonConfig config);
+    }
+    
+    private static final ConfigTransformer NOOP = new ConfigTransformer() {
+        @Override
+        public CeylonConfig transform(File file, CeylonConfig config) {
+            return config;
+        }
+    };
     
     /**
      * @param configName The name of the configuration file
      * @param systemPropertyOverride The name of the system property that
      * can be used to override the location of the configuration file
+     * (can be 'null' if this feature is not required)
      */
     public ConfigFinder(String configName, String systemPropertyOverride) {
+        this(configName, systemPropertyOverride, NOOP);
+    }
+    
+    /**
+     * @param configName The name of the configuration file
+     * @param systemPropertyOverride The name of the system property that
+     * can be used to override the location of the configuration file
+     * (can be 'null' if this feature is not required)
+     * @param transformer The transformer to use just after reading
+     * a configuration
+     */
+    public ConfigFinder(String configName, String systemPropertyOverride, ConfigTransformer transformer) {
         this.configName = configName;
         this.systemPropertyOverride = systemPropertyOverride;
+        this.transformer = transformer;
     }
     
     /**
@@ -45,19 +74,19 @@ public class ConfigFinder {
         CeylonConfig config = new CeylonConfig();
         try {
             CeylonConfig system = loadSystemConfig();
-            config.merge(system);
+            merge(config, system);
         } catch (IOException e) {
             // Just ignore any errors
         }
         try {
             CeylonConfig user = loadUserConfig();
-            config.merge(user);
+            merge(config, user);
         } catch (IOException e) {
             // Just ignore any errors
         }
         try {
             CeylonConfig local = loadLocalConfig(localDir);
-            config.merge(local);
+            merge(config, local);
         } catch (IOException e) {
             // Just ignore any errors
         }
@@ -78,7 +107,7 @@ public class ConfigFinder {
         try {
             File configFile = findLocalConfig(localDir);
             if (configFile != null) {
-                CeylonConfig localConfig = new ConfigParser(configFile).parse(true);
+                CeylonConfig localConfig = loadConfigFromFile(configFile);
                 return localConfig;
             }
         } catch (IOException e) {
@@ -124,7 +153,7 @@ public class ConfigFinder {
      */
     public CeylonConfig loadSystemConfig() throws IOException {
         File configFile = findSystemConfig();
-        return (new ConfigParser(configFile)).parse(true);
+        return loadConfigFromFile(configFile);
     }
     
     /**
@@ -157,7 +186,7 @@ public class ConfigFinder {
      */
     public CeylonConfig loadUserConfig() throws IOException {
         File configFile = findUserConfig();
-        return (new ConfigParser(configFile)).parse(true);
+        return loadConfigFromFile(configFile);
     }
     
     /**
@@ -205,8 +234,8 @@ public class ConfigFinder {
         File configFile = findLocalConfig(dir);
         if (configFile != null) {
             CeylonConfig parentConfig = loadLocalConfig(dir.getCanonicalFile().getParentFile());
-            CeylonConfig localConfig = new ConfigParser(configFile).parse(true);
-            return parentConfig.merge(localConfig);
+            CeylonConfig localConfig = loadConfigFromFile(configFile);
+            return merge(parentConfig, localConfig);
         } else {
             // No config file, just return an empty CeylonConfig
             return new CeylonConfig();
@@ -223,12 +252,12 @@ public class ConfigFinder {
      * are detected
      */
     public CeylonConfig loadConfigFromFile(File configFile) throws IOException {
-        return (new ConfigParser(configFile)).parse(true);
+        return transformer.transform(configFile, (new ConfigParser(configFile)).parse(true));
     }
     
     /**
      * Returns the configuration contained in the given file but NO variable
-     * substitution will be performed
+     * substitution or other transformations will be performed
      * @param configFile The file to read
      * @return CeylonConfig object containing the requested configuration.
      * If the file was not found the configuration will contain no values.
@@ -255,7 +284,10 @@ public class ConfigFinder {
      * are detected
      */
     public CeylonConfig loadConfigFromStream(InputStream stream, File currentDir) throws IOException {
-        return (new ConfigParser(stream, currentDir)).parse(currentDir != null);
+        return transformer.transform(null, (new ConfigParser(stream, currentDir)).parse(currentDir != null));
     }
     
+    private CeylonConfig merge(CeylonConfig pool, CeylonConfig config) {
+        return pool.merge(config);
+    }
 }
