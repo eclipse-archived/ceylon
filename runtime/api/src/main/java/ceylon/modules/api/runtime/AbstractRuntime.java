@@ -73,7 +73,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         return loadModuleMetaData(cl, name);
     }
 
-    protected static void invokeRun(ClassLoaderHolder clh, final String runClassName, final String[] args) throws Exception {
+    protected static void invokeRun(ClassLoaderHolder clh, String moduleName, final String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
         ClassLoader cl = clh.getClassLoader();
         ClassLoader oldClassLoader = SecurityActions.setContextClassLoader(cl);
@@ -88,7 +88,12 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
             } catch (ClassNotFoundException cnfe) {
                 String type = (Character.isUpperCase(runClassName.charAt(0)) ? "class" : "method");
-                throw new CeylonRuntimeException(String.format("Could not find toplevel %s '%s' [%s].", type, runClassName, clh));
+                String msg = String.format("Could not find toplevel %s '%s'.", type, runClassName);
+                if (!moduleName.equals(Constants.DEFAULT.toString()) && !runClassName.contains(".")) {
+                    msg += String.format(" Class and method names need to be fully qualified, maybe you meant '%s'?", moduleName + "::" + runClassName);
+                }
+                //msg += " [" + clh + "]";
+                throw new CeylonRuntimeException(msg);
             }
 
             SecurityActions.invokeRun(runClass, args);
@@ -152,6 +157,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             // replace any :: with a dot to allow for both java and ceylon-style run methods
             runClassName = runClassName.replace("::", ".");
         }
-        invokeRun(clh, runClassName, conf.arguments);
+        invokeRun(clh, name, runClassName, conf.arguments);
     }
 }
