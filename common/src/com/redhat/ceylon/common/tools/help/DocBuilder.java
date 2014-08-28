@@ -476,7 +476,7 @@ public class DocBuilder {
         } else {
             processBuilder = new ProcessBuilder(model.getScriptName(), arg);
         }
-        CeylonTool.setupScriptEnvironment(processBuilder);
+        CeylonTool.setupScriptEnvironment(processBuilder, model.getScriptName());
         processBuilder.redirectError(Redirect.INHERIT);
         try {
             Process process = processBuilder.start();

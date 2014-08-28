@@ -363,7 +363,7 @@ public class CeylonTool implements Tool {
         args.add(model.getScriptName());
         args.addAll(toolArgs);
         ProcessBuilder processBuilder = new ProcessBuilder(args);
-        setupScriptEnvironment(processBuilder);
+        setupScriptEnvironment(processBuilder, model.getScriptName());
         processBuilder.redirectError(Redirect.INHERIT);
         processBuilder.redirectInput(Redirect.INHERIT);
         if (OSUtil.isWindows()) {
@@ -390,7 +390,7 @@ public class CeylonTool implements Tool {
         }
     }
 
-    public static void setupScriptEnvironment(ProcessBuilder processBuilder) {
+    public static void setupScriptEnvironment(ProcessBuilder processBuilder, String script) {
         Map<String, String> env = processBuilder.environment();
         String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
         if (ceylonHome != null) {
@@ -408,6 +408,8 @@ public class CeylonTool implements Tool {
         env.put("CEYLON_VERSION_RELEASE", Integer.toString(Versions.CEYLON_VERSION_RELEASE));
         env.put("CEYLON_VERSION", Versions.CEYLON_VERSION);
         env.put("CEYLON_VERSION_NAME", Versions.CEYLON_VERSION_NAME);
+        env.put("SCRIPT", script);
+        env.put("SCRIPT_DIR", (new File(script)).getParent());
     }
 
     // WARNING: this is called by reflection: do not REMOVE!!!
