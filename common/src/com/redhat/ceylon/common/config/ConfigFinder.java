@@ -32,11 +32,11 @@ public class ConfigFinder {
     }
     
     /**
-     * Returns the configuration using the default lookup strategy, which
-     * is: first the system configuration, then the user's, and then in
+     * Returns the configuration using the default lookup strategy in reverse,
+     * which is: first the system configuration, then the user's, and then in
      * reverse order going from the localDir folder up the file system
-     * hierarchy all the configuration files encountered in any .ceylon
-     * subfolders encountered. Values from later files override earlier ones.
+     * hierarchy all the configuration files found in any .ceylon
+     * subfolders that exist. Values from later files override earlier ones.
      * 
      * @param localDir The local folder from which to start
      * @return The configuration from all the files combined
@@ -61,6 +61,42 @@ public class ConfigFinder {
         } catch (IOException e) {
             // Just ignore any errors
         }
+        return config;
+    }
+    
+    /**
+     * Returns the configuration using the default lookup strategy which is:
+     * going from the localDir folder up the file system hierarchy any
+     * configuration file found in any .ceylon subfolder that exists.
+     * If no file was found it will then look in the user's Ceylon folder
+     * and finally the system's.
+     * 
+     * @param localDir The local folder from which to start
+     * @return The configuration from the first file found
+     */
+    public CeylonConfig loadFirstConfig(File localDir) {
+        try {
+            File configFile = findLocalConfig(localDir);
+            if (configFile != null) {
+                CeylonConfig localConfig = new ConfigParser(configFile).parse(true);
+                return localConfig;
+            }
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        try {
+            CeylonConfig user = loadUserConfig();
+            return user;
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        try {
+            CeylonConfig system = loadSystemConfig();
+            return system;
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        CeylonConfig config = new CeylonConfig();
         return config;
     }
     
