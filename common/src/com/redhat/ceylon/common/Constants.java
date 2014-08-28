@@ -11,6 +11,8 @@ public abstract class Constants {
     
     public static final String CEYLON_CONFIG_DIR = ".ceylon";
     public static final String CEYLON_CONFIG_FILE = "config";
+    
+    public static final String CEYLON_BIN_DIR = "bin";
 
     public static final String MODULE_DESCRIPTOR = "module.ceylon";
     

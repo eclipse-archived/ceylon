@@ -3,7 +3,6 @@ package com.redhat.ceylon.common.tool;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.OSUtil;
 
@@ -100,23 +100,33 @@ public abstract class ServiceToolLoader extends ToolLoader {
         Set<String> names = new HashSet<String>();
         // First the ones from CEYLON_HOME/bin
         File ceylonHome = FileUtil.getInstallDir();
-        if(ceylonHome != null)
-            findPluginInPath(new File(ceylonHome, "bin"), names);
-        // Then look in ~/.ceylon/bin
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
-        findPluginInPath(defUserDir, names);
-        // And in every installed script plugin in ~/.ceylon/bin/{moduleName}/
-        if(defUserDir.isDirectory() && defUserDir.canRead()){
-            for(File scriptPluginDir : defUserDir.listFiles()){
-                if(scriptPluginDir.isDirectory()){
-                    findPluginInPath(scriptPluginDir, names);
-                }
-            }
+        if (ceylonHome != null) {
+            findPluginInPath(new File(ceylonHome, Constants.CEYLON_BIN_DIR), names);
         }
+        // Then look in /etc/ceylon/bin and /etc/ceylon/bin/{moduleName}/
+        // (or their equivalents on Windows and MacOS)
+        File systemDir = new File(FileUtil.getSystemConfigDir(), Constants.CEYLON_BIN_DIR);
+        findPathPlugins(systemDir, names);
+        // Then look in ~/.ceylon/bin and ~/.ceylon/bin/{moduleName}/
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
+        findPathPlugins(defUserDir, names);
         // And finally in the user's PATH
         File[] paths = FileUtil.getExecPath();
         for (File part : paths) {
             findPluginInPath(part, names);
+        }
+    }
+
+    private void findPathPlugins(File dir, Set<String> names) {
+        // Look in dir 
+        findPluginInPath(dir, names);
+        // And in every installed script plugin in <dir>/{moduleName}/
+        if(dir.isDirectory() && dir.canRead()){
+            for(File scriptPluginDir : dir.listFiles()){
+                if(scriptPluginDir.isDirectory()){
+                    findPluginInPath(scriptPluginDir, names);
+                }
+            }
         }
     }
 
