@@ -77,6 +77,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     private List<File> scriptFolders = DefaultToolOptions.getCompilerScriptDirs();
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private boolean force;
+    private boolean system;
     private Mode mode;
 
     public CeylonPluginTool() {
@@ -101,6 +102,12 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     @Description("Force installation even if a previous version exists")
     public void setForce(boolean force) {
         this.force = force;
+    }
+
+    @Option
+    @Description("Install to or uninstall from the system folder")
+    public void setSystem(boolean system) {
+        this.system = system;
     }
 
     @OptionArgument(longName="src", argumentName="dir")
@@ -233,9 +240,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             zipSource = result.artifact();
         }
 
-        // Put them in ~/.ceylon/bin/{moduleName}
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
-        File moduleScriptDir = new File(defUserDir, module.getName());
+        File moduleScriptDir = getModuleScriptDir(module);
         if(moduleScriptDir.exists()){
             if(force)
                 FileUtil.delete(moduleScriptDir);
@@ -261,9 +266,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     private boolean uninstallScripts(ModuleSpec module, boolean errorIfMissing) throws IOException {
-        // They are in ~/.ceylon/bin/{moduleName}
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
-        File moduleScriptDir = new File(defUserDir, module.getName());
+        File moduleScriptDir = getModuleScriptDir(module);
         if(moduleScriptDir.exists()){
             FileUtil.delete(moduleScriptDir);
             msg("success.uninstalled", module.getName(), moduleScriptDir);
@@ -274,6 +277,20 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                 errorMsg("error.no.script.installed.for.module", module.getName(), moduleScriptDir);
             return false;
         }
+    }
+
+    private File getModuleScriptDir(ModuleSpec module) {
+        File installDir;
+        if (system) {
+            // Put them in /etc/ceylon/bin/{moduleName} (or equivalent on Windows / MacOS)
+            installDir = FileUtil.getSystemConfigDir();
+        } else {
+            // Put them in ~/.ceylon/bin/{moduleName}
+            installDir = FileUtil.getDefaultUserDir();
+        }
+        File binDir = new File(installDir, Constants.CEYLON_BIN_DIR);
+        File moduleScriptDir = new File(binDir, module.getName());
+        return moduleScriptDir;
     }
 
     private void extractScripts(File zip, File dir) throws IOException {
