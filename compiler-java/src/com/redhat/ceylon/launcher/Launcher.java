@@ -117,10 +117,7 @@ public class Launcher {
             CeylonClassLoader ceylonClassLoader = CeylonClassLoader.newInstance();
 
             // Set some important system properties
-            File ceylonHome = LauncherUtil.determineHome();
-            System.setProperty(Constants.PROP_CEYLON_HOME_DIR, ceylonHome.getAbsolutePath());
-            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo(ceylonHome).getAbsolutePath());
-            System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
+            initGlobalProperties();
 
             return ceylonClassLoader;
         }catch(URISyntaxException e){
@@ -158,6 +155,17 @@ public class Launcher {
             }
         }
         return null;
+    }
+
+    public static void initGlobalProperties() throws URISyntaxException {
+        File ceylonHome = LauncherUtil.determineHome();
+        initGlobalProperties(ceylonHome);
+    }
+
+    public static void initGlobalProperties(File ceylonHome) throws URISyntaxException {
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, ceylonHome.getAbsolutePath());
+        System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo(ceylonHome).getAbsolutePath());
+        System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
     }
 
     public static void initGlobalLogger(String verbose) {
