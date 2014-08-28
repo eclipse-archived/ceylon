@@ -23,6 +23,8 @@ if "%errorlevel%" == "1" (
 rem REPLACE THE CODE BELOW THIS LINE WITH YOUR OWN CODE
 
 rem Just showing some variables that the script can use
+echo Script: %SCRIPT%
+echo Script folder: %SCRIPT_DIR%
 echo Ceylon home: %CEYLON_HOME%
 echo Ceylon executable: %CEYLON%
 echo Ceylon version major: %CEYLON_VERSION_MAJOR%
