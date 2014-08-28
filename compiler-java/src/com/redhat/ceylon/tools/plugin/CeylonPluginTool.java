@@ -8,8 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -19,6 +18,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -72,13 +72,6 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         pack, list, install, uninstall;
     }
 
-    private static final Comparator<? super File> FileNameComparator = new Comparator<File>(){
-        @Override
-        public int compare(File a, File b) {
-            return a.getName().compareTo(b.getName());
-        }
-    };
-    
     private List<ModuleSpec> modules;
     private List<File> scriptFolders = DefaultToolOptions.getCompilerScriptDirs();
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
@@ -177,13 +170,35 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     private void listScripts() throws IOException {
-        // They are in ~/.ceylon/bin/{moduleName}
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
-        File[] children = defUserDir.listFiles();
-        Arrays.sort(children, FileNameComparator);
-        for(File child : children){
-            append(child.getName());
+        ArrayList<String> scripts = new ArrayList<String>();
+        // Look in /etc/ceylon/bin/ and /etc/ceylon/bin/{moduleName}
+        File systemDir = new File(FileUtil.getSystemConfigDir(), Constants.CEYLON_BIN_DIR);
+        listScripts(systemDir, scripts);
+        // They are in ~/.ceylon/bin/ and ~/.ceylon/bin/{moduleName}
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
+        listScripts(defUserDir, scripts);
+        Collections.sort(scripts);
+        for (String script : scripts) {
+            append(script);
             newline();
+        }
+    }
+
+    private void listScripts(File dir, List<String> scripts) throws IOException {
+        File[] children = dir.listFiles();
+        if (children != null) {
+            for (File child : children) {
+                if (child.isDirectory()) {
+                    File[] modfiles = child.listFiles();
+                    for (File f : modfiles) {
+                        if (f.isFile() && f.getName().startsWith("ceylon-")) {
+                            scripts.add(f.getName() + " (" + child.getName() + ")");
+                        }
+                    }
+                } else if (child.isFile() && child.getName().startsWith("ceylon-")) {
+                    scripts.add(child.getName());
+                }
+            }
         }
     }
 
@@ -218,7 +233,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
 
         // Put them in ~/.ceylon/bin/{moduleName}
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
         File moduleScriptDir = new File(defUserDir, module.getName());
         if(moduleScriptDir.exists()){
             if(force)
@@ -246,7 +261,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     private boolean uninstallScripts(ModuleSpec module, boolean errorIfMissing) throws IOException {
         // They are in ~/.ceylon/bin/{moduleName}
-        File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), Constants.CEYLON_BIN_DIR);
         File moduleScriptDir = new File(defUserDir, module.getName());
         if(moduleScriptDir.exists()){
             FileUtil.delete(moduleScriptDir);
