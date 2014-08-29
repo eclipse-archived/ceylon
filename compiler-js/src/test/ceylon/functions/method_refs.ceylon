@@ -1,5 +1,9 @@
 import check { check,fail }
 
+String test410(String() f) {
+  return f().lowercased;
+}
+
 //Static method references
 class MethodRefTest(name) {
     shared String name;
@@ -9,6 +13,10 @@ class MethodRefTest(name) {
     shared class Inner(String kid) {
         shared actual String string => "``outer.string`` sub-``kid``";
         shared String prefix(Integer x) => "#``x`` ``string``";
+    }
+    shared String issue410() {
+        function f() => name;
+        return test410(f);
     }
 }
 
@@ -52,4 +60,5 @@ void testStaticMethodReferences() {
     value pad = String.padLeading;
     value test11=pad("x")(3,'.');
     check(test11=="..x", "Static method ref 11 expected ..x got ``test11``");
+    check(mr.issue410() == "test", "Issue 410");
 }
