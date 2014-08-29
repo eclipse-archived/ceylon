@@ -56,7 +56,15 @@ class Example1(){}
 class Example2() extends Example1(){}
 
 void typeTests() {
-  check(type(null).string=="Nothing","type(null):``type(null)``");
+  check(type(null).string=="ceylon.language::null","type(null):``type(null)``");
+  check(type(larger).string=="ceylon.language::larger", "type(larger): ``type(larger)``");
+  check(type(smaller).string=="ceylon.language::smaller", "type(smaller): ``type(smaller)``");
+  check(type(equal).string=="ceylon.language::equal", "type(equal): ``type(equal)``");
+  check(type(true).string=="ceylon.language::true", "type(true): ``type(true)``");
+  check(type(false).string=="ceylon.language::false", "type(false): ``type(false)``");
+  check(type(1).string=="ceylon.language::Integer", "type(1): ``type(1)``");
+  check(type(3.14).string=="ceylon.language::Float", "type(3.14): ``type(3.14)``");
+  check(type([]).string=="ceylon.language::empty", "type([]): ``type([])``");
   check(type(Example1()).string=="model2::Example1","type(Example1()):``type(Example1())``");
   check(type(Example2).string=="ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Anything>","type(Example2):``type(Example2)``");
   check(type("hello").string=="ceylon.language::String","type('hello'):``type("hello")``");
