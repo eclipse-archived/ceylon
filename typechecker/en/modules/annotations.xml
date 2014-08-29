@@ -390,8 +390,11 @@ shared deprecated</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>The following annotation is a hint to the compiler that lets 
-            the compiler optimize compiled bytecode for non-64 bit architectures:</para>
+            <comment><para>Note: annotation constraints ensure that these annotations 
+            do not occur at program elements to which they do not apply.</para></comment>
+            
+            <para>The following annotation is a hint to the compiler that lets the 
+            compiler optimize compiled bytecode for non-64 bit architectures:</para>
             
             <itemizedlist>
                 <listitem>
@@ -406,7 +409,7 @@ shared deprecated</programlisting>
             <xref linkend="numericoperations"/>.</para>
             
             <comment><para>Note that <literal>small</literal> is not yet supported 
-            in Ceylon 1.0.</para></comment>
+            in Ceylon 1.1.</para></comment>
             
             <!--
             <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
