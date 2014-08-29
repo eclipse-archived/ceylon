@@ -21,6 +21,20 @@ void a() {
 
 class B() {
     String name;
-    name=>"gavin";
+    name => "gavin";
     @error assign name {}
+}
+
+class C() {
+    shared void foo() { 
+        @error print(bar); 
+    }
+    String bar;
+    bar => "hello1";
+    void init() {}
+}
+
+class D() {
+    late String name;
+    @error name => "gavin";
 }

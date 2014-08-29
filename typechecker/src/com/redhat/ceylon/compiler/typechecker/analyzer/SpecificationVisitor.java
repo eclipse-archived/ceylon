@@ -537,9 +537,15 @@ public class SpecificationVisitor extends Visitor {
 	            		that.addError("value must be specified using => lazy specifier: '" +
 	            		        member.getName() + "'");
             	    }
-            	    if (value.isVariable() && lazy) {
-            	    	that.addError("variable value may not be specified using => lazy specifier: '" +
-            	    			member.getName() + "'");
+            	    if (lazy) {
+            	        if (value.isVariable()) {
+            	            that.addError("variable value may not be specified using => lazy specifier: '" +
+            	                    member.getName() + "'");
+            	        }
+            	        else if (value.isLate()) {
+            	            that.addError("late reference may not be specified using => lazy specifier: '" +
+            	                    member.getName() + "'");
+            	        }
             	    }
             	}
 	            if (!lazy) {

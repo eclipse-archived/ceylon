@@ -155,11 +155,9 @@ public class Util {
         if (s instanceof Tree.SpecifierStatement) {
             //shortcut refinement statements with => aren't really "executable"
             Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
-            if (!(ss.getSpecifierExpression() 
+            return !(ss.getSpecifierExpression() 
                     instanceof Tree.LazySpecifierExpression) || 
-                !ss.getRefinement()) {
-                return true;
-            }
+                    !ss.getRefinement();
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
@@ -168,17 +166,15 @@ public class Util {
             if (s instanceof Tree.AttributeDeclaration) {
                 Tree.SpecifierOrInitializerExpression sie = 
                         ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
-        		if (sie!=null && 
-        		        !(sie instanceof Tree.LazySpecifierExpression)) {
-                    return true;
-                }
+        		return sie!=null && 
+        		        !(sie instanceof Tree.LazySpecifierExpression);
             }
-            /*if (s instanceof Tree.MethodDeclaration) {
+            /*else if (s instanceof Tree.MethodDeclaration) {
                 if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
                     return s;
                 }
             }*/
-            if (s instanceof Tree.ObjectDefinition) {
+            else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
                 if (o.getExtendedType()!=null) {
                     ProducedType et = o.getExtendedType().getType().getTypeModel();
@@ -193,9 +189,12 @@ public class Util {
                         return true;
                     }
                 }
+                return false;
+            }
+            else {
+                return false;
             }
         }
-        return false;
     }
     
     private static String message(ProducedType type, String problem, 
