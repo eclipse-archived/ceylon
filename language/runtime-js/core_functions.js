@@ -400,10 +400,40 @@ function removeSupertypes(list) {
     }
 }
 
+function find_type_in_list$(t,l) {
+}
 function ut$(a,b){
   if (a.t==='u'){
+    //add to current union if not present
+    //TODO b can already be a union
+    var et=find_type_in_list$(b,a.l);
+    if (et) {
+      if (a.a&&b.a) {
+      } else {
+        return a;
+      }
+    } else {
+      var na=[];
+      na.push.apply(na,a.l);
+      na.push(b);
+      return {t:'u',l:na};
+    }
   } else if (b.t==='u') {
-  } else if (a.t==='i'||b.t==='u') {
+    //new union with a+list of b's
+    var et=find_type_in_list$(a,b.l);
+    if (et) {
+      if (a.a&&b.a) {
+      } else {
+        return b;
+      }
+    } else {
+      var na=[];
+      na.push.apply(na,b.l);
+      na.push(a);
+      return {t:'u',l:na};
+    }
+  } else if (a.t==='i'||b.t==='i') {
+    //new union
   } else if (a.t===b.t) {
     if (a.a&&b.a) {
       return {t:a.t,a:it$(a.a,b.a)};
@@ -413,13 +443,35 @@ function ut$(a,b){
   return {t:'u',l:[a,b]};
 }
 function it$(a,b){
-if (!b) {
-throw new Error("QUE PEDO");
-}
   if (a.t==='i') {
     //add to the current intersection if not present
+    //TODO b can already be an intersection
+    var et=find_type_in_list$(b,a.l);
+    if (et) {
+      if (a.a&&b.a) {
+      } else {
+        return a;
+      }
+    } else {
+      var na=[];
+      na.push.apply(na,a.l);
+      na.push(b);
+      return {t:'i',l:na};
+    }
   } else if (b.t==='i') {
     //create a new intersection with list of a+list of b's
+    var et=find_type_in_list$(a,b.l);
+    if (et) {
+      if (a.a&&b.a) {
+      } else {
+        return b;
+      }
+    } else {
+      var na=[];
+      na.push.apply(na,b.l);
+      na.push(a);
+      return {t:'i',l:na};
+    }
   } else if (a.t==='u'||b.t==='u') {
     //Create new intersection
   } else if (a.t===b.t) {
