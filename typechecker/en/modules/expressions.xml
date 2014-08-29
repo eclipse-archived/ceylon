@@ -298,52 +298,106 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     </section>
     
-        <section id="anonymousfunctions">
-            <title>Anonymous functions</title>
-            
-            <para>An anonymous function is a function, as specified in 
-            <xref linkend="functions"/>, with no name, defined within an expression. 
-            It comprises one or more parameter lists, followed by an expression.</para>
-            
-            <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
-            
-            <para>The parameters are the parameters of the function. The lazy 
-            specifier or block of code is the implementation of the function. If 
-            the <literal>void</literal> keyword is specified, the function is a 
-            <literal>void</literal> function. Otherwise, it is a 
-            non-<literal>void</literal> function, and its return type is 
-            inferred.</para>
-            
-            <para>The type of an anonymous function expression is the callable 
-            type of the function, as specified in 
-            <xref linkend="callabletypeoffunction"/>.</para>
-            
-            <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
-            
-            <programlisting>void (String name) => print(name)</programlisting>
-            
-            <programlisting>(String string) {
+    <section id="anonymousfunctions">
+        <title>Anonymous functions</title>
+        
+        <para>An anonymous function is a function, as specified in 
+        <xref linkend="functions"/>, with no name, defined within an expression. 
+        It comprises one or more parameter lists, followed by an expression.</para>
+        
+        <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
+        
+        <para>The parameters are the parameters of the function. The lazy 
+        specifier or block of code is the implementation of the function. If 
+        the <literal>void</literal> keyword is specified, the function is a 
+        <literal>void</literal> function. Otherwise, it is a 
+        non-<literal>void</literal> function, and its return type is 
+        inferred.</para>
+        
+        <para>The type of an anonymous function expression is the callable 
+        type of the function, as specified in 
+        <xref linkend="callabletypeoffunction"/>.</para>
+        
+        <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
+        
+        <programlisting>void (String name) => print(name)</programlisting>
+        
+        <programlisting>(String string) {
     value mid = string.size / 2;
     return [string[...mid],string[mid+1...]];
 }</programlisting>
             
-            <para>An anonymous function occurring in an <literal>extends</literal>
-            clause may not contain a reference to a variable value.</para>
+        <para>An anonymous function occurring in an <literal>extends</literal>
+        clause may not contain a reference to a variable value.</para>
+        
+        <comment><para>Note: evaluation of an anonymous function expression,
+        as defined in <xref linkend="anonymousfunctionevaluation"/> results
+        in instantiation of an object of type <literal>Callable</literal>.
+        However, the members of this object are never in scope, do not hide
+        other declarations, and are not referenceable from within the 
+        anonymous function.</para></comment>
+        
+        <comment><para>Note: there is almost no semantic difference between the
+        following function declarations:</para>
+        <programlisting>Float f(Float x)(Float y) => x*y;</programlisting>
+        <programlisting>Float(Float) f(Float x) => (Float y) => x*y;</programlisting>
+        <para>The first form is strongly preferred.</para></comment>
+        
+        <section id="parametertypeinference">
+            <title>Anonymous function parameter type inference</title>
             
-            <comment><para>Note: evaluation of an anonymous function expression,
-            as defined in <xref linkend="anonymousfunctionevaluation"/> results
-            in instantiation of an object of type <literal>Callable</literal>.
-            However, the members of this object are never in scope, do not hide
-            other declarations, and are not referenceable from within the 
-            anonymous function.</para></comment>
+            <para>If the type of a parameter of an anonymous function is not 
+            declared explicitly, and the anonymous function occurs as a 
+            listed argument, as defined in <xref linkend="listedarguments"/>, 
+            in a positional argument list, then in certain cases the type of 
+            the parameter may be inferred.</para>
             
-            <comment><para>Note: there is almost no semantic difference between the
-            following function declarations:</para>
-            <programlisting>Float f(Float x)(Float y) => x*y;</programlisting>
-            <programlisting>Float(Float) f(Float x) => (Float y) => x*y;</programlisting>
-            <para>The first form is strongly preferred.</para></comment>
+            <para>Suppose the type of the <literal>i</literal>th parameter 
+            of an anonymous function occurring as the <literal>n</literal>th 
+            listed argument in a positional argument list of an invocation 
+            expression is not declared explicitly.</para>
+            
+            <para>If the invocation is a direct invocation of a function or 
+            class, as defined in <xref linkend="directinvocations"/>, then
+            the type of the parameter of the anonymous function may be 
+            inferred if either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the function or class has no type parameters, or 
+                    the invocation has an explicit type argument list, and 
+                    the <literal>n</literal>th parameter of the function or
+                    class is a callable parameter with the same number of 
+                    parameters as the anonymous function, or,</para>
+                </listitem>
+                <listitem>
+                    <para>the function or class has at least one type 
+                    parameter, and the invocation has no explicit type 
+                    argument list, and the <literal>n</literal>th parameter 
+                    of the function or class is a callable parameter with 
+                    the same number of parameters as the anonymous function, 
+                    and the type of the <literal>i</literal>th parameter of 
+                    the callable parameter does not involve any of the type 
+                    parameters of the generic function or class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Then the type of the parameter of the anonymous function is 
+            inferred to be the type of the corresponding <literal>i</literal>th 
+            parameter of the <literal>n</literal>th parameter of the function 
+            or class.</para>
+            
+            <para>Otherwise, if the invocation is is an indirect invocation, and 
+            the callable type of the invoked expression represents a function 
+            whose <literal>n</literal>th parameter is a callable parameter with 
+            the same number of parameters as the anonymous function, then the 
+            type of the parameter of the anonymous function is inferred to be 
+            the type of the corresponding <literal>i</literal>th parameter of 
+            this callable parameter.</para>
             
         </section>
+        
+    </section>
         
     <section id="compoundexpressions">
         <title>Compound expressions</title>
