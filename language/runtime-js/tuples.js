@@ -29,7 +29,7 @@ function tpl$(elems,types,spread){
   Sequence({Element$Sequence:_t},that);
   elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
     Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
-  set_type_args(that,elems.$$targs$$);
+  set_type_args(that,elems.$$targs$$,Tuple);
   that.first_=elems[0];
   that.getFromFirst=function(i){
     var e=elems[i]
