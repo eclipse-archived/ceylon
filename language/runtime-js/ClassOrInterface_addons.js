@@ -53,7 +53,7 @@ ClassOrInterface$meta$model.$$.prototype.exactly.$crtmm$=function(){return{mod:$
 atr$(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   return coitarg$(this);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-atr$(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){return coiexttype$(this);},undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
+atr$(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){return coiexttype$(this);},undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
 atr$(ClassOrInterface$meta$model.$$.prototype,'caseValues',function(){return coicase$(this);},
 undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Type$ClassOrInterface'}},$cont:ClassOrInterface$meta$model,an:function(){return[doc$('ceylon.language.meta.model:ClassOrInterface:$at:caseValues'),shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','caseValues']};});
