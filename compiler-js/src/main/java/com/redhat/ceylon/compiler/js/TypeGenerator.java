@@ -171,11 +171,13 @@ public class TypeGenerator {
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, gen);
         if (withTargs) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$targs$$)");
+            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d),
+                    ",$$targs$$,", gen.getNames().name(d), ")");
             gen.endLine(true);
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
+            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes,",
+                    gen.getNames().name(d), ")");
             gen.endLine(true);
         }
         that.getInterfaceBody().visit(gen);
