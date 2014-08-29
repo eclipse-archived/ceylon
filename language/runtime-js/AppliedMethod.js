@@ -1,4 +1,7 @@
 function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
+  if (!$$targs$$.Type$AppliedMethod)$$targs$$.Type$AppliedMethod=$$targs$$.Type$Method;
+  if (!$$targs$$.Arguments$AppliedMethod)$$targs$$.Arguments$AppliedMethod=$$targs$$.Arguments$Method;
+  if (!$$targs$$.Container$AppliedMethod)$$targs$$.Container$AppliedMethod=$$targs$$.Container$Method;
   $init$AppliedMethod();
   var mm = getrtmm$$(tipo);
   if (mm.tp) {
@@ -32,9 +35,9 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     $$appliedMethod.getT$name=function(){return dummy.getT$name();};
   }
   if (_ta)$$appliedMethod.$targs=_ta;
-  set_type_args($$appliedMethod,$$targs$$);
   Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments$Method:$$appliedMethod.$$targs$$.Arguments$Method,
     Type$Method:$$appliedMethod.$$targs$$.Type$Method,Container$Method:$$appliedMethod.$$targs$$.Container$Method},$$appliedMethod);
+  set_type_args($$appliedMethod,$$targs$$,AppliedMethod);
   $$appliedMethod.tipo=tipo;
 
 //This was copied from prototype style

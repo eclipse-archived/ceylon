@@ -1,4 +1,5 @@
 function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
+  if (!$$targs$$.Type$AppliedInterface)$$targs$$.Type$AppliedInterface=$$targs$$.Type$Interface;
   $init$AppliedInterface$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -47,8 +48,8 @@ function AppliedInterface$jsint(tipo,$$targs$$,that,myTargs) {
       that=new AppliedInterface$jsint.$$;
     }
   }
-  set_type_args(that,$$targs$$);
-  Interface$meta$model($$targs$$,that);
+  Interface$meta$model({Type$Interface:$$targs$$.Type$AppliedInterface},that);
+  set_type_args(that,$$targs$$,AppliedInterface$jsint);
   that.$targs=myTargs;
   that.tipo=tipo;
   return that;

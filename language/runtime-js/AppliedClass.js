@@ -1,4 +1,6 @@
 function AppliedClass(tipo,$$targs$$,that,classTargs){
+  if (!$$targs$$.Type$AppliedClass)$$targs$$.Type$AppliedClass=$$targs$$.Type$Class;
+  if (!$$targs$$.Arguments$AppliedClass)$$targs$$.Arguments$AppliedClass=$$targs$$.Arguments$Class;
   $init$AppliedClass();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -86,12 +88,13 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
   that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
-  set_type_args(that,$$targs$$);
-  Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$Class:that.$$targs$$.Arguments$Class,Type$Class:that.$$targs$$.Type$Class},that);
+  Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
+                   Type$Class:that.$$targs$$.Type$AppliedClass},that);
+  set_type_args(that,$$targs$$,AppliedClass);
   that.tipo=tipo;
   return that;
 }
-AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$Class:{dv:'out','def':{t:Anything}},Arguments$Class:{dv:'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],pa:1,d:['ceylon.language.meta.model','Class']};};
+AppliedClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Type$AppliedClass:{dv:'out','def':{t:Anything}},Arguments$AppliedClass:{dv:'in',sts:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},sts:[{t:Class$meta$model,a:{Arguments$Class:'Arguments$Class',Type$Class:'Type$Class'}}],pa:1,d:['ceylon.language.meta.model','Class']};};
 function $init$AppliedClass(){
   if (AppliedClass.$$===undefined){
     initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);

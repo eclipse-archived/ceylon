@@ -1,4 +1,6 @@
 function AppliedFunction(m,$$targs$$,o,mptypes) {
+  if (!$$targs$$.Type$AppliedFunction)$$targs$$.Type$AppliedFunction=$$targs$$.Type$Function;
+  if (!$$targs$$.Arguments$AppliedFunction)$$targs$$.Arguments$AppliedFunction=$$targs$$.Arguments$Function;
   var mm=getrtmm$$(m);
   var ttargs;
   if (mm.tp) {

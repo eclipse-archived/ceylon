@@ -1,15 +1,21 @@
 function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
+  if (!$$targs$$.Get$AppliedAttribute)$$targs$$.Get$AppliedAttribute=$$targs$$.Get$Attribute;
+  if (!$$targs$$.Set$AppliedAttribute)$$targs$$.Set$AppliedAttribute=$$targs$$.Set$Attribute;
+  if (!$$targs$$.Container$AppliedAttribute)$$targs$$.Container$AppliedAttribute=$$targs$$.Container$Attribute;
   $init$AppliedAttribute();
   if ($$appliedAttribute===undefined) {
-    $$appliedAttribute=function(x){return AppliedValue$jsint(x,atr, {Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
-      Container$Value:$$targs$$.Container$Attribute});};
+    $$appliedAttribute=function(x){return AppliedValue$jsint(x,atr,
+      {Get$AppliedValue:$$targs$$.Get$AppliedAttribute,Set$AppliedValue:$$targs$$.Set$AppliedAttribute,
+      Container$AppliedValue:$$targs$$.Container$AppliedAttribute});};
     $$appliedAttribute.$$=AppliedAttribute.$$;
     var dummy=new AppliedAttribute.$$;
     $$appliedAttribute.getT$all=function(){return dummy.getT$all();};
     $$appliedAttribute.getT$name=function(){return dummy.getT$name();};
   }
-  set_type_args($$appliedAttribute,$$targs$$);
-  Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Get$Attribute:$$appliedAttribute.$$targs$$.Get$Attribute,Set$Attribute:$$appliedAttribute.$$targs$$.Set$Attribute,Container$Attribute:$$appliedAttribute.$$targs$$.Container$Attribute},$$appliedAttribute);
+  Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Get$Attribute:$$appliedAttribute.$$targs$$.Get$AppliedAttribute,
+    Set$Attribute:$$appliedAttribute.$$targs$$.Set$AppliedAttribute,
+    Container$Attribute:$$appliedAttribute.$$targs$$.Container$AppliedAttribute},$$appliedAttribute);
+  set_type_args($$appliedAttribute,$$targs$$,AppliedAttribute);
   $$appliedAttribute.tipo=atr;
   $$appliedAttribute.pname=pname;
   atr$($$appliedAttribute,'type',function(){
@@ -26,8 +32,9 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return OpenValue$jsint(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   $$appliedAttribute.$_bind=function(cont){
-    return AppliedValue$jsint(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
-      Container$Value:$$targs$$.Container$Attribute});
+    return AppliedValue$jsint(cont,atr,{Get$AppliedValue:$$targs$$.Get$AppliedAttribute,
+      Set$AppliedValue:$$targs$$.Set$AppliedAttribute,
+      Container$AppliedValue:$$targs$$.Container$AppliedAttribute});
   }
   atr$($$appliedAttribute,'string',function(){
     var c=getrtmm$$(atr).$cont;
@@ -37,7 +44,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     var qn=qname$(c);
     if (c.tp) {
       qn+="<"; var first=true;
-      var cnt=$$targs$$&&$$targs$$.Container$Attribute&&$$targs$$.Container$Attribute.a;
+      var cnt=$$targs$$&&$$targs$$.Container$AppliedAttribute&&$$targs$$.Container$AppliedAttribute.a;
       for (var tp in c.tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];

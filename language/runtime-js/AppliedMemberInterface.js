@@ -1,4 +1,6 @@
 function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
+  if (!$$targs$$.Type$AppliedMemberInterface)$$targs$$.Type$AppliedMemberInterface=$$targs$$.Type$MemberInterface;
+  if (!$$targs$$.Container$AppliedMemberInterface)$$targs$$.Container$AppliedMemberInterface=$$targs$$.Container$MemberInterface;
   $init$AppliedMemberInterface();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -15,7 +17,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
           if (!nt.a)nt.a={};
           for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
         }
-        rv=AppliedInterface$jsint(rv,{Type$Interface:nt});
+        rv=AppliedInterface$jsint(rv,{Type$AppliedInterface:nt});
         if (nt.a)rv.$targs=nt.a;
         rv.$bound=x;
         return rv;
@@ -25,9 +27,9 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
       that=new AppliedMemberInterface.$$;
     }
   }
-  set_type_args(that,$$targs$$);
-  MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$MemberInterface,
-    Container$MemberInterface:that.$$targs$$.Container$MemberInterface},that);
+  MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$AppliedMemberInterface,
+    Container$MemberInterface:that.$$targs$$.Container$AppliedMemberInterface},that);
+  set_type_args(that,$$targs$$,AppliedMemberInterface);
   that.$targs=myTargs;
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;

@@ -1,4 +1,7 @@
 function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
+  if (!$$targs$$.Type$AppliedMemberClass)$$targs$$.Type$AppliedMemberClass=$$targs$$.Type$MemberClass;
+  if (!$$targs$$.Arguments$AppliedMemberClass)$$targs$$.Arguments$AppliedMemberClass=$$targs$$.Arguments$MemberClass;
+  if (!$$targs$$.Container$AppliedMemberClass)$$targs$$.Container$AppliedMemberClass=$$targs$$.Container$MemberClass;
   $init$AppliedMemberClass();
   if (that===undefined) {
     var mm = getrtmm$$(tipo);
@@ -15,7 +18,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
           if (!nt.a)nt.a={};
           for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
         }
-        rv=AppliedClass(rv,{Type$Class:nt,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
+        rv=AppliedClass(rv,{Type$AppliedClass:nt,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
         if (nt.a)rv.$targs=nt.a;
         rv.$bound=x;
         return rv;
@@ -24,7 +27,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
       throw IncompatibleTypeException$meta$model("Invalid metamodel data for MemberClass");
     }
   }
-  AppliedClass(tipo,$$targs$$,that);
+  AppliedClass(tipo,{Type$AppliedClass:$$targs$$.Type$AppliedMemberClass,Arguments$AppliedClass:$$targs$$.Arguments$AppliedMemberClass},that);
   var dummy = new AppliedMemberClass.$$;
   that.$$=AppliedMemberClass.$$;
   that.getT$all=function(){return dummy.getT$all();};
@@ -54,8 +57,10 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
   atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'container',function(){return coicont$(that); },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-  set_type_args(that,$$targs$$);
-  MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
+  MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,
+                         Type$MemberClass:that.$$targs$$.Type$AppliedMemberClass,
+                         Container$MemberClass:that.$$targs$$.Container$AppliedMemberClass},that);
+  set_type_args(that,$$targs$$,AppliedMemberClass);
   that.tipo=tipo;
   return that;
 }
