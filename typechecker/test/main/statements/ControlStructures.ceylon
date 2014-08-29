@@ -326,3 +326,20 @@ shared void reachablefor() {
     if (false) { /*@error*/ return; } //TODO?
     for (c in "hello") {}    
 }
+
+void superfluousValue() {
+    class Transaction() satisfies Destroyable {
+        shared actual void destroy(Throwable? error) {}
+    }
+    if (exists value arg = process.arguments.first) {
+        for (a in arg) {}
+    }
+    try (value xxx = Transaction()) {
+        for (value s in "fsfgsdf") {
+            
+        }
+    }
+    catch (value e) {
+        e.printStackTrace();
+    }
+}

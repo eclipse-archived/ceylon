@@ -1490,10 +1490,10 @@ else {
             
             <para>In most cases, the explicit type be omitted.</para>
             
-            <synopsis>Variable: Type? MemberName</synopsis>
+            <synopsis>Variable: (Type | "value")? MemberName</synopsis>
             
-            <para>If the type is missing from the declaration, the type of the variable is 
-            inferred, according to rules that depend upon the control structure to which 
+            <para>If the explicit type is missing from the declaration, the type of the variable 
+            is inferred, according to rules that depend upon the control structure to which 
             the variable belongs.</para>
             
             <para>A variable declared by an assertion is a reference scoped to the body in which 
