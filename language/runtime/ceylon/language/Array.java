@@ -486,86 +486,112 @@ public final class Array<Element>
                 //note: we don't unbox strings in an Array<String?>
                 //      because it would break javaObjectArray()
                 java.lang.String[] array = new java.lang.String[size];
-                String s = (String) element;
-                if (s!=null) Arrays.fill(array, s.value); 
+                if (element!=null) {
+                    String s = (String) element;
+                    Arrays.fill(array, s.value);
+                }
                 return array;
             }
             else if (clazz==Integer.class) {
                 long[] array = new long[size];
-                long value = ((Integer) element).value;
-                if (value!=0l) Arrays.fill(array, value); 
+                if (element!=null) {
+                    long value = ((Integer) element).value;
+                    if (value!=0l) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==Float.class) {
                 double[] array = new double[size];
-                double value = ((Float) element).value;
-                if (value!=0.0d) Arrays.fill(array, value); 
+                if (element!=null) {
+                    double value = ((Float) element).value;
+                    if (value!=0.0d) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==Character.class) {
                 int[] array = new int[size];
-                int value = ((Character) element).codePoint;
-                if (value!=0) Arrays.fill(array, value); 
+                if (element!=null) {
+                    int value = ((Character) element).codePoint;
+                    if (value!=0) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==Boolean.class) {
                 boolean[] array = new boolean[size];
-                boolean value = ((Boolean) element).booleanValue();
-                if (value!=false) Arrays.fill(array, value); 
+                if (element!=null) {
+                    boolean value = ((Boolean) element).booleanValue();
+                    if (value!=false) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==Byte.class) {
                 byte[] array = new byte[size];
-                byte value = ((Byte) element).value;
-                if (value!=0.0d) Arrays.fill(array, value); 
+                if (element!=null) {
+                    byte value = ((Byte) element).value;
+                    if (value!=0.0d) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Boolean.class) {
                 boolean[] array = new boolean[size];
-                boolean value = ((java.lang.Boolean) element).booleanValue();
-                if (value!=false) Arrays.fill(array, value); 
+                if (element!=null) {
+                    boolean value = ((java.lang.Boolean) element).booleanValue();
+                    if (value!=false) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Character.class) {
                 char[] array = new char[size];
-                char value = ((java.lang.Character) element).charValue();
-                if (value!=0) Arrays.fill(array, value); 
+                if (element!=null) {
+                    char value = ((java.lang.Character) element).charValue();
+                    if (value!=0) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Float.class) {
                 float[] array = new float[size];
-                float value = ((java.lang.Float) element).floatValue();
-                if (value!=0.0f) Arrays.fill(array, value); 
+                if (element!=null) {
+                    float value = ((java.lang.Float) element).floatValue();
+                    if (value!=0.0f) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Double.class) {
                 double[] array = new double[size];
-                double value = ((java.lang.Double) element).doubleValue();
-                if (value!=0.0d) Arrays.fill(array, value); 
+                if (element!=null) {
+                    double value = ((java.lang.Double) element).doubleValue();
+                    if (value!=0.0d) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Byte.class) {
                 byte[] array = new byte[size];
                 byte value = ((java.lang.Byte) element).byteValue();
-                if (value!=0) Arrays.fill(array, value); 
+                if (value!=0) Arrays.fill(array, value);
                 return array;
             }
             else if (clazz==java.lang.Short.class) {
                 short[] array = new short[size];
-                short value = ((java.lang.Short) element).shortValue();
-                if (value!=0) Arrays.fill(array, value); 
+                if (element!=null) {
+                    short value = ((java.lang.Short) element).shortValue();
+                    if (value!=0) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Integer.class) {
                 int[] array = new int[size];
-                int value = ((java.lang.Integer) element).intValue();
-                if (value!=0) Arrays.fill(array, value); 
+                if (element!=null) {
+                    int value = ((java.lang.Integer) element).intValue();
+                    if (value!=0) Arrays.fill(array, value);
+                }
                 return array;
             }
             else if (clazz==java.lang.Long.class) {
                 long[] array = new long[size];
-                long value = ((java.lang.Long) element).longValue();
-                if (value!=0l) Arrays.fill(array, value); 
+                if (element!=null) {
+                    long value = ((java.lang.Long) element).longValue();
+                    if (value!=0l) Arrays.fill(array, value);
+                }
                 return array;
             }
         }
