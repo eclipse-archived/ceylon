@@ -317,7 +317,9 @@ function isOfTypes(obj, types) {
   }
   return _ints ? inters||unions : unions;
 }
-function extendsType(t1, t2,tparm) { //true if t1 is subtype of t2
+//Tells whether t1 is a subtype of t2
+//tparm indicates if the calculations are being done on type parameters
+function extendsType(t1, t2,tparm) {
     if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
       return true;//t2 === undefined;
     } else if (t2 && t2.t === Anything) {
@@ -398,14 +400,58 @@ function removeSupertypes(list) {
     }
 }
 
-function set_type_args(obj, targs) {
-    if (obj===undefined)return;
-    if (obj.$$targs$$ === undefined) {
-        obj.$$targs$$={};
+function ut$(a,b){
+  if (a.t==='u'){
+  } else if (b.t==='u') {
+  } else if (a.t==='i'||b.t==='u') {
+  } else if (a.t===b.t) {
+    if (a.a&&b.a) {
+      return {t:a.t,a:it$(a.a,b.a)};
     }
-    for (x in targs) {
-        obj.$$targs$$[x] = targs[x];
+    return a;
+  }
+  return {t:'u',l:[a,b]};
+}
+function it$(a,b){
+if (!b) {
+throw new Error("QUE PEDO");
+}
+  if (a.t==='i') {
+    //add to the current intersection if not present
+  } else if (b.t==='i') {
+    //create a new intersection with list of a+list of b's
+  } else if (a.t==='u'||b.t==='u') {
+    //Create new intersection
+  } else if (a.t===b.t) {
+    if (a.a&&b.a) {
+      return {t:a.t,a:ut$(a.a,b.a)};
     }
+    return a;
+  }
+  return {t:'i',l:[a,b]};
+}
+function set_type_args(obj,targs,t) {
+  if (obj===undefined)return;
+  if (obj.$$targs$$ === undefined) {
+    obj.$$targs$$={};
+  }
+  for (x in targs) {
+    var n=targs[x];
+    if (!n)continue;
+    var e=obj.$$targs$$[x];
+    if (e) {
+      var mm=getrtmm$$(t);
+      var iance=mm && mm.tp && mm.tp[x] && mm.tp[x].dv;
+      if (iance === 'out') {
+        //Intersection
+        n=it$(e,n);
+      } else if (iance === 'in') {
+        //Union
+        n=ut$(e,n);
+      }
+    }
+    obj.$$targs$$[x] = n;
+  }
 }
 function add_type_arg(obj, name, type) {
     if (obj===undefined)return;
