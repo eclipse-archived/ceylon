@@ -40,6 +40,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
     private String module;
     private String jar;
     private String descriptor;
+    private boolean force;
 
     public String getModule() {
         return module;
@@ -65,9 +66,21 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         this.descriptor = descriptor;
     }
 
+    public boolean getForce() {
+        return force;
+    }
+
+    public void setForce(boolean force) {
+        this.force = force;
+    }
+
     @Override
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
+        
+        if (force) {
+            appendOption(cmd, "--force");
+        }
         
         if (descriptor != null) {
             appendOptionArgument(cmd, "--descriptor", getDescriptor());
