@@ -61,7 +61,7 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
     return clsparamtypes(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
   atr$(that,'caseValues',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
+    return coicase$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
