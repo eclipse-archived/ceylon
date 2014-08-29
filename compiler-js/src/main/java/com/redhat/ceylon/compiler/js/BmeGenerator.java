@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class BmeGenerator {
@@ -41,7 +43,8 @@ public class BmeGenerator {
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
-                who="0";
+                ClassOrInterface cont = Util.getContainingClassOrInterface(bme.getScope());
+                who=cont == null ? "0" : gen.getNames().self(cont);
             }
             final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (who != null || hasTparms)) {
