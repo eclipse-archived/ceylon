@@ -1,6 +1,13 @@
 function type$meta(x,$$targs$$) {
-  if (x === null || $$targs$$.Type$type.t===Nothing) {
+  if (x===null){
+    return AppliedClass(getNull(),{Type$Class:{t:Null},Arguments$Class:{t:Empty}});
+  }
+  if ($$targs$$.Type$type.t===Nothing) {
     return getNothingType$meta$model();
+  }
+  if (x===true||x===false) {
+    var cls=x?trueClass:falseClass;
+    return AppliedClass(cls,{Type$Class:{t:cls},Arguments$Class:{t:Empty}});
   }
   var mm=getrtmm$$(x);
   var _t=$$targs$$.Type$type.t;
