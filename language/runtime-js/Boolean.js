@@ -1,18 +1,21 @@
 function $_Boolean(value) {return Boolean(value)}
 initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
-$_Boolean.$crtmm$=function(){return{ps:[],pa:257,mod:$CCMM$,d:['$','Boolean']};};
+$_Boolean.$crtmm$=function(){
+  return{ps:[],pa:257,of:[getTrue,getFalse],
+  mod:$CCMM$,d:['$','Boolean']};
+};
 ex$.$_Boolean=$_Boolean;
-function trueClass() {}
-initType(trueClass, "ceylon.language::true", $_Boolean);
-trueClass.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','true'],$t:{t:trueClass}};};
-function falseClass() {}
-initType(falseClass, "ceylon.language::false", $_Boolean);
-falseClass.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','false'],$t:{t:falseClass}};};
+function $_true() {return true;}
+initType($_true, "ceylon.language::true", $_Boolean);
+$_true.$crtmm$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','true']}};
+function $_false() {return false;}
+initType($_false, "ceylon.language::false", $_Boolean);
+$_false.$crtmm$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','false']}};
 Boolean.prototype.getT$name = function() {
-    return (this.valueOf()?trueClass:falseClass).$$.T$name;
+    return (this.valueOf()?$_true:$_false).$$.T$name;
 }
 Boolean.prototype.getT$all = function() {
-    return (this.valueOf()?trueClass:falseClass).$$.T$all;
+    return (this.valueOf()?$_true:$_false).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
@@ -21,6 +24,10 @@ atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?"true":"fals
   undefined,{$t:{t:$_String},pa:3,mod:$CCMM$,d:['$','Object','$at','string']});
 
 function getTrue() {return true;}
+getTrue.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','true'],$t:{t:$_true}};};
 function getFalse() {return false;}
-ex$.$prop$getTrue={get:getTrue,$crtmm$:trueClass.$crtmm$};
-ex$.$prop$getFalse={get:getFalse,$crtmm$:falseClass.$crtmm$};
+getFalse.$crtmm$=function(){return{mod:$CCMM$,pa:65,d:['$','false'],$t:{t:$_false}};};
+ex$.$prop$getTrue={get:getTrue,$crtmm$:getTrue.$crtmm$};
+ex$.$prop$getFalse={get:getFalse,$crtmm$:getFalse.$crtmm$};
+ex$.getTrue=getTrue;
+ex$.getFalse=getFalse;

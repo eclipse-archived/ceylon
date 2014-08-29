@@ -6,7 +6,7 @@ function type$meta(x,$$targs$$) {
     return getNothingType$meta$model();
   }
   if (x===true||x===false) {
-    var cls=x?trueClass:falseClass;
+    var cls=x?$_true:$_false;
     return AppliedClass(cls,{Type$Class:{t:cls},Arguments$Class:{t:Empty}});
   }
   var mm=getrtmm$$(x);
