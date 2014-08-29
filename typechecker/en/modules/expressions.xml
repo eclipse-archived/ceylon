@@ -368,7 +368,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     the invocation has an explicit type argument list, and 
                     the <literal>n</literal>th parameter of the function or
                     class is a callable parameter with the same number of 
-                    parameters as the anonymous function, or,</para>
+                    parameters as the anonymous function, or</para>
                 </listitem>
                 <listitem>
                     <para>the function or class has at least one type 
