@@ -66,10 +66,12 @@ public abstract class CeylonAntTask extends Task {
     private final String toolName;
     private File executable;
     private ExitHandler exitHandler = new ExitHandler();
-    private String verbose;
-    private List<Define> defines = new ArrayList<Define>(0);
     private Boolean fork;
     private boolean stacktraces;
+
+    private String cwd;
+    private String verbose;
+    private List<Define> defines = new ArrayList<Define>(0);
     
     private CeylonClassLoader loader;
     
@@ -87,6 +89,18 @@ public abstract class CeylonAntTask extends Task {
         return loader;
     }
     
+    protected String getCwd() {
+        return cwd;
+    }
+
+    /**
+     * Sets the current working directory
+     * @param cwd path to the current working directory
+     */
+    public void setCwd(String cwd) {
+        this.cwd = cwd;
+    }
+
     public void setVerbose(String verbose){
         this.verbose = verbose;
     }
@@ -265,6 +279,10 @@ public abstract class CeylonAntTask extends Task {
      * @param cmd
      */
     protected void completeCommandline(Commandline cmd) {
+        if (getCwd() != null) {
+            appendOptionArgument(cmd, "--cwd", getCwd());
+        }
+        
         appendVerboseOption(cmd, verbose);
         
         for (Define d : defines) {

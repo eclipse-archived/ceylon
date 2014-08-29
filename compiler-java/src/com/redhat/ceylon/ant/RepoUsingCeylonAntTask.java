@@ -31,12 +31,12 @@ import org.apache.tools.ant.types.Commandline;
  */
 abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
 
-    private Boolean offline = false;
-    private Boolean noDefaultRepositories = false;
+    private RepoSet reposet = new RepoSet();
     private String systemRepository;
     private String cacheRepository;
-    private String cwd;
-    private RepoSet reposet = new RepoSet();
+    private String mavenOverrides;
+    private Boolean noDefaultRepositories = false;
+    private Boolean offline = false;
     
     protected RepoUsingCeylonAntTask(String toolName) {
         super(toolName);
@@ -79,22 +79,22 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
 
     /**
      * Sets the cache repository
-     * @param rep path to the new cahce repository
+     * @param rep path to the new cache repository
      */
     public void setCacheRep(String rep) {
         cacheRepository = rep;
     }
 
-    protected String getCwd() {
-        return cwd;
+    protected String getMavenOverrides() {
+        return mavenOverrides;
     }
 
     /**
-     * Sets the current working directory
-     * @param cwd path to the current working directory
+     * Sets the path to the maven overrides XML file
+     * @param overrides the path to the maven overrides XML file
      */
-    public void setCwd(String cwd) {
-        this.cwd = cwd;
+    public void setMavenOverrides(String overrides) {
+        mavenOverrides = overrides;
     }
 
     /**
@@ -125,16 +125,16 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        if (getCwd() != null) {
-            appendOptionArgument(cmd, "--cwd", getCwd());
-        }
-        
         if (getSystemRepository() != null) {
             appendOptionArgument(cmd, "--sysrep", getSystemRepository());
         }
         
         if (getCacheRepository() != null) {
             appendOptionArgument(cmd, "--cacherep", getCacheRepository());
+        }
+        
+        if (getMavenOverrides() != null) {
+            appendOptionArgument(cmd, "--maven-overrides", getMavenOverrides());
         }
         
         if (offline) {
