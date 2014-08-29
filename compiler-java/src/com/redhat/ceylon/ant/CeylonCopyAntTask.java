@@ -34,8 +34,7 @@ import org.apache.tools.ant.types.Commandline;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Constants;
 
-
-public class CeylonCopyAntTask extends RepoUsingCeylonAntTask {
+public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Copy failed; see the error output for details.";
     

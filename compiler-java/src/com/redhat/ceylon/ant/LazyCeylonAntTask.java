@@ -39,13 +39,10 @@ import com.redhat.ceylon.launcher.ClassLoaderSetupException;
  * @see LazyHelper
  * @author tom
  */
-abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy {
+abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements Lazy {
 
     private Path src;
     private String encoding;
-    private String out;
-    private String user;
-    private String pass;
     private Boolean noMtimeCheck = false;
     
     protected LazyCeylonAntTask(String toolName) {
@@ -95,20 +92,6 @@ abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy 
     }
 
     /**
-     * Sets the user name for the output module repository (HTTP only)
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * Sets the password for the output module repository (HTTP only)
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-    
-    /**
      * Sets whether a file modification time check should be performed
      * @param noMtimeCheck
      */
@@ -120,32 +103,9 @@ abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy 
         return noMtimeCheck;
     }
 
-    /**
-     * Set the destination repository into which the Java source files should be
-     * compiled.
-     * @param out the destination repository
-     */
-    public void setOut(String out) {
-        this.out = out;
-    }
-
-    public String getOut() {
-        if (this.out == null) {
-            return new File(getProject().getBaseDir(), Constants.DEFAULT_MODULE_DIR).getPath();
-        }
-        return this.out;
-    }
-    
     @Override
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
-        
-        if (out != null) {
-            appendOptionArgument(cmd, "--out", out);
-        }
-
-        appendUserOption(cmd, user);
-        appendPassOption(cmd, pass);
         
         if (encoding != null) {
             appendOptionArgument(cmd, "--encoding", encoding);

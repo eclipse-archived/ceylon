@@ -20,17 +20,13 @@
 
 package com.redhat.ceylon.ant;
 
-import java.io.File;
-
 import org.apache.tools.ant.types.Commandline;
-
-import com.redhat.ceylon.common.Constants;
 
 /**
  * Ant task wrapping the {@code ceylon import-jar} tool
  * @author tom
  */
-public class CeylonImportJarAntTask extends CeylonAntTask {
+public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
 
     public CeylonImportJarAntTask() {
         super("import-jar");
@@ -41,39 +37,9 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
         return "import-jar failed";
     }
     
-    private String out;
-    private String pass;
-    private String user;
     private String module;
     private String jar;
     private String descriptor;
-
-    protected String getOut() {
-        if (this.out == null) {
-            return new File(getProject().getBaseDir(), Constants.DEFAULT_MODULE_DIR).getPath();
-        }
-        return this.out;
-    }
-
-    public void setOut(String out) {
-        this.out = out;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
 
     public String getModule() {
         return module;
@@ -102,13 +68,6 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
     @Override
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
-        
-        appendUserOption(cmd, getUser());
-        appendPassOption(cmd, getPass());
-        
-        if (out != null) {
-            appendOptionArgument(cmd, "--out", getOut());
-        }
         
         if (descriptor != null) {
             appendOptionArgument(cmd, "--descriptor", getDescriptor());

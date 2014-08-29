@@ -333,26 +333,6 @@ public abstract class CeylonAntTask extends Task {
     }
     
     /**
-     * Adds a {@code --user=user} to the given command line iff the given user 
-     * is not null.
-     * @param cmd The command line
-     * @param user The user
-     */
-    protected static void appendUserOption(Commandline cmd, String user) {
-        appendOptionArgument(cmd, "--user", user);
-    }
-    
-    /**
-     * Adds a {@code --pass=pass} to the given command line iff the given 
-     * password is not null.
-     * @param cmd The command line
-     * @param pass The password
-     */
-    protected static void appendPassOption(Commandline cmd, String pass) {
-        appendOptionArgument(cmd, "--pass", pass);
-    }
-    
-    /**
      * Adds a long option argument to the given command line iff the given 
      * value is not null.
      * @param cmd The command line
