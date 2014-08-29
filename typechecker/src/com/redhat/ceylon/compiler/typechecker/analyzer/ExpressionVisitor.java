@@ -1633,13 +1633,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.InvocationExpression that) {
         
         Tree.Primary p = that.getPrimary();
-        if (p==null) {
-            //TODO: can this actually occur??
-            that.addError("malformed invocation expression");
-        }
-        else {
-            p.visit(this);
-        }
+        p.visit(this);
         
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
@@ -1669,74 +1663,135 @@ public class ExpressionVisitor extends Visitor {
 
     private void inferParameterTypes(Tree.Primary p,
             Tree.PositionalArgumentList pal) {
-        if (p instanceof Tree.MemberOrTypeExpression) {
-            //TODO: unwrap parens?
+        Tree.Term term = unwrapExpressionUntilTerm(p);
+        if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) p;
+                    (Tree.MemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
             if (dec instanceof Functional) {
-                Tree.TypeArguments tas = 
-                        mte instanceof Tree.StaticMemberOrTypeExpression ?
-                                ((Tree.StaticMemberOrTypeExpression) mte).getTypeArguments() : null;
-                List<TypeParameter> tps = ((Functional) dec).getTypeParameters();
-                ProducedReference pr;
-                if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
-                        !(((Tree.QualifiedMemberOrTypeExpression) p).getPrimary() instanceof Tree.Package)) {
-                    Tree.QualifiedMemberOrTypeExpression qmte = 
-                            (Tree.QualifiedMemberOrTypeExpression) p;
-                    ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
-                    ProducedType qt = unwrap(pt, qmte);
-                    pr = qt.getTypedReference(dec,
-                            getTypeArguments(tas, tps, qt));
+                inferParameterTypesDirectly(dec, pal, mte);
+            }
+            else if (dec instanceof Value) {
+                ProducedType pt = ((Value) dec).getType();
+                inferParameterTypesIndirectly(pal, pt);
+            }
+        }
+        else {
+            inferParameterTypesIndirectly(pal, p.getTypeModel());
+        }
+    }
+
+    private void inferParameterTypesIndirectly(Tree.PositionalArgumentList pal,
+            ProducedType pt) {
+        if (unit.isCallableType(pt)) {
+            List<ProducedType> paramTypes = 
+                    unit.getCallableArgumentTypes(pt);
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            for (int i=0; i<paramTypes.size() && i<args.size(); i++) {
+                ProducedType paramType = paramTypes.get(i);
+                Tree.PositionalArgument arg = args.get(i);
+                if (unit.isCallableType(paramType) && 
+                        arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = (Tree.ListedArgument) arg;
+                    Tree.Expression e = la.getExpression();
+                    if (e!=null && 
+                            e.getTerm() instanceof Tree.FunctionArgument) {
+                        Tree.FunctionArgument anon = 
+                                (Tree.FunctionArgument) e.getTerm();
+                        List<Tree.ParameterList> apls = anon.getParameterLists();
+                        if (!apls.isEmpty()) {
+                            List<ProducedType> types = 
+                                    unit.getCallableArgumentTypes(paramType);
+                            List<Tree.Parameter> aps = apls.get(0).getParameters();
+                            for (int j=0; j<types.size() && j<aps.size(); j++) {
+                                ProducedType type = types.get(j);
+                                Tree.Parameter ap = aps.get(j);
+                                if (ap instanceof Tree.InitializerParameter) {
+                                    Parameter parameter = ap.getParameterModel();
+                                    if (parameter.getModel()==null) {
+                                        Value model = new Value();
+                                        model.setUnit(unit);
+                                        model.setType(type);
+                                        model.setName(parameter.getName());
+                                        parameter.setModel(model);
+                                        model.setInitializerParameter(parameter);
+                                        Method fun = anon.getDeclarationModel();
+                                        model.setContainer(fun);
+                                        fun.addMember(model);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else {
-                    ProducedType qt = p.getScope().getDeclaringType(dec);
-                    pr = dec.getProducedReference(qt,
-                            getTypeArguments(tas, tps, qt));
-                }
-                List<ParameterList> pls = 
-                        ((Functional) dec).getParameterLists();
-                if (!pls.isEmpty()) {
-                    ParameterList pl = pls.get(0);
-                    List<Parameter> params = pl.getParameters();
-                    List<Tree.PositionalArgument> args = 
-                            pal.getPositionalArguments();
-                    for (int i=0; i<params.size() && i<args.size(); i++) {
-                        Parameter param = params.get(i);
-                        Tree.PositionalArgument arg = args.get(i);
-                        if (param.getModel() instanceof Functional && 
-                                arg instanceof Tree.ListedArgument) {
-                            Tree.ListedArgument la = (Tree.ListedArgument) arg;
-                            Tree.Expression e = la.getExpression();
-                            if (e!=null && 
-                                    e.getTerm() instanceof Tree.FunctionArgument) {
-                                Tree.FunctionArgument anon = 
-                                        (Tree.FunctionArgument) e.getTerm();
-                                Functional f = (Functional) param.getModel();
-                                List<ParameterList> fpls = f.getParameterLists();
-                                List<Tree.ParameterList> apls = anon.getParameterLists();
-                                if (!fpls.isEmpty() && !apls.isEmpty()) {
-                                    List<Parameter> fps = fpls.get(0).getParameters();
-                                    List<Tree.Parameter> aps = apls.get(0).getParameters();
-                                    for (int j=0; j<fps.size() && j<aps.size(); j++) {
-                                        Parameter fp = fps.get(j);
-                                        Tree.Parameter ap = aps.get(j);
-                                        if (ap instanceof Tree.InitializerParameter) {
-                                            Parameter parameter = ap.getParameterModel();
-                                            if (parameter.getModel()==null) {
-                                                ProducedType t = 
-                                                        pr.getTypedParameter(fp).getType();
-                                                Value model = new Value();
-                                                model.setUnit(unit);
-                                                model.setType(t);
-                                                model.setName(parameter.getName());
-                                                parameter.setModel(model);
-                                                model.setInitializerParameter(parameter);
-                                                Method fun = anon.getDeclarationModel();
-                                                model.setContainer(fun);
-                                                fun.addMember(model);
-                                            }
-                                        }
+            }
+        }
+    }
+
+    private void inferParameterTypesDirectly(Declaration dec,
+            Tree.PositionalArgumentList pal,
+            Tree.MemberOrTypeExpression mte) {
+        Tree.TypeArguments tas = 
+                mte instanceof Tree.StaticMemberOrTypeExpression ?
+                        ((Tree.StaticMemberOrTypeExpression) mte).getTypeArguments() : null;
+        List<TypeParameter> tps = ((Functional) dec).getTypeParameters();
+        ProducedReference pr;
+        if (mte instanceof Tree.QualifiedMemberOrTypeExpression &&
+                !(((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary() instanceof Tree.Package)) {
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) mte;
+            ProducedType pt = qmte.getPrimary().getTypeModel().resolveAliases();
+            ProducedType qt = unwrap(pt, qmte);
+            pr = qt.getTypedReference(dec,
+                    getTypeArguments(tas, tps, qt));
+        }
+        else {
+            ProducedType qt = mte.getScope().getDeclaringType(dec);
+            pr = dec.getProducedReference(qt,
+                    getTypeArguments(tas, tps, qt));
+        }
+        List<ParameterList> pls = 
+                ((Functional) dec).getParameterLists();
+        if (!pls.isEmpty()) {
+            ParameterList pl = pls.get(0);
+            List<Parameter> params = pl.getParameters();
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            for (int i=0; i<params.size() && i<args.size(); i++) {
+                Parameter param = params.get(i);
+                Tree.PositionalArgument arg = args.get(i);
+                if (param.getModel() instanceof Functional && 
+                        arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = (Tree.ListedArgument) arg;
+                    Tree.Expression e = la.getExpression();
+                    if (e!=null && 
+                            e.getTerm() instanceof Tree.FunctionArgument) {
+                        Tree.FunctionArgument anon = 
+                                (Tree.FunctionArgument) e.getTerm();
+                        Functional f = (Functional) param.getModel();
+                        List<ParameterList> fpls = f.getParameterLists();
+                        List<Tree.ParameterList> apls = anon.getParameterLists();
+                        if (!fpls.isEmpty() && !apls.isEmpty()) {
+                            List<Parameter> fps = fpls.get(0).getParameters();
+                            List<Tree.Parameter> aps = apls.get(0).getParameters();
+                            for (int j=0; j<fps.size() && j<aps.size(); j++) {
+                                Parameter fp = fps.get(j);
+                                Tree.Parameter ap = aps.get(j);
+                                if (ap instanceof Tree.InitializerParameter) {
+                                    Parameter parameter = ap.getParameterModel();
+                                    if (parameter.getModel()==null) {
+                                        ProducedType t = 
+                                                pr.getTypedParameter(fp).getType();
+                                        Value model = new Value();
+                                        model.setUnit(unit);
+                                        model.setType(t);
+                                        model.setName(parameter.getName());
+                                        parameter.setModel(model);
+                                        model.setInitializerParameter(parameter);
+                                        Method fun = anon.getDeclarationModel();
+                                        model.setContainer(fun);
+                                        fun.addMember(model);
                                     }
                                 }
                             }
@@ -4116,7 +4171,7 @@ public class ExpressionVisitor extends Visitor {
         boolean notDirectlyInvoked = !that.getDirectlyInvoked();
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, notDirectlyInvoked);
-        if (member!=null && !that.getDirectlyInvoked()) {
+        if (member!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal)) {
                 List<ProducedType> ta = getTypeArguments(tal, 

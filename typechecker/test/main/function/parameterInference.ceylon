@@ -15,4 +15,13 @@ void parameterInference() {
         case (is Float) { return num; } 
     }
     @type:"Float|Integer" value reduced3 = (1..10).reduce<Float>((r, x) => float(r)+x);
+    
+    T? fun<T>({T*} ts)(Boolean match(T t)) => ts.find(match);
+    Character?(Boolean(Character)) fun1 = fun("goodbye*world");
+    
+    Character? found
+            = fun("hello-world")
+    ((ch)=>!ch.letter);
+    Character? found1
+            = fun1((ch)=>!ch.letter);
 }
