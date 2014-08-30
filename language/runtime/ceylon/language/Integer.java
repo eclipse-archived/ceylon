@@ -421,11 +421,11 @@ public final class Integer
     public static int getCharacter(long value) {
         if (value>java.lang.Integer.MAX_VALUE ||
             value<java.lang.Integer.MIN_VALUE) {
-            throw new OverflowException();
+            throw new OverflowException(value + " is not a 32-bit integer");
         }
         int result = Util.toInt(value);
         if (!java.lang.Character.isDefined(result)) {
-            throw new OverflowException();
+            throw new OverflowException(value + " is not a Unicode code point");
         }
         return result;
     }

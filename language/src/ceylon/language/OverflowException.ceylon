@@ -10,5 +10,5 @@
    thus never result in an `OverflowException`, and, 
  - likewise, arithmetic operations on [[Float]] produce the 
    value [[infinity]] instead of overflowing."
-shared class OverflowException()
-        extends Exception("Numeric overflow", null) {}
+shared class OverflowException(String message="Numeric overflow")
+        extends Exception(message) {}
