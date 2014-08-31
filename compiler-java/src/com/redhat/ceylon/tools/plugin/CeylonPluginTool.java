@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -199,17 +200,26 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                 if (child.isDirectory()) {
                     File[] modfiles = child.listFiles();
                     for (File f : modfiles) {
-                        if (f.isFile() && f.getName().startsWith("ceylon-")) {
+                        if (isScript(f)) {
                             scripts.add(f.getName() + " (" + child.getName() + ")");
                         }
                     }
-                } else if (child.isFile() && child.getName().startsWith("ceylon-")) {
+                } else if (isScript(child)) {
                     scripts.add(child.getName());
                 }
             }
         }
     }
 
+    private boolean isScript(File f) {
+        if (f.isFile() && f.getName().startsWith("ceylon-") && f.canExecute()) {
+            boolean isWinScript = OSUtil.isWindows() && f.getName().toLowerCase().endsWith(".bat");
+            boolean isUnixScript = !OSUtil.isWindows() && !f.getName().toLowerCase().endsWith(".bat");
+            return isWinScript || isUnixScript;
+        }
+        return false;
+    }
+    
     private boolean installScripts(RepositoryManager repositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
         String version = module.getVersion();
         if(!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
