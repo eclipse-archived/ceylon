@@ -183,7 +183,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
             String[] tmp = new String[artifacts.size()];
             ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts.toArray(tmp));
-            ac.setFetchSingleArtifact(!recursive);
+            ac.setIgnoreDependencies(!recursive);
             copier.copyModule(ac);
         }
     }
