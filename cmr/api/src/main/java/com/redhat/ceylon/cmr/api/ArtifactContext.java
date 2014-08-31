@@ -82,7 +82,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean throwErrorIfMissing;
     private boolean forceOperation;
     private boolean forceDescriptorCheck;
-    private boolean fetchSingleArtifact;
+    private boolean ignoreDependencies;
     private ArtifactCallback callback;
     private Repository repository;
 
@@ -305,12 +305,12 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.forceDescriptorCheck = forceDescriptorCheck;
     }
 
-    public boolean isFetchSingleArtifact() {
-        return fetchSingleArtifact;
+    public boolean isIgnoreDependencies() {
+        return ignoreDependencies;
     }
 
-    public void setFetchSingleArtifact(boolean fetchSingleArtifact) {
-        this.fetchSingleArtifact = fetchSingleArtifact;
+    public void setIgnoreDependencies(boolean ignoreDependencies) {
+        this.ignoreDependencies = ignoreDependencies;
     }
 
     public ArtifactCallback getCallback() {
@@ -368,7 +368,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         throwErrorIfMissing = ac.throwErrorIfMissing;
         forceOperation = ac.forceOperation;
         forceDescriptorCheck = ac.forceDescriptorCheck;
-        fetchSingleArtifact = ac.fetchSingleArtifact;
+        ignoreDependencies = ac.ignoreDependencies;
         callback = ac.callback;
         return ac;
     }

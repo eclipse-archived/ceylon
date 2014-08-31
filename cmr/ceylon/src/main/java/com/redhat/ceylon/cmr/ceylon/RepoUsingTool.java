@@ -211,7 +211,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (!forceCompilation && !checkCompilation && (ModuleUtil.isDefaultModule(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
-            ac.setFetchSingleArtifact(true);
+            ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
@@ -411,7 +411,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
         if (checkCompilation) {
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
-            ac.setFetchSingleArtifact(true);
+            ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
             if (artifile == null) {

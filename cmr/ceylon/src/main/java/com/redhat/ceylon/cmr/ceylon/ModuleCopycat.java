@@ -141,7 +141,7 @@ public class ModuleCopycat {
                 if (feedback != null) {
                     feedback.afterCopyModule(context, count, maxCount);
                 }
-                if (!context.isFetchSingleArtifact()) {
+                if (!context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleInfo dep : ver.getDependencies()) {
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());

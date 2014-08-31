@@ -155,7 +155,7 @@ public class AetherUtils {
             return fetchWithClassifier(repository, groupId, artifactId, version, "sources", repositoryDisplayString);
         }
 
-        return fetchDependencies(repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), repositoryDisplayString);
+        return fetchDependencies(repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
     }
 
     private ArtifactResult fetchDependencies(Repository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
