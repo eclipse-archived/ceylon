@@ -54,7 +54,7 @@ public class JsModuleManager extends ModuleManager {
                 }
                 ArtifactContext ac = new ArtifactContext(Module.LANGUAGE_MODULE_NAME,
                         module.getLanguageModule().getVersion(), ArtifactContext.JS_MODEL);
-                ac.setFetchSingleArtifact(true);
+                ac.setIgnoreDependencies(true);
                 ac.setThrowErrorIfMissing(true);
                 ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
                 resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
@@ -67,7 +67,7 @@ public class JsModuleManager extends ModuleManager {
         if (js.getName().endsWith(ArtifactContext.JS) && !js.getName().endsWith(ArtifactContext.JS_MODEL)) {
             ArtifactContext ac = new ArtifactContext(artifact.name(),
                     artifact.version(), ArtifactContext.JS_MODEL);
-            ac.setFetchSingleArtifact(true);
+            ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(true);
             ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
             js = lmar.artifact();
