@@ -567,7 +567,23 @@ String result = middleObject.string;</programlisting>
             initialization of other toplevel references. Therefore, it is possible that
             a cycle could occur where evaluation of a toplevel reference occurs while
             evaluating its initializer expression. When this occurs, an 
-            <literal>InitializationException</literal> is thrown.</para>
+            <literal>InitializationError</literal> is thrown.</para>
+            
+        </section>
+        
+        <section if="lateinitialization">
+            <title>Initialization of late references</title>
+            
+            <para>A reference annotated <literal>late</literal> may be uninitialized in a 
+            given frame. The rules of the language do not guarantee that an uninitialized 
+            <literal>late</literal> reference is never evaluated at runtime. If a
+            <literal>late</literal> reference which is uninitialized in the current frame 
+            or current instance is evaluated, an <literal>InitializationError</literal>
+            is thrown.</para>
+            
+            <para>Lifewise, if a non-<literal>variable</literal> <literal>late</literal> 
+            reference which is already initialized in the current frame or current instance
+            is assigned, an <literal>InitializationError</literal> is thrown.</para>
             
         </section>
         
