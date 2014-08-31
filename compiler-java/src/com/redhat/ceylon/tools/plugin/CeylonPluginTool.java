@@ -70,7 +70,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
     }
 
-    private static enum Mode{
+    public static enum Mode {
         pack, list, install, uninstall;
     }
 
@@ -99,7 +99,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         this.mode = mode;
     }
 
-    @Option
+    @Option(shortName='f')
     @Description("Force installation even if a previous version exists")
     public void setForce(boolean force) {
         this.force = force;
@@ -111,14 +111,22 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         this.system = system;
     }
 
-    @OptionArgument(longName="src", argumentName="dir")
+    @OptionArgument(shortName='s', longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("A directory containing Ceylon and/or Java/JavaScript source code (default: `./source`)")
-    public void setSourceFolders(List<File> sourceFolders) {
+    public void setSrcFolders(List<File> sourceFolders) {
         this.sourceFolders = sourceFolders;
     }
     
-    @OptionArgument(longName="script", argumentName="dirs")
+    @OptionArgument(longName="source", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSourceFolders(List<File> source) {
+        setSrcFolders(source);
+    }
+    
+    @OptionArgument(shortName='x', longName="script", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("A directory containing your module documentation (default: `./script`)")
     public void setScriptFolders(List<File> scriptFolders) {
