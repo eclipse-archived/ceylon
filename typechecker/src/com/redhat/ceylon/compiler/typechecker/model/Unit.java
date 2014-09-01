@@ -311,6 +311,24 @@ public class Unit {
         return null;
     }
     
+    /**
+     * Search for a declaration in {@code ceylon.language.serialization} 
+     */
+    public Declaration getLanguageModuleSerializationDeclaration(String name) {
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = 
+                    languageModule.getPackage("ceylon.language.serialization");
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+    
     public Interface getCorrespondenceDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Correspondence");
     }
