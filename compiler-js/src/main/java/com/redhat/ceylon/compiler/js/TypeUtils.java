@@ -77,8 +77,8 @@ public class TypeUtils {
                 } else {
                     closeBracket = pt.getDeclaration() instanceof TypeAlias==false;
                     if (closeBracket)gen.out("{t:");
-                    outputQualifiedTypename(
-                            gen.isImported(node == null ? null : node.getUnit().getPackage(), pt.getDeclaration()),
+                    outputQualifiedTypename(node,
+                            node != null && gen.isImported(node.getUnit().getPackage(), pt.getDeclaration()),
                             pt, gen, skipSelfDecl);
                 }
                 if (hasParams) {
@@ -102,7 +102,7 @@ public class TypeUtils {
         gen.out("}");
     }
 
-    static void outputQualifiedTypename(final boolean imported, final ProducedType pt,
+    static void outputQualifiedTypename(final Node node, final boolean imported, final ProducedType pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         final String qname = t.getQualifiedNameString();
@@ -119,6 +119,7 @@ public class TypeUtils {
                 gen.out(modAlias, ".");
             }
             if (t.getContainer() instanceof ClassOrInterface) {
+                final Scope scope = node == null ? null : Util.getContainingClassOrInterface(node.getScope());
                 List<ClassOrInterface> parents = new ArrayList<>();
                 ClassOrInterface parent = (ClassOrInterface)t.getContainer();
                 parents.add(0, parent);
@@ -127,7 +128,13 @@ public class TypeUtils {
                     parents.add(0, parent);
                 }
                 for (ClassOrInterface p : parents) {
-                    gen.out(gen.getNames().name(p), ".");
+                    if (p==scope) {
+                        if (gen.opts.isOptimize()) {
+                            gen.out(gen.getNames().self(p), ".");
+                        }
+                    } else {
+                        gen.out(gen.getNames().name(p), ".");
+                    }
                 }
             }
 
@@ -147,10 +154,12 @@ public class TypeUtils {
             if (type instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)type, gen, skipSelfDecl);
             } else if (type instanceof TypeAlias) {
-                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen, skipSelfDecl);
+                outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
+                        pt, gen, skipSelfDecl);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen, skipSelfDecl);
+                outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
+                        pt, gen, skipSelfDecl);
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     final Map<TypeParameter,ProducedType> targs;
                     if (pt.getDeclaration().isToplevel()) {
@@ -772,10 +781,10 @@ public class TypeUtils {
             if (type instanceof TypeParameter) {
                 gen.out("'", type.getNameAsString(), "$", ((TypeParameter)type).getDeclaration().getName(), "'");
             } else if (type instanceof TypeAlias) {
-                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen, false);
+                outputQualifiedTypename(null, gen.isImported(pkg, type), pt, gen, false);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen, false);
+                outputQualifiedTypename(null, gen.isImported(pkg, type), pt, gen, false);
                 //Type Parameters
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:{");

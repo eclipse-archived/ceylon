@@ -114,7 +114,7 @@ public class MetamodelHelper {
             } else {
                 gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedMemberClass$meta$model()(");
             }
-            TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
+            TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                     that.getTypeModel().getVarianceOverrides());
@@ -130,7 +130,7 @@ public class MetamodelHelper {
             } else {
                 gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedMemberInterface$meta$model()(");
             }
-            TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
+            TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                     that.getTypeModel().getVarianceOverrides());
