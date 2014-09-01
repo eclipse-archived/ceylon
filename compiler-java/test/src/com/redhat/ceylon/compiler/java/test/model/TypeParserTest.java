@@ -51,10 +51,16 @@ public class TypeParserTest {
         static final ModelLoader instance = new MockLoader();
 
         private Map<String, Class> classes = new HashMap<String,Class>();
+        private Module mod = new Module();
         private Package pkg = new Package();
+        private Unit unit = new Unit();
         
         private MockLoader(){
+            mod.setName(Arrays.asList(""));
+            mod.setLanguageModule(new Module());
             pkg.setName(Arrays.asList(""));
+            pkg.setModule(mod);
+            unit.setPackage(pkg);
             Class a = makeClass("a");
             makeClass("b", a);
             makeClass("b");
@@ -66,7 +72,9 @@ public class TypeParserTest {
             makeParameterisedClass("t2", t2);
             Package otherPkg = new Package();
             otherPkg.setName(Arrays.asList("pkg"));
-            makeClass("b", otherPkg);
+            makeClass("a", otherPkg);
+            Class b = makeClass("b", otherPkg);
+            makeClass("c", b);
         }
 
         
@@ -108,8 +116,10 @@ public class TypeParserTest {
         private Class makeClass(String name, Scope container) {
             Class klass = new Class();
             klass.setName(name);
+            klass.setUnit(unit);
+            klass.setShared(true);
             if(container != null){
-                container.getMembers().add(klass);
+                container.addMember(klass);
                 klass.setContainer(container);
                 classes.put(container.getQualifiedNameString()+"."+name, klass);
             }else{
@@ -136,12 +146,15 @@ public class TypeParserTest {
     private Module mockModule = new Module(){
         private Package mockPackage = new Package(){
             public Module getModule() {
+                mockModule.setName(Arrays.asList(""));
                 return mockModule;
             }
         };
         public Package getPackage(String name) {
+            mockPackage.setName(Arrays.asList(""));
             return mockPackage;
         }
+        
     };
     
     @Test
@@ -400,6 +413,23 @@ public class TypeParserTest {
         Assert.assertEquals("pkg::b", declaration.getQualifiedNameString());
 
         Assert.assertNull(type.getQualifyingType());
+    }
+
+    @Test
+    public void testComplexQualified(){
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("<pkg::a&pkg::b>.c", null, mockModule, mockUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("pkg::b.c", declaration.getQualifiedNameString());
+
+        ProducedType qualifyingType = type.getQualifyingType();
+        Assert.assertNotNull(qualifyingType);
+        TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
+        Assert.assertNotNull(qualifyingDeclaration);
+        Assert.assertTrue(qualifyingDeclaration instanceof IntersectionType);
+        Assert.assertEquals("a&b", qualifyingDeclaration.getName());
     }
 
     @Test(expected = ModelResolutionException.class)
