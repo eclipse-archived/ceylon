@@ -243,3 +243,18 @@ void inferenceAndSequencedAliases() {
     @type:"Test1<Integer>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
     @type:"Test2<Integer>" value test2x = Test2 { x = [(Integer x) => x]; };
 }
+
+void inferenceAndVariance() {
+    class Consumer<in T>(void consume(T t)) {}
+    class Producer<out T>(T t) {}
+    class Inv<T>() {}
+    class Test<in X, out Y>(
+        Producer<X> px, Producer<Y> py, 
+        Consumer<X> cx, Consumer<Y> cy) {}
+    @type:"Test<Integer,Integer>" @error Test(Producer(1.0), Producer(1), 
+        Consumer(void (Integer t) {}), Consumer(void (Float t) {}));
+    class Test2<in X, out Y>(Inv<X> invx, Inv<Y> invy) {}
+    @type:"Test2<Integer,Integer>" Test2(Inv<Integer>(), Inv<Integer>());
+    class Weird<in T>(T t) {}
+    @type:"Weird<Anything>" Weird("");
+}
