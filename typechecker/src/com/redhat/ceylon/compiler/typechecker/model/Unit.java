@@ -1258,6 +1258,7 @@ public class Unit {
         put("deprecated");
         put("annotation");
         put("optional");
+        put("serializable");
     }
     public Map<String, String> getModifiers() {
         return modifiers;

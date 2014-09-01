@@ -1209,7 +1209,14 @@ public class DeclarationVisitor extends Visitor {
                 model.setAnnotation(true);
             }
         }
-        
+        if (hasAnnotation(al, "serializable", unit)) {
+            if (model instanceof Class) {
+                ((Class) model).setSerializable(true);
+            }
+            else {
+                that.addError("declaration is not a class, and may not be annotated serializable", 1600);
+            }
+        }
         buildAnnotations(al, model.getAnnotations());        
     }
 
