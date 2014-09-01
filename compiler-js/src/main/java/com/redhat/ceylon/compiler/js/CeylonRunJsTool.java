@@ -107,12 +107,39 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
     }
 
+    private static String findNodeInPath(String path) {
+        if (path != null) {
+            String [] paths = path.split(File.pathSeparator);
+            for (String p : paths) {
+                String d = p.endsWith(File.separator) ? p : p + File.separator;
+                String np = d + "node";
+                if (isExe(np)) {
+                    return np;
+                }
+                np = d + "node.exe";
+                if (isExe(np)) {
+                    return np;
+                }
+                np = d + "nodejs";
+                if (isExe(np)) {
+                    return np;
+                }
+                np = d + "nodejs.exe";
+                if (isExe(np)) {
+                    return np;
+                }
+            }
+        }
+        return null;
+    }
+
     /** Finds the full path to the node.js executable. */
     public static String findNode() {
         String path = getNodeExe();
         if (path != null && !path.isEmpty() && isExe(path)) {
             return path;
         }
+        //quick search for most common cases
         String[] paths = { "/usr/bin/node", "/usr/bin/nodejs", "/usr/local/bin/node", "/bin/node", "/opt/bin/node",
                 "C:\\Program Files\\nodejs\\node.exe", "C:\\Program Files (x86)\\nodejs\\node.exe",
                 "C:\\Program Files\\nodejs\\nodejs.exe", "C:\\Program Files (x86)\\nodejs\\nodejs.exe" };
@@ -122,26 +149,14 @@ public class CeylonRunJsTool extends RepoUsingTool {
             }
         }
         //Now let's look for the executable in all path elements
-        String winpath = System.getenv("Path");
-        if (winpath != null) {
-            paths = winpath.split(File.pathSeparator);
-            for (String p : paths) {
-                String np = p.endsWith(File.separator) ? p + "node.exe" : p + File.separator + "node.exe";
-                if (isExe(np)) {
-                    return np;
-                }
-            }
-        }
+        String winpath = findNodeInPath(System.getenv("Path"));
         //And why not, look for it in PATH
-        winpath = System.getenv("PATH");
         if (winpath != null) {
-            paths = winpath.split(File.pathSeparator);
-            for (String p : paths) {
-                String np = p.endsWith(File.separator) ? p + "node" : p + File.separator + "node";
-                if (isExe(np)) {
-                    return np;
-                }
-            }
+            return winpath;
+        }
+        winpath = findNodeInPath(System.getenv("PATH"));
+        if (winpath != null) {
+            return winpath;
         }
         String errmsg = "Could not find 'node' executable. Please install node.js (from http://nodejs.org)."
                 + "\nMake sure the path to the node executable is included in your PATH environment variable."
