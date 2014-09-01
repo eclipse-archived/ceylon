@@ -4487,20 +4487,26 @@ public class ExpressionVisitor extends Visitor {
             type = (TypeDeclaration) handleAbstraction(type, that);
             that.setDeclaration(type);
             if (error) {
-                checkBaseTypeAndConstructorVisibility(that, name, type);
-                checkConcreteClass(type, that);
-                checkSealedReference(type, that);
+                if (checkConcreteClass(type, that)) {
+                    if (checkSealedReference(type, that)) {
+                        checkBaseTypeAndConstructorVisibility(that, name, type);
+                    }
+                }
             }
         }
         return type;
     }
 
-    private void checkConcreteClass(TypeDeclaration type,
+    private boolean checkConcreteClass(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
             if (!(type instanceof ClassOrInterface)) {
                 that.addError("type cannot be instantiated: '" +
                         type.getName(unit) + "' is not a class or interface");
+                return false;
+            }
+            else {
+                return true;
             }
         }
         else {
@@ -4508,28 +4514,41 @@ public class ExpressionVisitor extends Visitor {
                 if (((Class) type).isAbstract()) {
                     that.addError("class cannot be instantiated: '" +
                             type.getName(unit) + "' is abstract");
+                    return false;
+                }
+                else {
+                    return true;
                 }
             }
             else if (type instanceof TypeParameter) {
                 if (((TypeParameter) type).getParameterList()==null) {
                     that.addError("type parameter cannot be instantiated: '" +
                             type.getName(unit) + "'");
+                    return false;
+                }
+                else {
+                    return true;
                 }
             }
             else {
                 that.addError("type cannot be instantiated: '" +
                         type.getName(unit) + "' is not a class");
+                return false;
             }
         }
     }
 
-	private void checkSealedReference(TypeDeclaration type,
+	private boolean checkSealedReference(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
 	    if (type.isSealed() && !inSameModule(type) &&
 	    		(!that.getStaticMethodReferencePrimary())) {
 	    	that.addError("invokes or references a sealed class in a different module: '" +
 	    			type.getName(unit) + "' in '" + 
 	    			type.getUnit().getPackage().getModule().getNameAsString() + "'");
+	    	return false;
+	    }
+	    else {
+	        return true;
 	    }
     }
     
@@ -4678,9 +4697,11 @@ public class ExpressionVisitor extends Visitor {
                     type.setOtherInstanceAccess(true);
                 }
                 if (error) {
-                    checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
-                    checkConcreteClass(type, that);
-                    checkSealedReference(type, that);
+                    if (checkConcreteClass(type, that)) {
+                        if (checkSealedReference(type, that)) {
+                            checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
+                        }
+                    }
                     if (!inExtendsClause) {
                         checkSuperMember(that);
                     }
