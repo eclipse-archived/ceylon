@@ -64,6 +64,12 @@ shared void issue225_1(Integer|String content){}
 shared alias Issue225Alias => Integer|String;
 shared void issue225_2(Issue225Alias content){}
 
+shared class Issue412() {
+  alias Boom => String;
+  List<Boom> boom = Singleton<Boom>("BOOM!");
+  shared Object? bleh => boom.first;
+}
+
 void testAliasing() {
     print("testing type aliases");
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
@@ -82,4 +88,5 @@ void testAliasing() {
     check(xxxxx2 is String&List<Anything>, "is String&List");
     function cualquiera(Boolean* bits) => any(bits);
     check(cualquiera(true,true,true), "seq arg method alias");
+    check(Issue412().bleh exists, "Issue 412");
 }
