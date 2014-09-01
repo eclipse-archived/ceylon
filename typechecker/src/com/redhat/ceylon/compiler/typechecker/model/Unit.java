@@ -276,7 +276,7 @@ public class Unit {
     }
 
     /**
-     * Search for a declaration in {@code ceylon.language.model} 
+     * Search for a declaration in {@code ceylon.language.meta.model} 
      */
     public Declaration getLanguageModuleModelDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
@@ -294,7 +294,7 @@ public class Unit {
     }
     
     /**
-     * Search for a declaration in {@code ceylon.language.model.declaration} 
+     * Search for a declaration in {@code ceylon.language.meta.declaration} 
      */
     public Declaration getLanguageModuleDeclarationDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
