@@ -150,8 +150,13 @@ atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','integer']};});
 atr$(JSNum$proto, '$_byte', function(){ return Byte(this); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','byte']};});
-atr$(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
-  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
+atr$(JSNum$proto, 'character', function(){
+  var c=this.valueOf();
+  if (c < -2147483648 || c > 0x7fffffff) {
+    throw OverflowException(c + ' is not a 32-bit integer');
+  }
+  return Character(this.valueOf());
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
 atr$(JSNum$proto, 'successor', function(){ return this+1; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','successor']};});
 atr$(JSNum$proto, 'predecessor', function(){ return this-1; },
