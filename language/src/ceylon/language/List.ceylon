@@ -14,6 +14,14 @@
    A `List` is a [[Collection]] of its elements, and a 
    [[Correspondence]] from indices to elements.
    
+   Every list has a well-defined and stable iteration order.
+   An [[iterator]] of the list is required to return the
+   elements of the list in order of increasing index, 
+   beginning with the element at index `0`, and ending with
+   the element at index `lastIndex`. Thus, every iterator of 
+   an immutable list produces exactly the same elements in 
+   exactly the same order.
+   
    Direct access to a list element by index produces a value 
    of optional type. The following idiom may be used instead 
    of upfront bounds-checking, as long as the list element 
