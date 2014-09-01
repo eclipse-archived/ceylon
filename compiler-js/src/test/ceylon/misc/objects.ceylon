@@ -51,6 +51,7 @@ void test_objects() {
     print(a411);
     fail("Cyclic initialization check failed");
   } catch (InitializationError er) {
-    check(er.message == "Cyclic initialization trying to read the value of 'a' before it was set");
+    check(er.message == "Cyclic initialization trying to read the value of 'a411' before it was set",
+          "InitializationError message ``er.message``");
   }
 }

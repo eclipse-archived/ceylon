@@ -35,7 +35,7 @@ public class BmeGenerator {
         String exp = gen.memberAccess(bme, null);
         if (decl == null && gen.isInDynamicBlock()) {
             gen.out("(typeof ", exp, "==='undefined'||", exp, "===null?");
-            gen.generateThrow("Undefined or null reference: " + exp, bme);
+            gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
             gen.out(":", exp, ")");
         } else {
             final boolean isCallable = !forInvoke && decl instanceof Method

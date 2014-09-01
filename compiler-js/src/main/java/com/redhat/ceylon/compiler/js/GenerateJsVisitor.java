@@ -944,7 +944,13 @@ public class GenerateJsVisitor extends Visitor
             beginBlock();
             //Create the object lazily
             final String oname = names.objectName(c);
-            out("if(", objvar, "===undefined){", objvar, "=$init$", oname);
+            out("if(", objvar, "===", clAlias, "INIT$)");
+            generateThrow(clAlias+"InitializationError",
+                    "Cyclic initialization trying to read the value of '" +
+                    d.getName() + "' before it was set", that);
+            endLine(true);
+            out("if(", objvar, "===undefined){", objvar, "=", clAlias, "INIT$;",
+                    objvar, "=$init$", oname);
             if (!oname.endsWith("()"))out("()");
             out("(");
             if (!targs.isEmpty()) {
@@ -1872,7 +1878,7 @@ public class GenerateJsVisitor extends Visitor
             //It's a native js type but will be wrapped in dyntype() call
             String id = that.getIdentifier().getText();
             out("(typeof ", id, "==='undefined'?");
-            generateThrow("Undefined type " + id, that);
+            generateThrow(null, "Undefined type " + id, that);
             out(":", id, ")");
         } else {
             qualify(that, d);
@@ -3269,8 +3275,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Call internal function "throwexc" with the specified message and source location. */
-    void generateThrow(String msg, Node node) {
-        out(clAlias, "throwexc(", clAlias, "Exception(");
+    void generateThrow(String exceptionClass, String msg, Node node) {
+        out(clAlias, "throwexc(", exceptionClass==null ? clAlias + "Exception":exceptionClass, "(");
         out("\"", escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
                 node.getUnit().getFilename(), "')");
     }
