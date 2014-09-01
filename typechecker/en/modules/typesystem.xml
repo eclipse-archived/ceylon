@@ -2162,9 +2162,11 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
-                    <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
-                    inferred lower bound <literal>A</literal> on <literal>P</literal> for 
-                    <literal>T</literal> is <literal>T abstracts A</literal>.</para>
+                    <para>If <literal>P</literal> is exactly <literal>T</literal>, and
+                    the location at which <literal>P</literal> occurs in the parameter 
+                    list is not a contravariant location, the inferred lower bound 
+                    <literal>A</literal> on <literal>P</literal> for <literal>T</literal> 
+                    is <literal>T abstracts A</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
@@ -2242,9 +2244,11 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
-                    <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
-                    inferred upper bound <literal>A</literal> on <literal>P</literal> for 
-                    <literal>T</literal> is <literal>T satisfies A</literal>.</para>
+                    <para>If <literal>P</literal> is exactly <literal>T</literal>, and
+                    the location at which <literal>P</literal> occurs in the parameter 
+                    list is not a covariant location, the inferred upper bound 
+                    <literal>A</literal> on <literal>P</literal> for <literal>T</literal> 
+                    is <literal>T satisfies A</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
