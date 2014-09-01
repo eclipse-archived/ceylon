@@ -545,3 +545,5 @@ ex$.wrapexc=wrapexc;
 ex$.nn$=nn$;
 ex$.eorl$=eorl$;
 ex$.asrt$=asrt$;
+var INIT$={a:1};
+ex$.INIT$=INIT$;
