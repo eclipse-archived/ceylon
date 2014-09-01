@@ -15,8 +15,8 @@
    [[Correspondence]] from indices to elements.
    
    Every list has a well-defined and stable iteration order.
-   An [[iterator]] of the list is required to return the
-   elements of the list in order of increasing index, 
+   An [[iterator]] of a nonempty list is required to return 
+   the elements of the list in order of increasing index, 
    beginning with the element at index `0`, and ending with
    the element at index `lastIndex`. Thus, every iterator of 
    an immutable list produces exactly the same elements in 
