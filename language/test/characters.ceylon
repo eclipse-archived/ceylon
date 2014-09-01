@@ -52,4 +52,29 @@ shared void characters() {
     check('B'.notSmallerThan('A'), "Character.notSmallerThan");
     check('A'.neighbour(2)=='C', "Character.neighbour 1");
     check('Z'.neighbour(-2)=='X', "Character.neighbour 2");
+    try {
+        fail("Character out of range: ``(2147483650).character`` ");
+    } catch (OverflowException ex) {
+        check(ex.message == "2147483650 is not a 32-bit integer", "Character ouf of range message #1");
+    }
+    try {
+        fail("Character out of range: ``(-2147483650).character``");
+    } catch (OverflowException ex) {
+        check(ex.message == "-2147483650 is not a 32-bit integer", "Character ouf of range message #2");
+    }
+    try {
+        fail("Invalid codepoint: ``(888).character``:");
+    } catch (OverflowException ex) {
+        check(ex.message == "888 is not a Unicode code point", "888 is not a valid unicode codepoint");
+    }
+    try {
+        fail("Invalid codepoint: ``(55210).character``");
+    } catch (OverflowException ex) {
+        check(ex.message == "55210 is not a Unicode code point", "55210 is not a valid unicode codepoint");
+    }
+    try {
+        fail("Invalid codepoint: ``(98537).character``");
+    } catch (OverflowException ex) {
+        check(ex.message == "98537 is not a Unicode code point", "98537 is not a valid unicode codepoint");
+    }
 }
