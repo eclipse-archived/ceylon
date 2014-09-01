@@ -16,6 +16,14 @@ class TestObjects(Integer a, Integer b, Integer c) satisfies Iterable<Integer> {
   }
 }
 
+object b411 {
+    value bb = a411;
+}
+
+object a411 {
+    value aa = b411;
+}
+
 void test_objects() {
   print("testing objects");
   value t1 = TestObjects(1,2,3).iterator();
@@ -38,5 +46,11 @@ void test_objects() {
   }
   if (is Integer i=t2.next()) {
     check(i==3, "objects 7");
+  }
+  try {
+    print(a411);
+    fail("Cyclic initialization check failed");
+  } catch (InitializationError er) {
+    check(er.message == "Cyclic initialization trying to read the value of 'a' before it was set");
   }
 }
