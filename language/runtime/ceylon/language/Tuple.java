@@ -456,27 +456,37 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Ignore
-    private SoftReference<TypeDescriptor> $cachedType = null;
+    private volatile SoftReference<TypeDescriptor> $cachedType = null;
     
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        TypeDescriptor type = $cachedType != null ? 
-                $cachedType.get() : null;
-        if (type == null) {
-            TypeDescriptor restType = getTypeDescriptor(rest);
-            TypeDescriptor elementType = 
-                    Metamodel.getIteratedTypeDescriptor(restType);
-            for (int ii = array.length-1; ii >= 0; ii--) {
-                TypeDescriptor elemType = $getElementType(ii);
-                elementType = TypeDescriptor.union(elementType, elemType);
-                restType = TypeDescriptor.klass(Tuple.class, 
-                        elementType, elemType, restType);
+        SoftReference<TypeDescriptor> cachedType = $cachedType;
+        TypeDescriptor type = cachedType!=null ? cachedType.get() : null;
+        if (type==null) {
+            synchronized (this) {
+                cachedType = $cachedType;
+                type = cachedType!=null ? cachedType.get() : null;
+                if (type==null) {
+                    type = computeType();
+                    $cachedType = new SoftReference<TypeDescriptor>(type);
+                }
             }
-            type = restType;
-            $cachedType = new SoftReference<TypeDescriptor>(type);
         }
         return type;
+    }
+
+    private TypeDescriptor computeType() {
+        TypeDescriptor restType = getTypeDescriptor(rest);
+        TypeDescriptor elementType = 
+                Metamodel.getIteratedTypeDescriptor(restType);
+        for (int i=array.length-1; i>=0; i--) {
+            TypeDescriptor elemType = $getElementType(i);
+            elementType = TypeDescriptor.union(elementType, elemType);
+            restType = TypeDescriptor.klass(Tuple.class, 
+                    elementType, elemType, restType);
+        }
+        return restType;
     }
     
     /*
