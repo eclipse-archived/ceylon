@@ -8,7 +8,7 @@ import ceylon.language.meta.declaration {
  - [[FunctionModel]]
  - [[ValueModel]]
  "
-shared interface Model of ClassOrInterface<Anything>
+shared sealed interface Model of ClassOrInterface<Anything>
                         | FunctionModel<Anything, Nothing> 
                         | ValueModel<Anything> {
     

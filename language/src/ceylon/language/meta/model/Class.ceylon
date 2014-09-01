@@ -14,7 +14,7 @@
            print(c("Stef").hello);
        }
  """
-shared interface Class<out Type=Anything, in Arguments=Nothing>
+shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     satisfies ClassModel<Type, Arguments> & Callable<Type, Arguments> & Applicable<Type>
     given Arguments satisfies Anything[] {
 }

@@ -4,7 +4,7 @@
  
  - [[AnnotatedDeclaration]]s such as modules, packages, classes or functions, and
  - [[TypeParameter]] declarations."
-shared interface Declaration of AnnotatedDeclaration
+shared sealed interface Declaration of AnnotatedDeclaration
                               | TypeParameter {
     
     "The name of this declaration. For example, the [[Declaration]] class is named \"Declaration\"."

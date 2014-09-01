@@ -38,7 +38,7 @@ import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, Incomp
            print(boundValueModel.get());
        }
    """
-shared interface ValueDeclaration
+shared sealed interface ValueDeclaration
         satisfies FunctionOrValueDeclaration {
     
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."

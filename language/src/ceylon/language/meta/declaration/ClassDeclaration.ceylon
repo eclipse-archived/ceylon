@@ -48,7 +48,7 @@ import ceylon.language.meta.model {
            print(boundMemberClassModel());
        }
    """
-shared interface ClassDeclaration
+shared sealed interface ClassDeclaration
         satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."

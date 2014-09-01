@@ -9,7 +9,7 @@
  It will only have a single parameter list at runtime (the first), and its return
  type will be `Callable<Integer,[Integer]>`.
  "
-shared interface FunctionalDeclaration {
+shared sealed interface FunctionalDeclaration {
     
     "True if the current declaration is an annotation class or function."
     shared formal Boolean annotation;

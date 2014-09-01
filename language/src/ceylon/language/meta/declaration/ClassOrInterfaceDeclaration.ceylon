@@ -57,7 +57,7 @@ import ceylon.language.meta.model {
    Note that there are more specialised versions of [[memberApply]] in [[ClassDeclaration.memberClassApply]] and 
    [[InterfaceDeclaration.memberInterfaceApply]].
    """
-shared interface ClassOrInterfaceDeclaration 
+shared sealed interface ClassOrInterfaceDeclaration 
         of ClassDeclaration | InterfaceDeclaration 
         satisfies NestableDeclaration & GenericDeclaration {
     

@@ -1,6 +1,6 @@
 """Represents classes or functions that you can apply in a type-unsafe way.
    """
-shared interface Applicable<out Type=Anything> {
+shared sealed interface Applicable<out Type=Anything> {
     
     "Type-unsafe application, to be used when the argument types are unknown until runtime.
      

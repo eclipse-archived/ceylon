@@ -9,7 +9,7 @@ import ceylon.language{AnnotationType = Annotation}
  You can query annotations that are placed on a given annotated declaration with:
  
  "
-shared interface AnnotatedDeclaration of NestableDeclaration
+shared sealed interface AnnotatedDeclaration of NestableDeclaration
                                        | Module
                                        | Package
     satisfies Declaration & Annotated {

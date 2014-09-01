@@ -1,5 +1,5 @@
 "A type parameter declaration."
-shared interface TypeParameter satisfies Declaration {
+shared sealed interface TypeParameter satisfies Declaration {
     
     // FIXME: make it NestableDeclaration&GenericDeclaration?
     "The declaration that declared this type parameter. This is either a [[ClassOrInterfaceDeclaration]] or a

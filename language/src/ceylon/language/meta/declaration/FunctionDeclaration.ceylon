@@ -47,7 +47,7 @@ import ceylon.language.meta.model {
            print(boundMethodModel());
        }
    """
-shared interface FunctionDeclaration
+shared sealed interface FunctionDeclaration
         satisfies FunctionOrValueDeclaration & GenericDeclaration & FunctionalDeclaration {
 
     "Applies the given closed type arguments to this function declaration in order to obtain a function model. 

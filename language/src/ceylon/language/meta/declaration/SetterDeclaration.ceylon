@@ -1,6 +1,6 @@
 
 "A setter declaration for a variable `ValueDeclaration`."
-shared interface SetterDeclaration
+shared sealed interface SetterDeclaration
         satisfies NestableDeclaration {
 
     "The variable value this setter is for."
