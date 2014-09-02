@@ -520,7 +520,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
-        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, flags);
+        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, flags);
         return ret;
     }
 
@@ -740,13 +740,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         return findTypeArgument(type.getQualifyingType(), declaration);
     }
 
-    private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy, int flags) {
+    private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, 
+            BoxingStrategy boxingStrategy, boolean exprBoxed, int flags) {
         if(exprType == null || boxingStrategy != BoxingStrategy.UNBOXED)
             return ret;
         ProducedType definiteExprType = simplifyType(exprType);
         if(definiteExprType == null)
             return ret;
-        String convertFrom = definiteExprType.getUnderlyingType();
+        // ignore the underlying type of the expr type if it was boxed, since we must have unboxed it to
+        // something with no underlying type first
+        String convertFrom = exprBoxed ? null : definiteExprType.getUnderlyingType();
 
         ProducedType definiteExpectedType = null;
         String convertTo = null;
@@ -5023,7 +5026,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression unAutoPromote(JCExpression ret, ProducedType returnType) {
         // +/- auto-promotes to int, so if we're using java types we'll need a cast
         return applyJavaTypeConversions(ret, typeFact().getIntegerDeclaration().getType(), 
-                returnType, BoxingStrategy.UNBOXED, 0);
+                returnType, BoxingStrategy.UNBOXED, false, 0);
     }
 
     private ProducedType getMostPreciseType(Tree.Term term, ProducedType defaultType) {
