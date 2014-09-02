@@ -22,5 +22,6 @@ class Bug747() extends Bug747Java() {
         String? uc = s?.uppercased;
         print(s else "");
     }
-    shared actual void finalize() {}
+    // no longer allowed: see https://github.com/ceylon/ceylon-spec/issues/1073
+    //shared actual void finalize() {}
 }

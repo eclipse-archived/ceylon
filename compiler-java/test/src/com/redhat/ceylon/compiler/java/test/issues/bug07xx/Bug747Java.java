@@ -21,5 +21,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
 public abstract class Bug747Java {
     public abstract void main(String s);
-    public abstract void finalize();
+    // no longer allowed: see https://github.com/ceylon/ceylon-spec/issues/1073
+//    public abstract void finalize();
 }

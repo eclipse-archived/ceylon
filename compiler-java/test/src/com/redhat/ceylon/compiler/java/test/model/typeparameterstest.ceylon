@@ -42,6 +42,7 @@ void testToplevelMethodTypeParameters(){
     methodWithParameterizedUpperBounds(T3());
     methodWithSelfParameterizedUpperBounds(T4());
     methodWithErasedUpperBounds(T2());
-    methodWithVariance(1);
+    // no longer allowed, see https://github.com/ceylon/ceylon-spec/issues/1075
+    //methodWithVariance(1);
     methodWithCaseTypes<Integer>();
 }
