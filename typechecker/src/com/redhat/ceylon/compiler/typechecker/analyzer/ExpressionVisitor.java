@@ -2310,14 +2310,23 @@ public class ExpressionVisitor extends Visitor {
             ProducedType paramType,ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited) {
+        return inferTypeArg(tp, tp, paramType, argType, 
+                covariant, contravariant, visited);
+    }
+    
+    private ProducedType inferTypeArg(TypeParameter tp,
+            TypeParameter tp0,
+            ProducedType paramType,ProducedType argType, 
+            boolean covariant, boolean contravariant,
+            List<TypeParameter> visited) {
         if (paramType!=null && argType!=null) {
             paramType = paramType.resolveAliases();
             argType = argType.resolveAliases();
             TypeDeclaration paramTypeDec = paramType.getDeclaration();
             if (paramTypeDec instanceof TypeParameter &&
                     paramTypeDec.equals(tp)) {
-                if (tp.isContravariant()&&covariant ||
-                    tp.isCovariant()&&contravariant) {
+                if (tp0.isContravariant() && covariant ||
+                    tp0.isCovariant() && contravariant) {
                     return null;
                 }
                 else {
@@ -2332,13 +2341,13 @@ public class ExpressionVisitor extends Visitor {
                     List<ProducedType> list = new ArrayList<ProducedType>();
                     for (ProducedType upperBound: tp2.getSatisfiedTypes()) {
                         addToUnionOrIntersection(tp, list,
-                                inferTypeArg(tp, upperBound, argType,
+                                inferTypeArg(tp, tp2, upperBound, argType,
                                         covariant, contravariant,
                                         visited));
                         ProducedType supertype = 
                                 argType.getSupertype(upperBound.getDeclaration());
                         if (supertype!=null) {
-                            inferTypeArg(tp, paramType, supertype, 
+                            inferTypeArg(tp, tp2, paramType, supertype,
                                     covariant, contravariant, 
                                     list, visited);
                         }
@@ -2494,6 +2503,14 @@ public class ExpressionVisitor extends Visitor {
             ProducedType paramType, ProducedType supertype, 
             boolean covariant, boolean contravariant,
             List<ProducedType> list, List<TypeParameter> visited) {
+        inferTypeArg(tp, tp, paramType, supertype, 
+                covariant, contravariant, list, visited);
+    }
+    
+    private void inferTypeArg(TypeParameter tp, TypeParameter tp0,
+            ProducedType paramType, ProducedType supertype, 
+            boolean covariant, boolean contravariant,
+            List<ProducedType> list, List<TypeParameter> visited) {
         List<TypeParameter> typeParameters = 
                 paramType.getDeclaration().getTypeParameters();
         List<ProducedType> paramTypeArgs = 
@@ -2532,7 +2549,7 @@ public class ExpressionVisitor extends Visitor {
                 contra = false;
             }
             addToUnionOrIntersection(tp, list, 
-                    inferTypeArg(tp, 
+                    inferTypeArg(tp, tp0,
                             paramTypeArg, argTypeArg, 
                             co, contra,
                             visited));
