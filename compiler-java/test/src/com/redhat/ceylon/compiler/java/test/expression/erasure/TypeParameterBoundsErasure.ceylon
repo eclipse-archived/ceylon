@@ -50,7 +50,7 @@ void bug1327user(){
     Bug1327Con([]);
     Empty a3 = bug1327inv([]);
     Empty a4 = bug1327cov([]);
-    Empty a5 = bug1327con([]);
+    String[] a5 = bug1327con([]);
     Empty a6 = Bug1327Inv2().t;
     Empty a7 = Bug1327Cov2().t;
     Bug1327Con2();
