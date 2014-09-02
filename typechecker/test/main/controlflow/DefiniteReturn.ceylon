@@ -1440,4 +1440,28 @@ interface DefiniteReturn {
         testSomething();
     }
     
+    @error Integer testNonemptyRangeFor1() {
+        for (i in 0:10) {
+            return i;
+        }
+    }
+    
+    Integer testNonemptyRangeFor2() {
+        for (i in 0..10) {
+            return i;
+        }
+    }
+    
+    Integer testWhileTrue() {
+        while (true) {
+            return 0;
+        }
+    }
+    
+    @error Integer testWhileFalse() {
+        while (false) {
+            return 0;
+        }
+    }
+    
 }

@@ -1,11 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -397,22 +398,10 @@ public class ControlFlowVisitor extends Visitor {
         Boolean b = beginLoop();
         boolean bc = beginLoopScope();
         boolean atLeastOneIteration = false;
-        if (that.getForClause()!=null) {
-            that.getForClause().visit(this);
-            Unit unit = that.getUnit();
-			ProducedType neit = unit.getNonemptyIterableType(unit
-            		.getAnythingDeclaration().getType());
-            Tree.ForIterator fi = that.getForClause().getForIterator();
-            if (fi!=null) {
-            	Tree.SpecifierExpression se = fi.getSpecifierExpression();
-            	if (se!=null) {
-            		Tree.Expression e = se.getExpression();
-            		if (e!=null) {
-            			ProducedType t = e.getTypeModel();
-            			atLeastOneIteration = t!=null && t.isSubtypeOf(neit);
-            		}
-            	}
-            }
+        Tree.ForClause forClause = that.getForClause();
+        if (forClause!=null) {
+            forClause.visit(this);
+            atLeastOneIteration = isAtLeastOne(forClause);
         }
         boolean definitelyDoesNotBreakFromFor = !possiblyBreaks;
         boolean definitelyReturnsFromFor = definitelyReturns && 
@@ -424,8 +413,9 @@ public class ControlFlowVisitor extends Visitor {
         definitelyReturns = d || definitelyReturnsFromFor;
         
         boolean definitelyReturnsFromElse;
-        if (that.getElseClause()!=null) {
-            that.getElseClause().visit(this);
+        Tree.ElseClause elseClause = that.getElseClause();
+        if (elseClause!=null) {
+            elseClause.visit(this);
             definitelyReturnsFromElse = definitelyReturns && 
             		definitelyDoesNotBreakFromFor;
         }
@@ -460,8 +450,9 @@ public class ControlFlowVisitor extends Visitor {
         
         boolean definitelyReturnsFromElse;
         boolean breaksOrContinuesFromElse;
-        if (that.getElseClause()!=null) {
-            that.getElseClause().visit(this);
+        Tree.ElseClause elseClause = that.getElseClause();
+        if (elseClause!=null) {
+            elseClause.visit(this);
             definitelyReturnsFromElse = definitelyReturns;
             breaksOrContinuesFromElse = definitelyBreaksOrContinues;
         }
@@ -503,7 +494,9 @@ public class ControlFlowVisitor extends Visitor {
         
         boolean definitelyReturnsFromEveryCase = true;
         boolean definitelyBreaksOrContinuesFromEveryCase = true;
-        for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+        List<Tree.CaseClause> caseClauses = 
+                that.getSwitchCaseList().getCaseClauses();
+        for (Tree.CaseClause cc: caseClauses) {
             cc.visit(this);
             definitelyReturnsFromEveryCase = definitelyReturnsFromEveryCase && definitelyReturns;
             definitelyBreaksOrContinuesFromEveryCase = definitelyBreaksOrContinuesFromEveryCase 
@@ -512,8 +505,10 @@ public class ControlFlowVisitor extends Visitor {
             endLoopScope(bc);
         }
         
-        if (that.getSwitchCaseList().getElseClause()!=null) {
-            that.getSwitchCaseList().getElseClause().visit(this);
+        Tree.ElseClause elseClause = 
+                that.getSwitchCaseList().getElseClause();
+        if (elseClause!=null) {
+            elseClause.visit(this);
             definitelyReturnsFromEveryCase = definitelyReturnsFromEveryCase && definitelyReturns;
             definitelyBreaksOrContinuesFromEveryCase = definitelyBreaksOrContinuesFromEveryCase 
             		&& definitelyBreaksOrContinues;
@@ -532,8 +527,9 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginIndefiniteReturnScope();
         boolean bc = definitelyBreaksOrContinues;
         
-        if (that.getTryClause()!=null) {
-            that.getTryClause().visit(this);
+        Tree.TryClause tryClause = that.getTryClause();
+        if (tryClause!=null) {
+            tryClause.visit(this);
         }
         boolean definitelyReturnsFromTry = definitelyReturns;
         boolean definitelyBreaksOrContinuesFromTry = definitelyBreaksOrContinues;
@@ -553,8 +549,9 @@ public class ControlFlowVisitor extends Visitor {
         
         boolean definitelyReturnsFromFinally;
         boolean definitelyBreaksOrContinuesFromFinally;
-        if (that.getFinallyClause()!=null) {
-            that.getFinallyClause().visit(this);
+        Tree.FinallyClause finallyClause = that.getFinallyClause();
+        if (finallyClause!=null) {
+            finallyClause.visit(this);
             definitelyReturnsFromFinally = definitelyReturns;
             definitelyBreaksOrContinuesFromFinally = definitelyBreaksOrContinues;
         }

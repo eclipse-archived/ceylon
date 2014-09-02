@@ -607,6 +607,25 @@ public class Util {
         }
         return false;
     }
+    
+    static boolean isAtLeastOne(Tree.ForClause forClause) {
+        Tree.ForIterator fi = forClause.getForIterator();
+        if (fi!=null) {
+            Tree.SpecifierExpression se = fi.getSpecifierExpression();
+            if (se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    Unit unit = forClause.getUnit();
+                    ProducedType at = 
+                            unit.getAnythingDeclaration().getType();
+                    ProducedType neit = unit.getNonemptyIterableType(at);
+                    ProducedType t = e.getTypeModel();
+                    return t!=null && t.isSubtypeOf(neit);
+                }
+            }
+        }
+        return false;
+    }
 
     static boolean declaredInPackage(Declaration dec, Unit unit) {
         return dec.getUnit().getPackage().equals(unit.getPackage());

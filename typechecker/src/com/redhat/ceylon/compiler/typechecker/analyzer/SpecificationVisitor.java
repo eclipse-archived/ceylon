@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -1204,6 +1205,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.ForStatement that) {
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
+        boolean atLeastOneIteration = false;
         Tree.ForClause forClause = that.getForClause();
         if (forClause!=null) {
             if (isVariable() || isLate()) {
@@ -1215,6 +1217,7 @@ public class SpecificationVisitor extends Visitor {
                 forClause.visit(this);
                 inLoop = c;
             }
+            atLeastOneIteration = isAtLeastOne(forClause);
         }
         boolean possiblyExitedFromForClause = specified.exited && !specified.byExits;
         boolean possiblyAssignedByForClause = specified.possibly;
@@ -1239,7 +1242,7 @@ public class SpecificationVisitor extends Visitor {
             possiblyAssignedByElseClause = false;
         }
         
-        specified.definitely = specified.definitely || (!possiblyExitedFromForClause && definitelyAssignedByElseClause);
+        specified.definitely = specified.definitely || (!possiblyExitedFromForClause && (definitelyAssignedByElseClause|atLeastOneIteration));
         specified.possibly = specified.possibly || possiblyAssignedByForClause || possiblyAssignedByElseClause;
         
         checkDeclarationSection(that);
