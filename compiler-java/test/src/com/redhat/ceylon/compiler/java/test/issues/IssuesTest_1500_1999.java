@@ -607,4 +607,10 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1767() {
         compareWithJavaSource("bug17xx/bug1767/Bug1767.src", "bug17xx/bug1767/Bug1767.ceylon", "bug17xx/bug1767/module.ceylon");
     }
+
+    @Test
+    public void testBug1778() {
+        compile("bug17xx/Bug1778.java");
+        compareWithJavaSource("bug17xx/Bug1778");
+    }
 }
