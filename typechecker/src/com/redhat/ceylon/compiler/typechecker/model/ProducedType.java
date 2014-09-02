@@ -2553,9 +2553,12 @@ public class ProducedType extends ProducedReference {
         else {
             List<ProducedType> args = type.getTypeArgumentList();
             List<TypeParameter> params = dec.getTypeParameters();
-            // fast-path:
-            if(params.isEmpty())
+            if (params.isEmpty()) {
+                // we have variance overrides from a 
+                // qualifying type 
+                // optimize, since no work to do
                 return type;
+            }
             List<ProducedType> resultArgs = 
                     new ArrayList<ProducedType>(args.size());
             Map<TypeParameter,SiteVariance> varianceResults = 
