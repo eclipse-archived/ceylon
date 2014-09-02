@@ -535,16 +535,19 @@ public class CeylonDocToolTest {
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
                 "ceylon/net/http/server/internal/JavaHelper.java",
-                "ceylon/interop/java/javaBooleanArray_.java",
-                "ceylon/interop/java/javaByteArray_.java",
-                "ceylon/interop/java/javaShortArray_.java",
-                "ceylon/interop/java/javaIntArray_.java",
-                "ceylon/interop/java/javaLongArray_.java",
-                "ceylon/interop/java/javaFloatArray_.java",
-                "ceylon/interop/java/javaDoubleArray_.java",
-                "ceylon/interop/java/javaStringArray_.java",
-                "ceylon/interop/java/javaObjectArray_.java",
-                "ceylon/interop/java/javaString_.java",
+                "ceylon/interop/java/internal/javaCharArray_.java",
+                "ceylon/interop/java/internal/javaClass_.java",
+                "ceylon/interop/java/internal/javaClassFromInstance_.java",
+                "ceylon/interop/java/internal/javaBooleanArray_.java",
+                "ceylon/interop/java/internal/javaByteArray_.java",
+                "ceylon/interop/java/internal/javaShortArray_.java",
+                "ceylon/interop/java/internal/javaIntArray_.java",
+                "ceylon/interop/java/internal/javaLongArray_.java",
+                "ceylon/interop/java/internal/javaFloatArray_.java",
+                "ceylon/interop/java/internal/javaDoubleArray_.java",
+                "ceylon/interop/java/internal/javaStringArray_.java",
+                "ceylon/interop/java/internal/javaObjectArray_.java",
+                "ceylon/interop/java/internal/javaString_.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
