@@ -76,7 +76,7 @@ public abstract class ProducedReference {
         }
     }
     
-    void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
+    void setTypeArguments(Map<TypeParameter,ProducedType> typeArguments) {
         this.typeArguments = typeArguments;
     }
         
@@ -87,8 +87,9 @@ public abstract class ProducedReference {
     }
 
     public ProducedType getFullType(ProducedType wrappedType) {
-    	if (getDeclaration() instanceof Functional) {
-    		return getDeclaration().getUnit().getCallableType(this, wrappedType);
+    	if (declaration instanceof Functional) {
+    		return getDeclaration().getUnit()
+    		        .getCallableType(this, wrappedType);
     	}
     	else {
     		return wrappedType;
@@ -109,6 +110,10 @@ public abstract class ProducedReference {
         ptr.setQualifyingType(getQualifyingType());
         ptr.setTypeArguments(getTypeArguments());
         return ptr;
+    }
+    
+    public Declaration getOverloadedVersion() {
+        return declaration;
     }
     
 }

@@ -7,7 +7,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -45,19 +44,6 @@ public class ProducedType extends ProducedReference {
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             Collections.emptyMap();
-    
-    @Override
-    void setDeclaration(Declaration declaration) {
-        if (isOverloadedVersion(declaration)) {
-            declaration = getAbstraction(declaration);
-        }
-        if (declaration instanceof TypeDeclaration) {
-            super.setDeclaration(declaration);
-        }
-        else {
-            throw new RuntimeException("not a TypeDeclaration");
-        }
-    }
     
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
@@ -108,7 +94,17 @@ public class ProducedType extends ProducedReference {
 
     @Override
     public TypeDeclaration getDeclaration() {
-        return (TypeDeclaration) super.getDeclaration();
+        return (TypeDeclaration) getAbstraction(super.getDeclaration());
+    }
+    
+    @Override
+    void setDeclaration(Declaration declaration) {
+        if (declaration instanceof TypeDeclaration) {
+            super.setDeclaration(declaration);
+        }
+        else {
+            throw new IllegalArgumentException("not a TypeDeclaration");
+        }
     }
     
     /**

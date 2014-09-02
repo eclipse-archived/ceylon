@@ -501,9 +501,10 @@ public class Unit {
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
     	ProducedType result = rt;
-    	if (ref.getDeclaration() instanceof Functional) {
+    	Declaration declaration = ref.getOverloadedVersion();
+        if (declaration instanceof Functional) {
     	    List<ParameterList> pls = 
-    	            ((Functional) ref.getDeclaration()).getParameterLists();
+    	            ((Functional) declaration).getParameterLists();
             for (int i=pls.size()-1; i>=0; i--) {
         	    boolean hasSequenced = false;
         	    boolean atLeastOne = false;
