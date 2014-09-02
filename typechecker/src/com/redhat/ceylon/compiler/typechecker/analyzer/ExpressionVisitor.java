@@ -2079,24 +2079,27 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType inferTypeArgument(Tree.InvocationExpression that,
             ProducedReference pr, TypeParameter tp, ParameterList parameters) {
         List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
-        if (that.getPositionalArgumentList()!=null) {
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+        Tree.NamedArgumentList nal = that.getNamedArgumentList();
+        if (pal!=null) {
             inferTypeArgumentFromPositionalArgs(tp, parameters, pr, 
-                    that.getPositionalArgumentList(), inferredTypes);
+                    pal, inferredTypes);
         }
-        else if (that.getNamedArgumentList()!=null) {
+        else if (nal!=null) {
             inferTypeArgumentFromNamedArgs(tp, parameters, pr, 
-                    that.getNamedArgumentList(), inferredTypes);
+                    nal, inferredTypes);
         }
         return formUnionOrIntersection(tp, inferredTypes);
     }
 
-    private void inferTypeArgumentFromNamedArgs(TypeParameter tp, ParameterList parameters,
-            ProducedReference pr, Tree.NamedArgumentList args, 
+    private void inferTypeArgumentFromNamedArgs(TypeParameter tp, 
+            ParameterList parameters, ProducedReference pr, 
+            Tree.NamedArgumentList args, 
             List<ProducedType> inferredTypes) {
         Set<Parameter> foundParameters = new HashSet<Parameter>();
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
-            inferTypeArgFromNamedArg(arg, tp, pr, parameters, inferredTypes, 
-                    foundParameters);
+            inferTypeArgFromNamedArg(arg, tp, pr, parameters, 
+                    inferredTypes, foundParameters);
         }
         Parameter sp = getUnspecifiedParameter(null, parameters, 
                 foundParameters);
@@ -2106,14 +2109,16 @@ public class ExpressionVisitor extends Visitor {
         }    
     }
 
-    private void inferTypeArgFromSequencedArg(Tree.SequencedArgument sa, TypeParameter tp,
-            Parameter sp, List<ProducedType> inferredTypes) {
+    private void inferTypeArgFromSequencedArg(Tree.SequencedArgument sa, 
+            TypeParameter tp, Parameter sp, 
+            List<ProducedType> inferredTypes) {
     	ProducedType att;
     	if (sa==null) {
     		att = unit.getEmptyDeclaration().getType();
     	}
     	else {
-    		List<Tree.PositionalArgument> args = sa.getPositionalArguments();
+    		List<Tree.PositionalArgument> args = 
+    		        sa.getPositionalArguments();
     		att = getTupleType(args, false);
     	}
         ProducedType spt = sp.getType();
@@ -2122,13 +2127,16 @@ public class ExpressionVisitor extends Visitor {
                         new ArrayList<TypeParameter>()));
     }
 
-    private void inferTypeArgFromNamedArg(Tree.NamedArgument arg, TypeParameter tp,
-            ProducedReference pr, ParameterList parameters, 
-            List<ProducedType> inferredTypes, Set<Parameter> foundParameters) {
+    private void inferTypeArgFromNamedArg(Tree.NamedArgument arg, 
+            TypeParameter tp, ProducedReference pr, 
+            ParameterList parameters, 
+            List<ProducedType> inferredTypes, 
+            Set<Parameter> foundParameters) {
         ProducedType type = null;
         if (arg instanceof Tree.SpecifiedArgument) {
-            Tree.Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                            .getExpression();
+            Tree.SpecifierExpression se = 
+                    ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
+            Tree.Expression e = se.getExpression();
             if (e!=null) {
                 type = e.getTypeModel();
             }
@@ -2141,7 +2149,9 @@ public class ExpressionVisitor extends Visitor {
             		.getFullType();
         }
         if (type!=null) {
-            Parameter parameter = getMatchingParameter(parameters, arg, foundParameters);
+            Parameter parameter = 
+                    getMatchingParameter(parameters, arg, 
+                            foundParameters);
             if (parameter!=null) {
                 foundParameters.add(parameter);
                 ProducedType pt = pr.getTypedParameter(parameter)
@@ -2154,8 +2164,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void inferTypeArgumentFromPositionalArgs(TypeParameter tp, ParameterList parameters,
-            ProducedReference pr, Tree.PositionalArgumentList pal, 
+    private void inferTypeArgumentFromPositionalArgs(TypeParameter tp, 
+            ParameterList parameters, ProducedReference pr, 
+            Tree.PositionalArgumentList pal, 
             List<ProducedType> inferredTypes) {
         List<Parameter> params = parameters.getParameters();
         for (int i=0; i<params.size(); i++) {
@@ -2202,8 +2213,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void inferTypeArgFromPositionalArgs(TypeParameter tp, Parameter parameter,
-            List<Tree.PositionalArgument> args, List<ProducedType> inferredTypes) {
+    private void inferTypeArgFromPositionalArgs(TypeParameter tp, 
+            Parameter parameter, List<Tree.PositionalArgument> args, 
+            List<ProducedType> inferredTypes) {
         for (int k=0; k<args.size(); k++) {
             Tree.PositionalArgument sa = args.get(k);
             ProducedType sat = sa.getTypeModel();
@@ -2225,8 +2237,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void inferTypeArgFromComprehension(TypeParameter tp, Parameter parameter,
-            Tree.Comprehension c, List<ProducedType> inferredTypes) {
+    private void inferTypeArgFromComprehension(TypeParameter tp, 
+            Parameter parameter, Tree.Comprehension c, 
+            List<ProducedType> inferredTypes) {
             ProducedType sat = c.getTypeModel();
             if (sat!=null) {
                 ProducedType pt = parameter.getType();
@@ -2257,8 +2270,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void addToUnionOrIntersection(TypeParameter tp, List<ProducedType> list, 
-            ProducedType pt) {
+    private void addToUnionOrIntersection(TypeParameter tp, 
+            List<ProducedType> list, ProducedType pt) {
         if (tp.isContravariant()) {
             addToIntersection(list, pt, unit);
         }
@@ -2300,8 +2313,9 @@ public class ExpressionVisitor extends Visitor {
         if (paramType!=null && argType!=null) {
             paramType = paramType.resolveAliases();
             argType = argType.resolveAliases();
-            if (paramType.getDeclaration() instanceof TypeParameter &&
-                    paramType.getDeclaration().equals(tp)) {
+            TypeDeclaration paramTypeDec = paramType.getDeclaration();
+            if (paramTypeDec instanceof TypeParameter &&
+                    paramTypeDec.equals(tp)) {
                 if (tp.isContravariant()&&covariant ||
                     tp.isCovariant()&&contravariant) {
                     return null;
@@ -2310,9 +2324,9 @@ public class ExpressionVisitor extends Visitor {
                     return unit.denotableType(argType);
                 }
             }
-            else if (paramType.getDeclaration() instanceof TypeParameter) {
+            else if (paramTypeDec instanceof TypeParameter) {
                 TypeParameter tp2 = 
-                        (TypeParameter) paramType.getDeclaration();
+                        (TypeParameter) paramTypeDec;
                 if (!visited.contains(tp2)) {
                     visited.add(tp2);
                     List<ProducedType> list = new ArrayList<ProducedType>();
@@ -2335,7 +2349,7 @@ public class ExpressionVisitor extends Visitor {
                     return null;
                 }
             }
-            else if (paramType.getDeclaration() instanceof UnionType) {
+            else if (paramTypeDec instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
@@ -2411,9 +2425,9 @@ public class ExpressionVisitor extends Visitor {
                     //return null;
                 }*/
             }
-            else if (paramType.getDeclaration() instanceof IntersectionType) {
+            else if (paramTypeDec instanceof IntersectionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
-                for (ProducedType ct: paramType.getDeclaration().getSatisfiedTypes()) {
+                for (ProducedType ct: paramTypeDec.getSatisfiedTypes()) {
                     addToUnionOrIntersection(tp, list, 
                             inferTypeArg(tp, 
                                     ct.substitute(paramType.getTypeArguments()), 
@@ -2449,7 +2463,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ProducedType supertype = 
-                        argType.getSupertype(paramType.getDeclaration());
+                        argType.getSupertype(paramTypeDec);
                 if (supertype!=null) {
                     List<ProducedType> list = new ArrayList<ProducedType>();
                     if (paramType.getQualifyingType()!=null && 
