@@ -2561,43 +2561,44 @@ public class ExpressionVisitor extends Visitor {
         Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
-        if (dec==null) return;
-        if (!(p instanceof Tree.ExtendedTypeExpression)) {
-            if (dec instanceof Class && ((Class) dec).isAbstract()) {
-                that.addError("abstract class may not be instantiated: '" + 
+        if (dec!=null) {
+            if (!(p instanceof Tree.ExtendedTypeExpression)) {
+                if (dec instanceof Class && ((Class) dec).isAbstract()) {
+                    that.addError("abstract class may not be instantiated: '" + 
+                            dec.getName(unit) + "'");
+                }
+            }
+            if (that.getNamedArgumentList()!=null && 
+                    dec.isAbstraction()) {
+                //TODO: this is not really right - it's the fact 
+                //      that we're calling Java and don't have
+                //      meaningful parameter names that is the
+                //      real problem, not the overload
+                that.addError("overloaded declarations may not be called using named arguments: '" +
                         dec.getName(unit) + "'");
             }
-        }
-        if (that.getNamedArgumentList()!=null && 
-                dec.isAbstraction()) {
-            //TODO: this is not really right - it's the fact 
-            //      that we're calling Java and don't have
-            //      meaningful parameter names that is the
-            //      real problem, not the overload
-            that.addError("overloaded declarations may not be called using named arguments: '" +
-                    dec.getName(unit) + "'");
-        }
-        //that.setTypeModel(prf.getType());
-        ProducedType ct = p.getTypeModel();
-        if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
-            //pull the return type out of the Callable
-            that.setTypeModel(ct.getTypeArgumentList().get(0));
-        }
-        if (that.getNamedArgumentList() != null) {
-            List<ParameterList> parameterLists = dec.getParameterLists();
-            if(!parameterLists.isEmpty()
-                    && !parameterLists.get(0).isNamedParametersSupported()) {
-                that.addError("named invocations of Java methods not supported");
+            //that.setTypeModel(prf.getType());
+            ProducedType ct = p.getTypeModel();
+            if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
+                //pull the return type out of the Callable
+                that.setTypeModel(ct.getTypeArgumentList().get(0));
             }
-        }
-        if (dec.isAbstraction()) {
-            //nothing to check the argument types against
-            //that.addError("no matching overloaded declaration");
-        }
-        else {
-            //typecheck arguments using the parameter list
-            //of the target declaration
-            checkInvocationArguments(that, prf, dec);
+            if (that.getNamedArgumentList() != null) {
+                List<ParameterList> parameterLists = dec.getParameterLists();
+                if (!parameterLists.isEmpty()
+                        && !parameterLists.get(0).isNamedParametersSupported()) {
+                    that.addError("named invocations of Java methods not supported");
+                }
+            }
+            if (dec.isAbstraction()) {
+                //nothing to check the argument types against
+                //that.addError("no matching overloaded declaration");
+            }
+            else {
+                //typecheck arguments using the parameter list
+                //of the target declaration
+                checkInvocationArguments(that, prf, dec);
+            }
         }
     }
 
