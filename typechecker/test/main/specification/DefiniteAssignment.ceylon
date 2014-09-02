@@ -635,10 +635,34 @@ interface DefiniteAssignment {
         }
     }
 
-    class TestWhileTrue() {
+    class TestNonemptyRangeFor3() {
+        shared variable Integer j;
+        for (i in 0..10) {
+            if (1==1) {
+                j = i;
+            }
+            else {
+                @error return;
+            }
+        }
+    }
+    
+    class TestWhileTrue1() {
         shared variable Integer j;
         while (true) {
             j = 0;
+        }
+    }
+    
+    class TestWhileTrue2() {
+        shared variable Integer j;
+        while (true) {
+            if (1==1) {
+                j = 0;
+            }
+            else {
+                @error return;
+            }
         }
     }
     
