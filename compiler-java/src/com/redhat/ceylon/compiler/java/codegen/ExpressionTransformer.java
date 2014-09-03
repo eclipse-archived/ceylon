@@ -3976,7 +3976,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && decl.isStaticallyImportable()
-                    // make sure we only do this for things contained in a type
+                    // make sure we only do this for things contained in a type, as otherwise
+                    // it breaks for qualified calls to static methods in interfaces in Java 8
+                    // it only breaks for interfaces because they are statically importable
+                    // and not classes
                     && decl.getContainer() instanceof TypeDeclaration) {
                 qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
             }
