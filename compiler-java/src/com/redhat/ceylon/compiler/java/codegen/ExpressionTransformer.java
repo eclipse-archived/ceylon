@@ -281,6 +281,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(term instanceof Tree.SequenceEnumeration){
             // special case to be able to pass expected type to sequences
             result = transform((Tree.SequenceEnumeration)term, expectedType);
+        }else if(term instanceof Tree.DefaultOp){
+            // special case to be able to pass expected type to else op
+            result = transform((Tree.DefaultOp)term, expectedType);
         }else{
             CeylonVisitor v = gen().visitor;
             final ListBuffer<JCTree> prevDefs = v.defs;
@@ -1677,9 +1680,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(makeReifiedTypeArgument(leftType), makeReifiedTypeArgument(rightType), key, elem), null);
     }
 
-    public JCTree transform(Tree.DefaultOp op) {
+    public JCExpression transform(Tree.DefaultOp op, ProducedType expectedType) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(op.getTypeModel()));
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getTypeModel());
+        ProducedType rightExpectedType = op.getTypeModel();
+        if(expectedType != null 
+                && isOptional(expectedType) 
+                && hasUncheckedNulls(op.getRightTerm())
+                && !isOptional(rightExpectedType)){
+            // get rid of null-check if we accept an optional type on the LHS
+            rightExpectedType = typeFact().getOptionalType(rightExpectedType);
+        }
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightExpectedType);
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
