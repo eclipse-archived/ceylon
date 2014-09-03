@@ -2571,7 +2571,8 @@ public class GenerateJsVisitor extends Visitor
             out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            Operators.simpleBinaryOp(that, usenat?"(":null, usenat?"==":".equals(", ")", this);
+            Operators.simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
+                    usenat?").valueOf())":")", this);
         }
     }
 
@@ -2620,10 +2621,10 @@ public class GenerateJsVisitor extends Visitor
         }
         final ProducedType lt = left.getTypeModel();
         final ProducedType rt = right.getTypeModel();
-        return (left.getUnit().getIntegerDeclaration().equals(lt.getDeclaration())
-                && left.getUnit().getIntegerDeclaration().equals(rt.getDeclaration()))
-                || (left.getUnit().getBooleanDeclaration().equals(lt.getDeclaration())
-                        && left.getUnit().getBooleanDeclaration().equals(rt.getDeclaration()));
+        final TypeDeclaration intdecl = left.getUnit().getIntegerDeclaration();
+        final TypeDeclaration booldecl = left.getUnit().getBooleanDeclaration();
+        return (intdecl.equals(lt.getDeclaration()) && intdecl.equals(rt.getDeclaration()))
+                || (booldecl.equals(lt.getDeclaration()) && booldecl.equals(rt.getDeclaration()));
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
