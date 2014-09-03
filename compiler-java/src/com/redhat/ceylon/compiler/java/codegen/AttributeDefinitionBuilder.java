@@ -102,7 +102,7 @@ public class AttributeDefinitionBuilder {
         if (javaClassName != null) {
             classBuilder = 
                     ClassDefinitionBuilder
-                    .klass(owner, javaClassName, null);
+                    .klass(owner, javaClassName, null, false);
         } else {
             classBuilder = null;
         }

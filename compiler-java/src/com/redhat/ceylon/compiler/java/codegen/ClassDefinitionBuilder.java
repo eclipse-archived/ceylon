@@ -67,6 +67,7 @@ public class ClassDefinitionBuilder
     private long constructorModifiers = -1;
     
     private boolean isAlias = false;
+    private boolean isLocal = false;
     
     private JCExpression extending;
     private JCStatement superCall;
@@ -99,20 +100,20 @@ public class ClassDefinitionBuilder
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName) {
-        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName);
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
         builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
         return builder;
     }
     
 
-    public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName) {
-        return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName);
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName, boolean isLocal) {
+        return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName, isLocal);
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared) {
-        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null);
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null, false);
         builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
         return builder
@@ -123,15 +124,20 @@ public class ClassDefinitionBuilder
 
     private ClassDefinitionBuilder(AbstractTransformer gen,  
             String javaClassName, 
-            String ceylonClassName) {
+            String ceylonClassName,
+            boolean isLocal) {
         this.gen = gen;
         this.name = javaClassName;
+        this.isLocal = isLocal;
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
         
-        if (ceylonClassName != null && !ceylonClassName.equals(javaClassName)) {
-            // Only add @Name if it's different from the Java name
-            annotations(gen.makeAtName(ceylonClassName));
+        if (ceylonClassName != null){
+            if(!ceylonClassName.equals(javaClassName) || isLocal) {
+                // Only add @Name if it's different from the Java name, or for local types
+                // because they will have dollars inserted in their java class names
+                annotations(gen.makeAtName(ceylonClassName));
+            }
         }
     }
     
@@ -519,7 +525,7 @@ public class ClassDefinitionBuilder
                         // if it's an interface, let's first check if we need one
                         || CodegenUtil.isCompanionClassNeeded(decl))) {
             String className = gen.naming.getCompanionClassName(decl, false);//.replaceFirst(".*\\.", "");
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName())
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName(), isLocal)
                 .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
         }

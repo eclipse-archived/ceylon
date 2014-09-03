@@ -148,7 +148,7 @@ public class ClassTransformer extends AbstractTransformer {
             instantiatorDeclCb = null;
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, javaClassName, ceylonClassName)
+                .klass(this, javaClassName, ceylonClassName, Decl.isLocal(model))
                 .forDefinition(model);
         TypeParameterList typeParameterList = def.getTypeParameterList();
 
@@ -428,7 +428,7 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCTree> transformAnnotationClass(Tree.AnyClass def) {
         Class klass = (Class)def.getDeclarationModel();
         String annotationName = Naming.suffixName(Suffix.$annotation$, klass.getName());
-        ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
+        ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null, false);
         
         // annotations are never explicitly final in Java
         annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
@@ -443,7 +443,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (isSequencedAnnotation(klass)) {
             result = annoBuilder.annotations(makeAtAnnotationTarget()).build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
-            ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
+            ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
             // annotations are never explicitely final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
@@ -3464,7 +3464,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, name).forDefinition(klass);
+                this, name, Decl.isLocal(model)).forDefinition(klass);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
@@ -3637,7 +3637,7 @@ public class ClassTransformer extends AbstractTransformer {
         final String javaClassName = Naming.quoteClassName(def.getIdentifier().getText());
 
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, javaClassName, ceylonClassName);
+                .klass(this, javaClassName, ceylonClassName, Decl.isLocal(model));
 
         // class alias
         classBuilder.constructorModifiers(PRIVATE);
