@@ -66,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -93,6 +94,7 @@ import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -4285,6 +4287,35 @@ public abstract class AbstractTransformer implements Transformation {
             // no alias, must build it
             List<JCExpression> typeTestArguments = makeReifiedTypeArguments(pt.getTypeArgumentList(), qualified);
             JCExpression thisType = makeUnerasedClassLiteral(declaration);
+            // do we have variance overrides?
+            Map<TypeParameter, SiteVariance> varianceOverrides = pt.getVarianceOverrides();
+            if(!varianceOverrides.isEmpty()){
+                // we need to pass them as second argument then, in an array
+                ListBuffer<JCExpression> varianceElements = new ListBuffer<JCExpression>();
+                for(TypeParameter typeParameter : declaration.getTypeParameters()){
+                    SiteVariance useSiteVariance = varianceOverrides.get(typeParameter);
+                    String selector;
+                    if(useSiteVariance != null){
+                        switch(useSiteVariance){
+                        case IN:
+                            selector = "IN";
+                            break;
+                        case OUT:
+                            selector = "OUT";
+                            break;
+                        default:
+                            selector = "NONE";
+                            break;
+                        }
+                    }else{
+                        selector = "NONE";
+                    }
+                    JCExpression varianceElement = make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(selector));
+                    varianceElements.append(varianceElement);
+                }
+                JCNewArray varianceArray = make().NewArray(makeIdent(syms().ceylonVarianceType), List.<JCExpression>nil(), varianceElements.toList());
+                typeTestArguments = typeTestArguments.prepend(varianceArray);
+            }
             typeTestArguments = typeTestArguments.prepend(thisType);
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
             ProducedType qualifyingType = pt.getQualifyingType();
