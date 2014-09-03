@@ -42,6 +42,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -65,6 +66,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterLocalClass.1LocalClass<ceylon.language::String>")
             class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -96,6 +98,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -137,6 +140,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
                 void localMethod() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalMethod")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                             value = "Inner",
@@ -190,6 +194,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
                 public long get_() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                             value = "Inner",
@@ -244,6 +249,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
                 final long localAttribute) {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                             value = "Inner",
@@ -371,6 +377,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
     private final long getPrivateAttribute$priv$() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -407,6 +414,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         setClassDecl3$priv$(d);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -430,6 +438,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterLocalClass.privateAttribute.1LocalClass<ceylon.language::String>")
         class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -464,6 +473,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
     final long privateAttribute) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -498,6 +508,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         setClassDecl4$priv$(d);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -521,6 +532,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterLocalClass.privateAttribute.1LocalClass<ceylon.language::String>")
         class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -565,6 +577,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -588,6 +601,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterLocalClass.outerAttribute.1LocalClass<ceylon.language::String>")
             class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -619,6 +633,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -659,6 +674,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             void localMethod() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalMethod")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -710,6 +726,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             public long get_() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -765,6 +782,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -788,6 +806,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterLocalClass.outerMethod.1LocalClass<Method>")
             class LocalClass2 extends LocalClass<Method> {
@@ -821,6 +840,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -861,6 +881,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             void localMethod() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalMethod")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -912,6 +933,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
             public long get_() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -966,6 +988,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
     final .java.lang.Object arg) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "T",
@@ -1018,6 +1041,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
     public final .java.lang.String toString() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -1046,6 +1070,7 @@ public class OuterLocalClass<Outer> implements .com.redhat.ceylon.compiler.java.
     public final int hashCode() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -1101,6 +1126,7 @@ final class reifiedMethod_ {
     final .java.lang.Object arg) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "T",
@@ -1246,6 +1272,7 @@ class Outer<O> implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     final .java.lang.Object o) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "O",
@@ -1410,6 +1437,7 @@ final class OuterInterface$impl<Outer> {
     private final long getPrivateAttr$priv$() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -1430,6 +1458,7 @@ final class OuterInterface$impl<Outer> {
     final long privateAttr) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -1517,6 +1546,7 @@ final class OuterInterface$impl<Outer> {
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -1540,6 +1570,7 @@ final class OuterInterface$impl<Outer> {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterInterface.outerAttribute.1LocalClass<ceylon.language::String>")
             class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -1571,6 +1602,7 @@ final class OuterInterface$impl<Outer> {
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -1611,6 +1643,7 @@ final class OuterInterface$impl<Outer> {
             void localMethod() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalMethod")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -1662,6 +1695,7 @@ final class OuterInterface$impl<Outer> {
             public long get_() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -1708,6 +1742,7 @@ final class OuterInterface$impl<Outer> {
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -1731,6 +1766,7 @@ final class OuterInterface$impl<Outer> {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::OuterInterface.outerMethod.1LocalClass<Method>")
             class LocalClass2 extends LocalClass<Method> {
@@ -1764,6 +1800,7 @@ final class OuterInterface$impl<Outer> {
         if (true) {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "Inner",
@@ -1804,6 +1841,7 @@ final class OuterInterface$impl<Outer> {
             void localMethod() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalMethod")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -1855,6 +1893,7 @@ final class OuterInterface$impl<Outer> {
             public long get_() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                         value = "Inner",
@@ -1922,6 +1961,7 @@ final class OuterInterface$impl<Outer> {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalC")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::OuterInterface.privateMethodForLocalInterfaces.1LocalI1"})
         class LocalC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1<Outer> {
@@ -1965,6 +2005,7 @@ final class OuterInterface$impl<Outer> {
     final .java.lang.Object arg) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "T",
@@ -2148,6 +2189,7 @@ final class metamodelEquality_ {
                 public long get_() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2183,6 +2225,7 @@ final class metamodelEquality_ {
                 final long getter) {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2212,6 +2255,7 @@ final class metamodelEquality_ {
                 void m() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2251,6 +2295,7 @@ final class metamodelEquality_ {
                 public long get_() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2286,6 +2331,7 @@ final class metamodelEquality_ {
                 final long getter) {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2315,6 +2361,7 @@ final class metamodelEquality_ {
                 void m() {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("C")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
@@ -2866,8 +2913,8 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -2878,8 +2925,8 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -3380,8 +3427,8 @@ public final class MyIterable$impl<Element, Absent> {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-                return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+            public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+                return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
             }
             
             @.java.lang.Override
@@ -3392,8 +3439,8 @@ public final class MyIterable$impl<Element, Absent> {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-                return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
+            public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+                return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
             }
             
             @.java.lang.Override
@@ -3705,6 +3752,7 @@ final class toplevelAttribute_ {
     public static long get_() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -3741,6 +3789,7 @@ final class toplevelAttribute_ {
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl3_.set_(d);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -3764,6 +3813,7 @@ final class toplevelAttribute_ {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::toplevelAttribute.1LocalClass<ceylon.language::String>")
         class LocalClass2 extends LocalClass<.ceylon.language.String> {
@@ -3804,6 +3854,7 @@ final class toplevelAttribute_ {
     final long toplevelAttribute) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClassInLocalAttribute")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -3838,6 +3889,7 @@ final class toplevelAttribute_ {
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl4_.set_(d);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Inner",
@@ -3861,6 +3913,7 @@ final class toplevelAttribute_ {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass2")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::toplevelAttribute.1LocalClass<ceylon.language::String>")
         class LocalClass2 extends LocalClass<.ceylon.language.String> {

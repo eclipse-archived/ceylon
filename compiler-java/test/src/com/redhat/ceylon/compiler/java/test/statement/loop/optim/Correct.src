@@ -99,6 +99,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Name("MyOrdinal")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Enumerable<com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal>"})
     class MyOrdinal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> {

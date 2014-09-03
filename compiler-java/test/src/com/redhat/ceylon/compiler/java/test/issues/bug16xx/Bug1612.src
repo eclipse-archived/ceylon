@@ -44,6 +44,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Bar1")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "G",
