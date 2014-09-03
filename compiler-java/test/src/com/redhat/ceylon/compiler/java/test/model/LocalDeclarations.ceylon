@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 shared class LocalDeclarationsClassContainer() {
+    class Inner(){}
     shared void m(){
         class LocalClass(){
             shared Integer attr = 2;
@@ -25,7 +26,51 @@ shared class LocalDeclarationsClassContainer() {
         Integer getter {return 1;} assign getter {}
         Integer attr = 2;
         void localMethod(){}
-    } 
+    }
+    shared void fuckItUp(){
+        value c = {for (i in {}) i};
+        value f = function() => 2;
+        value l = {1, 2};
+        // method which takes a function argument
+        // and an int
+        void m(void m2(), Integer i){
+        }
+        // named invocation with MethodArgument and getter
+        m{
+            // pass that function
+            void m2(){
+            }
+            // pass the getter too, though it's not an anonymous one
+            Integer i {
+                return 2;
+            }
+        };
+        value spread = [1,2]*.string;
+        fuckItUp();
+        value capture = m;
+        value capture2 = LocalDeclarationsClassContainer;
+        value capture3 = LocalDeclarationsClassContainer.Inner;
+        value capture4 = LocalDeclarationsClassContainer.m;
+        value noCapture = f;
+    }
+    // MPL: two param lists
+    shared void m2()(){
+        class LocalClassInM2(){
+            shared Integer attr = 2;
+        }
+    }
+    // MPL: three param lists
+    shared void m3()()(){
+        class LocalClassInM3(){
+            shared Integer attr = 2;
+        }
+    }
+    // local type inside a lambda
+    shared void f(){
+        value g = void(){
+            class LocalClassInLambda(){}
+        };
+    }
 }
 shared void localDeclarationsMethodContainer(){
     class LocalClass(){
