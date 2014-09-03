@@ -78,8 +78,25 @@ function inheritProto(type) {
                 if (desc.get) {
                     // defined through getter/setter, so copy the definition
                     Object.defineProperty(proto, name, desc);
-                } else if (proto[name]===undefined || desc.value.$fml===undefined) {
-                    proto[name] = desc.value;
+                } else {
+                  var ow=proto[name]===undefined || desc.value.$fml===undefined;
+                  if (ow && proto[name]) {
+                    //Check if we really need to overwrite an existing method
+                    //Get the container of the existing method, and its metamodel
+                    var em = getrtmm$$(proto[name]);
+                    em = em && em.$cont && em.$cont.$$ && em.$cont.$$.prototype;
+                    if (em) {
+                      //Now the container of the new method, and its metamodel
+                      var nm = getrtmm$$(desc.value);
+                      nm = nm && nm.$cont && nm.$cont.$$ && nm.$cont.$$.prototype;
+                      if (nm) {
+                        //Overwrite of container of new method extends container of current method
+                        //but not the other way around
+                        ow=em.getT$all()[nm.getT$name()]===undefined;
+                      }
+                    }
+                  }
+                  if (ow) proto[name] = desc.value;
                 }
             }
         }
