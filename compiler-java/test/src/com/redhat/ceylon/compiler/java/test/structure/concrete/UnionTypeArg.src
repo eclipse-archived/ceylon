@@ -84,8 +84,8 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -94,8 +94,8 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -374,8 +374,8 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -555,8 +555,15 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        throw new .ceylon.language.Exception(null, null);
+    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Result>($reified$Result, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Result, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Result, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), $reified$Result, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Result, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Result, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), $reified$Result, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$))), .ceylon.language.Empty.$TypeDescriptor$), "Result(Result(Result, String|Integer))", (short)-1){
+            
+            @.java.lang.Override
+            public Result $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Callable<? extends Result> accumulating = (.ceylon.language.Callable<? extends Result>)(.ceylon.language.Callable)$param$0;
+                throw new .ceylon.language.Exception(null, null);
+            }
+        };
     }
     
     public static void main(.java.lang.String[] args) {

@@ -20,8 +20,7 @@
 @nomodel
 void bug1293() {
     //"ab".fold(0, (Integer p, Character e) => p+e.integer);
-    "ab".fold { 
-        initial = 0; 
-        function accumulating(Integer p, Character e) => p+e.integer; 
-    };
+    "ab".fold (0)( 
+        function (Integer p, Character e) => p+e.integer 
+    );
 }

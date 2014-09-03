@@ -19,7 +19,7 @@
  */
 @noanno
 shared interface Bug1777<Element> satisfies Iterable<Element> {
-    shared default Result fold<Result>(Result initial)
+    shared default Result foldd<Result>(Result initial)
            ("The accumulating function that accepts an
              intermediate result, and the next element."
             Result accumulating(Result partial, Element element)) {
@@ -43,7 +43,7 @@ shared abstract class Bug1777_Impl<Element>() satisfies Bug1777<Element> {
 
 @noanno
 shared abstract class Bug1777_2<Element>() satisfies Iterable<Element> {
-    shared default Result fold<Result>(Result initial)
+    shared default Result foldd<Result>(Result initial)
     ("The accumulating function that accepts an
              intermediate result, and the next element."
     Result accumulating(Result partial, Element element)) {

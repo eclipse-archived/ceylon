@@ -335,8 +335,8 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
     }
     
     @.java.lang.Override
@@ -345,8 +345,8 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
+    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
     }
     
     @.java.lang.Override
