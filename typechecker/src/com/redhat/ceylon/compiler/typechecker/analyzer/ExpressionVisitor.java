@@ -5015,15 +5015,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal) {
         ProducedType outerType = 
                 that.getScope().getDeclaringType(baseType);
-        ProducedType type = 
-                baseType.getProducedType(outerType, typeArgs);
-//        if (!type.isAlias()) {
-            //TODO: remove this awful hack which means
-            //      we can't define aliases for types
-            //      with sequenced type parameters
-            baseType = type.getDeclaration();
-//        }
         if (acceptsTypeArguments(baseType, typeArgs, tal, that, false)) {
+            ProducedType type = 
+                    baseType.getProducedType(outerType, typeArgs);
             ProducedType fullType = type.getFullType();
             that.setTypeModel(fullType);
             that.setTarget(type);
