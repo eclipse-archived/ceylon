@@ -80,14 +80,17 @@ shared void operators() {
     if (is String s13_1 = spread13[1]) {
         check(s13_1 == "S2", "spread 13 item 1");
     } else { fail("spread 13 item 1"); }
-    /*
-    function spread14() = spreadList*.x;
-    check(spread14().size == 2, "spread 14 size");
-    check(spread14()[0] is String, "spread 14 item 0");
-    if (is String s14_1 = spread14()[1]) {
-        check(s14_1 == "S2", "spread 14 item 1");
+    if (runtime.name=="jvm") {
+        print("Spread method refs tests DISABLED for now");
+    } else {
+    value spread14 = [ for (i in 1..3) "HELLO!" ]*.initial;
+    check(spread14(5).size == 3, "spread 14 size");
+    check(spread14(1)[0] == "H", "spread 14 item 0");
+    if (is String s14_1 = spread14(2)[1]) {
+        check(s14_1 == "HE", "spread 14 item 1");
     } else { fail("spread 14 item 1");}
-    */
+    check(spread14(2) == ["HE", "HE", "HE"], "spread14(2) == ``spread14(2)``");
+    }
 
     check("hello" in "hello world", "in 1");
     check("world" in "hello world", "in 2");
