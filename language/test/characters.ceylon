@@ -63,18 +63,37 @@ shared void characters() {
         check(ex.message == "-2147483650 is not a 32-bit integer", "Character ouf of range message #2");
     }
     try {
-        fail("Invalid codepoint: ``(888).character``:");
+        value c888=(888).character;
+        check(runtime.name!="jvm", "888.character is an invalid Unicode codepoint");
     } catch (OverflowException ex) {
         check(ex.message == "888 is not a Unicode code point", "888 is not a valid unicode codepoint");
     }
     try {
-        fail("Invalid codepoint: ``(55210).character``");
+        value c55210 = (55210).character;
+        check(runtime.name!="jvm", "55210.character is an invalid Unicode codepoint");
     } catch (OverflowException ex) {
         check(ex.message == "55210 is not a Unicode code point", "55210 is not a valid unicode codepoint");
     }
     try {
-        fail("Invalid codepoint: ``(98537).character``");
+        value c98537 = (98537).character;
+        check(runtime.name!="jvm", "98537.character is an invalid Unicode codepoint");
     } catch (OverflowException ex) {
         check(ex.message == "98537 is not a Unicode code point", "98537 is not a valid unicode codepoint");
+    }
+    try {
+        value c1114111 = (1114111).character;
+        check(runtime.name!="jvm", "1114111.character is an invalid Unicode codepoint");
+    } catch (OverflowException ex) {
+        check(ex.message == "1114111 is not a Unicode code point", "1114111 is not a valid unicode codepoint");
+    }
+    try {
+        fail("Invalid codepoint: ``(-1).character`` (-1)");
+    } catch (OverflowException ex) {
+        check(ex.message == "-1 is not a Unicode code point", "-1 is not a valid unicode codepoint");
+    }
+    try {
+        fail("Invalid codepoint: ``(1114112).character`` (1114112)");
+    } catch (OverflowException ex) {
+        check(ex.message == "1114112 is not a Unicode code point", "1114112 is not a valid unicode codepoint");
     }
 }
