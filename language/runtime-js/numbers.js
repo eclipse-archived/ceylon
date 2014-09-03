@@ -65,7 +65,7 @@ function $addnm$(nm,s) {
   var t={t:JSNumber};
   if (s===undefined)s=$_Number.$$.prototype[nm];
   var d=JSNum$proto[nm];
-  d.$crtmm$=s.$crtmm$();
+  d.$crtmm$=getrtmm$$(s);
   d=d.$crtmm$;
   if (typeof(d.$t)==='string')d.$t=t;
   if (d.ps) for (var i=0; i < d.ps.length; i++) {
