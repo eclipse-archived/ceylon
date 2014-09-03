@@ -79,6 +79,14 @@ public class JsCompiler {
             hasErrors(that);
         }
         @Override
+        public void visit(Tree.Import that) {
+            if (hasErrors(that)) {
+                exitCode = 1;
+                return;
+            }
+            super.visit(that);
+        }
+        @Override
         public void visit(Tree.ImportMemberOrType that) {
             if (hasErrors(that)) return;
             if (that.getImportModel() == null || that.getImportModel().getDeclaration() == null)return;
