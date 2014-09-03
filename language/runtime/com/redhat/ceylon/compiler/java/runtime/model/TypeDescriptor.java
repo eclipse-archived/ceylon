@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.model.FunctionOrValueInterface;
@@ -28,7 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.SiteVariance;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -37,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Util;
 public abstract class TypeDescriptor {
 
     public static final TypeDescriptor NothingType = new Nothing();
+    private static final Variance[] NO_VARIANCE = new Variance[0];
 
     //
     // Methods
@@ -76,10 +80,12 @@ public abstract class TypeDescriptor {
     }
     
     public static abstract class Generic extends TypeDescriptor {
-        protected TypeDescriptor[] typeArguments;
+        protected final TypeDescriptor[] typeArguments;
+        protected final Variance[] useSiteVariance;
 
-        public Generic(TypeDescriptor[] typeArguments){
+        public Generic(Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
             this.typeArguments = typeArguments;
+            this.useSiteVariance = useSiteVariance;
         }
 
         public TypeDescriptor[] getTypeArguments() {
@@ -87,13 +93,8 @@ public abstract class TypeDescriptor {
         }
 
         protected boolean equals(Generic other) {
-            if(typeArguments.length != other.typeArguments.length)
-                return false;
-            for(int i=0;i<typeArguments.length;i++){
-                if(!typeArguments[i].equals(other.typeArguments[i]))
-                    return false;
-            }
-            return true;
+            return Arrays.equals(typeArguments, other.typeArguments)
+                    && Arrays.equals(useSiteVariance, other.useSiteVariance);
         }
         
         protected void toString(StringBuilder b) {
@@ -119,13 +120,39 @@ public abstract class TypeDescriptor {
                 b.append(">");
             }
         }
+        
+        protected ProducedType applyUseSiteVariance(TypeDeclaration decl, ProducedType type) {
+            // apply use site variance if required
+            if(useSiteVariance.length != 0){
+                List<TypeParameter> typeParameters = decl.getTypeParameters();
+                int i = 0;
+                for(TypeParameter typeParameter : typeParameters){
+                    // bail if we have more type parameters than provided use site variance
+                    if(i >= useSiteVariance.length)
+                        break;
+                    switch(useSiteVariance[i]){
+                    case IN:
+                        type.setVariance(typeParameter, SiteVariance.IN);
+                        break;
+                    case OUT:
+                        type.setVariance(typeParameter, SiteVariance.OUT);
+                        break;
+                    case NONE:
+                    default:
+                        break;
+                    }
+                    i++;
+                }
+            }
+            return type;
+        }
     }
 
     public static class Class extends Generic implements QualifiableTypeDescriptor {
         private java.lang.Class<?> klass;
 
-        public Class(java.lang.Class<?> klass, TypeDescriptor[] typeArguments){
-            super(typeArguments);
+        public Class(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
+            super(useSiteVariance, typeArguments);
             this.klass = klass;
         }
 
@@ -151,6 +178,7 @@ public abstract class TypeDescriptor {
             int ret = 17;
             ret = 37 * ret + "class".hashCode();
             ret = 37 * ret + Arrays.hashCode(typeArguments);
+            ret = 37 * ret + Arrays.hashCode(useSiteVariance);
             ret = 37 * ret + klass.hashCode();
             return  ret;
         }
@@ -193,7 +221,9 @@ public abstract class TypeDescriptor {
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(Metamodel.getProducedType(typeArg));
             }
-            return decl.getProducedType(qualifyingType, typeArgs);
+            ProducedType type = decl.getProducedType(qualifyingType, typeArgs);
+            type = applyUseSiteVariance(decl, type);
+            return type;
         }
 
         @Override
@@ -255,7 +285,9 @@ public abstract class TypeDescriptor {
          * For members
          */
         public FunctionOrValue(String name, TypeDescriptor[] typeArguments) {
-            super(typeArguments);
+            // we can't have use-site variance for local types in functions, since they are only visible inside their declaration
+            // not where they are used
+            super(NO_VARIANCE, typeArguments);
             this.klass = null;
             this.name = name;
             if(name.isEmpty())
@@ -268,7 +300,9 @@ public abstract class TypeDescriptor {
          * For toplevels
          */
         public FunctionOrValue(java.lang.Class<?> klass, TypeDescriptor[] typeArguments) {
-            super(typeArguments);
+            // we can't have use-site variance for local types in functions, since they are only visible inside their declaration
+            // not where they are used
+            super(NO_VARIANCE, typeArguments);
             this.klass = klass;
             this.name = null;
             this.local = false;
@@ -679,7 +713,12 @@ public abstract class TypeDescriptor {
     }
     
     public static TypeDescriptor klass(java.lang.Class<?> klass, TypeDescriptor... typeArguments) {
-        return new Class(klass, typeArguments);
+        // delegate
+        return klass(klass, NO_VARIANCE, typeArguments);
+    }
+
+    public static TypeDescriptor klass(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor... typeArguments) {
+        return new Class(klass, useSiteVariance, typeArguments);
     }
 
     /**
