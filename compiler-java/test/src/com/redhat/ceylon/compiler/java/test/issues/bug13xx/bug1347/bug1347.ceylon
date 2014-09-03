@@ -1,4 +1,4 @@
-import com.ceylon.java8 { Interface { staticMethod }, ... }
+import com.ceylon.java8 { Interface { staticMethod, InnerClass, InnerInterface }, ... }
 import java.time { ... }
 import java.util { List }
 import java.util.\ifunction { Predicate, ToIntFunction }
@@ -11,6 +11,9 @@ void foo(Test t, Interface i, List<Integer> l){
     t.methodWithTypeAnnotation(null);
     staticMethod();
     i.defaultMethod();
+    Interface.staticMethod();
+    InnerClass.staticMethod();
+    InnerInterface.staticMethod();
     
     object pred satisfies Predicate<Integer>{
         shared actual Boolean test(Integer i) => i > 2;
