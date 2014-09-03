@@ -1,7 +1,7 @@
 import check { check }
 
 //Tests for spread invocations
-Integer spread1(Integer* a) => a.fold(0, (Integer a, Integer b) => a+b);
+Integer spread1(Integer* a) => a.fold(0)((Integer a, Integer b) => a+b);
 
 Integer spread2({Integer*} a) {
   variable value r  = 0;
