@@ -118,8 +118,8 @@ shared class Singleton<out Element>(Element element)
             (Boolean selecting(Element e)) 
             => selecting(element) then this else [];
     
-    shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Element e)) 
+    shared actual Result fold<Result>(Result initial)
+            (Result accumulating(Result partial, Element e)) 
             => accumulating(initial, element);
     
     shared actual Element reduce<Result>(

@@ -119,8 +119,8 @@ shared interface Empty of e
     shared actual [] filter(Boolean selecting(Nothing element)) 
             => this;
     
-    shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing element)) 
+    shared actual Result fold<Result>(Result initial)
+            (Result accumulating(Result partial, Nothing element)) 
             => initial;
     
     shared actual Null reduce<Result>(

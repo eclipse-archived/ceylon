@@ -1578,13 +1578,10 @@ public final class String
     }
 
     @Ignore
-    public static <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, 
-            java.lang.String value, Result ini, Callable<? extends Result> f) {
-        if (value.isEmpty()) {
-            return ini;
-        } else {
-            return instance(value).fold($reifiedResult, ini, f);
-        }
+    public static <Result> Callable<? extends Result> 
+    fold(@Ignore TypeDescriptor $reifiedResult, 
+            java.lang.String value, Result ini) {
+        return instance(value).fold($reifiedResult, ini);
     }
     
     @Ignore

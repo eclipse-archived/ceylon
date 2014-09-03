@@ -383,8 +383,8 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the integer `5050`."
     see (`function reduce`, 
          `function scan`)
-    shared default Result fold<Result>(Result initial,
-            "The accumulating function that accepts an
+    shared default Result fold<Result>(Result initial)
+           ("The accumulating function that accepts an
              intermediate result, and the next element."
             Result accumulating(Result partial, Element element)) {
         variable value partial = initial;
