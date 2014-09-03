@@ -4548,14 +4548,15 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
-        Functional dec = (Functional) that.getDeclaration();
+        Generic dec = (Generic) that.getDeclaration();
         StringBuilder params = new StringBuilder();
         for (TypeParameter tp: dec.getTypeParameters()) {
             if (params.length()>0) params.append(", ");
             params.append("'").append(tp.getName()).append("'");
         }
         that.addError("missing type arguments to generic declaration: '" + 
-                dec.getName(unit) + "' declares type parameters " + params);
+                that.getDeclaration().getName(unit) + 
+                "' declares type parameters " + params);
     }
     
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
