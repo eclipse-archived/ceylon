@@ -276,7 +276,7 @@ public class CeylonTransformer extends AbstractTransformer {
         final JCExpression initialValue;
         final HasErrorException expressionError;
         if (expression != null) {
-            expressionError = errors().getFirstExpressionError(expression.getExpression());
+            expressionError = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (expressionError != null) {
                 initialValue = make().Erroneous();
             } else {

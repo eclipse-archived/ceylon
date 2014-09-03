@@ -457,7 +457,7 @@ public abstract class AbstractTransformer implements Transformation {
             BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
             ProducedType type = declarationModel.getType();
             JCStatement transStat;
-            HasErrorException error = errors().getFirstExpressionError(expression.getExpression());
+            HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
                 transStat = error.makeThrow(this);
             } else {
@@ -484,7 +484,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             ProducedType type = declarationModel.getType();
             JCStatement transStmt;
-            HasErrorException error = errors().getFirstExpressionError(expression.getExpression());
+            HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
                 transStmt = error.makeThrow(this);
             } else {

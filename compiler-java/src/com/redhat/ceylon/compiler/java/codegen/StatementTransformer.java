@@ -2702,7 +2702,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression initialValue = null;
             SpecifierOrInitializerExpression initOrSpec = decl.getSpecifierOrInitializerExpression();
             if (initOrSpec != null) {
-                HasErrorException error = errors().getFirstExpressionError(initOrSpec.getExpression().getTerm());
+                HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(initOrSpec.getExpression().getTerm());
                 if (error != null) {
                     return List.<JCStatement>of(error.makeThrow(this));
                 }

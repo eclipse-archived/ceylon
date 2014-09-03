@@ -67,7 +67,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      */
 
     public void visit(Tree.TypeAliasDeclaration decl){
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
@@ -92,7 +92,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ClassOrInterface decl) {
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;
@@ -134,7 +134,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ObjectDefinition decl) {
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;
@@ -148,7 +148,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeDeclaration decl){
-        if (gen.errors().hasDeclarationError(decl)) {
+        if (gen.errors().hasDeclarationAndMarkBrokenness(decl)) {
             return;
         }
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -173,7 +173,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -196,9 +196,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
-        if (gen.errors().hasDeclarationError(getterSetterPairing.getGetter(decl))) {
+        if (gen.errors().hasDeclarationAndMarkBrokenness(getterSetterPairing.getGetter(decl))) {
             // For setters we also give up if the getter has a declaration error
             // because there's little chance we'll be able to generate a correct setter
             return;
@@ -224,7 +224,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AnyMethod decl) {
-        if(gen.errors().hasDeclarationError(decl))
+        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
             return;
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;

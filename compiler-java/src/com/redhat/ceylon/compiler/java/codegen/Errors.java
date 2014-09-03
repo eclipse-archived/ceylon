@@ -254,20 +254,25 @@ public class Errors {
     /** Visit the given declaration (but not it's body, specifier or 
      * initializer or defaulted parameter expressions) and return true if 
      * there are any errors
+     * WARNING: annotated the current decl as broken as side-effect
      */
-    public boolean hasDeclarationError(Tree.Declaration node) {
+    public boolean hasDeclarationAndMarkBrokenness(Tree.Declaration node) {
         return annotateBrokenness(declarationVisitor.hasErrors(node));
     }
-    
+
     /**
      * Visit the given tree of expressions returning the first error found, 
      * or null if the tree is free of errors.
+     * WARNING: annotated the current decl as broken as side-effect
      */
-    public HasErrorException getFirstExpressionError(Tree.Term node) {
+    public HasErrorException getFirstExpressionErrorAndMarkBrokenness(Tree.Term node) {
         return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
     }
-    
-    public HasErrorException getFirstExpressionError(Tree.ExtendedType node) {
+
+    /**
+     * WARNING: annotated the current decl as broken as side-effect
+     */
+    public HasErrorException getFirstExpressionErrorAndMarkBrokenness(Tree.ExtendedType node) {
         return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
     }
     

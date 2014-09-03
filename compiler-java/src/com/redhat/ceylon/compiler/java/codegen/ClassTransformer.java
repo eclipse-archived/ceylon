@@ -1984,7 +1984,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (forCompanion || lazy) {
             SpecifierOrInitializerExpression specOrInit = decl.getSpecifierOrInitializerExpression();
             if (specOrInit != null) {
-                HasErrorException error = errors().getFirstExpressionError(specOrInit.getExpression());
+                HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(specOrInit.getExpression());
                 if (error != null) {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(error.makeThrow(this))));
                 } else {
@@ -2512,7 +2512,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (specifierExpression != null
                 && specifierExpression.getExpression() != null) {
             term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
-            HasErrorException error = errors().getFirstExpressionError(term);
+            HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(term);
             if (error != null) {
                 return List.<JCStatement>of(error.makeThrow(this));
             }
@@ -3431,7 +3431,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (noBody) {
             methodBuilder.noBody();
         } else {
-            HasErrorException error = errors().getFirstExpressionError(Decl.getDefaultArgument(currentParam).getExpression());
+            HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(Decl.getDefaultArgument(currentParam).getExpression());
             if (error != null) {
                 methodBuilder.body(error.makeThrow(this));
             } else {

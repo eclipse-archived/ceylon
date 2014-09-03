@@ -182,7 +182,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
         JCStatement result;
-        HasErrorException error = errors().getFirstExpressionError(tree.getExpression());
+        HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(tree.getExpression());
         if (error != null) {
             result = error.makeThrow(this);
         } else {
@@ -196,10 +196,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
         JCStatement  result;
-        HasErrorException error = errors().getFirstExpressionError(op.getBaseMemberExpression());
+        HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(op.getBaseMemberExpression());
         if (error != null) {
             result = error.makeThrow(this);
-        } else if ((error = errors().getFirstExpressionError(op.getSpecifierExpression().getExpression())) != null) {
+        } else if ((error = errors().getFirstExpressionErrorAndMarkBrokenness(op.getSpecifierExpression().getExpression())) != null) {
             result = error.makeThrow(this);
         } else {
             result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
@@ -3181,7 +3181,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Invocations
     public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
-        HasErrorException error = errors().getFirstExpressionError(extendedType);
+        HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(extendedType);
         if (error != null) {
             classBuilder.superCall(error.makeThrow(this));
             return;
