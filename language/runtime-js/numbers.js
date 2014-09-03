@@ -154,6 +154,8 @@ atr$(JSNum$proto, 'character', function(){
   var c=this.valueOf();
   if (c < -2147483648 || c > 0x7fffffff) {
     throw OverflowException(c + ' is not a 32-bit integer');
+  } else if (c < 0 || c > 1114111) {
+    throw OverflowException(c + ' is not a Unicode code point');
   }
   return Character(this.valueOf());
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
