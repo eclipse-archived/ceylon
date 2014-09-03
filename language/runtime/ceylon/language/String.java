@@ -1585,6 +1585,14 @@ public final class String
     }
     
     @Ignore
+    public static <Result> 
+    Callable<? extends Iterable<? extends Result,? extends java.lang.Object>> 
+    scan(@Ignore TypeDescriptor $reifiedResult, 
+            java.lang.String value, Result ini) {
+        return instance(value).scan($reifiedResult, ini);
+    }
+    
+    @Ignore
     public static <Result> java.lang.Object 
     reduce(@Ignore TypeDescriptor $reifiedResult, 
             java.lang.String value, Callable<? extends Result> f) {

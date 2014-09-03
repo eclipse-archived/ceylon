@@ -447,31 +447,31 @@ shared interface Iterable<out Element, out Absent=Null>
      For an empty stream, `scan()` returns a stream 
      containing just the given initial value `z`:
      
-         {}.scan(z, f) == { z }
+         {}.scan(z)(f) == { z }
      
      For a given nonempty stream `it`, initial value `z`, 
      and combining function `f`, the result of `scan()` is 
      obtained according to the following recursive 
      definition:
      
-         it.scan(z, f).last == f(it.exceptLast.scan(z, f).last, it.last)
-         it.scan(z, f).exceptLast == it.exceptLast.scan(z, f)
+         it.scan(z)(f).last == f(it.exceptLast.scan(z)(f).last, it.last)
+         it.scan(z)(f).exceptLast == it.exceptLast.scan(z)(f)
      
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         it.scan(z, f).getFromFirst(n) == it.taking(n).fold(z)(f)
-         it.scan(z, f).last == it.fold(z)(f)
-         it.scan(z, f).first == {}.fold(z)(f) == z
+         it.scan(z)(f).getFromFirst(n) == it.taking(n).fold(z)(f)
+         it.scan(z)(f).last == it.fold(z)(f)
+         it.scan(z)(f).first == {}.fold(z)(f) == z
      
      For example, the expression
      
-         (1..4).scan(0, plus<Integer>)
+         (1..4).scan(0)(plus<Integer>)
      
      results in the stream `{ 0, 1, 3, 6, 10 }`."
     see (`function fold`)
-    shared default {Result+} scan<Result>(Result initial,
-            "The accumulating function that accepts
+    shared default {Result+} scan<Result>(Result initial)
+           ("The accumulating function that accepts
              the running total and the next element."
             Result accumulating(Result partial, Element element)) {
         object iterable satisfies {Result+} {

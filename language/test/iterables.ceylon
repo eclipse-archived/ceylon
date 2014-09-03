@@ -322,7 +322,7 @@ shared void testIterables() {
     
     check((0..1).product(1..2).sequence()==[[0,1],[0,2],[1,1],[1,2]], "range product");
     
-    check((1..3).scan(0, (Integer p, Integer e) => p+e).sequence()==[0,1,3,6], "range scan");
+    check((1..3).scan(0)((Integer p, Integer e) => p+e).sequence()==[0,1,3,6], "range scan");
     
     //TODO: reenable once js backend bug is fixed
     //check((1..3).spread((Integer i)(Float f) => i*f)(1.0).sequence()==[1.0,2.0,3.0], "range spread");
