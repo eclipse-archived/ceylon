@@ -40,6 +40,10 @@ void runtime(){
     assert(invTop1 is Invariant<Top1>);
     assert(! invTop1 is Invariant<Middle1>);
     assert(! invTop1 is Invariant<Bottom1>);
+    assert(invTop1 is Invariant<out Anything>);
+    assert(invTop1 is Invariant<out Object>);
+    assert(! invTop1 is Invariant<Object>);
+    assert(invTop1 is Invariant<in Nothing>);
 
     Object invMiddle1 = Invariant<Middle1>();
     assert(! invMiddle1 is Invariant<Top1>);

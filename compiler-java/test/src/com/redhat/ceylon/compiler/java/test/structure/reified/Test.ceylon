@@ -37,6 +37,12 @@ void test<Key,Value>(Object obj) given Key satisfies Object {
     }
     if(is TestInterface<Anything,Integer> obj){
     }
+    // two use-site variance
+    if(is TestInterface<out Anything,in Integer> obj){
+    }
+    // just one
+    if(is TestInterface<out Anything,Integer> obj){
+    }
 }
 
 shared void first<Value,Absent>()

@@ -80,6 +80,18 @@ final class test_ {
         if ((obj$28 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface && .com.redhat.ceylon.compiler.java.Util.isReified(obj$28, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
             final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> obj$29 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)obj$28;
         }
+        .java.lang.Object obj$31;
+        if ((obj$31 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface && .com.redhat.ceylon.compiler.java.Util.isReified(obj$31, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{
+                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                .com.redhat.ceylon.compiler.java.metadata.Variance.IN}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, ? super .ceylon.language.Integer> obj$32 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)obj$31;
+        }
+        .java.lang.Object obj$34;
+        if ((obj$34 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface && .com.redhat.ceylon.compiler.java.Util.isReified(obj$34, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{
+                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                .com.redhat.ceylon.compiler.java.metadata.Variance.NONE}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, .ceylon.language.Integer> obj$35 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)obj$34;
+        }
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
