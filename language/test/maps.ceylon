@@ -63,7 +63,7 @@ shared void testMaps() {
     if (exists v=m["a"]) {
         check(v==1, "LazyMap item");
     } else { fail("LazyMap item"); }
-    check(m.fold(0, (Integer x, String->Integer e) => x+e.item)==6, "LazyMap fold");
+    check(m.fold(0)((Integer x, String->Integer e) => x+e.item)==6, "LazyMap fold");
     check(m.every((String->Integer e) => e.key in "abc"), "LazyMap every");
     check("b"->2 in m, "LazyMap contains");
     

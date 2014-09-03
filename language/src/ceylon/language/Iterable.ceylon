@@ -367,18 +367,18 @@ shared interface Iterable<out Element, out Absent=Null>
      For an empty stream, `fold()` returns the given initial 
      value `z`:
      
-         {}.fold(z, f) == z
+         {}.fold(z)(f) == z
      
      For a given nonempty stream `it`, initial value `z`, 
      and combining function `f`, the result of `fold()` is 
      obtained according to the following recursive 
      definition:
      
-         it.fold(z, f) == f(it.exceptLast.fold(z, f), it.last)
+         it.fold(z)(f) == f(it.exceptLast.fold(z)(f), it.last)
      
      For example, the expression
      
-         (1..100).fold(0, plus<Integer>)
+         (1..100).fold(0)(plus<Integer>)
      
      results in the integer `5050`."
     see (`function reduce`, 
@@ -460,9 +460,9 @@ shared interface Iterable<out Element, out Absent=Null>
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         it.scan(z, f).getFromFirst(n) == it.taking(n).fold(z, f)
-         it.scan(z, f).last == it.fold(z, f)
-         it.scan(z, f).first == {}.fold(z, f) == z
+         it.scan(z, f).getFromFirst(n) == it.taking(n).fold(z)(f)
+         it.scan(z, f).last == it.fold(z)(f)
+         it.scan(z, f).first == {}.fold(z)(f) == z
      
      For example, the expression
      

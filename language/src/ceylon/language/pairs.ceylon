@@ -148,7 +148,7 @@ shared Boolean anyPair<First,Second>(
  combining function `f`, `foldPairs()` may be defined in 
  terms of [[Iterable.fold]], [[zipPairs]], and [[unflatten]]:
  
-     foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z, unflatten(f))"
+     foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z)(unflatten(f))"
 shared Result foldPairs<Result,First,Second>(
     Result initial,
     "The accumulating function to apply to each pair of 
