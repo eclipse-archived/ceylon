@@ -3976,6 +3976,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && decl.isStaticallyImportable()) {
+                if(decl.getContainer() instanceof TypeDeclaration == false){
+                    System.err.println("Statically importable decl "+decl.getQualifiedNameString()+" has container: "+decl.getContainer());
+                }
                 qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
             }
             if (Decl.isPrivateAccessRequiringUpcast(expr)) {
