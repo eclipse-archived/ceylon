@@ -21,8 +21,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -32,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -48,7 +51,13 @@ public class LocalTypeVisitor extends Visitor {
     private Set<String> ignored = new HashSet<String>();
     private Set<String> localCompanionClasses = new HashSet<String>();
     private Set<Interface> localInterfaces = new HashSet<Interface>();
-    
+
+    private LinkedList<Integer> anonymous = new LinkedList<Integer>();
+    {
+        anonymous.add(1);
+    }
+    private String prefix = "";
+
     public Set<String> getLocals() {
         locals.removeAll(ignored);
         return locals;
@@ -78,7 +87,7 @@ public class LocalTypeVisitor extends Visitor {
             // find an unused name
             int i;
             String prefixedName;
-            for(i=1;locals.contains(prefixedName = i+name);i++){}
+            for(i=1;locals.contains(prefixedName = prefix+i+name);i++){}
             // add it
             locals.add(prefixedName);
             // only keep it if it contains locals
@@ -90,10 +99,108 @@ public class LocalTypeVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that){
         Method model = that.getDeclarationModel();
+        int mpl = model.getParameterLists().size();
+        String prefix = null;
+//        System.err.println("In "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
+        if(mpl > 1){
+            prefix = this.prefix;
+            for(int i=1;i<mpl;i++)
+                enterAnonymousClass();
+//            System.err.println("Inside "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
+        }
         collect(that, model);
         // stop at locals, who get a type generated for them
         if(model.isMember())
             super.visit(that);
+        if(mpl > 1){
+            for(int i=1;i<mpl;i++)
+                exitAnonymousClass();
+            this.prefix = prefix;
+        }
+//        System.err.println("Out of "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
+    }
+
+    private void exitAnonymousClass() {
+        anonymous.pop();
+        Integer count = anonymous.peek();
+        anonymous.set(0, count+1);
+    }
+
+    private void enterAnonymousClass() {
+        anonymous.push(1);
+        prefix = getPrefix();
+    }
+
+    private String getPrefix() {
+        StringBuilder b = new StringBuilder();
+        // ignore the first one and traverse last to second
+        for(int i=anonymous.size()-1;i>0;i--){
+            Integer c = anonymous.get(i);
+            b.append(c).append("$");
+        }
+        return b.toString();
+    }
+
+    public void visit(Tree.Comprehension that) {
+        String prefix = this.prefix;
+        // one anonymous for Iterable, one for Iterator
+        enterAnonymousClass();
+        enterAnonymousClass();
+        super.visit(that);
+        exitAnonymousClass();
+        exitAnonymousClass();
+        this.prefix = prefix;
+    }
+
+    public void visit(Tree.FunctionArgument that) {
+        String prefix = this.prefix;
+        enterAnonymousClass();
+        super.visit(that);
+        exitAnonymousClass();
+        this.prefix = prefix;
+    }
+
+    public void visit(Tree.MethodArgument that) {
+        String prefix = this.prefix;
+        enterAnonymousClass();
+        super.visit(that);
+        exitAnonymousClass();
+        this.prefix = prefix;
+    }
+
+    public void visit(Tree.QualifiedMemberExpression that) {
+        if(that.getMemberOperator() instanceof Tree.SpreadOp){
+            String prefix = this.prefix;
+            enterAnonymousClass();
+            super.visit(that);
+            exitAnonymousClass();
+            this.prefix = prefix;
+        }else{
+            super.visit(that);
+        }
+    }
+
+    public void visit(Tree.BaseMemberOrTypeExpression that) {
+        Declaration model = that.getDeclaration();
+        if(model != null
+                && (model instanceof Method || model instanceof Class)
+                && !that.getDirectlyInvoked()){
+            String prefix = this.prefix;
+            enterAnonymousClass();
+            super.visit(that);
+            exitAnonymousClass();
+            this.prefix = prefix;
+        }else{
+            super.visit(that);
+        }
+    }
+    
+    public void visit(Tree.SequenceEnumeration that) {
+        String prefix = this.prefix;
+        enterAnonymousClass();
+        super.visit(that);
+        exitAnonymousClass();
+        this.prefix = prefix;
     }
 
     @Override
