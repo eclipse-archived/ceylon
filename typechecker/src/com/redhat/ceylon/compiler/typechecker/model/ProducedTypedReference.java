@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 
 
 
@@ -50,23 +48,6 @@ public class ProducedTypedReference extends ProducedReference {
                         covariant, contravariant);
             }
             return type.substitute(getTypeArguments()); //the type arguments to the member
-        }
-    }
-    
-    @Override
-    public ProducedType getFullType(ProducedType wrappedType) {
-        if (isAbstraction(super.getDeclaration())) {
-            Unit unit = getDeclaration().getUnit();
-            if (getDeclaration() instanceof Functional) {
-                return producedType(unit.getCallableDeclaration(), getType(),
-                        new UnknownType(unit).getType());
-            }
-            else {
-                return getType();
-            }
-        }
-        else {
-            return super.getFullType(wrappedType);
         }
     }
     

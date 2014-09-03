@@ -5013,9 +5013,9 @@ public class ExpressionVisitor extends Visitor {
     private void visitBaseTypeExpression(Tree.StaticMemberOrTypeExpression that, 
             TypeDeclaration baseType, List<ProducedType> typeArgs, 
             Tree.TypeArguments tal) {
-        ProducedType outerType = 
-                that.getScope().getDeclaringType(baseType);
         if (acceptsTypeArguments(baseType, typeArgs, tal, that, false)) {
+            ProducedType outerType = 
+                    that.getScope().getDeclaringType(baseType);
             ProducedType type = 
                     baseType.getProducedType(outerType, typeArgs);
             ProducedType fullType = type.getFullType();

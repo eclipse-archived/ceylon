@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static java.util.Collections.emptyMap;
 
 import java.util.HashMap;
@@ -87,15 +89,23 @@ public abstract class ProducedReference {
     }
 
     public ProducedType getFullType(ProducedType wrappedType) {
-    	if (declaration instanceof Functional) {
-    		return getDeclaration().getUnit()
-    		        .getCallableType(this, wrappedType);
-    	}
-    	else {
-    		return wrappedType;
-    	}
+        if (declaration instanceof Functional) {
+            if (isAbstraction(declaration)) { //TODO: || this instanceof ProducedType && ((ProducedType) this).isAbstract()
+                Unit unit = declaration.getUnit();
+                return producedType(unit.getCallableDeclaration(), 
+                        wrappedType,
+                        new UnknownType(unit).getType());
+            }
+            else {
+                return getDeclaration().getUnit()
+                        .getCallableType(this, wrappedType);
+            }
+        }
+        else {
+            return wrappedType;
+        }
     }
-    
+
     public boolean isFunctional() {
         return getDeclaration() instanceof Functional;
     }
