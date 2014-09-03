@@ -402,8 +402,13 @@ public class LanguageCompiler extends JavaCompiler {
                     printError(pe, pe.getMessage(), "ceylon.parser", map);
                 }
 
-                if (lexerErrors.size() == 0 
-                        && parserErrors.size() == 0) {
+                // if we continue and it's not a descriptor, we don't care about errors
+                if ((options.get(OptionName.CEYLONCONTINUE) != null
+                        && !ModuleManager.MODULE_FILE.equals(sourceFile.getName())
+                        && !ModuleManager.PACKAGE_FILE.equals(sourceFile.getName()))
+                        // otherwise we care about errors
+                        || (lexerErrors.size() == 0 
+                            && parserErrors.size() == 0)) {
                     // FIXME: this is bad in many ways
                     String pkgName = getPackage(filename);
                     // make a Package with no module yet, we will resolve them later
