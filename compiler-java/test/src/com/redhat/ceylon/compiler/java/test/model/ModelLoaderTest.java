@@ -585,10 +585,15 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
             Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
             Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-            Assert.assertEquals(name+" [declaredVoid]", validDeclaration.isDeclaredVoid(), modelDeclaration.isDeclaredVoid());
-            // make sure it has every parameter list required
             List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
             List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
+
+            // only check for void for non-MPL, since those actually return Callable
+            if(validParameterLists.size() == 1){
+                Assert.assertEquals(name+" [declaredVoid]", validDeclaration.isDeclaredVoid(), modelDeclaration.isDeclaredVoid());
+            }
+
+            // make sure it has every parameter list required
             compareParameterLists(name, validParameterLists, modelParameterLists);
             // now same for return type
             compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
