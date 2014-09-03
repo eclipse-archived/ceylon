@@ -709,6 +709,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             // see where that method belongs
             ClassMirror enclosingClass = method.getEnclosingClass();
+            while(enclosingClass.isAnonymous()){
+                // that's the anonymous class
+                enclosingClass = enclosingClass.getEnclosingClass();
+                // now get the enclosing method
+                method = enclosingClass.getEnclosingMethod();
+                if(method == null)
+                    return null;
+                // and the method's containing class
+                enclosingClass = method.getEnclosingClass();
+            }
             
             // if we are in a setter class, the attribute is declared in the getter class, so look for its declaration there
             TypeMirror getterClass = (TypeMirror) getAnnotationValue(enclosingClass, CEYLON_SETTER_ANNOTATION, "getterClass");
