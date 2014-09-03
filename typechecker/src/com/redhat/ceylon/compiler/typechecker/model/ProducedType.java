@@ -2685,9 +2685,7 @@ public class ProducedType extends ProducedReference {
                 }
             }
         }
-        if(!varianceOverrides.equals(other.varianceOverrides))
-            return false;
-        return true;
+        return varianceOverrides.equals(other.varianceOverrides);
     }
     
     public boolean isAbstract() {
