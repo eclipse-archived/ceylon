@@ -7,7 +7,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
@@ -2687,4 +2689,29 @@ public class ProducedType extends ProducedReference {
             return false;
         return true;
     }
+    
+    public boolean isAbstract() {
+        if (getDeclaration() instanceof Class) {
+            return ((Class) getDeclaration()).isAbstract();
+        }
+        else if (getDeclaration() instanceof TypeParameter) {
+            return ((TypeParameter) getDeclaration()).getParameterList()==null;
+        }
+        else {
+            return true;
+        }
+    }
+
+    @Override
+    public ProducedType getFullType(ProducedType wrappedType) {
+        if (isAbstract() || isAbstraction(super.getDeclaration())) {
+            Unit unit = getDeclaration().getUnit();
+            return producedType(unit.getCallableDeclaration(), this, 
+                    new UnknownType(unit).getType());
+        }
+        else {
+            return super.getFullType(wrappedType);
+        }
+    }
+    
 }

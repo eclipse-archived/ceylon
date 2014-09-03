@@ -88,7 +88,7 @@ interface TypeInference {
             return [element];
         }
         
-        @type:"unknown" @error value sing = singleton(hi);
+        @type:"Sequence<unknown>" @error value sing = singleton(hi);
         
         value hi = "hi";
         

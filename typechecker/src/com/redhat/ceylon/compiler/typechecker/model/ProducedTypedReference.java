@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
+
 
 
 /**
@@ -24,6 +27,16 @@ public class ProducedTypedReference extends ProducedReference {
         return (TypedDeclaration) super.getDeclaration();
     }
     
+    @Override
+    void setDeclaration(Declaration declaration) {
+        if (declaration instanceof TypedDeclaration) {
+            super.setDeclaration(declaration);
+        }
+        else {
+            throw new IllegalArgumentException("not a TypedDeclaration");
+        }
+    }
+    
     public ProducedType getType() {
         TypedDeclaration dec = getDeclaration();
         ProducedType type = dec==null ? null : dec.getType();
@@ -37,6 +50,23 @@ public class ProducedTypedReference extends ProducedReference {
                         covariant, contravariant);
             }
             return type.substitute(getTypeArguments()); //the type arguments to the member
+        }
+    }
+    
+    @Override
+    public ProducedType getFullType(ProducedType wrappedType) {
+        if (isAbstraction(super.getDeclaration())) {
+            Unit unit = getDeclaration().getUnit();
+            if (getDeclaration() instanceof Functional) {
+                return producedType(unit.getCallableDeclaration(), getType(),
+                        new UnknownType(unit).getType());
+            }
+            else {
+                return getType();
+            }
+        }
+        else {
+            return super.getFullType(wrappedType);
         }
     }
     

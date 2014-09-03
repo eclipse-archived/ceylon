@@ -4575,17 +4575,18 @@ public class ExpressionVisitor extends Visitor {
                         receiverType.getDeclaration().getName(unit));
             }
             else {*/
-                ProducedType t = 
-                        ptr.getFullType(wrap(ptr.getType(), receivingType, that));
-                that.setTarget(ptr); //TODO: how do we wrap ptr???
-                if (!dynamic && isTypeUnknown(t)) {
-                    //this occurs with an ambiguous reference
-                    //to a member of an intersection type
-                    that.addError("could not determine type of method or attribute reference: '" +
-                            member.getName(unit) + "' of '" + 
-                            receiverType.getDeclaration().getName(unit) + "'");
-                }
-                that.setTypeModel(accountForStaticReferenceType(that, member, t));
+            that.setTarget(ptr);
+            ProducedType fullType = 
+                    ptr.getFullType(wrap(ptr.getType(), receivingType, that));
+            if (!dynamic && !isAbstraction(member) && 
+                    isTypeUnknown(fullType)) {
+                //this occurs with an ambiguous reference
+                //to a member of an intersection type
+                that.addError("could not determine type of method or attribute reference: '" +
+                        member.getName(unit) + "' of '" + 
+                        receiverType.getDeclaration().getName(unit) + "'");
+            }
+            that.setTypeModel(accountForStaticReferenceType(that, member, fullType));
             //}
         }
     }
@@ -4630,7 +4631,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
-            TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
+            TypedDeclaration member, List<ProducedType> typeArgs, 
+            Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
             ProducedType outerType = 
                     that.getScope().getDeclaringType(member);
@@ -4638,16 +4640,18 @@ public class ExpressionVisitor extends Visitor {
                     member.getProducedTypedReference(outerType, typeArgs, 
                             that.getAssigned());
             that.setTarget(pr);
-            ProducedType t = pr.getFullType();
-            if (isTypeUnknown(t)) {
-                if (!dynamic) {
-                    that.addError("could not determine type of function or value reference: '" +
-                            member.getName(unit) + "'");
-                }
+            ProducedType fullType = pr.getFullType();
+            if (!dynamic && !isAbstraction(member) && 
+                    isTypeUnknown(fullType)) {
+                that.addError("could not determine type of function or value reference: '" +
+                        member.getName(unit) + "'");
             }
-            else {
-                that.setTypeModel(t);
+            if (dynamic && isTypeUnknown(fullType)) {
+                //deliberately throw away the partial
+                //type information we have
+                return;
             }
+            that.setTypeModel(fullType);
         }
     }
 
@@ -4983,62 +4987,46 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
-            ProducedType receivingType, TypeDeclaration type, 
+            ProducedType receivingType, TypeDeclaration memberType, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receiverType = 
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that, false)) {
-            ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            boolean abs = isAbstractType(t) || isAbstraction(type);
-            ProducedType ft = abs ?
-                    producedType(unit.getCallableDeclaration(), t, 
-                            new UnknownType(unit).getType()) :
-                    t.getFullType(wrap(t, receivingType, that));
-            that.setTarget(t);
-            if (!dynamic && !abs && !that.getStaticMethodReference() && isTypeUnknown(ft)) {
+        if (acceptsTypeArguments(receiverType, memberType, typeArgs, tal, that, false)) {
+            ProducedType type = receiverType.getTypeMember(memberType, typeArgs);
+            that.setTarget(type);
+            ProducedType fullType = 
+                    type.getFullType(wrap(type, receivingType, that));
+            if (!dynamic && !that.getStaticMethodReference() &&
+                    !type.isAbstract() && !isAbstraction(memberType) &&
+                    isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 that.addError("could not determine type of member class reference: '" +
-                        type.getName(unit)  + "' of '" + 
+                        memberType.getName(unit)  + "' of '" + 
                         receiverType.getDeclaration().getName(unit) + "'");
             }
-            that.setTypeModel(accountForStaticReferenceType(that, type, ft));
+            that.setTypeModel(accountForStaticReferenceType(that, memberType, fullType));
         }
     }
 
     private void visitBaseTypeExpression(Tree.StaticMemberOrTypeExpression that, 
-            TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
+            TypeDeclaration baseType, List<ProducedType> typeArgs, 
+            Tree.TypeArguments tal) {
         ProducedType outerType = 
-                that.getScope().getDeclaringType(type);
-        ProducedType t = 
-                type.getProducedType(outerType, typeArgs);
+                that.getScope().getDeclaringType(baseType);
+        ProducedType type = 
+                baseType.getProducedType(outerType, typeArgs);
 //        if (!type.isAlias()) {
             //TODO: remove this awful hack which means
             //      we can't define aliases for types
             //      with sequenced type parameters
-            type = t.getDeclaration();
+            baseType = type.getDeclaration();
 //        }
-        if (acceptsTypeArguments(type, typeArgs, tal, that, false)) {
-            boolean abs = isAbstractType(t) || isAbstraction(type);
-            ProducedType ft = abs ?
-                    producedType(unit.getCallableDeclaration(), t, 
-                            new UnknownType(unit).getType()) :
-                    t.getFullType();
-            that.setTypeModel(ft);
-            that.setTarget(t);
-        }
-    }
-
-    private boolean isAbstractType(ProducedType t) {
-        if (t.getDeclaration() instanceof Class) {
-            return ((Class) t.getDeclaration()).isAbstract();
-        }
-        else if (t.getDeclaration() instanceof TypeParameter) {
-            return ((TypeParameter) t.getDeclaration()).getParameterList()==null;
-        }
-        else {
-            return true;
+        if (acceptsTypeArguments(baseType, typeArgs, tal, that, false)) {
+            ProducedType fullType = type.getFullType();
+            that.setTypeModel(fullType);
+            that.setTarget(type);
         }
     }
 
