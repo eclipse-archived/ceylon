@@ -852,7 +852,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         
         // Generate the inner members list for model loading
-        addAtMembers(classBuilder, model);
+        addAtMembers(classBuilder, model, def);
         addAtLocalDeclarations(classBuilder, def);
         
         // Make sure top types satisfy reified type
@@ -941,11 +941,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // Generate the inner members list for model loading
-        addAtMembers(classBuilder, model);
+        addAtMembers(classBuilder, model, def);
         addAtLocalDeclarations(classBuilder, def);
     }
 
-    private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
+    private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model, com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def) {
         List<JCExpression> members = List.nil();
         for(Declaration member : model.getMembers()){
             if(member instanceof ClassOrInterface == false
@@ -953,10 +953,30 @@ public class ClassTransformer extends AbstractTransformer {
                 continue;
             }
             TypeDeclaration innerType = (TypeDeclaration) member;
+            Tree.Declaration innerTypeTree = findInnerType(def, innerType.getName());
+            if(innerTypeTree != null && errors().hasDeclarationError(innerTypeTree))
+                continue;
             JCAnnotation atMember = makeAtMember(innerType.getType());
             members = members.prepend(atMember);
         }
         classBuilder.annotations(makeAtMembers(members));
+    }
+
+    private Tree.Declaration findInnerType(Tree.ClassOrInterface def, String name) {
+        Tree.Body body;
+        if(def instanceof Tree.ClassDefinition)
+            body = ((Tree.ClassDefinition) def).getClassBody();
+        else if(def instanceof Tree.InterfaceDefinition)
+            body = ((Tree.InterfaceDefinition) def).getInterfaceBody();
+        else
+            return null;
+        for(Node node : body.getStatements()){
+            if(node instanceof Tree.Declaration
+                    && ((Tree.Declaration) node).getIdentifier() != null
+                    && ((Tree.Declaration) node).getIdentifier().getText().equals(name))
+                return (Tree.Declaration) node;
+        }
+        return null;
     }
 
     private void addAtLocalDeclarations(ClassDefinitionBuilder classBuilder, Tree.ClassOrInterface tree) {

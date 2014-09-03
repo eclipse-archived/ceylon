@@ -260,6 +260,14 @@ public class Errors {
         return annotateBrokenness(declarationVisitor.hasErrors(node));
     }
 
+    /** Visit the given declaration (but not it's body, specifier or 
+     * initializer or defaulted parameter expressions) and return true if 
+     * there are any errors
+     */
+    public boolean hasDeclarationError(Tree.Declaration node) {
+        return declarationVisitor.hasErrors(node);
+    }
+
     /**
      * Visit the given tree of expressions returning the first error found, 
      * or null if the tree is free of errors.
