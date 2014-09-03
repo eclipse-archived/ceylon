@@ -265,6 +265,7 @@ public class MiscTest extends CompilerTest {
                 "interop.java",
                 "io",
                 "json",
+                "locale",
                 "logging",
                 "math",
                 "net",
