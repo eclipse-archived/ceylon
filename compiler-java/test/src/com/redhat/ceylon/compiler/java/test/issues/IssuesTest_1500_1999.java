@@ -626,6 +626,15 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
+    public void testBug1779() {
+        assertErrors("bug17xx/Bug1779",
+                Arrays.asList("-continue"),
+                null,
+                new CompilerError(22, "missing class body or aliased class reference"),
+                new CompilerError(23, "incorrect syntax: no viable alternative at token '}'"));
+    }
+
+    @Test
     public void testBug1784() {
         compile("bug17xx/Bug1784.java");
         compareWithJavaSource("bug17xx/Bug1784");
