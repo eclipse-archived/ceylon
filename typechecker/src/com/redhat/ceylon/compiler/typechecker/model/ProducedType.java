@@ -2477,6 +2477,8 @@ public class ProducedType extends ProducedReference {
                     ret = (37 * ret) + (typeArgument != null ? typeArgument.hashCode() : 0);
                 }
             }
+            ret = (37 * ret) + varianceOverrides.hashCode();
+
             hashCode = ret;
         }
         return hashCode;
@@ -2681,6 +2683,8 @@ public class ProducedType extends ProducedReference {
                 }
             }
         }
+        if(!varianceOverrides.equals(other.varianceOverrides))
+            return false;
         return true;
     }
 }
