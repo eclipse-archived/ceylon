@@ -2213,7 +2213,7 @@ public class ClassTransformer extends AbstractTransformer {
                         true,
                         false,
                         !model.isShared(),
-                        transformMethodBlock((Tree.MethodDefinition)def),
+                        transformMplBodyUnlessSpecifier(def, model, body),
                         daoCompanion,
                         false);
             } else {
@@ -2468,11 +2468,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             return List.<JCStatement>of(result);
         } else if (def instanceof Tree.MethodDefinition) {
-            Scope container = model.getContainer();
-            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-            if(!isInterface){
-                body = transformMethodBlock((Tree.MethodDefinition)def);
-            } 
+            body = transformMethodBlock((Tree.MethodDefinition)def);
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
             body = transformSpecifiedMethodBody((MethodDeclaration)def, ((MethodDeclaration) def).getSpecifierExpression());
