@@ -2691,11 +2691,12 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isAbstract() {
-        if (getDeclaration() instanceof Class) {
-            return ((Class) getDeclaration()).isAbstract();
+        TypeDeclaration dec = getDeclaration();
+        if (dec instanceof Class) {
+            return ((Class) dec).isAbstract();
         }
-        else if (getDeclaration() instanceof TypeParameter) {
-            return ((TypeParameter) getDeclaration()).getParameterList()==null;
+        else if (dec instanceof TypeParameter) {
+            return ((TypeParameter) dec).getParameterList()==null;
         }
         else {
             return true;
