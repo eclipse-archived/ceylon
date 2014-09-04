@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
@@ -21,12 +20,15 @@ public class JsOutput {
     private File outfile;
     private File modfile;
     private Writer writer;
+    private final Module module;
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
     final MetamodelVisitor mmg;
     final String encoding;
+
     protected JsOutput(Module m, String encoding) throws IOException {
         this.encoding = encoding == null ? "UTF-8" : encoding;
+        module = m;
         mmg = new MetamodelVisitor(m);
     }
     protected Writer getWriter() throws IOException {
@@ -51,7 +53,7 @@ public class JsOutput {
     }
     Set<File> getSources() { return s; }
 
-    public void encodeModel(final Module mod) throws IOException {
+    public void encodeModel() throws IOException {
         if (modfile == null) {
             modfile = File.createTempFile("jsmod", ".tmp");
             try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
@@ -63,7 +65,7 @@ public class JsOutput {
             } finally {
             }
             writer.write("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
-            writer.write(GenerateJsVisitor.scriptPath(mod));
+            writer.write(GenerateJsVisitor.scriptPath(module));
             writer.write("-model");
             writer.write("').$CCMM$;return _CTM$;}\n");
             writer.write("ex$.$CCMM$=$CCMM$;\n");

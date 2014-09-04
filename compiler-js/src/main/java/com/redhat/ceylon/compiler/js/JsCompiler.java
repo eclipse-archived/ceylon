@@ -259,7 +259,7 @@ public class JsCompiler {
             //Then write it out and output the reference in the module file
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                    e.getValue().encodeModel(e.getKey());
+                    e.getValue().encodeModel();
                 }
             }
 
