@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -101,12 +100,10 @@ public class LocalTypeVisitor extends Visitor {
         Method model = that.getDeclarationModel();
         int mpl = model.getParameterLists().size();
         String prefix = null;
-//        System.err.println("In "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
         if(mpl > 1){
             prefix = this.prefix;
             for(int i=1;i<mpl;i++)
                 enterAnonymousClass();
-//            System.err.println("Inside "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
         }
         collect(that, model);
         // stop at locals, who get a type generated for them
@@ -141,6 +138,7 @@ public class LocalTypeVisitor extends Visitor {
         return b.toString();
     }
 
+    @Override
     public void visit(Tree.Comprehension that) {
         String prefix = this.prefix;
         // one anonymous for Iterable, one for Iterator
@@ -152,6 +150,7 @@ public class LocalTypeVisitor extends Visitor {
         this.prefix = prefix;
     }
 
+    @Override
     public void visit(Tree.FunctionArgument that) {
         String prefix = this.prefix;
         enterAnonymousClass();
@@ -160,6 +159,7 @@ public class LocalTypeVisitor extends Visitor {
         this.prefix = prefix;
     }
 
+    @Override
     public void visit(Tree.MethodArgument that) {
         String prefix = this.prefix;
         enterAnonymousClass();
@@ -168,6 +168,7 @@ public class LocalTypeVisitor extends Visitor {
         this.prefix = prefix;
     }
 
+    @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         if(that.getMemberOperator() instanceof Tree.SpreadOp){
             String prefix = this.prefix;
@@ -180,6 +181,7 @@ public class LocalTypeVisitor extends Visitor {
         }
     }
 
+    @Override
     public void visit(Tree.BaseMemberOrTypeExpression that) {
         Declaration model = that.getDeclaration();
         if(model != null
@@ -195,6 +197,7 @@ public class LocalTypeVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.SequenceEnumeration that) {
         String prefix = this.prefix;
         enterAnonymousClass();
