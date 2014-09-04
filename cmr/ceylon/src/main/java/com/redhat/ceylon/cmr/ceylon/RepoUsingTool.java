@@ -144,6 +144,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.out = out;
     }
     
+    // Tools that don't necessarily need the system repository
+    // to function can override this and set it to "false".
+    // If the user then specifies "--no-default-repositories"
+    // on the command line the system repository will be removed
+    // as well
+    protected boolean needsSystemRepo() {
+        return true;
+    }
+    
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
         return createRepositoryManagerBuilderNoOut();
     }
@@ -152,6 +161,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
                 .mavenOverrides(mavenOverrides)
+                .noSystemRepo(!needsSystemRepo() && noDefRepos)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
