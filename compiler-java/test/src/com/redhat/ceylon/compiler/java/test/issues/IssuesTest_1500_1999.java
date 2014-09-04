@@ -22,15 +22,21 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.TreeSet;
+
+import javax.tools.Diagnostic;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.sun.tools.javac.util.Position;
@@ -612,6 +618,24 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1767() {
         compareWithJavaSource("bug17xx/bug1767/Bug1767.src", "bug17xx/bug1767/Bug1767.ceylon", "bug17xx/bug1767/module.ceylon");
+    }
+
+    @Test
+    public void testBug1773() {
+        ErrorCollector collector = new ErrorCollector();
+        
+        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug17xx/Bug1773.ceylon");
+
+        // now compile it all the way
+        ExitState exitState = task.call2();
+        Assert.assertEquals(ExitState.CeylonState.ERROR, exitState.ceylonState);
+        
+        // make sure we only got one, do not trust actualErrors.size() for that since it's a Set so
+        // two methods with same contents would count as one.
+        Assert.assertEquals(1, exitState.errorCount);
+    
+        TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors, new CompilerError(22, "dynamic is not yet supported on this platform"));
     }
 
     @Test
