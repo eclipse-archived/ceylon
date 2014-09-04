@@ -114,7 +114,6 @@ public class LocalTypeVisitor extends Visitor {
                 exitAnonymousClass();
             this.prefix = prefix;
         }
-//        System.err.println("Out of "+model.getQualifiedNameString()+" with anon: "+anonymous+", prefix: "+this.prefix);
     }
 
     private void exitAnonymousClass() {
