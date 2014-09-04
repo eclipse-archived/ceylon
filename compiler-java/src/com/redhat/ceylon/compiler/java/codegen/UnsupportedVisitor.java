@@ -28,7 +28,8 @@ public class UnsupportedVisitor extends Visitor {
 
     @Override
     public void visit(Tree.DynamicClause that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        // do not report an error for a dynamic clause as that can only occur inside a dynamic statement and
+        // we already reported an error for that one
         super.visit(that);
     }
 
