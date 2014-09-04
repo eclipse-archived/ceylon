@@ -512,31 +512,36 @@ public class Unit {
     	    	List<Parameter> ps = pls.get(i).getParameters();
                 List<ProducedType> args = 
                         new ArrayList<ProducedType>(ps.size());
-				for (int j=0; j<ps.size(); j++) {
-					Parameter p = ps.get(j);
-    	    		ProducedTypedReference np = ref.getTypedParameter(p);
-    	    		ProducedType npt = np.getType();
-    	    		if (npt==null) {
-    	    			args.add(new UnknownType(this).getType());
-    	    		}
-    	    		else {
-    	    			if (p.isDefaulted() && 
-    	    					firstDefaulted==-1) {
-    	    				firstDefaulted = j;
-    	    			}
-    	    			if (np.getDeclaration() instanceof Functional) {
-    	    				args.add(getCallableType(np, npt));
-    	    			}
-    	    			else if (p.isSequenced()) {
-    	    				args.add(getIteratedType(npt));
-    	    				hasSequenced = true;
-    	    				atLeastOne = p.isAtLeastOne();
-    	    			}
-    	    			else {
-    	    				args.add(npt);
-    	    			}
-    	    		}
-    	    	}
+                for (int j=0; j<ps.size(); j++) {
+                    Parameter p = ps.get(j);
+                    if (p.getModel()==null) {
+                        args.add(new UnknownType(this).getType());
+                    }
+                    else {
+                        ProducedTypedReference np = ref.getTypedParameter(p);
+                        ProducedType npt = np.getType();
+                        if (npt==null) {
+                            args.add(new UnknownType(this).getType());
+                        }
+                        else {
+                            if (p.isDefaulted() && 
+                                    firstDefaulted==-1) {
+                                firstDefaulted = j;
+                            }
+                            if (np.getDeclaration() instanceof Functional) {
+                                args.add(getCallableType(np, npt));
+                            }
+                            else if (p.isSequenced()) {
+                                args.add(getIteratedType(npt));
+                                hasSequenced = true;
+                                atLeastOne = p.isAtLeastOne();
+                            }
+                            else {
+                                args.add(npt);
+                            }
+                        }
+                    }
+                }
     	    	ProducedType paramListType = 
     	    	        getTupleType(args, 
     	    	                hasSequenced, atLeastOne, 
