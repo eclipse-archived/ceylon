@@ -90,7 +90,7 @@ public abstract class ProducedReference {
 
     public ProducedType getFullType(ProducedType wrappedType) {
         if (declaration instanceof Functional) {
-            if (isAbstraction(declaration)) { //TODO: || this instanceof ProducedType && ((ProducedType) this).isAbstract()
+            if (isAbstraction(declaration)) {
                 Unit unit = declaration.getUnit();
                 return producedType(unit.getCallableDeclaration(), 
                         wrappedType,

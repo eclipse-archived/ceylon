@@ -4562,7 +4562,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
             ProducedType receivingType, TypedDeclaration member, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = 
+        ProducedType receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that, false)) {
@@ -4576,7 +4576,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {*/
             that.setTarget(ptr);
-            ProducedType fullType = 
+            ProducedType fullType =
                     ptr.getFullType(wrap(ptr.getType(), receivingType, that));
             if (!dynamic && !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
@@ -4594,8 +4594,12 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType accountForStaticReferenceReceiverType(Tree.QualifiedMemberOrTypeExpression that, 
             ProducedType receivingType) {
         if (that.getStaticMethodReference()) {
-            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
-            return target==null ? new UnknownType(unit).getType() : target.getType();
+            Tree.MemberOrTypeExpression primary = 
+                    (Tree.MemberOrTypeExpression) that.getPrimary();
+            ProducedReference target = primary.getTarget();
+            return target==null ? 
+                    new UnknownType(unit).getType() : 
+                    target.getType();
         }
         else {
             return receivingType;
@@ -4605,7 +4609,8 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType accountForStaticReferenceType(Tree.QualifiedMemberOrTypeExpression that, 
             Declaration member, ProducedType type) {
         if (that.getStaticMethodReference()) {
-            Tree.MemberOrTypeExpression qmte = (Tree.MemberOrTypeExpression) that.getPrimary();
+            Tree.MemberOrTypeExpression qmte = 
+                    (Tree.MemberOrTypeExpression) that.getPrimary();
             if (member.isStaticallyImportable()) {
                 return type;
             }
@@ -4615,7 +4620,8 @@ public class ExpressionVisitor extends Visitor {
                     return new UnknownType(unit).getType();
                 }
                 else {
-                    return getStaticReferenceType(type, target.getType());
+                    return getStaticReferenceType(type, 
+                            target.getType());
                 }
             }
         }
@@ -4989,16 +4995,17 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
             ProducedType receivingType, TypeDeclaration memberType, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = 
+        ProducedType receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, memberType, typeArgs, tal, that, false)) {
             ProducedType type = receiverType.getTypeMember(memberType, typeArgs);
             that.setTarget(type);
-            ProducedType fullType = 
+            ProducedType fullType =
                     type.getFullType(wrap(type, receivingType, that));
             if (!dynamic && !that.getStaticMethodReference() &&
-                    !type.isAbstract() && !isAbstraction(memberType) &&
+                    memberType instanceof Class &&
+                    !isAbstraction(memberType) &&
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type

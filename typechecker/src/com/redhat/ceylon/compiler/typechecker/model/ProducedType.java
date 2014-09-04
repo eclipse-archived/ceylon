@@ -2686,17 +2686,20 @@ public class ProducedType extends ProducedReference {
         return varianceOverrides.equals(other.varianceOverrides);
     }
     
-    public boolean isAbstract() {
-        TypeDeclaration dec = getDeclaration();
-        if (dec instanceof Class) {
-            return ((Class) dec).isAbstract();
-        }
-        else if (dec instanceof TypeParameter) {
-            return ((TypeParameter) dec).getParameterList()==null;
-        }
-        else {
-            return true;
-        }
+    @Override
+    public ProducedType getFullType(ProducedType wrappedType) {
+        //TODO: put this back in, and find another way to
+        //      propagate the type in static method refs
+        //      of form Interface.member in
+        //      visitQualifiedMemberExpression() and
+        //      visitQualifiedTypeExpression()
+//        TypeDeclaration declaration = getDeclaration();
+//        if (!(declaration instanceof Class)) {           
+//            return new UnknownType(declaration.getUnit()).getType();
+//        }
+//        else {
+            return super.getFullType(wrappedType);
+//        }
     }
     
 }
