@@ -27,6 +27,12 @@ shared class LocalDeclarationsClassContainer() {
         Integer attr = 2;
         void localMethod(){}
     }
+    // that creates an anonymous class
+    Anything mplDeclaration2()() => nothing;
+    // this too
+    void privateMethod(Boolean accept()=>true) {
+        object visitor {}
+    }
     shared void fuckItUp(){
         value c = {for (i in {}) i};
         value f = function() => 2;
