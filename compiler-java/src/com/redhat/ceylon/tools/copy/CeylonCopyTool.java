@@ -110,9 +110,6 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     @Override
     public void run() throws Exception {
         setSystemProperties();
-        // FIXME: copying is currently very inefficient!
-        // All possible suffix types are tried which will result in numerous
-        // unnecessary roundtrips to external servers
         Set<String> artifacts = new LinkedHashSet<String>();
         boolean defaults = js == null 
                 && jvm == null
