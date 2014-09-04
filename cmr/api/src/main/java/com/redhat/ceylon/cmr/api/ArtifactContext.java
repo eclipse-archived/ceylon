@@ -105,12 +105,17 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public ArtifactContext() {
     }
 
+    // Returns the SHA1 version of the current context or null
+    // if the current context is already an SHA1 artifact or
+    // if the artifact doesn't allow or need signing
     public ArtifactContext getSha1Context() {
-        String[] sha1Suffixes = new String[suffixes.length];
-        for (int i = 0; i < sha1Suffixes.length; i++) {
-            sha1Suffixes[i] = suffixes[i] + SHA1;
+        if (suffixes.length == 1) {
+            if (!suffixes[0].endsWith(SHA1) && !isDirectoryName(suffixes[0]) && !isFullName(suffixes[0])) {
+                String[] sha1Suffixes = { suffixes[0] + SHA1 };
+                return new ArtifactContext(name, version, sha1Suffixes);
+            }
         }
-        return new ArtifactContext(name, version, sha1Suffixes);
+        return null;
     }
 
     public ArtifactContext getSuffixContext(String... suffixes) {
