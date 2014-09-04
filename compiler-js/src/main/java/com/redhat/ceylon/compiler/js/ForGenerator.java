@@ -33,7 +33,7 @@ public class ForGenerator {
         gen.endBlock();
         if (hasElse) {
             gen.endLine();
-            gen.out("if(", GenerateJsVisitor.getClAlias(), "getFinished()", "===", itemVar, ")");
+            gen.out("if(", gen.getClAlias(), "getFinished()", "===", itemVar, ")");
             gen.encloseBlockInFunction(that.getElseClause().getBlock());
         }
     }
@@ -51,7 +51,7 @@ public class ForGenerator {
             gen.out("var ", itemVar, ";for(var ", iterVar,"=");
             iterable.visit(gen);
             gen.out(".iterator();(", itemVar, "=", iterVar, ".next())!==",
-                    GenerateJsVisitor.getClAlias(), "getFinished();)");
+                    gen.getClAlias(), "getFinished();)");
         }
         gen.beginBlock();
         if (that instanceof Tree.ValueIterator) {
@@ -98,8 +98,8 @@ public class ForGenerator {
         final String nxtvar = gen.getNames().createTempVariable();
         final String cfvar = gen.getNames().createTempVariable();
         gen.out(",", cmpvar, "=", itemVar, ".compare(", iterVar, "),", nxtvar, "=", cmpvar, "===",
-                GenerateJsVisitor.getClAlias(), "getSmaller()?'successor':'predecessor';for(var ",
-                cfvar, "=", GenerateJsVisitor.getClAlias(), "eorl$(", cmpvar, ");", cfvar,
+                gen.getClAlias(), "getSmaller()?'successor':'predecessor';for(var ",
+                cfvar, "=", gen.getClAlias(), "eorl$(", cmpvar, ");", cfvar,
                 "(", iterVar, ",", itemVar, ");");
         gen.out(itemVar, "=", itemVar, "[", nxtvar, "])");
         return true;

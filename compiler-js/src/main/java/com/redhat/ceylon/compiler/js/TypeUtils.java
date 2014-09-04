@@ -108,11 +108,11 @@ public class TypeUtils {
         final String qname = t.getQualifiedNameString();
         if (qname.equals("ceylon.language::Nothing")) {
             //Hack in the model means hack here as well
-            gen.out(GenerateJsVisitor.getClAlias(), "Nothing");
+            gen.out(gen.getClAlias(), "Nothing");
         } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
-            gen.out(GenerateJsVisitor.getClAlias(), "Null");
+            gen.out(gen.getClAlias(), "Null");
         } else if (pt.isUnknown()) {
-            gen.out(GenerateJsVisitor.getClAlias(), "Anything");
+            gen.out(gen.getClAlias(), "Anything");
         } else {
             final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
             if (modAlias != null && !modAlias.isEmpty()) {
@@ -250,14 +250,14 @@ public class TypeUtils {
                 gen.out("$$targs$$.", tp.getName(), "$", tp.getDeclaration().getName());
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
-                gen.out("{/*NO PARENT*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
+                gen.out("{/*NO PARENT*/t:", gen.getClAlias(), "Anything}");
             }
         } else if (tp.getContainer() instanceof TypeAlias) {
             if (parent == tp.getContainer()) {
                 gen.out("'", tp.getName(), "$", tp.getDeclaration().getName(), "'");
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
-                gen.out("{/*NO PARENT ALIAS*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
+                gen.out("{/*NO PARENT ALIAS*/t:", gen.getClAlias(), "Anything}");
             }
         } else {
             //it has to be a method, right?
@@ -352,7 +352,7 @@ public class TypeUtils {
             final GenerateJsVisitor gen, final boolean skipSelfDecl,
             final Map<TypeParameter,ProducedType> typeArguments) {
         if (t.getDeclaration().isDynamic()) {
-            gen.out(GenerateJsVisitor.getClAlias(), "dre$$(");
+            gen.out(gen.getClAlias(), "dre$$(");
             term.visit(gen);
             gen.out(",");
             TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
@@ -365,13 +365,13 @@ public class TypeUtils {
             term.visit(gen);
             String errmsg = "dynamic value cannot be used here";
             if (checkFloat) {
-                gen.out(",typeof(", tmp, ")==='number'?", GenerateJsVisitor.getClAlias(), "Float(", tmp, ")");
+                gen.out(",typeof(", tmp, ")==='number'?", gen.getClAlias(), "Float(", tmp, ")");
                 errmsg = "Expected Float";
             } else if (checkInt) {
                 gen.out(",typeof(", tmp, ")==='number'?Math.floor(", tmp, ")");
                 errmsg = "Expected Integer";
             } else {
-                gen.out(",", GenerateJsVisitor.getClAlias(), "is$(", tmp, ",");
+                gen.out(",", gen.getClAlias(), "is$(", tmp, ",");
                 if (t.getDeclaration() instanceof TypeParameter && typeArguments != null
                         && typeArguments.containsKey(t.getDeclaration())) {
                     t = typeArguments.get(t.getDeclaration());
@@ -891,9 +891,9 @@ public class TypeUtils {
                 final Tree.StringLiteral lit = annotations.getAnonymousAnnotation().getStringLiteral();
                 final String ptmd = pathToModelDoc(d);
                 if (ptmd != null && ptmd.length() < lit.getText().length()) {
-                    gen.out(GenerateJsVisitor.getClAlias(), "doc$($CCMM$,", ptmd);
+                    gen.out(gen.getClAlias(), "doc$($CCMM$,", ptmd);
                 } else {
-                    gen.out(GenerateJsVisitor.getClAlias(), "doc(");
+                    gen.out(gen.getClAlias(), "doc(");
                     lit.visit(gen);
                 }
                 gen.out(")");
@@ -962,9 +962,9 @@ public class TypeUtils {
                             final String ref = pathToModelDoc(d);
                             final String doc = a.getPositionalArguments().get(0);
                             if (ref != null && ref.length() < doc.length()) {
-                                gen.out(GenerateJsVisitor.getClAlias(), "doc$($CCMM$,", ref);
+                                gen.out(gen.getClAlias(), "doc$($CCMM$,", ref);
                             } else {
-                                gen.out(GenerateJsVisitor.getClAlias(), "doc(\"", gen.escapeStringLiteral(doc), "\"");
+                                gen.out(gen.getClAlias(), "doc(\"", gen.escapeStringLiteral(doc), "\"");
                             }
                         } else {
                             boolean farg = true;

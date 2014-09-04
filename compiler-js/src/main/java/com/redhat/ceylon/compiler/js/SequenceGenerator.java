@@ -23,11 +23,11 @@ public class SequenceGenerator {
             return;
         }
         final String idxvar = gen.getNames().createTempVariable();
-        gen.out(GenerateJsVisitor.getClAlias(), "sarg$(function(", idxvar,"){switch(",idxvar,"){");
+        gen.out(gen.getClAlias(), "sarg$(function(", idxvar,"){switch(",idxvar,"){");
         int count=0;
         for (Tree.PositionalArgument expr : args) {
             if (expr == seqarg) {
-                gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},function(){return ");
+                gen.out("}return ", gen.getClAlias(), "getFinished();},function(){return ");
                 if (gen.isInDynamicBlock() && expr instanceof Tree.SpreadArgument
                         && Util.isTypeUnknown(expr.getTypeModel())) {
                     //TODO should we remove this check and just let it blow up anyway?
@@ -46,7 +46,7 @@ public class SequenceGenerator {
             count++;
         }
         if (seqarg == null) {
-            gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},undefined,");
+            gen.out("}return ", gen.getClAlias(), "getFinished();},undefined,");
         }
         TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false, seqType.getVarianceOverrides());
         gen.out(")");
@@ -55,7 +55,7 @@ public class SequenceGenerator {
     static void sequenceEnumeration(final Tree.SequenceEnumeration that, final GenerateJsVisitor gen) {
         final Tree.SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-            gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+            gen.out(gen.getClAlias(), "getEmpty()");
         } else {
             final List<Tree.PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = isSpread(positionalArguments);
@@ -133,7 +133,7 @@ public class SequenceGenerator {
         //Iterate
         String elem = gen.getNames().createTempVariable();
         gen.out("var ", elem); gen.endLine(true);
-        gen.out("while((", elem, "=", iter, ".next())!==", GenerateJsVisitor.getClAlias(), "getFinished())");
+        gen.out("while((", elem, "=", iter, ".next())!==", gen.getClAlias(), "getFinished())");
         gen.beginBlock();
         //Add value or reference to the array
         gen.out(tmplist, ".push(");
@@ -146,14 +146,14 @@ public class SequenceGenerator {
         gen.endBlockNewLine();
         //Gather arguments to pass to the callable
         //Return the array of values or a Callable with the arguments
-        gen.out("return ", GenerateJsVisitor.getClAlias());
+        gen.out("return ", gen.getClAlias());
         if (isMethod) {
             gen.out("JsCallableList(", tmplist, ");");
         } else {
             gen.out("sequence(", tmplist, ",{Element$sequence:");
             TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
-            gen.out(",Absent$sequence:{t:", GenerateJsVisitor.getClAlias(), "Null}})||",
-                    GenerateJsVisitor.getClAlias(), "getEmpty();");
+            gen.out(",Absent$sequence:{t:", gen.getClAlias(), "Null}})||",
+                    gen.getClAlias(), "getEmpty();");
         }
         gen.endBlock();
         gen.out("())");
@@ -203,12 +203,12 @@ public class SequenceGenerator {
     static void tuple(final Tree.Tuple that, final GenerateJsVisitor gen) {
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-            gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+            gen.out(gen.getClAlias(), "getEmpty()");
         } else {
             final List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = SequenceGenerator.isSpread(positionalArguments);
             int lim = positionalArguments.size()-1;
-            gen.out(GenerateJsVisitor.getClAlias(), "tpl$([");
+            gen.out(gen.getClAlias(), "tpl$([");
             int count = 0;
             for (PositionalArgument expr : positionalArguments) {
                 if (!(count==lim && spread)) {

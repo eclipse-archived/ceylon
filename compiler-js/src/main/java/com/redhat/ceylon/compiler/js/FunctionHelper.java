@@ -337,7 +337,7 @@ public class FunctionHelper {
                 gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
                 TypeUtils.typeNameOrList(n, t, gen, false);
             }
-            gen.out("};};return ", GenerateJsVisitor.getClAlias(), "JsCallable(0,", name, ");");
+            gen.out("};};return ", gen.getClAlias(), "JsCallable(0,", name, ");");
         }
         ProducedType tupleFromParameterList() {
             if (params.getParameters().isEmpty()) {

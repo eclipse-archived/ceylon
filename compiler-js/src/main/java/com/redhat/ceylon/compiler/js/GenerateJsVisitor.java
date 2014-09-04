@@ -118,7 +118,6 @@ public class GenerateJsVisitor extends Visitor
     private final Writer originalOut;
     final Options opts;
     private CompilationUnit root;
-    private static String clAlias="";
     static final String function="function ";
     private boolean needIndent = true;
     private int indentLevel = 0;
@@ -127,11 +126,8 @@ public class GenerateJsVisitor extends Visitor
         return root.getUnit().getPackage();
     }
 
-    private static void setCLAlias(String alias) {
-        clAlias = alias + ".";
-    }
     /** Returns the module name for the language module. */
-    static String getClAlias() { return clAlias; }
+    String getClAlias() { return jsout.getLanguageModuleAlias(); }
 
     @Override
     public void handleException(Exception e, Node that) {
@@ -268,12 +264,6 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.CompilationUnit that) {
         root = that;
-        Module clm = that.getUnit().getPackage().getModule()
-                .getLanguageModule();
-        if (!JsCompiler.isCompilingLanguageModule()) {
-            setCLAlias(names.moduleAlias(clm));
-            require(clm);
-        }
         if (!that.getModuleDescriptors().isEmpty()) {
             ModuleDescriptor md = that.getModuleDescriptors().get(0);
             out("ex$.$mod$ans$=");
@@ -329,34 +319,8 @@ public class GenerateJsVisitor extends Visitor
         ImportableScope scope =
                 that.getImportMemberOrTypeList().getImportList().getImportedScope();
         if (scope instanceof Package && !((Package)scope).getModule().equals(that.getUnit().getPackage().getModule())) {
-            require(((Package) scope).getModule());
+            jsout.require(((Package) scope).getModule(), names);
         }
-    }
-
-    private void require(Module mod) {
-        final String path = scriptPath(mod);
-        final String modAlias = names.moduleAlias(mod);
-        if (jsout.requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=require('", path, "')");
-            endLine(true);
-            if (modAlias != null && !modAlias.isEmpty()) {
-                out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "')");
-                endLine(true);
-            }
-        }
-    }
-
-    /** Create a path for a require call to fetch the specified module. */
-    public static String scriptPath(Module mod) {
-        StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
-        if (!mod.isDefault()) {
-            path.append(mod.getVersion()).append('/');
-        }
-        path.append(mod.getNameAsString());
-        if (!mod.isDefault()) {
-            path.append('-').append(mod.getVersion());
-        }
-        return path.toString();
     }
 
     @Override
@@ -834,7 +798,7 @@ public class GenerateJsVisitor extends Visitor
     void declareSelf(ClassOrInterface d) {
         out("if(", names.self(d), "===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
-            out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(");
+            out(getClAlias(), "throwexc(", getClAlias(), "InvocationException$meta$model(");
             out("\"Cannot instantiate abstract class ", d.getQualifiedNameString(), "\"),'?','?')");
         } else {
             out(names.self(d), "=new ");
@@ -944,12 +908,12 @@ public class GenerateJsVisitor extends Visitor
             beginBlock();
             //Create the object lazily
             final String oname = names.objectName(c);
-            out("if(", objvar, "===", clAlias, "INIT$)");
-            generateThrow(clAlias+"InitializationError",
+            out("if(", objvar, "===", getClAlias(), "INIT$)");
+            generateThrow(getClAlias()+"InitializationError",
                     "Cyclic initialization trying to read the value of '" +
                     d.getName() + "' before it was set", that);
             endLine(true);
-            out("if(", objvar, "===undefined){", objvar, "=", clAlias, "INIT$;",
+            out("if(", objvar, "===undefined){", objvar, "=", getClAlias(), "INIT$;",
                     objvar, "=$init$", oname);
             if (!oname.endsWith("()"))out("()");
             out("(");
@@ -994,7 +958,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else {
-            out(clAlias, "atr$(");
+            out(getClAlias(), "atr$(");
             outerSelf(d);
             out(",'", names.name(d), "',function(){return ");
             if (addToPrototype) {
@@ -1191,7 +1155,7 @@ public class GenerateJsVisitor extends Visitor
                         }
                     }
                 } else {
-                    out(clAlias, "getEmpty()");
+                    out(getClAlias(), "getEmpty()");
                 }
                 out(";}");
                 endLine();
@@ -1496,17 +1460,17 @@ public class GenerateJsVisitor extends Visitor
     void generateUnitializedAttributeReadCheck(String privname, String pubname) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
-        out("if(", privname, "===undefined)throw ", clAlias,
+        out("if(", privname, "===undefined)throw ", getClAlias(),
                 "InitializationError('Attempt to read unitialized attribute «", pubname, "»');");
     }
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
-        out("if(", privname, "!==undefined)throw ", clAlias,
+        out("if(", privname, "!==undefined)throw ", getClAlias(),
                 "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
     }
 
     @Override
     public void visit(final Tree.CharLiteral that) {
-        out(clAlias, "Character(");
+        out(getClAlias(), "Character(");
         out(String.valueOf(that.getText().codePointAt(1)));
         out(",true)");
     }
@@ -1559,7 +1523,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.FloatLiteral that) {
-        out(clAlias, "Float(", that.getText(), ")");
+        out(getClAlias(), "Float(", that.getText(), ")");
     }
 
     public long parseNaturalLiteral(Tree.NaturalLiteral that) throws NumberFormatException {
@@ -1673,9 +1637,9 @@ public class GenerateJsVisitor extends Visitor
         super.visit(that);
         out(",");
         if (isMethod) {
-            out(clAlias, "JsCallable(", lhsVar, ",");
+            out(getClAlias(), "JsCallable(", lhsVar, ",");
         }
-        out(clAlias,"nn$(", lhsVar, ")?");
+        out(getClAlias(),"nn$(", lhsVar, ")?");
         if (isMethod && !((Method)that.getDeclaration()).getTypeParameters().isEmpty()) {
             //Method ref with type parameters
             BmeGenerator.printGenericMethodReference(this, that, lhsVar, memberAccess(that, lhsVar));
@@ -1711,7 +1675,7 @@ public class GenerateJsVisitor extends Visitor
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));
                 } else {
-                    out(clAlias, "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ")");
+                    out(getClAlias(), "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ")");
                 }
                 out(";}");
             } else {
@@ -1737,7 +1701,7 @@ public class GenerateJsVisitor extends Visitor
             if (BmeGenerator.hasTypeParameters(that)) {
                 BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
             } else {
-                out(clAlias, "JsCallable(x,x.", name, ")");
+                out(getClAlias(), "JsCallable(x,x.", name, ")");
             }
             out(";}");
             return;
@@ -1758,7 +1722,7 @@ public class GenerateJsVisitor extends Visitor
             //Method ref with type parameters
             BmeGenerator.printGenericMethodReference(this, that, primaryVar, member);
         } else {
-            out(clAlias, "JsCallable(", primaryVar, ",", clAlias, "nn$(", primaryVar, ")?", member, ":null)");
+            out(getClAlias(), "JsCallable(", primaryVar, ",", getClAlias(), "nn$(", primaryVar, ")?", member, ":null)");
         }
         out(")");
     }
@@ -1828,7 +1792,7 @@ public class GenerateJsVisitor extends Visitor
             sb.append(scope.getQualifiedNameString());
             sb.append("']");
             if (defineAsProperty(decl)) {
-                return clAlias + (setter ? "attrSetter(" : "attrGetter(")
+                return getClAlias() + (setter ? "attrSetter(" : "attrGetter(")
                         + sb.toString() + ",'" + names.name(decl) + "')";
             }
             sb.append(".$$.prototype.");
@@ -1945,13 +1909,13 @@ public class GenerateJsVisitor extends Visitor
                 if (fromTypeName.equals("ceylon.language::Integer")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Float")) {
-                    out(clAlias, "Float(");
+                    out(getClAlias(), "Float(");
                 } else if (fromTypeName.equals("ceylon.language::Boolean")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Character")) {
-                    out(clAlias, "Character(");
+                    out(getClAlias(), "Character(");
                 } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
-                    out(clAlias, "$JsCallable(");
+                    out(getClAlias(), "$JsCallable(");
                     return 4;
                 } else {
                     return 0;
@@ -1972,7 +1936,7 @@ public class GenerateJsVisitor extends Visitor
                         return 0;
                     }
                 }
-                out(clAlias, "$JsCallable(");
+                out(getClAlias(), "$JsCallable(");
                 return 4;
             } else {
                 return 3;
@@ -2637,14 +2601,14 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    clAlias, "getSmaller()))||", ltmp, "<", rtmp, ")");
+                    getClAlias(), "getSmaller()))||", ltmp, "<", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
                 Operators.simpleBinaryOp(that, "(", "<", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", clAlias, "getSmaller())");
+                out(".equals(", getClAlias(), "getSmaller())");
             }
         }
     }
@@ -2659,14 +2623,14 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    clAlias, "getLarger()))||", ltmp, ">", rtmp, ")");
+                    getClAlias(), "getLarger()))||", ltmp, ">", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
                 Operators.simpleBinaryOp(that, "(", ">", ")", this);
             } else {
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", clAlias, "getLarger())");
+                out(".equals(", getClAlias(), "getLarger())");
             }
         }
     }
@@ -2681,7 +2645,7 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    clAlias, "getLarger())||", ltmp, "<=", rtmp, ")");
+                    getClAlias(), "getLarger())||", ltmp, "<=", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -2689,7 +2653,7 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out("(");
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", clAlias, "getLarger()");
+                out("!==", getClAlias(), "getLarger()");
                 out(")");
             }
         }
@@ -2705,7 +2669,7 @@ public class GenerateJsVisitor extends Visitor
             out(",", rtmp, "=");
             box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    clAlias, "getSmaller())||", ltmp, ">=", rtmp, ")");
+                    getClAlias(), "getSmaller())||", ltmp, ">=", rtmp, ")");
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -2713,7 +2677,7 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out("(");
                 Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", clAlias, "getSmaller()");
+                out("!==", getClAlias(), "getSmaller()");
                 out(")");
             }
         }
@@ -2732,31 +2696,31 @@ public class GenerateJsVisitor extends Visitor
             box(that.getUpperBound().getTerm());
             out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
             if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", clAlias, "getLarger())||", ttmp, ">", tmpl, ")");
+                out(")===", getClAlias(), "getLarger())||", ttmp, ">", tmpl, ")");
             } else {
-                out(")!==", clAlias, "getSmaller())||", ttmp, ">=", tmpl, ")");
+                out(")!==", getClAlias(), "getSmaller())||", ttmp, ">=", tmpl, ")");
             }
             out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
             if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", clAlias, "getSmaller())||", ttmp, "<", tmpu, ")");
+                out(")===", getClAlias(), "getSmaller())||", ttmp, "<", tmpu, ")");
             } else {
-                out(")!==", clAlias, "getLarger())||", ttmp, "<=", tmpu, ")");
+                out(")!==", getClAlias(), "getLarger())||", ttmp, "<=", tmpu, ")");
             }
         } else {
             out(ttmp, ".compare(");
             box(that.getLowerBound().getTerm());
             if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", clAlias, "getLarger()");
+                out(")===", getClAlias(), "getLarger()");
             } else {
-                out(")!==", clAlias, "getSmaller()");
+                out(")!==", getClAlias(), "getSmaller()");
             }
             out("&&");
             out(ttmp, ".compare(");
             box(that.getUpperBound().getTerm());
             if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", clAlias, "getSmaller()");
+                out(")===", getClAlias(), "getSmaller()");
             } else {
-                out(")!==", clAlias, "getLarger()");
+                out(")!==", getClAlias(), "getLarger()");
             }
         }
         out(")");
@@ -2771,13 +2735,13 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(final Tree.EntryOp that) {
-       out(clAlias, "Entry(");
+       out(getClAlias(), "Entry(");
        Operators.genericBinaryOp(that, ",", that.getTypeModel().getTypeArguments(),
                that.getTypeModel().getVarianceOverrides(), this);
    }
 
    @Override public void visit(final Tree.RangeOp that) {
-       out(clAlias, "span(");
+       out(getClAlias(), "span(");
        that.getLeftTerm().visit(this);
        out(",");
        that.getRightTerm().visit(this);
@@ -2792,7 +2756,7 @@ public class GenerateJsVisitor extends Visitor
    public void visit(final Tree.SegmentOp that) {
        final Tree.Term left  = that.getLeftTerm();
        final Tree.Term right = that.getRightTerm();
-       out(clAlias, "measure(");
+       out(getClAlias(), "measure(");
        left.visit(this);
        out(",");
        right.visit(this);
@@ -2819,7 +2783,7 @@ public class GenerateJsVisitor extends Visitor
        String lhsVar = createRetainedTempVar();
        out("(", lhsVar, "=");
        box(that.getLeftTerm());
-       out(",", clAlias, "nn$(", lhsVar, ")?", lhsVar, ":");
+       out(",", getClAlias(), "nn$(", lhsVar, ")?", lhsVar, ":");
        box(that.getRightTerm());
        out(")");
    }
@@ -2867,10 +2831,10 @@ public class GenerateJsVisitor extends Visitor
     }
 
    @Override public void visit(final Tree.Exists that) {
-       Operators.unaryOp(that, clAlias+"nn$(", ")", this);
+       Operators.unaryOp(that, getClAlias()+"nn$(", ")", this);
    }
    @Override public void visit(final Tree.Nonempty that) {
-       Operators.unaryOp(that, clAlias+"ne$(", ")", this);
+       Operators.unaryOp(that, getClAlias()+"ne$(", ")", this);
    }
 
    //Don't know if we'll ever see this...
@@ -2908,7 +2872,7 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        out(clAlias, "is$(");
+        out(getClAlias(), "is$(");
         if (term instanceof Term) {
             conds.specialConditionRHS((Term)term, tmpvar);
         } else {
@@ -2973,9 +2937,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.Throw that) {
-        out("throw ", clAlias, "wrapexc(");
+        out("throw ", getClAlias(), "wrapexc(");
         if (that.getExpression() == null) {
-            out(clAlias, "Exception()");
+            out(getClAlias(), "Exception()");
         } else {
             that.getExpression().visit(this);
         }
@@ -3104,7 +3068,7 @@ public class GenerateJsVisitor extends Visitor
         }
         if (that.getSwitchCaseList().getElseClause() == null) {
             if (dynblock > 0 && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
-                out("else throw ", clAlias, "Exception('Ceylon switch over unknown type does not cover all cases')");
+                out("else throw ", getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
             out("else ");
@@ -3214,7 +3178,7 @@ public class GenerateJsVisitor extends Visitor
         }
         sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                 that.getConditionList().getLocation()).append(")");
-        conds.specialConditionsAndBlock(that.getConditionList(), null, clAlias+"asrt$(");
+        conds.specialConditionsAndBlock(that.getConditionList(), null, getClAlias()+"asrt$(");
         //escape
         out(",\"", escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
                 that.getUnit().getFilename(), "');");
@@ -3277,7 +3241,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Call internal function "throwexc" with the specified message and source location. */
     void generateThrow(String exceptionClass, String msg, Node node) {
-        out(clAlias, "throwexc(", exceptionClass==null ? clAlias + "Exception":exceptionClass, "(");
+        out(getClAlias(), "throwexc(", exceptionClass==null ? getClAlias() + "Exception":exceptionClass, "(");
         out("\"", escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
                 node.getUnit().getFilename(), "')");
     }
@@ -3288,7 +3252,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Outputs the initial part of an attribute definition. */
     void defineAttribute(final String owner, final String name) {
-        out(clAlias, "atr$(", owner, ",'", name, "',function()");
+        out(getClAlias(), "atr$(", owner, ",'", name, "',function()");
     }
 
     public int getExitCode() {

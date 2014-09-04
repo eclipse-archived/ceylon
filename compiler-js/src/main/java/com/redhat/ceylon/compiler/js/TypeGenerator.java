@@ -101,7 +101,7 @@ public class TypeGenerator {
         }
         if (genIniter) {
             final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-            gen.out(GenerateJsVisitor.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
+            gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size());
 
@@ -110,7 +110,7 @@ public class TypeGenerator {
                         !extendedType.getType().getDeclarationModel().isMember());
                 gen.out(",", fname);
             } else if (!isInterface) {
-                gen.out(",", GenerateJsVisitor.getClAlias(), "Basic");
+                gen.out(",", gen.getClAlias(), "Basic");
             }
             if (satisfiedTypes != null) {
                 supers.addAll(satisfiedTypes.getTypes());
@@ -171,12 +171,12 @@ public class TypeGenerator {
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, gen);
         if (withTargs) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d),
+            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
                     ",$$targs$$,", gen.getNames().name(d), ")");
             gen.endLine(true);
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes,",
+            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes,",
                     gen.getNames().name(d), ")");
             gen.endLine(true);
         }
@@ -249,7 +249,7 @@ public class TypeGenerator {
         gen.declareSelf(d);
         gen.referenceOuter(d);
         if (withTargs) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$targs$$)");
+            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$targs$$)");
             gen.endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
@@ -271,7 +271,7 @@ public class TypeGenerator {
             }
         }
         if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(GenerateJsVisitor.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
+            gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d), ",$$$mptypes)");
             gen.endLine(true);
         }
         gen.initParameters(that.getParameterList(), d, null);
@@ -331,7 +331,7 @@ public class TypeGenerator {
                 for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
                     com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
                     if (p.isSequenced()) {
-                        gen.out(GenerateJsVisitor.getClAlias(), "getEmpty(),");
+                        gen.out(gen.getClAlias(), "getEmpty(),");
                     } else {
                         gen.out("undefined,");
                     }
@@ -397,7 +397,7 @@ public class TypeGenerator {
     private static void superGetterRef(final Declaration d, final ClassOrInterface sub,
             final String parentSuffix, final GenerateJsVisitor gen) {
         if (gen.defineAsProperty(d)) {
-            gen.out(GenerateJsVisitor.getClAlias(), "copySuperAttr(", gen.getNames().self(sub), ",'",
+            gen.out(gen.getClAlias(), "copySuperAttr(", gen.getNames().self(sub), ",'",
                     gen.getNames().name(d), "','", parentSuffix, "')");
         }
         else {

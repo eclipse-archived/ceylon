@@ -93,7 +93,7 @@ public class AttributeGenerator {
             if (gen.isCaptured(decl) || decl.isToplevel()) {
                 final boolean isLate = decl.isLate();
                 if (gen.defineAsProperty(decl)) {
-                    gen.out(GenerateJsVisitor.getClAlias(), "atr$(");
+                    gen.out(gen.getClAlias(), "atr$(");
                     gen.outerSelf(decl);
                     gen.out(",'", varName, "',function(){");
                     if (isLate) {

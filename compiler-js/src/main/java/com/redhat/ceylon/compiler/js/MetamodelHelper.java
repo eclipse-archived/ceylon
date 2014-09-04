@@ -27,7 +27,7 @@ public class MetamodelHelper {
             if (JsCompiler.isCompilingLanguageModule()) {
                 gen.out("$init$Open");
             } else {
-                gen.out(GenerateJsVisitor.getClAlias(), "Open");
+                gen.out(gen.getClAlias(), "Open");
             }
         }
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
@@ -72,7 +72,7 @@ public class MetamodelHelper {
         if (JsCompiler.isCompilingLanguageModule()) {
             gen.out("()");
         }
-        gen.out("(", GenerateJsVisitor.getClAlias());
+        gen.out("(", gen.getClAlias());
         final String pkgname = d.getUnit().getPackage().getNameAsString();
         if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
             gen.out("lmp$(ex$,'");
@@ -110,9 +110,9 @@ public class MetamodelHelper {
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedClass$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedClass$meta$model()(");
             } else {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedMemberClass$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedMemberClass$meta$model()(");
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
@@ -126,9 +126,9 @@ public class MetamodelHelper {
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             if (td.isToplevel()) {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedInterface$jsint()(");
+                gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
             } else {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedMemberInterface$meta$model()(");
+                gen.out(gen.getClAlias(), "$init$AppliedMemberInterface$meta$model()(");
             }
             TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
@@ -141,13 +141,13 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
-            gen.out(GenerateJsVisitor.getClAlias(),"getNothingType$meta$model()");
+            gen.out(gen.getClAlias(),"getNothingType$meta$model()");
         } else if (that instanceof Tree.AliasLiteral) {
             gen.out("/*TODO: applied alias*/");
         } else if (that instanceof Tree.TypeParameterLiteral) {
             gen.out("/*TODO: applied type parameter*/");
         } else {
-            gen.out(GenerateJsVisitor.getClAlias(), "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type$typeLiteral:");
+            gen.out(gen.getClAlias(), "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type$typeLiteral:");
             TypeUtils.typeNameOrList(that, ltype, gen, false);
             gen.out("})");
         }
@@ -159,7 +159,7 @@ public class MetamodelHelper {
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
-            gen.out(GenerateJsVisitor.getClAlias(), d.isMember()&&anonClass==null?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
+            gen.out(gen.getClAlias(), d.isMember()&&anonClass==null?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
             if (ltype == null) {
                 if (anonClass != null) {
                     gen.qualify(that, anonClass);
@@ -187,7 +187,7 @@ public class MetamodelHelper {
                     boolean first=true;
                     for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
                         if (first)first=false;else gen.out(",");
-                        gen.out(GenerateJsVisitor.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
+                        gen.out(gen.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
                         TypeUtils.typeNameOrList(that, targ, gen, false);
                         gen.out("})");
                     }
@@ -219,10 +219,10 @@ public class MetamodelHelper {
         } else if (that instanceof ValueLiteral || d instanceof Value) {
             Value vd = (Value)d;
             if (vd.isMember() && anonClass==null) {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedAttribute$meta$model()('");
+                gen.out(gen.getClAlias(), "$init$AppliedAttribute$meta$model()('");
                 gen.out(d.getName(), "',");
             } else {
-                gen.out(GenerateJsVisitor.getClAlias(), "$init$AppliedValue$jsint()(");
+                gen.out(gen.getClAlias(), "$init$AppliedValue$jsint()(");
                 if (anonClass == null) {
                     gen.out("undefined");
                 } else {
@@ -252,7 +252,7 @@ public class MetamodelHelper {
                     that.getTypeModel().getVarianceOverrides());
             gen.out(")");
         } else {
-            gen.out(GenerateJsVisitor.getClAlias(), "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
+            gen.out(gen.getClAlias(), "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
             gen.out("{t:");
             if (ltype == null) {
                 gen.qualify(that, d);
@@ -276,7 +276,7 @@ public class MetamodelHelper {
     }
 
     static void findModule(final Module m, final GenerateJsVisitor gen) {
-        gen.out(GenerateJsVisitor.getClAlias(), "getModules$meta().find('",
+        gen.out(gen.getClAlias(), "getModules$meta().find('",
                 m.getNameAsString(), "','", m.getVersion(), "')");
     }
 

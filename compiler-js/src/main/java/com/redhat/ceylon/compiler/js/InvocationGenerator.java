@@ -100,7 +100,7 @@ public class InvocationGenerator {
                             "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
                         Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
                         if (printArg.getTypeModel().isUnknown()) {
-                            gen.out(GenerateJsVisitor.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
+                            gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
                             printArg.visit(gen);
                             gen.out(")");
                             return;
@@ -275,7 +275,7 @@ public class InvocationGenerator {
                     if (p.isDefaulted()) {
                         gen.out("undefined");
                     } else {
-                        gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+                        gen.out(gen.getClAlias(), "getEmpty()");
                     }
                 } else {
                     gen.out(vname);
@@ -415,7 +415,7 @@ public class InvocationGenerator {
                             args.get(args.size()-1).visit(gen);
                             gen.out(".sequence(),");
                             if (pd.isDefaulted()) {
-                                gen.out(GenerateJsVisitor.getClAlias(), "nn$(",
+                                gen.out(gen.getClAlias(), "nn$(",
                                         specialSpreadVar, ".$_get(0))?", specialSpreadVar,
                                         ".$_get(0):undefined)");
                             } else {
@@ -443,7 +443,7 @@ public class InvocationGenerator {
                                     if (found) {
                                         final String cs=Integer.toString(c++);
                                         if (restp.isDefaulted()) {
-                                            gen.out(",", GenerateJsVisitor.getClAlias(), "nn$(", specialSpreadVar,
+                                            gen.out(",", gen.getClAlias(), "nn$(", specialSpreadVar,
                                                     ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
                                         } else {
                                             gen.out(",", specialSpreadVar, ".$_get(", cs, ")");

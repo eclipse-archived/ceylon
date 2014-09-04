@@ -53,7 +53,7 @@ public class BmeGenerator {
                     printGenericMethodReference(gen, bme, who, exp);
                 } else {
                     //Member methods must be passed as JsCallables
-                    gen.out(GenerateJsVisitor.getClAlias(), "JsCallable(", who, ",", exp, ")");
+                    gen.out(gen.getClAlias(), "JsCallable(", who, ",", exp, ")");
                 }
             } else {
                 gen.out(exp);

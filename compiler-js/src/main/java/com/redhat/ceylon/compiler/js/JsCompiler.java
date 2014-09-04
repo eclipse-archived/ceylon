@@ -257,14 +257,14 @@ public class JsCompiler {
                 }
             }
             //Then write it out and output the reference in the module file
+            final JsIdentifierNames names = new JsIdentifierNames();
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                    e.getValue().encodeModel();
+                    e.getValue().encodeModel(names);
                 }
             }
 
             //Then generate the JS code
-            JsIdentifierNames names = new JsIdentifierNames();
             if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
                     compileUnit(pu, names);
@@ -555,4 +555,18 @@ public class JsCompiler {
         }
         return relRes;
     }
+
+    /** Create a path for a require call to fetch the specified module. */
+    public static String scriptPath(Module mod) {
+        StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
+        if (!mod.isDefault()) {
+            path.append(mod.getVersion()).append('/');
+        }
+        path.append(mod.getNameAsString());
+        if (!mod.isDefault()) {
+            path.append('-').append(mod.getVersion());
+        }
+        return path.toString();
+    }
+
 }

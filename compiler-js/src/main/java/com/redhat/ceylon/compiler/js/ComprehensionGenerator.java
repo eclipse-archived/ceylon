@@ -22,13 +22,13 @@ class ComprehensionGenerator {
 
     ComprehensionGenerator(GenerateJsVisitor gen, JsIdentifierNames names, Set<Declaration> directDeclarations) {
         this.gen = gen;
-        finished = String.format("%sgetFinished()", GenerateJsVisitor.getClAlias());
+        finished = String.format("%sgetFinished()", gen.getClAlias());
         this.names = names;
         directAccess = directDeclarations;
     }
 
     void generateComprehension(Tree.Comprehension that) {
-        gen.out(GenerateJsVisitor.getClAlias(), "for$(function()");
+        gen.out(gen.getClAlias(), "for$(function()");
         gen.beginBlock();
         if (gen.opts.isComment()) {
             gen.out("//Comprehension"); gen.location(that); gen.endLine();

@@ -20,6 +20,7 @@ public class JsOutput {
     private File outfile;
     private File modfile;
     private Writer writer;
+    private String clalias = "";
     private final Module module;
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
@@ -53,7 +54,7 @@ public class JsOutput {
     }
     Set<File> getSources() { return s; }
 
-    public void encodeModel() throws IOException {
+    public void encodeModel(final JsIdentifierNames names) throws IOException {
         if (modfile == null) {
             modfile = File.createTempFile("jsmod", ".tmp");
             try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
@@ -64,11 +65,14 @@ public class JsOutput {
                 JsCompiler.endWrapper(fw);
             } finally {
             }
-            writer.write("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('");
-            writer.write(GenerateJsVisitor.scriptPath(module));
-            writer.write("-model");
-            writer.write("').$CCMM$;return _CTM$;}\n");
+            out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
+                    JsCompiler.scriptPath(module), "-model').$CCMM$;return _CTM$;}\n");
             writer.write("ex$.$CCMM$=$CCMM$;\n");
+            if (!JsCompiler.isCompilingLanguageModule()) {
+                Module clm = module.getLanguageModule();
+                clalias = names.moduleAlias(clm) + ".";
+                require(clm, names);
+            }
         }
     }
 
@@ -84,6 +88,36 @@ public class JsOutput {
             }
         } catch(IOException ex) {
             throw new CompilerErrorException("Reading from " + f);
+        }
+    }
+
+    public String getLanguageModuleAlias() {
+        return clalias;
+    }
+
+    void require(final Module mod, final JsIdentifierNames names) {
+        final String path = JsCompiler.scriptPath(mod);
+        final String modAlias = names.moduleAlias(mod);
+        if (requires.put(path, modAlias) == null) {
+            out("var ", modAlias, "=require('", path, "');\n");
+            if (modAlias != null && !modAlias.isEmpty()) {
+                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
+            }
+        }
+    }
+
+    /** Print generated code to the Writer.
+     * @param code The main code
+     * @param codez Optional additional strings to print after the main code. */
+    void out(String code, String... codez) {
+        try {
+            writer.write(code);
+            for (String s : codez) {
+                writer.write(s);
+            }
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException("Generating JS code", ioe);
         }
     }
 
