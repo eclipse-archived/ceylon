@@ -329,7 +329,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(getName()).append("-").append(getVersion());
-        if (suffixes.length == 1) {
+        if (suffixes.length == 1 && !isDirectoryName(suffixes[0]) && !isFullName(suffixes[0])) {
             str.append(suffixes[0]);
         } else {
             str.append("(");
