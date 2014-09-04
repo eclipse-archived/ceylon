@@ -1539,8 +1539,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.IsOp op) {
+        // make sure we do not insert null checks if we're going to allow testing for null
+        ProducedType expectedType = getOptionalTypeForInteropIfAllowed(op.getType().getTypeModel(), op.getTerm().getTypeModel(), op.getTerm());
         // we don't need any erasure type cast for an "is" test
-        JCExpression expression = transformExpression(op.getTerm());
+        JCExpression expression = transformExpression(op.getTerm(), BoxingStrategy.BOXED, expectedType);
         at(op);
         Naming.SyntheticName varName = naming.temp();
         JCExpression test = makeOptimizedTypeTest(null, varName, op.getType().getTypeModel(), op.getTerm().getTypeModel());
@@ -1682,14 +1684,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.DefaultOp op, ProducedType expectedType) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(op.getTypeModel()));
-        ProducedType rightExpectedType = op.getTypeModel();
-        if(expectedType != null 
-                && isOptional(expectedType) 
-                && hasUncheckedNulls(op.getRightTerm())
-                && !isOptional(rightExpectedType)){
-            // get rid of null-check if we accept an optional type on the LHS
-            rightExpectedType = typeFact().getOptionalType(rightExpectedType);
-        }
+        // make sure we do not insert null checks if we're going to allow testing for null
+        ProducedType rightExpectedType = getOptionalTypeForInteropIfAllowed(expectedType, op.getTypeModel(), op.getRightTerm());
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightExpectedType);
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();

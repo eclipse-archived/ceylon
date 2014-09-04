@@ -934,19 +934,23 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeTest() {
+            ProducedType expressionType;
+            if(cond.getVariable().getSpecifierExpression() != null)
+                expressionType = cond.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+            else
+                expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
+
+            // make sure we do not insert null checks if we're going to allow testing for null
+            ProducedType specifierType = negate ? 
+                    expressionType : getOptionalTypeForInteropIfAllowed(cond.getType().getTypeModel(), expressionType, specifierExpr);
             // no need to cast for erasure here
-            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            JCExpression expr = expressionGen().transformExpression(specifierExpr, BoxingStrategy.BOXED, specifierType);
             at(cond);
             // Assign the expression to test to the temporary variable
             if (!isErasedToObjectOptimization() && !isNothingOptimization()) {
                 expr = make().Assign(testVar.makeIdent(), expr);
             }
             
-            ProducedType expressionType;
-            if(cond.getVariable().getSpecifierExpression() != null)
-                expressionType = cond.getVariable().getSpecifierExpression().getExpression().getTypeModel();
-            else
-                expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
             // Test on the tmpVar in the following condition
             expr = makeOptimizedTypeTest(expr, isErasedToObjectOptimization() ? getVariableName() : testVar,
                     // only test the types we're testing for, not the type of

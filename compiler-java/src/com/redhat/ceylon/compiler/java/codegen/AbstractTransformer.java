@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
@@ -77,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -4576,4 +4578,16 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
+    protected ProducedType getOptionalTypeForInteropIfAllowed(ProducedType expectedType, ProducedType termType, Term term){
+        // make sure we do not insert null checks if we're going to allow testing for null
+        if(expectedType != null
+                && hasUncheckedNulls(term)
+                && isOptional(expectedType)
+                && !isOptional(termType)){
+            // get rid of null-check if we accept an optional type on the LHS
+            return typeFact().getOptionalType(termType);
+        }
+        return termType;
+    }
+    
 }
