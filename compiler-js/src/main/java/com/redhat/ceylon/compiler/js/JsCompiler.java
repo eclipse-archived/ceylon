@@ -29,7 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
@@ -263,6 +265,35 @@ public class JsCompiler {
                     e.getValue().encodeModel(names);
                 }
             }
+            //Output all the require calls for any imports
+            final Visitor importVisitor = new Visitor() {
+                public void visit(Tree.Import that) {
+                    ImportableScope scope =
+                            that.getImportMemberOrTypeList().getImportList().getImportedScope();
+                    Module _m = that.getUnit().getPackage().getModule();
+                    if (scope instanceof Package && !((Package)scope).getModule().equals(_m)) {
+                        output.get(_m).require(((Package) scope).getModule(), names);
+                    }
+                }
+            };
+
+            if (srcFiles == null && !phasedUnits.isEmpty()) {
+                for (PhasedUnit pu: phasedUnits) {
+                    pu.getCompilationUnit().visit(importVisitor);
+                }
+            } else if(!phasedUnits.isEmpty() && !srcFiles.isEmpty()){
+                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
+                for (File path : srcFiles) {
+                    if (!path.getPath().endsWith(ArtifactContext.JS)) {
+                        for (PhasedUnit pu : units) {
+                            File unitFile = getFullPath(pu);
+                            if (FileUtil.sameFile(path, unitFile)) {
+                                pu.getCompilationUnit().visit(importVisitor);
+                            }
+                        }
+                    }
+                }
+            }
 
             //Then generate the JS code
             if (srcFiles == null && !phasedUnits.isEmpty()) {
@@ -282,7 +313,7 @@ public class JsCompiler {
                 final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
                 PhasedUnit lastUnit = units.get(0);
                 for (File path : srcFiles) {
-                    if (path.getPath().endsWith(".js")) {
+                    if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
                         final JsOutput lastOut = getOutput(lastUnit);
                         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
