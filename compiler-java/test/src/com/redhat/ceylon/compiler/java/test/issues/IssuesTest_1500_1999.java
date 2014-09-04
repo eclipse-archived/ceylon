@@ -621,6 +621,15 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
+    public void testBug1768() {
+        assertErrors("bug17xx/Bug1768",
+                Arrays.asList("-continue"),
+                null,
+                new CompilerError(22, "declaration is not a value, and may not be annotated late"),
+                new CompilerError(22, "value is not an uninitialized reference, and may not be annotated late"));
+    }
+
+    @Test
     public void testBug1773() {
         ErrorCollector collector = new ErrorCollector();
         
