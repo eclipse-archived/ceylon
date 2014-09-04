@@ -43,6 +43,7 @@ public class CeylonUtils {
         private String user;
         private String password;
         private boolean offline;
+        private boolean noSystemRepo;
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
@@ -126,6 +127,14 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder mavenOverrides(String mavenOverrides) {
             this.mavenOverrides = mavenOverrides;
+            return this;
+        }
+
+        /**
+         * Indicates that we don't need the default system repository (defaults to false)
+         */
+        public CeylonRepoManagerBuilder noSystemRepo(boolean noSystemRepo){
+            this.noSystemRepo = noSystemRepo;
             return this;
         }
 
@@ -299,7 +308,9 @@ public class CeylonUtils {
             // Now we add all the rest of the repositories in the order that they will be searched
             
             if (systemRepo == null) {
-                addRepo(builder, repositories.getSystemRepository());
+                if(!noSystemRepo){
+                    addRepo(builder, repositories.getSystemRepository());
+                }
             } else {
                 addRepo(builder, repositories, systemRepo);
             }
