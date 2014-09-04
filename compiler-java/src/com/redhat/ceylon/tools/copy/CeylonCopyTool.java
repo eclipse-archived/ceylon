@@ -37,6 +37,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     private Boolean js;
     private Boolean docs;
     private Boolean src;
+    private Boolean scripts;
     private Boolean all;
     
     public CeylonCopyTool() {
@@ -83,6 +84,12 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
+    @Description("Include scripts (default: false)")
+    public void setScripts(boolean scripts) {
+        this.scripts = scripts;
+    }
+
+    @Option
     @Description("Include everything (jvm,js,docs,src) (default: false)")
     public void setAll(boolean all) {
         this.all = all;
@@ -114,6 +121,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         boolean defaults = js == null 
                 && jvm == null
                 && src == null
+                && scripts == null
                 && docs == null
                 && all == null;
         if (BooleanUtil.isTrue(all)) {
@@ -144,6 +152,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             artifacts.add(ArtifactContext.SRC);
         } else if (BooleanUtil.isFalse(src)) {
             artifacts.remove(ArtifactContext.SRC);
+        }
+        if (BooleanUtil.isTrue(scripts)) {
+            artifacts.add(ArtifactContext.SCRIPTS_ZIPPED);
+        } else if (BooleanUtil.isFalse(scripts)) {
+            artifacts.remove(ArtifactContext.SCRIPTS_ZIPPED);
         }
         if (BooleanUtil.isTrue(docs)) {
             artifacts.add(ArtifactContext.DOCS_ZIPPED);
