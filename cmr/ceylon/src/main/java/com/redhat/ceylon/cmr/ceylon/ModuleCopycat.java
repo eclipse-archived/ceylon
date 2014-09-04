@@ -190,22 +190,21 @@ public class ModuleCopycat {
         // Store the artifact
         dstRepoman.putArtifact(ac, archive);
         // SHA1 it if required
-        if(!ArtifactContext.isDirectoryName(ac.getSingleSuffix())) {
-            signArtifact(ac, archive);
-        }
+        signArtifact(ac, archive);
     }
 
     private void signArtifact(ArtifactContext context, File jarFile){
-        String sha1 = ShaSigner.sha1(jarFile, log);
-        if(sha1 != null){
-            File shaFile = ShaSigner.writeSha1(sha1, log);
-            if(shaFile != null){
-                try{
-                    ArtifactContext sha1Context = context.getSha1Context();
-                    dstRepoman.putArtifact(sha1Context, shaFile);
-                }finally{
-                    //noinspection ResultOfMethodCallIgnored
-                    shaFile.delete();
+        ArtifactContext sha1Context = context.getSha1Context();
+        if (sha1Context != null) {
+            String sha1 = ShaSigner.sha1(jarFile, log);
+            if(sha1 != null){
+                File shaFile = ShaSigner.writeSha1(sha1, log);
+                if(shaFile != null){
+                    try{
+                        dstRepoman.putArtifact(sha1Context, shaFile);
+                    }finally{
+                        shaFile.delete();
+                    }
                 }
             }
         }

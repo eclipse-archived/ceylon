@@ -80,15 +80,17 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
     }
 
     protected void signArtifact(ArtifactContext context, File jarFile){
-        String sha1 = ShaSigner.sha1(jarFile, log);
-        if(sha1 != null){
-            File shaFile = ShaSigner.writeSha1(sha1, log);
-            if(shaFile != null){
-                try{
-                    ArtifactContext sha1Context = context.getSha1Context();
-                    getOutputRepositoryManager().putArtifact(sha1Context, shaFile);
-                }finally{
-                    shaFile.delete();
+        ArtifactContext sha1Context = context.getSha1Context();
+        if (sha1Context != null) {
+            String sha1 = ShaSigner.sha1(jarFile, log);
+            if(sha1 != null){
+                File shaFile = ShaSigner.writeSha1(sha1, log);
+                if(shaFile != null){
+                    try{
+                        getOutputRepositoryManager().putArtifact(sha1Context, shaFile);
+                    }finally{
+                        shaFile.delete();
+                    }
                 }
             }
         }
