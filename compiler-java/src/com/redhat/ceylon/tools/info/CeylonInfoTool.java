@@ -255,51 +255,78 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     private void outputModules(ModuleSpec query, Collection<ModuleDetails> modules) throws IOException {
-        if (findMember == null) {
-            msg("module.query", query.getName()).newline();
-        } else {
-            msg("module.query.find", query.getName(), findMember).newline();
+        if (System.console() != null) {
+            if (findMember == null) {
+                msg("module.query", query.getName()).newline();
+            } else {
+                msg("module.query.find", query.getName(), findMember).newline();
+            }
         }
+        String prefix = (System.console() != null) ? "    " : "";
         for (ModuleDetails module : modules) {
-            append("    ").append(module.getName()).newline();
+            if (System.console() != null || (!showVersions && !showNames)) {
+                append(prefix).append(module.getName()).newline();
+            }
             if (showVersions) {
-                outputVersions(module.getVersions(), "        ");
+                outputVersions(module.getName(), module.getVersions(), prefix + prefix);
             } else if (showNames) {
-                outputNames(module.getLastVersion(), "        ");
+                outputNames(module.getName(), module.getLastVersion(), prefix + prefix);
             }
         }
     }
 
     private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
-        if (findMember == null) {
-            msg("version.query", module.getName()).newline();
-        } else {
-            msg("version.query.find", module.getName(), findMember).newline();
+        if (System.console() != null) {
+            if (findMember == null) {
+                msg("version.query", module.getName()).newline();
+            } else {
+                msg("version.query.find", module.getName(), findMember).newline();
+            }
         }
-        outputVersions(versions, "    ");
+        outputVersions(module.getName(), versions, "    ");
     }
 
-    private void outputVersions(Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
+    private void outputVersions(String moduleName, Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
+        String namePrefix = (System.console() != null) ? prefix + "    " : "";
         for (ModuleVersionDetails version : versions) {
-            append(prefix).append(version.getVersion());
-            if (version.isRemote()) {
-                append(" *");
+            if (System.console() != null || (!showDependencies && !showNames)) {
+                append(prefix);
+                if (System.console() == null) {
+                    append(moduleName).append("/");
+                }
+                append(version.getVersion());
+                if (version.isRemote() && System.console() != null) {
+                    append(" *");
+                }
+                newline();
             }
-            newline();
             if (showDependencies) {
                 for (ModuleInfo dep : version.getDependencies()) {
-                    append(prefix).append("    ").append(dep).newline();
+                    if (System.console() != null) {
+                        append(prefix).append("    ");
+                    } else {
+                        append(moduleName).append("/").append(version.getVersion());
+                    }
+                    append(dep).newline();
                 }
             }
             if (showNames) {
-                outputNames(version, prefix + "    ");
+                outputNames(moduleName, version, namePrefix);
             }
         }
     }
 
-    private void outputNames(ModuleVersionDetails version, String prefix) throws IOException {
+    private void outputNames(String moduleName, ModuleVersionDetails version, String prefix) throws IOException {
         for (String member : version.getMembers()) {
-            append(prefix).append(member).newline();
+            if (System.console() != null) {
+                append(prefix).append(member).newline();
+            } else {
+                append(moduleName);
+                if (showVersions) {
+                    append("/").append(version.getVersion());
+                }
+                append("::").append(member).newline();
+            }
         }
     }
 
