@@ -767,10 +767,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         type = "method";
                     }
                     // strip any escaping or private suffix
-                    name = Util.strip(name, true, method.isPublic() || method.isProtected() || method.isDefaultAccess());
+                    // it can be foo$priv$canonical so get rid of that one first
                     if (name.endsWith(Naming.Suffix.$canonical$.toString())) {
                         name = name.substring(0, name.length()-11);
                     }
+                    name = Util.strip(name, true, method.isPublic() || method.isProtected() || method.isDefaultAccess());
 
                     methodDecl = (LocalDeclarationContainer) containerDecl.getDirectMember(name, null, false);
 
