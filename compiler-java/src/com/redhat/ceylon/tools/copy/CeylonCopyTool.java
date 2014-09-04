@@ -99,6 +99,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
     
     @Override
+    protected boolean needsSystemRepo() {
+        return false;
+    }
+
+    @Override
     public void initialize() {
     }
     

@@ -149,6 +149,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
     
     @Override
+    protected boolean needsSystemRepo() {
+        return false;
+    }
+
+    @Override
     public void initialize() {
         setSystemProperties();
         File f = applyCwd(jarFile);

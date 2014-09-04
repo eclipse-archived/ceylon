@@ -67,6 +67,11 @@ public class CeylonSrcTool extends RepoUsingTool {
     }
 
     @Override
+    protected boolean needsSystemRepo() {
+        return false;
+    }
+
+    @Override
     public void initialize() {
     }
     

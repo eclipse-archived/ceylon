@@ -146,6 +146,11 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
+    protected boolean needsSystemRepo() {
+        return false;
+    }
+
+    @Override
     public void initialize() {
         if (showType != null) {
             if ("jvm".equalsIgnoreCase(showType)) {
