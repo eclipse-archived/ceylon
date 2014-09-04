@@ -644,4 +644,15 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1787() {
         compareWithJavaSource("bug17xx/Bug1787");
     }
+
+    @Test
+    public void testBug1789() {
+        assertErrors("bug17xx/Bug1789",
+                Arrays.asList("-continue"),
+                null,
+                new CompilerError(22, "could not determine type of function or value reference: 'd'"),
+                new CompilerError(24, "does not definitely return: 'd' has branches which do not end in a return statement"),
+                new CompilerError(24, "type declaration does not exist: 'Id'"));
+
+    }
 }
