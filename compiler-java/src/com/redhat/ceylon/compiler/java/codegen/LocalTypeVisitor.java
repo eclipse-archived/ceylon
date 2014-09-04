@@ -116,6 +116,20 @@ public class LocalTypeVisitor extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.FunctionalParameterDeclaration that) {
+        Tree.TypedDeclaration typedDeclaration = that.getTypedDeclaration();
+        boolean anon = typedDeclaration instanceof Tree.MethodDeclaration
+            && ((Tree.MethodDeclaration) typedDeclaration).getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
+        String prefix = this.prefix;
+        if(anon)
+            enterAnonymousClass();
+        super.visit(that);
+        if(anon)
+            exitAnonymousClass();
+        this.prefix = prefix;
+    }
+    
     private void exitAnonymousClass() {
         anonymous.pop();
         Integer count = anonymous.peek();
