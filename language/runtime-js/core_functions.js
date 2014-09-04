@@ -418,6 +418,15 @@ function removeSupertypes(list) {
 }
 
 function find_type_in_list$(t,l) {
+  for (var i=0; i < l.length; i++) {
+    if (l.t==='u' || l.t==='i') {
+      var _t=find_type_in_list(t,l.l);
+      if (_t)return _t;
+    } else if (l.t===t.t) {
+      return t;
+    }
+  }
+  return undefined;
 }
 function ut$(a,b){
   if (a.t==='u'){
@@ -426,6 +435,7 @@ function ut$(a,b){
     var et=find_type_in_list$(b,a.l);
     if (et) {
       if (a.a&&b.a) {
+        //union the targs or something
       } else {
         return a;
       }
@@ -466,6 +476,7 @@ function it$(a,b){
     var et=find_type_in_list$(b,a.l);
     if (et) {
       if (a.a&&b.a) {
+        //intersect the targs or something
       } else {
         return a;
       }
