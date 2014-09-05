@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisf
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -502,6 +503,30 @@ public class SpecificationVisitor extends Visitor {
     		withinAttributeInitializer = false;
     	}
     }
+    
+    private String longdesc() {
+        if (declaration instanceof Value) {
+            return "value is not variable and";
+        }
+        else if (declaration instanceof Method) {
+            return "function";
+        }
+        else {
+            return "declaration";
+        }
+    }
+    
+    private String shortdesc() {
+        if (declaration instanceof Value) {
+            return "value";
+        }
+        else if (declaration instanceof Method) {
+            return "function";
+        }
+        else {
+            return "declaration";
+        }
+    }
 
     @Override
     public void visit(Tree.SpecifierStatement that) {
@@ -553,33 +578,42 @@ public class SpecificationVisitor extends Visitor {
 	            	se.visit(this);
 	            }
 	            boolean constant = !isVariable() && !isLate();
-				if (!declared && constant) {
-                    that.addError("value is not yet declared: '" + 
+	            if (constant && !declaration.isDefinedInScope(that.getScope())) {
+                    that.addError("inherited member is not variable and may not be specified here: '" + 
+                            member.getName() + "'");
+	            }
+	            else if (!declared && constant) {
+                    that.addError(shortdesc() + 
+                            " is not yet declared: '" + 
                             member.getName() + "'");
 	            }
 	            else if (inLoop && constant && 
 	                    !(endsInBreakReturnThrow && lastContinue==null)) {
 	            	if (specified.definitely) {
-	            		that.addError("value is not variable and is aready definitely specified: '" + 
+	            		that.addError(longdesc() + 
+	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError("value is not variable and is not definitely unspecified in loop: '" + 
+	            		that.addError(longdesc() + 
+	            		        " is not definitely unspecified in loop: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            }
                 else if (withinDeclaration && constant && 
                         !that.getRefinement()) {
-                    that.addError("cannot specify value being declared: '" + 
-                            member.getName() + "'", 803);
+                    that.addError("cannot specify " + shortdesc() + 
+                            " being declared: '" + member.getName() + "'", 803);
                 }
 	            else if (specified.possibly && constant) {
 	            	if (specified.definitely) {
-	            		that.addError("value is not variable and is aready definitely specified: '" + 
+	            		that.addError(longdesc() + 
+	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError("value is not variable and is not definitely unspecified: '" + 
+	            		that.addError(longdesc() + 
+	            		        " is not definitely unspecified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            }
