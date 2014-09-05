@@ -738,12 +738,34 @@ public class ExpressionVisitor extends Visitor {
                 else if (d instanceof MethodOrValue) {
                     MethodOrValue mv = (MethodOrValue) d;
                     if (mv.isShortcutRefinement()) {
+                        String desc;
+                        if (d instanceof Value) {
+                            desc = "value";
+                        }
+                        else {
+                            desc = "function";
+                        }
                         that.getBaseMemberExpression()
-                            .addError("already specified: '" + d.getName(unit) + "'");
+                            .addError(desc + " already specified: '" + 
+                                    d.getName(unit) + "'");
                     }
-                    else if (d.isToplevel() && !mv.isVariable() && !mv.isLate()) {
-                        that.addError("cannot specify non-variable toplevel value here: '" + 
-                                d.getName(unit) + "' is not variable or late", 803);
+                    else if (!mv.isVariable() && !mv.isLate()) {
+                        String desc;
+                        if (d instanceof Value) {
+                            desc = "value is neither variable nor late and";
+                        }
+                        else {
+                            desc = "function";
+                        }
+                        if (mv.isToplevel()) {
+                            that.addError("toplevel " + desc + 
+                                    " may not be specified: '" + 
+                                    d.getName(unit) + "'", 803);
+                        }
+                        else if (!mv.isDefinedInScope(that.getScope())) {
+                            that.addError(desc + " may not be specified here: '" + 
+                                    d.getName(unit) + "'", 803);
+                        }
                     }
                 }
                 if (hasParams && d instanceof Method && 

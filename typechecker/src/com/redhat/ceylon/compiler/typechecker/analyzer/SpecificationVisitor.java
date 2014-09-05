@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -506,7 +505,7 @@ public class SpecificationVisitor extends Visitor {
     
     private String longdesc() {
         if (declaration instanceof Value) {
-            return "value is not variable and";
+            return "value is neither variable nor late and";
         }
         else if (declaration instanceof Method) {
             return "function";
@@ -535,7 +534,7 @@ public class SpecificationVisitor extends Visitor {
         	m = ((Tree.ParameterizedExpression) m).getPrimary();
         }
         if (m instanceof Tree.BaseMemberExpression) {
-	        BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
@@ -579,8 +578,9 @@ public class SpecificationVisitor extends Visitor {
 	            }
 	            boolean constant = !isVariable() && !isLate();
 	            if (constant && !declaration.isDefinedInScope(that.getScope())) {
-                    that.addError("inherited member is not variable and may not be specified here: '" + 
-                            member.getName() + "'");
+	                //this error is added by ExpressionVisitor
+//                    that.addError("inherited member is not variable and may not be specified here: '" + 
+//                            member.getName() + "'");
 	            }
 	            else if (!declared && constant) {
                     that.addError(shortdesc() + 

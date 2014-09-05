@@ -1098,11 +1098,11 @@ public class RefinementVisitor extends Visitor {
         final ProducedReference rv = getRefinedMember(sv, c);
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
+            that.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
                     message(sv), 510);
         }
         else if (sv.isVariable()) {
-            bme.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
+            that.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
                     message(sv));
         }
         Value v = new Value();
@@ -1141,7 +1141,7 @@ public class RefinementVisitor extends Visitor {
         final ProducedReference rm = getRefinedMember(sm, c);
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("inherited method is neither formal nor default so may not be refined: " + 
+            that.addError("inherited method is neither formal nor default so may not be refined: " + 
                     message(sm));
         }
         Method m = new Method();

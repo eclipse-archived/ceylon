@@ -354,9 +354,6 @@ public class PhasedUnit {
             //System.out.println("Validate specification for " + fileName);
             for (Declaration d: unit.getDeclarations()) {
                 compilationUnit.visit(new SpecificationVisitor(d));
-//                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-//                    compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
-//                }
                 if (d instanceof TypeDeclaration) {
                     compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
                 }
