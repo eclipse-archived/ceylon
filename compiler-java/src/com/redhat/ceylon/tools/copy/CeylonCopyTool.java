@@ -31,7 +31,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;
-    private boolean recursive;
+    private boolean withDependencies;
     
     private Boolean jvm;
     private Boolean js;
@@ -53,10 +53,10 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         this.modules = modules;
     }
 
-    @Option
-    @Description("Recursively copy dependencies")
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
+    @Option(longName="with-dependencies", shortName='r')
+    @Description("Recursively copy all dependencies")
+    public void setWithDependencies(boolean withDependencies) {
+        this.withDependencies = withDependencies;
     }
 
     @Option
@@ -198,7 +198,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
             String[] tmp = new String[artifacts.size()];
             ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts.toArray(tmp));
-            ac.setIgnoreDependencies(!recursive);
+            ac.setIgnoreDependencies(!withDependencies);
             copier.copyModule(ac);
         }
     }

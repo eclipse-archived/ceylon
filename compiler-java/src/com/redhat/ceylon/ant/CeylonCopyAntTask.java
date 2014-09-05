@@ -42,7 +42,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     private String out;
     private String user;
     private String pass;
-    private boolean recursive;
+    private boolean withDependencies;
     private Boolean js;
     private Boolean jvm;
     private Boolean docs;
@@ -103,8 +103,8 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Determines if dependencies should be recursively copied or not
      */
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
+    public void setWithDependencies(boolean withDependencies) {
+        this.withDependencies = withDependencies;
     }
 
     /**
@@ -180,8 +180,8 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
         appendUserOption(cmd, user);
         appendPassOption(cmd, pass);
         
-        if (recursive) {
-            appendOption(cmd, "--recursive");
+        if (withDependencies) {
+            appendOption(cmd, "--with-dependencies");
         }
 
         if (BooleanUtil.isTrue(js)) {
