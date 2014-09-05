@@ -47,6 +47,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     private Boolean jvm;
     private Boolean docs;
     private Boolean src;
+    private Boolean scripts;
     private Boolean all;
     
     public CeylonCopyAntTask() {
@@ -128,6 +129,13 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     }
 
     /**
+     * Set to true to copy script artifacts (defaults: false)
+     */
+    public void setScripts(Boolean scripts) {
+        this.scripts = scripts;
+    }
+
+    /**
      * Set to true to copy documentation artifacts (defaults: false)
      */
     public void setDocs(Boolean docs) {
@@ -186,6 +194,10 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
 
         if (BooleanUtil.isTrue(src)) {
             appendOption(cmd, "--src");
+        }
+
+        if (BooleanUtil.isTrue(scripts)) {
+            appendOption(cmd, "--scripts");
         }
 
         if (BooleanUtil.isTrue(docs)) {
