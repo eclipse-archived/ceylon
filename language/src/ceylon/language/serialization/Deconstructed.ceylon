@@ -21,7 +21,7 @@ shared interface Deconstructor {
         "if there is already a value for the given attribute")
     shared formal void putValue<Type>(ValueDeclaration attribute, Type referenced);
     
-    shared formal void putArray<Element>(ValueDeclaration attribute, Array<Element> array);
+    shared formal void putElement<Type>(Integer index, Type referenced);
 }
 
 "The flattened state of an instance of a class.
@@ -39,6 +39,8 @@ shared interface Deconstructed
         "if the value is missing")
     shared formal Type|Reference<Type> getValue<Type>(ValueDeclaration attribute);
     
-    shared formal Array<Element> array
-    getArray<Element>(ValueDeclaration attribute);
+    shared formal Type|Reference<Type> getElement<Type>(Integer index);
+    
+    //shared formal Array<Element>
+    //getArray<Element>(ValueDeclaration attribute);
 }

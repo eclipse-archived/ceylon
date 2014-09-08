@@ -5,9 +5,11 @@ import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.Deconstructed;
 
 /**
- * Interface implicitly implemented by serializable classes. 
+ * Interface implicitly implemented by {@code serializable} classes. 
  * The methods in this inerface are generated 
  * automatically by the compiler.
+ * 
+ * @see $Serialization$
  */
 public interface Serializable {
     public void $serialize$(Callable<? extends Deconstructor> deconstructor);

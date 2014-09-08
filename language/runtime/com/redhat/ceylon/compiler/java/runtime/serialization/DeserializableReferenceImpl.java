@@ -3,12 +3,15 @@ package com.redhat.ceylon.compiler.java.runtime.serialization;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 import ceylon.language.AssertionError;
+import ceylon.language.Collection;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.DeserializableReference;
 import ceylon.language.serialization.RealizableReference;
@@ -42,10 +45,23 @@ class DeserializableReferenceImpl<Instance>
                     + (classModel != null ? classModel.getClass().getName() : "null"));
         }
         
+        Collection<?> typeArgs = classModel.getTypeArguments().getItems();
+        Class[] types = new Class[Util.toInt(typeArgs.getSize() + 1)];
+        Object[] args = new Object[Util.toInt(typeArgs.getSize() + 1)];
+        args[0] = null;
+        types[0] = $Serialization$.class;
+        for (int ii = 0; ii < typeArgs.getSize(); ii++) {
+            args[ii+1] = Metamodel.getTypeDescriptor(typeArgs.getFromFirst(ii));
+            types[ii+1] = TypeDescriptor.class;
+        }
+        
         try {
-            Constructor<Instance> ctor = clazz.getDeclaredConstructor($Serialization$.class);
+            Constructor<Instance> ctor = clazz.getDeclaredConstructor(types);
             ctor.setAccessible(true);
-            instance = ctor.newInstance(new Object[]{null});// Pass a null $Serialization$
+            // Actually we need to pass something equivalent to the type descriptors here
+            // because the companion instances can require those. But we don't have the deconstructed yet!
+            // This means we have to obtain the type descriptors from the class model
+            instance = ctor.newInstance(args);// Pass a null $Serialization$
             context.put(id, (DeserializableReferenceImpl)this);
         } catch (NoSuchMethodException e) {
             throw new AssertionError("class is not serializable " + classModel);
