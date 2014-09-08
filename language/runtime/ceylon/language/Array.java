@@ -1610,7 +1610,7 @@ public final class Array<Element>
             ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
             Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
             
-            createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null);
+            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null));
             
             for (int ii = 0; ii < size.value; ii++) {
                 Element element = (Element)dted.<Element>getElement(this.$reifiedElement, ii);
