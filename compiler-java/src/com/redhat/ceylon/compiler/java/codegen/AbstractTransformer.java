@@ -854,8 +854,82 @@ public abstract class AbstractTransformer implements Transformation {
                     }
                 }
             }
+            /*
+             * Now there's another crazy case:
+             * 
+             * interface Top<out Element> {
+             *  Top<Element> ret => nothing;
+             * }
+             * interface Left satisfies Top<Integer> {}
+             * interface Right satisfies Top<String> {}
+             * class Bottom() satisfies Left&Right {}
+             * 
+             * Where Bottom.ret does not exist and is typed as returning Integer&String which is Nothing, erased to Object,
+             * and we look at what it refines and find only a single definition Top.ret typed as returning Integer&String (Nothing),
+             * so we think there's no widening, but Java will only see Top<Integer>.ret from Left, and that's the one we want
+             * to use for determining widening.
+             * See https://github.com/ceylon/ceylon-compiler/issues/1765
+             */
+            ProducedType firstInstantiation = isInheritedWithDifferentTypeArguments(modelRefinedDecl.getContainer(), currentType);
+            if(firstInstantiation != null){
+                ProducedTypedReference firstInstantiationTypedReference = getRefinedTypedReference(firstInstantiation, modelRefinedDecl);
+                ProducedType firstInstantiationType = firstInstantiationTypedReference.getType();
+                if(isWidening(decl.getType(), firstInstantiationType)
+                        || isWideningTypeArguments(decl.getType(), firstInstantiationType, true))
+                    return firstInstantiationTypedReference;
+
+            }
         }
         return getRefinedTypedReference(typedReference, modelRefinedDecl);
+    }
+
+    private ProducedType isInheritedWithDifferentTypeArguments(Scope container, ProducedType currentType) {
+        // only interfaces can be inherited twice
+        if(container instanceof Interface == false)
+            return null;
+        if(currentType.getDeclaration() instanceof ClassOrInterface == false)
+            return null;
+        Interface iface = (Interface) container;
+        // if we have no type parameter there's no problem
+        if(iface.getTypeParameters().isEmpty())
+            return null;
+        
+        ProducedType[] arg = new ProducedType[1];
+        return findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, currentType, arg);
+    }
+
+    private ProducedType findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(Interface iface, ProducedType currentType, ProducedType[] found) {
+        if(currentType.getDeclaration() == iface){
+            if(found[0] == null){
+                // first time we find it, just record it
+                found[0] = currentType;
+                // stop there
+                return null;
+            }else if(found[0].isExactly(currentType)){
+                // we already found the same type, ignore it and stop there
+                return null;
+            }else{
+                // we found a second type, let's return the first one found
+                return found[0];
+            }
+        }
+        // first extended type
+        ProducedType extendedType = currentType.getExtendedType();
+        if(extendedType != null){
+            ProducedType ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, extendedType, found);
+            // stop there if we found a result
+            if(ret != null)
+                return ret;
+        }
+        // then satisfied interfaces
+        for(ProducedType satisfiedType : currentType.getSatisfiedTypes()){
+            ProducedType ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, satisfiedType, found);
+            // stop there if we found a result
+            if(ret != null)
+                return ret;
+        }
+        // not found
+        return null;
     }
 
     private TypedDeclaration getFirstRefinedDeclaration(TypedDeclaration decl) {
@@ -1016,7 +1090,14 @@ public abstract class AbstractTransformer implements Transformation {
             // check if we are refining a covariant param which we must "fix" because it is dependend on, like Tuple's first TP
             if(declType.isCovariant(tp)
                     && hasDependentTypeParameters(typeParameters, tp)
-                    && !typeArgument.isExactly(refinedTypeArgument))
+                    && !typeArgument.isExactly(refinedTypeArgument)
+                    // it is not widening if we refine Object with a TP, though
+                    && !(willEraseToObject(refinedTypeArgument)
+                            && (isTypeParameter(typeArgument)
+                                    // it is also not widening if we erase both to Object
+                                    || willEraseToObject(typeArgument))
+                            )
+                    )
                 return true;
             // check if the type arg is a subtype, or if its type args are widening
             if(isWideningTypeArguments(typeArgument, refinedTypeArgument, tp.isCovariant()))
