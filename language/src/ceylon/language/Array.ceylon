@@ -8,8 +8,8 @@
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
-shared final native class Array<Element>({Element*} elements) 
-        extends Object()
+shared final native class Array<Element>({Element*} elements)
+        extends Basic()
         satisfies List<Element> &
                   Ranged<Integer, Element, Array<Element>> {
 	
@@ -95,4 +95,6 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Element[] sort(
         Comparison comparing(Element x, Element y));
     
+    shared actual Boolean equals(Object other) => (super of List<Element>).equals(other);
+    shared actual Integer hash => (super of List<Element>).hash;
 }
