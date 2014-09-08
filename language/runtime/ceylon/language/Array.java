@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,6 +12,13 @@ import java.util.Comparator;
 
 import ceylon.language.impl.BaseIterator;
 import ceylon.language.impl.BaseList;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.GenericDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.meta.model.Type;
+import ceylon.language.serialization.Deconstructed;
+import ceylon.language.serialization.Deconstructor;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -27,7 +35,10 @@ import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
+import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 
 @Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Basic")
@@ -38,7 +49,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 })
 public final class Array<Element>
         extends BaseList<Element>
-        implements List<Element> {
+        implements List<Element>, Serializable {
     
     private final java.lang.Object array;
     private final int size;
@@ -1558,5 +1569,55 @@ public final class Array<Element>
     public int hashCode() {
         // overridden so the native model is identical to the ceylon model
         return super.hashCode();
+    }
+    
+    @Ignore
+    public Array($Serialization$ ignored, TypeDescriptor $reifiedElement) {
+        super(ignored, $reifiedElement);
+        this.$reifiedElement = $reifiedElement;
+        this.array = null;
+    }
+    
+    @Ignore
+    @Override
+    public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
+        //super.$serialize$(deconstructor);
+        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral($getType$()));
+        
+        ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
+        dtor.putTypeArgument(elementTypeParameter, Metamodel.getAppliedMetamodel(this.$reifiedElement));
+        
+        ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
+        
+        dtor.putValue(Integer.$TypeDescriptor$, 
+                sizeAttribute, 
+                Integer.instance(getSize()));
+        
+        for (int ii = 0; ii < getSize(); ii++) {
+            dtor.<Element>putElement(this.$reifiedElement, ii, unsafeItem(ii));
+        }
+    }
+
+    @Ignore
+    @Override
+    public void $deserialize$(Deconstructed dted) {
+        //super.$deserialize$(dted);
+        try {
+            ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
+            TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
+            Util.setter(MethodHandles.lookup(), "$reifiedElement").invokeExact(this, reifiedElement);
+            
+            ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
+            Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
+            
+            createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null);
+            
+            for (int ii = 0; ii < size.value; ii++) {
+                Element element = (Element)dted.<Element>getElement(this.$reifiedElement, ii);
+                set(ii, element);
+            }
+        } catch (java.lang.Throwable e) {
+            rethrow_.rethrow(e);
+        }
     }
 }

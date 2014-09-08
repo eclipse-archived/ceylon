@@ -1,5 +1,5 @@
-import ceylon.language { 
-    makeSpan=span, 
+import ceylon.language {
+    makeSpan=span,
     makeMeasure=measure
 }
 
@@ -29,28 +29,30 @@ import ceylon.language {
  The functions [[ceylon.language::span]] and 
  [[ceylon.language::measure]], and corresponding operators 
  `..` and `:` are used to create new instances of `Range`."
-see (`function makeSpan`, 
-     `function makeMeasure`)
-shared sealed abstract class Range<Element>()
+see (`function makeSpan`,
+    `function makeMeasure`)
+shared sealed
+abstract serializable
+class Range<Element>()
         of Span<Element> | Measure<Element>
-        extends Object()  
+        extends Object()
         satisfies [Element+]
         given Element satisfies Enumerable<Element> {
     
-	"Determines if this range includes the given value."
+    "Determines if this range includes the given value."
     shared formal Boolean containsElement(Element element);
-
-	"Determines if this range includes the given range."
+    
+    "Determines if this range includes the given range."
     shared formal Boolean includesRange(Range<Element> range);
-	
-	"Returns a range of the same length and type as this
-	 range, with its endpoints shifted by the given number 
-	 of elements, where:
-	 
-	 - a negative [[shift]] measures 
-	   [[decrements|Ordinal.predecessor]], and 
-	 - a positive `shift` measures 
-	   [[increments|Ordinal.successor]]."
+    
+    "Returns a range of the same length and type as this
+        range, with its endpoints shifted by the given number 
+        of elements, where:
+        
+        - a negative [[shift]] measures 
+          [[decrements|Ordinal.predecessor]], and 
+        - a positive `shift` measures 
+          [[increments|Ordinal.successor]]."
     shared formal Range<Element> shifted(Integer shift);
     
     "Determines if the range is increasing, that is, if
@@ -64,5 +66,4 @@ shared sealed abstract class Range<Element>()
     "Returns the range itself, since a range cannot contain 
      null elements."
     shared actual Range<Element> coalesced => this;
-    
 }

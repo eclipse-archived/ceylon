@@ -1,4 +1,6 @@
-import ceylon.language { seq=sequence }
+import ceylon.language {
+    seq=sequence
+}
 "A [[Sequence]] backed by an [[Array]]. 
  
  Since [[Array]]s are mutable, this class is private to the
@@ -6,7 +8,9 @@ import ceylon.language { seq=sequence }
  modified after the `ArraySequence` has been initialized."
 by ("Tom")
 see (`function seq`)
-shared sealed class ArraySequence<out Element>(array) 
+shared sealed
+serializable
+class ArraySequence<out Element>(array)
         extends Object()
         satisfies [Element+] {
     
@@ -25,8 +29,7 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element first {
         if (exists first = array.first) {
             return first;
-        }
-        else {
+        } else {
             assert (is Element null);
             return null;
         }
@@ -35,14 +38,13 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element last {
         if (exists last = array.last) {
             return last;
-        }
-        else {
+        } else {
             assert (is Element null);
             return null;
         }
     }
     
-    rest => size==1 then [] else ArraySequence(array[1...]);
+    rest => size == 1 then [] else ArraySequence(array[1...]);
     
     clone() => ArraySequence(array.clone());
     
@@ -59,13 +61,11 @@ shared sealed class ArraySequence<out Element>(array)
     }
     
     shared actual Element[] measure(Integer from, Integer length) {
-        if (from>lastIndex || length<=0 || from+length<=0) {
+        if (from > lastIndex || length <= 0 || from + length <= 0) {
             return [];
-        }
-        else if (from < 0) {
-            return ArraySequence(array[0:length+from]);
-        }
-        else {
+        } else if (from < 0) {
+            return ArraySequence(array[0 : length + from]);
+        } else {
             return ArraySequence(array[from:length]);
         }
     }
@@ -76,8 +76,7 @@ shared sealed class ArraySequence<out Element>(array)
                 return [];
             }
             return ArraySequence(array[from..to]);
-        }
-        else {
+        } else {
             if (from < 0 || to > lastIndex) {
                 return [];
             }
@@ -88,8 +87,7 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element[] spanFrom(Integer from) {
         if (from > lastIndex) {
             return [];
-        }
-        else {
+        } else {
             return ArraySequence(array[from...]);
         }
     }
@@ -97,10 +95,8 @@ shared sealed class ArraySequence<out Element>(array)
     shared actual Element[] spanTo(Integer to) {
         if (to < 0) {
             return [];
-        }
-        else { 
+        } else {
             return ArraySequence(array[...to]);
         }
     }
-    
 }

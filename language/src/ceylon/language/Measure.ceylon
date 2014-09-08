@@ -2,12 +2,13 @@
  a [[first]] element, and a strictly positive [[size]]. The 
  range includes all values whose offset from `first` is 
  non-negative and less than the `size`."
-see (`class Span`, 
+see (`class Span`,
     `interface Enumerable`)
-final class Measure<Element>(first, size)
+final serializable
+class Measure<Element>(first, size)
         extends Range<Element>()
         given Element satisfies Enumerable<Element> {
-
+    
     "The start of the range."
     shared actual Element first;
     
@@ -17,10 +18,10 @@ final class Measure<Element>(first, size)
     "Can't be used for empty segments"
     assert (size > 0);
     
-    shared actual String string 
+    shared actual String string
             => first.string + ":" + size.string;
     
-    shared actual Element last => first.neighbour(size-1);
+    shared actual Element last => first.neighbour(size - 1);
     
     "Determines if this sized range has more elements than 
      the given [[length]]."
@@ -33,17 +34,17 @@ final class Measure<Element>(first, size)
             => size < length;
     
     "The index of the end of the sized range."
-    shared actual Integer lastIndex => size-1; 
+    shared actual Integer lastIndex => size - 1;
     
     "The rest of the range, without its first element."
-    shared actual Element[] rest 
-            => size==1 then [] 
-                       else Measure(first.successor,size-1);
+    shared actual Element[] rest
+            => size == 1 then []
+            else Measure(first.successor, size - 1);
     
     "The element of the range that occurs [[index]] values
      after the start of the range."
     shared actual Element? getFromFirst(Integer index) {
-        if (index<0 || index >= size) {
+        if (index < 0 || index >= size) {
             return null;
         }
         return first.neighbour(index);
@@ -59,12 +60,11 @@ final class Measure<Element>(first, size)
             variable value count = 0;
             variable value current = first;
             shared actual Element|Finished next() {
-                if (++count>size) {
+                if (++count > size) {
                     return finished;
-                }
-                else {
+                } else {
                     return current++;
-                } 
+                }
             }
             string => "(``outer.string``).iterator()";
         }
@@ -92,14 +92,13 @@ final class Measure<Element>(first, size)
                 variable value count = 0;
                 variable value current = first;
                 shared actual Element|Finished next() {
-                    if (++count>size) {
+                    if (++count > size) {
                         return finished;
-                    }
-                    else {
+                    } else {
                         value result = current;
                         current = current.neighbour(step);
                         return result;
-                    } 
+                    }
                 }
                 string => "``outer.string``.iterator()";
             }
@@ -108,11 +107,10 @@ final class Measure<Element>(first, size)
     }
     
     shared actual Measure<Element> shifted(Integer shift) {
-        if (shift==0) {
+        if (shift == 0) {
             return this;
-        }
-        else {
-            return Measure(first.neighbour(shift),size);
+        } else {
+            return Measure(first.neighbour(shift), size);
         }
     }
     
@@ -120,8 +118,7 @@ final class Measure<Element>(first, size)
     shared actual Boolean contains(Object element) {
         if (is Element element) {
             return containsElement(element);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -130,8 +127,7 @@ final class Measure<Element>(first, size)
     shared actual Boolean occurs(Anything element) {
         if (is Element element) {
             return containsElement(element);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -142,11 +138,9 @@ final class Measure<Element>(first, size)
     shared actual Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
-        }
-        else if (is Range<Element> sublist) {
+        } else if (is Range<Element> sublist) {
             return includesRange(sublist);
-        }
-        else {
+        } else {
             return super.includes(sublist);
         }
     }
@@ -160,8 +154,7 @@ final class Measure<Element>(first, size)
         case (is Span<Element>) {
             if (sublist.decreasing) {
                 return false;
-            }
-            else {
+            } else {
                 value offset = sublist.first.offset(first);
                 return offset >= 0 && offset + sublist.size <= size;
             }
@@ -171,48 +164,42 @@ final class Measure<Element>(first, size)
     shared actual Boolean equals(Object that) {
         if (is Measure<Object> that) {
             //optimize for another Measure
-            return that.size==size && that.first==first;
-        }
-        else if (is Span<Object> that) {
-            return that.increasing && 
-                    that.first == first && that.size == size; 
-        }
-        else {
+            return that.size == size && that.first == first;
+        } else if (is Span<Object> that) {
+            return that.increasing &&
+                    that.first == first && that.size == size;
+        } else {
             //it might be another sort of List
             return super.equals(that);
         }
     }
     
     shared actual Element[] measure(Integer from, Integer length) {
-        if (length<=0) {
-             return []; 
-        }
-        else {
-            value len = from+length < size then length 
-                                           else size-from;
-            return Measure(first.neighbour(from),len);
+        if (length <= 0) {
+            return [];
+        } else {
+            value len = from + length < size then length
+                    else size - from;
+            return Measure(first.neighbour(from), len);
         }
     }
     
     shared actual Element[] span(Integer from, Integer to) {
-        if (from<=to) {
-            if (to<0 || from>=size) {
+        if (from <= to) {
+            if (to < 0 || from >= size) {
                 return [];
+            } else {
+                value len = to < size then to - from + 1
+                        else size - from;
+                return Measure(first.neighbour(from), len);
             }
-            else {
-                value len = to < size then to-from+1
-                                      else size-from;
-                return Measure(first.neighbour(from),len);
-            }
-        }
-        else {
-            if (from<0 || to>=size) {
+        } else {
+            if (from < 0 || to >= size) {
                 return [];
-            }
-            else {
-                value len = from < size then from-to+1 
-                                        else size-to;
-                return Measure(first.neighbour(to),len).reversed;
+            } else {
+                value len = from < size then from - to + 1
+                        else size - to;
+                return Measure(first.neighbour(to), len).reversed;
             }
         }
     }
@@ -220,23 +207,19 @@ final class Measure<Element>(first, size)
     shared actual Element[] spanFrom(Integer from) {
         if (from <= 0) {
             return this;
-        }
-        else if (from < size) {
-            return Measure(first.neighbour(from),size-from);
-        }
-        else {
+        } else if (from < size) {
+            return Measure(first.neighbour(from), size - from);
+        } else {
             return [];
         }
     }
     
     shared actual Element[] spanTo(Integer to) {
-        if (to<0) {
+        if (to < 0) {
             return [];
-        }
-        else if (to < size-1) {
-            return Measure(first,to);
-        }
-        else {
+        } else if (to < size - 1) {
+            return Measure(first, to);
+        } else {
             return this;
         }
     }
@@ -269,6 +252,6 @@ final class Measure<Element>(first, size)
      5:0     // []
      0:-5    // []"
 shared Range<Element>|[] measure<Element>
-            (Element first, Integer size) 
-        given Element satisfies Enumerable<Element> 
+        (Element first, Integer size)
+        given Element satisfies Enumerable<Element>
         => size <= 0 then [] else Measure(first, size);

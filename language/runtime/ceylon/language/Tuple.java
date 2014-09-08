@@ -4,11 +4,17 @@ import static com.redhat.ceylon.compiler.java.Util.toInt;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
 import static java.lang.System.arraycopy;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
 import ceylon.language.impl.BaseIterator;
 import ceylon.language.impl.BaseSequence;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Deconstructed;
+import ceylon.language.serialization.Deconstructor;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -26,6 +32,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Object", 
@@ -61,7 +69,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
         extends BaseSequence<Element>
-        implements Sequence<Element> {
+        implements Sequence<Element>, Serializable {
 
     /** 
      * A backing array. May be shared between many Tuple instances
@@ -696,6 +704,51 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     public int $getLength$() {
         return Util.toInt(array.length + rest.getSize());
+    }
+
+    @Ignore
+    public Tuple($Serialization$ ignored, TypeDescriptor $reifiedElement,TypeDescriptor $reifiedFirst, TypeDescriptor $reifiedRest) {
+        super($reifiedElement);
+        this.$reifiedElement = $reifiedElement;
+        // hack: put the type descriptors into the array, so they're available
+        // in $deserialize$() for getting the values from the dted
+        this.array = new java.lang.Object[]{$reifiedFirst, $reifiedRest};
+        this.rest = null;
+    }
+    @Ignore
+    @Override
+    public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
+        super.$serialize$(deconstructor);
+        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral($getType$()));
+        ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        
+        TypeDescriptor[] tas = ((TypeDescriptor.Class)$getType$()).getTypeArguments();
+        dtor.putValue(tas[1], firstAttribute, getFirst());
+        
+        ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+        dtor.putValue(tas[2], restAttribute, getRest());
+    }
+    @Ignore
+    @Override
+    public void $deserialize$(Deconstructed deconstructed) {
+        super.$deserialize$(deconstructed);
+        try {
+            TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
+            TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
+            ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+            ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+            
+            First first = (First)deconstructed.<First>getValue(reifiedFirst, firstAttribute);
+            Rest rest = (Rest)deconstructed.<Rest>getValue(reifiedRest, firstAttribute);
+            
+            
+            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, makeArray(first, rest));
+            Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, makeRest(rest));
+        } catch (java.lang.Throwable t) {
+            rethrow_.rethrow(t);
+        }
+        
+        
     }
     
     
