@@ -983,13 +983,14 @@ public abstract class AbstractTransformer implements Transformation {
             java.util.List<ProducedType> signature, boolean ellipsis) {
         Set<TypedDeclaration> ret = new HashSet<TypedDeclaration>();
         collectRefinedMembers(decl, name, signature, ellipsis, 
-                new HashSet<TypeDeclaration>(), ret);
+                new HashSet<TypeDeclaration>(), ret, true);
         return ret;
     }
 
     private void collectRefinedMembers(TypeDeclaration decl, String name, 
             java.util.List<ProducedType> signature, boolean ellipsis,
-            java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret) {
+            java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret, 
+            boolean ignoreFirst) {
         if (visited.contains(decl)) {
             return;
         }
@@ -997,14 +998,17 @@ public abstract class AbstractTransformer implements Transformation {
             visited.add(decl);
             TypeDeclaration et = decl.getExtendedTypeDeclaration();
             if (et!=null) {
-                collectRefinedMembers(et, name, signature, ellipsis, visited, ret);
+                collectRefinedMembers(et, name, signature, ellipsis, visited, ret, false);
             }
             for (TypeDeclaration st: decl.getSatisfiedTypeDeclarations()) {
-                collectRefinedMembers(st, name, signature, ellipsis, visited, ret);
+                collectRefinedMembers(st, name, signature, ellipsis, visited, ret, false);
             }
-            Declaration found = decl.getDirectMember(name, signature, ellipsis);
-            if(found != null)
-                ret.add((TypedDeclaration) found);
+            // we're collecting refined members, not the refining one
+            if(!ignoreFirst){
+                Declaration found = decl.getDirectMember(name, signature, ellipsis);
+                if(found != null)
+                    ret.add((TypedDeclaration) found);
+            }
         }
     }
 
