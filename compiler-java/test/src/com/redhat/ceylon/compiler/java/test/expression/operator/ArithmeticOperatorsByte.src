@@ -68,9 +68,9 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI) {
         this.initN = initN;
         this.initI = initI;
-        this.n1 = .ceylon.language.Integer.getByte(0L);
-        this.n2 = .ceylon.language.Integer.getByte(0L);
-        this.i1 = .ceylon.language.Integer.getByte(0L);
+        this.n1 = (byte)0L;
+        this.n2 = (byte)0L;
+        this.i1 = (byte)0L;
         this.boxedByte1 = getInitN$priv$();
         this.boxedByte2 = getInitN$priv$();
         this.boxedByte3 = getInitI$priv$();
@@ -417,9 +417,9 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final void unboxedLocals$priv$() {
-        byte n1 = .ceylon.language.Integer.getByte(0L);
-        byte n2 = .ceylon.language.Integer.getByte(0L);
-        byte i1 = .ceylon.language.Integer.getByte(0L);
+        byte n1 = (byte)0L;
+        byte n2 = (byte)0L;
+        byte i1 = (byte)0L;
         n1++;
         ++n1;
         n1--;
@@ -432,9 +432,9 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final void unboxedLocalGetters$priv$() {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte(.ceylon.language.Integer.getByte(0L));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxByte i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxByte((byte)0L);
         
         final class getterByte1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterByte {
             
@@ -818,7 +818,7 @@ final class toplevelByte1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            value = new byte[]{(byte)0L};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
@@ -847,7 +847,7 @@ final class toplevelByte2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            value = new byte[]{(byte)0L};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
@@ -876,7 +876,7 @@ final class toplevelByte3_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{.ceylon.language.Integer.getByte(0L)};
+            value = new byte[]{(byte)0L};
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;

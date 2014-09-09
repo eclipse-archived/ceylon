@@ -41,8 +41,8 @@ final class byteTypes_ {
         final byte n1 = java.return_byte();
         final .ceylon.language.Byte n2 = .ceylon.language.Byte.instance(java.return_byte());
         final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Byte()).longValue();
-        java.byteParams(.ceylon.language.Integer.getByte(1L), new .java.lang.Byte(.ceylon.language.Integer.getByte(1L)));
-        java.byteParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance(.ceylon.language.Integer.getByte(1L))).byteValue(), new .java.lang.Byte(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance(.ceylon.language.Integer.getByte(1L))).byteValue()));
+        java.byteParams((byte)1L, new .java.lang.Byte((byte)1L));
+        java.byteParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance((byte)1L)).byteValue(), new .java.lang.Byte(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance((byte)1L)).byteValue()));
         java.byteParams(java.return_byte(), new .java.lang.Byte(java.return_byte()));
         java.byteParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Byte()).byteValue(), java.return_Byte());
     }
