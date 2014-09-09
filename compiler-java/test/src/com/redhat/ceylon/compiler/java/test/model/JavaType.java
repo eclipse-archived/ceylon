@@ -23,4 +23,24 @@ package com.redhat.ceylon.compiler.java.test.model;
 public class JavaType {
     java.util.List<? extends java.lang.Object> javaList(java.util.List<? extends java.lang.Object> x){ return x; }
     ceylon.language.List<? extends java.lang.Object> ceylonList(ceylon.language.List<? extends java.lang.Object> x){ return x; }
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

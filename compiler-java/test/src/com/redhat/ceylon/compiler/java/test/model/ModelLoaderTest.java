@@ -1256,6 +1256,31 @@ public class ModelLoaderTest extends CompilerTest {
                 Parameter ceylonListParam = ceylonListMethod.getParameterLists().get(0).getParameters().get(0);
                 Assert.assertNotNull(ceylonListParam);
                 Assert.assertEquals("List<Object>?", ceylonListParam.getType().getProducedTypeName());
+
+                Method equalsMethod = (Method) javaType.getDirectMember("equals", null, false);
+                Assert.assertNotNull(equalsMethod);
+                Assert.assertTrue(equalsMethod.isActual());
+                Assert.assertTrue(equalsMethod.getRefinedDeclaration() != equalsMethod);
+
+                Value hashAttribute = (Value) javaType.getDirectMember("hash", null, false);
+                Assert.assertNotNull(hashAttribute);
+                Assert.assertTrue(hashAttribute.isActual());
+                Assert.assertTrue(hashAttribute.getRefinedDeclaration() != hashAttribute);
+
+                Value stringAttribute = (Value) javaType.getDirectMember("string", null, false);
+                Assert.assertNotNull(stringAttribute);
+                Assert.assertTrue(stringAttribute.isActual());
+                Assert.assertTrue(stringAttribute.getRefinedDeclaration() != stringAttribute);
+
+                Method cloneMethod = (Method) javaType.getDirectMember("clone", null, false);
+                Assert.assertNotNull(cloneMethod);
+                Assert.assertFalse(cloneMethod.isActual());
+                Assert.assertTrue(cloneMethod.getRefinedDeclaration() == cloneMethod);
+
+                Method finalizeMethod = (Method) javaType.getDirectMember("finalize", null, false);
+                Assert.assertNotNull(finalizeMethod);
+                Assert.assertFalse(finalizeMethod.isActual());
+                Assert.assertTrue(finalizeMethod.getRefinedDeclaration() == finalizeMethod);
 }
         });
     }
@@ -1440,6 +1465,28 @@ public class ModelLoaderTest extends CompilerTest {
     public interface ChannelListener<T extends Channel> {
         void handleEvent(T channel);
     }
+    class HiddenObjectMethods {
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+        }
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+        @Override
+        public String toString() {
+            return super.toString();
+        }
+    }
 
     @Test
     public void testReflectionOverriding() throws NoSuchMethodException, SecurityException{
@@ -1460,6 +1507,12 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertTrue(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("pkg")));
         Assert.assertFalse(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("priv")));
         Assert.assertTrue(ReflectionUtils.isOverridingMethod(AbstractReceiveListener.class.getDeclaredMethod("handleEvent", WebSocketChannel.class)));
+
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(HiddenObjectMethods.class.getDeclaredMethod("finalize")));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(HiddenObjectMethods.class.getDeclaredMethod("clone")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(HiddenObjectMethods.class.getDeclaredMethod("toString")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(HiddenObjectMethods.class.getDeclaredMethod("hashCode")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(HiddenObjectMethods.class.getDeclaredMethod("equals", Object.class)));
     }
     
     @Test
