@@ -68,11 +68,11 @@ class RealizableReferenceImpl<Instance>
     public String toString() {
         switch (state) {
         case UNINITIALIZED:
-            return "unitialized " + id +"<=((" + deconstructed + "))";
+            return "RealizableReference(" + id + "~>~" + deconstructed + ")";
         case UNINITIALIZED_REFS:
-            return "unitialized refs " + id +"<=(" + deconstructed + ")";
+            return "RealizableReference(" + id + "~>" + deconstructed + ")";
         case INITIALIZED:
-            return id +"<=" + instance;
+            return "RealizableReference(" + id + "->" + instance + ")";
         }
         throw new AssertionError("Illegal state");
     }

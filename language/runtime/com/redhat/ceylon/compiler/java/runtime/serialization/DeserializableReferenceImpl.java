@@ -101,7 +101,7 @@ class DeserializableReferenceImpl<Instance>
     }
     
     public String toString() {
-        return id +"<-"+classModel;
+        return "DeserializableReference(" + id + "," + classModel + ")";
     }
 
     @Override
