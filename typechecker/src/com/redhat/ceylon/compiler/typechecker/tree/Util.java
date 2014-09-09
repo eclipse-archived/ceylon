@@ -24,7 +24,8 @@ public class Util {
     public static boolean hasAnnotation(Tree.AnnotationList al, String name, Unit unit) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
-                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
+                Tree.BaseMemberExpression p = 
+                        (Tree.BaseMemberExpression) a.getPrimary();
                 if (p!=null) {
                     String an = name(p.getIdentifier());
                     String alias = unit==null ? name : //WTF?!
