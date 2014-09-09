@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -59,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
@@ -70,6 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -189,11 +192,14 @@ public abstract class BoxingVisitor extends Visitor {
             // These are always boxed
             return;
         }
-        propagateFromTerm(that, that.getPrimary());
+        if(isByteLiteral(that))
+            CodegenUtil.markUnBoxed(that);
+        else
+            propagateFromTerm(that, that.getPrimary());
         
         // Specifically for method invocations we check if the return type is
         // a type parameter and if so if one of the type arguments is erased,
-        // in that case we mark the expressionitself as erased as well
+        // in that case we mark the expression itself as erased as well
         if (that.getPrimary() instanceof StaticMemberOrTypeExpression) {
             StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
             if (expr.getDeclaration() instanceof Method) {
@@ -205,6 +211,34 @@ public abstract class BoxingVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private boolean isByteLiteral(Tree.InvocationExpression ce) {
+        // same test as in ExpressionTransformer.checkForByteLiterals
+        if(ce.getPrimary() instanceof Tree.BaseTypeExpression
+                && ce.getPositionalArgumentList() != null){
+            java.util.List<Tree.PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            if(positionalArguments.size() == 1){
+                PositionalArgument argument = positionalArguments.get(0);
+                if(argument instanceof Tree.ListedArgument
+                        && ((Tree.ListedArgument) argument).getExpression() != null){
+                    Term term = ((Tree.ListedArgument)argument).getExpression().getTerm();
+                    if(term instanceof Tree.NegativeOp){
+                        term = ((Tree.NegativeOp) term).getTerm();
+                    }
+                    if(term instanceof Tree.NaturalLiteral){
+                        Declaration decl = ((Tree.BaseTypeExpression)ce.getPrimary()).getDeclaration();
+                        if(decl instanceof Class){
+                            String name = decl.getQualifiedNameString();
+                            if(name.equals("ceylon.language::Byte")){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hasErasedTypeParameter(ProducedReference producedReference, List<ProducedType> typeArguments) {

@@ -68,7 +68,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.sun.source.tree.ReturnTree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -766,6 +769,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (isCeylonByte(definiteExpectedType) && isCeylonInteger(exprType)) {
             if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                if(ret instanceof JCTree.JCUnary){
+                    JCTree.JCUnary unary = (JCTree.JCUnary)ret;
+                    if(unary.getTag() == JCTree.NEG
+                            && unary.arg instanceof JCTree.JCLiteral){
+                        Object value = ((JCTree.JCLiteral)unary.arg).value;
+                        if(value instanceof Integer){
+                            int val = (Integer)value;
+                            // if it fits let's just leave it
+                            if(val >= 0 && val <= -Byte.MIN_VALUE){
+                                // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
+                                // assignment, not for method calls, so it's simpler to always cast
+                                return make().TypeCast(syms().byteType, ret);
+                            }
+                        }
+                    }
+                }
                 ret = utilInvocation().toByte(ret);
             } else {
                 ret = make().TypeCast(syms().byteType, ret);
@@ -1588,6 +1607,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // replaced with a throw.
                 return e.makeErroneous(this);
             }
+        }
+        if(op.getTerm() instanceof Tree.QualifiedMemberExpression){
+            JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberExpression)op.getTerm());
+            if(ret != null)
+                return at(op).Unary(JCTree.NEG, ret);
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
@@ -5123,6 +5147,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = checkForCharacterAsInteger(expr);
         if(ret != null)
             return ret;
+        ret = checkForByteLiterals(expr);
+        if(ret != null)
+            return ret;
         return null;
     }
 
@@ -5148,10 +5175,90 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression checkForInvocationExpressionOptimisation(Tree.InvocationExpression ce) {
-        // FIXME: temporary hack for bitwise operators literals
-        JCExpression ret = checkForBitwiseOperators(ce);
+        // FIXME: temporary hack for byte literals
+        JCExpression ret = checkForByteLiterals(ce);
         if(ret != null)
             return ret;
+        // FIXME: temporary hack for bitwise operators literals
+        ret = checkForBitwiseOperators(ce);
+        if(ret != null)
+            return ret;
+        return null;
+    }
+
+    private JCExpression checkForByteLiterals(Tree.QualifiedMemberExpression expr) {
+        // must be a call on Integer
+        Tree.Term left = expr.getPrimary();
+        if(left == null || !isCeylonInteger(left.getTypeModel()))
+            return null;
+        // must be on "byte"
+        if(!expr.getIdentifier().getText().equals("byte"))
+            return null;
+        // must be a normal member op "."
+        if(expr.getMemberOperator() instanceof Tree.MemberOp == false)
+            return null;
+        // must be unboxed
+        if(!expr.getUnboxed() || !left.getUnboxed())
+            return null;
+        // This can't be Tree.NegativeOp as the normal precedence of -1.byte is -(1.byte), not (-1).byte
+        // and must be a number literal
+        if(left instanceof Tree.NaturalLiteral == false)
+            return null;
+        // all good
+        at(expr);
+        try{
+            long value = literalValue((Tree.NaturalLiteral) left);
+            // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
+            // assignment, not for method calls, so it's simpler to always cast
+            return make().TypeCast(syms().byteType, make().Literal(value));
+        } catch (ErroneousException e) {
+            // We should never get here since the error should have been 
+            // reported by the UnsupportedVisitor and the containing statement
+            // replaced with a throw.
+            return e.makeErroneous(this);
+        }
+    }
+    
+    private JCExpression checkForByteLiterals(Tree.InvocationExpression ce) {
+        // same test as in BoxingVisitor.isByteLiteral()
+        if(ce.getPrimary() instanceof Tree.BaseTypeExpression
+                && ce.getPositionalArgumentList() != null){
+            java.util.List<Tree.PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            if(positionalArguments.size() == 1){
+                PositionalArgument argument = positionalArguments.get(0);
+                if(argument instanceof Tree.ListedArgument
+                        && ((Tree.ListedArgument) argument).getExpression() != null){
+                    Term term = ((Tree.ListedArgument)argument).getExpression().getTerm();
+                    boolean negative = false;
+                    if(term instanceof Tree.NegativeOp){
+                        negative = true;
+                        term = ((Tree.NegativeOp) term).getTerm();
+                    }
+                    if(term instanceof Tree.NaturalLiteral){
+                        Declaration decl = ((Tree.BaseTypeExpression)ce.getPrimary()).getDeclaration();
+                        if(decl instanceof Class){
+                            String name = decl.getQualifiedNameString();
+                            if(name.equals("ceylon.language::Byte")){
+                                at(ce);
+                                try{
+                                    long value = literalValue((Tree.NaturalLiteral) term);
+                                    if(negative)
+                                        value = -value;
+                                    // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
+                                    // assignment, not for method calls, so it's simpler to always cast
+                                    return make().TypeCast(syms().byteType, make().Literal(value));
+                                } catch (ErroneousException e) {
+                                    // We should never get here since the error should have been 
+                                    // reported by the UnsupportedVisitor and the containing statement
+                                    // replaced with a throw.
+                                    return e.makeErroneous(this);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return null;
     }
 
