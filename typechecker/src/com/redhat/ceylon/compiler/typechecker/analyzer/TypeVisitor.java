@@ -479,6 +479,7 @@ public class TypeVisitor extends Visitor {
                     (!d.getUnit().getPackage().getNameAsString()
                             .equals(Module.LANGUAGE_MODULE_NAME) ||
                     !mods.containsKey(d.getName()))) {
+                //TODO: why is this even necessary?!
                 member.addError("import hides a language modifier: '" + alias + "'");
             }
             else {
