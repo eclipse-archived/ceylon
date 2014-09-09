@@ -119,4 +119,14 @@ public class AppliedIntersectionType<Intersection>
     public boolean exactly(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isExactly(model, type);
     }
+    
+    @Override
+    public <Other> ceylon.language.meta.model.Type<?> union(TypeDescriptor reified$Other, ceylon.language.meta.model.Type<? extends Other> other) {
+        return Metamodel.union(this, other);
+    }
+    
+    @Override
+    public <Other> ceylon.language.meta.model.Type<?> intersection(TypeDescriptor reified$Other, ceylon.language.meta.model.Type<? extends Other> other) {
+        return Metamodel.intersection(this, other);
+    }
 }

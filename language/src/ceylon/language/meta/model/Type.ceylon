@@ -12,20 +12,27 @@ import ceylon.language.meta.model { AppliedType = Type }
  - [[IntersectionType]]
  - [[nothingType]]
 "
-shared sealed interface Type<out Type=Anything> /* of ClassOrInterface
-                                 | UnionType
-                                 | IntersectionType
-                                 | nothingType */ {
+shared sealed
+interface Type<out Target = Anything> /* of ClassOrInterface
+                                      | UnionType
+                                      | IntersectionType
+                                      | nothingType */ {
     
     "True if the given instance is of this type, or is of a subtype of this type."
     shared formal Boolean typeOf(Anything instance);
-
+    
     "True if this type is a supertype of the given type, or if both types are the same."
     shared formal Boolean supertypeOf(AppliedType<Anything> type);
     
     "True if this type is a subtype of the given type, or if both types are the same."
     shared default Boolean subtypeOf(AppliedType<Anything> type) => type.supertypeOf(this);
-
+    
     "True if the given type is a exactly this type."
     shared formal Boolean exactly(AppliedType<Anything> type);
+    
+    "The union of this type with the other type."
+    shared formal Type<Target|Other> union<Other>(Type<Other> other);
+    
+    "The intersection of this type with the other type."
+    shared formal Type<Target&Other> intersection<Other>(Type<Other> other);
 }

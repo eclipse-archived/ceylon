@@ -80,6 +80,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -91,6 +92,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 
 public class Metamodel {
@@ -1227,6 +1229,24 @@ public class Metamodel {
     public static boolean isExactly(ProducedType a, ceylon.language.meta.model.Type<? extends Object> type) {
         ProducedType b = Metamodel.getModel(type);
         return a.isExactly(b);
+    }
+    
+    public static ceylon.language.meta.model.Type<?> union(
+            ceylon.language.meta.model.Type<? extends Object> typeX, 
+            ceylon.language.meta.model.Type<? extends Object> typeY) {
+        ProducedType x = Metamodel.getModel(typeX);
+        ProducedType y = Metamodel.getModel(typeY);
+        ProducedType unionType = com.redhat.ceylon.compiler.typechecker.model.Util.unionType(x, y, moduleManager.getModelLoader().getUnit());
+        return getAppliedMetamodel(unionType);
+    }
+    
+    public static ceylon.language.meta.model.Type<?> intersection(
+            ceylon.language.meta.model.Type<? extends Object> typeX, 
+            ceylon.language.meta.model.Type<? extends Object> typeY) {
+        ProducedType x = Metamodel.getModel(typeX);
+        ProducedType y = Metamodel.getModel(typeY);
+        ProducedType intersectionType = com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType(x, y, moduleManager.getModelLoader().getUnit());
+        return getAppliedMetamodel(intersectionType);
     }
 
     public static void checkReifiedTypeArgument(String methodName, String className, Variance variance, ProducedType appliedType, TypeDescriptor $reifiedType) {

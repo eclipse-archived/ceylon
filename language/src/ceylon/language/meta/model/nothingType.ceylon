@@ -11,4 +11,7 @@ shared object nothingType satisfies Type<Nothing> {
     
     subtypeOf(Type<Anything> type) => true;
     
+    shared actual Type<Other> union<Other>(Type<Other> type) => type;
+    
+    shared actual Type<Nothing> intersection<Other>(Type<Other> type) => this;
 }

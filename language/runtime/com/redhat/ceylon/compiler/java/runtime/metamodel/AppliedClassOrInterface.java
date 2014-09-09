@@ -1266,4 +1266,14 @@ public abstract class AppliedClassOrInterface<Type>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedClassOrInterface.class, $reifiedType);
     }
+
+    @Override
+    public <Other> ceylon.language.meta.model.Type<?> union(TypeDescriptor reified$Other, ceylon.language.meta.model.Type<? extends Other> other) {
+        return Metamodel.union(this, other);
+    }
+    
+    @Override
+    public <Other> ceylon.language.meta.model.Type<?> intersection(TypeDescriptor reified$Other, ceylon.language.meta.model.Type<? extends Other> other) {
+        return Metamodel.intersection(this, other);
+    }
 }
