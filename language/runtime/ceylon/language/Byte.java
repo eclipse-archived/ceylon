@@ -235,7 +235,7 @@ public final class Byte implements
             return value;
         }
         int mask = 1 << index;
-        return (byte) ((0xff&value) ^ ~mask);
+        return (byte) ((0xff&value) ^ mask);
     }
 
     @Override
