@@ -521,19 +521,24 @@ td>p:FIRST-CHILD {
 
 code {
 	color: #333; /* default bootstrap color is red */
+    border:none;
+    background-color:inherit;
+}
+
+div .syntaxhighlighter {
+  margin-bottom: 10px !important;
 }
 
 .doc .syntaxhighlighter {
   display: block;
-  padding: 9.5px !important;
-  margin: 0 0 10px !important;
+  margin-left: 10px !important;
+  padding-left: 10px !important;
   font-size: 13px;
   line-height: 20px;
   word-break: break-all;
   word-wrap: break-word;
   white-space: pre;
   white-space: pre-wrap;
-  border-left: 5px solid #f0f0f0 !important;
 }
 
 [class^='icon-'] {
