@@ -181,7 +181,8 @@ public class ReflectionUtils {
             Method m = lookupClass.getDeclaredMethod(name, parameterTypes);
             // present
             return !m.isBridge() && !m.isSynthetic() && !Modifier.isPrivate(m.getModifiers())
-                    && !m.isAnnotationPresent(IGNORE_ANNOTATION);
+                    && !m.isAnnotationPresent(IGNORE_ANNOTATION)
+                    && !isHiddenMethod(m);
         } catch (Exception e) {
             // not present
         }
@@ -192,7 +193,8 @@ public class ReflectionUtils {
                     || m.isSynthetic()
                     || m.isAnnotationPresent(IGNORE_ANNOTATION)
                     || Modifier.isFinal(m.getModifiers())
-                    || Modifier.isPrivate(m.getModifiers()))
+                    || Modifier.isPrivate(m.getModifiers())
+                    || isHiddenMethod(m))
                 continue;
             if(m.getParameterTypes().length != parameterTypes.length)
                 continue;
@@ -217,7 +219,8 @@ public class ReflectionUtils {
                     || m.isBridge()
                     || m.isSynthetic()
                     || m.isAnnotationPresent(IGNORE_ANNOTATION)
-                    || Modifier.isPrivate(m.getModifiers()))
+                    || Modifier.isPrivate(m.getModifiers())
+                    || isHiddenMethod(m))
                 continue;
             if(m.getParameterTypes().length != parameterTypes.length)
                 return true;
@@ -234,6 +237,12 @@ public class ReflectionUtils {
         }
         // no overload here
         return false;
+    }
+
+    private static boolean isHiddenMethod(Method m) {
+        return m.getDeclaringClass() == Object.class
+                && (m.getName().equals("finalize")
+                        || m.getName().equals("clone"));
     }
 
     private static Class<?> getParameterErasure(Map<TypeVariable<?>, Class<?>> typeArguments, Type t) {

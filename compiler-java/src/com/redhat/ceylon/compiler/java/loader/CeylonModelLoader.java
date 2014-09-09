@@ -583,6 +583,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private boolean isIgnored(Symbol sym) {
         if(sym.kind != Kinds.MTH)
             return true;
+        String name = sym.name.toString();
+        if(name.equals("finalize")
+                || name.equals("clone")){
+            if(sym.owner != null && sym.owner.getQualifiedName().toString().equals("java.lang.Object"))
+                return true;
+        }
         for(Compound ann : sym.getAnnotationMirrors()){
             if(ann.type.tsym.getQualifiedName().toString().equals(CEYLON_IGNORE_ANNOTATION))
                 return true;
