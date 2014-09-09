@@ -1928,11 +1928,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
-            boolean isOverloaded = methodMirrors.size() > 1;
+            boolean isOverloaded = isMethodOverloaded(methodMirrors);
             
             List<Declaration> overloads = (isOverloaded) ? new ArrayList<Declaration>(methodMirrors.size()) : null;
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
+                // same tests as in isMethodOverloaded()
                 if(methodMirror.isConstructor() || isInstantiator(methodMirror)) {
                     break;
                 } else if(isGetter(methodMirror)) {
@@ -2064,6 +2065,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             addLocalDeclarations((LazyContainer) klass, containerMirror, classMirror);
         }
+    }
+
+    private boolean isMethodOverloaded(List<MethodMirror> methodMirrors) {
+        // it's overloaded if we have more than one method (non constructor/value)
+        boolean one = false;
+        for (MethodMirror methodMirror : methodMirrors) {
+            // same tests as in complete(ClassOrInterface klass, ClassMirror classMirror)
+            if(methodMirror.isConstructor() 
+                    || isInstantiator(methodMirror)
+                    || isGetter(methodMirror)
+                    || isSetter(methodMirror)
+                    || isHashAttribute(methodMirror)
+                    || isStringAttribute(methodMirror)
+                    || methodMirror.getName().equals("hash")
+                    || methodMirror.getName().equals("string")){
+                break;
+            }
+            if(one)
+                return true;
+            one = true;
+        }
+        return false;
     }
 
     private void collectMethods(List<MethodMirror> methodMirrors, Map<String,List<MethodMirror>> methods,
