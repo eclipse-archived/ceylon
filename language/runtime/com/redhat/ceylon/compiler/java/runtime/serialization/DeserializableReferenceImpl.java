@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import ceylon.language.AssertionError;
 import ceylon.language.Collection;
 import ceylon.language.meta.model.ClassModel;
+import ceylon.language.meta.model.Type;
 import ceylon.language.serialization.DeserializableReference;
 import ceylon.language.serialization.RealizableReference;
 import ceylon.language.serialization.Deconstructed;
@@ -46,12 +47,13 @@ class DeserializableReferenceImpl<Instance>
         }
         
         Collection<?> typeArgs = classModel.getTypeArguments().getItems();
-        Class[] types = new Class[Util.toInt(typeArgs.getSize() + 1)];
+        Class<?>[] types = new Class[Util.toInt(typeArgs.getSize() + 1)];
         Object[] args = new Object[Util.toInt(typeArgs.getSize() + 1)];
         args[0] = null;
         types[0] = $Serialization$.class;
         for (int ii = 0; ii < typeArgs.getSize(); ii++) {
-            args[ii+1] = Metamodel.getTypeDescriptor(typeArgs.getFromFirst(ii));
+            
+            args[ii+1] = Metamodel.getTypeDescriptor((Type)typeArgs.getFromFirst(ii));
             types[ii+1] = TypeDescriptor.class;
         }
         
