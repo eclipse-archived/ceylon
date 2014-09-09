@@ -44,4 +44,15 @@ class NumericLiteral(){
         Integer b1 = $1101;
         Integer b2 = $1101110111011101110111011101110111011101110111011101110111011101;
     }
+
+    shared void bytes(){
+        Byte b1 = 123.byte;
+        Byte b2 = Byte(123);
+        Byte b1n = -123.byte;
+        Byte b2n = Byte(-123);
+        Byte b3 = #ff.byte;
+        Byte b4 = Byte(#ff);
+        Byte b5 = $1101.byte;
+        Byte b6 = Byte($1101);
+    }
 }
