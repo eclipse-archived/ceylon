@@ -477,7 +477,7 @@ Used with another target such as 'package'">
         <tempfile property="bundleDefinitionFile"/>
         <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
-        <echo file="${bundleDefinitionFile}" append="true">Export-Package: *${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
         <if>
