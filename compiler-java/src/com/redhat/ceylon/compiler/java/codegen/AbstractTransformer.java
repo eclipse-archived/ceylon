@@ -63,6 +63,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -804,6 +805,10 @@ public abstract class AbstractTransformer implements Transformation {
             modelRefinedDecl = getFirstRefinedDeclaration(decl);
         TypeDeclaration qualifyingDeclaration = currentType.getDeclaration();
         if(qualifyingDeclaration instanceof ClassOrInterface){
+            // if both are returning unboxed void we're good
+            if(Decl.isUnboxedVoid(decl)
+                    && Decl.isUnboxedVoid(modelRefinedDecl))
+                return null;
             // only try to find better if we're erasing to Object and we're not returning a type param
             if(willEraseToObject(typedReference.getType())
                         || isWideningTypeArguments(decl.getType(), modelRefinedDecl.getType(), true)
