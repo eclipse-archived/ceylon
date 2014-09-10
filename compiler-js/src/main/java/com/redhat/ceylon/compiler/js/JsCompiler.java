@@ -249,8 +249,19 @@ public class JsCompiler {
             boolean generatedCode = false;
             
             //First generate the metamodel
+            final Module defmod = tc.getContext().getModules().getDefaultModule();
             for (PhasedUnit pu: phasedUnits) {
                 File path = getFullPath(pu);
+                //#416 default module with packages
+                Module mod = pu.getPackage().getModule();
+                if (mod.getVersion() == null && !mod.isDefault()) {
+                    //Switch with the default module
+                    for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : mod.getPackages()) {
+                        defmod.getPackages().add(pkg);
+                        pkg.setModule(defmod);
+                    }
+                }
+                if (mod != null)System.out.println("MOD: " + mod);
                 if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
@@ -376,10 +387,6 @@ public class JsCompiler {
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
-        if (mod.getVersion() == null && !mod.isDefault()) {
-            //Swap with default module
-            mod = tc.getContext().getModules().getDefaultModule();
-        }
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
             jsout = newJsOutput(mod);
