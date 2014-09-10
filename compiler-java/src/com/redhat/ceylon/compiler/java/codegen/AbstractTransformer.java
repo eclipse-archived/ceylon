@@ -987,34 +987,76 @@ public abstract class AbstractTransformer implements Transformation {
             String name, 
             java.util.List<ProducedType> signature, boolean ellipsis) {
         Set<TypedDeclaration> ret = new HashSet<TypedDeclaration>();
-        collectRefinedMembers(decl, name, signature, ellipsis, 
+        collectRefinedMembers(decl.getType(), name, signature, ellipsis, 
                 new HashSet<TypeDeclaration>(), ret, true);
         return ret;
     }
 
-    private void collectRefinedMembers(TypeDeclaration decl, String name, 
+    private void collectRefinedMembers(ProducedType currentType, String name, 
             java.util.List<ProducedType> signature, boolean ellipsis,
-            java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret, 
+            java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret,
             boolean ignoreFirst) {
+        TypeDeclaration decl = currentType.getDeclaration();
         if (visited.contains(decl)) {
             return;
         }
         else {
             visited.add(decl);
-            TypeDeclaration et = decl.getExtendedTypeDeclaration();
+            ProducedType et = decl.getExtendedType();
             if (et!=null) {
                 collectRefinedMembers(et, name, signature, ellipsis, visited, ret, false);
             }
-            for (TypeDeclaration st: decl.getSatisfiedTypeDeclarations()) {
+            for (ProducedType st: decl.getSatisfiedTypes()) {
                 collectRefinedMembers(st, name, signature, ellipsis, visited, ret, false);
             }
             // we're collecting refined members, not the refining one
             if(!ignoreFirst){
-                Declaration found = decl.getDirectMember(name, signature, ellipsis);
-                if(found != null)
-                    ret.add((TypedDeclaration) found);
+                TypedDeclaration found = (TypedDeclaration) decl.getDirectMember(name, signature, ellipsis);
+                if(found instanceof Method){
+                    // do not trust getDirectMember because if you ask it for [Integer,String] and it has [Integer,E] it does not
+                    // know that E=String and will not make it match, and will just return any member when there is overloading,
+                    // including one with signature [String] when you asked for [Integer,String]
+                    java.util.List<ProducedType> typedSignature = getTypedSignature(currentType, found);
+                    if(typedSignature != null
+                            && hasMatchingSignature(signature, typedSignature))
+                        ret.add(found);
+                }
             }
         }
+    }
+
+    private java.util.List<ProducedType> getTypedSignature(ProducedType currentType, TypedDeclaration found) {
+        // check that its signature is compatible
+        java.util.List<ParameterList> parameterLists = ((Method) found).getParameterLists();
+        if(parameterLists == null || parameterLists.isEmpty())
+            return null;
+        // only consider first param list
+        java.util.List<Parameter> parameters = parameterLists.get(0).getParameters();
+        if(parameters == null)
+            return null;
+        ProducedTypedReference typedMember = currentType.getTypedMember(found, Collections.<ProducedType>emptyList());
+        if(typedMember == null)
+            return null;
+        java.util.List<ProducedType> typedSignature = new ArrayList<ProducedType>(parameters.size());
+        for(Parameter p : parameters){
+            ProducedType parameterType = typedMember.getTypedParameter(p).getFullType();
+            typedSignature.add(parameterType);
+        }
+        return typedSignature;
+    }
+
+    private boolean hasMatchingSignature(java.util.List<ProducedType> signature, java.util.List<ProducedType> typedSignature) {
+        if(signature.size() != typedSignature.size())
+            return false;
+        for(int i=0;i<signature.size();i++){
+            ProducedType signatureArg = signature.get(i);
+            ProducedType typedSignatureArg = typedSignature.get(i);
+            if(signatureArg != null
+                    && typedSignatureArg != null
+                    && !com.redhat.ceylon.compiler.typechecker.model.Util.matches(signatureArg, typedSignatureArg, typeFact()))
+                return false;
+        }
+        return true;
     }
 
     private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
