@@ -131,7 +131,6 @@ public class JsModuleManager extends ModuleManager {
         if (module!=null && module == getContext().getModules().getDefaultModule()) {
             try {
                 //Fix 280 part 2
-                System.out.println("WTF package " + pkgName);
                 return module.getPackage(pkgName);
             } catch (CompilerErrorException ex) {
                 //nothing, package will be created
