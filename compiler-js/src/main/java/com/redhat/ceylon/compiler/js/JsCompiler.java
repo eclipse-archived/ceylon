@@ -376,6 +376,10 @@ public class JsCompiler {
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
+        if (mod.getVersion() == null && !mod.isDefault()) {
+            //Swap with default module
+            mod = tc.getContext().getModules().getDefaultModule();
+        }
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
             jsout = newJsOutput(mod);
