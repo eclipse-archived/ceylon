@@ -261,7 +261,6 @@ public class JsCompiler {
                         pkg.setModule(defmod);
                     }
                 }
-                if (mod != null)System.out.println("MOD: " + mod);
                 if (srcFiles == null || FileUtil.containsFile(srcFiles, path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
