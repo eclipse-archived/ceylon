@@ -266,11 +266,12 @@ public class JsIdentifierNames {
             }
         }
         //Fix #204 - same top-level declarations in different packages
-        if (decl.isToplevel() && !decl.getUnit().getPackage().equals(decl.getUnit().getPackage().getModule().getRootPackage())) {
+        final com.redhat.ceylon.compiler.typechecker.model.Package declPkg = decl.getUnit().getPackage();
+        if (decl.isToplevel() && !declPkg.equals(declPkg.getModule().getRootPackage())) {
             //rootPackage can be null when compiling from IDE
-            String rootName = decl.getUnit().getPackage().getModule().getRootPackage() == null ?
-                    "":decl.getUnit().getPackage().getModule().getRootPackage().getNameAsString();
-            String pkgName = decl.getUnit().getPackage().getNameAsString();
+            String rootName = declPkg.getModule().getRootPackage() == null ?
+                    "":declPkg.getModule().getRootPackage().getNameAsString();
+            String pkgName = declPkg.getNameAsString();
             rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
             if (rootName.length()>0 && rootName.charAt(0) != '$') {
                 rootName = '$' + rootName;
