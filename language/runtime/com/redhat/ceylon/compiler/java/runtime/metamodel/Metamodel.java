@@ -213,6 +213,9 @@ public class Metamodel {
         // TODO: what about Throwable/j.l.Exception/RuntimeException?
         if(klass == Object.class)
             return ceylon.language.Object.$TypeDescriptor$;
+        if(klass.isMemberClass())
+            return TypeDescriptor.member(getJavaTypeDescriptor(klass.getEnclosingClass()), TypeDescriptor.klass(klass));
+        // FIXME: what about local or anonymous types?
         return TypeDescriptor.klass(klass);
     }
 
