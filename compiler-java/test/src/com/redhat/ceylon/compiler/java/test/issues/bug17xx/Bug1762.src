@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+public abstract class Bug1762 extends .java.util.AbstractList<.ceylon.language.String> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1762() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final void add(final int $int, final .ceylon.language.String e) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1762.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1762.class);
+}
