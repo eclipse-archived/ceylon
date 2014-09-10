@@ -128,12 +128,14 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     protected com.redhat.ceylon.compiler.typechecker.model.Package createPackage(String pkgName, Module module) {
-        if (module!=null && module == getContext().getModules().getDefaultModule())
-        try {
-            //Fix 280 part 2
-            return module.getPackage(pkgName);
-        } catch (CompilerErrorException ex) {
-            //nothing, package will be created
+        if (module!=null && module == getContext().getModules().getDefaultModule()) {
+            try {
+                //Fix 280 part 2
+                System.out.println("WTF package " + pkgName);
+                return module.getPackage(pkgName);
+            } catch (CompilerErrorException ex) {
+                //nothing, package will be created
+            }
         }
         final JsonPackage pkg = new JsonPackage(pkgName);
         List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
