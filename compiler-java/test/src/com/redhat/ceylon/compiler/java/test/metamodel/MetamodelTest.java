@@ -50,6 +50,11 @@ public class MetamodelTest extends CompilerTest {
     }
 
     @Test
+    public void testBug1793() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1793", "bug1793.ceylon", "JavaType.java");
+    }
+
+    @Test
     public void testBug1209() {
         assertErrors("bug1209",
                 new CompilerError(3, "metamodel reference to local declaration")
