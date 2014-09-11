@@ -300,11 +300,17 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 func = fsb.toString();
             }
         }
+        if (JsIdentifierNames.isReservedWord(func)) {
+            func = "$_" + func;
+        }
         final boolean isDefault = ModuleUtil.isDefaultModule(module);
         String moduleString = isDefault ? module : module +"/"+version;
         //The timeout is to have enough time to start reading on the process streams
         
-        String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined){console.log('The specified method \"%s\" does not exist or is not shared in the %s module');process.exit(1);}else __entry_point__();",
+        String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};" +
+                "var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined){" +
+                "console.log('The specified method \"%s\" does not exist or is not shared in the %s module');" +
+                "process.exit(1);}else __entry_point__();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,

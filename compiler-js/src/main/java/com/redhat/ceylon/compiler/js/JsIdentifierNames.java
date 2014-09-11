@@ -72,7 +72,7 @@ public class JsIdentifierNames {
                 "concat", "indexOf", "lastIndexOf", "slice", "get"));
     }
 
-    public boolean isReservedWord(String token) {
+    public static boolean isReservedWord(String token) {
         return reservedWords.contains(token);
     }
 
