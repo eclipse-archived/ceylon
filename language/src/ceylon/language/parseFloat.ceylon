@@ -11,13 +11,26 @@
 see (`function parseInteger`)
 shared Float? parseFloat(String string) {
     
+    // parse the sign first
+    Float sign;
+    String unsignedPart;
+    if (string startsWith "-") {
+        sign = -1.0;
+        unsignedPart = string[1...];
+    } else if (string startsWith "+") {
+        sign = +1.0;
+        unsignedPart = string[1...];
+    } else {
+        sign = +1.0;
+        unsignedPart = string;
+    }
     // split into three main parts
     String wholePart;
     String fractionalPart;
     String? rest;
-    if (exists dot = string.firstOccurrence('.')) {
-        wholePart = string[...dot-1];
-        String afterWholePart = string[dot+1...];
+    if (exists dot = unsignedPart.firstOccurrence('.')) {
+        wholePart = unsignedPart[...dot-1];
+        String afterWholePart = unsignedPart[dot+1...];
         if (exists mag 
             = afterWholePart firstIndexWhere Character.letter) {
             fractionalPart = afterWholePart[...mag-1];
@@ -30,18 +43,18 @@ shared Float? parseFloat(String string) {
     }
     else {
         if (exists mag
-            = string firstIndexWhere Character.letter) {
-            wholePart = string[...mag-1];
-            rest = string[mag...];
+            = unsignedPart firstIndexWhere Character.letter) {
+            wholePart = unsignedPart[...mag-1];
+            rest = unsignedPart[mag...];
         }
         else {
-            wholePart = string;
+            wholePart = unsignedPart;
             rest = null;
         }
         fractionalPart = "0";
     }
     
-    if (!wholePart.every(digitOrSign) ||
+    if (!wholePart.every(Character.digit) ||
         !fractionalPart.every(Character.digit)) {
         return null;
     }
@@ -62,17 +75,17 @@ shared Float? parseFloat(String string) {
         else {
             exponent = -shift; 
         }
-        Integer numerator 
-                = whole*10^shift + fractional;
+        Float numerator 
+                = sign * (whole*10^shift + fractional);
         value em = exponent.magnitude;
         if (em==0) {
-            return numerator.float;
+            return numerator;
         }
         else if (em<maximumIntegerExponent) {
             value scale = 10^em;
             return exponent<0
-            then numerator.float / scale
-            else numerator.float * scale;
+            then numerator / scale
+            else numerator * scale;
         }
         else {
             //scale can't be represented as 
