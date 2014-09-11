@@ -727,13 +727,13 @@ void checkParseFloat() {
     check(parseFloat0("-12340.0")==-12.34e3, "parseFloat(-12340.0)");
     check(parseFloat0("-12340")==-12.34e3, "parseFloat(-12340.0)");
     
-    check(parseFloat0("1.2340")==1.234_0, "parseFloat(1.234_0)");
-    check(parseFloat0("0.0001")==0.000_1, "parseFloat(0.000_1)");
-    check(parseFloat0("1.23456")==1.234_56, "parseFloat(1.234_56)");
-    check(parseFloat0("1.00000")==1.0, "parseFloat(1.000_00)");
-    check(parseFloat0("1.000000")==1.0, "parseFloat(1.000_000)");
-    check(parseFloat0("1.000000000")==1.0, "parseFloat(1.000_000_000)");
-    check(parseFloat0("1.0000000000")==1.0, "parseFloat(1.000_000_000_0)");
+    check(parseFloat0("1.2340")==1.234_0, "parseFloat(1.2340)");
+    check(parseFloat0("0.0001")==0.000_1, "parseFloat(0.0001)");
+    check(parseFloat0("1.23456")==1.234_56, "parseFloat(1.23456)");
+    check(parseFloat0("1.00000")==1.0, "parseFloat(1.00000)");
+    check(parseFloat0("1.000000")==1.0, "parseFloat(1.000000)");
+    check(parseFloat0("1.000000000")==1.0, "parseFloat(1.000000000)");
+    check(parseFloat0("1.0000000000")==1.0, "parseFloat(1.0000000000)");
     
     check(parseFloat0("-0.5")==-0.5, "parseFloat(-0.5)");
     check(parseFloat0("-1.75")==-1.75, "parseFloat(-1.75)");
