@@ -305,33 +305,7 @@ shared void numbers() {
     }
     checkParseInteger();
     checkFormatInteger();
-    
-    // parseFloat
-    check((parseFloat("12.34e3") else 0.0)==12.34e3, "parseFloat(12.34e3)");
-    check((parseFloat("12.340e3") else 0.0)==12.34e3, "parseFloat(12.340e3)");
-    check((parseFloat("123.4e2") else 0.0)==12.34e3, "parseFloat(123.4e2)");
-    check((parseFloat("1234.0e1") else 0.0)==12.34e3, "parseFloat(1234.0e1)");
-    check((parseFloat("1234.0e+1") else 0.0)==12.34e3, "parseFloat(1234.0e+1)");
-    check((parseFloat("12340.0e0") else 0.0)==12.34e3, "parseFloat(12340.0e0)");
-    check((parseFloat("12340.0") else 0.0)==12.34e3, "parseFloat(12340.0)");
-    check((parseFloat("12340.0") else 0.0)==12.34e3, "parseFloat(12340.0)");
-    check((parseFloat("123400.0e-1") else 0.0)==12.34e3, "parseFloat(123400.0e-1)");
-    
-    check((parseFloat("012340.0") else 0.0)==12.34e3, "parseFloat(012340.0)");
-    check((parseFloat("+12340.0") else 0.0)==12.34e3, "parseFloat(+12340.0)");
-    check((parseFloat("012340") else 0.0)==12.34e3, "parseFloat(012340.0)");
-    check((parseFloat("+12340") else 0.0)==12.34e3, "parseFloat(+12340.0)");
-    
-    check((parseFloat("-12340.0") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
-    check((parseFloat("-12340") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
-    
-    check((parseFloat("1.2340") else 0.0)==1.234_0, "parseFloat(1.234_0)");
-    check((parseFloat("0.0001") else 0.0)==0.000_1, "parseFloat(0.000_1)");
-    check((parseFloat("1.23456") else 0.0)==1.234_56, "parseFloat(1.234_56)");
-    check((parseFloat("1.00000") else 0.0)==1.0, "parseFloat(1.000_00)");
-    check((parseFloat("1.000000") else 0.0)==1.0, "parseFloat(1.000_000)");
-    check((parseFloat("1.000000000") else 0.0)==1.0, "parseFloat(1.000_000_000)");
-    check((parseFloat("1.0000000000") else 0.0)==1.0, "parseFloat(1.000_000_000_0)");
+    checkParseFloat();
 
     //type safety
     check(obj(1+1)    is Integer, "int+int Integer");
@@ -716,4 +690,58 @@ void checkFormatInteger() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number formatInteger() tests for this platform");
     }
+}
+
+void checkParseFloat() {
+    "Not a Number.
+     
+     Used in [[parseFloat0]]: if [[parseFloat]]
+     doesn't return a result, we return NaN,
+     and if that is compared with an expected value,
+     the test is guaranteed to fail (because NaN == anything
+     is always false)."
+    value nan = 0.0/0.0;
+    "Utility function so we can compare
+     parseFloat() results with the == operator"
+    function parseFloat0(String string)
+            => parseFloat(string) else nan;
+    
+    check(parseFloat0("1")==1, "parseFloat0(1)");
+    check(parseFloat0("-1")==-1, "parseFloat0(-1)");
+    
+    check(parseFloat0("12.34e3")==12.34e3, "parseFloat(12.34e3)");
+    check(parseFloat0("12.340e3")==12.34e3, "parseFloat(12.340e3)");
+    check(parseFloat0("123.4e2")==12.34e3, "parseFloat(123.4e2)");
+    check(parseFloat0("1234.0e1")==12.34e3, "parseFloat(1234.0e1)");
+    check(parseFloat0("1234.0e+1")==12.34e3, "parseFloat(1234.0e+1)");
+    check(parseFloat0("12340.0e0")==12.34e3, "parseFloat(12340.0e0)");
+    check(parseFloat0("12340.0")==12.34e3, "parseFloat(12340.0)");
+    check(parseFloat0("12340.0")==12.34e3, "parseFloat(12340.0)");
+    check(parseFloat0("123400.0e-1")==12.34e3, "parseFloat(123400.0e-1)");
+    
+    check(parseFloat0("012340.0")==12.34e3, "parseFloat(012340.0)");
+    check(parseFloat0("+12340.0")==12.34e3, "parseFloat(+12340.0)");
+    check(parseFloat0("012340")==12.34e3, "parseFloat(012340.0)");
+    check(parseFloat0("+12340")==12.34e3, "parseFloat(+12340.0)");
+    
+    check(parseFloat0("-12340.0")==-12.34e3, "parseFloat(-12340.0)");
+    check(parseFloat0("-12340")==-12.34e3, "parseFloat(-12340.0)");
+    
+    check(parseFloat0("1.2340")==1.234_0, "parseFloat(1.234_0)");
+    check(parseFloat0("0.0001")==0.000_1, "parseFloat(0.000_1)");
+    check(parseFloat0("1.23456")==1.234_56, "parseFloat(1.234_56)");
+    check(parseFloat0("1.00000")==1.0, "parseFloat(1.000_00)");
+    check(parseFloat0("1.000000")==1.0, "parseFloat(1.000_000)");
+    check(parseFloat0("1.000000000")==1.0, "parseFloat(1.000_000_000)");
+    check(parseFloat0("1.0000000000")==1.0, "parseFloat(1.000_000_000_0)");
+    
+    check(parseFloat0("-0.5")==-0.5, "parseFloat(-0.5)");
+    check(parseFloat0("-1.75")==-1.75, "parseFloat(-1.75)");
+    
+    // check that positive and negative zero are distinguished correctly.
+    // we can't check that with '==' (because 0.0 == -0.0), so we use the string instead.
+    check(parseFloat0("0").string=="0.0", "parseFloat(0)");
+    check(parseFloat0("-0").string=="-0.0", "parseFloat(-0)");
+    check(parseFloat0("0.0").string=="0.0", "parseFloat(0.0)");
+    check(parseFloat0("-0.0").string=="-0.0", "parseFloat(-0.0)");
 }
