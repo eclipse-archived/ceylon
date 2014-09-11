@@ -1350,6 +1350,17 @@ public class ClassTransformer extends AbstractTransformer {
                             reifiedType))));
         }
         
+        // Get the outer instance, if any
+        if (model.getContainer() instanceof ClassOrInterface) {
+            ClassOrInterface outerInstanceModel = (ClassOrInterface)model.getContainer();
+            ProducedType outerInstanceType = outerInstanceModel.getType();
+            stmts.add(make().Exec(make().Apply(
+                    List.of(makeJavaType(outerInstanceType, JT_TYPE_ARGUMENT)), 
+                    naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructor.toString()), "putOuterInstance"),
+                    List.of(makeReifiedTypeArgument(outerInstanceType),
+                            expressionGen().makeOuterExpr(outerInstanceType)))));
+        }
+        
         // get state from fields
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
@@ -1368,12 +1379,6 @@ public class ClassTransformer extends AbstractTransformer {
                         !CodegenUtil.isUnBoxed(value), 
                         BoxingStrategy.BOXED, 
                         value.getType());
-                //} else {
-                //    serializedValueType = typeFact().getReferenceType(value.getType());
-                    // TODO Here I need to obtain a Reference if the field is not value typed
-                //    serializedValue = makeNull();
-                //}
-                
                 stmts.add(make().Exec(make().Apply(
                         List.of(makeJavaType(serializedValueType, JT_TYPE_ARGUMENT)), 
                         naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.deconstructor.toString()), "putValue"),
@@ -1413,7 +1418,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean requiredLookup = false;
         
         // assign reified type arguments
-        for (TypeParameter tp : model.getTypeParameters()) {
+        /*for (TypeParameter tp : model.getTypeParameters()) {
             requiredLookup = true;
             String descriptorName = naming.getTypeArgumentDescriptorName(tp);
             // Get the c.l.m.m.Type
@@ -1423,7 +1428,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Now convert it to a TypeDescriptor, which is what we actually need
             JCExpression reifiedTypeDescriptor = makeMetamodelInvocation("getTypeDescriptor", List.of(reifiedType), null); 
             stmts.add(makeReassignFinalField(makeTypeDescriptorType(), descriptorName, reifiedTypeDescriptor));
-        }
+        }*/
         
         // assign fields
         for (Declaration member : model.getMembers()) {

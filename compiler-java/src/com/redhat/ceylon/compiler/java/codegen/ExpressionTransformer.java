@@ -1595,6 +1595,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        return makeOuterExpr(outerClass);
+    }
+
+    JCExpression makeOuterExpr(ProducedType outerClass) {
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
             return makeQualifiedDollarThis(outerClass);
