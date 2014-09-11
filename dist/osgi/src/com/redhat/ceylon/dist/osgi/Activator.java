@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
 
 public class Activator implements BundleActivator {
 
-    private class BundleArtifactResult implements ContentAwareArtifactResult {
+    private static class BundleArtifactResult implements ContentAwareArtifactResult {
         BundleWiring wiring;
         
         public BundleArtifactResult(BundleWiring bundle) {
@@ -164,6 +164,10 @@ public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
         Bundle bundle = context.getBundle();
+        loadBundleAsModule(bundle);
+    }
+
+    public static void loadBundleAsModule(Bundle bundle) {
         BundleWiring wiring = bundle.adapt(BundleWiring.class);
         String symbolicName = bundle.getSymbolicName();
         Version version = bundle.getVersion();
@@ -177,8 +181,18 @@ public class Activator implements BundleActivator {
                                     
         
         final ClassLoader  bundleClassLoader = wiring.getClassLoader();
-        Metamodel.loadModule(symbolicName, versionString, 
-                new BundleArtifactResult(wiring), bundleClassLoader);
+        BundleArtifactResult artifactResult = new BundleArtifactResult(wiring);
+        if (Metamodel.loadModule(symbolicName, versionString, 
+                artifactResult, bundleClassLoader)) {
+            for (ArtifactResult dependency : artifactResult.dependencies()) {
+                if (dependency instanceof BundleArtifactResult) {
+                    Bundle childBundle = ((BundleArtifactResult) dependency).wiring.getBundle();
+                    if (childBundle != null) {
+                        loadBundleAsModule(childBundle);
+                    }
+                }
+            }
+        }
     }
 
     @Override
