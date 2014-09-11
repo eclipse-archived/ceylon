@@ -1603,9 +1603,9 @@ public final class Array<Element>
     public void $deserialize$(Deconstructed dted) {
         //super.$deserialize$(dted);
         try {
-            ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
-            TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
-            Util.setter(MethodHandles.lookup(), "$reifiedElement").invokeExact(this, reifiedElement);
+            //ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
+            //TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
+            //Util.setter(MethodHandles.lookup(), "$reifiedElement").invokeExact(this, reifiedElement);
             
             ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
             Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
@@ -1613,7 +1613,13 @@ public final class Array<Element>
             Util.setter(MethodHandles.lookup(), "array").invokeExact(this, createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null));
             
             for (int ii = 0; ii < size.value; ii++) {
-                Element element = (Element)dted.<Element>getElement(this.$reifiedElement, ii);
+                java.lang.Object elementValOrRef = dted.<Element>getElement(this.$reifiedElement, ii);
+                Element element;
+                if (elementValOrRef instanceof ceylon.language.serialization.Reference) {
+                    element = (Element)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)elementValOrRef).$leakInstance$();
+                } else {
+                    element = (Element)elementValOrRef;
+                }
                 set(ii, element);
             }
         } catch (java.lang.Throwable e) {

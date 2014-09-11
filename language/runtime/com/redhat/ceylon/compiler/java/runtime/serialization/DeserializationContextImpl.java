@@ -41,7 +41,7 @@ public class DeserializationContextImpl
     public <Instance> Reference<Instance> reference(
             TypeDescriptor reified$Instance, 
             Object id,
-            @SuppressWarnings("rawtypes") ClassModel classModel) {
+            @SuppressWarnings("rawtypes") ceylon.language.meta.model.Class classModel) {
         Reference<Object> ref = idToReference.get(id);
         if (ref != null) {
             if (ref.getClazz().equals(classModel)) {
@@ -53,7 +53,28 @@ public class DeserializationContextImpl
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);
         }
-        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel);
+        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel, null);
+    }
+    
+    @Override
+    public <Outer, Instance> Reference<Instance> memberReference(
+            TypeDescriptor reified$Outer,
+            TypeDescriptor reified$Instance, 
+            Object id,
+            @SuppressWarnings("rawtypes") ceylon.language.meta.model.MemberClass classModel,
+            Reference<Outer> outerReference) {
+        Reference<Object> ref = idToReference.get(id);
+        if (ref != null) {
+            if (ref.getClazz().equals(classModel)) {
+                return (Reference)ref;
+            } else {
+                throw new AssertionError("reference already made to instance with a different class");
+            }
+        }
+        if (classModel.getDeclaration().getAbstract()) {
+            throw new AssertionError("class is abstract: " + classModel);
+        }
+        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel, outerReference);
     }
 
     boolean containsId(Object id) {

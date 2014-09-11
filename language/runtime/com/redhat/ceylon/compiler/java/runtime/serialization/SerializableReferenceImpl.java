@@ -27,8 +27,12 @@ implements SerializableReference<Instance>, ReifiedType {
 
     @Override
     public /*Deconstructed<Instance>*/ Object serialize(Callable<? extends Deconstructor> deconstructor) {
-        ((Serializable)this.instance).$serialize$(deconstructor);
-        return null;
+        if (this.instance instanceof Serializable) {
+            ((Serializable)this.instance).$serialize$(deconstructor);
+            return null;
+        } else {
+            throw new ceylon.language.AssertionError("object is not an instance of a serializable class");
+        }
     }
 
     @Override

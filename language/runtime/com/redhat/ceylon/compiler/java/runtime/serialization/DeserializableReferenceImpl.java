@@ -17,6 +17,7 @@ import ceylon.language.meta.model.Type;
 import ceylon.language.serialization.DeserializableReference;
 import ceylon.language.serialization.RealizableReference;
 import ceylon.language.serialization.Deconstructed;
+import ceylon.language.serialization.Reference;
 
 class DeserializableReferenceImpl<Instance> 
         implements DeserializableReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
@@ -30,31 +31,46 @@ class DeserializableReferenceImpl<Instance>
     DeserializableReferenceImpl(TypeDescriptor reified$Instance, 
             DeserializationContextImpl context, 
             Object id, 
-            @SuppressWarnings("rawtypes") ClassModel classModel) {
+            @SuppressWarnings("rawtypes") ClassModel classModel, Reference<?> outerReference) {
         this.reified$Instance = reified$Instance;
         this.context = context;
         this.id = id;
         this.classModel = classModel;
         java.lang.Class<Instance> clazz;
+        Class outerClass;
+        Object outer;
         TypeDescriptor[] typeArguments = ((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArguments();
         if (classModel instanceof AppliedClass) {
+            // Class<Type, Arguments>
             clazz = (java.lang.Class)((TypeDescriptor.Class)typeArguments[0]).getKlass();
+            outerClass = null;
+            outer = null;
         } else if (classModel instanceof AppliedMemberClass) {
+            // MemberClass<Container, Type, Arguments>
             clazz = (java.lang.Class)((TypeDescriptor.Class)typeArguments[1]).getKlass();
+            outerClass = ((TypeDescriptor.Class)typeArguments[0]).getKlass();
+            outer = (($InstanceLeaker$)context.getReference(outerReference.getId())).$leakInstance$();
         } else {
             throw new AssertionError("unexpected class model: " 
                     + (classModel != null ? classModel.getClass().getName() : "null"));
         }
-        
+        // Construct arrays for types and arguments for reflective instantiation
+        // of the serialization constructor
         Collection<?> typeArgs = classModel.getTypeArguments().getItems();
-        Class<?>[] types = new Class[Util.toInt(typeArgs.getSize() + 1)];
-        Object[] args = new Object[Util.toInt(typeArgs.getSize() + 1)];
-        args[0] = null;
-        types[0] = $Serialization$.class;
-        for (int ii = 0; ii < typeArgs.getSize(); ii++) {
-            
-            args[ii+1] = Metamodel.getTypeDescriptor((Type)typeArgs.getFromFirst(ii));
-            types[ii+1] = TypeDescriptor.class;
+        Class<?>[] types = new Class[(outerClass != null ? 2 : 1) + Util.toInt(typeArgs.getSize())];
+        Object[] args = new Object[(outer != null ? 2 : 1) + Util.toInt(typeArgs.getSize())];
+        int ii = 0;
+        if (outerClass != null) {
+            types[ii] = outerClass;
+            args[ii] = outer;
+            ii++;
+        }
+        types[ii] = $Serialization$.class;
+        args[ii] = null;
+        ii++;
+        for (int jj = 0 ; jj < typeArgs.getSize(); ii++, jj++) {
+            types[ii] = TypeDescriptor.class;
+            args[ii] = Metamodel.getTypeDescriptor((Type)typeArgs.getFromFirst(jj));
         }
         
         try {

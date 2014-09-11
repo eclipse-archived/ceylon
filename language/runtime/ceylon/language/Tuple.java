@@ -12,6 +12,7 @@ import ceylon.language.impl.BaseIterator;
 import ceylon.language.impl.BaseSequence;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.GenericDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Deconstructed;
 import ceylon.language.serialization.Deconstructor;
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Generic;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
@@ -718,29 +720,62 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     @Override
     public void $serialize$(Callable<? extends Deconstructor> deconstructor) {
-        super.$serialize$(deconstructor);
-        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral($getType$()));
-        ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        // Don't call super.$serialize$() since our runtime super class is 
+        // an implementation detail
+        Generic myTd = (TypeDescriptor.Generic)$getType$();
+        Deconstructor dtor = deconstructor.$call$(ceylon.language.meta.typeLiteral_.typeLiteral(myTd));
         
-        TypeDescriptor[] tas = ((TypeDescriptor.Class)$getType$()).getTypeArguments();
-        dtor.putValue(tas[1], firstAttribute, getFirst());
+        TypeDescriptor reifiedElement = myTd.getTypeArguments()[0];
+        TypeDescriptor reifiedFirst = myTd.getTypeArguments()[1];
+        TypeDescriptor reifiedRest = myTd.getTypeArguments()[2];
+        
+        dtor.putTypeArgument(
+                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("Element"), 
+                Metamodel.getAppliedMetamodel(reifiedElement));
+        
+        dtor.putTypeArgument(
+                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("First"), 
+                Metamodel.getAppliedMetamodel(reifiedFirst));
+        
+        dtor.putTypeArgument(
+                ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getTypeParameterDeclaration("Rest"), 
+                Metamodel.getAppliedMetamodel(reifiedRest));
+        
+        ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        dtor.putValue(reifiedFirst, firstAttribute, getFirst());
         
         ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
-        dtor.putValue(tas[2], restAttribute, getRest());
+        dtor.putValue(reifiedRest, restAttribute, getRest());
     }
     @Ignore
     @Override
     public void $deserialize$(Deconstructed deconstructed) {
-        super.$deserialize$(deconstructed);
+        // Don't call super.$deserialize$() since our runtime super class is 
+        // an implementation detail
         try {
+            // hack: recover the reified type arguments stored in the array
             TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
             TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
+            
             ValueDeclaration firstAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
             ValueDeclaration restAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
             
-            First first = (First)deconstructed.<First>getValue(reifiedFirst, firstAttribute);
-            Rest rest = (Rest)deconstructed.<Rest>getValue(reifiedRest, firstAttribute);
+            java.lang.Object firstValOrRef = deconstructed.<First>getValue(reifiedFirst, firstAttribute);
+            java.lang.Object restValOrRef = deconstructed.<Rest>getValue(reifiedRest, restAttribute);
             
+            First first;
+            if (firstValOrRef instanceof ceylon.language.serialization.Reference) {
+                first = (First)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)firstValOrRef).$leakInstance$();
+            } else {
+                first = (First)firstValOrRef;
+            }
+            
+            Rest rest;
+            if (restValOrRef instanceof ceylon.language.serialization.Reference) {
+                rest = (Rest)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)restValOrRef).$leakInstance$();
+            } else {
+                rest = (Rest)restValOrRef;
+            }
             
             Util.setter(MethodHandles.lookup(), "array").invokeExact(this, makeArray(first, rest));
             Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, makeRest(rest));
