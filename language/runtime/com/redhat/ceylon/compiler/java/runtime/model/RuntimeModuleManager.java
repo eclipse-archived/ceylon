@@ -61,7 +61,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         return module;
     }
 
-    public void loadModule(String name, String version, 
+    public boolean loadModule(String name, String version, 
     		ArtifactResult artifact, ClassLoader classLoader) {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
@@ -71,7 +71,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
             if(module.isDefault() 
                     ? module.getUnit() != null
                     : module.isAvailable())
-                return;
+                return false;
             modelLoader.addModuleToClassPath(module, artifact);
             modelLoader.addModuleClassLoader(module, classLoader);
             module.setAvailable(true);
@@ -104,6 +104,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
                     }
                 }
             }
+            return true;
         }
     }
     

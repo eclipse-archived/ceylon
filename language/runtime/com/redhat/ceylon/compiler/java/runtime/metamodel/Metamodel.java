@@ -116,13 +116,14 @@ public class Metamodel {
         resetModuleManager();
     }
 
-    public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
-        moduleManager.loadModule(name, version, result, classLoader);
+    public static boolean loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
+        boolean hasLoaded = moduleManager.loadModule(name, version, result, classLoader);
         // notify any thread waiting for this monitor
         Object lock = getLock();
         synchronized(lock){
             lock.notifyAll();
         }
+        return hasLoaded;
     }
     
     public static void resetModuleManager() {
