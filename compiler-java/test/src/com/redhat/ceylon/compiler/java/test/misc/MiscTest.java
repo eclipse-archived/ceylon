@@ -85,7 +85,9 @@ public class MiscTest extends CompilerTest {
         String ceylonSourcePath = "../ceylon.language/src";
         String javaSourcePath = "../ceylon.language/runtime";
         
-        String[] ceylonPackages = {"ceylon.language", "ceylon.language.meta", "ceylon.language.impl", "ceylon.language.meta.declaration", "ceylon.language.meta.model"};
+        String[] ceylonPackages = {"ceylon.language", "ceylon.language.meta", 
+                "ceylon.language.impl", "ceylon.language.meta.declaration", 
+                "ceylon.language.meta.model", "ceylon.language.serialization"};
         // Native files
         FileFilter exceptions = new FileFilter() {
             @Override
@@ -99,8 +101,9 @@ public class MiscTest extends CompilerTest {
                         "language", "metamodel", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 
                         "StringBuilder", "Throwable",
-                        "infinity", "arrayOfSize", "unflatten"}) {
-
+                        "infinity", "arrayOfSize", "unflatten",
+                        "serialization", "deserialization"}) {
+                    
                     if (s.equals(filename)) {
                         return true;
                     }
@@ -151,6 +154,7 @@ public class MiscTest extends CompilerTest {
                 "com/redhat/ceylon/compiler/java/runtime/ide",
                 "com/redhat/ceylon/compiler/java/runtime/metamodel",
                 "com/redhat/ceylon/compiler/java/runtime/model",
+                "com/redhat/ceylon/compiler/java/runtime/serialization",
                 };
         for(String pkg : javaPackages){
             File pkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
