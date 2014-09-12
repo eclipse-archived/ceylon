@@ -770,15 +770,22 @@ public final class Tuple<Element, First extends Element,
                 first = (First)firstValOrRef;
             }
             
-            Rest rest;
+            Sequential<? extends Element> rest1;
             if (restValOrRef instanceof ceylon.language.serialization.Reference) {
-                rest = (Rest)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)restValOrRef).$leakInstance$();
+                if (restValOrRef instanceof ceylon.language.serialization.RealizableReference) {
+                    ((ceylon.language.serialization.RealizableReference)restValOrRef).reconstruct();
+                } else {
+                    throw new AssertionError("cannot deserialize tuple because tail hasn't been deserialized");
+                }
+                rest1 = (Sequential<? extends Element>)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)restValOrRef).$leakInstance$();
             } else {
-                rest = (Rest)restValOrRef;
+                rest1 = (Sequential<? extends Element>)restValOrRef;
             }
             
-            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, makeArray(first, rest));
-            Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, makeRest(rest));
+            Rest rest2 = (Rest)makeRest(rest1);
+            java.lang.Object[] array = makeArray(first, rest1);
+            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, array);
+            Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, rest2);
         } catch (java.lang.Throwable t) {
             rethrow_.rethrow(t);
         }
