@@ -128,7 +128,8 @@ public class AnnotationVisitor extends Visitor {
                 //ok
             }
             else if (term instanceof Tree.Tuple) {
-                Tree.SequencedArgument sa = ((Tree.Tuple) term).getSequencedArgument();
+                Tree.SequencedArgument sa = 
+                        ((Tree.Tuple) term).getSequencedArgument();
                 if (sa!=null) {
                     for (PositionalArgument arg: sa.getPositionalArguments()) {
                         if (arg instanceof Tree.ListedArgument){
@@ -144,11 +145,13 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.SequenceEnumeration) {
-                Tree.SequencedArgument sa = ((Tree.SequenceEnumeration) term).getSequencedArgument();
+                Tree.SequencedArgument sa = 
+                        ((Tree.SequenceEnumeration) term).getSequencedArgument();
                 if (sa!=null) {
                     for (Tree.PositionalArgument arg: sa.getPositionalArguments()){
                         if (arg instanceof Tree.ListedArgument){
-                            Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
+                            Tree.Expression expression = 
+                                    ((Tree.ListedArgument) arg).getExpression();
                             if (expression!=null) {
                                 checkAnnotationArgument(a, expression, arg.getTypeModel());
                             }
@@ -163,9 +166,11 @@ public class AnnotationVisitor extends Visitor {
                 checkAnnotationInstantiation(a, e, pt);
             }
             else if (term instanceof Tree.BaseMemberExpression) {
-                Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
+                Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) term;
+                Declaration d = bme.getDeclaration();
                 if (a!=null && d!=null && d.isParameter()) {
-                    if (!((MethodOrValue) d).getInitializerParameter().getDeclaration().equals(a)) {
+                    Parameter p = ((MethodOrValue) d).getInitializerParameter();
+                    if (!p.getDeclaration().equals(a)) {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
@@ -175,6 +180,26 @@ public class AnnotationVisitor extends Visitor {
                 }
                 else {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                }
+            }
+            else if (term instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+                Declaration d = qme.getDeclaration();
+                if (d!=null && !d.isStaticallyImportable()) {
+                    e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                    
+                }
+                else {
+                    Tree.Primary p = qme.getPrimary();
+                    while (!(p instanceof Tree.BaseTypeExpression)) {
+                        if (p instanceof Tree.QualifiedTypeExpression) {
+                            p = ((Tree.QualifiedTypeExpression) p).getPrimary();
+                        }
+                        else {
+                            e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                            break;
+                        }
+                    }
                 }
             }
             else {
