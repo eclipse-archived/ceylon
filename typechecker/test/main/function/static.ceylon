@@ -61,3 +61,12 @@ void testAB() {
     value val12 = sum<Integer>;
     value val13 = every;
 }
+
+void testCallableMembers() {
+    value ok1 = String.equals;
+    value alsoOk1 = (String).equals;
+    @error value bad1 = String equals;
+    value ok2 = Identifiable.equals;
+    @error value alsoOk2 = (Identifiable).equals;
+    @error value bad2 = Identifiable equals;
+}
