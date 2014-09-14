@@ -2856,7 +2856,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="operatorstyleexpressions">
         <title>Operator-style member and invocation expressions</title>
         
-        <para>An member expression or a method invocation with a single positional 
+        <para>A member expression or a method invocation with a single positional 
         argument may be written using an <emphasis>operator-style</emphasis> 
         syntax.</para>
         
