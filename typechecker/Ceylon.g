@@ -1674,9 +1674,16 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
     @init { MethodArgument marg = new MethodArgument(null);
             AttributeArgument aarg = new AttributeArgument(null); 
             $declaration=aarg; }
-    : type 
-      { marg.setType($type.type);
-        aarg.setType($type.type); }
+    : (
+        type 
+        { marg.setType($type.type);
+          aarg.setType($type.type); }
+      |
+        DYNAMIC
+        { DynamicModifier dm = new DynamicModifier($DYNAMIC);
+          marg.setType(dm);
+          aarg.setType(dm); }
+      )
       memberNameDeclaration
       { marg.setIdentifier($memberNameDeclaration.identifier);
         aarg.setIdentifier($memberNameDeclaration.identifier); }

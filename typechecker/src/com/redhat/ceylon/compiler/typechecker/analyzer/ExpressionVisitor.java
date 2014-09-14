@@ -2806,6 +2806,9 @@ public class ExpressionVisitor extends Visitor {
             		.getTypedReference() //argument can't have type parameters
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
+            if (!dynamic && isTypeUnknown(argType)) {
+                a.addError("could not determine type of named argument: " + p.getName());
+            }
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
