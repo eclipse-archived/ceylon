@@ -4817,16 +4817,23 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
-        Tree.Primary p = that.getPrimary();
-        if (p instanceof Tree.MemberOrTypeExpression) {
-            Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
-            if (!(pd instanceof TypeDeclaration) && 
-                    pd instanceof Functional) {
-                //this is a direct function ref
-                //its not a type, it can't have members
-                that.addError("direct function references do not have members");
+//        Declaration d = that.getDeclaration();
+//        if (!d.isStaticallyImportable()) {
+            Tree.Term p = that.getPrimary();
+            while (p instanceof Tree.Expression &&
+                    p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
+                p = ((Tree.Expression) p).getTerm();
             }
-        }
+            if (p instanceof Tree.MemberOrTypeExpression) {
+                Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
+                if (!(that.getStaticMethodReference()) && 
+                        pd instanceof Functional) {
+                    //this is a direct function ref
+                    //its not a type, it can't have members
+                    that.addError("direct function references do not have members");
+                }
+            }
+//        }
     }
     
     @Override public void visit(Tree.QualifiedTypeExpression that) {
