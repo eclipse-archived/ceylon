@@ -2807,7 +2807,7 @@ public class ExpressionVisitor extends Visitor {
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
             if (!dynamic && isTypeUnknown(argType)) {
-                a.addError("could not determine type of named argument: " + p.getName());
+                a.addError("could not determine type of named argument: '" + p.getName() + "'");
             }
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
