@@ -431,6 +431,11 @@ public class InteropTest extends CompilerTest {
     }
     
     @Test
+    public void testAnnotationInteropQualifiedEnum(){
+        compareWithJavaSource("AnnotationInteropQualifiedEnum");
+    }
+    
+    @Test
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
