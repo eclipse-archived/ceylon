@@ -111,10 +111,14 @@ shared final native class Character(Character character)
     
     "The character with the unicode code point that is one
      greater than this character."
+    throws (`class OverflowException`,
+        "if there is no such character")
     shared actual native Character predecessor;
 
     "The character with the unicode code point that is one
      less than this character."
+    throws (`class OverflowException`,
+        "if there is no such character")
     shared actual native Character successor;
     
     shared actual native Character neighbour(Integer offset);
