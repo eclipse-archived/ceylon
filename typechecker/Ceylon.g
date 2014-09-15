@@ -1389,10 +1389,28 @@ tuple returns [Tuple tuple]
     ;
     
 dynamicObject returns [Dynamic dynamic]
-    : VALUE_MODIFIER
-      { $dynamic = new Dynamic($VALUE_MODIFIER); } 
-      namedArguments
-      { $dynamic.setNamedArgumentList($namedArguments.namedArgumentList); }
+    @init { NamedArgumentList nal=null; }
+    : DYNAMIC LBRACKET
+      { $dynamic = new Dynamic($DYNAMIC);
+        nal = new NamedArgumentList($LBRACKET); 
+        $dynamic.setNamedArgumentList(nal); }
+      ( //TODO: get rid of the predicate and use the approach
+        //      in expressionOrSpecificationStatement
+        (namedArgumentStart) 
+        => namedArgument
+        { if ($namedArgument.namedArgument!=null) 
+              nal.addNamedArgument($namedArgument.namedArgument); }
+      | (anonymousArgument)
+        => anonymousArgument
+        { if ($anonymousArgument.namedArgument!=null) 
+              nal.addNamedArgument($anonymousArgument.namedArgument); }
+      )*
+      ( 
+        sequencedArgument
+        { nal.setSequencedArgument($sequencedArgument.sequencedArgument); }
+      )?
+      RBRACKET
+      { nal.setEndToken($RBRACKET); }
     ;
     
 expressions returns [ExpressionList expressionList]
@@ -2919,8 +2937,8 @@ dynamic returns [DynamicStatement statement]
       DYNAMIC 
       { dc = new DynamicClause($DYNAMIC);
         $statement.setDynamicClause(dc); }
-      controlBlock
-      { dc.setBlock($controlBlock.block); }
+      block
+      { dc.setBlock($block.block); }
     ;
 
 ifElse returns [IfStatement statement]

@@ -31,7 +31,7 @@ void test() {
         } 
     }
     dynamic {
-        dynamic x = value { y="hello"; };
+        dynamic x = dynamic [ y="hello"; ];
         //@error dynamic x0 = value { "hello"; };
         x.w = "goodbye";
         dynamic f(dynamic z) => x.y + " " + z;
@@ -40,7 +40,7 @@ void test() {
         for (c in s) {
             print(c.integer);
         }
-        dynamic xs = value { 1, 2, 3 };
+        dynamic xs = dynamic [ 1, 2, 3 ];
         for (i in xs) {
             print(i^2);
         }
@@ -52,7 +52,7 @@ T foo<T>(T t) given T satisfies Object => t;
 
 void run() {
     dynamic {
-        dynamic x = value {};
+        dynamic x = dynamic [];
         @error value f1 = foo(x);
         value f2 = foo<Integer>(x);
         value f3 = foo(x of Integer);
@@ -73,14 +73,14 @@ void run() {
 
 void newit() {
     dynamic {
-        dynamic nuevo = value {
+        dynamic nuevo = dynamic [
             x="hello";
             y="world";
             bar(dynamic name) => "oops ``name``";
-        };
+        ];
         print(nuevo.x + " " + nuevo.y);
         print(nuevo.bar("dynamic"));
-        dynamic aa = value { a=1; b=2; 5,6,7,8 };
+        dynamic aa = dynamic [ a=1; b=2; 5,6,7,8 ];
     }
 }
 
@@ -88,7 +88,7 @@ variable String val = "";
 void fun(String o) {}
 String leak() {
   dynamic {
-    dynamic x = value { x=1; };
+    dynamic x = dynamic [ x=1; ];
     val=x;
     fun(x);
     return x;
