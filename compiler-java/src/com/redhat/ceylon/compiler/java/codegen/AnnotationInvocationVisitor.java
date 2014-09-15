@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -517,9 +518,14 @@ class AnnotationInvocationVisitor extends Visitor {
     public void visit(Tree.MemberOrTypeExpression term) {
         // Metamodel reference
         if (anno.isInterop()) {
-            append(exprGen.naming.makeQualIdent(
-                    exprGen.makeJavaType(((ClassOrInterface)term.getDeclaration()).getType()),
-                    "class"));
+            Declaration decl = term.getDeclaration();
+            if (decl instanceof ClassOrInterface) {
+                append(exprGen.naming.makeQualIdent(
+                        exprGen.makeJavaType(((ClassOrInterface)decl).getType()),
+                        "class"));
+            } else if (decl instanceof Value) {
+                append(exprGen.transformExpression(term));
+            }
         } else {
             append(exprGen.make().Literal(term.getDeclaration().getQualifiedNameString()));
         }
