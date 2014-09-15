@@ -180,7 +180,12 @@ public class Activator implements BundleActivator {
                                     .toString();
                                     
         
-        final ClassLoader  bundleClassLoader = wiring.getClassLoader();
+        ClassLoader  bundleClassLoader = null;
+        try {
+            bundleClassLoader = wiring.getClassLoader();
+        } catch(ClassCastException e) {
+            // to solve a problem in Kepler with system bundles throwing a CCE
+        }
         BundleArtifactResult artifactResult = new BundleArtifactResult(wiring);
         if (Metamodel.loadModule(symbolicName, versionString, 
                 artifactResult, bundleClassLoader)) {
