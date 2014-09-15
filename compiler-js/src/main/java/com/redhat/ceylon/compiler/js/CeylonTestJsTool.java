@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -54,6 +53,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
     private String nodeExe;
     private boolean debug = true;
     private boolean tap = false;
+    private boolean report = false;
 
     public CeylonTestJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE);
@@ -104,6 +104,12 @@ public class CeylonTestJsTool extends RepoUsingTool {
     @Description("Enables the Test Anything Protocol v13.")
     public void setTap(boolean tap) {
         this.tap = tap;
+    }
+
+    @Option(longName = "report")
+    @Description("Generates the test results report into HTML format, output directory is `reports/test-js` (experimental).")
+    public void setReport(boolean report) {
+        this.report = report;
     }
 
     @Rest
@@ -165,6 +171,9 @@ public class CeylonTestJsTool extends RepoUsingTool {
         
         if (tap) {
             args.add("--tap");
+        }
+        if (report) {
+            args.add("--report");
         }
         
         if (System.getProperties().containsKey(COLOR_WHITE)
