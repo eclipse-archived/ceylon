@@ -45,6 +45,7 @@ public class CeylonTestTool extends RepoUsingTool {
     private String compileFlags;
     private String version;
     private boolean tap;
+    private boolean report;
 
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -84,6 +85,12 @@ public class CeylonTestTool extends RepoUsingTool {
     @Description("Enables the Test Anything Protocol v13.")
     public void setTap(boolean tap) {
         this.tap = tap;
+    }
+
+    @Option(longName = "report")
+    @Description("Generates the test results report into HTML format, output directory is `reports/test` (experimental).")
+    public void setReport(boolean report) {
+        this.report = report;
     }
 
     @Rest
@@ -143,6 +150,9 @@ public class CeylonTestTool extends RepoUsingTool {
 
         if (tap) {
             args.add("--tap");
+        }
+        if (report) {
+            args.add("--report");
         }
 
         CeylonRunTool ceylonRunTool = new CeylonRunTool();
