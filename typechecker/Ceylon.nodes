@@ -103,8 +103,8 @@
     STATIC_TYPE* type
     BASE_MEMBER_EXPRESSION*)
 ^(EXTENDED_TYPE 
-    SIMPLE_TYPE type
-    INVOCATION_EXPRESSION)
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
 
 "A list of constraints organized by parameter."
 ^(TYPE_CONSTRAINT_LIST 

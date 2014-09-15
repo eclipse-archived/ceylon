@@ -1875,9 +1875,14 @@ public class DeclarationVisitor extends Visitor {
         if (td.isAlias()) {
             return;
         }
-        Tree.SimpleType t = that.getType();
-        if (t!=null) {
-            ProducedType type = t.getTypeModel();
+        if (that.getType()==null) {
+            that.addError("missing extended type");
+        }
+        else if (that.getInvocationExpression()==null) {
+            that.addError("missing instantiation arguments");
+        }
+        else {
+            ProducedType type = that.getType().getTypeModel();
             if (type!=null) {
                 td.setExtendedType(type);
             }

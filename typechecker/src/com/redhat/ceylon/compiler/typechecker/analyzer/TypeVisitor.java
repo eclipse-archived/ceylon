@@ -1205,7 +1205,7 @@ public class TypeVisitor extends Visitor {
         }
         Tree.SimpleType et = that.getType();
         if (et==null) {
-            that.addError("malformed extended type");
+//            that.addError("malformed extended type");
         }
         else {
             /*if (et instanceof Tree.QualifiedType) {

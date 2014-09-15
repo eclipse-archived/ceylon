@@ -717,9 +717,11 @@ classBody returns [ClassBody classBody]
 
 extendedType returns [ExtendedType extendedType]
     : EXTENDS { $extendedType = new ExtendedType($EXTENDS); }
-      ci=classInstantiation
-      { $extendedType.setType($ci.type);
-        $extendedType.setInvocationExpression($ci.invocationExpression); }
+      (  
+        ci=classInstantiation
+        { $extendedType.setType($ci.type);
+          $extendedType.setInvocationExpression($ci.invocationExpression); }
+      )?
     ;
 
 classSpecifier returns [ClassSpecifier classSpecifier]
