@@ -247,6 +247,13 @@ void run() {
             has a value, which may or may not be initialized. The value may be initialized
             or assigned during execution of the body.</para>
             
+            <para>We can visualize a frame as a list of reference declarations with optional
+            values. For example, a frame with an initialized reference named 
+            <literal>language</literal> and an uninitialized reference named 
+            <literal>count</literal> would be written like this:</para>
+            
+            <programlisting>{ String language = "ceylon"; Integer count; }</programlisting>
+            
             <para>While a body is executing, all values held in the frame are considered 
             accessible. An evaluation, assignment, invocation, or instantiation may result 
             in a pause in execution of the body while the called getter, setter, function, 
@@ -449,9 +456,9 @@ String result = middleObject.string;</programlisting>
             initialization terminates and the incompletely-initialized instance never becomes
             accessible.</para>
             
-            <para>Each initializer produces a frame containing values for each reference declared
-            be the corresponding class. These frames are aggregated together to form the new
-            instance of the class <literal>C</literal>.</para>
+            <para>Each initializer produces a frame containing initialized values for each 
+            reference declared by the corresponding class. These frames are aggregated together 
+            to form the new instance of the class <literal>C</literal>.</para>
             
             <comment><para>Note: since interfaces don't have initializers, the issue of 
             "linearization" of supertypes simply never arises in Ceylon. There is a natural,
