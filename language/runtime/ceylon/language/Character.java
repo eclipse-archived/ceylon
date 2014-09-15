@@ -204,22 +204,22 @@ public final class Character
 
     @Override
     public Character getPredecessor() {
-    	return new Character(codePoint-1);
+    	return new Character(getPredecessor(codePoint));
     }
 
     @Ignore
     public static int getPredecessor(int codePoint) {
-        return codePoint-1;
+        return codepoint(codePoint-1);
     }
 
     @Override
     public Character getSuccessor() {
-    	return new Character(codePoint+1);
+    	return new Character(getSuccessor(codePoint));
     }
 
     @Ignore
     public static int getSuccessor(int codePoint) {
-        return codePoint+1;
+        return codepoint(codePoint+1);
     }
 
     public long getInteger() {
@@ -317,6 +317,21 @@ public final class Character
     @Override
     public boolean notLargerThan(@Name("other") Character other) {
     	return codePoint<=other.codePoint;
+    }
+
+    static int codepoint(long value) {
+        if (value>java.lang.Integer.MAX_VALUE ||
+            value<java.lang.Integer.MIN_VALUE) {
+            throw new OverflowException(value + " is not a 32-bit integer");
+        }
+        return codepoint(Util.toInt(value));
+    }
+
+    private static int codepoint(int value) {
+        if (!java.lang.Character.isDefined(value)) {
+            throw new OverflowException(value + " is not a Unicode code point");
+        }
+        return value;
     }
     
 }

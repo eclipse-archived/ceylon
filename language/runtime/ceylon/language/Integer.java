@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static ceylon.language.Character.codepoint;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -419,15 +421,7 @@ public final class Integer
     @Ignore
     @TypeInfo("ceylon.language::Character")
     public static int getCharacter(long value) {
-        if (value>java.lang.Integer.MAX_VALUE ||
-            value<java.lang.Integer.MIN_VALUE) {
-            throw new OverflowException(value + " is not a 32-bit integer");
-        }
-        int result = Util.toInt(value);
-        if (!java.lang.Character.isDefined(result)) {
-            throw new OverflowException(value + " is not a Unicode code point");
-        }
-        return result;
+        return codepoint(value);
     }
 
     public boolean getEven() {
