@@ -1196,9 +1196,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>InlineDeclarationArgument: ValueArgument | FunctionArgument | ObjectArgument</synopsis>
             
-            <para>An inline getter argument is a streamlined getter declaration, as defined
-            in <xref linkend="getters"/>. The type of the argument is the declared or inferred 
-            type of the getter.</para>
+            <para>An inline getter argument is a streamlined value declaration, as defined
+            in <xref linkend="values"/>. The type of the argument is the declared or inferred 
+            type of the value.</para>
             
             <synopsis>ValueArgument: ValueHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
             
