@@ -1666,8 +1666,11 @@ inferredGetterArgument returns [AttributeArgument declaration]
         { $declaration.setBlock($block.block); }
       | 
         (
-          functionSpecifier
-          { $declaration.setSpecifierExpression($functionSpecifier.specifierExpression); }
+          specifier 
+          { $declaration.setSpecifierExpression($specifier.specifierExpression); }
+        | 
+          lazySpecifier 
+          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -1693,27 +1696,42 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
       memberNameDeclaration
       { marg.setIdentifier($memberNameDeclaration.identifier);
         aarg.setIdentifier($memberNameDeclaration.identifier); }
-      ( 
+      (
         { $declaration = marg; }
         (
           parameters
           { marg.addParameterList($parameters.parameterList); }
         )+
-      )?
-      (
-        block
-        { marg.setBlock($block.block);
-          aarg.setBlock($block.block); }
-      | 
         (
-          functionSpecifier
-          { marg.setSpecifierExpression($functionSpecifier.specifierExpression);
-            aarg.setSpecifierExpression($functionSpecifier.specifierExpression); }
-        )?
-        { expecting=SEMICOLON; }
-        SEMICOLON
-        { expecting=-1; }
-        { $declaration.setEndToken($SEMICOLON); }
+          b1=block
+          { marg.setBlock($b1.block); }
+        | 
+          (
+            functionSpecifier
+            { marg.setSpecifierExpression($functionSpecifier.specifierExpression); }
+          )?
+          { expecting=SEMICOLON; }
+          s1=SEMICOLON
+          { expecting=-1; }
+          { $declaration.setEndToken($s1); }
+        )
+      |
+        (
+          b2=block
+          { aarg.setBlock($b2.block); }
+        | 
+          (
+            specifier 
+            { aarg.setSpecifierExpression($specifier.specifierExpression); }
+          | 
+            lazySpecifier 
+            { aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          )?
+          { expecting=SEMICOLON; }
+          s2=SEMICOLON
+          { expecting=-1; }
+          { $declaration.setEndToken($s2); }
+        )
       )
     ;
 
@@ -1732,10 +1750,19 @@ untypedMethodOrGetterArgument returns [TypedArgument declaration]
           parameters
           { marg.addParameterList($parameters.parameterList); }
         )+
-      )?
-      lazySpecifier
-      { marg.setSpecifierExpression($lazySpecifier.specifierExpression);
-        aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        (
+          functionSpecifier
+          { marg.setSpecifierExpression($functionSpecifier.specifierExpression); }
+        )
+      |
+        //(
+        //  specifier 
+        //  { aarg.setSpecifierExpression($specifier.specifierExpression); }
+        //|
+          lazySpecifier 
+          { aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        //)
+      )
       { expecting=SEMICOLON; }
       SEMICOLON
       { expecting=-1; }
