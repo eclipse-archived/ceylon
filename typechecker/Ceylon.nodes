@@ -118,15 +118,15 @@
 
 "An aliased type specified in a type or interface alias."
 ^(TYPE_SPECIFIER 
-    STATIC_TYPE type)
+    STATIC_TYPE? type)
 
 "A default type argument for a type parameter"
 ^(DEFAULT_TYPE_ARGUMENT: TYPE_SPECIFIER)
     
 "An aliased class specified in a class alias."
 ^(CLASS_SPECIFIER 
-    SIMPLE_TYPE type
-    INVOCATION_EXPRESSION)
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
 
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE

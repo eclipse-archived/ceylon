@@ -1908,7 +1908,13 @@ public class DeclarationVisitor extends Visitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        if (that.getType()!=null) {
+        if (that.getType()==null) {
+            that.addError("missing aliased type");
+        }
+        else if (that.getInvocationExpression()==null) {
+            that.addError("missing instantiation arguments");
+        }
+        else {
             TypeDeclaration td = (TypeDeclaration) that.getScope();
             ProducedType type = that.getType().getTypeModel();
             if (type!=null) {
@@ -1925,7 +1931,10 @@ public class DeclarationVisitor extends Visitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        if (!(that instanceof Tree.DefaultTypeArgument) && that.getType()!=null) {
+        if (that.getType()==null) {
+            that.addError("missing aliased type");
+        }
+        else if (!(that instanceof Tree.DefaultTypeArgument)) {
             TypeDeclaration td = (TypeDeclaration) that.getScope();
             ProducedType type = that.getType().getTypeModel();
             if (type!=null) {

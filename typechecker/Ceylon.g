@@ -730,9 +730,11 @@ classSpecifier returns [ClassSpecifier classSpecifier]
         SPECIFY 
         { $classSpecifier = new ClassSpecifier($SPECIFY); }
       )
-      ci=classInstantiation
-      { $classSpecifier.setType($ci.type);
-        $classSpecifier.setInvocationExpression($ci.invocationExpression); }
+      (
+        ci=classInstantiation
+        { $classSpecifier.setType($ci.type);
+          $classSpecifier.setInvocationExpression($ci.invocationExpression); }
+      )?
     ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
@@ -1193,8 +1195,10 @@ typeSpecifier returns [TypeSpecifier typeSpecifier]
         SPECIFY 
         { $typeSpecifier = new TypeSpecifier($SPECIFY); }
       )
-      type
-      { $typeSpecifier.setType($type.type); }
+      (
+        type
+        { $typeSpecifier.setType($type.type); }
+      )?
     ;
 
 typeDefault returns [TypeSpecifier typeSpecifier]

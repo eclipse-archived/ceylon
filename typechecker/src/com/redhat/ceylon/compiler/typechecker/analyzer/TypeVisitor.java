@@ -1035,7 +1035,7 @@ public class TypeVisitor extends Visitor {
             }
             Tree.SimpleType ct = cs.getType();
             if (ct==null) {
-                that.addError("malformed aliased class");
+//                that.addError("malformed aliased class");
             }
             else if (!(ct instanceof Tree.StaticType)) {
                 cs.addError("aliased type must be a class");
@@ -1085,7 +1085,7 @@ public class TypeVisitor extends Visitor {
             }
             Tree.StaticType et = that.getTypeSpecifier().getType();
             if (et==null) {
-                that.addError("malformed aliased interface");
+//                that.addError("malformed aliased interface");
             }
             else if (!(et instanceof Tree.StaticType)) {
                 that.getTypeSpecifier()
