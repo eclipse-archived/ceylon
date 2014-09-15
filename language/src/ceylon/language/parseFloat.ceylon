@@ -12,16 +12,16 @@ see (`function parseInteger`)
 shared Float? parseFloat(String string) {
     
     // parse the sign first
-    Float sign;
+    Integer sign;
     String unsignedPart;
     if (string startsWith "-") {
-        sign = -1.0;
+        sign = -1;
         unsignedPart = string[1...];
     } else if (string startsWith "+") {
-        sign = +1.0;
+        sign = +1;
         unsignedPart = string[1...];
     } else {
-        sign = +1.0;
+        sign = +1;
         unsignedPart = string;
     }
     // split into three main parts
@@ -75,23 +75,24 @@ shared Float? parseFloat(String string) {
         else {
             exponent = -shift; 
         }
-        Float numerator 
+        Integer numerator
                 = sign * (whole*10^shift + fractional);
-        value em = exponent.magnitude;
-        if (em==0) {
-            return numerator;
+        Float numeratorFloat = numerator.float;
+        value exponentMagnitude = exponent.magnitude;
+        if (exponentMagnitude==0) {
+            return numeratorFloat;
         }
-        else if (em<maximumIntegerExponent) {
-            value scale = 10^em;
+        else if (exponentMagnitude<maximumIntegerExponent) {
+            value scale = 10^exponentMagnitude;
             return exponent<0
-            then numerator / scale
-            else numerator * scale;
+                then numeratorFloat / scale
+                else numeratorFloat * scale;
         }
         else {
             //scale can't be represented as 
             //an integer, resulting in some
             //rounding error
-            return numerator * 10.0^exponent;
+            return numeratorFloat * 10.0^exponent;
         }
     }
     
