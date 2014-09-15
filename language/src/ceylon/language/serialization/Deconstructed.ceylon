@@ -20,6 +20,8 @@ shared interface Deconstructor {
     throws (`class AssertionError`,
         "if there is already a value for the given attribute")
     shared formal void putValue<Type>(ValueDeclaration attribute, Type referenced);
+    
+    shared formal void putArray<Element>(ValueDeclaration attribute, Array<Element> array);
 }
 
 "The flattened state of an instance of a class.
@@ -36,4 +38,7 @@ shared interface Deconstructed
     throws (`class AssertionError`,
         "if the value is missing")
     shared formal Type|Reference<Type> getValue<Type>(ValueDeclaration attribute);
+    
+    shared formal Array<Element> array
+    getArray<Element>(ValueDeclaration attribute);
 }
