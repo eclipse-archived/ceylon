@@ -22,6 +22,10 @@ class Assignability() {
     
     method { arg1=X(); arg2=Y(); };
     
+    method { X arg1=X(); Y arg2=Y(); };
+    
+    method { value arg1=X(); value arg2=Y(); };
+    
     @error method(Y(), Y());
     @error method(X(), X());
 
