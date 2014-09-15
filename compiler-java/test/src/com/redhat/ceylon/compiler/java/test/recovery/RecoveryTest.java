@@ -223,7 +223,7 @@ public class RecoveryTest extends CompilerTest {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassExtendsMissingParens.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtendsMissingParens",
-                "missing invocation expression");
+                "missing instantiation arguments");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtendsMissingParens");
     }
     
