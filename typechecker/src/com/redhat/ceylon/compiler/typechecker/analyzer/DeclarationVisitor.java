@@ -1951,12 +1951,4 @@ public class DeclarationVisitor extends Visitor {
         }
     }
     
-    @Override
-    public void visit(Tree.LazySpecifierExpression that) {
-        super.visit(that);
-        if (that.getMainToken().getType()==SPECIFY) {
-            that.addError("incorrect syntax: expression must be specified using =>", 1050);
-        }
-    }
-    
 }
