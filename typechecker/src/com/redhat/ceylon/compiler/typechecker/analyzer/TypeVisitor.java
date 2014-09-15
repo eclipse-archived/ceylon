@@ -1119,7 +1119,7 @@ public class TypeVisitor extends Visitor {
             that.getSatisfiedTypes().addError("type alias may not satisfy a type");
         }
         if (that.getTypeSpecifier()==null) {
-            that.addError("missing aliased type");
+//            that.addError("missing aliased type");
         }
         else {
             Tree.StaticType et = that.getTypeSpecifier().getType();
