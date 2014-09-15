@@ -1085,13 +1085,41 @@ String result = middleObject.string;</programlisting>
             <title>Evaluation of enumerations</title>
             
             <para>Evaluation of an enumeration expression, as defined in 
-            <xref linkend="enumeration"/>, results in creation of an iterable object or 
+            <xref linkend="enumeration"/>, results in creation of an iterable stream or 
             tuple.</para>
             
             <programlisting>{ "hello", "world" }</programlisting>
             <programlisting>[ new, *elements ]</programlisting>
             
-            <para>When an enumeration expression is executed:</para>
+            <para>When an iterable enumeration expression is executed, a reference to the
+            enumeration expression, together with a reference to the current frame or 
+            instance of every containing body, together with a comprehension instance, 
+            as defined in <xref linkend="comprehensionevaluation"/>, in the case that the 
+            enumeration expression has a comprehension, are packaged together into a stream. 
+            Evaluation of an expression occurring in the enumeration expression occurs in 
+            the context of the packaged framed associated with the stream. When the stream 
+            is iterated, it produces, in turn:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>one value for each listed argument, by evaluating the listed
+                    argument expression, and then</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a spread argument, each value produced 
+                    by the spread argument, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a comprehension, each value produced 
+                    by the comprehension instance, or</para>
+                </listitem>
+                <listitem>
+                    <para>if there are no arguments, and no comprehension, the 
+                    stream is empty and produces no values.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a tuple enumeration expression is executed:</para>
                 
             <itemizedlist>
                 <listitem>
@@ -1109,8 +1137,8 @@ String result = middleObject.string;</programlisting>
                     object is the resulting value of the enumeration expression, unless</para>
                 </listitem>
                 <listitem>
-                    <para>there are no arguments, and no comprehension, in which case the 
-                    resulting value of the enumeration expression is the object 
+                    <para>there are no  arguments, and no comprehension, in which case 
+                    the resulting value of the enumeration expression is the object 
                     <literal>empty</literal>.</para>
                 </listitem>
             </itemizedlist>
