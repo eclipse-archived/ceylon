@@ -1908,13 +1908,15 @@ public class DeclarationVisitor extends Visitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        TypeDeclaration td = (TypeDeclaration) that.getScope();
-        ProducedType type = that.getType().getTypeModel();
-        if (type!=null) {
-            td.setExtendedType(type);
-        }
-        if (that.getMainToken().getType()==SPECIFY) {
-            that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
+        if (that.getType()!=null) {
+            TypeDeclaration td = (TypeDeclaration) that.getScope();
+            ProducedType type = that.getType().getTypeModel();
+            if (type!=null) {
+                td.setExtendedType(type);
+            }
+            if (that.getMainToken().getType()==SPECIFY) {
+                that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
+            }
         }
     }
     
