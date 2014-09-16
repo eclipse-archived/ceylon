@@ -1327,21 +1327,20 @@ public class Metamodel {
         for(Parameter parameter : parameters){
             // get the parameter value and remove it so we can keep track of those we used
             java.lang.Object value;
-            if (!argumentMap.containsKey(parameter.getName())) {
-                // make sure it has a default value
-                if(!parameter.isDefaulted())
-                    throw new InvocationException("Missing value for non-defaulted parameter "+parameter.getName());
-                // we need to fetch the default value
-                value = defaultValueProvider.getDefaultParameterValue(parameter, values, parameterIndex);
-                argumentMap.remove(parameter.getName());
-            }
-            else {
+            if(argumentMap.containsKey(parameter.getName())){
                 value = argumentMap.remove(parameter.getName());
                 // we have a value: check the type
                 ProducedType argumentType = Metamodel.getProducedType(value);
                 ProducedType parameterType = parameterProducedTypes.get(parameterIndex);
                 if(!argumentType.isSubtypeOf(parameterType))
                     throw new ceylon.language.meta.model.IncompatibleTypeException("Invalid argument "+parameter.getName()+", expected type "+parameterType+" but got "+argumentType);
+            }else{
+                // make sure it has a default value
+                if(!parameter.isDefaulted())
+                    throw new InvocationException("Missing value for non-defaulted parameter "+parameter.getName());
+                // we need to fetch the default value
+                value = defaultValueProvider.getDefaultParameterValue(parameter, values, parameterIndex);
+                argumentMap.remove(parameter.getName());
             }
             values.set(parameterIndex++, value);
         }
