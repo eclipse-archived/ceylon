@@ -1355,7 +1355,7 @@ public class Metamodel {
         return Util.apply(function, argumentSequence);
     }
     
-    private static Map<String, Object> collectArguments(Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
+    private static Map<String, Object> collectArguments(ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends Object>,? extends Object> arguments) {
         java.util.Map<java.lang.String,java.lang.Object> args = new java.util.HashMap<>();
         ceylon.language.Iterator<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>> iterator 
                 = arguments.iterator();
