@@ -13,7 +13,7 @@ shared final class Entry<out Key, out Item>(key, item)
     "The key used to access the entry."
     shared Key key;
     
-    "The value associated with the key."
+    "The item associated with the key."
     shared Item item;
     
     "A pair (2 element tuple) with the key and item of this 
@@ -59,8 +59,9 @@ shared final class Entry<out Key, out Item>(key, item)
         }
     }
     
-    "Returns a description of the entry in the form 
-     `key->item`."
+    "A description of the entry in the form `key->item`. If 
+     [[item]] is `null`, its string representation is the 
+     string `\"<null>\"`."
     shared actual String string 
             => "``key``->``stringify(item)``";
     
