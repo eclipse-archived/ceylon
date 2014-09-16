@@ -200,13 +200,13 @@ shared void testIterables() {
     for (k->v in (1..5).indexed) {
         check(k+1==v, "Range.indexed");
     }
-    check({"a", "b", "c"}.indexed.sequence()=={0->"a", 1->"b", 2->"c"}.sequence(), "Sequence.indexed");
-    check(Array{0, 1, 2}.indexed.sequence()=={0->0, 1->1, 2->2}.sequence(), "Array.indexed");
-    check(Singleton("A").indexed.sequence()=={0->"A"}.sequence(), "Singleton.indexed");
+    check({"a", "b", "c"}.indexed.sequence()==[0->"a", 1->"b", 2->"c"], "Sequence.indexed");
+    check(Array{0, 1, 2}.indexed.sequence()==[0->0, 1->1, 2->2], "Array.indexed");
+    check(Singleton("A").indexed.sequence()==[0->"A"], "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
-    check({for (c in "abc") c}.indexed.sequence()=={0->'a', 1->'b', 2->'c'}.sequence(), "Iterable.indexed");
-    check("abc".indexed.sequence()=={0->'a', 1->'b', 2->'c'}.sequence(), "String.indexed");
-    check({1,null,2}.indexed.sequence() == {0->1, 2->2}.sequence(), "indexed with nulls");
+    check({for (c in "abc") c}.indexed.sequence()==[0->'a', 1->'b', 2->'c'], "Iterable.indexed");
+    check("abc".indexed.sequence()==[0->'a', 1->'b', 2->'c'], "String.indexed");
+    check({1,null,2}.indexed.sequence() == [0->1,1->null,2->2], "indexed with nulls");
 
     //last (defined in ContainerWithFirst but tested here)
     check((1..5000000000).last == 5000000000, "Range.last");
