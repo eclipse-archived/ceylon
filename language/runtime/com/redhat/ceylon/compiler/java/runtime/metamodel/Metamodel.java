@@ -21,8 +21,6 @@ import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.ConstrainedAnnotation;
-import ceylon.language.Entry;
-import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
