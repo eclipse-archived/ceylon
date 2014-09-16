@@ -30,24 +30,37 @@ shared interface Map<out Key,out Item>
                   Correspondence<Object,Item>
         given Key satisfies Object {
     
+    "Determines if there is an entry in this map with the
+     given [[key]]."
+    see (`function contains`)
+    shared actual formal Boolean defines(Object key);
+    
+    "Returns the item of the entry with the given [[key]], 
+     or `null` if there is no entry with the given `key` in
+     this map."
+    shared actual formal Item? get(Object key);
+    
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
-    see(`function defines`)
+    see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Key->Object entry, 
-            exists item = get(entry.key)) {
-            return item==entry.item;
+        if (is Key->Anything entry, defines(entry.key)) {
+            if (exists item = get(entry.key)) {
+                if (exists entryItem = entry.item) {
+                    return item==entryItem;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return !entry.item exists;
+            }
         }
         else {
             return false;
         }
     }
-    
-    "Determines if the given [[value|key]] is a [[Key]] of
-     an entry in this map."
-    see(`function contains`)
-    shared actual default Boolean defines(Object key) 
-            => super.defines(key);
     
     shared actual formal Map<Key,Item> clone();
     
@@ -140,17 +153,17 @@ shared interface Map<out Key,out Item>
                 extends Object()
                 satisfies Map<Key,Result> {
             
+            defines(Object key) => outer defines key;
+            
             shared actual Result? get(Object key) {
-                if (is Key key, 
-                    exists item=outer[key]) {
+                if (is Key key, defines(key)) {
+                    assert (is Item item = outer[key]);
                     return mapping(key, item);
                 }
                 else {
                     return null;
                 }
             }
-            
-            defines(Object key) => outer defines key;
             
             function mapEntry(Key->Item entry) 
                     => entry.key -> 

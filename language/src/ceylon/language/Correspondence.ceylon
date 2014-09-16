@@ -33,8 +33,7 @@ shared interface Correspondence<in Key, out Item>
     see (`function Correspondence.definesAny`, 
          `function Correspondence.definesEvery`, 
          `value Correspondence.keys`)
-    shared default Boolean defines(Key key) 
-            => get(key) exists;
+    shared formal Boolean defines(Key key);
     
     "The `Category` of all keys for which a value is defined
      by this `Correspondence`."
