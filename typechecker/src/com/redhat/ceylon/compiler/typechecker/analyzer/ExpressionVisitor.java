@@ -3608,8 +3608,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType ot = unit.getType(unit.getObjectDeclaration());
         checkAssignable(lhst, ot, that.getLeftTerm(), 
                 "operand expression must not be an optional type");
-        checkAssignable(rhst, ot, that.getRightTerm(), 
-                "operand expression must not be an optional type");
+//        checkAssignable(rhst, ot, that.getRightTerm(), 
+//                "operand expression must not be an optional type");
         that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
                 unit.denotableType(rhst)) );
     }
@@ -5020,8 +5020,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         checkAssignable(that.getKeyType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
                 that.getKeyType(), "entry key type must not be an optional type");
-        checkAssignable(that.getValueType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
-                that.getValueType(), "entry item type must not be an optional type");
+//        checkAssignable(that.getValueType().getTypeModel(), unit.getType(unit.getObjectDeclaration()), 
+//                that.getValueType(), "entry item type must not be an optional type");
     }
 
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
