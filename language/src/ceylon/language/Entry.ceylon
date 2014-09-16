@@ -24,7 +24,12 @@ shared final class Entry<out Key, out Item>(key, item)
     
     "Determines if this entry is equal to the given entry. 
      Two entries are equal if they have the same key and 
-     the same value."
+     the same item. 
+     
+     - The keys are considered the same if they are equal,
+       in the sense of [[value equality|Object.equals]].
+     - Two items are considered the same if they are both 
+       null or if neither is null and they are equal."
     shared actual Boolean equals(Object that) {
         if (is Entry<Object,Anything> that) {
             if (this.key!=that.key) {
