@@ -46,7 +46,6 @@ shared [Iterable<Key,Absent>, Iterable<Item,Absent>]
 unzipEntries<Key,Item,Absent>
         (Iterable<<Key->Item>,Absent> entries)
         given Key satisfies Object
-        given Item satisfies Object
         given Absent satisfies Null
         => [entries.map(Entry<Key,Item>.key),
             entries.map(Entry<Key,Item>.item)];
