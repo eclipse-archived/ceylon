@@ -2420,7 +2420,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
             <entry><literal>U given U satisfies Object</literal></entry>
-            <entry><literal>V given V satisfies Object</literal></entry>
+            <entry><literal>V</literal></entry>
             <entry><literal>Entry&lt;U,V&gt;</literal></entry>
         </row>
         
