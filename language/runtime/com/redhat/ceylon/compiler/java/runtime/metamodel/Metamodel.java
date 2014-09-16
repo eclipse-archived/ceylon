@@ -1313,7 +1313,7 @@ public class Metamodel {
     public static <Return> Return namedApply(Callable<? extends Return> function,
             DefaultValueProvider defaultValueProvider, 
             com.redhat.ceylon.compiler.typechecker.model.Functional declaration,
-            ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments, 
+            ceylon.language.Iterable<? extends ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<java.lang.Object,? extends java.lang.Object,? extends ceylon.language.Empty>>,? extends java.lang.Object> arguments, 
             List<ProducedType> parameterProducedTypes){
         // FIXME: throw for Java declarations
         
@@ -1357,16 +1357,17 @@ public class Metamodel {
         return Util.apply(function, argumentSequence);
     }
     
-    private static Map<String, Object> collectArguments(Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
+    private static Map<String, Object> collectArguments(
+    ceylon.language.Iterable<? extends ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<java.lang.Object,? extends java.lang.Object,? extends ceylon.language.Empty>>,? extends java.lang.Object> arguments) {
         java.util.Map<java.lang.String,java.lang.Object> args = new java.util.HashMap<>();
-        ceylon.language.Iterator<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>> iterator 
+        ceylon.language.Iterator<? extends ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<? extends java.lang.Object,? extends java.lang.Object, ? extends ceylon.language.Empty>>> iterator 
                 = arguments.iterator();
         java.lang.Object elem; 
         while((elem = iterator.next()) != finished_.get_()){
             @SuppressWarnings("unchecked")
-            ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object> entry 
-                = (ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>)elem;
-            args.put(entry.getKey().toString(), entry.getItem());
+            ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<? extends java.lang.Object,? extends java.lang.Object, ? extends ceylon.language.Empty>> entry 
+                = (ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<? extends java.lang.Object,? extends java.lang.Object, ? extends ceylon.language.Empty>>)elem;
+            args.put(entry.getFirst().value, entry.getRest().getFirst());
         }
         return args;
     }

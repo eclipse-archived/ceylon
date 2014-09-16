@@ -401,8 +401,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Override
     public Type namedApply(@Name("arguments")
-        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Anything>,ceylon.language::Null>")
-        ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Tuple<ceylon.language::Anything,ceylon.language::String,ceylon.language::Tuple<ceylon.language::Anything,ceylon.language::Anything,ceylon.language::Empty>,ceylon.language::Null>")
+    ceylon.language.Iterable<? extends ceylon.language.Tuple<java.lang.Object,? extends ceylon.language.String,? extends ceylon.language.Tuple<java.lang.Object,? extends java.lang.Object,? extends ceylon.language.Empty>>,? extends java.lang.Object> arguments){
 
         return Metamodel.namedApply(this, this, 
                 (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
