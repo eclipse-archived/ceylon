@@ -16,7 +16,6 @@ zipEntries<Key,Item,KeyAbsent,ItemAbsent>
         (Iterable<Key,KeyAbsent> keys, 
          Iterable<Item,ItemAbsent> items)
         given Key satisfies Object
-        given Item satisfies Object
         given KeyAbsent satisfies Null
         given ItemAbsent satisfies Null
         => mapPairs(Entry<Key,Item>, keys, items);

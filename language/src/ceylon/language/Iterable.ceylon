@@ -979,34 +979,25 @@ shared interface Iterable<out Element, out Absent=Null>
             => { for (e in this) if (exists e) e };
     
     "All entries of form `index->element` where `index` is 
-     the position at which `element` occurs, for every
-     non-null element of this stream, ordered by increasing 
-     `index`. For a null element at a given position in this 
-     stream, there is no entry with the corresponding index 
-     in the resulting stream.
+     the position at which `element` occurs, ordered by 
+     increasing `index`.
      
      For example, the expression 
      
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 2->\"world\" }`."
-    shared default Iterable<<Integer->Element&Object>,Element&Null|Absent> indexed {
+    shared default Iterable<<Integer->Element>,Element&Null|Absent> indexed {
         object indexes
-                satisfies Iterable<<Integer->Element&Object>,Element&Null|Absent> {
-            shared actual Iterator<Integer->Element&Object> iterator() {
+                satisfies Iterable<<Integer->Element>,Element&Null|Absent> {
+            shared actual Iterator<Integer->Element> iterator() {
                 value iter = outer.iterator();
                 object iterator 
-                        satisfies Iterator<Integer->Element&Object> {
+                        satisfies Iterator<Integer->Element> {
                     variable value i=0;
-                    shared actual <Integer->Element&Object>|Finished next() {
-                        variable value next = iter.next();
-                        while (!next exists) {
-                            i++;
-                            next = iter.next();
-                        }
-                        assert (exists n = next);
-                        if (!is Finished n) {
-                            return i++->n;
+                    shared actual <Integer->Element>|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            return i++->next;
                         }
                         else {
                             return finished;
