@@ -414,7 +414,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public Type namedApply(@Name("arguments")
-        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Object>,ceylon.language::Null>")
+        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Anything>,ceylon.language::Null>")
         ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
         checkInit();
         checkConstructor();
