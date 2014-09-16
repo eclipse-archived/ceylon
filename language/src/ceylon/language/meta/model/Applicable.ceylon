@@ -19,9 +19,5 @@ shared sealed interface Applicable<out Type=Anything> {
     throws(`class IncompatibleTypeException`, "If any argument is not assignable to this applicable's corresponding parameter")
     throws(`class InvocationException`, "If there are not enough or too many provided arguments, 
                                          or if the target does not support named invocation")
-    shared formal Type namedApply(Iterable<String->Object> arguments);
+    shared formal Type namedApply({<String->Object>*} arguments);
 }
-
-"""Use this singleton value to specify a named parameter which should have a [[null]] value in [[Applicable.namedApply]].
-   """
-shared object nullArgument {}
