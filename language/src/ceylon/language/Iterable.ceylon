@@ -1,32 +1,39 @@
-"""Abstract supertype of [[categories|Category]] whose 
-   elements may be iterated. Iterable categories are often 
-   called _streams_. A stream need not be finite, but its 
-   elements must be countable. That is, for any given 
-   element of the stream, every iterator of the stream must 
-   eventually return the element, even if the iterator 
-   itself is not exhaustable. 
+"""Abstract supertype of [[categories|Category]] whose
+   elements may be iterated. Iterable categories are often
+   called _streams_. A stream need not be finite, but its
+   elements must be countable. That is, for any given
+   element of the stream, every iterator of the stream must
+   eventually return the element, even if the iterator
+   itself is not exhaustable.
    
-   A given stream might not have a well-defined order, and 
-   so the order in which elements are produced by the 
-   stream's iterator may not be _stable_. That is, the order 
-   may be different for two different iterators of the 
-   stream. However, a stream has a well-defined set of 
-   elements, and any two iterators for an immutable finite 
-   stream should eventually return the same elements. 
+   A stream may have null elements. That is, an iterator for
+   the stream may produce the value [[null]] one or more
+   times. For every non-null `element` of a given stream
+   `it`, the expression `element in it` must evaluate to
+   `true`. Thus, a stream is a category of its non-null
+   elements.
+   
+   A given stream might not have a well-defined order, and
+   so the order in which elements are produced by the
+   stream's iterator may not be _stable_. That is, the order
+   may be different for two different iterators of the
+   stream. However, a stream has a well-defined set of
+   elements, and any two iterators for an immutable finite
+   stream should eventually return the same elements.
    Furthermore, any two iterators for an immutable finite
-   stream should eventually return exactly the same number 
+   stream should eventually return exactly the same number
    of elements, which must be the [[size]] of the stream.
    
-   A given stream may not be _finite_, in which case an 
+   A given stream may not be _finite_, in which case an
    iterator for the stream is never exhaustible, and certain
    operations of this interface either never terminate or
    result in an [[AssertionError]]. It may not, in general,
    be possible to even determine if an `Iterable` is finite.
    
    The type `Iterable<Element,Null>`, usually abbreviated
-   `{Element*}`, represents a possibly-empty iterable 
-   container. The type `Iterable<Element,Nothing>`, usually 
-   abbreviated `{Element+}`, represents a nonempty iterable 
+   `{Element*}`, represents a possibly-empty iterable
+   container. The type `Iterable<Element,Nothing>`, usually
+   abbreviated `{Element+}`, represents a nonempty iterable
    container.
    
    A value list in braces produces a new instance of 
