@@ -19,5 +19,5 @@ shared sealed interface Applicable<out Type=Anything> {
     throws(`class IncompatibleTypeException`, "If any argument is not assignable to this applicable's corresponding parameter")
     throws(`class InvocationException`, "If there are not enough or too many provided arguments, 
                                          or if the target does not support named invocation")
-    shared formal Type namedApply({[String,Anything]*} arguments);
+    shared formal Type namedApply({<String->Anything>*} arguments);
 }
