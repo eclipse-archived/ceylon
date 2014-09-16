@@ -62,13 +62,13 @@ shared void bug366() {
 }
 
 void bug366Check(Applicable<Anything> f){
-    assert(f.namedApply{ ["a",1], ["opt",null] } exists);
-    assert(f.namedApply{ ["a",1], ["opt",null], ["b",2] } exists);
-    assert(f.namedApply{ ["a",1], ["opt",null], ["b",2], ["o",3] } exists);
-    assert(f.namedApply{ ["a", 1], ["opt", null], ["o", 3] } exists);
+    assert(f.namedApply{ "a"->1, "opt"->null } exists);
+    assert(f.namedApply{ "a"->1, "opt"->null, "b"->2 } exists);
+    assert(f.namedApply{ "a"->1, "opt"->null, "b"->2, "o"->3 } exists);
+    assert(f.namedApply{ "a"->1, "opt"->null, "o"->3 } exists);
     
     try{
-        f.namedApply{ ["a","f"] };
+        f.namedApply{ "a"->"f" };
         assert(false);
     }catch(IncompatibleTypeException x){
         // good!
@@ -82,7 +82,7 @@ void bug366Check(Applicable<Anything> f){
     }
     
     try{
-        f.namedApply{ ["a",1], ["opt",null], ["nonexistent",2] };
+        f.namedApply{ "a"->1, "opt"->null, "nonexistent"->2 };
         assert(false);
     }catch(InvocationException x){
         // good!
