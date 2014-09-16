@@ -93,8 +93,18 @@ shared interface List<out Element>
     "Determines if this list contains the given value.
      Returns `true` for every element of this list."
     see (`function occurs`)
-    shared actual default Boolean contains(Object element) 
-            => occurs(element);
+    shared actual default Boolean contains(Object element) {
+        for (index in 0:size) {
+            if (exists elem = getFromFirst(index)) {
+                if (elem==element) {
+                    return true;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
@@ -445,7 +455,9 @@ shared interface List<out Element>
                 return true;
             }
         }
-        return false;
+        else {
+            return false;
+        }
     }
     
     "The indexes in this list at which the given [[element]] 
