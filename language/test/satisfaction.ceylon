@@ -151,7 +151,8 @@ class MyInvertable(Integer x) satisfies Invertible<MyInvertable> {
 }
 class MyCorrespondence() satisfies Correspondence<Integer, Character> {
     value a = "abcdef";
-    shared actual Character? get(Integer k) { return a[k]; }
+    shared actual Character? get(Integer k) => a[k];
+    shared actual Boolean defines(Integer key) => 0<=key<a.size;
 }
 class MyIterable() satisfies {String+} {
     shared actual Iterator<String> iterator() {

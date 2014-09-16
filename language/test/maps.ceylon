@@ -22,6 +22,12 @@ class MapTest<Key, Item>(<Key->Item>* entry)
         }
         return null;
     }
+    shared actual Boolean defines(Object key) {
+        for (e in entries) {
+            if (e.key == key) { return true; }
+        }
+        return false;
+    }
 }
 
 @test
