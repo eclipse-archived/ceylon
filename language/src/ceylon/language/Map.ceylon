@@ -28,8 +28,7 @@ see (`class Entry`,
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item>
-        given Key satisfies Object
-        given Item satisfies Object {
+        given Key satisfies Object {
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
@@ -58,14 +57,21 @@ shared interface Map<out Key,out Item>
      equal iff they have same set of `keys`, and for every 
      key in the key set, the maps have equal items."
     shared actual default Boolean equals(Object that) {
-        if (is Map<Object,Object> that,
+        if (is Map<Object,Anything> that,
                 that.size==size) {
             for (entry in this) {
-                if (exists item = that[entry.key],
-                        item==entry.item) {
-                    continue;
+                value thatItem = that[entry.key];
+                if (exists thisItem = entry.item) {
+                    if (exists thatItem) {
+                        if (thatItem!=thisItem) {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
                 }
-                else {
+                else if (thatItem exists) {
                     return false;
                 }
             }
@@ -107,7 +113,7 @@ shared interface Map<out Key,out Item>
                 satisfies Collection<Item> {
             shared actual Boolean contains(Object item) {
                 for (k->v in outer) {
-                    if (v==item) {
+                    if (exists v, v==item) {
                         return true;
                     }
                 }

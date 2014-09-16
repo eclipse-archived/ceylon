@@ -8,8 +8,7 @@
 by ("Gavin")
 shared final class Entry<out Key, out Item>(key, item)
         extends Object()
-        given Key satisfies Object
-        given Item satisfies Object {
+        given Key satisfies Object {
     
     "The key used to access the entry."
     shared Key key;
@@ -27,19 +26,37 @@ shared final class Entry<out Key, out Item>(key, item)
      Two entries are equal if they have the same key and 
      the same value."
     shared actual Boolean equals(Object that) {
-        if (is Entry<Object,Object> that) {
-            return this.key==that.key &&
-                    this.item==that.item;
+        if (is Entry<Object,Anything> that) {
+            if (this.key!=that.key) {
+                return false;
+            }
+            if (exists thisItem=this.item,
+                exists thatItem=that.item) {
+                return thisItem==thatItem;
+            }
+            else {
+                return !this.item exists &&
+                        !that.item exists;
+            }
         }
         else {
             return false;
         }
     }
     
-    hash => (31 + key.hash) * 31 + item.hash;
+    shared actual Integer hash {
+        value keyHash = (31 + key.hash) * 31;
+        if (exists item) {
+            return keyHash + item.hash;
+        }
+        else {
+            return keyHash;
+        }
+    }
     
     "Returns a description of the entry in the form 
      `key->item`."
-    shared actual String string => "``key``->``item``";
+    shared actual String string 
+            => "``key``->``stringify(item)``";
     
 }
