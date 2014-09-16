@@ -36,6 +36,8 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask {
     
     private final ModuleSet moduleSet = new ModuleSet();
     private String compileFlags;
+    private Boolean tap = false;
+    private Boolean report = false;
     
     public CeylonTestJsAntTask() {
         super("test-js");
@@ -65,6 +67,22 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask {
     }
     
     /**
+     * Enables the Test Anything Protocol v13.
+     * @param tap
+     */
+    public void setTap(Boolean tap) {
+        this.tap = tap;
+    }
+    
+    /**
+     * Generates the test results report into HTML format, output directory is `reports/test-js` (experimental).
+     * @param report
+     */
+    public void setReport(Boolean report) {
+        this.report = report;
+    }
+    
+    /**
      * Check that all required attributes have been set and nothing silly has
      * been entered.
      * 
@@ -84,6 +102,12 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask {
         
         if(compileFlags != null){
             appendOptionArgument(cmd, "--compile", compileFlags);
+        }
+        if(tap) {
+            appendOption(cmd, "--tap");
+        }
+        if(report) {
+            appendOption(cmd, "--report");
         }
         
         for (Module module : moduleSet.getModules()) {
