@@ -1615,8 +1615,6 @@ public abstract class AbstractTransformer implements Transformation {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
                 return makeIdent(syms().ceylonExceptionType);
-            } else if ((flags & JT_CATCH) != 0) {
-                return make().Type(syms().exceptionType);
             } else {
                 return make().Type(syms().exceptionType);
             }
@@ -1624,8 +1622,6 @@ public abstract class AbstractTransformer implements Transformation {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
                 return makeIdent(syms().throwableType);
-            } else if ((flags & JT_CATCH) != 0) {
-                return make().Type(syms().throwableType);
             } else {
                 return make().Type(syms().throwableType);
             }
