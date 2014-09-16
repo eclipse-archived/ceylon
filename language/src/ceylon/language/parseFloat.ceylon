@@ -75,24 +75,26 @@ shared Float? parseFloat(String string) {
         else {
             exponent = -shift; 
         }
-        Integer numerator
-                = sign * (whole*10^shift + fractional);
-        Float numeratorFloat = numerator.float;
+        Integer numerator = whole*10^shift + fractional;
+        Float signedNumerator 
+                = numerator.zero
+                      then 0 * sign.float //preserve sign of -0.0
+                      else (sign * numerator).float;
         value exponentMagnitude = exponent.magnitude;
         if (exponentMagnitude==0) {
-            return numeratorFloat;
+            return signedNumerator;
         }
         else if (exponentMagnitude<maximumIntegerExponent) {
             value scale = 10^exponentMagnitude;
             return exponent<0
-                then numeratorFloat / scale
-                else numeratorFloat * scale;
+                then signedNumerator / scale
+                else signedNumerator * scale;
         }
         else {
             //scale can't be represented as 
             //an integer, resulting in some
             //rounding error
-            return numeratorFloat * 10.0^exponent;
+            return signedNumerator * 10.0^exponent;
         }
     }
     
