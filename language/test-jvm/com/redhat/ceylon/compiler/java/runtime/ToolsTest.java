@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.compiler.java.runtime.launcher.ToolsTestRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
 import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
@@ -34,6 +35,7 @@ public class ToolsTest {
     
     private static final String BuildToolsBuildDir = "build/toolsTest";
     private static final String BuildToolsClassesDir = BuildToolsBuildDir + "/classes";
+    private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes";
     private static final String OutputRepository = BuildToolsBuildDir + "/modules";
     private static String SystemRepo = BuildToolsBuildDir + "/repo";
     private static String FlatRepoLib = BuildToolsBuildDir + "/lib";
@@ -129,13 +131,9 @@ public class ToolsTest {
     private void runInNewJVM() throws Exception{
         String java = System.getProperty("java.home")
                 + File.separator + "bin" + File.separator + "java";
-        File systemClasspath = new File(SystemRepo);
-        File libClasspath = new File(FlatRepoLib);
         
-        String classpath = getClassPath(systemClasspath) + File.pathSeparator + getClassPath(libClasspath) 
-                + File.pathSeparator + BuildToolsClassesDir
-                + File.pathSeparator + "lib/junit-4.9b2.jar";
-        ProcessBuilder pb = new ProcessBuilder(java, "-cp", classpath, ToolsTest.class.getName(), name.getMethodName());
+        String classpath = BuildToolsRunnerClassesDir;
+        ProcessBuilder pb = new ProcessBuilder(java, "-cp", classpath, ToolsTestRunner.class.getName(), name.getMethodName());
         pb.inheritIO();
         Process process = pb.start();
         int exit = process.waitFor();
@@ -151,23 +149,6 @@ public class ToolsTest {
 //        }
     }
     
-    private String getClassPath(File classpath) throws IOException {
-        final StringBuilder sb = new StringBuilder();
-        Files.walkFileTree(classpath.toPath(), new SimpleFileVisitor<Path>(){
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                String name = file.getFileName().toString();
-                if(name.endsWith(".jar") || name.endsWith(".car")){
-                    if(sb.length() != 0)
-                        sb.append(File.pathSeparator);
-                    sb.append(file.toString());
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-        return sb.toString();
-    }
-
     @Test
     public void testJavaCompiler() throws Exception {
         runInNewJVM();
@@ -311,10 +292,5 @@ public class ToolsTest {
         }else{
             Assert.assertTrue(ret);
         }
-    }
-    
-    public static void main(String[] args) throws Exception {
-        Method method = ToolsTest.class.getDeclaredMethod(args[0]+"_");
-        method.invoke(new ToolsTest());
     }
 }
