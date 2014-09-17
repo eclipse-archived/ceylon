@@ -22,7 +22,13 @@
    its first operand evaluates to `true`, and to `null` 
    otherwise:
    
-       Float? diff = x>=y then x-y;"""
+       Float? diff = x>=y then x-y;
+   
+   No equivalence relation is defined for `Null`. In 
+   particular, neither `null==null` nor `null===null` are
+   considered meaningful. Therefore, `Null` is neither
+   [[Identifiable]], nor does it define 
+   [[value equality|Object.equals]]."""
 see (`value null`)
 by ("Gavin") 
 shared abstract class Null() 
