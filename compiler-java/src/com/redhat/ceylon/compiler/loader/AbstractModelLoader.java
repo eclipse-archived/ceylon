@@ -448,6 +448,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
+        
+        // make sure the language module has its real dependencies added, because we need them in the classpath
+        // otherwise we will get errors on the Util and Metamodel calls we insert
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", "1.3.3.Final"), false, false));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", "1.0.3.Final"), false, false));
+        
         nested.endTask();
         
         nested.startTask("load JDK");

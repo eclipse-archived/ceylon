@@ -432,6 +432,9 @@ public class Paths {
     private Path computeUserClassPath() {
         String cp = options.get(CLASSPATH);
 
+        /*
+         * Ceylon: disabled because we use the -cp flag or set it up via module repos
+         * 
         // CLASSPATH environment variable when run from `javac'.
         if (cp == null) cp = System.getProperty("env.class.path");
 
@@ -442,11 +445,14 @@ public class Paths {
 
         // Default to current working directory.
         if (cp == null) cp = ".";
+        */
 
-        return new Path()
+        Path ret = new Path()
             .expandJarClassPaths(true)        // Only search user jars for Class-Paths
-            .emptyPathDefault(new File("."))  // Empty path elt ==> current directory
-            .addFiles(cp);
+            .emptyPathDefault(new File("."));  // Empty path elt ==> current directory
+        if(cp != null)
+            ret.addFiles(cp);
+        return ret;
     }
 
     private Path computeSourcePath() {
