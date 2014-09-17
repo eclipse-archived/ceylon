@@ -79,15 +79,16 @@ public class JavaRunnerImpl implements JavaRunner {
         else
             moduleClassLoader = makeModuleClassLoader();
         // initialise the metamodel
-        registerInMetamodel("ceylon.language");
-        registerInMetamodel("com.redhat.ceylon.typechecker");
-        registerInMetamodel("com.redhat.ceylon.common");
-        registerInMetamodel("com.redhat.ceylon.module-resolver");
-        registerInMetamodel("com.redhat.ceylon.compiler.java");
-        registerInMetamodel(module);
+        Set<String> registered = new HashSet<String>();
+        registerInMetamodel("ceylon.language", registered);
+        registerInMetamodel("com.redhat.ceylon.typechecker", registered);
+        registerInMetamodel("com.redhat.ceylon.common", registered);
+        registerInMetamodel("com.redhat.ceylon.module-resolver", registered);
+        registerInMetamodel("com.redhat.ceylon.compiler.java", registered);
+        registerInMetamodel(module, registered);
         if(extraModules != null){
             for(String extraModule : extraModules.keySet()){
-                registerInMetamodel(extraModule);
+                registerInMetamodel(extraModule, registered);
             }
         }
         // now load and invoke the main class
@@ -209,7 +210,9 @@ public class JavaRunnerImpl implements JavaRunner {
     }
 
     // we only need the module name since we already dealt with conflicting versions
-    private void registerInMetamodel(String module) {
+    private void registerInMetamodel(String module, Set<String> registered) {
+        if(!registered.add(module))
+            return;
         // skip JDK modules
         if(JDKUtils.isJDKModule(module) || JDKUtils.isOracleJDKModule(module))
             return;
@@ -222,15 +225,15 @@ public class JavaRunnerImpl implements JavaRunner {
                 dependencyClassLoader = delegateClassLoader;
             else
                 dependencyClassLoader = moduleClassLoader;
-            registerInMetamodel(dependencyArtifact, dependencyClassLoader);
+            registerInMetamodel(dependencyArtifact, dependencyClassLoader, registered);
         }
     }
     
-    private void registerInMetamodel(ArtifactResult artifact, ClassLoader classLoader) {
+    private void registerInMetamodel(ArtifactResult artifact, ClassLoader classLoader, Set<String> registered) {
         Metamodel.loadModule(artifact.name(), artifact.version(), artifact, classLoader);
         // also register its dependencies
         for(ArtifactResult dep : artifact.dependencies()){
-            registerInMetamodel(dep.name());
+            registerInMetamodel(dep.name(), registered);
         }
     }
 
