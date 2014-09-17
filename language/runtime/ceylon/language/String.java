@@ -1714,6 +1714,16 @@ public final class String
         return instance(value).interpose($reifiedOther, other, step);    
     }
     
+    @Ignore
+    @SuppressWarnings("rawtypes")
+    public static <Other, OtherAbsent> Iterable 
+    product(@Ignore TypeDescriptor $reified$Other,
+            @Ignore TypeDescriptor $reified$OtherAbsent,
+            java.lang.String value, 
+            Iterable<? extends Other, ? extends OtherAbsent> other) {
+        return instance(value).product($reified$Other, $reified$OtherAbsent, other);
+    }
+    
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> list, long from, long length) {
