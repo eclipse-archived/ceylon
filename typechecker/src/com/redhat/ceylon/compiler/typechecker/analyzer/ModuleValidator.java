@@ -75,9 +75,11 @@ public class ModuleValidator {
         // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
         Set<Module> compiledModules = moduleManager.getCompiledModules();
         List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
-        modules.addAll(compiledModules);
-        modules.add(context.getModules().getDefaultModule());
+        // we must resolve the language module first because it contains definitions that must be in the classpath
+        // before any other JVM class is loaded, including the module descriptor annotations themselves
         modules.add(context.getModules().getLanguageModule());
+        modules.add(context.getModules().getDefaultModule());
+        modules.addAll(compiledModules);
         for (Module module : modules) {
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
