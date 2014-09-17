@@ -1274,13 +1274,13 @@ public final class String
     @SuppressWarnings("rawtypes")
     @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
     @Override
-    public Tuple slice(@Name("index") long index) {
+    public Sequence slice(@Name("index") long index) {
         return slice(value,index);
     }
     
     @Ignore
     @SuppressWarnings("rawtypes")
-    public static Tuple slice(java.lang.String value, long index) {
+    public static Sequence slice(java.lang.String value, long index) {
         java.lang.String first;
         java.lang.String second;
         if (index<=0) {
@@ -1925,8 +1925,7 @@ public final class String
     
     @Ignore
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
-    public static Iterable<? extends Tuple<Character,? extends Character,? extends Tuple<Character,? extends Character,? extends Sequential<? extends Character>>>, ?>
-    getPaired(java.lang.String value) {
+    public static Iterable<? extends Sequence<? extends Character>,?> getPaired(java.lang.String value) {
     	return instance(value).getPaired();
     }
     
