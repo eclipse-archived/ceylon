@@ -23,7 +23,7 @@ class Dynamic() {
     }
     void m(){
         dynamic {
-            value f = value { a = 2;};
+            value f = dynamic [ a = 2;];
         }
     }
 }

@@ -17,10 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class CorrespondenceImpl<Key,Item>() satisfies Correspondence<Key,Item> 
-    given Key satisfies Object
-    given Item satisfies Object {
+class CorrespondenceImpl<Key,Item>() satisfies Correspondence<Key,Item>
+        given Key satisfies Object
+        given Item satisfies Object {
     shared actual Item? get(Key key) {
+        return nothing;
+    }
+    shared actual Boolean defines(Key key) {
         return nothing;
     }
 }

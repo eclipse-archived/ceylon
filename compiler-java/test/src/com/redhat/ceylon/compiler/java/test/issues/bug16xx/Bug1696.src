@@ -261,8 +261,8 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getIndexed() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -563,8 +563,8 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getIndexed() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -842,8 +842,8 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getIndexed() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -1144,8 +1144,8 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getIndexed() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override

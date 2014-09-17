@@ -21,7 +21,7 @@ class MapImpl<out Key,out Item>() extends Object()
         satisfies Map<Key,Item>
         given Key satisfies Object
         given Item satisfies Object {
-        
+    
     shared actual MapImpl<Key,Item> clone() {
         return nothing;
     }
@@ -31,6 +31,9 @@ class MapImpl<out Key,out Item>() extends Object()
     shared actual Integer size = 0;
     
     shared actual Item? get(Object key) {
+        return nothing;
+    }
+    shared actual Boolean defines(Object key) {
         return nothing;
     }
 }

@@ -2749,17 +2749,25 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
         super();
         this.$reified$Key = $reified$Key;
         this.$reified$Item = $reified$Item;
+        this.entry = entry;
         this.$ceylon$language$Map$this$ = new .ceylon.language.Map$impl<Key, Item>($reified$Key, $reified$Item, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends Key, ? extends Item>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.java.lang.Object, Item>(.ceylon.language.Object.$TypeDescriptor$, $reified$Item, this);
-        this.entries = entry.sequence();
+        this.entries = getEntry$priv$().sequence();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> entry;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Entry<Key,Item>>")
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> getEntry$priv$() {
+        return entry;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Map$impl<Key, Item> $ceylon$language$Map$this$;
     
@@ -2773,12 +2781,6 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean contains(final .java.lang.Object entry) {
         return $ceylon$language$Map$this$.contains(entry);
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean defines(final .java.lang.Object key) {
-        return $ceylon$language$Map$this$.defines(key);
     }
     
     @.java.lang.Override
@@ -3039,8 +3041,8 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable getIndexed() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends Key, ? extends Item>>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -3208,6 +3210,42 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public final boolean defines(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object key) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .java.lang.Object> iterable$199 = getEntry$priv$();
+        final boolean isTuple$200 = iterable$199 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$199).$getArray$() != null;
+        .java.lang.Object elem$196 = null;
+        final .java.lang.Object array$201;
+        int i$202 = 0;
+        final int length$203;
+        if (isTuple$200) {
+            array$201 = ((.ceylon.language.Tuple)iterable$199).$getArray$();
+            i$202 = ((.ceylon.language.Tuple)iterable$199).$getFirst$();
+            length$203 = i$202 + ((.ceylon.language.Tuple)iterable$199).$getLength$();
+        } else {
+            array$201 = null;
+            length$203 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> k$iterator$$197 = isTuple$200 ? null : iterable$199.iterator();
+        loop_0: while (isTuple$200 ? i$202 < length$203 : !((elem$196 = k$iterator$$197.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$200) elem$196 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$201, i$202++);
+            final Key k = ((.ceylon.language.Entry<? extends Key, ? extends Item>)elem$196).getKey();
+            final Item v = ((.ceylon.language.Entry<? extends Key, ? extends Item>)elem$196).getItem();
+            if (k.equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterator<ceylon.language::Entry<Key,Item>>")
     public final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> iterator() {
         return getEntries().iterator();
@@ -3223,24 +3261,24 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     public final Item get(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object key) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .java.lang.Object> iterable$199 = getEntries();
-        final boolean isTuple$200 = iterable$199 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$199).$getArray$() != null;
-        .java.lang.Object elem$196 = null;
-        final .java.lang.Object array$201;
-        int i$202 = 0;
-        final int length$203;
-        if (isTuple$200) {
-            array$201 = ((.ceylon.language.Tuple)iterable$199).$getArray$();
-            i$202 = ((.ceylon.language.Tuple)iterable$199).$getFirst$();
-            length$203 = i$202 + ((.ceylon.language.Tuple)iterable$199).$getLength$();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .java.lang.Object> iterable$207 = getEntries();
+        final boolean isTuple$208 = iterable$207 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$207).$getArray$() != null;
+        .java.lang.Object elem$204 = null;
+        final .java.lang.Object array$209;
+        int i$210 = 0;
+        final int length$211;
+        if (isTuple$208) {
+            array$209 = ((.ceylon.language.Tuple)iterable$207).$getArray$();
+            i$210 = ((.ceylon.language.Tuple)iterable$207).$getFirst$();
+            length$211 = i$210 + ((.ceylon.language.Tuple)iterable$207).$getLength$();
         } else {
-            array$201 = null;
-            length$203 = 0;
+            array$209 = null;
+            length$211 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> e$iterator$$197 = isTuple$200 ? null : iterable$199.iterator();
-        loop_0: while (isTuple$200 ? i$202 < length$203 : !((elem$196 = e$iterator$$197.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$200) elem$196 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$201, i$202++);
-            final .ceylon.language.Entry<? extends Key, ? extends Item> e = (.ceylon.language.Entry<? extends Key, ? extends Item>)elem$196;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> e$iterator$$205 = isTuple$208 ? null : iterable$207.iterator();
+        loop_1: while (isTuple$208 ? i$210 < length$211 : !((elem$204 = e$iterator$$205.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$208) elem$204 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$209, i$210++);
+            final .ceylon.language.Entry<? extends Key, ? extends Item> e = (.ceylon.language.Entry<? extends Key, ? extends Item>)elem$204;
             if (e.getKey().equals(key)) {
                 return e.getItem();
             }
@@ -3553,8 +3591,8 @@ public final class MyIterable$impl<Element, Absent> {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.Iterable getIndexed() {
-                return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
+            public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>>, ? extends .java.lang.Object> getIndexed() {
+                return $ceylon$language$Iterable$this$.getIndexed();
             }
             
             @.java.lang.Override
@@ -3605,9 +3643,9 @@ public final class MyIterable$impl<Element, Absent> {
                 return (
                     let
                     {
-                        long $ceylontmp$step$204 = interpose$step($reified$Other, element);
+                        long $ceylontmp$step$212 = interpose$step($reified$Other, element);
                     }
-                    returning interpose$canonical$($reified$Other, element, $ceylontmp$step$204);
+                    returning interpose$canonical$($reified$Other, element, $ceylontmp$step$212);
                 );
             }
             
@@ -3775,16 +3813,16 @@ final class toplevelAttribute_ {
             }
         }
         final .ceylon.language.meta.declaration.ClassDeclaration d = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClassInLocalAttribute.class);
-        final .ceylon.language.meta.declaration.ValueDeclaration lm$207;
-        .java.lang.Object lm$206 = null;
-        if ((lm$206 = d.getContainer()) instanceof .ceylon.language.meta.declaration.ValueDeclaration) {
-            lm$207 = (.ceylon.language.meta.declaration.ValueDeclaration)lm$206;
+        final .ceylon.language.meta.declaration.ValueDeclaration lm$215;
+        .java.lang.Object lm$214 = null;
+        if ((lm$214 = d.getContainer()) instanceof .ceylon.language.meta.declaration.ValueDeclaration) {
+            lm$215 = (.ceylon.language.meta.declaration.ValueDeclaration)lm$214;
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ValueDeclaration lm = d.container"));
-        if (lm$207.getVariable()) {
+        if (lm$215.getVariable()) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.variable"));
-        if (lm$207.getName().equals("toplevelAttribute")) {
+        if (lm$215.getName().equals("toplevelAttribute")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.name == \"toplevelAttribute\""));
-        if (lm$207.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
+        if (lm$215.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.container == `package com.redhat.ceylon.compiler.java.test.structure.reified`"));
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl3_.set_(d);
         
@@ -3836,15 +3874,15 @@ final class toplevelAttribute_ {
             }
         }
         final .ceylon.language.meta.declaration.ClassDeclaration lc = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClass.class);
-        if (lc.getContainer().equals(lm$207)) {
+        if (lc.getContainer().equals(lm$215)) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lc.container == lm"));
         if (((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClass2.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "f").getName().equals("f")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`function LocalClass2.f`.name == \"f\""));
         final .java.lang.Object o = new LocalClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-        final LocalClass<.ceylon.language.Integer> o$215;
-        .java.lang.Object o$214 = null;
-        if ((o$214 = o) instanceof LocalClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$214, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(toplevelAttribute_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
-            o$215 = (LocalClass)o$214;
+        final LocalClass<.ceylon.language.Integer> o$223;
+        .java.lang.Object o$222 = null;
+        if ((o$222 = o) instanceof LocalClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$222, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(toplevelAttribute_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            o$223 = (LocalClass)o$222;
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is LocalClass<Integer> o"));
         return 1L;
     }
@@ -3877,14 +3915,14 @@ final class toplevelAttribute_ {
             }
         }
         final .ceylon.language.meta.declaration.ClassDeclaration d = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClassInLocalAttribute.class);
-        final .ceylon.language.meta.declaration.SetterDeclaration lm$218;
-        .java.lang.Object lm$217 = null;
-        if ((lm$217 = d.getContainer()) instanceof .ceylon.language.meta.declaration.SetterDeclaration) {
-            lm$218 = (.ceylon.language.meta.declaration.SetterDeclaration)lm$217;
+        final .ceylon.language.meta.declaration.SetterDeclaration lm$226;
+        .java.lang.Object lm$225 = null;
+        if ((lm$225 = d.getContainer()) instanceof .ceylon.language.meta.declaration.SetterDeclaration) {
+            lm$226 = (.ceylon.language.meta.declaration.SetterDeclaration)lm$225;
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is SetterDeclaration lm = d.container"));
-        if (lm$218.getName().equals("toplevelAttribute")) {
+        if (lm$226.getName().equals("toplevelAttribute")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.name == \"toplevelAttribute\""));
-        if (lm$218.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
+        if (lm$226.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.container == `package com.redhat.ceylon.compiler.java.test.structure.reified`"));
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl4_.set_(d);
         
@@ -3936,15 +3974,15 @@ final class toplevelAttribute_ {
             }
         }
         final .ceylon.language.meta.declaration.ClassDeclaration lc = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClass.class);
-        if (lc.getContainer().equals(lm$218)) {
+        if (lc.getContainer().equals(lm$226)) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lc.container == lm"));
         if (((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(LocalClass2.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "f").getName().equals("f")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`function LocalClass2.f`.name == \"f\""));
         final .java.lang.Object o = new LocalClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
-        final LocalClass<.ceylon.language.Integer> o$225;
-        .java.lang.Object o$224 = null;
-        if ((o$224 = o) instanceof LocalClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$224, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(toplevelAttribute_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
-            o$225 = (LocalClass)o$224;
+        final LocalClass<.ceylon.language.Integer> o$233;
+        .java.lang.Object o$232 = null;
+        if ((o$232 = o) instanceof LocalClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$232, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(toplevelAttribute_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            o$233 = (LocalClass)o$232;
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is LocalClass<Integer> o"));
     }
 }
