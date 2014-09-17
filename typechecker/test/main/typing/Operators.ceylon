@@ -89,7 +89,8 @@ class Operators() {
     @type:"Operators.X" value x27item = x27.item;
     @type:"Integer" value x27key = x27.key;
     
-    @error value x28 = 0->none;
+    value x28k = 0->none;
+    @error value x28i = none->X();
     
     @type:"Boolean" value x29 = none exists;
     //@type:"Boolean" value x29n = exists none;
@@ -267,14 +268,15 @@ class Operators() {
     @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = [esf];
     
     String->Object okEntry;   
-    @error String->Anything brokenEntry1;
+    String->Anything okEntry2;
+    @error Anything->String brokenEntry1;
     @error Null->String brokenEntry2;
     
-    @error value brokenEntry3 = "hello"->null;
-    @error value brokenEntry4 = null->"hello";
+    value okEntry3 = "hello"->null;
+    @error value brokenEntry3 = null->"hello";
     
     @type:"Entry<String,Float|Integer>" 
-    String->Float|Integer okEntry2 = "hello"->(true then 1.0 else 1);
+    String->Float|Integer okEntry4 = "hello"->(true then 1.0 else 1);
 
     Float x=1.0;
     Float result = x>0.0 then x else 0.0;
