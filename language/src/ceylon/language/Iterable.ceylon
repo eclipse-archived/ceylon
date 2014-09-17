@@ -985,18 +985,19 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
-    "All entries of form `index->element` where `index` is 
-     the position at which `element` occurs, ordered by 
-     increasing `index`.
+    "A stream containing all [[entries|Entry]] of form 
+     `index->element` where `element` is an element of this
+     stream, and `index` is the position at which `element` 
+     occurs in this stream, ordered by increasing `index`.
      
      For example, the expression 
      
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 2->\"world\" }`."
-    shared default Iterable<<Integer->Element>,Element&Null|Absent> indexed {
+    shared default Iterable<<Integer->Element>,Absent> indexed {
         object indexes
-                satisfies Iterable<<Integer->Element>,Element&Null|Absent> {
+                satisfies Iterable<<Integer->Element>,Absent> {
             shared actual Iterator<Integer->Element> iterator() {
                 value iter = outer.iterator();
                 object iterator 
