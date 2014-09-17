@@ -18,11 +18,19 @@
        if ("hello" in "hello world") { ... }
        assert ('.' in string);
    
-   Ordinarily, `x==y` implies that `x in cat == y in cat`.
+   Every meaningful `Category` is formed from elements with
+   some equivalence relation. Ordinarily, that equivalence
+   relation is [[value equality|Object.equals]]. Thus,
+   ordinarily, `x==y` implies that `x in cat == y in cat`.
    But this contract is not required since it is possible to 
    form a meaningful `Category` using a different 
    equivalence relation. For example, an `IdentitySet` is a 
-   meaningful `Category`.
+   meaningful `Category`, where the equivalence relation is
+   [[identity equality|Identifiable]].
+   
+   Since [[Null]] is not considered to have any meaningful
+   equivalence relation, a `Category` may not contain the
+   [[null value|null]].
    
    Note that even though `Category<Element>` is declared
    contravariant in its [[element type|Element]], most types
