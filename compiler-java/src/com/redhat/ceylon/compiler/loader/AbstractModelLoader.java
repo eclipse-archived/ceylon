@@ -1575,7 +1575,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     protected Module findOrCreateModule(String moduleName, String version)  {
         synchronized(getLock()){
-            boolean isJava = false;
+            boolean isJdk = false;
             boolean defaultModule = false;
 
             // make sure it isn't loaded
@@ -1584,7 +1584,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return module;
 
             if(JDKUtils.isJDKModule(moduleName) || JDKUtils.isOracleJDKModule(moduleName)){
-                isJava = true;
+                isJdk = true;
             }
 
             java.util.List<String> moduleNameList = Arrays.asList(moduleName.split("\\."));
@@ -1599,12 +1599,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // TRICKY We do this only when isJava is true to prevent resetting
             // the value to false by mistake. LazyModule get's created with
             // this attribute to false by default, so it should work
-            if (isJava && module instanceof LazyModule) {
+            if (isJdk && module instanceof LazyModule) {
                 ((LazyModule)module).setJava(true);
             }
 
             // FIXME: this can't be that easy.
-            module.setAvailable(true);
+            if(isJdk)
+                module.setAvailable(true);
             module.setDefault(defaultModule);
             return module;
         }
