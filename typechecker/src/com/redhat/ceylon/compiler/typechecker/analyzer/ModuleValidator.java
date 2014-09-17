@@ -79,10 +79,6 @@ public class ModuleValidator {
         modules.add(context.getModules().getDefaultModule());
         modules.add(context.getModules().getLanguageModule());
         for (Module module : modules) {
-            // the language module has hidden dependencies that we never need to load unless they
-            // are loaded explicitly by modules compiled for the user, or unless we're compiling the language module
-            if(isLanguageModule(module) && !compiledModules.contains(module))
-                continue;
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First, searchedArtifacts);
@@ -90,10 +86,6 @@ public class ModuleValidator {
         }
         moduleManager.addImplicitImports();
         executeExternalModulePhases();
-    }
-
-    private boolean isLanguageModule(Module module) {
-        return module == context.getModules().getLanguageModule();
     }
 
     public final long numberOfModulesNotAlreadySearched() {
@@ -216,10 +208,6 @@ public class ModuleValidator {
                     moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
-            // the language module has hidden dependencies that we never need to load unless they
-            // are loaded explicitly by modules compiled for the user, or unless we're compiling the language module
-            if(isLanguageModule(module))
-                continue;
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
             verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, newImportDepth, alreadySearchedArtifacts);
