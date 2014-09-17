@@ -994,7 +994,7 @@ shared interface Iterable<out Element, out Absent=Null>
      
          { \"hello\", null, \"world\" }.indexed
      
-     results in the stream `{ 0->\"hello\", 2->\"world\" }`."
+     results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
     shared default Iterable<<Integer->Element>,Absent> indexed {
         object indexes
                 satisfies Iterable<<Integer->Element>,Absent> {
