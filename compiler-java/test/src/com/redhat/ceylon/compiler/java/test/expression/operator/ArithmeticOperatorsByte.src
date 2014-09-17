@@ -169,14 +169,14 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$0 = getN1();
-                setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$0 + 1));
+                setN1((byte)($ceylontmp$op$0 + 1));
             }
             returning $ceylontmp$op$0;
         );
         (
             let
             {
-                byte $ceylontmp$op$1 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() + 1);
+                byte $ceylontmp$op$1 = (byte)(getN1() + 1);
                 setN1($ceylontmp$op$1);
             }
             returning $ceylontmp$op$1;
@@ -185,26 +185,26 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$2 = getN1();
-                setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$2 - 1));
+                setN1((byte)($ceylontmp$op$2 - 1));
             }
             returning $ceylontmp$op$2;
         );
         (
             let
             {
-                byte $ceylontmp$op$3 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() - 1);
+                byte $ceylontmp$op$3 = (byte)(getN1() - 1);
                 setN1($ceylontmp$op$3);
             }
             returning $ceylontmp$op$3;
         );
         setI1(getN1());
-        setI1(.com.redhat.ceylon.compiler.java.Util.toByte(-getN1()));
-        setN1(.com.redhat.ceylon.compiler.java.Util.toByte(getN1() + getN2()));
-        setI1(.com.redhat.ceylon.compiler.java.Util.toByte(getN1() - getN2()));
+        setI1((byte)-getN1());
+        setN1((byte)(getN1() + getN2()));
+        setI1((byte)(getN1() - getN2()));
         (
             let
             {
-                byte $ceylontmp$op$4 = .com.redhat.ceylon.compiler.java.Util.toByte(getN1() + getN2());
+                byte $ceylontmp$op$4 = (byte)(getN1() + getN2());
                 setN1($ceylontmp$op$4);
             }
             returning $ceylontmp$op$4;
@@ -216,14 +216,14 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$5 = getGetterByte1();
-                setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$5 + 1));
+                setGetterByte1((byte)($ceylontmp$op$5 + 1));
             }
             returning $ceylontmp$op$5;
         );
         (
             let
             {
-                byte $ceylontmp$op$6 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + 1);
+                byte $ceylontmp$op$6 = (byte)(getGetterByte1() + 1);
                 setGetterByte1($ceylontmp$op$6);
             }
             returning $ceylontmp$op$6;
@@ -232,26 +232,26 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$7 = getGetterByte1();
-                setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$7 - 1));
+                setGetterByte1((byte)($ceylontmp$op$7 - 1));
             }
             returning $ceylontmp$op$7;
         );
         (
             let
             {
-                byte $ceylontmp$op$8 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() - 1);
+                byte $ceylontmp$op$8 = (byte)(getGetterByte1() - 1);
                 setGetterByte1($ceylontmp$op$8);
             }
             returning $ceylontmp$op$8;
         );
         setGetterByte3(getGetterByte1());
-        setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-getGetterByte1()));
-        setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + getGetterByte2()));
-        setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() - getGetterByte2()));
+        setGetterByte3((byte)-getGetterByte1());
+        setGetterByte1((byte)(getGetterByte1() + getGetterByte2()));
+        setGetterByte3((byte)(getGetterByte1() - getGetterByte2()));
         (
             let
             {
-                byte $ceylontmp$op$9 = .com.redhat.ceylon.compiler.java.Util.toByte(getGetterByte1() + getGetterByte2());
+                byte $ceylontmp$op$9 = (byte)(getGetterByte1() + getGetterByte2());
                 setGetterByte1($ceylontmp$op$9);
             }
             returning $ceylontmp$op$9;
@@ -264,7 +264,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$10 = this;
                 byte $ceylontmp$opV$11 = $ceylontmp$opE$10.getN1();
-                $ceylontmp$opE$10.setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$11 + 1));
+                $ceylontmp$opE$10.setN1((byte)($ceylontmp$opV$11 + 1));
             }
             returning $ceylontmp$opV$11;
         );
@@ -272,7 +272,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$12 = this;
-                byte $ceylontmp$opV$13 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$12.getN1() + 1);
+                byte $ceylontmp$opV$13 = (byte)($ceylontmp$opE$12.getN1() + 1);
                 $ceylontmp$opE$12.setN1($ceylontmp$opV$13);
             }
             returning $ceylontmp$opV$13;
@@ -282,7 +282,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$14 = this;
                 byte $ceylontmp$opV$15 = $ceylontmp$opE$14.getN1();
-                $ceylontmp$opE$14.setN1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$15 - 1));
+                $ceylontmp$opE$14.setN1((byte)($ceylontmp$opV$15 - 1));
             }
             returning $ceylontmp$opV$15;
         );
@@ -290,20 +290,20 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$16 = this;
-                byte $ceylontmp$opV$17 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$16.getN1() - 1);
+                byte $ceylontmp$opV$17 = (byte)($ceylontmp$opE$16.getN1() - 1);
                 $ceylontmp$opE$16.setN1($ceylontmp$opV$17);
             }
             returning $ceylontmp$opV$17;
         );
         this.setI1(this.getN1());
-        this.setI1(.com.redhat.ceylon.compiler.java.Util.toByte(-this.getN1()));
-        this.setN1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getN1() + this.getN2()));
-        this.setI1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getN1() - this.getN2()));
+        this.setI1((byte)-this.getN1());
+        this.setN1((byte)(this.getN1() + this.getN2()));
+        this.setI1((byte)(this.getN1() - this.getN2()));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$18 = this;
-                byte $ceylontmp$opV$19 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$18.getN1() + this.getN2());
+                byte $ceylontmp$opV$19 = (byte)($ceylontmp$opE$18.getN1() + this.getN2());
                 $ceylontmp$opE$18.setN1($ceylontmp$opV$19);
             }
             returning $ceylontmp$opV$19;
@@ -316,7 +316,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$20 = this;
                 byte $ceylontmp$opV$21 = $ceylontmp$opE$20.getGetterByte1();
-                $ceylontmp$opE$20.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$21 + 1));
+                $ceylontmp$opE$20.setGetterByte1((byte)($ceylontmp$opV$21 + 1));
             }
             returning $ceylontmp$opV$21;
         );
@@ -324,7 +324,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$22 = this;
-                byte $ceylontmp$opV$23 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$22.getGetterByte1() + 1);
+                byte $ceylontmp$opV$23 = (byte)($ceylontmp$opE$22.getGetterByte1() + 1);
                 $ceylontmp$opE$22.setGetterByte1($ceylontmp$opV$23);
             }
             returning $ceylontmp$opV$23;
@@ -334,7 +334,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$24 = this;
                 byte $ceylontmp$opV$25 = $ceylontmp$opE$24.getGetterByte1();
-                $ceylontmp$opE$24.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$25 - 1));
+                $ceylontmp$opE$24.setGetterByte1((byte)($ceylontmp$opV$25 - 1));
             }
             returning $ceylontmp$opV$25;
         );
@@ -342,20 +342,20 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$26 = this;
-                byte $ceylontmp$opV$27 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$26.getGetterByte1() - 1);
+                byte $ceylontmp$opV$27 = (byte)($ceylontmp$opE$26.getGetterByte1() - 1);
                 $ceylontmp$opE$26.setGetterByte1($ceylontmp$opV$27);
             }
             returning $ceylontmp$opV$27;
         );
         this.setGetterByte3(this.getGetterByte1());
-        this.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-this.getGetterByte1()));
-        this.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(this.getGetterByte1() + this.getGetterByte2()));
-        this.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(this.getGetterByte1() - this.getGetterByte2()));
+        this.setGetterByte3((byte)-this.getGetterByte1());
+        this.setGetterByte1((byte)(this.getGetterByte1() + this.getGetterByte2()));
+        this.setGetterByte3((byte)(this.getGetterByte1() - this.getGetterByte2()));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators $ceylontmp$opE$28 = this;
-                byte $ceylontmp$opV$29 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$28.getGetterByte1() + this.getGetterByte2());
+                byte $ceylontmp$opV$29 = (byte)($ceylontmp$opE$28.getGetterByte1() + this.getGetterByte2());
                 $ceylontmp$opE$28.setGetterByte1($ceylontmp$opV$29);
             }
             returning $ceylontmp$opV$29;
@@ -425,9 +425,9 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         n1--;
         --n1;
         i1 = n1;
-        i1 = .com.redhat.ceylon.compiler.java.Util.toByte(-n1);
-        n1 = .com.redhat.ceylon.compiler.java.Util.toByte(n1 + n2);
-        i1 = .com.redhat.ceylon.compiler.java.Util.toByte(n1 - n2);
+        i1 = (byte)-n1;
+        n1 = (byte)(n1 + n2);
+        i1 = (byte)(n1 - n2);
         n1 += n2;
     }
     
@@ -508,14 +508,14 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$40 = getterByte1$getter$_.get_();
-                getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$40 + 1));
+                getterByte1$setter$_.set_((byte)($ceylontmp$op$40 + 1));
             }
             returning $ceylontmp$op$40;
         );
         (
             let
             {
-                byte $ceylontmp$op$41 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + 1);
+                byte $ceylontmp$op$41 = (byte)(getterByte1$getter$_.get_() + 1);
                 getterByte1$setter$_.set_($ceylontmp$op$41);
             }
             returning $ceylontmp$op$41;
@@ -524,26 +524,26 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$42 = getterByte1$getter$_.get_();
-                getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$42 - 1));
+                getterByte1$setter$_.set_((byte)($ceylontmp$op$42 - 1));
             }
             returning $ceylontmp$op$42;
         );
         (
             let
             {
-                byte $ceylontmp$op$43 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() - 1);
+                byte $ceylontmp$op$43 = (byte)(getterByte1$getter$_.get_() - 1);
                 getterByte1$setter$_.set_($ceylontmp$op$43);
             }
             returning $ceylontmp$op$43;
         );
         getterByte3$setter$_.set_(getterByte1$getter$_.get_());
-        getterByte3$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-getterByte1$getter$_.get_()));
-        getterByte1$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + getterByte2$getter$_.get_()));
-        getterByte3$setter$_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() - getterByte2$getter$_.get_()));
+        getterByte3$setter$_.set_((byte)-getterByte1$getter$_.get_());
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() + getterByte2$getter$_.get_()));
+        getterByte3$setter$_.set_((byte)(getterByte1$getter$_.get_() - getterByte2$getter$_.get_()));
         (
             let
             {
-                byte $ceylontmp$op$44 = .com.redhat.ceylon.compiler.java.Util.toByte(getterByte1$getter$_.get_() + getterByte2$getter$_.get_());
+                byte $ceylontmp$op$44 = (byte)(getterByte1$getter$_.get_() + getterByte2$getter$_.get_());
                 getterByte1$setter$_.set_($ceylontmp$op$44);
             }
             returning $ceylontmp$op$44;
@@ -605,14 +605,14 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$50 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$50 + 1));
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_((byte)($ceylontmp$op$50 + 1));
             }
             returning $ceylontmp$op$50;
         );
         (
             let
             {
-                byte $ceylontmp$op$51 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + 1);
+                byte $ceylontmp$op$51 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + 1);
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$51);
             }
             returning $ceylontmp$op$51;
@@ -621,26 +621,26 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$52 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$52 - 1));
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_((byte)($ceylontmp$op$52 - 1));
             }
             returning $ceylontmp$op$52;
         );
         (
             let
             {
-                byte $ceylontmp$op$53 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - 1);
+                byte $ceylontmp$op$53 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - 1);
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$53);
             }
             returning $ceylontmp$op$53;
         );
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_((byte)-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_()));
         (
             let
             {
-                byte $ceylontmp$op$54 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_());
+                byte $ceylontmp$op$54 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.get_());
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.set_($ceylontmp$op$54);
             }
             returning $ceylontmp$op$54;
@@ -652,14 +652,14 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$55 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$55 + 1));
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_((byte)($ceylontmp$op$55 + 1));
             }
             returning $ceylontmp$op$55;
         );
         (
             let
             {
-                byte $ceylontmp$op$56 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + 1);
+                byte $ceylontmp$op$56 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + 1);
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$56);
             }
             returning $ceylontmp$op$56;
@@ -668,26 +668,26 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             let
             {
                 byte $ceylontmp$op$57 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$57 - 1));
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_((byte)($ceylontmp$op$57 - 1));
             }
             returning $ceylontmp$op$57;
         );
         (
             let
             {
-                byte $ceylontmp$op$58 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - 1);
+                byte $ceylontmp$op$58 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - 1);
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$58);
             }
             returning $ceylontmp$op$58;
         );
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_(.com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_((byte)-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_()));
         (
             let
             {
-                byte $ceylontmp$op$59 = .com.redhat.ceylon.compiler.java.Util.toByte(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_());
+                byte $ceylontmp$op$59 = (byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte2_.get_());
                 .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterByte1_.set_($ceylontmp$op$59);
             }
             returning $ceylontmp$op$59;
@@ -712,14 +712,14 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
             let
             {
                 byte $ceylontmp$opV$61 = super.getGetterByte1();
-                super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$61 + 1));
+                super.setGetterByte1((byte)($ceylontmp$opV$61 + 1));
             }
             returning $ceylontmp$opV$61;
         );
         (
             let
             {
-                byte $ceylontmp$opV$63 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + 1);
+                byte $ceylontmp$opV$63 = (byte)(super.getGetterByte1() + 1);
                 super.setGetterByte1($ceylontmp$opV$63);
             }
             returning $ceylontmp$opV$63;
@@ -728,26 +728,26 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
             let
             {
                 byte $ceylontmp$opV$65 = super.getGetterByte1();
-                super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$65 - 1));
+                super.setGetterByte1((byte)($ceylontmp$opV$65 - 1));
             }
             returning $ceylontmp$opV$65;
         );
         (
             let
             {
-                byte $ceylontmp$opV$67 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() - 1);
+                byte $ceylontmp$opV$67 = (byte)(super.getGetterByte1() - 1);
                 super.setGetterByte1($ceylontmp$opV$67);
             }
             returning $ceylontmp$opV$67;
         );
         super.setGetterByte3(super.getGetterByte1());
-        super.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(-super.getGetterByte1()));
-        super.setGetterByte1(.com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + super.getGetterByte2()));
-        super.setGetterByte3(.com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() - super.getGetterByte2()));
+        super.setGetterByte3((byte)-super.getGetterByte1());
+        super.setGetterByte1((byte)(super.getGetterByte1() + super.getGetterByte2()));
+        super.setGetterByte3((byte)(super.getGetterByte1() - super.getGetterByte2()));
         (
             let
             {
-                byte $ceylontmp$opV$69 = .com.redhat.ceylon.compiler.java.Util.toByte(super.getGetterByte1() + super.getGetterByte2());
+                byte $ceylontmp$opV$69 = (byte)(super.getGetterByte1() + super.getGetterByte2());
                 super.setGetterByte1($ceylontmp$opV$69);
             }
             returning $ceylontmp$opV$69;

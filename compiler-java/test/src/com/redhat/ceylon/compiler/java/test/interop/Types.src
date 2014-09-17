@@ -234,14 +234,14 @@ final class operationsOnBytes_ {
     
     static void operationsOnBytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        java.byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(java.byte_attr + java.byte_attr);
-        java.byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(java.byte_attr - java.byte_attr);
+        java.byte_attr = (byte)(java.byte_attr + java.byte_attr);
+        java.byte_attr = (byte)(java.byte_attr - java.byte_attr);
         java.byte_attr = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$2 = java;
                 byte $ceylontmp$opV$3 = $ceylontmp$opE$2.byte_attr;
-                $ceylontmp$opE$2.byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$3 + 1);
+                $ceylontmp$opE$2.byte_attr = (byte)($ceylontmp$opV$3 + 1);
             }
             returning $ceylontmp$opV$3;
         );
@@ -249,7 +249,7 @@ final class operationsOnBytes_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$4 = java;
-                byte $ceylontmp$opV$5 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$4.byte_attr + 1);
+                byte $ceylontmp$opV$5 = (byte)($ceylontmp$opE$4.byte_attr + 1);
                 $ceylontmp$opE$4.byte_attr = $ceylontmp$opV$5;
             }
             returning $ceylontmp$opV$5;
@@ -258,7 +258,7 @@ final class operationsOnBytes_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$6 = java;
-                byte $ceylontmp$opV$7 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$6.byte_attr + java.byte_attr);
+                byte $ceylontmp$opV$7 = (byte)($ceylontmp$opE$6.byte_attr + java.byte_attr);
                 $ceylontmp$opE$6.byte_attr = $ceylontmp$opV$7;
             }
             returning $ceylontmp$opV$7;
@@ -267,7 +267,7 @@ final class operationsOnBytes_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$8 = java;
-                byte $ceylontmp$opV$9 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$8.byte_attr - java.byte_attr);
+                byte $ceylontmp$opV$9 = (byte)($ceylontmp$opE$8.byte_attr - java.byte_attr);
                 $ceylontmp$opE$8.byte_attr = $ceylontmp$opV$9;
             }
             returning $ceylontmp$opV$9;
@@ -289,14 +289,14 @@ final class operationsOnBytes2_ {
     
     static void operationsOnBytes2() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        java.setByte(.com.redhat.ceylon.compiler.java.Util.toByte(java.getByte() + java.getByte()));
-        java.setByte(.com.redhat.ceylon.compiler.java.Util.toByte(java.getByte() - java.getByte()));
+        java.setByte((byte)(java.getByte() + java.getByte()));
+        java.setByte((byte)(java.getByte() - java.getByte()));
         java.setByte((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$10 = java;
                 byte $ceylontmp$opV$11 = $ceylontmp$opE$10.getByte();
-                $ceylontmp$opE$10.setByte(.com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opV$11 + 1));
+                $ceylontmp$opE$10.setByte((byte)($ceylontmp$opV$11 + 1));
             }
             returning $ceylontmp$opV$11;
         ));
@@ -304,7 +304,7 @@ final class operationsOnBytes2_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$12 = java;
-                byte $ceylontmp$opV$13 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$12.getByte() + 1);
+                byte $ceylontmp$opV$13 = (byte)($ceylontmp$opE$12.getByte() + 1);
                 $ceylontmp$opE$12.setByte($ceylontmp$opV$13);
             }
             returning $ceylontmp$opV$13;
@@ -313,7 +313,7 @@ final class operationsOnBytes2_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$14 = java;
-                byte $ceylontmp$opV$15 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$14.getByte() + java.getByte());
+                byte $ceylontmp$opV$15 = (byte)($ceylontmp$opE$14.getByte() + java.getByte());
                 $ceylontmp$opE$14.setByte($ceylontmp$opV$15);
             }
             returning $ceylontmp$opV$15;
@@ -322,7 +322,7 @@ final class operationsOnBytes2_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$16 = java;
-                byte $ceylontmp$opV$17 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$16.getByte() - java.getByte());
+                byte $ceylontmp$opV$17 = (byte)($ceylontmp$opE$16.getByte() - java.getByte());
                 $ceylontmp$opE$16.setByte($ceylontmp$opV$17);
             }
             returning $ceylontmp$opV$17;
@@ -344,20 +344,20 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
     }
     
     private final void m$priv$() {
-        byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(byte_attr + byte_attr);
-        byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(byte_attr - byte_attr);
+        byte_attr = (byte)(byte_attr + byte_attr);
+        byte_attr = (byte)(byte_attr - byte_attr);
         byte_attr = (
             let
             {
                 byte $ceylontmp$op$18 = byte_attr;
-                byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$op$18 + 1);
+                byte_attr = (byte)($ceylontmp$op$18 + 1);
             }
             returning $ceylontmp$op$18;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmp$op$19 = .com.redhat.ceylon.compiler.java.Util.toByte(byte_attr + 1);
+                byte $ceylontmp$op$19 = (byte)(byte_attr + 1);
                 byte_attr = $ceylontmp$op$19;
             }
             returning $ceylontmp$op$19;
@@ -365,7 +365,7 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
         byte_attr = (
             let
             {
-                byte $ceylontmp$op$20 = .com.redhat.ceylon.compiler.java.Util.toByte(byte_attr + byte_attr);
+                byte $ceylontmp$op$20 = (byte)(byte_attr + byte_attr);
                 byte_attr = $ceylontmp$op$20;
             }
             returning $ceylontmp$op$20;
@@ -373,7 +373,7 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
         byte_attr = (
             let
             {
-                byte $ceylontmp$op$21 = .com.redhat.ceylon.compiler.java.Util.toByte(byte_attr - byte_attr);
+                byte $ceylontmp$op$21 = (byte)(byte_attr - byte_attr);
                 byte_attr = $ceylontmp$op$21;
             }
             returning $ceylontmp$op$21;
@@ -401,15 +401,15 @@ final class operationsOnMixedTypes_ {
     
     static void operationsOnMixedTypes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        java.byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(java.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
+        java.byte_attr = (byte)(java.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
         java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Byte.getUnsigned(java.byte_attr) + java.int_attr);
-        java.byte_attr = .com.redhat.ceylon.compiler.java.Util.toByte(.ceylon.language.Integer.getByte(java.int_attr) + java.byte_attr);
+        java.byte_attr = (byte)(.ceylon.language.Integer.getByte(java.int_attr) + java.byte_attr);
         java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(java.int_attr + .ceylon.language.Byte.getUnsigned(java.byte_attr));
         java.byte_attr = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$22 = java;
-                byte $ceylontmp$opV$23 = .com.redhat.ceylon.compiler.java.Util.toByte($ceylontmp$opE$22.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
+                byte $ceylontmp$opV$23 = (byte)($ceylontmp$opE$22.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
                 $ceylontmp$opE$22.byte_attr = $ceylontmp$opV$23;
             }
             returning $ceylontmp$opV$23;
