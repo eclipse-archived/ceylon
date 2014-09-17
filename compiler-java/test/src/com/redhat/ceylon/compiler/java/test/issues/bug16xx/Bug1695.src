@@ -97,11 +97,11 @@ final class bug1695_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B b1 = (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> arg$1$0 = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A()});
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> arg$1$0 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A()});
             }
             returning new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B(arg$1$0);
         );
-        final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B b2 = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B((.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A()}));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B b2 = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695B((.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695A()}));
     }
     
     public static void main(.java.lang.String[] args) {

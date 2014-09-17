@@ -4,7 +4,7 @@ interface Bug1450<Element> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$impl();
     
-    public .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getTuple();
+    public .ceylon.language.Sequence<? extends Element> getTuple();
 }
 final class Bug1450$impl<Element> {
     
@@ -19,7 +19,7 @@ final class Bug1450$impl<Element> {
         this.$reified$Element = $reified$Element;
     }
     
-    public final .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getTuple() {
+    public final .ceylon.language.Sequence<? extends Element> getTuple() {
         throw new .ceylon.language.Exception(null, null);
     }
 }
@@ -38,7 +38,7 @@ class Bug1450_Single<Element> implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getTuple() {
+    public .ceylon.language.Sequence<? extends Element> getTuple() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$.getTuple();
     }
     

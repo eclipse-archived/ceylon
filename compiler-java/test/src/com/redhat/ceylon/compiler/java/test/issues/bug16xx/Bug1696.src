@@ -4,9 +4,9 @@ interface Bug1696<Element, Absent> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696$impl<? extends Element, ? extends Absent> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$impl();
     
-    public .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getPaired();
+    public .ceylon.language.Sequence<? extends Element> getPaired();
     
-    public .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getPaired2();
+    public .ceylon.language.Sequence<? extends Element> getPaired2();
 }
 final class Bug1696$impl<Element, Absent> {
     
@@ -24,12 +24,12 @@ final class Bug1696$impl<Element, Absent> {
         this.$reified$Element = $reified$Element;
     }
     
-    public final .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getPaired() {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    public final .ceylon.language.Sequence<? extends Element> getPaired() {
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
     
-    public final .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>> getPaired2() {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    public final .ceylon.language.Sequence<? extends Element> getPaired2() {
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
 }
 class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696<.java.lang.Object, .ceylon.language.String> {
@@ -47,14 +47,14 @@ class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple getPaired() {
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
+    public .ceylon.language.Sequence getPaired() {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Tuple getPaired2() {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty> r = (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple)r;
+    public final .ceylon.language.Sequence getPaired2() {
+        final .ceylon.language.Sequence r = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$.getPaired();
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)r;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -267,7 +267,7 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override
@@ -287,7 +287,7 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -569,7 +569,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Sequential<? extends T>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override
@@ -589,7 +589,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -863,7 +863,7 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -1165,7 +1165,7 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override

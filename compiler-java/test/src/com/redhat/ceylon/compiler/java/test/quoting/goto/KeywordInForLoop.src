@@ -195,7 +195,7 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     KeywordInForLoop3(final long age) {
         this.age = age;
-        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{
                 new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(1L),
                 new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(18L)});
         final boolean minors;

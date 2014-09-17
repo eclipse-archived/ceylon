@@ -60,8 +60,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Tuple withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
-        return (.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequence<? extends Element>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.withLeading($reified$Other, element);
+    public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element) {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$ceylon$language$Sequence$this$.withLeading($reified$Other, element);
     }
     
     @.java.lang.Override
@@ -100,8 +100,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple slice(final long index) {
-        return (.ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends Element>, ? extends .ceylon.language.List<? extends Element>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends Element>>>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.slice(index);
+    public .ceylon.language.Sequence slice(final long index) {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.List<? extends Element>>)(.ceylon.language.Sequence)$ceylon$language$Sequence$this$.slice(index);
     }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
@@ -417,7 +417,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override
@@ -437,7 +437,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends Element, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override

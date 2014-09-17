@@ -6,7 +6,7 @@ final class bug616_ {
     }
     
     static void bug616() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = (.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
         final .ceylon.language.Iterable<? extends .ceylon.language.Comparable<? super .ceylon.language.String>, ? extends .java.lang.Object> iterable$2 = comparables;
         final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$0 = null;

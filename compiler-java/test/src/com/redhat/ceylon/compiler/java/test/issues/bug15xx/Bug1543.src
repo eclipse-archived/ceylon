@@ -6,7 +6,7 @@ final class bug1543_ {
     }
     
     static void bug1543() {
-        .ceylon.language.Sequence<? extends .ceylon.language.Integer> chain = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        .ceylon.language.Sequence<? extends .ceylon.language.Integer> chain = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         final long start$0 = 0L;
         final long end$1 = start$0 + .java.lang.Math.max(0L, 100000L);
         loop_0: for (long i$2 = start$0; i$2 < end$1; i$2++) {
@@ -87,7 +87,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public abstract <Other>.ceylon.language.Tuple withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <Other>.ceylon.language.Sequence withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
@@ -105,7 +105,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public abstract <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends Element>> withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <Other>.ceylon.language.Sequence withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
@@ -118,7 +118,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
             erased = true)
-    public abstract .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>> getA();
+    public abstract .ceylon.language.Sequence getA();
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
@@ -128,7 +128,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
             erased = true)
-    public abstract .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>> m();
+    public abstract .ceylon.language.Sequence m();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -157,7 +157,7 @@ public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.jav
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public abstract <Other>.ceylon.language.Tuple withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <Other>.ceylon.language.Sequence withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
@@ -185,7 +185,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public <Other>.ceylon.language.Tuple withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Other>.ceylon.language.Sequence withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
@@ -204,7 +204,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public <Other>.ceylon.language.Tuple withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Other>.ceylon.language.Sequence withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
@@ -219,7 +219,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
             value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public .ceylon.language.Tuple getA();
+    public .ceylon.language.Sequence getA();
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
@@ -230,7 +230,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
             erased = true)
-    public .ceylon.language.Tuple m();
+    public .ceylon.language.Sequence m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty.class);
 }
@@ -245,24 +245,24 @@ public final class My1543Empty$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Other>.ceylon.language.Tuple withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Other>.ceylon.language.Sequence withLeading(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Other>.ceylon.language.Tuple withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Other>.ceylon.language.Sequence withLeading2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.Tuple getA() {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    public final .ceylon.language.Sequence getA() {
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Tuple m() {
-        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    public .ceylon.language.Sequence m() {
+        return (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
     }
 }

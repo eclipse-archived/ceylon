@@ -231,8 +231,8 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Tuple slice(final long index) {
-        return (.ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Tuple<.ceylon.language.List<? extends X>, ? extends .ceylon.language.List<? extends X>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.List<? extends X>>>>)(.ceylon.language.Tuple)$ceylon$language$List$this$.slice(index);
+    public .ceylon.language.Sequence slice(final long index) {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.List<? extends X>>)(.ceylon.language.Sequence)$ceylon$language$List$this$.slice(index);
     }
     
     @.java.lang.Override
@@ -389,7 +389,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<X, ? extends X, ? extends .ceylon.language.Tuple<X, ? extends X, ? extends .ceylon.language.Sequential<? extends X>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends X>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override
@@ -409,7 +409,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Other, ? extends Other, ? extends .ceylon.language.Sequential<? extends Other>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override

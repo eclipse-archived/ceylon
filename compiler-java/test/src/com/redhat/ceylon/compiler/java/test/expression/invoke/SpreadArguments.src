@@ -45,11 +45,11 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public final void m3(final long i, final .ceylon.language.Sequence<? extends T> s) {
     }
     
-    private final void spreadTuple$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> args) {
+    private final void spreadTuple$priv$(final .ceylon.language.Sequence args) {
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$1 = args;
+                .ceylon.language.Sequential tuple$1 = (.ceylon.language.Sequential)args;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.spreadArguments_.spreadArguments(((.ceylon.language.Integer)tuple$1.get(.ceylon.language.Integer.instance(0L))).longValue(), ((.ceylon.language.String)tuple$1.get(.ceylon.language.Integer.instance(1L))).toString());
             }
             returning null;
@@ -57,7 +57,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> tuple$3 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                .ceylon.language.Sequential tuple$3 = (.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.spreadArguments_.spreadArguments(0L, ((.ceylon.language.String)tuple$3.get(.ceylon.language.Integer.instance(0L))).toString());
             }
             returning null;
@@ -65,14 +65,14 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$5 = args;
+                .ceylon.language.Sequential tuple$5 = (.ceylon.language.Sequential)args;
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, ((.ceylon.language.Integer)tuple$5.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.String)tuple$5.get(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> tuple$7 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                .ceylon.language.Sequential tuple$7 = (.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, 0L, (.ceylon.language.String)tuple$7.get(.ceylon.language.Integer.instance(0L)));
         );
@@ -80,14 +80,14 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$9 = args;
+                .ceylon.language.Sequential tuple$9 = (.ceylon.language.Sequential)args;
             }
             returning f.$call$((.ceylon.language.Integer)tuple$9.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.String)tuple$9.get(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> tuple$11 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                .ceylon.language.Sequential tuple$11 = (.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
             }
             returning f.$call$(.ceylon.language.Integer.instance(1L), (.ceylon.language.String)tuple$11.get(.ceylon.language.Integer.instance(0L)));
         );
@@ -95,7 +95,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> tuple$13 = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(0L)});
+                .ceylon.language.Sequential tuple$13 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(0L)});
                 sa.m2(((.ceylon.language.Integer)tuple$13.get(.ceylon.language.Integer.instance(0L))).longValue());
             }
             returning null;
@@ -103,7 +103,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$15 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$15 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello")});
                 sa.m2(((.ceylon.language.Integer)tuple$15.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tuple$15.spanFrom(.ceylon.language.Integer.instance(1L)));
@@ -113,7 +113,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$17 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$17 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello")});
                 sa.m3(((.ceylon.language.Integer)tuple$17.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tuple$17.spanFrom(.ceylon.language.Integer.instance(1L)));
@@ -123,7 +123,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>> tuple$19 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$19 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello"),
                         .ceylon.language.String.instance("world")});
@@ -134,7 +134,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>> tuple$21 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$21 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello"),
                         .ceylon.language.String.instance("world")});
@@ -142,11 +142,11 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
             returning null;
         );
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>> t = (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence).ceylon.language.nothing_.get_();
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>> tuple$23 = t;
+                .ceylon.language.Sequential tuple$23 = (.ceylon.language.Sequential)t;
                 sa.m2(((.ceylon.language.Integer)tuple$23.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tuple$23.spanFrom(.ceylon.language.Integer.instance(1L)));
             }
             returning null;
@@ -154,20 +154,20 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>> tuple$25 = t;
+                .ceylon.language.Sequential tuple$25 = (.ceylon.language.Sequential)t;
                 sa.m3(((.ceylon.language.Integer)tuple$25.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tuple$25.spanFrom(.ceylon.language.Integer.instance(1L)));
             }
             returning null;
         );
     }
     
-    private final void spreadTupleWithSpreadOp$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> args) {
+    private final void spreadTupleWithSpreadOp$priv$(final .ceylon.language.Sequence args) {
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iter = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
         (
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$27$iterable$ = iter;
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$28 = args;
+                .ceylon.language.Sequential tuple$28 = (.ceylon.language.Sequential)args;
                 final long spread$27$arg$0 = ((.ceylon.language.Integer)tuple$28.get(.ceylon.language.Integer.instance(0L))).longValue();
                 final .ceylon.language.String spread$27$arg$1 = (.ceylon.language.String)tuple$28.get(.ceylon.language.Integer.instance(1L));
             }
@@ -200,7 +200,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$29$iterable$ = iter;
-                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> tuple$30 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                .ceylon.language.Sequential tuple$30 = (.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
                 final long spread$29$arg$0 = 0L;
                 final .ceylon.language.String spread$29$arg$1 = (.ceylon.language.String)tuple$30.get(.ceylon.language.Integer.instance(0L));
             }
@@ -234,7 +234,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$31$iterable$ = iter;
                 final long spread$31$arg$0 = 0L;
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> spread$31$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> spread$31$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
@@ -266,7 +266,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$32$iterable$ = iter;
                 final long spread$32$arg$0 = 0L;
-                final .ceylon.language.Sequence<? extends .ceylon.language.String> spread$32$arg$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
+                final .ceylon.language.Sequence<? extends .ceylon.language.String> spread$32$arg$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest();
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
@@ -298,7 +298,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$33$iterable$ = iter;
                 final long spread$33$arg$0 = 0L;
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> spread$33$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Tuple)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest()).getRest();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> spread$33$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args).getRest()).getRest();
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
@@ -329,7 +329,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$34$iterable$ = iter;
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> tuple$35 = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(0L)});
+                .ceylon.language.Sequential tuple$35 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(0L)});
                 final long spread$34$arg$0 = ((.ceylon.language.Integer)tuple$35.get(.ceylon.language.Integer.instance(0L))).longValue();
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -361,7 +361,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$36$iterable$ = iter;
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$37 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$37 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello")});
                 final long spread$36$arg$0 = ((.ceylon.language.Integer)tuple$37.get(.ceylon.language.Integer.instance(0L))).longValue();
@@ -396,7 +396,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$38$iterable$ = iter;
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> tuple$39 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$39 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello")});
                 final long spread$38$arg$0 = ((.ceylon.language.Integer)tuple$39.get(.ceylon.language.Integer.instance(0L))).longValue();
@@ -431,7 +431,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$40$iterable$ = iter;
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>> tuple$41 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$41 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello"),
                         .ceylon.language.String.instance("world")});
@@ -467,7 +467,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> spread$42$iterable$ = iter;
-                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>> tuple$43 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Sequential tuple$43 = (.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(0L),
                         .ceylon.language.String.instance("hello"),
                         .ceylon.language.String.instance("world")});
@@ -719,15 +719,15 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 return .ceylon.language.Integer.instance(1L);
             }
         };
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> one = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> two = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> one = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> two = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L)});
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> three = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> three = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)});
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>> four = (.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> four = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L),
@@ -735,98 +735,98 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> tuple$47 = one;
+                .ceylon.language.Sequential tuple$47 = (.ceylon.language.Sequential)one;
             }
             returning f.$callvariadic$((.ceylon.language.Integer)tuple$47.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> tuple$49 = two;
+                .ceylon.language.Sequential tuple$49 = (.ceylon.language.Sequential)two;
             }
             returning f.$callvariadic$((.ceylon.language.Integer)tuple$49.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Integer)tuple$49.get(.ceylon.language.Integer.instance(1L)), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> tuple$51 = three;
+                .ceylon.language.Sequential tuple$51 = (.ceylon.language.Sequential)three;
             }
             returning f.$callvariadic$((.ceylon.language.Integer)tuple$51.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Integer)tuple$51.get(.ceylon.language.Integer.instance(1L)), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)tuple$51.spanFrom(.ceylon.language.Integer.instance(2L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> tuple$53 = three;
+                .ceylon.language.Sequential tuple$53 = (.ceylon.language.Sequential)three;
             }
             returning f2.$callvariadic$((.ceylon.language.Integer)tuple$53.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Integer)tuple$53.get(.ceylon.language.Integer.instance(1L)), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)tuple$53.spanFrom(.ceylon.language.Integer.instance(2L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>> tuple$55 = four;
+                .ceylon.language.Sequential tuple$55 = (.ceylon.language.Sequential)four;
             }
             returning f.$callvariadic$((.ceylon.language.Integer)tuple$55.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Integer)tuple$55.get(.ceylon.language.Integer.instance(1L)), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)tuple$55.spanFrom(.ceylon.language.Integer.instance(2L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>> tuple$57 = four;
+                .ceylon.language.Sequential tuple$57 = (.ceylon.language.Sequential)four;
             }
             returning f2.$callvariadic$((.ceylon.language.Integer)tuple$57.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Integer)tuple$57.get(.ceylon.language.Integer.instance(1L)), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)tuple$57.spanFrom(.ceylon.language.Integer.instance(2L)));
         );
         (
             let
             {
-                .ceylon.language.empty_ tuple$59 = .ceylon.language.empty_.get_();
+                .ceylon.language.Sequential tuple$59 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning f.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> tuple$61 = one;
+                .ceylon.language.Sequential tuple$61 = (.ceylon.language.Sequential)one;
             }
             returning f.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$61.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> tuple$63 = two;
+                .ceylon.language.Sequential tuple$63 = (.ceylon.language.Sequential)two;
             }
             returning f.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$63.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)tuple$63.spanFrom(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> tuple$65 = two;
+                .ceylon.language.Sequential tuple$65 = (.ceylon.language.Sequential)two;
             }
             returning f2.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$65.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)tuple$65.spanFrom(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> tuple$67 = three;
+                .ceylon.language.Sequential tuple$67 = (.ceylon.language.Sequential)three;
             }
             returning f.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$67.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)tuple$67.spanFrom(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>> tuple$69 = three;
+                .ceylon.language.Sequential tuple$69 = (.ceylon.language.Sequential)three;
             }
             returning f2.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$69.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)tuple$69.spanFrom(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>> tuple$71 = four;
+                .ceylon.language.Sequential tuple$71 = (.ceylon.language.Sequential)four;
             }
             returning f.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$71.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)tuple$71.spanFrom(.ceylon.language.Integer.instance(1L)));
         );
         (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>> tuple$73 = four;
+                .ceylon.language.Sequential tuple$73 = (.ceylon.language.Sequential)four;
             }
             returning f2.$callvariadic$(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)tuple$73.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)tuple$73.spanFrom(.ceylon.language.Integer.instance(1L)));
         );

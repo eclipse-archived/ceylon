@@ -359,16 +359,16 @@ final class emptinessParameterised_ {
                 }
             }
         };
-        final .ceylon.language.Iterable<? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>, ? extends Absent> c2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)), $reified$Absent, 1, true){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends Absent> c2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)), $reified$Absent, 1, true){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
                 switch ($index$) {
                 case 0: 
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)), $reified$Absent){
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)), $reified$Absent){
                         
-                        public final .ceylon.language.Iterator<.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>> iterator() {
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$))){
+                        public final .ceylon.language.Iterator<.ceylon.language.Sequence<? extends Element>> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Sequence<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$))){
                                 {
                                     $iterator$0 = it.iterator();
                                 }
@@ -417,7 +417,7 @@ final class emptinessParameterised_ {
                                     if (this.f()) {
                                         final Element e = this.e;
                                         final Element f = this.f;
-                                        return (.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>).ceylon.language.Tuple.instance($reified$Element, new .java.lang.Object[]{
+                                        return (.ceylon.language.Sequence<? extends Element>).ceylon.language.Tuple.instance($reified$Element, new .java.lang.Object[]{
                                                 e,
                                                 f});
                                     } else return .ceylon.language.finished_.get_();
