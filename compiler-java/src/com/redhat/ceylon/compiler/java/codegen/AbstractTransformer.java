@@ -1277,6 +1277,12 @@ public abstract class AbstractTransformer implements Transformation {
         return decl == typeFact.getThrowableDeclaration();
     }
     
+    boolean willEraseToSequence(ProducedType type) {
+        type = simplifyType(type);
+        TypeDeclaration decl = type.getDeclaration();
+        return decl == typeFact.getTupleDeclaration();
+    }
+    
     // keep in sync with MethodDefinitionBuilder.paramType()
     public boolean willEraseToBestBounds(Parameter param) {
         ProducedType type = param.getType();
@@ -1624,6 +1630,16 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeIdent(syms().throwableType);
             } else {
                 return make().Type(syms().throwableType);
+            }
+        } else if (willEraseToSequence(type)) {
+            if ((flags & (JT_CLASS_NEW | JT_EXTENDS)) == 0) {
+                ProducedType typeArg = simplifyType(type).getTypeArgumentList().get(0);
+                ProducedType seqType = typeFact.getSequenceType(typeArg);
+                if (typeFact.isOptionalType(type)) {
+                    type = typeFact.getOptionalType(seqType);
+                } else {
+                    type = seqType;
+                }
             }
         } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_NO_PRIMITIVES | JT_CLASS_NEW)) == 0
                 && ((isCeylonBasicType(type) && !isOptional(type)) || isJavaString(type))) {

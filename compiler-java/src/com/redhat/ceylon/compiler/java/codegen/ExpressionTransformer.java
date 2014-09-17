@@ -69,9 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.sun.source.tree.ReturnTree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -1496,7 +1494,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (tail != null) {
                 args = args.append(tail);
             }
-            JCExpression typeExpr = makeJavaType(tupleType);
+            JCExpression typeExpr = makeJavaType(tupleType, JT_TYPE_ARGUMENT);
             /* Tuple.instance(reifiedElement, new Object[]{elem, elem, elem}, tail) */
             return make().TypeCast(typeExpr, make().Apply(
                     List.<JCExpression>nil(), 
@@ -2757,12 +2755,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         SyntheticName tupleAlias = naming.alias("tuple");
         JCExpression tupleType;
         JCExpression tupleExpr = transformExpression(tupleArgument, BoxingStrategy.BOXED, null);
-        if (willEraseToObject(tupleArgument.getTypeModel())) {
-            tupleType = makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW);
-            tupleExpr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), tupleExpr);
-        } else {
-            tupleType = makeJavaType(tupleArgument.getTypeModel(), 0);
-        }
+        tupleType = makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW);
+        tupleExpr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), tupleExpr);
         
         callBuilder.appendStatement(makeVar(tupleAlias, tupleType, tupleExpr));
         
