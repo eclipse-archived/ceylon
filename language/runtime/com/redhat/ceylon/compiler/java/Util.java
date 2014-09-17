@@ -364,9 +364,6 @@ public class Util {
             size++;
         }
         
-        void appendLong(long b) {
-            appendByte(toByte(b));
-        }
     }
     
     /** 
@@ -1624,24 +1621,5 @@ public class Util {
         throw new OverflowException();
     }
     
-    /** 
-     * <p>Typecast a {@code long} to a {@code byte}, or throw if the {@code long} 
-     * cannot be safely converted.</p>
-     *   
-     * <p>We need to do this:</p>
-     *  <ul>
-     *  <li>when creating or indexing into an array,</li>
-     *  <li>when invoking a Java method which takes a {@code byte},</li>
-     *  <li>when assigning to a Java {@code byte} field.</li>
-     *  <ul>
-     *  @throws ceylon.language.OverflowException
-     */
-    public static byte toByte(long value) {
-        if (value <= java.lang.Byte.MAX_VALUE
-                && value >= java.lang.Byte.MIN_VALUE) {
-            return (byte)value;
-        }
-        throw new OverflowException();
-    }
     
 }
