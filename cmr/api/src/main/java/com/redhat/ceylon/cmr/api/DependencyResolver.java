@@ -29,20 +29,20 @@ import com.redhat.ceylon.cmr.spi.Node;
  */
 public interface DependencyResolver {
     /**
-     * Resolve dependecies.
+     * Resolve dependencies.
      *
      * @param context the context
-     * @return dependencies list or null if cannot resolve
+     * @return module info or null if cannot resolve
      */
-    Set<ModuleInfo> resolve(DependencyContext context);
+    ModuleInfo resolve(DependencyContext context);
 
     /**
-     * Resolve dependecies.
+     * Resolve dependencies.
      *
      * @param result the result
-     * @return dependencies list or null if cannot resolve
+     * @return module info or null if cannot resolve
      */
-    Set<ModuleInfo> resolve(ArtifactResult result);
+    ModuleInfo resolve(ArtifactResult result);
 
     /**
      * Reads module dependencies from the given file, if supported. This is only implemented to read
@@ -51,7 +51,7 @@ public interface DependencyResolver {
      * @param file the file to read to list dependencies 
      * @return dependencies list or null if cannot resolve
      */
-    Set<ModuleInfo> resolveFromFile(File file);
+    ModuleInfo resolveFromFile(File file);
 
     /**
      * Reads module dependencies from the given InputStream, if supported. This is only implemented to read
@@ -60,7 +60,7 @@ public interface DependencyResolver {
      * @param stream the stream to read to list dependencies 
      * @return dependencies list or null if cannot resolve
      */
-    Set<ModuleInfo> resolveFromInputStream(InputStream stream);
+    ModuleInfo resolveFromInputStream(InputStream stream);
 
     /**
      * Get descriptor if exists.

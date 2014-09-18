@@ -43,7 +43,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -254,8 +254,8 @@ public class AbstractTest {
         return ret;
     }
 
-    protected static SortedSet<ModuleInfo> deps(ModuleInfo... values) {
-        SortedSet<ModuleInfo> ret = new TreeSet<>();
+    protected static SortedSet<ModuleDependencyInfo> deps(ModuleDependencyInfo... values) {
+        SortedSet<ModuleDependencyInfo> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
     }

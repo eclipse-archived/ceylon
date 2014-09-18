@@ -19,7 +19,9 @@ package com.redhat.ceylon.test.maven.test;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
@@ -30,8 +32,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.MavenDependencyResolver;
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -42,9 +42,9 @@ public class ResolverTestCase extends AbstractAetherTest {
         final MavenDependencyResolver resolver = new MavenDependencyResolver();
         doTest(new Tester() {
             public void run(Repository repository, final File artifact) {
-                Set<ModuleInfo> infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel.camel-core", "2.9.2", artifact));
+                ModuleInfo infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel.camel-core", "2.9.2", artifact));
                 Assert.assertNotNull(infos);
-                Assert.assertEquals(String.valueOf(infos), 3, infos.size());
+                Assert.assertEquals(String.valueOf(infos), 3, infos.getDependencies().size());
             }
         });
     }

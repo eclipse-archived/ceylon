@@ -27,12 +27,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.util.PathFilterParser;
 
 /**
  * Read module info from module.xml.
@@ -46,14 +49,14 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
         super(ArtifactContext.MODULE_XML);
     }
 
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         try {
             final Module module = parse(stream);
-            final Set<ModuleInfo> infos = new LinkedHashSet<>();
+            final Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (ModuleIdentifier mi : module.getDependencies()) {
-                infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
+                infos.add(new ModuleDependencyInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
             }
-            return infos;
+            return new ModuleInfo(module.getFilter(), infos);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -129,6 +132,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
     private static class Module {
         private ModuleIdentifier module;
         private Set<ModuleIdentifier> dependencies = new LinkedHashSet<>();
+        private String filter;
 
         public Module(ModuleIdentifier module) {
             this.module = module;
@@ -170,7 +174,16 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             for (ModuleIdentifier dep : dependencies) {
                 builder.append("\t").append(dep).append("\n");
             }
+            builder.append("Filter: ").append(filter).append("\n");
             return builder.toString();
+        }
+
+        public void setFilter(String filter) {
+            this.filter = filter;
+        }
+
+        public String getFilter() {
+            return filter;
         }
     }
 
@@ -185,6 +198,11 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
                 for (Element dependency : getElements(dependencies, "module")) {
                     module.addDependency(getModuleIdentifier(dependency));
                 }
+            }
+            // filter
+            Element filterNode = getChildElement(root, "exports");
+            if (filterNode != null) {
+                module.setFilter(PathFilterParser.convertNodeToString(filterNode));
             }
             return module;
         } finally {

@@ -16,78 +16,51 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.util.Objects;
+import java.util.Set;
+
 /**
  * Module info.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class ModuleInfo implements Comparable<ModuleInfo> {
-    private String name;
-    private String version;
-    private boolean optional;
-    private boolean shared;
+public final class ModuleInfo {
+    private String filter;
+    private Set<ModuleDependencyInfo> dependencies;
 
-    public ModuleInfo(String name, String version, boolean optional, boolean shared) {
-        this.name = name;
-        this.version = version;
-        this.optional = optional;
-        this.shared = shared;
+    public ModuleInfo(String filter, Set<ModuleDependencyInfo> dependencies) {
+        this.filter = filter;
+        this.dependencies = dependencies;
     }
-
-    public String getName() {
-        return name;
+    
+    public Set<ModuleDependencyInfo> getDependencies() {
+        return dependencies;
     }
-
-    public String getVersion() {
-        return version;
+    
+    public String getFilter() {
+        return filter;
     }
-
-    public boolean isOptional() {
-        return optional;
-    }
-
-    public boolean isExport() {
-        return shared;
-    }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         ModuleInfo that = (ModuleInfo) o;
-        return that.name.equals(name)
-                && that.version.equals(version)
-                && that.shared == shared
-                && that.optional == optional;
+        return Objects.equals(filter, that.filter)
+                && dependencies.equals(that.dependencies);
     }
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
-    }
-
-    @Override
-    public int compareTo(ModuleInfo that) {
-        int res = name.compareTo(that.name);
-        if (res == 0) {
-            res = version.compareTo(that.version);
-            if (res == 0) {
-                res = Boolean.compare(shared, that.shared);
-                if (res == 0) {
-                    res = Boolean.compare(optional, that.optional);
-                }
-            }
-        }
-        return res;
+        int ret = 17;
+        ret = 37 * ret + (filter == null ? 0 : filter.hashCode());
+        ret = 37 * ret + dependencies.hashCode();
+        return ret;
     }
 
     @Override
     public String toString() {
-        return ((shared) ? "shared " : "") + ((optional) ? "optional " : "") + getModuleName();
-    }
-
-    public String getModuleName() {
-        return name + "/" + version;
+        return "[filter: "+filter+", dependencies: "+dependencies+"]";
     }
 }

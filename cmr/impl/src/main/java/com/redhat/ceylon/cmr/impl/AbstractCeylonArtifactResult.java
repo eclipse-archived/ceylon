@@ -17,19 +17,22 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.util.PathFilterParser;
 
 /**
  * Abstract, use Jandex to read off Module info.
@@ -38,6 +41,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
  */
 public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResult {
     private RepositoryManager manager;
+    private ModuleInfo infos;
 
     protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
         super(repository, name, version);
@@ -48,22 +52,36 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         return ArtifactResultType.CEYLON;
     }
 
-    protected Set<ModuleInfo> resolve(){
-        return Configuration.getResolvers(manager).resolve(this);
+    protected ModuleInfo resolve(){
+        if(infos == null)
+            infos = Configuration.getResolvers(manager).resolve(this);
+        return infos;
     }
     
     protected RepositoryManager getManager(){
         return manager;
     }
     
+    @Override
+    public PathFilter filter(){
+        ModuleInfo infos = resolve();
+        if(infos == null || infos.getFilter() == null)
+            return null;
+        try {
+            return PathFilterParser.parse(infos.getFilter());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        Set<ModuleInfo> infos = resolve();
+        ModuleInfo infos = resolve();
         // TODO -- perhaps null is not valid?
-        if (infos == null || infos.isEmpty())
+        if (infos == null || infos.getDependencies().isEmpty())
             return Collections.emptyList();
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
-        for (ModuleInfo mi : infos) {
+        for (ModuleDependencyInfo mi : infos.getDependencies()) {
             results.add(new LazyArtifactResult(
                     mi.getName(),
                     mi.getVersion(),
@@ -115,6 +133,11 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         @Override
         public String repositoryDisplayString() {
             return getDelegate().repositoryDisplayString();
+        }
+        
+        @Override
+        public PathFilter filter(){
+            return getDelegate().filter();
         }
     }
 }

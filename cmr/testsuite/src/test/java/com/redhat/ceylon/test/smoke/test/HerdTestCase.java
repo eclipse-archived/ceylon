@@ -22,7 +22,7 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -116,14 +116,14 @@ public class HerdTestCase extends AbstractTest {
     
     public final static ModuleDetails jsonModuleDetails0_5 =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
-                              deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                              deps(new ModuleDependencyInfo("ceylon.collection", "0.5", false, false)), 
                               types(art(".car", 4, 0), art(".js", 4, 0), art(".src")), true, "The Herd");
     public final static ModuleDetails jsonModuleDetails0_5_Api1 =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
                               deps(), types(), true, "The Herd");
     public final static ModuleDetails jsonModuleDetails0_5_js =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.5"), 
-                              deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                              deps(new ModuleDependencyInfo("ceylon.collection", "0.5", false, false)), 
                               types(art(".car", 4, 0), art(".js", 4, 0), art(".src")), true, "The Herd");
 
     
@@ -203,21 +203,21 @@ public class HerdTestCase extends AbstractTest {
 
     public static final ModuleVersionDetails jsonVersionDetail0_3_3 =                 
             new ModuleVersionDetails("0.3.3", "A JSON parser / serialiser", "Apache Software License", set("Stéphane Épardaud"), 
-                    deps(new ModuleInfo("ceylon.collection", "0.3.3", false, false)), 
+                    deps(new ModuleDependencyInfo("ceylon.collection", "0.3.3", false, false)), 
                     types(new ModuleVersionArtifact(".car", 3, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
 
     public static final ModuleVersionDetails jsonVersionDetail0_4 =                 
             new ModuleVersionDetails("0.4", jsonDoc0_4, "Apache Software License", set("Stéphane Épardaud"), 
-                    deps(new ModuleInfo("ceylon.collection", "0.4", false, false)), 
+                    deps(new ModuleDependencyInfo("ceylon.collection", "0.4", false, false)), 
                     types(new ModuleVersionArtifact(".car", 3, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
 
     public static final ModuleVersionDetails jsonVersionDetail0_5 =                 
             new ModuleVersionDetails("0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
-                    deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                    deps(new ModuleDependencyInfo("ceylon.collection", "0.5", false, false)), 
                     types(new ModuleVersionArtifact(".car", 4, 0),
                             new ModuleVersionArtifact(".js", null, null),
                             new ModuleVersionArtifact(".src", null, null)),

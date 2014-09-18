@@ -24,7 +24,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
@@ -52,7 +52,7 @@ public class JDKRepository extends AbstractRepository {
         add(JDK_VERSION);
     }};
     private static final SortedSet<String> EmptySet = new TreeSet<String>();
-    private static final SortedSet<ModuleInfo> EmptyDependencySet = new TreeSet<ModuleInfo>();
+    private static final SortedSet<ModuleDependencyInfo> EmptyDependencySet = new TreeSet<ModuleDependencyInfo>();
     private static final SortedSet<String> FixedTypeSet = new TreeSet<String>() {{
         add(ArtifactContext.JAR);
     }};

@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -59,8 +58,8 @@ public class FlatRepository extends DefaultRepository {
         }
         
         @Override
-        protected Set<ModuleInfo> resolve() {
-            Set<ModuleInfo> dependencies = super.resolve();
+        protected ModuleInfo resolve() {
+            ModuleInfo dependencies = super.resolve();
             if(dependencies == null){
                 // try to resolve them from other flat repos
                 for(Repository repo : getManager().getRepositories()){
@@ -77,7 +76,7 @@ public class FlatRepository extends DefaultRepository {
             return dependencies;
         }
 
-        private Set<ModuleInfo> getExternalDescriptor(Repository repo, ModulesDependencyResolver resolver) {
+        private ModuleInfo getExternalDescriptor(Repository repo, ModulesDependencyResolver resolver) {
             String moduleXml = resolver.getQualifiedToplevelDescriptorName(name(), version());
             Node moduleXmlNode = repo.getRoot().getChild(moduleXml);
             if(moduleXmlNode != null){

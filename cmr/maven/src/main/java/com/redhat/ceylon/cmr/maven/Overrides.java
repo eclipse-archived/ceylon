@@ -43,6 +43,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.redhat.ceylon.cmr.util.PathFilterParser;
+
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
@@ -73,7 +75,7 @@ public class Overrides {
                 NodeList filterNode = artifact.getElementsByTagName("filter");
                 if (filterNode != null && filterNode.getLength() > 0) {
                     Node node = filterNode.item(0);
-                    ao.setFilter(convertNodeToString(node));
+                    ao.setFilter(PathFilterParser.convertNodeToString(node));
                 }
             }
             return result;
@@ -138,13 +140,5 @@ public class Overrides {
             elements.add((Element) nodes.item(i));
         }
         return elements;
-    }
-
-    protected static String convertNodeToString(Node node) throws TransformerException {
-        Transformer t = TransformerFactory.newInstance().newTransformer();
-        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        StringWriter sw = new StringWriter();
-        t.transform(new DOMSource(node), new StreamResult(sw));
-        return sw.toString();
     }
 }

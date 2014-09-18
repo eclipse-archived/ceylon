@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -48,7 +49,7 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     }
 
     @Override
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreExternal()) {
             return null;
         }
@@ -62,12 +63,12 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     }
     
     @Override
-    public Set<ModuleInfo> resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file) {
         return getDependenciesFromFile(file);
     }
 
     @Override
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         throw new UnsupportedOperationException("Cannot resolve from stream");
     }
 
@@ -85,9 +86,9 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         ModuleVersionDetails mvd = new ModuleVersionDetails(getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
-        Set<ModuleInfo> deps = getDependencies(moduleArchive);
-        if (deps != null) {
-            mvd.getDependencies().addAll(deps);
+        ModuleInfo info = getDependencies(moduleArchive);
+        if (info != null) {
+            mvd.getDependencies().addAll(info.getDependencies());
         }
         if (includeMembers) {
             mvd.setMembers(getMembers(moduleArchive));
@@ -103,9 +104,9 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
         }
     }
 
-    private static Set<ModuleInfo> getDependencies(File moduleArchive) {
+    private static ModuleInfo getDependencies(File moduleArchive) {
         File xml = new File(moduleArchive.getParentFile(), "module.xml");
-        Set<ModuleInfo> result = getDependenciesFromFile(xml);
+        ModuleInfo result = getDependenciesFromFile(xml);
         if (result != null) {
             return result;
         }
@@ -114,7 +115,7 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
         return getDependenciesFromFile(props);
     }
     
-    private static Set<ModuleInfo> getDependenciesFromFile(File descriptorFile) {
+    private static ModuleInfo getDependenciesFromFile(File descriptorFile) {
         if (descriptorFile.isFile() == false) {
             return null;
         }
@@ -139,9 +140,9 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
 
     @Override
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        Set<ModuleInfo> deps = getDependencies(moduleArchive);
+        ModuleInfo deps = getDependencies(moduleArchive);
         if (deps != null) {
-            for (ModuleInfo dep : deps) {
+            for (ModuleDependencyInfo dep : deps.getDependencies()) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }

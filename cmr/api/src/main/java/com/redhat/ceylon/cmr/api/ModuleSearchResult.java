@@ -23,7 +23,7 @@ public class ModuleSearchResult {
                 String license,
                 SortedSet<String> authors,
                 SortedSet<String> versions,
-                SortedSet<ModuleInfo> dependencies,
+                SortedSet<ModuleDependencyInfo> dependencies,
                 SortedSet<ModuleVersionArtifact> artifacts,
                 boolean remote,
                 String origin) {
@@ -82,7 +82,7 @@ public class ModuleSearchResult {
             return (getLastVersion() != null) ? getLastVersion().getAuthors() : null;
         }
 
-        public NavigableSet<ModuleInfo> getDependencies() {
+        public NavigableSet<ModuleDependencyInfo> getDependencies() {
             return (getLastVersion() != null) ? getLastVersion().getDependencies() : null;
         }
 

@@ -13,7 +13,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private boolean remote;
     private String origin;
     private NavigableSet<String> authors = new TreeSet<String>();
-    private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
+    private NavigableSet<ModuleDependencyInfo> dependencies = new TreeSet<ModuleDependencyInfo>();
     private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
     private NavigableSet<String> members = new TreeSet<>();
 
@@ -31,7 +31,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     }
 
     public ModuleVersionDetails(String version, String doc, String license, Set<String> authors, 
-            Set<ModuleInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
+            Set<ModuleDependencyInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
             boolean remote, String origin) {
         this(version);
         this.doc = doc;
@@ -93,11 +93,11 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         this.authors.addAll(authors);
     }
 
-    public NavigableSet<ModuleInfo> getDependencies() {
+    public NavigableSet<ModuleDependencyInfo> getDependencies() {
         return dependencies;
     }
 
-    public void setDependencies(SortedSet<ModuleInfo> dependencies) {
+    public void setDependencies(SortedSet<ModuleDependencyInfo> dependencies) {
         this.dependencies.clear();
         this.dependencies.addAll(dependencies);
     }

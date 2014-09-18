@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -52,7 +53,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     private JSUtils() {
     }
 
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreInner()) {
             return null;
         }
@@ -68,12 +69,12 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     }
     
     @Override
-    public Set<ModuleInfo> resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file) {
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
     @Override
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
@@ -88,7 +89,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
      * @param jarFile    the module JS file
      * @return module info list
      */
-    public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
+    public static ModuleInfo readModuleInformation(final String moduleName, final File jarFile) {
         Map<String, Object> model = loadJsonModel(jarFile);
         return getDependencies(model);
     }
@@ -122,7 +123,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
     }
 
-    private static Set<ModuleInfo> getDependencies(Map<String,Object> model) {
+    private static ModuleInfo getDependencies(Map<String,Object> model) {
         try {
             return asModInfos(metaModelProperty(model, "$mod-deps"));
         } catch (Exception ex) {
@@ -139,7 +140,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             throw new RuntimeException("Incorrect module");
         }
         String version = asString(metaModelProperty(model, "$mod-version"));
-        Set<ModuleInfo> deps = getDependencies(model);
+        ModuleInfo info = getDependencies(model);
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
@@ -156,7 +157,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
         ModuleVersionDetails mvd = new ModuleVersionDetails(version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
-        mvd.getDependencies().addAll(deps);
+        mvd.getDependencies().addAll(info.getDependencies());
         
         if (includeMembers) {
             mvd.setMembers(getMembers(moduleName, moduleArchive));
@@ -182,16 +183,16 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
     }
 
-    private static Set<ModuleInfo> asModInfos(Object obj) {
+    private static ModuleInfo asModInfos(Object obj) {
         if (obj == null) {
-            return Collections.emptySet();
+            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
         }
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
         }
         @SuppressWarnings("unchecked")
         Iterable<Object> array = (Iterable<Object>)obj;
-        Set<ModuleInfo> result = new HashSet<ModuleInfo>();
+        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>();
         for (Object o : array) {
             String module;
             boolean optional = false;
@@ -207,10 +208,10 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             }
             String name = ModuleUtil.moduleName(module);
             if (!"ceylon.language".equals(name)) {
-                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
+                result.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
             }
         }
-        return result;
+        return new ModuleInfo(null, result);
     }
 
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
@@ -223,7 +224,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             if (matches(author, query))
                 return true;
         }
-        for (ModuleInfo dep : mvd.getDependencies()) {
+        for (ModuleDependencyInfo dep : mvd.getDependencies()) {
             if (matches(dep.getModuleName(), query))
                 return true;
         }

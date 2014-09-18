@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 
 /**
@@ -37,11 +38,11 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
         super(ArtifactContext.MODULE_PROPERTIES);
     }
 
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         try {
             final Properties properties = new Properties();
             properties.load(stream);
-            Set<ModuleInfo> infos = new LinkedHashSet<>();
+            Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (Map.Entry<?,?> entry : properties.entrySet()) {
                 String name = entry.getKey().toString();
                 String version = entry.getValue().toString();
@@ -55,9 +56,9 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                     name = name.substring(0, name.length() - 1);
                     optional = true;
                 }
-                infos.add(new ModuleInfo(name, version, optional, shared));
+                infos.add(new ModuleDependencyInfo(name, version, optional, shared));
             }
-            return infos;
+            return new ModuleInfo(null, infos);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

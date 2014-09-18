@@ -32,7 +32,7 @@ import java.util.TreeSet;
 import javax.xml.bind.DatatypeConverter;
 
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -364,7 +364,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result) {
         List<String> authors = new LinkedList<String>();
-        List<ModuleInfo> dependencies = new LinkedList<ModuleInfo>();
+        List<ModuleDependencyInfo> dependencies = new LinkedList<ModuleDependencyInfo>();
         List<ModuleVersionArtifact> types = new LinkedList<ModuleVersionArtifact>();
         p.moveToOpenTag("results");
         
@@ -447,7 +447,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
     }
 
-    private ModuleInfo parseDependency(Parser p) {
+    private ModuleDependencyInfo parseDependency(Parser p) {
         String dependencyName = null, dependencyVersion = null;
         boolean dependencyShared = false, dependencyOptional = false;
         while(p.moveToOptionalOpenTag()){
@@ -470,7 +470,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             throw new RuntimeException("Missing required dependency module name");
         if(dependencyVersion == null || dependencyVersion.isEmpty())
             throw new RuntimeException("Missing required dependency module version");
-        return new ModuleInfo(dependencyName, dependencyVersion, dependencyOptional, dependencyShared);
+        return new ModuleDependencyInfo(dependencyName, dependencyVersion, dependencyOptional, dependencyShared);
     }
 
     @Override
@@ -500,7 +500,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result, Long start) {
         SortedSet<String> authors = new TreeSet<String>();
         SortedSet<String> versions = new TreeSet<String>();
-        SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
+        SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<ModuleDependencyInfo>();
         SortedSet<ModuleVersionArtifact> types = new TreeSet<ModuleVersionArtifact>();
 
         p.moveToOpenTag("results");

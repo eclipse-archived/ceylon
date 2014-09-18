@@ -32,11 +32,13 @@ import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
+
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationValue;
 import org.jboss.jandex.ClassInfo;
@@ -60,7 +62,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
     private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
 
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreInner()) {
             return null;
         }
@@ -69,11 +71,11 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return readModuleInformation(result.name(), result.artifact());
     }
 
-    public Set<ModuleInfo> resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
@@ -88,30 +90,30 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
      * @param jarFile    the module jar file
      * @return module info list
      */
-    private static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
+    private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile) {
         Index index = readModuleIndex(jarFile);
         final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
         final AnnotationValue dependencies = ai.value("dependencies");
         if (dependencies == null)
-            return Collections.emptySet();
+            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
 
         final AnnotationInstance[] imports = dependencies.asNestedArray();
         if (imports == null || imports.length == 0)
-            return Collections.emptySet();
+            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
 
-        final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
+        final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
         for (AnnotationInstance im : imports) {
             final String name = asString(im, "name");
-            final ModuleInfo mi = new ModuleInfo(
+            final ModuleDependencyInfo mi = new ModuleDependencyInfo(
                     name,
                     asString(im, "version"),
                     asBoolean(im, "optional"),
                     asBoolean(im, "export"));
             infos.add(mi);
         }
-        return infos;
+        return new ModuleInfo(null, infos);
     }
 
     private static Index readModuleIndex(final File jarFile) {
@@ -213,16 +215,16 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
     }
 
-    private static List<ModuleInfo> asModInfos(AnnotationValue dependencies) {
+    private static List<ModuleDependencyInfo> asModInfos(AnnotationValue dependencies) {
         AnnotationInstance[] deps = dependencies.asNestedArray();
-        List<ModuleInfo> result = new ArrayList<ModuleInfo>(deps.length);
+        List<ModuleDependencyInfo> result = new ArrayList<ModuleDependencyInfo>(deps.length);
         for (AnnotationInstance dep : deps) {
             AnnotationValue name = dep.value("name");
             AnnotationValue version = dep.value("version");
             AnnotationValue export = dep.value("export");
             AnnotationValue optional = dep.value("optional");
             
-            result.add(new ModuleInfo(name.asString(), version.asString(),
+            result.add(new ModuleDependencyInfo(name.asString(), version.asString(),
                     (export != null) && export.asBoolean(),
                     (optional != null) && optional.asBoolean()));
         }
@@ -249,7 +251,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
         AnnotationValue dependencies = moduleAnnotation.value("dependencies");
         if (dependencies != null) {
-            for (ModuleInfo dep : asModInfos(dependencies)) {
+            for (ModuleDependencyInfo dep : asModInfos(dependencies)) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }

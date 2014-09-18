@@ -27,6 +27,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.IOUtils;
@@ -40,7 +41,7 @@ import com.redhat.ceylon.common.log.Logger;
 public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static final Logger logger = new CMRJULLogger();
 
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
             String name = result.name();
@@ -67,7 +68,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    public Set<ModuleInfo> resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file) {
         if (file.exists() == false) {
             return null;
         }
@@ -77,7 +78,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         return toModuleInfo(dependencies);
     }
 
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         if (stream == null) {
             return null;
         }
@@ -91,12 +92,12 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         return NodeUtils.firstParent(artifact).getChild("pom.xml");
     }
 
-    protected static Set<ModuleInfo> toModuleInfo(MavenArtifactInfo[] dependencies) {
-        Set<ModuleInfo> infos = new HashSet<>();
+    protected static ModuleInfo toModuleInfo(MavenArtifactInfo[] dependencies) {
+        Set<ModuleDependencyInfo> infos = new HashSet<>();
         for (MavenArtifactInfo dep : dependencies) {
             MavenCoordinate co = dep.getCoordinate();
-            infos.add(new ModuleInfo(AetherUtils.toCanonicalForm(co.getGroupId(), co.getArtifactId()), co.getVersion(), AetherUtils.isOptional(dep), false));
+            infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(co.getGroupId(), co.getArtifactId()), co.getVersion(), AetherUtils.isOptional(dep), false));
         }
-        return infos;
+        return new ModuleInfo(null, infos);
     }
 }

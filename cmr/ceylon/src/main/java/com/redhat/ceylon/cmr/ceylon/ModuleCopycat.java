@@ -11,7 +11,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -143,7 +143,7 @@ public class ModuleCopycat {
                 }
                 if (!context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
-                    for (ModuleInfo dep : ver.getDependencies()) {
+                    for (ModuleDependencyInfo dep : ver.getDependencies()) {
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
                         ArtifactContext depContext = context.copy();
                         depContext.setName(depModule.getName());
@@ -159,9 +159,9 @@ public class ModuleCopycat {
         }
     }
 
-    private int countNonJdkDeps(NavigableSet<ModuleInfo> dependencies) {
+    private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
-        for (ModuleInfo dep : dependencies) {
+        for (ModuleDependencyInfo dep : dependencies) {
             if (!JDKUtils.isJDKModule(dep.getName()) && !JDKUtils.isOracleJDKModule(dep.getName())) {
                 cnt++;
             }

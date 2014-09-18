@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -40,7 +39,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
         this.descriptorName = descriptorName;
     }
 
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         final ArtifactResult result = context.result();
 
         if (context.ignoreInner() == false) {
@@ -78,7 +77,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
         return String.format("%s-%s-" + descriptorName, module, version);
     }
     
-    public Set<ModuleInfo> resolveFromFile(File mp) {
+    public ModuleInfo resolveFromFile(File mp) {
         if (mp.exists() == false) {
             return null;
         }

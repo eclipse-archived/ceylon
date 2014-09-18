@@ -20,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.Attributes;
@@ -32,6 +31,7 @@ import java.util.logging.Logger;
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.spi.Node;
 
@@ -42,7 +42,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
     private static final Logger log = Logger.getLogger(OSGiDependencyResolver.class.getName());
     public static final DependencyResolver INSTANCE = new OSGiDependencyResolver();
 
-    public Set<ModuleInfo> resolve(DependencyContext context) {
+    public ModuleInfo resolve(DependencyContext context) {
         if (context.ignoreInner() == false) {
             InputStream stream = IOUtils.findDescriptor(context.result(), JarFile.MANIFEST_NAME);
             if (stream != null) {
@@ -56,12 +56,12 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    public Set<ModuleInfo> resolveFromFile(File file) {
+    public ModuleInfo resolveFromFile(File file) {
         return null;
     }
 
     @Override
-    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+    public ModuleInfo resolveFromInputStream(InputStream stream) {
         if (stream == null) {
             return null;
         }
@@ -93,17 +93,17 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         return null;
     }
 
-    private Set<ModuleInfo> parseRequireBundle(String requireBundle) {
-        Set<ModuleInfo> infos = new HashSet<>();
+    private ModuleInfo parseRequireBundle(String requireBundle) {
+        Set<ModuleDependencyInfo> infos = new HashSet<>();
         String[] bundles = requireBundle.split(",");
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
         }
-        return infos;
+        return new ModuleInfo(null, infos);
     }
 
     // very simplistic osgi parsing ...
-    private ModuleInfo parseModuleInfo(String bundle) {
+    private ModuleDependencyInfo parseModuleInfo(String bundle) {
         int p = bundle.indexOf(';');
         String name = (p < 0) ? bundle : bundle.substring(0, p);
         String version = "0.0.0";
@@ -138,7 +138,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                 log.warning(String.format("Parameter %s is not directive or attribute.", param));
             }
         }
-        return new ModuleInfo(name, version, optional, shared);
+        return new ModuleDependencyInfo(name, version, optional, shared);
     }
 
     private String[] parseDirective(String parameter) {

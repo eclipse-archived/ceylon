@@ -19,13 +19,23 @@ package com.redhat.ceylon.cmr.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import com.redhat.ceylon.cmr.api.PathFilter;
+
 import org.jboss.modules.filter.MultiplePathFilterBuilder;
 import org.jboss.modules.filter.PathFilters;
 import org.jboss.modules.xml.MXParser;
 import org.jboss.modules.xml.XmlPullParser;
+import org.w3c.dom.Node;
 
 import static org.jboss.modules.xml.XmlPullParser.FEATURE_PROCESS_NAMESPACES;
 
@@ -66,7 +76,7 @@ public final class PathFilterParser {
     }
 
     private static PathFilter parseFilter(XmlPullParser parser) throws Exception {
-        parser.nextTag(); // just skip <filter>
+        parser.nextTag(); // just skip <filter> or <exports>
 
         MultiplePathFilterBuilder builder = PathFilters.multiplePathFilterBuilder(true);
         parseFilterList.invoke(null, parser, builder);
@@ -84,5 +94,13 @@ public final class PathFilterParser {
         public boolean accept(String path) {
             return filter.accept(path);
         }
+    }
+    
+    public static String convertNodeToString(Node node) throws TransformerException {
+        Transformer t = TransformerFactory.newInstance().newTransformer();
+        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        StringWriter sw = new StringWriter();
+        t.transform(new DOMSource(node), new StreamResult(sw));
+        return sw.toString();
     }
 }
