@@ -143,6 +143,7 @@ public class ModuleVisitor extends Visitor {
                 if (!completeOnlyAST) {
                     moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
                     mainModule.setAvailable(true);
+                    mainModule.getAnnotations().clear();
                     buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
                 }
             }
@@ -205,6 +206,7 @@ public class ModuleVisitor extends Visitor {
                     else {
                         pkg.setShared(false);
                     }
+                    pkg.getAnnotations().clear();
                     buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
                 }
             }
@@ -269,6 +271,7 @@ public class ModuleVisitor extends Visitor {
                             boolean optional = hasAnnotation(al, "optional", unit.getUnit());
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
                             moduleImport = new ModuleImport(importedModule, optional, export);
+                            moduleImport.getAnnotations().clear();
                             buildAnnotations(al, moduleImport.getAnnotations());
                             mainModule.addImport(moduleImport);
                         }
