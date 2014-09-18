@@ -478,7 +478,16 @@ Used with another target such as 'package'">
         <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *${line.separator}</echo>
-        <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+        <if>
+            <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>
+            <then>
+                <echo file="${bundleDefinitionFile}" append="true">Import-Package: javax.lang.model.*${line.separator}</echo>
+            </then>
+            <else>
+                <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
+            </else>
+        </if>
         <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
         <if>
             <not>
