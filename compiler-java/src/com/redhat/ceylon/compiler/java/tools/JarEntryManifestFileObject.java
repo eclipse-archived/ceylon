@@ -306,7 +306,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             if (originalManifest != null) {
                 Attributes attributes = originalManifest.getMainAttributes();
                 for (Object key : attributes.keySet()) {
-                    if (!main.containsKey(key)) {
+                    if (!main.containsKey(key) || key.equals(Bundle_Activator)) {
                         main.put(key, attributes.get(key));
                     }
                 }
