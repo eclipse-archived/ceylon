@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.WeakHashMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -51,7 +52,8 @@ public class ModuleManager {
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<ModuleImport,Set<Node>> moduleImportToNode = new HashMap<ModuleImport, Set<Node>>();
+    private static Object PRESENT = new Object();
+    private final Map<ModuleImport,WeakHashMap<Node, Object>> moduleImportToNode = new HashMap<ModuleImport, WeakHashMap<Node, Object>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
     private Map<Module, Node> moduleToNode = new TreeMap<Module, Node>();
 
@@ -219,12 +221,12 @@ public class ModuleManager {
     }
 
     public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
-        Set<Node> moduleDepDefinition = moduleImportToNode.get(moduleImport);
+        WeakHashMap<Node, Object> moduleDepDefinition = moduleImportToNode.get(moduleImport);
         if (moduleDepDefinition == null) {
-            moduleDepDefinition = new HashSet<Node>();
+            moduleDepDefinition = new WeakHashMap<Node, Object>();
             moduleImportToNode.put(moduleImport, moduleDepDefinition);
         }
-        moduleDepDefinition.add(definition);
+        moduleDepDefinition.put(definition, PRESENT);
     }
 
     public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
@@ -254,9 +256,9 @@ public class ModuleManager {
     }
 
     private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
-        Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
+        WeakHashMap<Node, Object> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
-            for ( Node definition :  moduleDepError ) {
+            for ( Node definition :  moduleDepError.keySet() ) {
                 definition.addError(new ModuleDependencyAnalysisError(definition, error));
             }
             return true;
@@ -270,9 +272,9 @@ public class ModuleManager {
             addErrorToModule(module, error);
         }else{
             // we must be importing it
-            for(Entry<ModuleImport, Set<Node>> entry : moduleImportToNode.entrySet()){
+            for(Entry<ModuleImport, WeakHashMap<Node, Object>> entry : moduleImportToNode.entrySet()){
                 if(entry.getKey().getModule() == module){
-                    for ( Node definition :  entry.getValue() ) {
+                    for ( Node definition :  entry.getValue().keySet() ) {
                         definition.addError(new ModuleDependencyAnalysisError(definition, error));
                     }
                 }
