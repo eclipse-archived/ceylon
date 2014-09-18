@@ -59,8 +59,11 @@ atr$(JSNum$proto,'$$targs$$',function(){
   return this.$targs$;
 });
 JSNum$proto.toString = origNumToString;
-atr$(JSNum$proto, 'string', function(){ return this.toString(); },
-  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
+atr$(JSNum$proto, 'string', function(){
+  var s=this.toString();
+  if (s.indexOf('.')<0 && nflt$(this))s+='.0';
+  return s;
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 function $addnm$(nm,s) {
   var t={t:JSNumber};
   if (s===undefined)s=$_Number.$$.prototype[nm];
