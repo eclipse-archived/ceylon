@@ -171,11 +171,24 @@ public class JarOutputRepositoryManager {
             return null;
         }
 
+        private Manifest getPreviousManifest() throws IOException {
+            if (originalJarFile != null) {
+                JarFile jarFile = null;
+                jarFile = new JarFile(originalJarFile);
+                try {
+                    return jarFile.getManifest();
+                } finally {
+                    jarFile.close();
+                }
+            }
+            return null;
+        }
+
         public void close() throws IOException {
             Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
 
             if (writeOsgiManifest && !manifestWritten) {
-                Manifest manifest = new OsgiManifest(module).build();
+                Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
                 writeManifestJarEntry(manifest);
             }
             if (writeMavenManifest) {
