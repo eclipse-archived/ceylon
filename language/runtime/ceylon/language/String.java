@@ -942,8 +942,15 @@ public final class String
         java.lang.Object elem = it.next();
         if (!(elem instanceof Finished)) {
             result.append(elem);
-            while (!((elem = it.next()) instanceof Finished)) {
-                result.append(value).append(elem);
+            if (value.isEmpty()) {
+                while (!((elem = it.next()) instanceof Finished)) {
+                    result.append(elem);
+                }
+            }
+            else {
+                while (!((elem = it.next()) instanceof Finished)) {
+                    result.append(value).append(elem);
+                }
             }
         }
         return result.toString();
