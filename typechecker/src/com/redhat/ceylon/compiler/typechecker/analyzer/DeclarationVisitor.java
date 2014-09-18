@@ -1446,10 +1446,10 @@ public class DeclarationVisitor extends Visitor {
                         String alias = name(imt.getAlias().getIdentifier());
                         Map<String, String> mods = unit.getModifiers();
                         if (mods.containsKey(name)) {
-                            String curr = mods.get(alias);
-                            if (curr!=null && curr.equals(alias)) {
-                                mods.remove(alias);
-                            }
+//                            String curr = mods.get(alias);
+//                            if (curr!=null && curr.equals(alias)) {
+//                                mods.remove(alias);
+//                            }
                             mods.put(name, alias);
                         }
                     }
