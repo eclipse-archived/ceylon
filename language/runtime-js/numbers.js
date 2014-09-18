@@ -60,6 +60,7 @@ atr$(JSNum$proto,'$$targs$$',function(){
 });
 JSNum$proto.toString = origNumToString;
 atr$(JSNum$proto, 'string', function(){
+  if (this.fmz$)return "-0.0";
   var s=this.toString();
   if (s.indexOf('.')<0 && nflt$(this))s+='.0';
   return s;
@@ -116,7 +117,11 @@ JSNum$proto.power = function(exp) {
 }
 $addnm$('power',Exponentiable.$$.prototype.power);
 atr$(JSNum$proto, 'negated', function() {
-    return nflt$(this) ? Float(-this) : -this;
+  if (this.valueOf()==0 && this.float$) {
+    this.fmz$=(this.fmz$?false:true);
+    return this;
+  }
+  return nflt$(this) ? Float(-this) : -this;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
 atr$(JSNum$proto, 'negative', function(){
   return nflt$(this) ? this < 0.0 : this.valueOf() < 0;
@@ -254,9 +259,9 @@ atr$(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','finite']};});
 atr$(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','infinite']};});
-atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
+atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && !this.fmz$ && (1/this==Infinity)); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
-atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
+atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);
