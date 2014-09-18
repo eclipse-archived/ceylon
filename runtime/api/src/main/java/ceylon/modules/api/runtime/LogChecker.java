@@ -3,7 +3,7 @@ package ceylon.modules.api.runtime;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 
 /**
  * This allows for external checkers to replace current log module dependency.
@@ -21,5 +21,5 @@ public interface LogChecker {
      * @return null if not determined, otherwise list of module info dependencies
      * @throws java.lang.IllegalArgumentException if empty list is returned
      */
-    List<ModuleInfo> handle(ArtifactResult dependency);
+    List<ModuleDependencyInfo> handle(ArtifactResult dependency);
 }

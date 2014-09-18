@@ -27,17 +27,6 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ceylon.modules.api.runtime.LogChecker;
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -50,6 +39,19 @@ import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
+
+import ceylon.modules.api.runtime.LogChecker;
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * Ceylon JBoss Module loader.
@@ -233,7 +235,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
         for (LogChecker checker : checkers) {
-            final List<ModuleInfo> replacements = checker.handle(result);
+            final List<ModuleDependencyInfo> replacements = checker.handle(result);
             if (replacements != null) {
                 if (replacements.isEmpty()) {
                     throw new IllegalArgumentException(String.format("Log replacements cannot be empty - %s [%s]!", result, checker));
@@ -350,8 +352,8 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
     }
 
-    private void addLoggingModules(Builder builder, List<DependencySpec> deps, List<ModuleInfo> replacements) {
-        for (ModuleInfo mi : replacements) {
+    private void addLoggingModules(Builder builder, List<DependencySpec> deps, List<ModuleDependencyInfo> replacements) {
+        for (ModuleDependencyInfo mi : replacements) {
             ModuleIdentifier identifier = ModuleIdentifier.create(mi.getName(), mi.getVersion());
             final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
                 PathFilters.acceptAll(),
