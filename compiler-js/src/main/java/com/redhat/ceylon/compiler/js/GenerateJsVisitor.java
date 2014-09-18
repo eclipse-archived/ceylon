@@ -2502,6 +2502,10 @@ public class GenerateJsVisitor extends Visitor
             }
             out(Long.toString(t));
             out(")");
+            if (t == 0) {
+                //Force -0
+                out(".negated");
+            }
             return;
         }
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
