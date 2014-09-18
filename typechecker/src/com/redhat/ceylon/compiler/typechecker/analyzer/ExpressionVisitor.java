@@ -6274,7 +6274,7 @@ public class ExpressionVisitor extends Visitor {
                     List<ProducedType> types =
                             new ArrayList<ProducedType>(std.getCaseTypes().size());
                     for (ProducedType ct: std.getCaseTypes()) {
-                        ProducedType cst = type.getSupertype(ct.getDeclaration());
+                        ProducedType cst = type.getSupertype(ct.resolveAliases().getDeclaration());
                         if (cst!=null) {
                             types.add(cst);
                         }

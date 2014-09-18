@@ -271,3 +271,13 @@ class Array() satisfies List<Value> {
 	shared actual String string => super.string;
 	
 }
+
+abstract class Enum() of CaseAlias {}
+class CaseAlias() => Case();
+abstract class EnumAlias() => Enum();
+class Case() extends EnumAlias() {}
+
+@error abstract class Duped1() of dupe|dupe {}
+@error object dupe extends Duped1() {}
+@error abstract class Duped2() of Dupe|Dupe {}
+@error class Dupe() extends Duped2() {}
