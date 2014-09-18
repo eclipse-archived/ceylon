@@ -31,4 +31,8 @@
         <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
         <module name="org.slf4j.api" slot="1.6.1"/>
     </dependencies>
+    
+    <exports>
+        <exclude path="com/github/sardine/ant/**"/>
+    </exports>
 </module>
