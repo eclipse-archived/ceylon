@@ -8,6 +8,7 @@ class TestCorresp() satisfies Correspondence<Integer, String> {
     }
     return null;
   }
+  shared actual Boolean defines(Integer key) => key > 0 && key <= 10;
 
 }
 

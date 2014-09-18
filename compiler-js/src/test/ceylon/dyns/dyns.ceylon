@@ -2,7 +2,7 @@ import check { ... }
 
 Object leakTest(Boolean flag) {
   dynamic {
-    dynamic x = value{x=1;};
+    dynamic x = dynamic [x=1;];
     return flag then Singleton(1) else x;
   }
 }
@@ -16,7 +16,7 @@ shared void test() {
     String zzz;
     dynamic carrier;
     dynamic {
-        variable dynamic n = value { x=3; y="hello"; };
+        variable dynamic n = dynamic[x=3; y="hello";];
         n.a={1};
         check(n.x==3, "n.x==");
         check(n.x!=9, "n.x!=");
@@ -26,10 +26,10 @@ shared void test() {
         check(n.x<=3, "n.x<=");
         check(!n.z exists, "n.z exists");
         check(n.a is {Integer*}, "n.a is {Integer*}");
-        dynamic n2 = value {3, "hello"};
+        dynamic n2 = dynamic[3, "hello"];
         check(n2.length==2, "n2.length");
         check(n2[0]==3, "n2[0]");
-        dynamic n3 = value{a=1; b='b'; "a","b","c"};
+        dynamic n3 = dynamic[a=1; b='b'; "a","b","c"];
         check(n3.a==1, "n3.a");
         check(n3[0]=="a", "n3[0]");
         check(n3["b"]=='b', "n3[b]");
@@ -100,7 +100,7 @@ shared void test() {
         }*/
         value iter = testCoalesce<Anything>{n,null,n2,null,n3};
         check(iter.first exists, "sequenced args w/dynamic types");
-        n = value{5};
+        n = dynamic[5];
         check(n.length==1, "reassign n");
         n = Singleton(1);
         check(n.size == 1, "Ceylon attribute in dynamic type");
@@ -129,7 +129,7 @@ shared void test() {
         check(0<=\iMath.random()<=1,  "dynamic a<=b<=c");
         check(0<\iMath.random()+1<=2, "dynamic a< b<=c");
         check(0<=\iMath.random()<1.1, "dynamic a<=b< c");
-        carrier = value {a=3; b="hello";};
+        carrier = dynamic[a=3; b="hello";];
     }
     //print("carrier object ``carrier``");
     dynamic {
@@ -152,7 +152,7 @@ shared void test() {
     }
     value tuple = [1,"2", '3'];
     dynamic {
-      dynamic issue270 = value{0,0};
+      dynamic issue270 = dynamic[0,0];
       issue270.push(*tuple);
       check(issue270.length==5, "dynamic spread #270 [1]");
       issue270.push(*issue270);

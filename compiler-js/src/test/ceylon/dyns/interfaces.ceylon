@@ -11,11 +11,11 @@ dynamic Node satisfies DataHolder {
 
 Node createNode(Node? k2) {
   dynamic {
-    dynamic k1 = value{data="A child.";children=[];};
-    dynamic r = value{
-      data=value{a=1;b="2";};
-      children=value{k1};
-    };
+    dynamic k1 = dynamic[data="A child.";children=[];];
+    dynamic r = dynamic[
+      data=dynamic[a=1;b="2";];
+      children=dynamic[k1];
+    ];
     if (k2 exists) {
       r.children.push(k2);
     }

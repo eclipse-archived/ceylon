@@ -13,26 +13,26 @@ shared class Kid350(dynamic n) extends Class350() {
 
 dynamic f366_1() {
   dynamic {
-    return value{a=1;};
+    return dynamic[a=1;];
   }
 }
 
 Object f366_2() {
   dynamic {
-    return value{a=2;};
+    return dynamic[a=2;];
   }
 }
 
 dynamic f366_3() {
   dynamic {
-    return value{3,4};
+    return dynamic[3,4];
   }
 }
 
 void issue350() {
     Kid350 i350;
     dynamic {
-      i350 = Kid350(value {a=1;b="2";});
+      i350 = Kid350(dynamic[a=1;b="2";]);
     }
     dynamic {
       //Can leak, because the declaration is dynamic

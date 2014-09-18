@@ -37,7 +37,7 @@ void testIssues() {
     //351
     Object i1={1,null};
     Object i2={1,2};
-    assert(exists e1={1,null}.indexed.first);
+    value e1={1,null}.indexed.first;
     Object e2=e1; //Integer?&Object
     check(e2 is Integer->Integer?&Object, "#351.1");
     check(i2 is {Integer?*}, "#351.2");

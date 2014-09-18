@@ -600,6 +600,14 @@ class MapTest<Key, Item>(<Key->Item>* entry)
     shared actual Integer size { return entries.size; }
     shared actual Boolean empty { return entries.empty; }
     shared actual MapTest<Key, Item> clone() { return this; }
+    shared actual Boolean defines(Object key) {
+        for (k->v in entry) {
+            if (k==key) {
+                return true;
+            }
+        }
+        return false;
+    }
     shared actual Iterator<Key->Item> iterator() { return entries.iterator(); }
     shared actual Item? get(Object key) {
         for (e in entries) {
@@ -608,3 +616,17 @@ class MapTest<Key, Item>(<Key->Item>* entry)
         return null;
     }
 }
+
+shared interface MyIterable<out Element, out Absent=Null>
+        satisfies Category
+        given Absent satisfies Null {
+
+    shared default {<Integer->Element&Object>*} indexed {
+        object indexes
+            satisfies {<Integer->Element&Object>*} {
+            iterator() => nothing;
+        }
+        return indexes;
+    }
+}
+

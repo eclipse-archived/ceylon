@@ -564,7 +564,7 @@ void testIssue315() {
   String? s=null;
   check((s else "1") == "1", "Issue 315 [1]");
   dynamic {
-    dynamic z=value{a=1;};
+    dynamic z=dynamic[a=1;];
     check((z.b else "2") == "2", "Issue 315 [2]");
   }
 }
