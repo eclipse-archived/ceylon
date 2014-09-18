@@ -115,7 +115,7 @@ function $init$AppliedClass(){
         if (mm.ps===undefined)throw InvocationException$meta$model("Applied function does not have metamodel parameter info for named args call");
         var mapped={};
         var iter=args.iterator();var a;while((a=iter.next())!==getFinished()) {
-          mapped[a.key]=a.item===getNullArgument$meta$model()?null:a.item;
+          mapped[a.key]=a.item;
         }
         var ordered=[];
         for (var i=0; i<mm.ps.length; i++) {
