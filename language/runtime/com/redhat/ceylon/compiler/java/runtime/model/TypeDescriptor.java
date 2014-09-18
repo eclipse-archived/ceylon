@@ -271,7 +271,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public boolean containsNull() {
-            return klass==Null.class;
+            return klass==Null.class || klass==Anything.class;
         }
     }
 
