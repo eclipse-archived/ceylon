@@ -61,13 +61,13 @@ void testNamedArguments() {
     match=(Integer x)=>x==2;
     for (i in 10..1) i
   } == "Even: 2", "named arguments 4");
-  check(order { product = "Mouse"; }=="Order 'Mouse', quantity 1, discount 0, comments: ",
+  check(order { product = "Mouse"; }=="Order 'Mouse', quantity 1, discount 0.0, comments: ",
         "defaulted & sequenced named [1]");
   check(order { product = "Rhinoceros"; discount = 10.0; }
-        =="Order 'Rhinoceros', quantity 1, discount 10, comments: ",
+        =="Order 'Rhinoceros', quantity 1, discount 10.0, comments: ",
         "defaulted & sequenced named [2]");
   check(order { product = "Bee"; count = 531; "Express delivery", "Send individually" }
-        =="Order 'Bee', quantity 531, discount 0, comments: 'Express delivery', 'Send individually'",
+        =="Order 'Bee', quantity 531, discount 0.0, comments: 'Express delivery', 'Send individually'",
         "defaulted & sequenced named [3]");
   C293 {
     "issue 293";
