@@ -33,6 +33,7 @@ import java.util.zip.ZipInputStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.PathFilter;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
@@ -152,7 +153,7 @@ public abstract class LazyModule extends Module {
     public void loadPackageList(ArtifactResult artifact) {
         if (artifact instanceof ContentAwareArtifactResult) {
             for (String entry : ((ContentAwareArtifactResult) artifact).getEntries()) {
-                addPackageForPath(entry);
+                addPackageForPath(entry, artifact.filter());
             }
         } else {
             File file = artifact.artifact();
@@ -166,7 +167,7 @@ public abstract class LazyModule extends Module {
                 try{
                     Enumeration<? extends ZipEntry> entries = zipFile.entries();
                     while(entries.hasMoreElements())
-                        loadPackageList(entries.nextElement());
+                        loadPackageList(entries.nextElement(), artifact.filter());
                 }finally{
                     try {
                         zipFile.close();
@@ -178,22 +179,30 @@ public abstract class LazyModule extends Module {
         }
     }
     
-    private void loadPackageList(ZipEntry entry) {
+    private void loadPackageList(ZipEntry entry, PathFilter pathFilter) {
         if(!entry.isDirectory()){
             String path = entry.getName();
-            addPackageForPath(path);
+            addPackageForPath(path, pathFilter);
         }
     }
 
-    private void addPackageForPath(String path) {
+    private void addPackageForPath(String path, PathFilter pathFilter) {
         if(path.toLowerCase().endsWith(".class")){
             int sep = path.lastIndexOf('/');
             if(sep != -1)
                 path = path.substring(0, sep);
-            String pkg = path.replace('/', '.');
+            String pkg = path;
             // make sure we unquote any package part
             pkg = pkg.replace("$", "");
-            jarPackages.add(pkg);
+            String pathQuery;
+            if(path.isEmpty())
+                pathQuery = pkg;
+            else
+                pathQuery = pkg+"/";
+            if(pathFilter == null || pathFilter.accept(pathQuery)){
+                pkg = path.replace('/', '.');
+                jarPackages.add(pkg);
+            }
         }
     }
 
