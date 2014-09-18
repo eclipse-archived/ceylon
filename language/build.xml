@@ -20,6 +20,7 @@
     <property name="test.res" location="test-resource"/>
     <property name="test.java.src" location="test-java"/>
     <property name="test-jvm.src" location="test-jvm"/>
+    <property name="test-jvm-tools.src" location="test-jvm-tools"/>
     <property name="test-js.src" location="test-js"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
@@ -549,7 +550,7 @@
             <rep url="aether"/>
         </ceylon-compile>
         <javac
-            srcdir="${test-jvm.src}"
+            srcdir="${test-jvm.src}:${test-jvm-tools.src}"
             destdir="${build.test}"
             debug="true"
             encoding="UTF-8"
