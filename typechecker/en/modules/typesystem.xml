@@ -1065,10 +1065,8 @@ alias Y => List<X>;]]></programlisting>
             
             <programlisting>extends super.Buffer()</programlisting>
             
-            <para>
-            The root class <literal>Anything</literal> defined in <literal>ceylon.language</literal> 
-            does not have a superclass.
-            </para>
+            <para>The root class <literal>Anything</literal> defined in 
+            <literal>ceylon.language</literal> does not have a superclass.</para>
             
         </section>
         
@@ -1109,6 +1107,9 @@ alias Y => List<X>;]]></programlisting>
             must specify type arguments.</para>
             
             <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
+            
+            <para>A <literal>satisfies</literal> clause may not contain two types produced from 
+            the same type declaration.</para>
             
         </section>
     
@@ -1287,6 +1288,17 @@ Item item = comp of Item;</programlisting>
             
             <para>A type parameter with an <literal>of</literal> clause may specify 
             multiple cases, as defined in <xref linkend="generictypeconstraints"/>.</para>
+            
+            <para>An <literal>of</literal> clause may not contain:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>two types produced from the same type declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>two value references to a single toplevel anonymous class.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         

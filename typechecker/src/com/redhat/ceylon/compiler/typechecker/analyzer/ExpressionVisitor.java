@@ -6078,13 +6078,13 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
+            Set<TypeDeclaration> typeSet = new HashSet<TypeDeclaration>();
             for (Tree.StaticType st: that.getTypes()) {
                 ProducedType type = st.getTypeModel();
                 TypeDeclaration ctd = type.getDeclaration();
                 if (type!=null && ctd!=null) {
                     type = type.resolveAliases();
-                    if (!set.add(ctd)) {
+                    if (!typeSet.add(ctd)) {
                         //this error is not really truly necessary
                         st.addError("duplicate case type: '" + 
                                 ctd.getName(unit) + 
@@ -6139,9 +6139,16 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            Set<Declaration> valueSet = new HashSet<Declaration>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 ProducedType type = bme.getTypeModel();
                 Declaration d = bme.getDeclaration();
+                if (d!=null && !valueSet.add(d)) {
+                    //this error is not really truly necessary
+                    bme.addError("duplicate case: '" + 
+                            d.getName(unit) + 
+                            "' of '" + td.getName() + "'");
+                }
                 if (d!=null && type!=null && 
                         !type.getDeclaration().isAnonymous()) {
                     bme.addError("case must be a toplevel anonymous class: '" + 
