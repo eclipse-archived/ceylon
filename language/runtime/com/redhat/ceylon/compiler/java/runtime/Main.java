@@ -28,6 +28,7 @@ import org.jboss.jandex.Indexer;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
@@ -422,9 +423,9 @@ public class Main {
                                         Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                Set<ModuleInfo> moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream);
+                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream);
                 Module module = new Module(name, version, moduleType, file);
-                for(ModuleInfo dep : moduleDependencies){
+                for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
                     module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
                 }
                 return module;
