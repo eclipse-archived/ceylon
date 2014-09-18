@@ -255,4 +255,13 @@ shared void types() {
     check(yourIdo is Basic, "is identifiable object 1");
     check(ido is Identifiable, "is identifiable 2");
     check(ido is Basic, "is identifiable object 2");
+    
+    reifiedIs<String>("abc");
+    reifiedIs<Anything>("abc");
+    reifiedIs<Null>(null);
+    reifiedIs<Anything>(null);
+}
+
+void reifiedIs<T>(T|Integer obj) {
+    check(obj is T, "reified is");
 }
