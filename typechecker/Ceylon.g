@@ -1979,13 +1979,13 @@ assignmentExpression returns [Term term]
               qe.setTypeArguments($memberReference.typeArgumentList); 
           $term = qe; }
         (
-        positionalArgument
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary(qe);
-          PositionalArgumentList al = new PositionalArgumentList(null);
-          al.addPositionalArgument($positionalArgument.positionalArgument); 
-          ie.setPositionalArgumentList(al);
-          $term = ie; }
+          positionalArgument
+          { InvocationExpression ie = new InvocationExpression(null);
+            ie.setPrimary(qe);
+            PositionalArgumentList al = new PositionalArgumentList(null);
+            al.addPositionalArgument($positionalArgument.positionalArgument); 
+            ie.setPositionalArgumentList(al);
+            $term = ie; }
         )?
       )?
     ;
