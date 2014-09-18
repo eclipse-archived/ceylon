@@ -39,6 +39,7 @@ import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -573,7 +574,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // from the given set of external class names
     private void checkModuleProperties(File descriptorFile, Set<String> externalClasses) throws IOException {
         try{
-            Set<ModuleInfo> dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+            ModuleInfo dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
             checkDependencies(dependencies, externalClasses);
         }catch(ImportJarException x){
             throw x;
@@ -589,7 +590,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // from the given set of external class names
     private void checkModuleXml(File descriptorFile, Set<String> externalClasses) throws IOException {
         try{
-            Set<ModuleInfo> dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+            ModuleInfo dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
             checkDependencies(dependencies, externalClasses);
         }catch(ImportJarException x){
             throw x;
@@ -603,11 +604,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // Check the given dependencies for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkDependencies(Set<ModuleInfo> dependencies, Set<String> externalClasses) throws IOException {
-        if (!dependencies.isEmpty()) {
+    private void checkDependencies(ModuleInfo dependencies, Set<String> externalClasses) throws IOException {
+        if (!dependencies.getDependencies().isEmpty()) {
             msg("info.checkingDependencies").newline();
-            TreeSet<ModuleInfo> sortedDeps = new TreeSet<>(dependencies);
-            for (ModuleInfo dep : sortedDeps) {
+            TreeSet<ModuleDependencyInfo> sortedDeps = new TreeSet<>(dependencies.getDependencies());
+            for (ModuleDependencyInfo dep : sortedDeps) {
                 String name = dep.getName();
                 String version = dep.getVersion();
                 // missing dep is OK, it can be fixed later, but invalid module/dependency is not OK

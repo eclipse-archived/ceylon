@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -301,7 +301,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 newline();
             }
             if (showDependencies) {
-                for (ModuleInfo dep : version.getDependencies()) {
+                for (ModuleDependencyInfo dep : version.getDependencies()) {
                     if (System.console() != null) {
                         append(prefix).append("    ");
                     } else {
@@ -420,12 +420,12 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     private void recurseDependencies(ModuleVersionDetails version, final int depth) throws IOException {
-        for (ModuleInfo dep : version.getDependencies()) {
+        for (ModuleDependencyInfo dep : version.getDependencies()) {
             dependency(dep, depth+1);
         }
     }
     
-    private void dependency(ModuleInfo dep, final int depth) throws IOException {
+    private void dependency(ModuleDependencyInfo dep, final int depth) throws IOException {
         for (int ii = 0; ii < depth; ii++) {
             append("  ");
         }
