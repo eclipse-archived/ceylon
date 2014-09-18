@@ -354,9 +354,17 @@ public class LanguageCompiler extends JavaCompiler {
         void visitModules(PhasedUnits phasedUnits);
     }
     
+    private static class RunTwiceException extends RuntimeException {
+
+        public RunTwiceException(String string) {
+            super(string);
+        }
+        
+    }
+    
     private JCCompilationUnit ceylonParse(JavaFileObject filename, CharSequence readSource) {
         if(ceylonEnter.hasRun())
-            throw new RuntimeException("Trying to load new source file after CeylonEnter has been called: "+filename);
+            throw new RunTwiceException("Trying to load new source file after CeylonEnter has been called: "+filename);
         try {
             ModuleManager moduleManager = phasedUnits.getModuleManager();
             File sourceFile = new File(filename.getName());
@@ -792,6 +800,8 @@ public class LanguageCompiler extends JavaCompiler {
         try {
             sourceLanguage.push(Language.JAVA);
             super.complete(c);
+        } catch (RunTwiceException e) {
+            throw new CompletionFailure(c, e.getLocalizedMessage());
         } finally {
             sourceLanguage.pop();
         }
