@@ -1804,30 +1804,32 @@ public class ExpressionVisitor extends Visitor {
                         arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = (Tree.ListedArgument) arg;
                     Tree.Expression e = la.getExpression();
-                    if (e!=null && 
-                            e.getTerm() instanceof Tree.FunctionArgument) {
-                        Tree.FunctionArgument anon = 
-                                (Tree.FunctionArgument) e.getTerm();
-                        List<Tree.ParameterList> apls = anon.getParameterLists();
-                        if (!apls.isEmpty()) {
-                            List<ProducedType> types = 
-                                    unit.getCallableArgumentTypes(paramType);
-                            List<Tree.Parameter> aps = apls.get(0).getParameters();
-                            for (int j=0; j<types.size() && j<aps.size(); j++) {
-                                ProducedType type = types.get(j);
-                                Tree.Parameter ap = aps.get(j);
-                                if (ap instanceof Tree.InitializerParameter) {
-                                    Parameter parameter = ap.getParameterModel();
-                                    if (parameter.getModel()==null) {
-                                        Value model = new Value();
-                                        model.setUnit(unit);
-                                        model.setType(type);
-                                        model.setName(parameter.getName());
-                                        parameter.setModel(model);
-                                        model.setInitializerParameter(parameter);
-                                        Method fun = anon.getDeclarationModel();
-                                        model.setContainer(fun);
-                                        fun.addMember(model);
+                    if (e!=null) {
+                        Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
+                        if (term instanceof Tree.FunctionArgument) {
+                            Tree.FunctionArgument anon = 
+                                    (Tree.FunctionArgument) term;
+                            List<Tree.ParameterList> apls = anon.getParameterLists();
+                            if (!apls.isEmpty()) {
+                                List<ProducedType> types = 
+                                        unit.getCallableArgumentTypes(paramType);
+                                List<Tree.Parameter> aps = apls.get(0).getParameters();
+                                for (int j=0; j<types.size() && j<aps.size(); j++) {
+                                    ProducedType type = types.get(j);
+                                    Tree.Parameter ap = aps.get(j);
+                                    if (ap instanceof Tree.InitializerParameter) {
+                                        Parameter parameter = ap.getParameterModel();
+                                        if (parameter.getModel()==null) {
+                                            Value model = new Value();
+                                            model.setUnit(unit);
+                                            model.setType(type);
+                                            model.setName(parameter.getName());
+                                            parameter.setModel(model);
+                                            model.setInitializerParameter(parameter);
+                                            Method fun = anon.getDeclarationModel();
+                                            model.setContainer(fun);
+                                            fun.addMember(model);
+                                        }
                                     }
                                 }
                             }
@@ -1874,33 +1876,35 @@ public class ExpressionVisitor extends Visitor {
                         arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = (Tree.ListedArgument) arg;
                     Tree.Expression e = la.getExpression();
-                    if (e!=null && 
-                            e.getTerm() instanceof Tree.FunctionArgument) {
-                        Tree.FunctionArgument anon = 
-                                (Tree.FunctionArgument) e.getTerm();
-                        Functional f = (Functional) param.getModel();
-                        List<ParameterList> fpls = f.getParameterLists();
-                        List<Tree.ParameterList> apls = anon.getParameterLists();
-                        if (!fpls.isEmpty() && !apls.isEmpty()) {
-                            List<Parameter> fps = fpls.get(0).getParameters();
-                            List<Tree.Parameter> aps = apls.get(0).getParameters();
-                            for (int j=0; j<fps.size() && j<aps.size(); j++) {
-                                Parameter fp = fps.get(j);
-                                Tree.Parameter ap = aps.get(j);
-                                if (ap instanceof Tree.InitializerParameter) {
-                                    Parameter parameter = ap.getParameterModel();
-                                    if (parameter.getModel()==null) {
-                                        ProducedType t = 
-                                                pr.getTypedParameter(fp).getType();
-                                        Value model = new Value();
-                                        model.setUnit(unit);
-                                        model.setType(t);
-                                        model.setName(parameter.getName());
-                                        parameter.setModel(model);
-                                        model.setInitializerParameter(parameter);
-                                        Method fun = anon.getDeclarationModel();
-                                        model.setContainer(fun);
-                                        fun.addMember(model);
+                    if (e!=null) {
+                        Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
+                        if (term instanceof Tree.FunctionArgument) {
+                            Tree.FunctionArgument anon = 
+                                    (Tree.FunctionArgument) term;
+                            Functional f = (Functional) param.getModel();
+                            List<ParameterList> fpls = f.getParameterLists();
+                            List<Tree.ParameterList> apls = anon.getParameterLists();
+                            if (!fpls.isEmpty() && !apls.isEmpty()) {
+                                List<Parameter> fps = fpls.get(0).getParameters();
+                                List<Tree.Parameter> aps = apls.get(0).getParameters();
+                                for (int j=0; j<fps.size() && j<aps.size(); j++) {
+                                    Parameter fp = fps.get(j);
+                                    Tree.Parameter ap = aps.get(j);
+                                    if (ap instanceof Tree.InitializerParameter) {
+                                        Parameter parameter = ap.getParameterModel();
+                                        if (parameter.getModel()==null) {
+                                            ProducedType t = 
+                                                    pr.getTypedParameter(fp).getType();
+                                            Value model = new Value();
+                                            model.setUnit(unit);
+                                            model.setType(t);
+                                            model.setName(parameter.getName());
+                                            parameter.setModel(model);
+                                            model.setInitializerParameter(parameter);
+                                            Method fun = anon.getDeclarationModel();
+                                            model.setContainer(fun);
+                                            fun.addMember(model);
+                                        }
                                     }
                                 }
                             }
