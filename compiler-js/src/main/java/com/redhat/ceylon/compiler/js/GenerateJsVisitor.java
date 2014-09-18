@@ -2511,8 +2511,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(final Tree.PositiveOp that) {
         final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-        final boolean nat = d.inherits(that.getUnit().getIntegerDeclaration())
-                || d.inherits(that.getUnit().getFloatDeclaration());
+        final boolean nat = d.inherits(that.getUnit().getIntegerDeclaration());
         //TODO if it's positive we leave it as is?
         Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
     }
