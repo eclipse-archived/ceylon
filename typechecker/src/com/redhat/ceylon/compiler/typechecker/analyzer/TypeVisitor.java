@@ -473,13 +473,11 @@ public class TypeVisitor extends Visitor {
             Import i) {
         String alias = i.getAlias();
         if (alias!=null) {
-            Declaration d = i.getDeclaration();
             Map<String, String> mods = unit.getModifiers();
-            if (mods.containsValue(alias) &&
-                    (!d.getUnit().getPackage().getNameAsString()
-                            .equals(Module.LANGUAGE_MODULE_NAME) ||
-                    !mods.containsKey(d.getName()))) {
-                //TODO: why is this even necessary?!
+            if (mods.containsKey(alias) && mods.get(alias).equals(alias)) {
+                //spec says you can't hide a language modifier
+                //unless the modifier itself has an alias
+                //(this is perhaps a little heavy-handed)
                 member.addError("import hides a language modifier: '" + alias + "'");
             }
             else {
