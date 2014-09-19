@@ -1223,24 +1223,26 @@ public class TypeVisitor extends Visitor {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
                 TypeDeclaration etd = et.getDeclarationModel();
-                if (etd==td) {
-                    //TODO: handle indirect circularities!
-                    et.addError("directly extends itself: '" + td.getName() + "'");
-                }
-                else if (etd instanceof TypeParameter) {
-                    et.addError("directly extends a type parameter: '" + 
-                            type.getDeclaration().getName(unit) + "'");
-                }
-                else if (etd instanceof Interface) {
-                    et.addError("extends an interface: '" + 
-                            type.getDeclaration().getName(unit) + "'");
-                }
-                else if (etd instanceof TypeAlias) {
-                    et.addError("extends a type alias: '" + 
-                            type.getDeclaration().getName(unit) + "'");
-                }
-                else {
-                    td.setExtendedType(type);
+                if (etd!=null) {
+                    if (etd==td) {
+                        //TODO: handle indirect circularities!
+                        et.addError("directly extends itself: '" + td.getName() + "'");
+                    }
+                    else if (etd instanceof TypeParameter) {
+                        et.addError("directly extends a type parameter: '" + 
+                                type.getDeclaration().getName(unit) + "'");
+                    }
+                    else if (etd instanceof Interface) {
+                        et.addError("extends an interface: '" + 
+                                type.getDeclaration().getName(unit) + "'");
+                    }
+                    else if (etd instanceof TypeAlias) {
+                        et.addError("extends a type alias: '" + 
+                                type.getDeclaration().getName(unit) + "'");
+                    }
+                    else {
+                        td.setExtendedType(type);
+                    }
                 }
             }
         }
@@ -1264,57 +1266,59 @@ public class TypeVisitor extends Visitor {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
-                if (std==td) {
-                    //TODO: handle indirect circularities!
-                    st.addError("directly extends itself: '" + td.getName() + "'");
-                    continue;
-                }
-                if (std instanceof TypeAlias) {
-                    st.addError("satisfies a type alias: '" + 
-                            type.getDeclaration().getName(unit) + "'");
-                    continue;
-                }
-                if (td instanceof TypeParameter) {
-                    if (foundTypeParam) {
-                        st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+                if (std!=null) {
+                    if (std==td) {
+                        //TODO: handle indirect circularities!
+                        st.addError("directly extends itself: '" + td.getName() + "'");
+                        continue;
                     }
-                    else if (std instanceof TypeParameter) {
-                        if (foundClass||foundInterface) {
+                    if (std instanceof TypeAlias) {
+                        st.addError("satisfies a type alias: '" + 
+                                type.getDeclaration().getName(unit) + "'");
+                        continue;
+                    }
+                    if (td instanceof TypeParameter) {
+                        if (foundTypeParam) {
                             st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
                         }
-                        foundTypeParam = true;
-                    }
-                    else if (std instanceof Class) {
-                        if (foundClass) {
-                            st.addUnsupportedError("multiple class upper bounds are not yet supported");
+                        else if (std instanceof TypeParameter) {
+                            if (foundClass||foundInterface) {
+                                st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
+                            }
+                            foundTypeParam = true;
                         }
-                        foundClass = true;
-                    }
-                    else if (std instanceof Interface) {
-                        foundInterface = true;
-                    }
+                        else if (std instanceof Class) {
+                            if (foundClass) {
+                                st.addUnsupportedError("multiple class upper bounds are not yet supported");
+                            }
+                            foundClass = true;
+                        }
+                        else if (std instanceof Interface) {
+                            foundInterface = true;
+                        }
+                        else {
+                            st.addError("upper bound must be a class, interface, or type parameter");
+                            continue;
+                        }
+                    } 
                     else {
-                        st.addError("upper bound must be a class, interface, or type parameter");
-                        continue;
+                        if (std instanceof TypeParameter) {
+                            st.addError("directly satisfies type parameter: '" + 
+                                    type.getDeclaration().getName(unit) + "'");
+                            continue;
+                        }
+                        else if (std instanceof Class) {
+                            st.addError("satisfies a class: '" + 
+                                    type.getDeclaration().getName(unit) + "'");
+                            continue;
+                        }
+                        else if (!(std instanceof Interface)) {
+                            st.addError("satisfied type must be an interface");
+                            continue;
+                        }
                     }
-                } 
-                else {
-                    if (std instanceof TypeParameter) {
-                        st.addError("directly satisfies type parameter: '" + 
-                                type.getDeclaration().getName(unit) + "'");
-                        continue;
-                    }
-                    else if (std instanceof Class) {
-                        st.addError("satisfies a class: '" + 
-                                type.getDeclaration().getName(unit) + "'");
-                        continue;
-                    }
-                    else if (!(std instanceof Interface)) {
-                        st.addError("satisfied type must be an interface");
-                        continue;
-                    }
+                    list.add(type);
                 }
-                list.add(type);
             }
         }
         td.setSatisfiedTypes(list);
