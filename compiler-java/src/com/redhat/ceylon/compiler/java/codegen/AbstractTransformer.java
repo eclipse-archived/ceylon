@@ -4578,7 +4578,6 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean supportsReifiedAlias(ClassOrInterface decl){
         return !decl.isAlias() 
-                && !decl.isAnonymous()
                 && decl.getTypeParameters().isEmpty()
                 && supportsReified(decl)
                 && Decl.isToplevel(decl);

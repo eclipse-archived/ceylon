@@ -3528,6 +3528,8 @@ public class ClassTransformer extends AbstractTransformer {
 
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(objectClassBuilder, klass);
+        if(supportsReifiedAlias(klass))
+            objectClassBuilder.reifiedAlias(model.getType());
         
         // make sure we set the container in case we move it out
         addAtContainer(objectClassBuilder, klass);
