@@ -45,11 +45,20 @@ public class ModuleCopycat {
     private int count;
     private int maxCount;
 
+    /**
+     * Class for feedback and control during copying.
+     * The <code>beforeCopyModule</code> and <code>beforeCopyArtifact</code> should return
+     * <code>true</code> to indicate they want the specified module or artifact to be copied
+     * or skipped otherwise.
+     * The <code>afterCopyModule</code> and <code>afterCopyArtifact</code> will get a boolean
+     * passed if the copy was actually done or not (the copy algorithm might decide to skip the
+     * module or artifact anyway, even if you returned <code>true</code> from the "before" method.
+     */
     public static interface CopycatFeedback {
-        void beforeCopyModule(ArtifactContext ac, int count, int max) throws Exception;
-        void afterCopyModule(ArtifactContext ac, int count, int max) throws Exception;
-        void beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws Exception;
-        void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws Exception;
+        boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws Exception;
+        void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws Exception;
+        boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws Exception;
+        void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max, boolean copied) throws Exception;
         void notFound(ArtifactContext ac) throws Exception;
     }
     
@@ -131,31 +140,37 @@ public class ModuleCopycat {
                     feedback.beforeCopyModule(context, count++, maxCount);
                 }
                 if (feedback != null) {
-                    feedback.afterCopyModule(context, count, maxCount);
+                    feedback.afterCopyModule(context, count, maxCount, false);
                 }
                 return;
             }
             Collection<ModuleVersionDetails> versions = getModuleVersions(srcRepoman, context.getName(), context.getVersion(), ModuleQuery.Type.ALL, null, null);
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
+                boolean copyModule = true;
                 if (feedback != null) {
-                    feedback.beforeCopyModule(context, count++, maxCount);
+                    copyModule = feedback.beforeCopyModule(context, count++, maxCount);
                 }
-                List<ArtifactResult> results = srcRepoman.getArtifactResults(context);
-                int artCnt = 0;
-                for (ArtifactResult r : results) {
-                    if (feedback != null) {
-                        feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
-                    }
-                    copyArtifact(context, r.artifact());
-                    if (feedback != null) {
-                        feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size());
+                boolean copiedModule = false;
+                if (copyModule) {
+                    List<ArtifactResult> results = srcRepoman.getArtifactResults(context);
+                    int artCnt = 0;
+                    for (ArtifactResult r : results) {
+                        boolean copyArtifact = true;
+                        if (feedback != null) {
+                            copyArtifact = feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
+                        }
+                        boolean copied = copyArtifact && copyArtifact(context, r.artifact());
+                        if (feedback != null) {
+                            feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size(), copied);
+                        }
+                        copiedModule |= copied;
                     }
                 }
                 if (feedback != null) {
-                    feedback.afterCopyModule(context, count, maxCount);
+                    feedback.afterCopyModule(context, count, maxCount, copiedModule);
                 }
-                if (!context.isIgnoreDependencies()) {
+                if (copyModule && !context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
@@ -196,7 +211,7 @@ public class ModuleCopycat {
         return versionMap.values();
     }
     
-    private void copyArtifact(ArtifactContext orgac, File archive) throws Exception {
+    private boolean copyArtifact(ArtifactContext orgac, File archive) throws Exception {
         ArtifactContext ac = orgac.copy();
         // Make sure we set the correct suffix for the put
         String suffix = ArtifactContext.getSuffixFromFilename(archive.getName());
@@ -205,6 +220,7 @@ public class ModuleCopycat {
         dstRepoman.putArtifact(ac, archive);
         // SHA1 it if required
         signArtifact(ac, archive);
+        return true;
     }
 
     private void signArtifact(ArtifactContext context, File jarFile){
