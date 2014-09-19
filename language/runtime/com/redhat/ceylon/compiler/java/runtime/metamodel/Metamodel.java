@@ -26,6 +26,7 @@ import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.null_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
@@ -170,7 +171,7 @@ public class Metamodel {
     
     public static TypeDescriptor getTypeDescriptor(Object instance) {
         if(instance == null)
-            return Null.$TypeDescriptor$;
+            return null_.$TypeDescriptor$;
         else if(instance instanceof ReifiedType)
             return((ReifiedType) instance).$getType$();
         else

@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+import ceylon.language.null_;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.MutationException;
 
@@ -224,6 +225,8 @@ public class AppliedValue<Get, Set>
 
     @Override
     public Get get() {
+        if($reifiedGet.equals(null_.$TypeDescriptor$))
+            return null;
         try {
             return (Get) getter.invokeExact();
         } catch (Throwable e) {

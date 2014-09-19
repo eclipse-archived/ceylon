@@ -9,6 +9,7 @@ import ceylon.language.AssertionError;
 import ceylon.language.Basic;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
+import ceylon.language.null_;
 
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
@@ -271,7 +272,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public boolean containsNull() {
-            return klass==Null.class || klass==Anything.class;
+            return klass==Null.class || klass == null_.class || klass==Anything.class;
         }
     }
 
