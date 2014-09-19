@@ -249,7 +249,7 @@ shared void strings() {
     
     check(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
     
-    /*value builder = StringBuilder();
+    value builder = StringBuilder();
     check(builder.string=="", "StringBuilder 1");
     builder.append("hello");
     check(builder.string=="hello", "StringBuilder 2");
@@ -271,11 +271,14 @@ shared void strings() {
     check(builder.delete(12,3).delete(5,1).delete(99999,1).string=="hello world goodbye everyone ", "StringBuilder.delete 1");
     check(builder.delete(28,100).string=="hello world goodbye everyone", "StringBuilder.delete 2");
     check(builder.size==28, "StringBuilder.size 2");
-    check(builder.reset().size==0, "StringBuilder.reset");
+    check(builder.clear().size==0, "StringBuilder.reset");
 
     check(builder.append("so|me").size==5);
     check(builder.deleteInitial(2).string == "|me", "StringBuilder.deleteInitial");
-    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");*/
+    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");
+    check(builder.clear().append("oat").reverseInPlace().string == "tao", "StringBuilder.reverseInPlace");
+    check(builder.replace(1,1,"omat").string == "tomato", "StringBuilder.replace");
+    check(builder.size == 6, "StringBuilder.size");
 
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
