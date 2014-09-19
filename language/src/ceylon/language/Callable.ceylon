@@ -4,12 +4,19 @@
  represented by a tuple type. Functions declared `void`
  are considered to have the return type `Anything`.
  
- For example, the type of the function reference 
- `plus<Float>` to the function [[plus]] is:
+ For example, the type of the anonymous function
+ `(Float x, Integer y) => x^y+1` is:
+ 
+     Callable<Float, [Float,Integer]>
+ 
+ which we usually abbreviate to `Float(Float,Integer)`.
+ 
+ Likewise, the type of the function reference `plus<Float>` 
+ to the function [[plus]] is:
  
      Callable<Float, [Float,Float]>
  
- which we usually abbreviate `Float(Float,Float)`.
+ which we abbreviate as `Float(Float,Float)`.
  
  A variadic function is represented using an unterminated 
  tuple type. For example, the type of the function reference
