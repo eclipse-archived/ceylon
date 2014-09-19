@@ -1,12 +1,18 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Object
-public final class operatingSystem_ {
+public final class operatingSystem_ implements ReifiedType {
+
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(operatingSystem_.class);
 
     private static final operatingSystem_ value = new operatingSystem_();
 
@@ -56,5 +62,11 @@ public final class operatingSystem_ {
     @Transient
     public java.lang.String toString() {
         return "operating system [" + getName() + " / " + getVersion() + "]";
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType$(){
+        return $TypeDescriptor$;
     }
 }

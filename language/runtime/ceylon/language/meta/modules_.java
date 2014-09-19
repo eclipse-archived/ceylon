@@ -11,10 +11,15 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Object
-public final class modules_ {
+public final class modules_ implements ReifiedType {
+    
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(modules_.class);
     
     private modules_() {}
     
@@ -40,5 +45,11 @@ public final class modules_ {
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Module")
     public Module getDefault() {
         return getDefaultModule();
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType$(){
+        return $TypeDescriptor$;
     }
 }

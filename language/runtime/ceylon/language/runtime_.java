@@ -2,12 +2,18 @@ package ceylon.language;
 
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7) @Object
-public final class runtime_ {
+public final class runtime_ implements ReifiedType {
     
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(runtime_.class);
+
     private static final runtime_ value = new runtime_();
     
     public static runtime_ get_() {
@@ -55,5 +61,11 @@ public final class runtime_ {
     @Transient
     public java.lang.String toString() {
         return "runtime [" + getName() + " / " + getVersion() + "]";
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType$(){
+        return $TypeDescriptor$;
     }
 }

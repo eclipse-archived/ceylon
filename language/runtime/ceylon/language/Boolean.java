@@ -53,7 +53,7 @@ public abstract class Boolean implements ReifiedType {
 
     @Override
     @Ignore
-    public final TypeDescriptor $getType$() {
+    public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
     

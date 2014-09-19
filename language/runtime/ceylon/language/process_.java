@@ -10,9 +10,14 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7) @Object
-public final class process_ {
+public final class process_ implements ReifiedType {
+
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(process_.class);
 
     private java.io.BufferedReader stdinReader = null;
     
@@ -153,5 +158,11 @@ public final class process_ {
     
     public static process_ get_() {
         return value;
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType$(){
+        return $TypeDescriptor$;
     }
 }

@@ -2,11 +2,17 @@ package ceylon.language;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7) @Object
-public final class language_ {
-    
+public final class language_ implements ReifiedType {
+
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(language_.class);
+
     public java.lang.String getVersion() {
         return Versions.CEYLON_VERSION_NUMBER;
     }
@@ -45,5 +51,11 @@ public final class language_ {
     
     public static language_ get_() {
         return value;
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType$(){
+        return $TypeDescriptor$;
     }
 }
