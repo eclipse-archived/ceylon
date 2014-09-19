@@ -86,10 +86,11 @@ final class bug1530_foo_ implements .com.redhat.ceylon.compiler.java.runtime.mod
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1530_foo\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.class);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.$TypeDescriptor$;
     }
 }
 class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

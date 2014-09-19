@@ -28,7 +28,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
         }
     }
     
@@ -69,10 +69,12 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Object\' before it was set");
         }
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
+        return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$;
     }
 }

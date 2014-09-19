@@ -36,10 +36,11 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'foo\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.$TypeDescriptor$;
     }
 }
 public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
@@ -67,10 +68,11 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bar\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.$TypeDescriptor$;
     }
 }
 public abstract class CaseTypes2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

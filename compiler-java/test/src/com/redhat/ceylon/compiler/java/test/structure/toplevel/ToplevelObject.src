@@ -27,10 +27,11 @@ final class topLevelObject_ implements .com.redhat.ceylon.compiler.java.runtime.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObject\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$TypeDescriptor$;
     }
 }
 final class accessTopLevelObject_ {

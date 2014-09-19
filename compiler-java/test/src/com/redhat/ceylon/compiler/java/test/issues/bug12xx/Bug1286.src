@@ -129,7 +129,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class));
                     }
                 }
                 final objectArgument_ arg$1$2 = new objectArgument_();
@@ -178,10 +178,11 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1286_objectDefinition\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$TypeDescriptor$;
     }
 }
 interface bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<E> {

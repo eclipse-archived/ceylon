@@ -169,11 +169,13 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelObject\' before it was set");
         }
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_.class);
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_.$TypeDescriptor$;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

@@ -27,10 +27,11 @@ public final class bug1225available_ implements .com.redhat.ceylon.compiler.java
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225available\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.class);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$;
     }
 }
 public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
@@ -57,10 +58,11 @@ public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compile
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_O\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.class);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$TypeDescriptor$;
     }
 }
 public final class bug1225unavailableBy_X_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
@@ -87,10 +89,11 @@ public final class bug1225unavailableBy_X_ implements .com.redhat.ceylon.compile
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_X\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.class);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$TypeDescriptor$;
     }
 }
 public final class Bug1225Board {

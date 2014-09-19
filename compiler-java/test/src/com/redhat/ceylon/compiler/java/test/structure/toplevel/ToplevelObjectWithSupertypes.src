@@ -46,9 +46,10 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithSuperTypes\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.$TypeDescriptor$;
     }
 }

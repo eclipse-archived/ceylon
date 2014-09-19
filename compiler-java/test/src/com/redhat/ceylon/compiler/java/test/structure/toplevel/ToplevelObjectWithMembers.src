@@ -66,9 +66,10 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithMembers\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$TypeDescriptor$;
     }
 }

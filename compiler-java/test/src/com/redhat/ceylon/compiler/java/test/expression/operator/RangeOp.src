@@ -105,10 +105,11 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'rangeOpF\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.class);
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.$TypeDescriptor$;
     }
 }
 final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum {
@@ -136,10 +137,11 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'rangeOpE\' before it was set");
         }
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.class);
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.class);
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.$TypeDescriptor$;
     }
 }
 final class bug_ {
