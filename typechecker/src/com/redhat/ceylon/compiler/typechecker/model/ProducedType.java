@@ -7,7 +7,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
