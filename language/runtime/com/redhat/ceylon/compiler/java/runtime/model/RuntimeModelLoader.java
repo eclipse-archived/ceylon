@@ -25,7 +25,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
 
-    public static final int MAX_JBOSS_MODULES_WAITS = 1;
+    public static final int MAX_JBOSS_MODULES_WAITS = 4;
+    public static final int JBOSS_MODULES_TIMEOUT = 5000;
     
     private Map<Module,ClassLoader> classLoaders = new HashMap<Module,ClassLoader>();
     private Map<String, Module> moduleCache = new HashMap<String, Module>();
@@ -131,7 +132,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                     int tries = MAX_JBOSS_MODULES_WAITS;
                     while(!classLoaders.containsValue(cl)){
                         try {
-                            lock.wait(5000);
+                            lock.wait(JBOSS_MODULES_TIMEOUT);
                         } catch (InterruptedException e) {
                             throw new ModelResolutionException(e);
                         }

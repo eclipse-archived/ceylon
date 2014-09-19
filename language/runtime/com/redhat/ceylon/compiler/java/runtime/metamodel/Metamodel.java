@@ -369,7 +369,7 @@ public class Metamodel {
                         int tries = RuntimeModelLoader.MAX_JBOSS_MODULES_WAITS;
                         while(!declaration.isAvailable()){
                             try {
-                                lock.wait(5000);
+                                lock.wait(RuntimeModelLoader.JBOSS_MODULES_TIMEOUT);
                             } catch (InterruptedException e) {
                                 throw Metamodel.newModelError("Interrupted");
                             }
