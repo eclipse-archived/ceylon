@@ -11,7 +11,7 @@
 //#native Callable
 //#COMPILE Binary,Usable,Destroyable,Obtainable,Comparable,Invertible,Summable,Ordinal,Enumerable,Numeric,Exponentiable,Integral,Scalable,Number,numbers.js,OverflowException,InitializationError,Resource,Ranged,Iterator,Collection,Category,List,Array,sequences.js,ArraySequence,Tuple,ChainedIterator,CycledIterator,Entry,Byte
 //#Number
-//#COMPILE Set,Range,Span,Measure,Singleton,AssertionError,Map,String,strings.js,Character
+//#COMPILE Set,Range,Span,Measure,Singleton,AssertionError,Map,String,strings.js,Character,StringBuilder
 //#COMPILE any,byDecreasing,byIncreasing,byItem,byKey,count,emptyOrSingleton,curry,apply,comparing,functions
 //#COMPILE every,forItem,forKey,concatenate,expand,interleave,corresponding,loop,largest,max,min,smallest,sum,product,pairs,zip,unzip,print,nothing
 //#COMPILE identical,compose,shuffle,flatten,unflatten,plus,times,sort,and,or,not,arrayOfSize
