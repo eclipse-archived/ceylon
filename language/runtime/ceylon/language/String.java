@@ -628,7 +628,8 @@ public final class String
                 int codePoint = value.codePointAt(offset);
                 offset += java.lang.Character.charCount(codePoint);
                 return Character.instance(codePoint);
-            } else {
+            }
+            else {
                 return finished_.get_();
             }
         }
