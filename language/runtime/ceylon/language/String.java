@@ -1942,13 +1942,15 @@ public final class String
     }
     
     @Ignore
+    @SuppressWarnings("rawtypes")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
-    public static Iterable<? extends Sequence<? extends Character>,?> getPaired(java.lang.String value) {
-    	return instance(value).getPaired();
+    public static Iterable getPaired(java.lang.String value) {
+        return instance(value).getPaired();
     }
     
     @Ignore
-    public static Iterable<? extends Sequence<? extends Character>,?> partition(java.lang.String value, long length) {
+    public static Iterable<? extends Sequence<? extends Character>,? extends java.lang.Object> 
+    partition(java.lang.String value, long length) {
     	return instance(value).partition(length);
     }
     
