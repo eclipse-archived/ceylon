@@ -582,7 +582,7 @@ public class Decl {
      */
     public static String className(Declaration decl) {
         String name = decl.getQualifiedNameString().replace("::", ".");
-        if (Character.isLowerCase(decl.getName().charAt(0))) {
+        if (Naming.isLowerCase(decl.getName())) {
             name += "_";
         }
         return name;

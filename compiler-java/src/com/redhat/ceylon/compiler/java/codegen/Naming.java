@@ -757,8 +757,11 @@ public class Naming implements LocalId {
             Tree.AnyInterface iface = (Tree.AnyInterface)decl;
             b.append(iface.getIdentifier().getText());
         } else if (decl instanceof Tree.TypedDeclaration){
-            b.append(decl.getIdentifier().getText());
-            b.append('_');
+            String name = decl.getIdentifier().getText();
+            b.append(name);
+            // only for lowercase stuff, not for \iFoo names
+            if(isLowerCase(name))
+                b.append('_');
         } else {
             throw new RuntimeException("Don't know how to get a class name for tree of type " + decl.getClass());
         }
@@ -2248,6 +2251,10 @@ public class Naming implements LocalId {
 
     public static String getToplevelAttributeSavedExceptionName() {
         return name(Unfix.$initException$);
+    }
+    
+    public static boolean isLowerCase(String name){
+        return !name.isEmpty() && Character.isLowerCase(name.charAt(0));
     }
 }
 
