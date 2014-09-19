@@ -31,6 +31,7 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
     shared native actual Boolean toplevel;
     shared native actual String qualifiedName;
     shared native actual Boolean equals(Object other);
+    shared native actual Integer hash;
     shared native actual Boolean shared;
     shared native actual Boolean formal;
     shared native actual Boolean default;
