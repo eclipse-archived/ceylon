@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -565,11 +566,13 @@ public class ProducedType extends ProducedReference {
             }
         }
     }
-
+    
     /**
      * Substitute the given types for the corresponding
      * given type parameters wherever they appear in the
-     * type. 
+     * type. Has the side-effect of performing disjoint
+     * type analysis, simplifying union/intersection
+     * types, even when there are no substitutions. 
      */
     public ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
         return new Substitution().substitute(this, substitutions).simple();
@@ -2196,21 +2199,20 @@ public class ProducedType extends ProducedReference {
         List<ProducedType> simpleArgs;
         ProducedType qt = getQualifyingType();
         if (args.isEmpty()) {
-            if(qt == null)
-                return this;// we have nothing to simplify
+            if (qt == null) {
+                return this; // we have nothing to simplify
+            }
             simpleArgs = Collections.<ProducedType>emptyList();
         }
-        else{
-            simpleArgs = 
-                    new ArrayList<ProducedType>(args.size());
+        else {
+            simpleArgs = new ArrayList<ProducedType>(args.size());
             for (ProducedType arg: args) {
                 simpleArgs.add(arg==null ? null : arg.simple());
             }
         }
-        ProducedType simpleQualifyingType = qt==null ? 
-                null : qt.simple();
         ProducedType ret = 
-                d.getProducedType(simpleQualifyingType, simpleArgs);
+                d.getProducedType(qt==null ? null : qt.simple(), 
+                        simpleArgs);
         ret.setUnderlyingType(underlyingType);
         ret.setRaw(isRaw);
         ret.varianceOverrides=varianceOverrides;

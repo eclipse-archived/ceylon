@@ -107,7 +107,11 @@ public class Util {
             		i<typeParameters.size(); i++) {
                 TypeParameter tp = typeParameters.get(i);
             	ProducedType dta = tp.getDefaultTypeArgument();
-            	if (dta==null) {
+            	if (dta==null || 
+            	        //necessary to prevent stack overflow
+            	        //for illegal recursively-defined
+            	        //default type argument
+            	        dta.containsDeclaration(tp.getDeclaration())) {
             		break;
             	}
             	else {

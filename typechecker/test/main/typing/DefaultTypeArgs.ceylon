@@ -30,5 +30,7 @@ class DefaultTypeArgs() {
     X<Integer>.New<Float> xn1 = nothing;
     X<Integer>.New<Float,Integer|Float> xn2 = xn1;
     X<Integer>.New<Float> xn3 = xn2;
-
+    
+    class G1<X,@error N=G1<Y>>() {}
+    class G2<@error N=G2<>>() {}
 }
