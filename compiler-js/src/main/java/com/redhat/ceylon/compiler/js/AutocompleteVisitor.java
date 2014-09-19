@@ -81,13 +81,13 @@ public class AutocompleteVisitor extends Visitor {
     @Override
     public void visitAny(Node that) {
         if (pass == 2 && node != null) {
-            for (Node n : that.getChildren()) {
+            /*for (Node n : that.getChildren()) {
                 if (n.getChildren().contains(node)) {
                     node = n;
                     pass = 3;
                     break;
                 }
-            }
+            }*/
         }
         super.visitAny(that);
     }
