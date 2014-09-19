@@ -90,7 +90,14 @@ JSNum$proto.minus = function(other) {
 }
 $addnm$('minus');
 JSNum$proto.times = function(other) {
-    return (nflt$(this)||nflt$(other)) ? Float(this*other) : (this*other);
+  if (this.fmz$)return other.negative?Float(0.0):this;
+  var fls=nflt$(this)||nflt$(other);
+  if (fls && this.valueOf()==0 && other.negative) {
+    //0*-something
+    var f=Float(0.0);f.fmz$=true;
+    return f;
+  }
+  return fls ? Float(this*other) : (this*other);
 }
 $addnm$('times');
 JSNum$proto.timesInteger = function(other) {
@@ -98,6 +105,7 @@ JSNum$proto.timesInteger = function(other) {
 }
 $addnm$('timesInteger');
 JSNum$proto.divided = function(other) {
+  if (this.fmz$)return this;
     if (nflt$(this)||nflt$(other)) { return Float(this/other); }
     if (other == 0) {
         throw Exception("Division by Zero");
@@ -118,8 +126,9 @@ JSNum$proto.power = function(exp) {
 $addnm$('power',Exponentiable.$$.prototype.power);
 atr$(JSNum$proto, 'negated', function() {
   if (this.valueOf()==0 && this.float$) {
-    this.fmz$=(this.fmz$?false:true);
-    return this;
+    var f=Float(0.0);
+    if (!this.fmz$)f.fmz$=true;
+    return f;
   }
   return nflt$(this) ? Float(-this) : -this;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
