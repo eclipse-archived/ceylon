@@ -617,8 +617,11 @@
             </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: Should the name of this type be a keyword, perhaps
-            <literal>nothing</literal>, to emphasize that it is defined primitively?</para></comment>
+            <comment><para>Note: an expression of type <literal>Nothing</literal> results 
+            in a compiler warning.</para></comment>
+            
+            <!--comment><para>TODO: Should the name of this type be a keyword, perhaps
+            <literal>nothing</literal>, to emphasize that it is defined primitively?</para></comment-->
             
         </section>
         
