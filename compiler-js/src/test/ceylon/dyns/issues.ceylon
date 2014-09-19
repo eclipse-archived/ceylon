@@ -132,4 +132,10 @@ shared void issues() {
     } catch (Throwable ex) {
         check("xpected ceylon.language::String" in ex.message, "Issue #381 [1] msg ``ex.message``");
     }
+    dynamic {
+        test418 = "OK!";
+        check(test418 == "OK!", "#418.1");
+        test418 = "Again";
+        check(test418 == "Again", "#418.2");
+    }
 }
