@@ -1992,18 +1992,23 @@ public class GenerateJsVisitor extends Visitor
     private void specifierStatement(final TypeDeclaration outer,
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
-        if (dynblock > 0 && Util.isTypeUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
-            specStmt.getBaseMemberExpression().visit(this);
+        final Term term = specStmt.getBaseMemberExpression();
+        final BaseMemberExpression bme = term instanceof BaseMemberExpression ? (BaseMemberExpression)term : null;
+        if (dynblock > 0 && Util.isTypeUnknown(term.getTypeModel())) {
+            if (bme != null && bme.getDeclaration() == null) {
+                out(bme.getIdentifier().getText());
+            } else {
+                term.visit(this);
+            }
             out("=");
-            int box = boxUnboxStart(expr, specStmt.getBaseMemberExpression());
+            int box = boxUnboxStart(expr, term);
             expr.visit(this);
             if (box == 4) out("/*TODO: callable targs 6*/");
             boxUnboxEnd(box);
             out(";");
             return;
         }
-        if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
-            BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
+        if (bme != null) {
             Declaration bmeDecl = bme.getDeclaration();
             if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
@@ -2128,14 +2133,13 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        else if ((specStmt.getBaseMemberExpression() instanceof ParameterizedExpression)
+        else if ((term instanceof ParameterizedExpression)
                 && (specStmt.getSpecifierExpression() != null)) {
-            final ParameterizedExpression paramExpr =
-                    (ParameterizedExpression) specStmt.getBaseMemberExpression();
+            final ParameterizedExpression paramExpr = (ParameterizedExpression)term;
             if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
                 // func(params) => expr;
-                BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
-                Declaration bmeDecl = bme.getDeclaration();
+                final BaseMemberExpression bme2 = (BaseMemberExpression) paramExpr.getPrimary();
+                final Declaration bmeDecl = bme2.getDeclaration();
                 if (bmeDecl.isMember()) {
                     qualify(specStmt, bmeDecl);
                 } else {
