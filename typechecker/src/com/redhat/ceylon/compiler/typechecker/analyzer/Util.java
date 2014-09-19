@@ -367,20 +367,28 @@ public class Util {
             		supertype1, node.getUnit()));
         }
     }
+    
+    public static boolean hasErrorOrWarning(Node node) {
+        return hasError(node, true);
+    }
 
-    static boolean hasError(Node node) {
+    public static boolean hasError(Node node) {
+        return hasError(node, false);
+    }
+
+    static boolean hasError(Node node, 
+            final boolean includeWarnings) {
         // we use an exception to get out of the visitor 
         // as fast as possible when an error is found
         // TODO: wtf?! because it's the common case that
         //       a node has an error? that's just silly
         @SuppressWarnings("serial")
-        class ErrorFoundException extends RuntimeException{}
+        class ErrorFoundException extends RuntimeException {}
         class ErrorVisitor extends Visitor {
             @Override
             public void handleException(Exception e, Node that) {
-                if(e instanceof ErrorFoundException){
-                    // rethrow
-                    throw (RuntimeException)e;
+                if (e instanceof ErrorFoundException){
+                    throw (ErrorFoundException) e;
                 }
                 super.handleException(e, that);
             }
@@ -389,10 +397,13 @@ public class Util {
                 if (that.getErrors().isEmpty()) {
                     super.visitAny(that);
                 }
+                else if (includeWarnings) {
+                    throw new ErrorFoundException();
+                }
                 else {
                     // UsageWarning don't count as errors
-                    for(Message error : that.getErrors()){
-                        if(!(error instanceof UsageWarning)){
+                    for (Message error: that.getErrors()) {
+                        if (!(error instanceof UsageWarning)) {
                             // get out fast
                             throw new ErrorFoundException();
                         }
@@ -403,10 +414,11 @@ public class Util {
             }
         }
         ErrorVisitor ev = new ErrorVisitor();
-        try{
+        try {
             node.visit(ev);
             return false;
-        }catch(ErrorFoundException x){
+        }
+        catch (ErrorFoundException x) {
             return true;
         }
     }

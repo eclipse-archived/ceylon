@@ -4,6 +4,7 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrorOrWarning;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 
@@ -77,9 +78,11 @@ public class UsageVisitor extends Visitor {
     @Override
     public void visit(Tree.Term that) {
         super.visit(that);
-        ProducedType type = that.getTypeModel();
-        if (!isTypeUnknown(type) && type.isNothing()) {
-            that.addUsageWarning("expression has type 'Nothing'");
+        if (!hasErrorOrWarning(that)) {
+            ProducedType type = that.getTypeModel();
+            if (!isTypeUnknown(type) && type.isNothing()) {
+                that.addUsageWarning("expression has type 'Nothing'");
+            }
         }
     }
 }
