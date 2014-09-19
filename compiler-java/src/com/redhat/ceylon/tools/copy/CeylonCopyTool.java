@@ -182,27 +182,33 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         }
         
         // Now do the actual copying
+        final boolean logArtifacts = verbose != null && (verbose.contains("all") || verbose.contains("files"));
         ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
             @Override
             public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
                 String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
                 msg("copying.module", module, count+1, max).flush();
+                if (logArtifacts) {
+                    newline().flush();
+                }
                 return true;
             }
             @Override
             public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
-                append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
+                if (!logArtifacts) {
+                    append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
+                }
             }
             @Override
             public boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
-                if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
-                    append("    ").msg("copying.artifact", archive.getName(), count+1, max).newline().flush();
+                if (logArtifacts) {
+                    append("    ").msg("copying.artifact", archive.getName(), count+1, max).flush();
                 }
                 return true;
             }
             @Override
             public void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max, boolean copied) throws IOException {
-                if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
+                if (logArtifacts) {
                     append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
                 }
             }
