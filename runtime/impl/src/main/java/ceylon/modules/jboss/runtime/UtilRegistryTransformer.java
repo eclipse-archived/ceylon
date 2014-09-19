@@ -49,16 +49,22 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
         return classfileBuffer;
     }
 
-    static void registerModule(final String name, String _version, final ArtifactResult result, final ClassLoader cl) {
+    static void registerModule(final String name, String _version, final ArtifactResult result, final ClassLoader cl, boolean async) {
         // transform "null" into null version for the default module
         final String version = RepositoryManager.DEFAULT_MODULE.equals(name) ? null : _version;
         // FIXME: this hack is required to make sure we never try to load modules in the metamodel with the
         // classloader lock, because this causes deadlocks: https://github.com/ceylon/ceylon.language/issues/429
-        if(Thread.currentThread().getName().equals("ClassLoader Thread")){
+        if(async){
+            if(cl instanceof CeylonModuleClassLoader){
+                ((CeylonModuleClassLoader) cl).registerThreadRunning();
+            }
             new Thread(){
                 @Override
                 public void run() {
                     com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
+                    if(cl instanceof CeylonModuleClassLoader){
+                        ((CeylonModuleClassLoader) cl).registerThreadDone();
+                    }
                 }
             }.start();
         }else
@@ -70,7 +76,7 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
             synchronized (this) {
                 if (done == false) {
                     done = true;
-                    registerModule(mi.getName(), mi.getSlot(), result, loader);
+                    registerModule(mi.getName(), mi.getSlot(), result, loader, true);
                 }
             }
         }

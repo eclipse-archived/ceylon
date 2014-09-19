@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleClassLoader;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
@@ -156,7 +158,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
-            UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module));
+            UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);
         }
     }
 
@@ -417,5 +419,15 @@ public class CeylonModuleLoader extends ModuleLoader {
     @Override
     public String toString() {
         return "Ceylon ModuleLoader: " + repository;
+    }
+
+    public void loadModuleSynchronous(String name, String version) throws ModuleLoadException{
+        ModuleIdentifier moduleIdentifier = ModuleIdentifier.create(name, version);
+        Module module = loadModule(moduleIdentifier);
+        ModuleClassLoader classLoader = module.getClassLoader();
+        if(classLoader instanceof CeylonModuleClassLoader){
+            ((CeylonModuleClassLoader) classLoader).registerInMetaModel();
+            ((CeylonModuleClassLoader) classLoader).waitForRegisterThreads();
+        }
     }
 }

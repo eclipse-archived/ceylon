@@ -11,6 +11,8 @@ import org.jboss.modules.ModuleClassLoaderFactory;
 public class CeylonModuleClassLoader extends ModuleClassLoader implements com.redhat.ceylon.common.runtime.CeylonModuleClassLoader {
 
     private UtilRegistryTransformer transformer;
+    private volatile int registerThreadCount = 0;
+    private final Object registerThreadLock = new Object();
 
     protected CeylonModuleClassLoader(Configuration configuration, UtilRegistryTransformer transformer) {
         super(configuration);
@@ -20,6 +22,30 @@ public class CeylonModuleClassLoader extends ModuleClassLoader implements com.re
     @Override
     public void registerInMetaModel(){
         transformer.register(this);
+    }
+
+    public void registerThreadRunning() {
+        synchronized(registerThreadLock){
+            registerThreadCount++;
+        }
+    }
+
+    public void registerThreadDone() {
+        synchronized(registerThreadLock){
+            registerThreadCount--;
+            registerThreadLock.notifyAll();
+        }
+    }
+
+    public void waitForRegisterThreads(){
+        synchronized(registerThreadLock){
+            while(registerThreadCount > 0){
+                try {
+                    registerThreadLock.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+        }
     }
     
     /**
