@@ -245,7 +245,8 @@ public final class StringBuilder extends BaseCharacterList {
                 Util.toInt(index));
     }
     
-    private static final TypeDescriptor $TypeDescriptor$ = 
+    @Ignore
+    public final static TypeDescriptor $TypeDescriptor$ = 
             TypeDescriptor.klass(StringBuilder.class);
     
     @Override @Ignore
