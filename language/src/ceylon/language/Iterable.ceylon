@@ -71,20 +71,20 @@
    Lazy operations are generally preferred, because they can 
    be efficiently chained. For example:
    
-       string.filter((Character c) => c.letter)
-             .map((Character c) => c.uppercased)
+       string.filter((c) => c.letter||c.digit)
+             .map(Character.uppercased)
    
    is much less expensive than:
    
-       string.select((Character c) => c.letter)
-             .collect((Character c) => c.uppercased)
+       string.select((c) => c.letter||c.digit)
+             .collect(Character.uppercased)
    
    Furthermore, it is always easy to produce a new 
    immutable iterable object given the view produced by a
    lazy operation. For example:
    
-       [ *string.filter((Character c) => c.letter)
-             .map((Character c) => c.uppercased) ]
+       [ *string.filter((c) => c.letter||c.digit)
+                .map(Character.uppercased) ]
    
    However, there are certain scenarios where an eager 
    operation is more useful, more convenient, or no more 
