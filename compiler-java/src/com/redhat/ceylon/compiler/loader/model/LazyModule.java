@@ -200,7 +200,7 @@ public abstract class LazyModule extends Module {
             else
                 pathQuery = pkg+"/";
             if(pathFilter == null || pathFilter.accept(pathQuery)){
-                pkg = path.replace('/', '.');
+                pkg = pkg.replace('/', '.');
                 jarPackages.add(pkg);
             }
         }
