@@ -214,13 +214,18 @@ public class CustomTree extends Tree {
     
     public static class ExtendedTypeExpression 
             extends Tree.ExtendedTypeExpression {
+        private SimpleType type;
         public ExtendedTypeExpression(Token token) {
             super(token);
         }
         @Override public String getNodeType() {
             return ExtendedTypeExpression.class.getSimpleName();
         }
+        public SimpleType getType() {
+            return type;
+        }
         public void setExtendedType(SimpleType type) {
+            this.type = type;
             connect(type);
         }
     }

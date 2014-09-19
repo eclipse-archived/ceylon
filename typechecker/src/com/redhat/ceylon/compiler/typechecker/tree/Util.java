@@ -105,7 +105,7 @@ public class Util {
         }
         else if (node instanceof Tree.ExtendedTypeExpression) {
             //TODO: whoah! this is really ugly!
-            result = ((Tree.SimpleType) ((Tree.ExtendedTypeExpression) node).getChildren().get(0))
+            result = ((CustomTree.ExtendedTypeExpression) node).getType()
                     .getIdentifier();
         }
         else if (node instanceof Tree.SimpleType) {

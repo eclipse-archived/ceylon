@@ -299,11 +299,25 @@ public class DeclarationVisitor extends Visitor {
         pkg.addUnit(unit);
         super.visit(that);
         Node firstNonImportNode = null;
-        for (Node node: that.getChildren()) {
-            if (!(node instanceof Tree.ImportList)) {
-                firstNonImportNode = node;
-                break;
+        int index = -1;
+        for (Node d: that.getDeclarations()) {
+            firstNonImportNode = d;
+            index = d.getToken().getTokenIndex();
+            break;
+        }
+        for (Tree.ModuleDescriptor md: that.getModuleDescriptors()) {
+            if (index<0 || md.getToken().getTokenIndex()<index) {
+                firstNonImportNode = md;
+                index = md.getToken().getTokenIndex();
             }
+            break;
+        }
+        for (Tree.PackageDescriptor pd: that.getPackageDescriptors()) {
+            if (index<0 || pd.getToken().getTokenIndex()<index) {
+                firstNonImportNode = pd;
+                index = pd.getToken().getTokenIndex();
+            }
+            break;
         }
         if (firstNonImportNode!=null) {
             for (Tree.Import im: that.getImportList().getImports()) {
@@ -320,9 +334,9 @@ public class DeclarationVisitor extends Visitor {
             first=false;
         }
         first=true;
-        for (Tree.PackageDescriptor md: that.getPackageDescriptors()) {
+        for (Tree.PackageDescriptor pd: that.getPackageDescriptors()) {
             if (!first) {
-                md.addError("there may be only one package descriptor for a module");
+                pd.addError("there may be only one package descriptor for a module");
             }
             first=false;
         }

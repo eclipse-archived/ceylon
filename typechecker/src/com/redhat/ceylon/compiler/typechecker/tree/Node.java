@@ -22,10 +22,11 @@ public abstract class Node {
     private String text;
     private Token token;
     private Token endToken;
+    private Token firstChildToken;
+    private Token lastChildToken;
     private Scope scope;
     private Unit unit;
     private List<Message> errors = null;
-    private List<Node> children = new ArrayList<Node>(4);
     
     protected Node(Token token) {
         this.token = token;
@@ -150,20 +151,16 @@ public abstract class Node {
     }
 
     private Token getFirstChildToken() {
-        Token token=this.token==null || 
+        Token token = this.token==null || 
                 //the tokens ANTLR inserts to represent missing tokens
                 //don't come with useful offset information
                 isMissingToken(this.token) ?
                 null : this.token;
-        List<Node> children = getChildren();
-		for (int i=0;i<children.size();i++) {
-		    Node child = children.get(i);
-			Token tok = child.getFirstChildToken();
-			if (tok!=null && (token==null || 
-					tok.getTokenIndex()<token.getTokenIndex())) {
-				token=tok;
-			}
-		}
+        if (firstChildToken!=null && 
+                (token==null || 
+                firstChildToken.getTokenIndex()<token.getTokenIndex())) {
+            token = firstChildToken;
+        }
 		return token;
     }
 
@@ -173,13 +170,11 @@ public abstract class Node {
 		        //don't come with useful offset information
 		        isMissingToken(endToken) ?
 				this.token : this.endToken;
-		for (Node child: getChildren()) {
-			Token tok = child.getLastChildToken();
-			if (tok!=null && (token==null || 
-			        tok.getTokenIndex()>token.getTokenIndex())) {
-				token=tok;
-			}
-		}
+        if (lastChildToken!=null && 
+                (token==null || 
+                lastChildToken.getTokenIndex()>token.getTokenIndex())) {
+            token = lastChildToken;
+        }
 		return token;
     }
     
@@ -270,12 +265,19 @@ public abstract class Node {
 	
 	public void connect(Node child) {
 		if (child!=null) {
-			children.add(child);
+			Token childFirstChildToken = child.getFirstChildToken();
+            if (childFirstChildToken!=null &&
+                    (firstChildToken==null || 
+			        childFirstChildToken.getTokenIndex()<firstChildToken.getTokenIndex())) {
+			    firstChildToken = childFirstChildToken;
+			}
+            Token childLastChildToken = child.getLastChildToken();
+            if (childLastChildToken!=null &&
+                    (lastChildToken==null || 
+                    childLastChildToken.getTokenIndex()>lastChildToken.getTokenIndex())) {
+                lastChildToken = childLastChildToken;
+            }
 		}
-	}
-
-	public List<Node> getChildren() {
-		return children;
 	}
 
 }
