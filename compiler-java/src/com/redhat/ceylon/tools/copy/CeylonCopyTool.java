@@ -2,6 +2,7 @@ package com.redhat.ceylon.tools.copy;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -165,24 +166,45 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             artifacts.remove(ArtifactContext.DOCS_ZIPPED);
             artifacts.remove(ArtifactContext.DOCS);
         }
+
+        // Create the list of ArtifactContexts to copy
+        List<ArtifactContext> acs = new ArrayList<ArtifactContext>();
+        String[] artifactsArray = new String[artifacts.size()];
+        artifacts.toArray(artifactsArray);
+        for (ModuleSpec module : modules) {
+            if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
+                String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
+                module = new ModuleSpec(module.getName(), version);
+            }
+            ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifactsArray);
+            ac.setIgnoreDependencies(!withDependencies);
+            acs.add(ac);
+        }
         
+        // Now do the actual copying
         ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
             @Override
-            public void beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
+            public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
                 String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
-                msg("copying.module", module, count+1, max).newline().flush();
+                msg("copying.module", module, count+1, max).flush();
+                return true;
             }
             @Override
-            public void afterCopyModule(ArtifactContext ac, int count, int max) throws IOException {
+            public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
+                append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
             }
             @Override
-            public void beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
+            public boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
                 if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
                     append("    ").msg("copying.artifact", archive.getName(), count+1, max).newline().flush();
                 }
+                return true;
             }
             @Override
-            public void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
+            public void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max, boolean copied) throws IOException {
+                if (verbose != null && (verbose.contains("all") || verbose.contains("files"))) {
+                    append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
+                }
             }
             @Override
             public void notFound(ArtifactContext ac) throws IOException {
@@ -191,16 +213,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 errorNewline();
             }
         });
-        for (ModuleSpec module : modules) {
-            if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
-                String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
-                module = new ModuleSpec(module.getName(), version);
-            }
-            String[] tmp = new String[artifacts.size()];
-            ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifacts.toArray(tmp));
-            ac.setIgnoreDependencies(!withDependencies);
-            copier.copyModule(ac);
-        }
+        copier.copyModules(acs);
     }
 
     @Override
