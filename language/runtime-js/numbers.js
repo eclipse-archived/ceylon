@@ -3,9 +3,7 @@ function toInt(f) {
 }
 function nflt$(n) {
   if (n.float$)return true;
-  var r= n===+n&&n!==(n|0);
-  if (!r && n.float$===undefined)r=Math.round(n)!=n;
-  return r;
+  return Math.round(n)!=n;
 }
 
 function JSNumber(value) {
