@@ -34,7 +34,7 @@ shared void misc() {
     by(); tagged();
     concatenate();
     ",".join{};
-    //StringBuilder().appendAll{};
+    StringBuilder().appendAll{};
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();
     [1,2,3].getAll([]);
     [1,2,3].definesAny([]);

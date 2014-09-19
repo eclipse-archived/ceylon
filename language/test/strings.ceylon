@@ -277,8 +277,8 @@ shared void strings() {
     check(builder.deleteInitial(2).string == "|me", "StringBuilder.deleteInitial");
     check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");
     check(builder.clear().append("oat").reverseInPlace().string == "tao", "StringBuilder.reverseInPlace");
-    check(builder.replace(1,1,"omat").string == "tomato", "StringBuilder.replace");
-    check(builder.size == 6, "StringBuilder.size");
+    check(builder.replace(1,1,"omat").string == "tomato", "StringBuilder.replace expected 'tomato' got ``builder``");
+    check(builder.size == 6, "StringBuilder.size expected 6 got ``builder.size``");
 
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
