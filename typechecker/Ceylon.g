@@ -61,8 +61,8 @@ options {
 
 compilationUnit returns [CompilationUnit compilationUnit]
     @init { $compilationUnit = new CompilationUnit(null);
-             ImportList importList = new ImportList(null);
-             $compilationUnit.setImportList(importList); }
+            ImportList importList = new ImportList(null); 
+            $compilationUnit.setImportList(importList); }
     : ( 
         ca1=compilerAnnotations
         SEMICOLON
@@ -70,7 +70,8 @@ compilationUnit returns [CompilationUnit compilationUnit]
       )?
       ( 
         importDeclaration 
-        { importList.addImport($importDeclaration.importDeclaration); }
+        { importList.addImport($importDeclaration.importDeclaration); 
+          $compilationUnit.connect(importList); }
       |
         (compilerAnnotations annotations MODULE)=>
         moduleDescriptor 
@@ -861,28 +862,36 @@ parameters returns [ParameterList parameterList]
       { $parameterList.setEndToken($RPAREN); }
     ;
 
-// FIXME: This accepts more than the language spec: named arguments
-// and varargs arguments can appear in any order.  We'll have to
-// enforce the rule that the ... appears at the end of the parapmeter
-// list in a later pass of the compiler.
 parameter returns [ParameterDeclaration parameter]
-    @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null); 
+    : parameterDeclaration
+      { TypedDeclaration d = $parameterDeclaration.declaration;
+        if (d instanceof AttributeDeclaration) {
+            ValueParameterDeclaration vp = new ValueParameterDeclaration(null);
+            vp.setTypedDeclaration(d);
+            $parameter = vp;
+        }
+        else if (d instanceof MethodDeclaration) {
             FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null);
-            AttributeDeclaration a = new AttributeDeclaration(null); 
+            fp.setTypedDeclaration(d);
+            $parameter = fp;
+        }
+      }
+    ;
+    
+parameterDeclaration returns [TypedDeclaration declaration]
+    @init { AttributeDeclaration a = new AttributeDeclaration(null); 
             MethodDeclaration m = new MethodDeclaration(null);
-            vp.setTypedDeclaration(a);
-            fp.setTypedDeclaration(m);
-            $parameter = vp; }
+            $declaration = a; }
     : ( 
         variadicType
         { a.setType($variadicType.type);
           m.setType($variadicType.type); }
       | VOID_MODIFIER
         { m.setType(new VoidModifier($VOID_MODIFIER));
-          $parameter=fp; }
+          $declaration=m; }
       | FUNCTION_MODIFIER
         { m.setType(new FunctionModifier($FUNCTION_MODIFIER));
-          $parameter=fp; }
+          $declaration=m; }
       | DYNAMIC
         { a.setType(new DynamicModifier($DYNAMIC)); }
       | VALUE_MODIFIER
@@ -900,7 +909,7 @@ parameter returns [ParameterDeclaration parameter]
         (
           parameters
           { m.addParameterList($parameters.parameterList);
-            $parameter=fp; }
+            $declaration=m; }
         )+
         (
           functionSpecifier
@@ -1878,38 +1887,36 @@ nonemptyParametersStart
 functionOrExpression returns [Expression expression]
     : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart) =>
       f=anonymousFunction
-      { $expression = $f.expression; }
+      { $expression = new Expression(null);
+        $expression.setTerm($f.function); }
     | e=expression
       { $expression = $e.expression; }
     ;
 
-anonymousFunction returns [Expression expression]
-    @init { FunctionArgument fa = new FunctionArgument(null);
-            fa.setType(new FunctionModifier(null)); 
-            Expression e = new Expression(null);
-            e.setTerm(fa); }
+anonymousFunction returns [FunctionArgument function]
+    @init { $function = new FunctionArgument(null);
+            $function.setType(new FunctionModifier(null)); }
     : (
         FUNCTION_MODIFIER
-        { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+        { $function.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       |
         VOID_MODIFIER
-        { fa.setType(new VoidModifier($VOID_MODIFIER)); }
+        { $function.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
-      { $expression=e; }
       p1=parameters
-      { fa.addParameterList($p1.parameterList); }
+      { $function.addParameterList($p1.parameterList); }
       ( 
         //(anonParametersStart)=> 
         p2=parameters
-        { fa.addParameterList($p2.parameterList); }
+        { $function.addParameterList($p2.parameterList); }
       )*
       ( 
         COMPUTE
         fe=functionOrExpression
-        { fa.setExpression($fe.expression); }
+        { $function.setExpression($fe.expression); }
       |
         block
-        { fa.setBlock($block.block); }
+        { $function.setBlock($block.block); }
       )
     ;
 
