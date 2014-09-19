@@ -301,13 +301,17 @@ public class CeylonInfoTool extends RepoUsingTool {
                 newline();
             }
             if (showDependencies) {
-                for (ModuleDependencyInfo dep : version.getDependencies()) {
-                    if (System.console() != null) {
-                        append(prefix).append("    ");
-                    } else {
-                        append(moduleName).append("/").append(version.getVersion());
+                if (System.console() != null || !version.getDependencies().isEmpty()) {
+                    for (ModuleDependencyInfo dep : version.getDependencies()) {
+                        if (System.console() != null) {
+                            append(prefix).append("    ").append(dep);
+                        } else {
+                            append(moduleName).append("/").append(version.getVersion()).append(" ").append(dep.getModuleName());
+                        }
+                        newline();
                     }
-                    append(dep).newline();
+                } else {
+                    append(moduleName).append("/").append(version.getVersion()).newline();
                 }
             }
             if (showNames) {
