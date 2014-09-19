@@ -81,7 +81,7 @@ public class MainTest {
         File destDir = new File("build/mainTest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
-        CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath()), null, units);
+        CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath(), "-cp", "build/classes"), null, units);
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 
