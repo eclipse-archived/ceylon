@@ -387,7 +387,7 @@ public class Util {
         class ErrorVisitor extends Visitor {
             @Override
             public void handleException(Exception e, Node that) {
-                if (e instanceof ErrorFoundException){
+                if (e instanceof ErrorFoundException) {
                     throw (ErrorFoundException) e;
                 }
                 super.handleException(e, that);
@@ -429,7 +429,8 @@ public class Util {
         }
     }
 
-    public static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
+    public static void buildAnnotations(Tree.AnnotationList al, 
+            List<Annotation> annotations) {
         if (al!=null) {
             Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
             if (aa!=null) {
@@ -440,15 +441,20 @@ public class Util {
             }
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();
-                String name = ( (Tree.BaseMemberExpression) a.getPrimary() ).getIdentifier().getText();
+                String name = ((Tree.BaseMemberExpression) 
+                        a.getPrimary()).getIdentifier().getText();
                 ann.setName(name);
                 if (a.getNamedArgumentList()!=null) {
-                    for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
+                    for (Tree.NamedArgument na: 
+                            a.getNamedArgumentList().getNamedArguments()) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Tree.Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            Tree.SpecifierExpression sie = 
+                                    ((Tree.SpecifiedArgument) na).getSpecifierExpression();
+                            Tree.Expression e = sie.getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
-                                Parameter p = ((Tree.SpecifiedArgument) na).getParameter();
+                                Parameter p = 
+                                        ((Tree.SpecifiedArgument) na).getParameter();
                                 if (p!=null) {
                                     String text = toString(t);
                                     if (text!=null) {
@@ -460,9 +466,11 @@ public class Util {
                     }
                 }
                 if (a.getPositionalArgumentList()!=null) {
-                    for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
+                    for (Tree.PositionalArgument pa: 
+                            a.getPositionalArgumentList().getPositionalArguments()) {
                     	if (pa instanceof Tree.ListedArgument) {
-                    		Tree.Term t = ((Tree.ListedArgument) pa).getExpression().getTerm();
+                    		Tree.Term t = 
+                    		        ((Tree.ListedArgument) pa).getExpression().getTerm();
                     		String text = toString(t);
                     		if (text!=null) {
                     			ann.addPositionalArgment(text);
