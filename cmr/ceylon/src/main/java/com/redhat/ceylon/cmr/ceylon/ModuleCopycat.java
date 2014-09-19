@@ -93,6 +93,20 @@ public class ModuleCopycat {
     }
     
     /**
+     * This method basically calls <code>copyModule</code> on each of the artifact
+     * contexts in the list it gets passed.
+     * @param contexts
+     * @throws Exception
+     */
+    public void copyModules(List<ArtifactContext> contexts) throws Exception {
+        count = 0;
+        maxCount = contexts.size();
+        for (ArtifactContext context : contexts) {
+            copyModuleInternal(context);
+        }
+    }
+    
+    /**
      * Method to copy the given module from the source repository to the destination repository.
      * The context's "suffixes" will be used to determine which artifact types will be copied.
      * If the `isFetchSingleArtifact` is not set all the module's dependencies will also be copied.
