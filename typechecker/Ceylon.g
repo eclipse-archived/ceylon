@@ -2893,17 +2893,21 @@ isCondition returns [IsCondition condition]
       type
       { $condition.setType($type.type); }
     ( (LIDENTIFIER SPECIFY) =>
-      { Variable v = new Variable(null);
-        v.setType(new ValueModifier(null)); 
-        $condition.setVariable(v); }
-      memberName
-      { $condition.getVariable().setIdentifier($memberName.identifier); }
-      specifier
-      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      v=isConditionVariable
+      { $condition.setVariable($v.variable); }
     | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
       impliedVariable 
       { $condition.setVariable($impliedVariable.variable); }
     )
+    ;
+
+isConditionVariable returns [Variable variable]
+    @init { $variable = new Variable(null);
+            $variable.setType(new ValueModifier(null));  }
+    : memberName
+      { $variable.setIdentifier($memberName.identifier); }
+      specifier
+      { $variable.setSpecifierExpression($specifier.specifierExpression); }
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
