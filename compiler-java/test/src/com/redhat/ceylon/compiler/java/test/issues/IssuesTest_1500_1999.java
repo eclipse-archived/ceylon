@@ -699,4 +699,10 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new CompilerError(24, "type declaration does not exist: 'Id'"));
 
     }
+
+    @Test
+    public void testBug1803() {
+        compile("bug18xx/bug1803.ceylon");
+        compile("bug18xx/bug1803.ceylon");
+    }
 }
