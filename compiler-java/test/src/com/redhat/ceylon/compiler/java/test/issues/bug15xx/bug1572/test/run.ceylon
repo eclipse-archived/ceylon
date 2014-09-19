@@ -28,20 +28,18 @@ import ceylon.language.meta.declaration {
 import org.jboss.modules {
     JBossModule=Module {
         ceylonModuleLoader=callerModuleLoader
-    },
-    ModuleIdentifier {
-        createModuleIdentifier=create
     }
 }
-
+import ceylon.modules.jboss.runtime { CeylonModuleLoader }
+ 
 Module? loadModule(String name, String version) {
     loadModuleInClassPath(name, version);
     return modules.find(name, version);
 }
 
 void loadModuleInClassPath(String modName, String modVersion) {
-    value modIdentifier = createModuleIdentifier(modName, modVersion);
-    value mod = ceylonModuleLoader.loadModule(modIdentifier);
+    assert(is CeylonModuleLoader loader = ceylonModuleLoader);
+    loader.loadModuleSynchronous(modName, modVersion);
 }
 
 shared void run() {
