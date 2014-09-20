@@ -1266,7 +1266,7 @@ public class TypeVisitor extends Visitor {
             ProducedType type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
-                if (std!=null) {
+                if (std!=null && !(std instanceof UnknownType)) {
                     if (std==td) {
                         //TODO: handle indirect circularities!
                         st.addError("directly extends itself: '" + td.getName() + "'");
