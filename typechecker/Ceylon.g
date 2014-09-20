@@ -1912,6 +1912,7 @@ anonymousFunction returns [FunctionArgument function]
       )*
       ( 
         COMPUTE
+        //TODO: should be a LazySpecifierExpression!
         fe=functionOrExpression
         { $function.setExpression($fe.expression); }
       |
