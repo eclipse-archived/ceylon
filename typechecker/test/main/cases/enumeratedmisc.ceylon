@@ -1,4 +1,4 @@
-interface Association 
+@error interface Association 
     of OneToOne | OneToMany { }
 @error interface OneTo satisfies Association {}
 class OneToOne() satisfies OneTo {}
@@ -23,7 +23,7 @@ object xx extends XX() {}
 object ww {}
 
 
-abstract class XXX() of www | xxx | YYY | ZZZ {}
+@error abstract class XXX() of www | xxx | YYY | ZZZ {}
 class ZZZ() extends XXX() {}
 class YYY() extends XXX() {}
 class YYY1() extends YYY() {}

@@ -158,12 +158,12 @@ Integer fib(Integer n) {
     }
 }
 
-    interface Association 
-        of OneToOne | OneToMany { }
-    @error interface OneTo satisfies Association {}
-    class OneToOne() satisfies OneTo {}
-    class OneToMany() satisfies OneTo {}
-    @error class Broken() satisfies Association {}
+@error interface Association 
+    of OneToOne | OneToMany { }
+@error interface OneTo satisfies Association {}
+class OneToOne() satisfies OneTo {}
+class OneToMany() satisfies OneTo {}
+@error class Broken() satisfies Association {}
     
     
 interface Anything of SomethingUsual | SomethingElse {}

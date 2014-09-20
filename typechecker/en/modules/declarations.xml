@@ -856,13 +856,13 @@ TypeConstraints?
             of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
             
             <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
-            case may be an <literal>abstract</literal> class. Each case must be a subtype 
-            of the interface type. An interface may not be a case of itself. An interface 
-            declaration may not list the same case twice.</para>
+            case may be an <literal>abstract</literal> class. Each case must be a direct 
+            subtype of the interface type. An interface may not be a case of itself. An 
+            interface declaration may not list the same case twice.</para>
                     
             <para>If an interface has an <literal>of</literal> clause, then every interface 
-            or class which is a subtype of the interface must be subtype of exactly one of 
-            the enumerated cases.</para>
+            or class which is a subtype of the interface must occurs as exactly one of the 
+            enumerated cases of the interface.</para>
                     
         </section>
         
@@ -1640,13 +1640,13 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         extends Node<Element>(name) { ... }]]></programlisting>
             
             <para>The cases may be classes or toplevel anonymous classes. A case may 
-            be an <literal>abstract</literal> class. Each case must be a subclass of 
-            the class. A class may not be a case of itself. A class declaration may 
-            not list the same case twice.</para>
+            be an <literal>abstract</literal> class. Each case must be a direct 
+            subclass of the enumerated class. A class may not be a case of itself. A 
+            class declaration may not list the same case twice.</para>
                         
             <para>If a class has an <literal>of</literal> clause, then every class 
-            that directly extends the class must be of one of the enumerated cases of 
-            the class.</para>
+            that directly extends the class must occur as exactly one of the enumerated 
+            cases of the class.</para>
             
             <para>A non-<literal>abstract</literal> class may not have an 
             <literal>of</literal> clause.</para>

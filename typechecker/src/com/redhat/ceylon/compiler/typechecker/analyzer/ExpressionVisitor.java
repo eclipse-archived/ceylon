@@ -6088,6 +6088,7 @@ public class ExpressionVisitor extends Visitor {
                 TypeDeclaration ctd = type.getDeclaration();
                 if (type!=null && ctd!=null) {
                     type = type.resolveAliases();
+                    ctd = type.getDeclaration();
                     if (!typeSet.add(ctd)) {
                         //this error is not really truly necessary
                         st.addError("duplicate case type: '" + 
@@ -6096,17 +6097,17 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (!(ctd instanceof TypeParameter)) {
                         //it's not a self type
-                        if (type!=null) {
+                        if (checkDirectSubtype(td, st, type)) {
                             checkAssignable(type, td.getType(), st,
                                     getCaseTypeExplanation(td, type));
-                            //note: this is a better, faster way to call 
-                            //      validateEnumeratedSupertypeArguments()
-                            //      but unfortunately it winds up displaying
-                            //      the error on the wrong node, confusing
-                            //      the user
-                            /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
-                            validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
                         }
+                        //note: this is a better, faster way to call 
+                        //      validateEnumeratedSupertypeArguments()
+                        //      but unfortunately it winds up displaying
+                        //      the error on the wrong node, confusing
+                        //      the user
+                        /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
+                        validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
                     }
                     if (ctd instanceof ClassOrInterface && st instanceof Tree.SimpleType) {
                         Tree.TypeArgumentList tal = ((Tree.SimpleType) st).getTypeArgumentList();
@@ -6163,14 +6164,42 @@ public class ExpressionVisitor extends Visitor {
                             d.getName(unit) + "' is not toplevel");
                 }
                 if (type!=null) {
-                    checkAssignable(type, td.getType(), bme, 
-                            getCaseTypeExplanation(td, type));
+                    if (checkDirectSubtype(td, bme, type)) {
+                        checkAssignable(type, td.getType(), bme, 
+                                getCaseTypeExplanation(td, type));
+                    }
                 }
             }
         }
         
         //TODO: get rid of this awful hack:
         td.setCaseTypes(cases);
+    }
+
+    private static boolean checkDirectSubtype(TypeDeclaration td, Node node,
+            ProducedType type) {
+        boolean found = false;
+        TypeDeclaration ctd = type.getDeclaration();
+        if (td instanceof Interface) {
+            for (ProducedType st: ctd.getSatisfiedTypes()) {
+                if (st!=null && 
+                        st.resolveAliases().getDeclaration().equals(td)) {
+                    found = true;
+                }
+            }
+        }
+        else if (td instanceof Class) {
+            ProducedType et = ctd.getExtendedType();
+            if (et!=null && 
+                    et.resolveAliases().getDeclaration().equals(td)) {
+                found = true;
+            }
+        }
+        if (!found) {
+            node.addError("case type is not a direct subtype of enumerated type: " + 
+                    ctd.getName(node.getUnit()));
+        }
+        return found;
     }
 
     private String getCaseTypeExplanation(TypeDeclaration td, 
