@@ -207,7 +207,7 @@ public class ModelLoaderTest extends CompilerTest {
                     Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
             Assert.assertNotNull(modelDeclaration);
             // make sure we loaded them exactly the same
-            modelCompare.compareDeclarations(entry.getValue(), modelDeclaration);
+            modelCompare.compareDeclarations(entry.getValue().getQualifiedNameString(), entry.getValue(), modelDeclaration);
         }
     }
 
@@ -292,10 +292,9 @@ public class ModelLoaderTest extends CompilerTest {
             return d.isShared();
         }
             
-        public void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
+        public void compareDeclarations(String name, Declaration validDeclaration, Declaration modelDeclaration) {
             if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
                 return;
-            String name = validDeclaration.getQualifiedNameString();
             Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
             // check that we have a unit
             Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
@@ -348,7 +347,7 @@ public class ModelLoaderTest extends CompilerTest {
             Scope modelContainer = modelDeclaration.getContainer();
             if(validContainer instanceof Declaration){
                 Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
-                compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
+                compareDeclarations(name+" [container]", (Declaration)validContainer, (Declaration)modelContainer);
             }else{
                 Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
             }
@@ -359,10 +358,10 @@ public class ModelLoaderTest extends CompilerTest {
             Scope validContainer = validDeclaration.getScope();
             Scope modelContainer = modelDeclaration.getScope();
             if(validContainer instanceof Declaration){
-                Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
-                compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
+                Assert.assertTrue(name+" [Scope is Declaration]", modelContainer instanceof Declaration);
+                compareDeclarations(name+" [scope]", (Declaration)validContainer, (Declaration)modelContainer);
             }else{
-                Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
+                Assert.assertTrue(name+" [Scope is not Declaration]", modelContainer instanceof Declaration == false);
             }
         }
         
@@ -416,17 +415,17 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertEquals(name+" [SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
             Assert.assertEquals(name+" [Defaulted]", validDeclaration.isDefaulted(), modelDeclaration.isDefaulted());
             if (validDeclaration.getDeclaration() != null && modelDeclaration.getDeclaration() != null) {
-                compareDeclarations(validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
+                compareDeclarations(name+" [type param]", validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
             } else if (!(validDeclaration.getDeclaration() == null && modelDeclaration.getDeclaration() == null)) {
                 Assert.fail("[Declaration] one has declaration the other not");
             }
             if (validDeclaration.getSelfTypedDeclaration() != null && modelDeclaration.getSelfTypedDeclaration() != null) {
-                compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
+                compareDeclarations(name+" [type param self typed]", validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
             } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
                 Assert.fail("[SelfType] one has self typed declaration the other not");
             }
             if (validDeclaration.getDefaultTypeArgument() != null && modelDeclaration.getDefaultTypeArgument() != null) {
-                compareDeclarations(validDeclaration.getDefaultTypeArgument().getDeclaration(), modelDeclaration.getDefaultTypeArgument().getDeclaration());
+                compareDeclarations(name+" [type param default]", validDeclaration.getDefaultTypeArgument().getDeclaration(), modelDeclaration.getDefaultTypeArgument().getDeclaration());
             } else if (!(validDeclaration.getDefaultTypeArgument() == null && modelDeclaration.getDefaultTypeArgument() == null)) {
                 Assert.fail("[DefaultTypeArgument] one has default type argument the other not");
             }
@@ -446,7 +445,7 @@ public class ModelLoaderTest extends CompilerTest {
             if(validDeclaration.getExtendedTypeDeclaration() == null)
                 Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
             else
-                compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+                compareDeclarations(name+" [supertype]", validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
             // satisfied types!
             compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
             // case types
@@ -475,7 +474,7 @@ public class ModelLoaderTest extends CompilerTest {
                     continue;
                 Declaration modelMember = lookupMember(modelDeclaration, validMember);
                 Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
-                compareDeclarations(validMember, modelMember);
+                compareDeclarations(modelMember.getQualifiedNameString(), validMember, modelMember);
             }
             // and not more
             for(Declaration modelMember : modelDeclaration.getMembers()){
@@ -500,7 +499,7 @@ public class ModelLoaderTest extends CompilerTest {
             for(int i=0;i<validTypeDeclarations.size();i++){
                 TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
                 TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
-                compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+                compareDeclarations(name+ " [case types]", validTypeDeclaration, modelTypeDeclaration);
             }
         }
     
@@ -513,7 +512,7 @@ public class ModelLoaderTest extends CompilerTest {
                 ProducedType modelSelfType =  modelDeclaration.getSelfType();
                 Assert.assertNotNull(name+" [non-null self type]", modelSelfType);
                 // self types are always type parameters so they must have a declaration
-                compareDeclarations(validSelfType.getDeclaration(), modelSelfType.getDeclaration());
+                compareDeclarations(name+" [non-null self type]", validSelfType.getDeclaration(), modelSelfType.getDeclaration());
             }
         }
         
@@ -545,7 +544,7 @@ public class ModelLoaderTest extends CompilerTest {
             for(int i=0;i<validTypeDeclarations.size();i++){
                 TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
                 TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
-                compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+                compareDeclarations(name+ " [Satisfied types]", validTypeDeclaration, modelTypeDeclaration);
             }
         }
     
@@ -576,7 +575,7 @@ public class ModelLoaderTest extends CompilerTest {
                 Assert.assertEquals(name+" [param "+validParameter.getName()+" defaulted]", 
                         validParameter.isDefaulted(), modelParameter.isDefaulted());
                 // make sure they have the same name and type
-                compareDeclarations(validParameter.getModel(), modelParameter.getModel());
+                compareDeclarations(name+" [param "+i+", "+p+"]", validParameter.getModel(), modelParameter.getModel());
             }
         }
     
@@ -596,7 +595,7 @@ public class ModelLoaderTest extends CompilerTest {
             // make sure it has every parameter list required
             compareParameterLists(name, validParameterLists, modelParameterLists);
             // now same for return type
-            compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+            compareDeclarations(name + " [return type]", validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
             // work on type parameters
             compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
         }
@@ -606,7 +605,7 @@ public class ModelLoaderTest extends CompilerTest {
             for(int i=0;i<validTypeParameters.size();i++){
                 TypeParameter validTypeParameter = validTypeParameters.get(i);
                 TypeParameter modelTypeParameter = modelTypeParameters.get(i);
-                compareDeclarations(validTypeParameter, modelTypeParameter);
+                compareDeclarations(name+" [type param "+i+"]", validTypeParameter, modelTypeParameter);
             }
         }
     
@@ -615,16 +614,17 @@ public class ModelLoaderTest extends CompilerTest {
             if(validDeclaration instanceof Setter)
                 return;
             // make sure the flags are the same
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [late]", validDeclaration.isLate(), modelDeclaration.isLate());
+            String name = validDeclaration.getQualifiedNameString();
+            Assert.assertEquals(name+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
+            Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+            Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+            Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+            Assert.assertEquals(name+" [late]", validDeclaration.isLate(), modelDeclaration.isLate());
             if (compareTransientness(validDeclaration)) {
-                Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [transient]", validDeclaration.isTransient(), modelDeclaration.isTransient());
+                Assert.assertEquals(name+" [transient]", validDeclaration.isTransient(), modelDeclaration.isTransient());
             }
             // compare the types
-            compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+            compareDeclarations(name+" [type]", validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
         }
 
         protected boolean compareTransientness(MethodOrValue validDeclaration) {
@@ -1608,7 +1608,7 @@ public class ModelLoaderTest extends CompilerTest {
                     Declaration binary = loader.getDeclaration(binaryLangMod, 
                             source.getQualifiedNameString().replace("::", "."), 
                             dt);
-                    comparer.compareDeclarations(source, binary);
+                    comparer.compareDeclarations(source.getQualifiedNameString(), source, binary);
                 }
             }
         };
