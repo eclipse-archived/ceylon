@@ -4,6 +4,8 @@ import ceylon.language.impl.BaseCharacterList;
 import ceylon.language.impl.BaseIterator;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -255,6 +257,7 @@ public final class StringBuilder extends BaseCharacterList {
     }
 
     @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFromFirst(@Name("index") long index) {
         if (index<0 || index>getSize()) {
             return null;
@@ -265,6 +268,7 @@ public final class StringBuilder extends BaseCharacterList {
     }
 
     @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
         if (builder.length()==0) {
             return null;
@@ -319,4 +323,15 @@ public final class StringBuilder extends BaseCharacterList {
             return $TypeDescriptor$;
         }
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        return super.equals(obj);
+    }
+    
 }

@@ -6,7 +6,7 @@
        builder.appendCharacter(' ');
        builder.append("world");
        String hello = builder.string; //hello world"""
-shared native class StringBuilder() satisfies List<Character> {
+shared native final class StringBuilder() satisfies List<Character> {
     
     "The number characters in the current content, that is, 
      the [[size|String.size]] of the produced [[string]]."
