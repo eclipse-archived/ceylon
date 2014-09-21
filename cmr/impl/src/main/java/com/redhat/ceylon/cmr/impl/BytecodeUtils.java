@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -125,7 +127,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
             if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
                 indexFile.delete();
             if (indexFile.exists() == false) {
-                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
+                createJarIndexThreadSafe(jarFile);
             }
 
             try (InputStream stream = new FileInputStream(indexFile)) {
@@ -135,6 +137,36 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
             throw new RuntimeException("Failed to read index for module " + jarFile.getPath(), e);
         }
         return index;
+    }
+    
+    private static ConcurrentMap<File, File> indicesUnderConstruction = new ConcurrentHashMap<File, File>();
+    
+    private static void createJarIndexThreadSafe(final File jarFile) throws IOException {
+        File lock = null;
+        synchronized (indicesUnderConstruction) {
+            lock = indicesUnderConstruction.putIfAbsent(jarFile, jarFile);
+        }
+        if (lock == null) {
+            synchronized (jarFile) {
+                try {
+                    JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
+                } finally {
+                    synchronized (indicesUnderConstruction) {
+                        indicesUnderConstruction.remove(jarFile);
+                    }
+                    // Tell any listeners we're done indexing
+                    jarFile.notifyAll();
+                }
+            }
+        } else {
+            synchronized (lock) {
+                try {
+                    lock.wait(10000);
+                } catch (InterruptedException e) {
+                    // We'll just assume things are done now
+                }
+            }
+        }
     }
 
     private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
