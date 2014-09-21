@@ -98,7 +98,7 @@ public class MiscTest extends CompilerTest {
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "language", "metamodel", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 
-                        "Throwable",
+                        "StringBuilder", "Throwable",
                         "infinity", "arrayOfSize", "unflatten"}) {
 
                     if (s.equals(filename)) {
