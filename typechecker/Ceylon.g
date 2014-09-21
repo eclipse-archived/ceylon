@@ -1117,10 +1117,10 @@ expressionOrSpecificationStatement returns [Statement statement]
             AssignOp a = (AssignOp) $expression.expression.getTerm();
             if (a.getLeftTerm() instanceof BaseMemberExpression ||
                 a.getLeftTerm() instanceof ParameterizedExpression) {
-                SpecifierExpression se = new SpecifierExpression(null);
                 Expression e = new Expression(null);
-                se.setExpression(e);
                 e.setTerm(a.getRightTerm());
+                SpecifierExpression se = new SpecifierExpression(null);
+                se.setExpression(e);
                 ss.setSpecifierExpression(se);
                 ss.setBaseMemberExpression(a.getLeftTerm());
                 $statement = ss;
@@ -1982,7 +1982,7 @@ assignmentExpression returns [Term term]
           qe.setPrimary(e);
           qe.setMemberOperator(new MemberOp(null));
           qe.setIdentifier($memberReference.identifier);
-          qe.setTypeArguments( new InferredTypeArguments(null) );
+          qe.setTypeArguments(new InferredTypeArguments(null));
           if ($memberReference.typeArgumentList!=null)
               qe.setTypeArguments($memberReference.typeArgumentList); 
           $term = qe; }
