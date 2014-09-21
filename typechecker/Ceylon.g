@@ -1074,7 +1074,8 @@ declaration returns [Declaration declaration]
     ;
 
 annotatedDeclarationStart
-    : stringLiteral? annotation* declarationStart
+    : stringLiteral? annotation* 
+      ((unambiguousType) => unambiguousType | declarationStart)
     ;
 
 annotatedAssertionStart
@@ -1095,6 +1096,42 @@ declarationStart
     | ALIAS 
     | variadicType LIDENTIFIER
     | DYNAMIC (LIDENTIFIER|UIDENTIFIER)
+    ;
+    
+// recognize some common pattarns that are unambiguously
+// type abbreviations - these are not necessary, but 
+// help the IDE
+unambiguousType
+    : qualifiedType 
+      (
+        (OPTIONAL | LBRACKET RBRACKET)? 
+        ENTRY_OP qualifiedType
+      )?
+      (OPTIONAL | LBRACKET RBRACKET)
+    | LBRACE 
+      qualifiedType (OPTIONAL | LBRACKET RBRACKET)?
+      (
+        ENTRY_OP qualifiedType 
+        (OPTIONAL | LBRACKET RBRACKET)?
+      )? 
+      (PRODUCT_OP|SUM_OP) 
+      RBRACE
+    | LBRACKET 
+      qualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
+      (
+        ENTRY_OP qualifiedType
+        (OPTIONAL | LBRACKET RBRACKET)?
+      )? 
+      (
+        COMMA 
+        qualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
+        (
+          ENTRY_OP qualifiedType 
+          (OPTIONAL | LBRACKET RBRACKET)?
+        )?
+      )* 
+      (PRODUCT_OP|SUM_OP) 
+      RBRACKET
     ;
 
 statement returns [Statement statement]
