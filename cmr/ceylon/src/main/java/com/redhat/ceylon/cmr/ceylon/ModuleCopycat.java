@@ -226,6 +226,7 @@ public class ModuleCopycat {
     private void signArtifact(ArtifactContext context, File jarFile){
         ArtifactContext sha1Context = context.getSha1Context();
         if (sha1Context != null) {
+            sha1Context.setForceOperation(true);
             String sha1 = ShaSigner.sha1(jarFile, log);
             if(sha1 != null){
                 File shaFile = ShaSigner.writeSha1(sha1, log);
