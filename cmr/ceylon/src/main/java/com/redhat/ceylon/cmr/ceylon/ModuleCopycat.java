@@ -146,6 +146,7 @@ public class ModuleCopycat {
             }
             Collection<ModuleVersionDetails> versions = getModuleVersions(srcRepoman, context.getName(), context.getVersion(), ModuleQuery.Type.ALL, null, null);
             if (!versions.isEmpty()) {
+                ArtifactContext depContext = context.copy();
                 ModuleVersionDetails ver = versions.iterator().next();
                 boolean copyModule = true;
                 if (feedback != null) {
@@ -174,10 +175,10 @@ public class ModuleCopycat {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
-                        ArtifactContext depContext = context.copy();
-                        depContext.setName(depModule.getName());
-                        depContext.setVersion(depModule.getVersion());
-                        copyModuleInternal(depContext);
+                        ArtifactContext copyContext = depContext.copy();
+                        copyContext.setName(depModule.getName());
+                        copyContext.setVersion(depModule.getVersion());
+                        copyModuleInternal(copyContext);
                     }
                 }
             } else {
