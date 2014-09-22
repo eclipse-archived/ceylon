@@ -13,22 +13,20 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /** A visitor that can return a list of suggestions given a location on the AST.
  * 
  * @author Enrique Zamudio
  */
-public class AutocompleteVisitor extends Visitor {
+public class AutocompleteVisitor {
 
     private final int row;
     private final int col;
     private final TypeChecker checker;
     private String text;
     private Node node;
-    private int pass;
 
     /** Create a new instance that will look for suggestions for the node at the specified location. */
     public AutocompleteVisitor(int row, int col, TypeChecker tc) {
@@ -42,18 +40,16 @@ public class AutocompleteVisitor extends Visitor {
 
     public Node findNode(AutocompleteUnitValidator callback) {
         //First pass, to find the identifier
-        pass = 1;
         for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
             if (callback.processUnit(pu)) {
-                pu.getCompilationUnit().visit(this);
+                pu.getCompilationUnit().visit(new FindIdentifierVisitor());
             }
         }
         //Second pass, to find its parent
         if (node != null) {
-            pass = 2;
             for (PhasedUnit pu : checker.getPhasedUnits().getPhasedUnits()) {
                 if (callback.processUnit(pu)) {
-                    pu.getCompilationUnit().visit(this);
+                    pu.getCompilationUnit().visit(new FindParentVisitor());
                 }
             }
         }
@@ -62,34 +58,6 @@ public class AutocompleteVisitor extends Visitor {
 
     public Node findNode() {
         return findNode(new DefaultAutocompleteUnitValidator());
-    }
-
-    /** Checks if the identifier contains the location we're interested in. */
-    @Override
-    public void visit(Identifier that) {
-        if (pass == 1 && that.getToken().getLine() == row) {
-            final int col0 = that.getToken().getCharPositionInLine();
-            final int col1 = Math.max(col0+that.getText().length()-1, col0);
-            if (col >= col0 && col <= col1) {
-                node = that;
-                text = node.getText();
-            }
-        }
-        super.visit(that);
-    }
-
-    @Override
-    public void visitAny(Node that) {
-        if (pass == 2 && node != null) {
-            /*for (Node n : that.getChildren()) {
-                if (n.getChildren().contains(node)) {
-                    node = n;
-                    pass = 3;
-                    break;
-                }
-            }*/
-        }
-        super.visitAny(that);
     }
 
     /** Returns the node containing the specified location, if any. */
@@ -126,8 +94,8 @@ public class AutocompleteVisitor extends Visitor {
         if (node != null) {
             HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
             HashSet<com.redhat.ceylon.compiler.typechecker.model.Package> packs = new HashSet<com.redhat.ceylon.compiler.typechecker.model.Package>();
-            if (node instanceof QualifiedMemberExpression) {
-                QualifiedMemberExpression exp = (QualifiedMemberExpression)node;
+            if (node instanceof Tree.QualifiedMemberExpression) {
+                final Tree.QualifiedMemberExpression exp = (Tree.QualifiedMemberExpression)node;
                 ProducedType type = exp.getPrimary().getTypeModel();
                 Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(node.getUnit(), null, text, 0);
                 comps.putAll(c2);
@@ -153,4 +121,111 @@ public class AutocompleteVisitor extends Visitor {
             return true;
         }
     }
+
+    private class FindIdentifierVisitor extends Visitor {
+        /** Checks if the identifier contains the location we're interested in. */
+        @Override
+        public void visit(final Tree.Identifier that) {
+            if (that.getToken().getLine() == row) {
+                final int col0 = that.getToken().getCharPositionInLine();
+                final int col1 = Math.max(col0+that.getText().length()-1, col0);
+                if (col >= col0 && col <= col1) {
+                    node = that;
+                    text = node.getText();
+                }
+            }
+            super.visit(that);
+        }
+    }
+
+    private class FindParentVisitor extends Visitor {
+        boolean found;
+        public void visitAny(Node node) {
+            if (found) return;
+            super.visitAny(node);
+        }
+        @Override
+        public void visit(final Tree.StaticMemberOrTypeExpression that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.ImportMemberOrType that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.Alias that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.Declaration that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.InitializerParameter that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.SimpleType that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.MemberLiteral that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.SatisfiesCondition that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+        public void visit(final Tree.NamedArgument that) {
+            if (found)return;
+            if (that.getIdentifier() == node) {
+                node = that;
+                found = true;
+                return;
+            }
+            super.visit(that);
+        }
+    }
+
 }
