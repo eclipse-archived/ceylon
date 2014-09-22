@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
-@TypeParameters(@TypeParameter(value = "Element"))
+@TypeParameters(@TypeParameter("Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
