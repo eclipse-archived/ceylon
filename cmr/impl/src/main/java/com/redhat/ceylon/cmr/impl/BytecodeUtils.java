@@ -118,16 +118,34 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return new ModuleInfo(null, infos);
     }
 
+    private static ConcurrentMap<File, File> indicesUnderConstruction = new ConcurrentHashMap<File, File>();
+    
     private static Index readModuleIndex(final File jarFile) {
         final Index index;
         try {
             // TODO -- remove this with new Jandex release
             final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
-            // remove the index file if it is older than the jar file
-            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
-                indexFile.delete();
-            if (indexFile.exists() == false) {
-                createJarIndexThreadSafe(jarFile);
+            if (!indexFile.exists() || indexFile.lastModified() < jarFile.lastModified()) {
+                // Synchronize on a per-file basis so concurrent indexing for different files is possible
+                File lock = indicesUnderConstruction.putIfAbsent(jarFile, jarFile);
+                if (lock == null) {
+                    synchronized (jarFile) {
+                        try {
+                            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified()) {
+                                indexFile.delete();
+                            }
+                            if (!indexFile.exists()) {
+                                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
+                            }
+                        } finally {
+                            indicesUnderConstruction.remove(jarFile);
+                        }
+                    }
+                } else {
+                    // Just waiting until the file has been created
+                    synchronized (lock) {
+                    }
+                }
             }
 
             try (InputStream stream = new FileInputStream(indexFile)) {
@@ -139,36 +157,6 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return index;
     }
     
-    private static ConcurrentMap<File, File> indicesUnderConstruction = new ConcurrentHashMap<File, File>();
-    
-    private static void createJarIndexThreadSafe(final File jarFile) throws IOException {
-        File lock = null;
-        synchronized (indicesUnderConstruction) {
-            lock = indicesUnderConstruction.putIfAbsent(jarFile, jarFile);
-        }
-        if (lock == null) {
-            synchronized (jarFile) {
-                try {
-                    JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
-                } finally {
-                    synchronized (indicesUnderConstruction) {
-                        indicesUnderConstruction.remove(jarFile);
-                    }
-                    // Tell any listeners we're done indexing
-                    jarFile.notifyAll();
-                }
-            }
-        } else {
-            synchronized (lock) {
-                try {
-                    lock.wait(10000);
-                } catch (InterruptedException e) {
-                    // We'll just assume things are done now
-                }
-            }
-        }
-    }
-
     private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
         DotName moduleClassName = DotName.createSimple(moduleName + ".$module_");
         ClassInfo ret = index.getClassByName(moduleClassName);
