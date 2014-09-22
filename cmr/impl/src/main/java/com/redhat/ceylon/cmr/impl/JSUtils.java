@@ -144,19 +144,19 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
-        Integer mayor = null, minor = null;
+        Integer major = null, minor = null;
         String bin = asString(metaModelProperty(model, "$mod-bin"));
         if (bin != null) {
             int p = bin.indexOf('.');
             if (p >= 0) {
-                mayor = Integer.parseInt(bin.substring(0, p));
+                major = Integer.parseInt(bin.substring(0, p));
                 minor = Integer.parseInt(bin.substring(p + 1));
             } else {
-                mayor = Integer.parseInt(bin);
+                major = Integer.parseInt(bin);
             }
         }
         ModuleVersionDetails mvd = new ModuleVersionDetails(version);
-        mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
+        mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(info.getDependencies());
         
         if (includeMembers) {
