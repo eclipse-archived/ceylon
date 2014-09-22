@@ -200,7 +200,12 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public static String getSuffixFromNode(Node node) {
         String fileName = node.getLabel();
-        return getSuffixFromFilename(fileName);
+        String suffix = getSuffixFromFilename(fileName);
+        if (SHA1.equals(suffix)) {
+            fileName = fileName.substring(0, fileName.length() - 5);
+            suffix = getSuffixFromFilename(fileName) + SHA1;
+        }
+        return suffix;
     }
 
     /**
