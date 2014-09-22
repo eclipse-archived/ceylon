@@ -118,34 +118,16 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return new ModuleInfo(null, infos);
     }
 
-    private static ConcurrentMap<File, File> indicesUnderConstruction = new ConcurrentHashMap<File, File>();
-    
-    private static Index readModuleIndex(final File jarFile) {
+    private synchronized static Index readModuleIndex(final File jarFile) {
         final Index index;
         try {
             // TODO -- remove this with new Jandex release
             final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
-            if (!indexFile.exists() || indexFile.lastModified() < jarFile.lastModified()) {
-                // Synchronize on a per-file basis so concurrent indexing for different files is possible
-                File lock = indicesUnderConstruction.putIfAbsent(jarFile, jarFile);
-                if (lock == null) {
-                    synchronized (jarFile) {
-                        try {
-                            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified()) {
-                                indexFile.delete();
-                            }
-                            if (!indexFile.exists()) {
-                                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
-                            }
-                        } finally {
-                            indicesUnderConstruction.remove(jarFile);
-                        }
-                    }
-                } else {
-                    // Just waiting until the file has been created
-                    synchronized (lock) {
-                    }
-                }
+            // remove the index file if it is older than the jar file
+            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
+                indexFile.delete();
+            if (indexFile.exists() == false) {
+                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
             }
 
             try (InputStream stream = new FileInputStream(indexFile)) {
