@@ -4425,7 +4425,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
-            if (isSuper(qualified.getPrimary())) {
+            if (qualified.getPrimary() instanceof Tree.Package) {
+                expr = null;
+            } else if (isSuper(qualified.getPrimary())) {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
                 expr = transformSuperOf(qualified);
