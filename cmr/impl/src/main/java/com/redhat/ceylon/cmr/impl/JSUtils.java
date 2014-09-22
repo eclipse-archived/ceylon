@@ -270,7 +270,8 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             while ((line = reader.readLine()) != null) {
                 if ((line.startsWith("ex$.$CCMM$=")
                         || line.startsWith("var $CCMM$=")
-                        || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
+                        || line.startsWith("var $$METAMODEL$$=")
+                        || line.startsWith("var $$metamodel$$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
                     @SuppressWarnings("unchecked")
                     Map<String, Object> rv = (Map<String,Object>) JSONValue.parse(line);
