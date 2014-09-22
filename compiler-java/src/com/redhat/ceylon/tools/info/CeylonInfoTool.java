@@ -208,7 +208,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     errorNewline();
                     continue;
                 }
-                if (module.getVersion() == null || module.getVersion().isEmpty()) {
+                if (module.getVersion() == null || module.getVersion().isEmpty() || versions.size() > 1) {
                     outputVersions(module, versions);
                 } else {
                     outputDetails(module, versions.iterator().next());
