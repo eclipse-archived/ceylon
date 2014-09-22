@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class bug1814_run_ {
+    
+    private bug1814_run_() {
+    }
+    
+    static void bug1814_run() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.set_(0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_run_.bug1814_run();
+    }
+}
+final class bug1814_ {
+    
+    private bug1814_() {
+    }
+    private static long[] value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new long[]{0L};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
+    }
+    
+    public static long get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1814\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bug1814) {
+        value[0] = bug1814;
+    }
+}
