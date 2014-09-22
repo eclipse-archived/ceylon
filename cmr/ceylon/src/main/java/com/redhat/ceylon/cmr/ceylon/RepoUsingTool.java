@@ -218,27 +218,31 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         boolean checkCompilation = compileFlags.contains(COMPILE_CHECK);
         boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains(COMPILE_ONCE);
         
-        if (!forceCompilation && !checkCompilation && (ModuleUtil.isDefaultModule(name) || version != null)) {
+        Collection<ModuleVersionDetails> versions = null;
+        
+        if (ModuleUtil.isDefaultModule(name) || version != null) {
             // If we have the default module or a version we first try it the quick way
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
-                return (result.version() != null) ? result.version() : "";
-            }
-            if (ModuleUtil.isDefaultModule(name) && !allowCompilation) {
+                if (forceCompilation || checkCompilation) {
+                    versions = Collections.singletonList(new ModuleVersionDetails(result.version()));
+                } else {
+                    return (result.version() != null) ? result.version() : "";
+                }
+            } else if (ModuleUtil.isDefaultModule(name) && !allowCompilation) {
                 String err = getModuleNotFoundErrorMessage(repoMgr, name, version);
                 throw new ToolUsageError(err);
             }
         }
 
         boolean suggested = false;
-        Collection<ModuleVersionDetails> versions = null;
         
         // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
         // try that first
-        if (version == null && !ModuleUtil.isDefaultModule(name)) {
+        if (version == null && !ModuleUtil.isDefaultModule(name) && versions == null) {
             versions = findCompiledVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
             if (versions != null && versions.size() == 1) {
                 ModuleVersionDetails compiledVersion = versions.iterator().next();
@@ -266,7 +270,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     // we found some source and several local compiled versions exist,
                     // let's if one of them matches and use that one
                     for (ModuleVersionDetails mvd : versions) {
-                        if (mvd.getVersion().equals(srcVersion.getVersion())) {
+                        if (sameVersion(name, mvd.getVersion(), srcVersion.getVersion())) {
                             if (forceCompilation || checkCompilation) {
                                 versions = Collections.singleton(mvd);
                             } else {
@@ -281,17 +285,37 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // find versions unless we have one in sources waiting to be compiled
         if (versions == null) {
             versions = getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
+            if (version != null && !versions.isEmpty()) {
+                // We have one or more matching versions, let's see if one is exactly the same
+                // while not having any partial matches
+                boolean partialMatch = false;
+                ModuleVersionDetails exactMatch = null;
+                for (ModuleVersionDetails v : versions) {
+                    if (version.equals(v.getVersion())) {
+                        exactMatch = v;
+                    } else if (v.getVersion().startsWith(version)) {
+                        partialMatch = true;
+                    }
+                }
+                if (exactMatch != null && !partialMatch) {
+                    versions = Collections.singletonList(exactMatch);
+                }
+            }
         }
         
-        if (version != null) {
+        if (version != null && (versions.isEmpty() || exactSingleMatch(versions, version))) {
             // Here we either have a single version or none
             if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
                 if (allowCompilation) {
-                    if (srcVersion != null && (version.equals(srcVersion.getVersion()) || srcVersion.getVersion().isEmpty())) {
-                        // There seems to be source code that has the proper version
-                        // Let's see if we can compile it...
-                        if (!runCompiler(repoMgr, name, type)) {
-                            throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
+                    if (srcVersion != null) {
+                        if (version.equals(srcVersion.getVersion())) {
+                            // There seems to be source code that has the proper version
+                            // Let's see if we can compile it...
+                            if (!runCompiler(repoMgr, name, type)) {
+                                throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
+                            }
+                        } else {
+                            suggested = true;
                         }
                         // All okay it seems, let's use this version
                         versions = Arrays.asList(srcVersion);
@@ -313,7 +337,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                         || checkCompilation)) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
-                if (srcVersion != null) {
+                if (srcVersion != null && (version == null || version.equals(srcVersion.getVersion()))) {
                     // There seems to be source code
                     // Let's see if we can compile it...
                     String srcver = srcVersion.getVersion();
@@ -331,7 +355,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             String err = getModuleNotFoundErrorMessage(repoMgr, name, version);
             throw new ToolUsageError(err);
         }
-        if (versions.size() > 1 || suggested) {
+        if (versions.size() > 1 || inexactSingleMatch(versions, version) || suggested) {
             StringBuilder err = new StringBuilder();
             if (version == null) {
                 err.append(Messages.msg(bundle, "missing.version", name));
@@ -359,6 +383,22 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         } else {
             return versions.iterator().next().getVersion();
         }
+    }
+    
+    private boolean sameVersion(String name, String version1, String version2) {
+        if (ModuleUtil.isDefaultModule(name)) {
+            return version1 == null && version2 == null;
+        } else {
+            return version1 != null && version2 != null && version1.equals(version2);
+        }
+    }
+
+    private boolean exactSingleMatch(Collection<ModuleVersionDetails> versions, String version) {
+        return version != null && (versions.size() == 1) && version.equals(versions.iterator().next().getVersion());
+    }
+    
+    private boolean inexactSingleMatch(Collection<ModuleVersionDetails> versions, String version) {
+        return version != null && (versions.size() == 1) && !version.equals(versions.iterator().next().getVersion());
     }
     
     private Collection<ModuleVersionDetails> findCompiledVersions(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
