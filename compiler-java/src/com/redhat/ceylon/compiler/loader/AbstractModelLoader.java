@@ -2077,6 +2077,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             addLocalDeclarations((LazyContainer) klass, containerMirror, classMirror);
         }
+        
+        if (!isCeylon) {
+            // In java, a class can inherit a public member from a non-public supertype
+            for (Declaration d : klass.getMembers()) {
+                if (d.isShared()) {
+                    d.setVisibleScope(null);
+                }
+            }
+        }
     }
 
     private boolean isMethodOverloaded(List<MethodMirror> methodMirrors) {
