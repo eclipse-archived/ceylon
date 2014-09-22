@@ -552,7 +552,7 @@ function throwexc(e,loc,file) {
 }
 //exists
 function nn$(e) {
-  return e!==null&&e!==undefined;
+  return e!==null&&e!==undefined&&e!==getNull();
 }
 //for optimized ranges
 //"exit optimized range loop"
