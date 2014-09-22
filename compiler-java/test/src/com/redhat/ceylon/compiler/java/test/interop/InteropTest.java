@@ -449,4 +449,10 @@ public class InteropTest extends CompilerTest {
         compile("JavaWithStaticMembers.java");
         compareWithJavaSource("Bug1736");
     }
+    
+    @Test
+    @Ignore
+    public void testIopBug1806(){
+        compareWithJavaSource("Bug1806");
+    }
 }
