@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+abstract class Top1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Top1728() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728.class);
+}
+class Side1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 {
+    
+    Side1728() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728.class);
+}
+abstract class Mid1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 {
+    
+    Mid1728() {
+        super();
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 getChild();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728.class);
+}
+class Bottom1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728 {
+    
+    Bottom1728(final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 child) {
+        super();
+        this.child = child;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 child;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 getChild() {
+        return child;
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728 copy(final .java.lang.Object blob) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728((.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728)blob);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728.class);
+}
