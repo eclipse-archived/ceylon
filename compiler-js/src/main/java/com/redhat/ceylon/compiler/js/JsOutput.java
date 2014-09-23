@@ -20,8 +20,8 @@ public class JsOutput {
     private File outfile;
     private File modfile;
     private Writer writer;
-    private String clalias = "";
-    private final Module module;
+    protected String clalias = "";
+    protected final Module module;
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
     final MetamodelVisitor mmg;
@@ -67,7 +67,7 @@ public class JsOutput {
             }
             out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
                     JsCompiler.scriptPath(module), "-model').$CCMM$;return _CTM$;}\n");
-            writer.write("ex$.$CCMM$=$CCMM$;\n");
+            getWriter().write("ex$.$CCMM$=$CCMM$;\n");
             if (!JsCompiler.isCompilingLanguageModule()) {
                 Module clm = module.getLanguageModule();
                 clalias = names.moduleAlias(clm) + ".";
@@ -95,7 +95,7 @@ public class JsOutput {
         return clalias;
     }
 
-    void require(final Module mod, final JsIdentifierNames names) {
+    public void require(final Module mod, final JsIdentifierNames names) {
         final String path = JsCompiler.scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
         if (requires.put(path, modAlias) == null) {
@@ -109,11 +109,11 @@ public class JsOutput {
     /** Print generated code to the Writer.
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
-    void out(String code, String... codez) {
+    public void out(String code, String... codez) {
         try {
-            writer.write(code);
+            getWriter().write(code);
             for (String s : codez) {
-                writer.write(s);
+                getWriter().write(s);
             }
         }
         catch (IOException ioe) {

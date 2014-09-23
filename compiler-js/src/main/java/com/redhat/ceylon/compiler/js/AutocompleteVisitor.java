@@ -24,7 +24,7 @@ public class AutocompleteVisitor {
 
     private final int row;
     private final int col;
-    private final TypeChecker checker;
+    protected final TypeChecker checker;
     private String text;
     private Node node;
 
@@ -70,7 +70,7 @@ public class AutocompleteVisitor {
     }
 
     /** Looks for matching declarations in the specified phased unit, recursively navigating through its dependent units. */
-    private void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
+    protected void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
             Set<com.redhat.ceylon.compiler.typechecker.model.Package> packs, PhasedUnit pu) {
         if (!packs.contains(pu.getPackage())) {
             Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), text, 100);
@@ -93,11 +93,12 @@ public class AutocompleteVisitor {
         Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
         if (node != null) {
             HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
-            HashSet<com.redhat.ceylon.compiler.typechecker.model.Package> packs = new HashSet<com.redhat.ceylon.compiler.typechecker.model.Package>();
+            HashSet<com.redhat.ceylon.compiler.typechecker.model.Package> packs = new HashSet<>();
             if (node instanceof Tree.QualifiedMemberExpression) {
                 final Tree.QualifiedMemberExpression exp = (Tree.QualifiedMemberExpression)node;
                 ProducedType type = exp.getPrimary().getTypeModel();
-                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(node.getUnit(), null, text, 0);
+                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
+                        node.getUnit(), null, text, 0);
                 comps.putAll(c2);
             } else {
                 for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
@@ -115,14 +116,14 @@ public class AutocompleteVisitor {
         public boolean processUnit(PhasedUnit pu);
     }
 
-    private class DefaultAutocompleteUnitValidator implements AutocompleteUnitValidator {
+    protected class DefaultAutocompleteUnitValidator implements AutocompleteUnitValidator {
         @Override
         public boolean processUnit(PhasedUnit pu) {
             return true;
         }
     }
 
-    private class FindIdentifierVisitor extends Visitor {
+    protected class FindIdentifierVisitor extends Visitor {
         /** Checks if the identifier contains the location we're interested in. */
         @Override
         public void visit(final Tree.Identifier that) {
@@ -138,7 +139,7 @@ public class AutocompleteVisitor {
         }
     }
 
-    private class FindParentVisitor extends Visitor {
+    protected class FindParentVisitor extends Visitor {
         boolean found;
         public void visitAny(Node node) {
             if (found) return;
