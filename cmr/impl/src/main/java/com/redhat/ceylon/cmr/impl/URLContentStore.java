@@ -32,6 +32,7 @@ import java.util.TreeSet;
 import javax.xml.bind.DatatypeConverter;
 
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -198,6 +199,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         // otherwise, pretend that folders exist, we'll find out soon
         // enough
         if (hasContent(child) && !urlExists(path)) {
+            return null;
+        }
+        // FIXME Crappy fix to make sure we don't try to return the "module-doc" folder
+        // at least until we properly support auto-zipping and unzipping of folders
+        // to and from the Herd
+        if (ArtifactContext.DOCS.equals(child) && isHerd()) {
             return null;
         }
         final RemoteNode node = createNode(child);
