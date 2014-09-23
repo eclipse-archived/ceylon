@@ -3,6 +3,7 @@ function ocoitarg$(coi) {
   if (tps) {
     var rtps = coi.declaration._targs;
     var targs={};
+    var ord=[];
     for (var tpn in tps) {
       var rtp=rtps&&rtps[tpn];
       var otp=OpenTypeParam$jsint(coi.declaration.tipo,tpn);
@@ -24,8 +25,9 @@ function ocoitarg$(coi) {
         targ = _openTypeFromTarg(rtp,coi.declaration);
       }
       targs[otp.qualifiedName]=[otp,targ];
+      ord.push(otp.qualifiedName);
     }
-    return TpMap$jsint(targs,{V$TpMap:{t:OpenType$meta$declaration}});
+    return TpMap$jsint(targs,ord,{V$TpMap:{t:OpenType$meta$declaration}});
   }
   return getEmpty();
 }

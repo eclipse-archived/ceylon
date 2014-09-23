@@ -1,5 +1,5 @@
 function(){
-    var keys=Object.keys(tpMap$.m);
+    var keys=tpMap$.ord||Object.keys(tpMap$.m);
     this.idx++;
     if (this.idx>=keys.length)return getFinished();
     var k=keys[this.idx];

@@ -1,6 +1,6 @@
 import ceylon.language.meta.declaration { TypeParameter }
 
-native class TpMap<out V>(shared dynamic m) 
+native class TpMap<out V>(shared dynamic m, shared dynamic ord)
         satisfies Map<TypeParameter,V>
         given V satisfies Object {
     

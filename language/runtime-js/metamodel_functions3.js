@@ -146,6 +146,7 @@ function funtypearg$(fun) {
     if (mm.tp) {
       if (fun.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+fun.string);
       var targs={};
+      var ord=[];
       for (var tp in mm.tp) {
         var param = OpenTypeParam$jsint(fun.tipo,tp);
         var targ = fun.$targs[tp];
@@ -155,8 +156,9 @@ function funtypearg$(fun) {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
         targs[param.qualifiedName]=[param,targ];
+        ord.push(param.qualifiedName);
       }
-      return TpMap$jsint(targs,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }
@@ -239,6 +241,7 @@ function coitarg$(coi){
   if (mm) {
     if (mm.tp) {
       var targs={};
+      var ord=[];
       for (var tp in mm.tp) {
         var param = OpenTypeParam$jsint(coi.tipo,tp);
         var targ;
@@ -254,8 +257,9 @@ function coitarg$(coi){
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
         targs[param.qualifiedName]=[param,targ];
+        ord.push(param.qualifiedName);
       }
-      return TpMap$jsint(targs,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }
