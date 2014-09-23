@@ -80,12 +80,13 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
-        this.herdRequestedApi = apiVersion != null ? apiVersion : "3";
+        this.herdRequestedApi = apiVersion != null ? apiVersion : "4";
         if(apiVersion != null
                 && !apiVersion.equals("1")
                 && !apiVersion.equals("2")
-                && !apiVersion.equals("3"))
-            throw new IllegalArgumentException("Only Herd APIs 1 to 3 are supported: requested API "+apiVersion);
+                && !apiVersion.equals("3")
+                && !apiVersion.equals("4"))
+            throw new IllegalArgumentException("Only Herd APIs 1 to 4 are supported: requested API "+apiVersion);
     }
 
     @Override
@@ -322,12 +323,24 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         switch(type){
         case JS:
             return "javascript";
+        case CAR:
+            if(herdVersion >= 4)
+                return "car";
+            else
+                return "jvm";
         case JVM:
             return "jvm";
         case SRC:
             return "source";
         case CODE:
             if(herdVersion >= 3)
+                return "code";
+            else
+                return "all";
+        case CEYLON_CODE:
+            if(herdVersion >= 4)
+                return "ceylon";
+            else if(herdVersion >= 3)
                 return "code";
             else
                 return "all";

@@ -14,8 +14,9 @@ public class ModuleQuery {
     private boolean memberSearchExact;
 
     public enum Type {
-        SRC(ArtifactContext.SRC), 
-        JVM(ArtifactContext.CAR, ArtifactContext.JAR), 
+        SRC(ArtifactContext.SRC),
+        CAR(ArtifactContext.CAR),
+        JVM(ArtifactContext.CAR, ArtifactContext.JAR),
         JS(ArtifactContext.JS),
         CODE(ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS),
         CEYLON_CODE(ArtifactContext.CAR, ArtifactContext.JS),
