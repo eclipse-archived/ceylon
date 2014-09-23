@@ -142,7 +142,7 @@ public class RecoveryTest extends CompilerTest {
     
     @Test
     public void testRcvBrokenClass(){
-        compile(3, "BrokenClass.ceylon");
+        compile(2, "BrokenClass.ceylon");
     }
 
     @Test
