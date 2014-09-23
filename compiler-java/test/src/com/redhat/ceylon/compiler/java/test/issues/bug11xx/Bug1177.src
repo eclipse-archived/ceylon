@@ -38,10 +38,6 @@ final class bug1177_ {
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.String s = (.ceylon.language.String)$param$0;
-                return $calltyped$(s);
-            }
-            
-            private .java.lang.Object $calltyped$(final .ceylon.language.String s) {
                 return .ceylon.language.String.instance("");
             }
         };

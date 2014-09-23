@@ -710,6 +710,11 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new CompilerError(24, "type declaration does not exist: 'Id'"));
 
     }
+    
+    @Test
+    public void testBug1796() {
+        compareWithJavaSource("bug17xx/Bug1796");
+    }
 
     @Test
     public void testBug1803() {
