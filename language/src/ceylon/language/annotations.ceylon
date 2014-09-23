@@ -38,7 +38,7 @@ shared final annotation class VariableAnnotation()
         satisfies OptionalAnnotation<VariableAnnotation, 
             ValueDeclaration> {}
 
-"Annotation to mark an value as variable. A `variable` value 
+"Annotation to mark a value as variable. A `variable` value 
  may be assigned multiple times."
 shared annotation VariableAnnotation variable() 
         => VariableAnnotation();
