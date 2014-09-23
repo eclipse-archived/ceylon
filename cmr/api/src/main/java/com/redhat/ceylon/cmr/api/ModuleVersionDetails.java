@@ -144,7 +144,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     public String toString() {
         return "ModuleVersionDetails[ "
                 + "version: " + version
-                + ", doc: " + doc
+                + ", doc: " + ((doc != null) ? ((doc.length() > 10) ? doc.substring(0, 10) + "..." : doc) : null)
                 + ", license: " + license
                 + ", by: " + authors
                 + ", deps: " + dependencies
