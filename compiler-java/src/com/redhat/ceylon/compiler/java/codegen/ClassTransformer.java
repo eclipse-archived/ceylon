@@ -2409,8 +2409,9 @@ public class ClassTransformer extends AbstractTransformer {
             List<JCStatement> body) {
         if (def instanceof Tree.MethodDeclaration) {
             Tree.SpecifierExpression specifier = ((Tree.MethodDeclaration)def).getSpecifierExpression();
-            if (specifier != null 
-                    && !(specifier instanceof Tree.LazySpecifierExpression)) {
+            if (specifier == null) {
+                return body;
+            } else if (!(specifier instanceof Tree.LazySpecifierExpression)) {
                 if (!CodegenUtil.canOptimiseMethodSpecifier(specifier.getExpression().getTerm(), model)) {
                     return body;
                 }
@@ -2455,7 +2456,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // The field isn't initialized by a parameter, but later in the block
                 initialValue = makeNull();
             }
-            ProducedType callableType = typeFact().getCallableType(model.getType());
+            ProducedType callableType = model.getReference().getFullType();
             current().field(mods, fieldName, makeJavaType(callableType), initialValue, false);
             Invocation invocation = new CallableSpecifierInvocation(
                     this,

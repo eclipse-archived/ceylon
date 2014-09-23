@@ -1358,8 +1358,7 @@ class NamedArgumentInvocation extends Invocation {
         ProducedType callableType = model.getProducedReference(null, Collections.<ProducedType>emptyList()).getFullType();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
                 callableType, 
-                model.getParameterLists().get(0),
-                methodArg.getParameterLists().get(0),
+                Collections.singletonList(methodArg.getParameterLists().get(0)),
                 gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
         JCNewClass callable = callableBuilder.build();
         JCExpression typeExpr = gen.makeJavaType(callableType, JT_RAW);

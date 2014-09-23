@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -354,8 +355,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType callableType = functionArg.getTypeModel();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(), 
                 callableType, 
-                model.getParameterLists().get(0),
-                functionArg.getParameterLists().get(0),
+                Collections.singletonList(functionArg.getParameterLists().get(0)),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
         JCExpression result = callableBuilder.build();
@@ -2404,7 +2404,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Method fp = (Method)fpTree.getParameterModel().getModel();
                 
                 expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
-                        ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists().get(0),
+                        ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists(),
                         getTypeForFunctionalParameter(fp),
                         true).build();
             } else {
@@ -4393,7 +4393,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
                     (Tree.Expression)rightTerm,
-                    paramExpr.getParameterLists().get(0),
+                    paramExpr.getParameterLists(),
                     paramExpr.getPrimary().getTypeModel(),
                     !decl.isDeferred());
             rhs = callableBuilder.build();
