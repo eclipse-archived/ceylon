@@ -8,7 +8,7 @@
      \"x must be positive\"
      assert (x>0);
  
- has the almost the same effect as this `if` statement
+ has almost the same effect as this `if` statement
      
      if (!x>0) {
          throw AssertionError(\"x must be positive\");
