@@ -329,19 +329,13 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseTypes() {
-        Boolean enabled = ProducedTypeCache.setEnabled(true);
-        try {
-            if (!fullyTyped) {
-                ProducedType.depth.set(-100);
-                //System.out.println("Run analysis phase for " + fileName);
-                compilationUnit.visit(new ExpressionVisitor());
-                compilationUnit.visit(new AnnotationVisitor());
-                compilationUnit.visit(new TypeArgumentVisitor());
-                fullyTyped = true;
-            }
-        }
-        finally {
-            ProducedTypeCache.setEnabled(enabled);
+        if (!fullyTyped) {
+            ProducedType.depth.set(-100);
+            //System.out.println("Run analysis phase for " + fileName);
+            compilationUnit.visit(new ExpressionVisitor());
+            compilationUnit.visit(new AnnotationVisitor());
+            compilationUnit.visit(new TypeArgumentVisitor());
+            fullyTyped = true;
         }
     }
     
