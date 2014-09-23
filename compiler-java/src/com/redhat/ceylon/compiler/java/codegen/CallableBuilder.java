@@ -446,14 +446,15 @@ public class CallableBuilder {
      * Constructs an {@code AbstractCallable} suitable for an anonymous function.
      */
     public static CallableBuilder anonymous(
-            CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
+            CeylonTransformer gen, Tree.Expression expr,  
             Tree.ParameterList parameterListTree, 
             ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(true);
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, delegateDefaultedCalls);
+        
+        return methodArgument(gen, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
     }
 
     public static CallableBuilder methodArgument(
@@ -462,7 +463,7 @@ public class CallableBuilder {
             ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
-        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, true);
+        return methodArgument(gen, callableTypeModel, parameterListTree, stmts, true);
     }
     
     /**
@@ -484,11 +485,10 @@ public class CallableBuilder {
     private static CallableBuilder methodArgument(
             CeylonTransformer gen,
             ProducedType callableTypeModel,
-            ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts, boolean delegateDefaultedCalls) {
         
-        CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
+        CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterListTree.getModel());
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
         cb.delegateDefaultedCalls = delegateDefaultedCalls;

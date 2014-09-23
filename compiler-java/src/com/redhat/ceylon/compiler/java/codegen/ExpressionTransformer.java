@@ -2404,7 +2404,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Method fp = (Method)fpTree.getParameterModel().getModel();
                 
                 expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
-                        fp.getParameterLists().get(0),
                         ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists().get(0),
                         getTypeForFunctionalParameter(fp),
                         true).build();
@@ -4394,7 +4393,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
                     (Tree.Expression)rightTerm,
-                    decl.getParameterLists().get(0),
                     paramExpr.getParameterLists().get(0),
                     paramExpr.getPrimary().getTypeModel(),
                     !decl.isDeferred());
