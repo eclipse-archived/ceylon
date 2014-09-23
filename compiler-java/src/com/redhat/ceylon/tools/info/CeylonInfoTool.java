@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -41,7 +41,11 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
         "and its dependencies")
 public class CeylonInfoTool extends RepoUsingTool {
 
-    private static final int INFINITE_DEPTH = -1; 
+    private static final int INFINITE_DEPTH = -1;
+    
+    public enum Formatting {
+        simple, fancy
+    }
     
     private List<ModuleSpec> modules;
     private boolean showVersions;
@@ -54,6 +58,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     private boolean showNames;
     private boolean exactMatch;
     private boolean requireAll;
+    private Formatting formatting;
     
     private Integer binaryMajor = null;
     private Integer binaryMinor = null;
@@ -145,6 +150,12 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.exactMatch = exactMatch;
     }
 
+    @OptionArgument(argumentName = "formatting")
+    @Description("Set the output formatting to use, can be `simple` or `fancy`")
+    public void setFormatting(Formatting formatting) {
+        this.formatting = formatting;
+    }
+
     @Override
     protected boolean needsSystemRepo() {
         return false;
@@ -175,6 +186,9 @@ public class CeylonInfoTool extends RepoUsingTool {
         if (findMember != null && findPackage != null) {
             throw new IllegalArgumentException(CeylonInfoMessages.msg("incompatible.find.options"));
         }
+        if (formatting == null) {
+            formatting = (System.console() != null) ? Formatting.fancy : Formatting.simple;
+        }
     }
     
     @Override
@@ -184,6 +198,7 @@ public class CeylonInfoTool extends RepoUsingTool {
             binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
             binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
         }
+        
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
@@ -255,28 +270,36 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     private void outputModules(ModuleSpec query, Collection<ModuleDetails> modules) throws IOException {
-        if (System.console() != null) {
+        if (formatting == Formatting.fancy) {
             if (findMember == null) {
                 msg("module.query", query.getName()).newline();
             } else {
                 msg("module.query.find", query.getName(), findMember).newline();
             }
         }
-        String prefix = (System.console() != null) ? "    " : "";
+        outputModules(modules);
+    }
+
+    private void outputModules(Collection<ModuleDetails> modules) throws IOException {
         for (ModuleDetails module : modules) {
-            if (System.console() != null || (!showVersions && !showNames)) {
-                append(prefix).append(module.getName()).newline();
-            }
-            if (showVersions) {
-                outputVersions(module.getName(), module.getVersions(), prefix + prefix);
-            } else if (showNames) {
-                outputNames(module.getName(), module.getLastVersion(), prefix + prefix);
-            }
+            outputModule(module);
+        }
+    }
+
+    private void outputModule(ModuleDetails module) throws IOException {
+        String prefix = (formatting == Formatting.fancy) ? "    " : "";
+        if (formatting == Formatting.fancy || (!showVersions && !showNames)) {
+            append(prefix).append(module.getName()).newline();
+        }
+        if (showVersions) {
+            outputVersions(module.getName(), module.getVersions(), prefix + prefix);
+        } else if (showNames) {
+            outputNames(module.getName(), module.getLastVersion(), prefix + prefix);
         }
     }
 
     private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
-        if (System.console() != null) {
+        if (formatting == Formatting.fancy) {
             if (findMember == null) {
                 msg("version.query", module.getName()).newline();
             } else {
@@ -287,23 +310,23 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     private void outputVersions(String moduleName, Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
-        String namePrefix = (System.console() != null) ? prefix + "    " : "";
+        String namePrefix = (formatting == Formatting.fancy) ? prefix + "    " : "";
         for (ModuleVersionDetails version : versions) {
-            if (System.console() != null || (!showDependencies && !showNames)) {
+            if (formatting == Formatting.fancy || (!showDependencies && !showNames)) {
                 append(prefix);
-                if (System.console() == null) {
+                if (formatting == Formatting.simple) {
                     append(moduleName).append("/");
                 }
                 append(version.getVersion());
-                if (version.isRemote() && System.console() != null) {
+                if (version.isRemote() && formatting == Formatting.fancy) {
                     append(" *");
                 }
                 newline();
             }
             if (showDependencies) {
-                if (System.console() != null || !version.getDependencies().isEmpty()) {
+                if (formatting == Formatting.fancy || !version.getDependencies().isEmpty()) {
                     for (ModuleDependencyInfo dep : version.getDependencies()) {
-                        if (System.console() != null) {
+                        if (formatting == Formatting.fancy) {
                             append(prefix).append("    ").append(dep);
                         } else {
                             append(moduleName).append("/").append(version.getVersion()).append(" ").append(dep.getModuleName());
@@ -322,7 +345,7 @@ public class CeylonInfoTool extends RepoUsingTool {
 
     private void outputNames(String moduleName, ModuleVersionDetails version, String prefix) throws IOException {
         for (String member : version.getMembers()) {
-            if (System.console() != null) {
+            if (formatting == Formatting.fancy) {
                 append(prefix).append(member).newline();
             } else {
                 append(moduleName);
