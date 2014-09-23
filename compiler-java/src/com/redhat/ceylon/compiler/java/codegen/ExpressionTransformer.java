@@ -634,7 +634,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private boolean lostTypeParameterInInheritance(ClassOrInterface exprDecl, ClassOrInterface commonDecl, boolean searchInterfaces, boolean lostTypeParameter) {
         // stop if we found the common decl
-        if(exprDecl == commonDecl)
+        if(Decl.equal(exprDecl, commonDecl))
             return lostTypeParameter;
         if(searchInterfaces){
             // find a match in interfaces
@@ -4212,7 +4212,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean needsQualified = false;
         while(scope != null){
             if(scope instanceof Interface){
-                if(scope == interf || ((Interface)scope).inherits(interf)){
+                if(Decl.equalScopeDecl(scope, interf) || ((Interface)scope).inherits(interf)){
                     break;
                 }
                 // we only need to qualify it if we're aiming for a $this of an outer interface than the interface we are caught in
@@ -5074,10 +5074,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration decl = expr.getDeclaration();
         Scope s = expr.getScope();
         // do we have decl as our container anywhere in the scope?
-        while (s != null && s != decl) {
+        while (s != null && !Decl.equalScopeDecl(s, decl)) {
             s = s.getContainer();
         }
-        return s == decl;
+        return Decl.equalScopeDecl(s, decl);
     }
 
     private boolean isReferenceInSameScope(Tree.StaticMemberOrTypeExpression expr) {
@@ -5087,7 +5087,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         while (s != null && s instanceof Declaration == false) {
             s = s.getContainer();
         }
-        return s == decl;
+        return Decl.equalScopeDecl(s, decl);
     }
 
     boolean isWithinInvocation() {
@@ -5124,7 +5124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean isWithinDefaultParameterExpression(Scope container) {
-        return withinDefaultParameterExpression == container;
+        return Decl.equalScopeDecl(container, withinDefaultParameterExpression);
     }
 
     void withinDefaultParameterExpression(ClassOrInterface forDefinition) {

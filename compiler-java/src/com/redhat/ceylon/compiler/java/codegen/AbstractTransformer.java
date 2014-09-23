@@ -798,7 +798,7 @@ public abstract class AbstractTransformer implements Transformation {
                 && referenceQualifyingType != null
                 && referenceQualifyingType.getDeclaration() != currentType.getDeclaration();
         // quick exit
-        if(decl == modelRefinedDecl && !forMixinMethod)
+        if (Decl.equal(decl, modelRefinedDecl) && !forMixinMethod)
             return null;
         // modelRefinedDecl exists, but perhaps it's the toplevel refinement and not the one Java will look at
         if(!forMixinMethod)
@@ -1184,7 +1184,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     ProducedType nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
         final ProducedReference pr;
-        if (declaration == refinedDeclaration) {
+        if (declaration.equals(refinedDeclaration)) {
             pr = declaration;
         } else {
             ProducedType refinedType = refinedDeclaration.getType();
@@ -4072,7 +4072,7 @@ public abstract class AbstractTransformer implements Transformation {
         boolean isDependedOn = false;
         for(TypeParameter otherTypeParameter : tps){
             // skip this very type parameter
-            if(otherTypeParameter == tp)
+            if(Decl.equal(otherTypeParameter, tp))
                 continue;
             if(dependsOnTypeParameter(otherTypeParameter, tp)){
                 isDependedOn = true;
@@ -4113,7 +4113,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         }else if(decl instanceof TypeParameter){
-            if(tp == null || tp == decl)
+            if (tp == null || Decl.equal(tp, decl))
                 return true;
         }else if(decl instanceof ClassOrInterface){
             for(ProducedType ta : t.getTypeArgumentList()){
@@ -4237,7 +4237,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(declarationModel.getContainer() instanceof Method){
             Method method = (Method) declarationModel.getContainer();
             Method refinedMethod = (Method) method.getRefinedDeclaration();
-            if(method != refinedMethod){
+            if (!Decl.equal(method, refinedMethod)) {
                 // find the param index
                 int index = method.getTypeParameters().indexOf(declarationModel);
                 if(index == -1){

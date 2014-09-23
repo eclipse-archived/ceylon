@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -58,6 +59,38 @@ public class Decl {
     private Decl() {
     }
 
+    private static boolean eq(Object decl, Object other) {
+        if (decl == null) {
+            return other == null;
+        } else {
+            return decl.equals(other);
+        }
+    }
+    
+    public static boolean equal(Declaration decl, Declaration other) {
+        return eq(decl, other);
+    }
+    
+    public static boolean equal(Parameter decl, Parameter other) {
+        return eq(decl, other);
+    }
+    
+    /*public static boolean equal(Declaration decl, Scope scope) {
+        return equal(decl, scope);
+    }*/
+    
+    public static boolean equalScopes(Scope scope, Scope other) {
+        return eq(scope, other);
+    }
+    
+    public static boolean equalScopeDecl(Scope scope, Declaration other) {
+        return eq(scope, other);
+    }
+    
+    public static boolean equalModules(Module scope, Module other) {
+        return eq(scope, other);
+    }
+    
     /**
      * Returns the declaration's container
      * @param decl The declaration

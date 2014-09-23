@@ -307,7 +307,7 @@ public class ReflectionUtils {
         if(searchedSuperType.getTypeParameters().length == 0)
             return Collections.<TypeVariable<?>, Class<?>>emptyMap();
         
-        if(base == searchedSuperType){
+        if(base.equals(searchedSuperType)){
             return baseTypeArguments;
         }
         Map<TypeVariable<?>, Class<?>> ret = null;

@@ -270,7 +270,7 @@ public class CodegenUtil {
             }
             if (decl.isShared()) {
                 Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??
-                if(refinedDecl != null && refinedDecl != decl) {
+                if(refinedDecl != null && !Decl.equal(refinedDecl, decl)) {
                     return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
                 }
             }
@@ -293,8 +293,9 @@ public class CodegenUtil {
                 return decl;
             Functional refinedFunc = (Functional) kk;
             // shortcut if the functional doesn't override anything
-            if(refinedFunc == func)
+            if (Decl.equal((Declaration)refinedFunc, (Declaration)func)) {
                 return decl;
+            }
             if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
                 // invalid input
                 return decl;
@@ -328,7 +329,7 @@ public class CodegenUtil {
             decl = methodOverrides.get(decl);
         }
         Declaration refinedDecl = decl.getRefinedDeclaration();
-        if(refinedDecl != null && refinedDecl != decl)
+        if(refinedDecl != null && !Decl.equal(refinedDecl, decl))
             return getTopmostRefinedDeclaration(refinedDecl);
         return decl;
     }

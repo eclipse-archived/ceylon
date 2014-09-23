@@ -793,7 +793,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
                             || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
-                    if (!generateInstantiator || refinedParam == paramModel) {
+                    if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
                         cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param, typeParameterList));
                         if (cbForDevaultValuesDecls != null) {
                             cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param, typeParameterList));
@@ -1148,7 +1148,7 @@ public class ClassTransformer extends AbstractTransformer {
 
                             if (Strategy.hasDefaultParameterOverload(param)) {
                                 if ((method.isDefault() || method.isShared() && !method.isFormal())
-                                        && (method == subMethod)) {
+                                        && Decl.equal(method, subMethod)) {
                                     MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
                                     MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(daoThis, typedMember)
                                         .makeOverload(
@@ -1184,7 +1184,7 @@ public class ClassTransformer extends AbstractTransformer {
 
                     if (hasOverloads
                             && (method.isDefault() || method.isShared() && !method.isFormal())
-                            && (method == subMethod)) {
+                            && Decl.equal(method, subMethod)) {
                         final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
                                 typedMember,
                                 model.getType(),
@@ -1601,8 +1601,9 @@ public class ClassTransformer extends AbstractTransformer {
     private ProducedType getFirstSatisfiedType(ProducedType currentType, Interface iface) {
         ProducedType found = null;
         TypeDeclaration currentDecl = currentType.getDeclaration();
-        if(currentDecl == iface)
+        if (Decl.equal(currentDecl, iface)) {
             return currentType;
+        }
         if(currentDecl.getExtendedType() != null){
             ProducedType supertype = currentType.getSupertype(currentDecl.getExtendedTypeDeclaration());
             found = getFirstSatisfiedType(supertype, iface);
@@ -2324,7 +2325,7 @@ public class ClassTransformer extends AbstractTransformer {
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
-                if (refinedDeclaration == methodModel
+                if (Decl.equal(refinedDeclaration, methodModel)
                         || (!Decl.withinInterface(methodModel) && body != null)) {
                     
                     if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
@@ -2340,7 +2341,7 @@ public class ClassTransformer extends AbstractTransformer {
                         lb.append(overloadedMethod);
                     }
                     
-                    if (refinedDeclaration == methodModel
+                    if (Decl.equal(refinedDeclaration, methodModel)
                             && Strategy.hasDefaultParameterValueMethod(parameterModel)) {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, typeParameterList));
                     }
@@ -2716,7 +2717,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean initedVars = false;
             boolean useDefault = false;
             for (Parameter parameterModel : parameterList.getParameters()) {
-                if (currentParameter != null && parameterModel == currentParameter) {
+                if (currentParameter != null && Decl.equal(parameterModel, currentParameter)) {
                     useDefault = true;
                 }
                 if (useDefault) {
@@ -2805,7 +2806,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
             for (Parameter parameter : parameterList.getParameters()) {
-                if (currentParameter != null && parameter == currentParameter) {
+                if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
                 }
                 args.add(naming.makeUnquotedIdent(parameter.getName()));
@@ -2858,7 +2859,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         protected void parameters(MethodDefinitionBuilder overloadBuilder, ParameterList parameterList, Parameter currentParameter) {
             for (Parameter parameter : parameterList.getParameters()) {
-                if (currentParameter != null && parameter == currentParameter) {
+                if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
                 }
                 overloadBuilder.parameter(parameter, null, 0, false);
@@ -3039,7 +3040,7 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected void parameters(MethodDefinitionBuilder overloadBuilder, ParameterList parameterList, Parameter currentParameter) {
             for (Parameter param : parameterList.getParameters()) {
-                if (currentParameter != null && param == currentParameter) {
+                if (currentParameter != null && Decl.equal(param, currentParameter)) {
                     break;
                 }
                 ProducedType type = paramType(param);
@@ -3437,7 +3438,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Add any of the preceding parameters as parameters to the method
         for (Tree.Parameter p : params.getParameters()) {
-            if (p == currentParam) {
+            if (p.equals(currentParam)) {
                 break;
             }
             at(p);

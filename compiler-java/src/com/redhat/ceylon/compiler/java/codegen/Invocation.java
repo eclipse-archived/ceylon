@@ -1294,7 +1294,7 @@ class NamedArgumentInvocation extends Invocation {
         ProducedTypedReference typedRef = gen.getTypedReference(model);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType type;
-        if(nonWideningTypedRef != typedRef)
+        if(!nonWideningTypedRef.equals(typedRef))
             type = gen.nonWideningType(typedRef, nonWideningTypedRef);
         else
             type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);

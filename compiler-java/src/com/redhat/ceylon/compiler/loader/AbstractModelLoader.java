@@ -1692,7 +1692,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         modules.getListOfModules().add(module);
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
-        if(module != languageModule){
+        if(!Decl.equalModules(module, languageModule)){
             ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
             if (moduleImport == null) {
                 moduleImport = new ModuleImport(languageModule, false, false);
@@ -4523,7 +4523,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public boolean isImported(Module moduleScope, Module importedModule) {
-        if(moduleScope == importedModule)
+        if(Decl.equalModules(moduleScope, importedModule))
             return true;
         if(isImportedSpecialRules(moduleScope, importedModule))
             return true;

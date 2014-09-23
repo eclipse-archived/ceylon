@@ -128,7 +128,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (!(annotationConstructor instanceof Tree.MethodDefinition 
                         && d instanceof Tree.Return)
-                    && d != annotationConstructor) {
+                    && !d.equals(annotationConstructor)) {
                 d.addError("compiler bug: annotation constructors may only contain a return statement");
             }
         }

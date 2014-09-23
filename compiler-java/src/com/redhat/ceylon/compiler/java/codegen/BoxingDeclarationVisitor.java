@@ -167,7 +167,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             return;
         }
         // fetch the real refined declaration if required
-        if(declaration == refinedDeclaration
+        if (Decl.equal(declaration, refinedDeclaration)
                 && declaration instanceof MethodOrValue
                 && ((MethodOrValue)declaration).isParameter()
                 && declaration.getContainer() instanceof Class){
@@ -180,7 +180,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         
         // inherit underlying type constraints
-        if(refinedDeclaration != declaration && type.getUnderlyingType() == null
+        if(!Decl.equal(refinedDeclaration, declaration) && type.getUnderlyingType() == null
                 && refinedDeclaration.getType() != null)
             type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
         
@@ -196,7 +196,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             return;
         }
         
-        if(refinedDeclaration != declaration){
+        if (!Decl.equal(refinedDeclaration, declaration)) {
             // make sure refined declarations have already been set
             if(refinedDeclaration.getUnboxed() == null)
                 setBoxingState(refinedDeclaration, refinedDeclaration);
@@ -219,7 +219,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 && Strategy.createMethod((MethodOrValue)declaration.getContainer())) {
             Method functionalParameter = (Method)declaration.getContainer();
             TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
-            if (refinedFrom == functionalParameter) { 
+            if (Decl.equal(refinedFrom, functionalParameter)) { 
                 declaration.setUnboxed(true);
             } else {
                 // make sure refined declarations have already been set

@@ -80,7 +80,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 return;
             }
             TypedDeclaration d = (TypedDeclaration) decl;
-            if (d==declaration) {
+            if (Decl.equal(d, declaration)) {
                 if (Decl.isParameter(d)) {
                     // a reference from a default argument 
                     // expression of the same parameter 
@@ -131,9 +131,10 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         Scope scope = that.getScope();
         while(scope != null 
                 && scope instanceof Package == false
-                && scope != type)
+                && !Decl.equalScopeDecl(scope, type)) {
             scope = scope.getScope();
-        return scope == type;
+        }
+        return Decl.equalScopeDecl(scope, type);
     }
 
     /**
@@ -203,7 +204,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     @Override public void visit(Tree.Declaration that) {
         Declaration dm = that.getDeclarationModel();
         if (dm==declaration.getContainer()
-                || dm==declaration
+                || Decl.equal(dm, declaration)
                 || (dm instanceof Setter && ((Setter) dm).getGetter()==declaration)) {
             if (!isCapturableMplParameter(declaration)) {
                 inCapturingScope = false;

@@ -700,7 +700,7 @@ public class Naming implements LocalId {
                     nonLocal = nonLocal.getContainer();
                 }
                 typeDeclarationBuilder.append(((Declaration)nonLocal).getPrefixedName());
-                if(scope != nonLocal) {
+                if (!Decl.equalScopes(scope, nonLocal)) {
                     typeDeclarationBuilder.append('$');
                     typeDeclarationBuilder.append(getLocalId(scope));
                 }
@@ -1913,7 +1913,7 @@ public class Naming implements LocalId {
                 TypedDeclaration orig = decl.getOriginalDeclaration();
                 Scope stop = (orig != null ? orig : decl).getContainer();
                 Scope scope = decl.getContainer();
-                while (scope != stop) {
+                while (!Decl.equalScopes(scope, stop)) {
                     if (!(scope instanceof ControlBlock)) {
                         break;
                     }

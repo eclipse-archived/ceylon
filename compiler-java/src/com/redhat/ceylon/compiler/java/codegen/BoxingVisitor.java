@@ -513,7 +513,7 @@ public abstract class BoxingVisitor extends Visitor {
             // only look at it if it is defined outside our scope
             Scope typeParameterScope = declaration.getContainer();
             while(scope != null){
-                if(scope == typeParameterScope)
+                if (Decl.equalScopes(scope,  typeParameterScope))
                     return false;
                 scope = scope.getContainer();
             }
