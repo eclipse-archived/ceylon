@@ -171,7 +171,10 @@ public class AbstractTest {
             ModuleVersionDetails version = entry.getValue();
             Assert.assertEquals(expectedVersion.getVersion(), entry.getKey());
             Assert.assertEquals(expectedVersion.getVersion(), version.getVersion());
-            Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
+            if (expectedVersion.getDoc() != null) {
+                // Docs can be really big, this let's allow us to ignore them for comparisons
+                Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
+            }
             Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
             Assert.assertEquals(expectedVersion.getAuthors(), version.getAuthors());
             Assert.assertEquals(expectedVersion.getDependencies(), version.getDependencies());
@@ -239,7 +242,10 @@ public class AbstractTest {
             ModuleDetails expectedResult = expected[i++];
             System.err.println("Testing " + result.getName());
             Assert.assertEquals(expectedResult.getName(), result.getName());
-            Assert.assertEquals(expectedResult.getDoc(), result.getDoc());
+            if (expectedResult.getDoc() != null) {
+                // Docs can be really big, this let's allow us to ignore them for comparisons
+                Assert.assertEquals(expectedResult.getDoc(), result.getDoc());
+            }
             Assert.assertEquals(expectedResult.getLicense(), result.getLicense());
             Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
