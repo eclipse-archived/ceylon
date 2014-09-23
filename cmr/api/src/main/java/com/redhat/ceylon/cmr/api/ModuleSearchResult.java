@@ -30,8 +30,8 @@ public class ModuleSearchResult {
             this.name = name;
             for (String v : versions) {
                 ModuleVersionDetails mvd = new ModuleVersionDetails(v);
-                mvd.setDoc(toNull(doc));
-                mvd.setLicense(toNull(license));
+                mvd.setDoc(doc);
+                mvd.setLicense(license);
                 mvd.getAuthors().addAll(authors);
                 mvd.getDependencies().addAll(dependencies);
                 mvd.getArtifactTypes().addAll(artifacts);
@@ -41,11 +41,6 @@ public class ModuleSearchResult {
             }
         }
 
-        private String toNull(String str) {
-            if(str != null && str.isEmpty())
-                return null;
-            return str;
-        }
         public String getName() {
             return name;
         }
