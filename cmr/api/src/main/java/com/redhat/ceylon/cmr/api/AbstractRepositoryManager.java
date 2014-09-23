@@ -20,9 +20,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.common.log.Logger;
 
@@ -93,7 +92,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
         final List<ArtifactResult> results = new ArrayList<>();
         ArtifactResult result = null;
-        Set<String> suffixes = new LinkedHashSet<>(Arrays.asList(context.getSuffixes()));
+        TreeSet<String> suffixes = new TreeSet<>(Arrays.asList(context.getSuffixes()));
         while (!suffixes.isEmpty()) {
             // Try to get one of the artifacts
             String[] sfx = suffixes.toArray(new String[suffixes.size()]);
@@ -112,7 +111,12 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 
                 // make sure we don't try to get the same artifact twice
                 String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
-                suffixes.remove(suffix);
+                // but we don't just remove the one we got, but all of suffixes
+                // up to the one we found, because we know the list is ordered
+                // and the others were tried first
+                while (!suffixes.first().equals(suffix)) {
+                    suffixes.remove(suffixes.first());
+                }
                 
                 // TODO this shouldn't be hard-coded here but is to prevent
                 // unnecessary queries to remote repositories
