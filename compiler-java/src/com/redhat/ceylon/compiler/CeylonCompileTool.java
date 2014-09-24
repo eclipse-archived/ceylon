@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -403,23 +404,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         addJavacArguments(arguments);
         
-        List<File> srcs = applyCwd(this.sources);
-        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
-        if (expandedModulesOrFiles.isEmpty()) {
-            throw new IllegalArgumentException("No modules or source files to compile");
-        }
-        
-        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
-        if (sourceFileOpt != null) {
-            for (String moduleOrFile : expandedModulesOrFiles) {
-                validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
-            }
-        }
-        
-        validateSourceArguments(expandedModulesOrFiles);
-        
-        arguments.addAll(expandedModulesOrFiles);
-        
         if (verbose != null) {
             System.out.println(arguments);
             System.out.flush();
@@ -442,12 +426,23 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     /**
      * Run the compilation
+     * @throws IOException 
      * @throws CompilerErrorException If the source code had errors
      * @throws SystemErrorException If there was a system error
      * @throws CompilerBugException If a bug in the compiler was detected.
      */
     @Override
-    public void run() {
+    public void run() throws IOException {
+        List<File> srcs = applyCwd(this.sources);
+        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
+        if (expandedModulesOrFiles.isEmpty()) {
+            throw new ToolUsageError("No modules or source files to compile");
+        }
+        
+        validateSourceArguments(expandedModulesOrFiles);
+        
+        arguments.addAll(expandedModulesOrFiles);
+        
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result, compiler.exitState);
     }
