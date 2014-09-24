@@ -146,6 +146,14 @@ public class SourceArgumentsResolver {
             } else {
                 File dir = searchModulePath(modPath);
                 if (dir == null || !dir.isDirectory()) {
+                    if (modName.contains("/")) {
+                        throw new ToolUsageError(CeylonToolMessages.msg("error.invalid.module.or.file", modName));
+                    }
+                    for (String suffix : suffixes) {
+                        if (modName.endsWith(suffix)) {
+                            throw new ToolUsageError(CeylonToolMessages.msg("error.file.not.found", modName));
+                        }
+                    }
                     String ps = sourceDirs.toString();
                     ps = ps.substring(1, ps.length() - 1);
                     throw new ToolUsageError(CeylonToolMessages.msg("error.module.not.found", modName, ps));
