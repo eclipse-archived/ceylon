@@ -117,6 +117,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 while (!suffixes.first().equals(suffix)) {
                     suffixes.remove(suffixes.first());
                 }
+                suffixes.remove(suffix);
                 
                 // TODO this shouldn't be hard-coded here but is to prevent
                 // unnecessary queries to remote repositories
