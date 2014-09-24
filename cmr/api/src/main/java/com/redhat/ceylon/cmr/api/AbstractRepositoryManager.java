@@ -20,8 +20,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 import com.redhat.ceylon.common.log.Logger;
 
@@ -92,7 +93,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
         final List<ArtifactResult> results = new ArrayList<>();
         ArtifactResult result = null;
-        TreeSet<String> suffixes = new TreeSet<>(Arrays.asList(context.getSuffixes()));
+        LinkedHashSet<String> suffixes = new LinkedHashSet<>(Arrays.asList(context.getSuffixes()));
         while (!suffixes.isEmpty()) {
             // Try to get one of the artifacts
             String[] sfx = suffixes.toArray(new String[suffixes.size()]);
@@ -114,8 +115,9 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 // but we don't just remove the one we got, but all of suffixes
                 // up to the one we found, because we know the list is ordered
                 // and the others were tried first
-                while (!suffixes.first().equals(suffix)) {
-                    suffixes.remove(suffixes.first());
+                Iterator<String> iter = suffixes.iterator();
+                while (!suffix.equals(iter.next())) {
+                    iter.remove();
                 }
                 suffixes.remove(suffix);
                 
