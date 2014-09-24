@@ -27,6 +27,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -493,13 +494,18 @@ public class CodegenUtil {
         Naming n = new Naming(null, null);
         if (decl instanceof TypeDeclaration) {
             result = n.makeTypeDeclarationName((TypeDeclaration)decl, DeclNameFlag.QUALIFIED);
+            result = result.substring(1);// remove initial .
+            if (decl.isAnonymous()) {
+                result += "." + Unfix.get_.toString();
+            }
         } else if (decl instanceof TypedDeclaration) {
             if (decl.isToplevel()) {
                 result = n.getName((TypedDeclaration)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
+                result = result.substring(1);// remove initial .
             } else {
                 Scope container = decl.getContainer();
                 if (container instanceof TypeDeclaration) {
-                    String qualifier = "."+getJavaNameOfDeclaration((TypeDeclaration)container);
+                    String qualifier = getJavaNameOfDeclaration((TypeDeclaration)container);
                     result = qualifier+n.getName((TypedDeclaration)decl, Naming.NA_MEMBER);
                 } else {
                     throw new IllegalArgumentException();
@@ -508,6 +514,6 @@ public class CodegenUtil {
         } else {
             throw new RuntimeException();
         }
-        return result.substring(1);// remove initial .
+        return result;
     }
 }
