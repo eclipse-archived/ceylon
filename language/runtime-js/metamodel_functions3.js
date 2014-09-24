@@ -513,12 +513,12 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
         if (noInherit && mm.$cont!==coi.tipo)continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=allann$(mm);
-        if (anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
+        if (!mm.tp && anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
           var types=[].rt$({t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
-          mems.push(AppliedMethod(mem, types, {Container$Method:{t:_tipo},Type$Method:mm.$t,Arguments$Method:$$$mptypes.Arguments$getMethods}));
+          mems.push(AppliedMethod(mem,undefined,{Container$Method:{t:_tipo},Type$Method:mm.$t,Arguments$Method:types}));
         }
       }
     }
