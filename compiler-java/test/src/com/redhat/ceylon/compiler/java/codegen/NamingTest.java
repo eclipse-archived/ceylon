@@ -172,7 +172,7 @@ public class NamingTest {
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "Co.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         
-        assertEquals("com.redhat.ceylon.compiler.java.codegen.Co.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Co.o_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
@@ -212,7 +212,7 @@ public class NamingTest {
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "Io$impl.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         
-        assertEquals("com.redhat.ceylon.compiler.java.codegen.Io$impl.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Io$impl.o_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
@@ -221,7 +221,7 @@ public class NamingTest {
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         
-        assertEquals("com.redhat.ceylon.compiler.java.codegen.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.o_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
@@ -250,7 +250,7 @@ public class NamingTest {
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "oo_.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         
-        assertEquals("com.redhat.ceylon.compiler.java.codegen.oo_.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.oo_.o_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
