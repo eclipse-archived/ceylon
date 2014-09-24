@@ -473,8 +473,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
 
     // Extract the name of the class that couldn't be loaded and add it to the given set
-    private void handleNotFoundErrors(Set<String> notFound, Throwable th) {
+    private void handleNotFoundErrors(Set<String> notFound, Throwable orgth) {
         // This is very brittle because it depends on the message only containing the class name
+        Throwable th = orgth;
         if (th instanceof TypeNotPresentException
                 && (th.getCause() instanceof ClassNotFoundException
                         || th.getCause() instanceof NoClassDefFoundError)) {
