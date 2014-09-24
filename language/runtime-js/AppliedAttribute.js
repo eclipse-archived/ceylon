@@ -21,9 +21,7 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   atr$(that,'type',function(){
     var t = getrtmm$$(atr);
     if (t===undefined)throw Exception("Attribute reference not found. Metamodel doesn't work in modules compiled in lexical scope style.");
-    t=t.$t;
-    //TODO resolve type arguments
-    return typeLiteral$meta({Type$typeLiteral:t});
+    return typeLiteral$meta({Type$typeLiteral:restype$($$targs$$.Container$Attribute,t.$t)});
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Attribute'}},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
   atr$(that,'declaration',function(){
