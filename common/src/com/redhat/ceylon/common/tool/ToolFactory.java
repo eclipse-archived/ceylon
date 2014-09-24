@@ -352,7 +352,7 @@ public class ToolFactory {
                 try {
                     toolModel.getRest().invoke(tool, rest);
                 } catch (InvocationTargetException e) {
-                    throw new ToolInitializationException(e.getCause());
+                    throw new ToolInitializationException(toolModel, e.getCause());
                 }
             } else {
                 for (String arg : rest) {
@@ -365,7 +365,7 @@ public class ToolFactory {
             try {
                 tool.initialize();
             } catch (Exception e) {
-                throw new ToolInitializationException(e);
+                throw new ToolInitializationException(toolModel, e);
             }
         }
         

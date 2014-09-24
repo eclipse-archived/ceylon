@@ -51,8 +51,15 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class ToolInitializationException extends OptionArgumentException {
-        public ToolInitializationException(Throwable cause) {
+        private ToolModel<?> toolModel;
+        
+        public ToolInitializationException(ToolModel<?> toolModel, Throwable cause) {
             super(cause.getLocalizedMessage(), cause);
+            this.toolModel = toolModel;
+        }
+        
+        public ToolModel<?> getToolModel() {
+            return toolModel;
         }
         
         @Override

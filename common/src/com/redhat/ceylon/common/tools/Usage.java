@@ -32,6 +32,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValu
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionMultiplicityException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionWithoutArgumentException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.ToolError;
@@ -261,6 +262,9 @@ class Usage {
             printSynopsis(e.getToolModel());
             printOptions(e.getOptionModel().getLongName());
             printSuggestions(e.getOptionModel().getArgument().getParser(), e.getBadValue());
+        } else if (t instanceof ToolInitializationException) {
+            ToolInitializationException e = (ToolInitializationException)t;
+            printSynopsis(e.getToolModel());
         } else {
             printSynopsis(null);
         } 
