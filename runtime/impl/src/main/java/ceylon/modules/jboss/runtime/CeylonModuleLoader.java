@@ -170,7 +170,7 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @param dependencySpec new dependency
      * @throws ModuleLoadException for any error
      */
-    void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException {
+    public void updateModule(org.jboss.modules.Module module, DependencySpec dependencySpec) throws ModuleLoadException {
         ModuleIdentifier mi = module.getIdentifier();
         List<DependencySpec> deps = dependencies.get(mi);
         if (deps == null) // should not really happen
