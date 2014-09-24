@@ -24,7 +24,10 @@ import static javax.tools.StandardLocation.PLATFORM_CLASS_PATH;
 import static javax.tools.StandardLocation.CLASS_PATH;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileManager;
@@ -85,6 +88,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private Types types;
     private Options options;
     private JavaFileManager fileManager;
+    protected final Map<String,Boolean> packageExistence = new HashMap<String,Boolean>();
     
     public static AbstractModelLoader instance(Context context) {
         AbstractModelLoader instance = context.get(AbstractModelLoader.class);
@@ -126,8 +130,20 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     public void addModuleToClassPath(Module module, ArtifactResult artifact){
-        if(artifact != null)
+        if(artifact != null){
             ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, artifact);
+            // invalidate all the package not found caches since they may be visible now
+            synchronized(getLock()){
+                java.util.List<String> clear = new ArrayList<String>(packageExistence.size());
+                for(Map.Entry<String,Boolean> entry : packageExistence.entrySet()){
+                    if(!entry.getValue().booleanValue())
+                        clear.add(entry.getKey());
+                }
+                for(String key : clear){
+                    packageExistence.remove(key);
+                }
+            }
+        }
     }
 
     @Override
