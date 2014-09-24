@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /**
  * Class loader which looks into a list of jar files
@@ -44,16 +45,16 @@ class ModulesClassLoader extends ClassLoader {
         return super.findClass(name);
     }
 
-    public void addJar(ArtifactResult artifact, boolean skipContents) {
-        jars.addJar(artifact, skipContents);
+    public void addJar(ArtifactResult artifact, Module module, boolean skipContents) {
+        jars.addJar(artifact, module, skipContents);
     }
 
-    public boolean packageExists(String name) {
-        return jars.packageExists(name);
+    public boolean packageExists(Module module, String name) {
+        return jars.packageExists(module, name);
     }
 
-    public List<String> getPackageList(String name) {
-        return jars.getPackageList(name);
+    public List<String> getPackageList(Module module, String name) {
+        return jars.getPackageList(module, name);
     }
 
 }

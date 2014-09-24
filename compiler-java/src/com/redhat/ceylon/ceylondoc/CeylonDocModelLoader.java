@@ -73,7 +73,7 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
         File file = artifact.artifact();
         // do not load classes from it if it's the language module, since it's already in our ClassLoader and
         // that would create multiple instances of the same class 
-        classLoader.addJar(artifact, module == modules.getLanguageModule());
+        classLoader.addJar(artifact, module, module == modules.getLanguageModule());
         log.debug("Adding jar to classpath: "+file);
         if(module instanceof LazyModule){
             ((LazyModule) module).loadPackageList(artifact);
@@ -82,12 +82,12 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     @Override
     protected List<String> getPackageList(Module module, String packageName) {
-        return classLoader.getPackageList(packageName);
+        return classLoader.getPackageList(module, packageName);
     }
 
     @Override
     protected boolean packageExists(Module module, String packageName) {
-        return classLoader.packageExists(packageName);
+        return classLoader.packageExists(module, packageName);
     }
 
     @Override

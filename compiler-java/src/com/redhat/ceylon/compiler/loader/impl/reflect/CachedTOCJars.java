@@ -25,14 +25,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.ContentAwareArtifactResult;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class CachedTOCJars {
 
@@ -172,43 +175,34 @@ public class CachedTOCJars {
         }
     }
     
-    private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
+    private Map<Module, CachedTOCJar> jars = new HashMap<Module, CachedTOCJar>();
     
-    public void addJar(ArtifactResult artifact) {
-        addJar(artifact, false);
+    public void addJar(ArtifactResult artifact, Module module) {
+        addJar(artifact, module, false);
     }
     
-    public void addJar(ArtifactResult artifact, boolean skipContents) {
+    public void addJar(ArtifactResult artifact, Module module, boolean skipContents) {
         // skip duplicates
-        for(CachedTOCJar jar : jars){
-            if(jar.artifact.equals(artifact))
-                return;
-        }
-        jars.add(new CachedTOCJar(artifact, skipContents));
+        if(jars.containsKey(module))
+            return;
+        jars.put(module, new CachedTOCJar(artifact, skipContents));
     }
 
-    public boolean packageExists(String name) {
+    public boolean packageExists(Module module, String name) {
         String path = name.replace('.', '/');
-        for(CachedTOCJar jar : jars){
-            if(jar.containsPackage(path)){
-                return true;
-            }
-        }
-        return false;
+        CachedTOCJar jar = jars.get(module);
+        return jar != null && jar.containsPackage(path);
     }
 
-    public List<String> getPackageList(String name) {
+    public List<String> getPackageList(Module module, String name) {
         String path = name.replace('.', '/');
-        for(CachedTOCJar jar : jars){
-            if(jar.containsPackage(path)){
-                return jar.getFileNames(path);
-            }
-        }
-        return Collections.emptyList();
+        CachedTOCJar jar = jars.get(module);
+        return jar != null && jar.containsPackage(path) ?
+                jar.getFileNames(path) : Collections.<String>emptyList();
     }
 
     public byte[] getContents(String path) {
-        for(CachedTOCJar jar : jars){
+        for(CachedTOCJar jar : jars.values()){
             if(!jar.skipContents && jar.containsFile(path)){
                 return jar.getContents(path);
             }
