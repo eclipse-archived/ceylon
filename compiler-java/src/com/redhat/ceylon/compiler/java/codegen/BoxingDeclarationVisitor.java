@@ -219,8 +219,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 && Strategy.createMethod((MethodOrValue)declaration.getContainer())) {
             Method functionalParameter = (Method)declaration.getContainer();
             TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
-            if (Decl.equal(refinedFrom, functionalParameter)) { 
-                declaration.setUnboxed(true);
+            if (Decl.equal(refinedFrom, functionalParameter) ) {
+                // Don't consider Anything to be unboxed, since this is a parameter
+                // note a method return type (where void would be considered unboxed).
+                declaration.setUnboxed(!declaration.getUnit().getAnythingDeclaration().getType().isExactly(declaration.getType()));
             } else {
                 // make sure refined declarations have already been set
                 if(refinedFrom.getUnboxed() == null)
