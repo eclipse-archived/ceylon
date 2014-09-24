@@ -22,7 +22,6 @@ import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.Iterator;
-import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -147,7 +146,7 @@ public class Metamodel {
                 System.err.println("DEBUG: "+str);
             }
             
-        }, false);
+        }, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
