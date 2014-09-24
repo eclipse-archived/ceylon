@@ -452,7 +452,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (version == null) {
             return;
         }
-        File jsmod = getArtifact(repoman, modname, version, true);
+        File jsmod = getArtifact(repoman, modname, version, false);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         List<File> localRepos = new ArrayList<>();
