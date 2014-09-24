@@ -459,7 +459,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
         if (anns && coi$is$anns(anns,ats)) {
           var atname=mm.d[mm.d.length-1];
           if (atname.indexOf('$')>0)atname=atname.substring(0,atname.indexOf('$'));
-          mems.push(AppliedAttribute(atname,_tipo.$$.prototype[m],{Container$Attribute:{t:mm.$cont},Get$Attribute:mm.$t,Set$Attribute:setter?mm.$t:{t:Nothing}}));
+          mems.push(AppliedAttribute(atname,_tipo.$$.prototype[m],{Container$Attribute:{t:coi.tipo},Get$Attribute:mm.$t,Set$Attribute:setter?mm.$t:{t:Nothing}}));
         }
       }
     }
