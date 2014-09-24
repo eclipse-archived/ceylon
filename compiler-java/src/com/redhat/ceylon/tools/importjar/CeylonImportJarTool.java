@@ -334,15 +334,17 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         try {
             Method[] methods = clazz.getMethods();
             for (Method mth : methods) {
-                checkTypes(externalClasses, mth.getTypeParameters());
-                checkAnnotations(externalClasses, mth.getAnnotations());
-                checkType(externalClasses, mth.getGenericReturnType());
-                for (Type param : mth.getGenericParameterTypes()) {
-                    checkType(externalClasses, param);
-                }
-                checkAnnotations(externalClasses, mth.getParameterAnnotations());
-                for (Type ex : mth.getGenericExceptionTypes()) {
-                    checkType(externalClasses, ex);
+                if ((mth.getModifiers() & (Modifier.PUBLIC | Modifier.PROTECTED)) != 0) {
+                    checkTypes(externalClasses, mth.getTypeParameters());
+                    checkAnnotations(externalClasses, mth.getAnnotations());
+                    checkType(externalClasses, mth.getGenericReturnType());
+                    for (Type param : mth.getGenericParameterTypes()) {
+                        checkType(externalClasses, param);
+                    }
+                    checkAnnotations(externalClasses, mth.getParameterAnnotations());
+                    for (Type ex : mth.getGenericExceptionTypes()) {
+                        checkType(externalClasses, ex);
+                    }
                 }
             }
         } catch (NoClassDefFoundError | TypeNotPresentException e) {
@@ -351,8 +353,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         try {
             Field[] fields = clazz.getFields();
             for (Field fld : fields) {
-                checkAnnotations(externalClasses, fld.getAnnotations());
-                checkType(externalClasses, fld.getGenericType());
+                if ((fld.getModifiers() & (Modifier.PUBLIC | Modifier.PROTECTED)) != 0) {
+                    checkAnnotations(externalClasses, fld.getAnnotations());
+                    checkType(externalClasses, fld.getGenericType());
+                }
             }
         } catch (NoClassDefFoundError | TypeNotPresentException e) {
             handleNotFoundErrors(externalClasses, e);
@@ -360,14 +364,16 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         try {
             Constructor<?>[] constructors = clazz.getConstructors();
             for (Constructor<?> cons : constructors) {
-                checkTypes(externalClasses, cons.getTypeParameters());
-                checkAnnotations(externalClasses, cons.getAnnotations());
-                for (Type param : cons.getGenericParameterTypes()) {
-                    checkType(externalClasses, param);
-                }
-                checkAnnotations(externalClasses, cons.getParameterAnnotations());
-                for (Type ex : cons.getGenericExceptionTypes()) {
-                    checkType(externalClasses, ex);
+                if ((cons.getModifiers() & (Modifier.PUBLIC | Modifier.PROTECTED)) != 0) {
+                    checkTypes(externalClasses, cons.getTypeParameters());
+                    checkAnnotations(externalClasses, cons.getAnnotations());
+                    for (Type param : cons.getGenericParameterTypes()) {
+                        checkType(externalClasses, param);
+                    }
+                    checkAnnotations(externalClasses, cons.getParameterAnnotations());
+                    for (Type ex : cons.getGenericExceptionTypes()) {
+                        checkType(externalClasses, ex);
+                    }
                 }
             }
         } catch (NoClassDefFoundError | TypeNotPresentException e) {
