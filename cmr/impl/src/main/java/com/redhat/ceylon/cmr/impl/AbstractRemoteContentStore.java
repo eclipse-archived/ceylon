@@ -33,8 +33,8 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
  */
 public abstract class AbstractRemoteContentStore extends AbstractContentStore implements ContentFinder {
 
-    protected AbstractRemoteContentStore(Logger log, boolean offline) {
-        super(log, offline);
+    protected AbstractRemoteContentStore(Logger log, boolean offline, int timeout) {
+        super(log, offline, timeout);
     }
 
     public OpenNode createRoot() {

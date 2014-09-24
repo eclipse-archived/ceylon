@@ -39,17 +39,17 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(Logger log) {
-        this(log, true);
+        this(log, true, 0);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline) {
-        this(log, offline, null);
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout) {
+        this(log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, String.class);
-            delegate = ctor.newInstance(log, offline, mavenOverrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, String.class);
+            delegate = ctor.newInstance(log, offline, timeout, mavenOverrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {
@@ -64,14 +64,14 @@ public class RepositoryManagerBuilder {
         }
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline) {
-        this(mainRepository, log, offline, null);
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout) {
+        this(mainRepository, log, offline, timeout, null);
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, String.class);
-            delegate = ctor.newInstance(mainRepository, log, offline, mavenOverrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, String.class);
+            delegate = ctor.newInstance(mainRepository, log, offline, timeout, mavenOverrides);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {

@@ -73,7 +73,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(logger, false);
+        AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
         MavenArtifactInfo[] dependencies = utils.getDependencies(file);
         return toModuleInfo(dependencies);
     }
@@ -83,7 +83,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(logger, false);
+        AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
         MavenArtifactInfo[] dependencies = utils.getDependencies(stream);
         return toModuleInfo(dependencies);
     }

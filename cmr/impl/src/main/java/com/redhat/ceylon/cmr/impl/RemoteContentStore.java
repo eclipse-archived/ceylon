@@ -26,11 +26,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Remote content store.
@@ -39,8 +39,8 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  */
 public class RemoteContentStore extends URLContentStore {
 
-    public RemoteContentStore(String root, Logger log, boolean offline) {
-        super(root, log, offline);
+    public RemoteContentStore(String root, Logger log, boolean offline, int timeout) {
+        super(root, log, offline, timeout);
     }
 
     protected InputStream openStream(final URL url) throws IOException {
@@ -48,6 +48,8 @@ public class RemoteContentStore extends URLContentStore {
             final URLConnection conn = url.openConnection();
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
+                huc.setConnectTimeout(timeout);
+                huc.setReadTimeout(timeout);
                 addCredentials(huc);
                 InputStream stream = conn.getInputStream();
                 int code = huc.getResponseCode();

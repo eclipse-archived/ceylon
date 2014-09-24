@@ -41,9 +41,9 @@ public class AetherContentStore extends AbstractContentStore {
 
     private final AetherUtils utils;
 
-    public AetherContentStore(Logger log, boolean offline) {
-        super(log, offline);
-        utils = new AetherUtils(log, offline);
+    public AetherContentStore(Logger log, boolean offline, int timeout) {
+        super(log, offline, timeout);
+        utils = new AetherUtils(log, offline, timeout);
     }
 
     AetherUtils getUtils() {

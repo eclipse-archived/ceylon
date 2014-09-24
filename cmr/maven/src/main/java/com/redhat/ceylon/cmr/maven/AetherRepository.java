@@ -42,16 +42,16 @@ public class AetherRepository extends MavenRepository {
         utils = acs.getUtils();
     }
 
-    public static Repository createRepository(Logger log, boolean offline) {
-        return createRepository(log, null, offline);
+    public static Repository createRepository(Logger log, boolean offline, int timeout) {
+        return createRepository(log, null, offline, timeout);
     }
 
-    public static Repository createRepository(Logger log, String settingsXml, boolean offline) {
-        return createRepository(log, settingsXml, null, offline);
+    public static Repository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
+        return createRepository(log, settingsXml, null, offline, timeout);
     }
 
-    public static Repository createRepository(Logger log, String settingsXml, String overridesXml, boolean offline) {
-        AetherContentStore acs = new AetherContentStore(log, offline);
+    public static Repository createRepository(Logger log, String settingsXml, String overridesXml, boolean offline, int timeout) {
+        AetherContentStore acs = new AetherContentStore(log, offline, timeout);
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);
         repo.utils.setOverrides(overridesXml);

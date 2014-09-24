@@ -15,6 +15,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.redhat.ceylon.common.config.DefaultToolOptions;
+
 /**
  * WS REST client for XML
  *
@@ -102,6 +104,8 @@ public class WS {
                 url += toQueryString(params);
             URL endpoint = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
+            connection.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
+            connection.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
             connection.addRequestProperty("Accept", "application/xml");
             connection.connect();
             try{

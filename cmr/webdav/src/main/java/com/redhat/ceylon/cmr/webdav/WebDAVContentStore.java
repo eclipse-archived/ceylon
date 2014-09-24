@@ -19,17 +19,27 @@ package com.redhat.ceylon.cmr.webdav;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ProxySelector;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.config.Registry;
+import org.apache.http.config.SocketConfig;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+
 import com.github.sardine.DavResource;
 import com.github.sardine.Sardine;
-import com.github.sardine.SardineFactory;
 import com.github.sardine.impl.SardineException;
-import com.redhat.ceylon.common.log.Logger;
+import com.github.sardine.impl.SardineImpl;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
@@ -37,8 +47,8 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-import org.apache.http.ProtocolException;
-import org.apache.http.client.ClientProtocolException;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * WebDAV content store.
@@ -54,19 +64,31 @@ public class WebDAVContentStore extends URLContentStore {
     /**
      * For tests only!!!
      */
-    public WebDAVContentStore(String root, Logger log, boolean offline, String apiVersion) {
-        super(root, log, offline, apiVersion);
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, String apiVersion) {
+        super(root, log, offline, timeout, apiVersion);
     }
 
-    public WebDAVContentStore(String root, Logger log, boolean offline) {
-        super(root, log, offline);
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout) {
+        super(root, log, offline, timeout);
     }
 
     protected Sardine getSardine() {
         if (sardine == null) {
             synchronized (this) {
                 if (sardine == null) {
-                    sardine = (username == null || password == null) ? SardineFactory.begin() : SardineFactory.begin(username, password);
+                    sardine = new SardineImpl(username, password, null) {
+                        @Override
+                        protected HttpClientConnectionManager createDefaultConnectionManager(Registry<ConnectionSocketFactory> schemeRegistry) {
+                            HttpClientConnectionManager connMan = super.createDefaultConnectionManager(schemeRegistry);
+                            if (connMan instanceof PoolingHttpClientConnectionManager) {
+                                @SuppressWarnings("resource")
+                                PoolingHttpClientConnectionManager phccm = (PoolingHttpClientConnectionManager)connMan;
+                                SocketConfig config = SocketConfig.custom().setSoTimeout(timeout).build();
+                                phccm.setDefaultSocketConfig(config);
+                            }
+                            return connMan;
+                        }
+                    };
                 }
             }
         }

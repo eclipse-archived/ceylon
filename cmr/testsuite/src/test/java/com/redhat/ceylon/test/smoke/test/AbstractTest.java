@@ -112,23 +112,23 @@ public class AbstractTest {
         return new File(url.toURI());
     }
 
-    protected RepositoryManagerBuilder getRepositoryManagerBuilder(boolean offline) throws Exception {
-        return getRepositoryManagerBuilder(getRepositoryRoot(), offline);
+    protected RepositoryManagerBuilder getRepositoryManagerBuilder(boolean offline, int timeout) throws Exception {
+        return getRepositoryManagerBuilder(getRepositoryRoot(), offline, timeout);
     }
 
-    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline) throws Exception {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline);
+    protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline, int timeout) throws Exception {
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline, timeout);
         builder.addRepository(new DefaultRepository(new FileContentStore(root).createRoot()));
         return builder;
     }
 
-    protected RepositoryManager getRepositoryManager(boolean offline) throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(offline);
+    protected RepositoryManager getRepositoryManager(boolean offline, int timeout) throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(offline, timeout);
         return builder.buildRepository();
     }
 
     protected RepositoryManager getRepositoryManager() throws Exception {
-        return getRepositoryManager(false);
+        return getRepositoryManager(false, 20000);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager) {

@@ -32,11 +32,13 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
 
     protected static final String SEPARATOR = "/";
 
+    protected int timeout;
     protected boolean offline;
     protected Logger log;
 
-    protected AbstractContentStore(Logger log, boolean offline) {
+    protected AbstractContentStore(Logger log, boolean offline, int timeout) {
         this.log = log;
+        this.timeout = timeout;
         this.offline = offline;
     }
 
@@ -57,6 +59,15 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
         }
     }
     
+    @Override
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
     @Override
     public boolean isOffline() {
         return offline;

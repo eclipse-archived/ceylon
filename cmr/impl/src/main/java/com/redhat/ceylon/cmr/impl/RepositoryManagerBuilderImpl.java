@@ -38,20 +38,23 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     private RootRepositoryManager repository;
     private Logger log;
+    private int timeout;
     private boolean offline;
     private String mavenOverrides;
 
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, String mavenOverrides) {
         repository = new RootRepositoryManager(log);
         this.log = log;
+        this.timeout = timeout;
         this.offline = offline;
         this.mavenOverrides = mavenOverrides;
         init();
     }
 
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, String mavenOverrides) {
         repository = new RootRepositoryManager(mainRepository, log);
         this.log = log;
+        this.timeout = timeout;
         this.offline = offline;
         this.mavenOverrides = mavenOverrides;
         init();
@@ -67,7 +70,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     @Override
     public RepositoryBuilder repositoryBuilder() {
-        return new RepositoryBuilderImpl(log, offline, mavenOverrides);
+        return new RepositoryBuilderImpl(log, offline, timeout, mavenOverrides);
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {

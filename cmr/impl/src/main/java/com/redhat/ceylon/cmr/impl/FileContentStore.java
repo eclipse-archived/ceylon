@@ -261,6 +261,11 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     }
 
     @Override
+    public int getTimeout() {
+        return 0;
+    }
+
+    @Override
     public boolean isHerd() {
         return false;
     }

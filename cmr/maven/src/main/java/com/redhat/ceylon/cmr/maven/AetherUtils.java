@@ -64,12 +64,14 @@ public class AetherUtils {
     private static final SingleScopedStrategy SCOPED_STRATEGY = new SingleScopedStrategy(SCOPES);
 
     private Logger log;
+    private int timeout;
     private boolean offline;
     private String settingsXml;
     private Overrides overrides;
 
-    AetherUtils(Logger log, boolean offline) {
+    AetherUtils(Logger log, boolean offline, int timeout) {
         this.log = log;
+        this.timeout = timeout;
         this.offline = offline;
         settingsXml = getDefaultMavenSettings();
     }

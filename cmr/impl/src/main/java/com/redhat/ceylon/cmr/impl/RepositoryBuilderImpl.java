@@ -36,11 +36,13 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 class RepositoryBuilderImpl implements RepositoryBuilder {
 
     private Logger log;
+    private int timeout;
     private boolean offline;
     private String mavenOverrides;
     
-    RepositoryBuilderImpl(Logger log, boolean offline, String mavenOverrides) {
+    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, String mavenOverrides) {
         this.log = log;
+        this.timeout = timeout;
         this.offline = offline;
         this.mavenOverrides = mavenOverrides;
     }
@@ -56,13 +58,13 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
 
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
-            structureBuilder = new RemoteContentStore(token, log, offline);
+            structureBuilder = new RemoteContentStore(token, log, offline, timeout);
         } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class);
-            return (Repository) createRepository.invoke(null, log, null, mavenOverrides, offline);
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class);
+            return (Repository) createRepository.invoke(null, log, null, mavenOverrides, offline, timeout);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
@@ -104,8 +106,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         if(overridesXml == null)
             overridesXml = mavenOverrides;
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class);
-        return (Repository) createRepository.invoke(null, log, settingsXml, overridesXml, offline);
+        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class);
+        return (Repository) createRepository.invoke(null, log, settingsXml, overridesXml, offline, timeout);
     }
 
     public boolean isRemote(String token) {

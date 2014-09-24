@@ -39,7 +39,7 @@ import org.junit.Test;
 public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testSimpleTest() throws Throwable {
-        StructureBuilder structureBuilder = new AetherContentStore(log, false);
+        StructureBuilder structureBuilder = new AetherContentStore(log, false, 60000);
         Repository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         File artifact = manager.getArtifact("org.slf4j.slf4j-api", "1.6.4");
@@ -57,7 +57,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testAether() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false);
+        Repository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
@@ -78,7 +78,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testWithSources() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false);
+        Repository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j.slf4j-api", "1.6.4", ArtifactContext.MAVEN_SRC));
         Assert.assertNotNull(result);
@@ -97,7 +97,7 @@ public class AetherTestCase extends AbstractAetherTest {
 
     @Test
     public void testScopes() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, false);
+        Repository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult artifact = manager.getArtifactResult("org.jboss.xnio:xnio-api", "3.1.0.Beta7");
         File file = null;

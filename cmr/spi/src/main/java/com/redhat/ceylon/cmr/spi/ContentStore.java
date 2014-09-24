@@ -58,6 +58,8 @@ public interface ContentStore {
 
     String getDisplayString();
     
+    int getTimeout();
+    
     boolean isOffline();
     
     boolean isHerd();

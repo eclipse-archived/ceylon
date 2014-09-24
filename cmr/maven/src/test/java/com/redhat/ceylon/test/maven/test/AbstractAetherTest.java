@@ -42,9 +42,9 @@ public abstract class AbstractAetherTest {
         if (useOverrides) {
             URL overridessURL = getClass().getClassLoader().getResource("maven-settings/overrides.xml");
             String overridesXml = new File(overridessURL.toURI()).getPath();
-            return AetherRepository.createRepository(log, settingsXml, overridesXml, false);
+            return AetherRepository.createRepository(log, settingsXml, overridesXml, false, 60000);
         } else {
-            return AetherRepository.createRepository(log, settingsXml, false);
+            return AetherRepository.createRepository(log, settingsXml, false, 60000);
         }
     }
 }

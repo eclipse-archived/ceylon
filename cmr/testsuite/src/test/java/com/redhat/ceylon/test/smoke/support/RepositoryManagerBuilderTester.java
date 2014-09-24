@@ -7,10 +7,10 @@ import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 
 public class RepositoryManagerBuilderTester extends RepositoryManagerBuilder {
-    public RepositoryManagerBuilderTester(Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilderTester(Logger log, boolean offline, int timeout, String mavenOverrides) {
     }
 
-    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, String mavenOverrides) {
+    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, int timeout, String mavenOverrides) {
     }
     
     public RepositoryManagerBuilder addRepository(Repository external) {

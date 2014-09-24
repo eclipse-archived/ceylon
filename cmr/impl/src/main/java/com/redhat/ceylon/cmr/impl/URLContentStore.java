@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -73,11 +74,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdRequestedApi;
     private int herdVersion = 1; // assume 1 until we find otherwise
 
-    protected URLContentStore(String root, Logger log, boolean offline) {
-        this(root, log, offline, null);
+    protected URLContentStore(String root, Logger log, boolean offline, int timeout) {
+        this(root, log, offline, timeout, null);
     }
-    protected URLContentStore(String root, Logger log, boolean offline, String apiVersion) {
-        super(log, offline);
+    protected URLContentStore(String root, Logger log, boolean offline, int timeout, String apiVersion) {
+        super(log, offline, timeout);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
@@ -112,6 +113,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             URL rootURL = getURL("?version="+herdRequestedApi);
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
             try{
+                con.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
+                con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
                 con.setRequestMethod("OPTIONS");
                 if(con.getResponseCode() != HttpURLConnection.HTTP_OK)
                     return false;
@@ -274,6 +277,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             final URLConnection conn = url.openConnection();
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
+                huc.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
+                huc.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
                 huc.setRequestMethod("HEAD");
                 addCredentials(huc);
                 int code = huc.getResponseCode();

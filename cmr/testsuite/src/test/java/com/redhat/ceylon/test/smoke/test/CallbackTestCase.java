@@ -77,8 +77,8 @@ public class CallbackTestCase extends AbstractTest {
             return; // probably not on the internet?
         }
 
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
-        RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+        RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false, 60000);
         Repository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
