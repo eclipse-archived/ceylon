@@ -21,7 +21,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -100,7 +101,7 @@ public class NamingTest {
         return pu.getDeclarations();
     }
     
-    protected TypeDeclaration findDecl(String resource, String declName) throws Exception {
+    protected Declaration findDecl(String resource, String declName) throws Exception {
         List<Declaration> members = getDecls(resource);
         Declaration found = null;
         outer: for (String name : declName.split("\\.")) {
@@ -116,7 +117,11 @@ public class NamingTest {
         if (found == null) {
             throw new RuntimeException("Unable to find declaration");
         }
-        return (TypeDeclaration)found;
+        return found;
+    }
+    
+    protected TypeDeclaration findType(String resource, String declName) throws Exception {
+        return (TypeDeclaration)findDecl(resource, declName);
     }
 
     private final Naming naming;
@@ -134,153 +139,236 @@ public class NamingTest {
     
     @Test
     public void testC() throws Exception {
-        final TypeDeclaration decl = findDecl("C.ceylon", "C");
+        final TypeDeclaration decl = findType("C.ceylon", "C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.C", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testCC() throws Exception {
-        final TypeDeclaration decl = findDecl("CC.ceylon", "CC.C");
+        final TypeDeclaration decl = findType("CC.ceylon", "CC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "CC.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.CC.C", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testCI() throws Exception {
-        final TypeDeclaration decl = findDecl("CI.ceylon", "CI.I");
+        final TypeDeclaration decl = findType("CI.ceylon", "CI.I");
         Assert.assertEquals("CI$I", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "CI$I", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals(QUAL + "CI.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.CI$I", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testCo() throws Exception {
-        final TypeDeclaration decl = findDecl("Co.ceylon", "Co.o");
+        final TypeDeclaration decl = findType("Co.ceylon", "Co.o");
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "Co.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Co.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testI() throws Exception {
-        final TypeDeclaration decl = findDecl("I.ceylon", "I");
+        final TypeDeclaration decl = findType("I.ceylon", "I");
         Assert.assertEquals("I", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "I", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals(QUAL + "I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.I", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testIC() throws Exception {
-        final TypeDeclaration decl = findDecl("IC.ceylon", "IC.C");
+        final TypeDeclaration decl = findType("IC.ceylon", "IC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "IC$impl.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.IC$impl.C", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testII() throws Exception {
-        final TypeDeclaration decl = findDecl("II.ceylon", "II.I");
+        final TypeDeclaration decl = findType("II.ceylon", "II.I");
         Assert.assertEquals("II$I", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "II$I", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals(QUAL + "II$impl.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+    
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.II$I", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testIo() throws Exception {
-        final TypeDeclaration decl = findDecl("Io.ceylon", "Io.o");
+        final TypeDeclaration decl = findType("Io.ceylon", "Io.o");
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "Io$impl.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Io$impl.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testo() throws Exception {
-        final TypeDeclaration decl = findDecl("o.ceylon", "o");
+        final TypeDeclaration decl = findType("o.ceylon", "o");
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testoC() throws Exception {
-        final TypeDeclaration decl = findDecl("oC.ceylon", "oC.C");
+        final TypeDeclaration decl = findType("oC.ceylon", "oC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "oC_.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.oC_.C", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testoI() throws Exception {
-        final TypeDeclaration decl = findDecl("oI.ceylon", "oI.I");
+        final TypeDeclaration decl = findType("oI.ceylon", "oI.I");
         Assert.assertEquals("oI$I_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "oI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals(QUAL + "oI_.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.oI$I_", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testoo() throws Exception {
-        final TypeDeclaration decl = findDecl("oo.ceylon", "oo.o");
+        final TypeDeclaration decl = findType("oo.ceylon", "oo.o");
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals(QUAL + "oo_.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.oo_.o_", CodegenUtil.getJavaNameOfDeclaration(decl));
+    }
+    
+    @Test
+    public void testf() throws Exception {
+        final Declaration decl = findDecl("f.ceylon", "f");
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.f_.f", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
     
     @Test
     public void testfC() throws Exception {
-        final TypeDeclaration decl = findDecl("fC.ceylon", "fC.C");
+        final TypeDeclaration decl = findType("fC.ceylon", "fC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("C$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals("C$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfCC() throws Exception {
-        final TypeDeclaration decl = findDecl("fCC.ceylon", "fCC.CC.C");
+        final TypeDeclaration decl = findType("fCC.ceylon", "fCC.CC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("CC.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfCI() throws Exception {
-        final TypeDeclaration decl = findDecl("fCI.ceylon", "fCI.CI.I");
+        final TypeDeclaration decl = findType("fCI.ceylon", "fCI.CI.I");
         Assert.assertEquals("fCI$CI$I_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "fCI$CI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals("CI.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfI() throws Exception {
-        final TypeDeclaration decl = findDecl("fI.ceylon", "fI.I");
+        final TypeDeclaration decl = findType("fI.ceylon", "fI.I");
         Assert.assertEquals("fI$I_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "fI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfIC() throws Exception {
-        final TypeDeclaration decl = findDecl("fIC.ceylon", "fIC.IC.C");
+        final TypeDeclaration decl = findType("fIC.ceylon", "fIC.IC.C");
         Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("IC$impl.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfII() throws Exception {
-        final TypeDeclaration decl = findDecl("fII.ceylon", "fII.II.I");
+        final TypeDeclaration decl = findType("fII.ceylon", "fII.II.I");
         Assert.assertEquals("fII$II$I_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals(QUAL + "fII$II$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals("II$impl.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
     
     @Test
     public void testfo() throws Exception {
-        final TypeDeclaration decl = findDecl("fo.ceylon", "fo.o");
+        final TypeDeclaration decl = findType("fo.ceylon", "fo.o");
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
         Assert.assertEquals("o$impl_", naming.makeTypeDeclarationName(decl, COMPANION));
         Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
         Assert.assertEquals("o$impl_", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
+        try {
+            CodegenUtil.getJavaNameOfDeclaration(decl);
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+    
+    @Test
+    public void testv() throws Exception {
+        final Declaration decl = findDecl("v.ceylon", "v");
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.v_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
+    }
+    
+    @Test
+    public void testg() throws Exception {
+        final Declaration decl = findDecl("g.ceylon", "g");
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.g_.get_", CodegenUtil.getJavaNameOfDeclaration(decl));
+    }
+    
+    @Test
+    public void testCm() throws Exception {
+        final Declaration decl = findDecl("Cm.ceylon", "Cm.m");
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Cm.m", CodegenUtil.getJavaNameOfDeclaration(decl));
+    }
+    
+    @Test
+    public void testCa() throws Exception {
+        final Declaration decl = findDecl("Ca.ceylon", "Ca.a");
+        assertEquals("com.redhat.ceylon.compiler.java.codegen.Ca.getA", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
 
 }
