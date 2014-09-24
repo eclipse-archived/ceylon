@@ -12,7 +12,7 @@ function $_false() {return false;}
 initType($_false, "ceylon.language::false", $_Boolean);
 $_false.$crtmm$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','false']}};
 Boolean.prototype.getT$name = function() {
-    return (this.valueOf()?$_true:$_false).$$.T$name;
+    return 'ceylon.language::Boolean';
 }
 Boolean.prototype.getT$all = function() {
     return (this.valueOf()?$_true:$_false).$$.T$all;

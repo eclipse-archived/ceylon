@@ -1,4 +1,8 @@
 function className(obj) {
+    if (obj===null) return 'ceylon.language::Null';
+    if (obj===undefined) return "JavaScript UNDEFINED";
+    if (obj===true) return 'ceylon.language::true';
+    if (obj===false) return 'ceylon.language::false';
     function _typename(t) {
         if (t.t==='i' || t.t==='u') {
             var _sep = t.t==='i'?'&':'|';
@@ -21,8 +25,6 @@ function className(obj) {
             return tn;
         }
     }
-    if (obj === null) return 'ceylon.language::Null';
-    if (obj === undefined) return "JavaScript UNDEFINED";
     var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
     if (tn === 'UNKNOWN') {
         if (typeof obj === 'function') {
