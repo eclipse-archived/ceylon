@@ -181,6 +181,7 @@ public class ModuleValidator {
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             ImportDepth newImportDepth = importDepth.forModuleImport(moduleImport);
             
+            boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
             if ( ! module.isAvailable()) {
                 ArtifactResult artifact = null;
                 if (alreadySearchedArtifacts.containsKey(module)) {
@@ -205,11 +206,11 @@ public class ModuleValidator {
                 
                 if (artifact != null) {
                     //parse module units and build module dependency and carry on
-                    boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
                     listener.resolvingModuleArtifact(module, artifact);
                     moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
+            moduleManager.visitedModule(module, forCompiledModule);
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
             verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, newImportDepth, alreadySearchedArtifacts);

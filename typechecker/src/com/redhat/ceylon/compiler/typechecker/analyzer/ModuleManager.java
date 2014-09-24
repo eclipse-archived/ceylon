@@ -430,4 +430,8 @@ public class ModuleManager {
     public void modulesVisited() {
         // to be overridden by subclasses
     }
+
+    public void visitedModule(Module module, boolean forCompiledModule) {
+        // to be overridden by subclasses
+    }
 }
