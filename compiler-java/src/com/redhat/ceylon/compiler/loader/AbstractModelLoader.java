@@ -557,7 +557,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         }
     }
-    protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
+    protected Declaration convertToDeclaration(Module module, ClassMirror classMirror, DeclarationType declarationType) {
         // avoid ignored classes
         if(classMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
             return null;
@@ -575,7 +575,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         
         List<Declaration> decls = new ArrayList<Declaration>();
-        Module module = findModuleForClassMirror(classMirror);
         boolean[] alreadyExists = new boolean[1];
         Declaration decl = getOrCreateDeclaration(module, classMirror, declarationType,
                 decls, alreadyExists);
@@ -948,7 +947,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         + " for inner type " + classMirror.getQualifiedName().toString());
             return containerDecl;
         }else{
-            return (ClassOrInterface) convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
+            return (ClassOrInterface) convertToDeclaration(module, classMirror.getEnclosingClass(), DeclarationType.TYPE);
         }
     }
 
@@ -1342,7 +1341,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // (well, technically before the ceylon code)
                 if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
                     return null;
-                return convertToDeclaration(classMirror, declarationType);
+                return convertToDeclaration(module, classMirror, declarationType);
             }finally{
                 timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
@@ -2254,6 +2253,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void addInnerClassesFromMirror(ClassOrInterface klass, ClassMirror classMirror) {
         boolean isJDK = isFromJDK(classMirror);
+        Module module = Decl.getModule(klass);
         for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
             // We skip members marked with @Ignore
             if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
@@ -2265,7 +2265,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(isJDK && !innerClass.isPublic())
                 continue;
             // convert it
-            convertToDeclaration(innerClass, DeclarationType.TYPE);
+            convertToDeclaration(module, innerClass, DeclarationType.TYPE);
             // no need to set its container as that's now handled by convertToDeclaration
         }
     }
@@ -3349,11 +3349,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setPrimaryFromAnnotationInvocationAnnotation(AnnotationMirror annotationInvocationAnnotation,
             AnnotationInvocation ai) {
         TypeMirror annotationType = (TypeMirror)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER);
-        ClassMirror annotationClassMirror = annotationType.getDeclaredClass();            
+        ClassMirror annotationClassMirror = annotationType.getDeclaredClass();
+        Module module = findModuleForClassMirror(annotationClassMirror);
         if (annotationClassMirror.getAnnotation(CEYLON_METHOD_ANNOTATION) != null) {
-            ai.setPrimary((Method)convertToDeclaration(annotationClassMirror, DeclarationType.VALUE));
+            ai.setPrimary((Method)convertToDeclaration(module, annotationClassMirror, DeclarationType.VALUE));
         } else {
-            ai.setPrimary((Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE));
+            ai.setPrimary((Class)convertToDeclaration(module, annotationClassMirror, DeclarationType.TYPE));
         }
     }
     

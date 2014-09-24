@@ -221,7 +221,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // skip module and package descriptors
                         if(isModuleOrPackageDescriptorName(m.name.toString()))
                             continue;
-                        convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
+                        convertToDeclaration(module, lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
                     }
                 }
                 if(module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
