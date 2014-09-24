@@ -54,12 +54,12 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     
     @Override
     protected List<String> getPackageList(Module module, String packageName) {
-        return jars.getPackageList(packageName);
+        return jars.getPackageList(module, packageName);
     }
 
     @Override
     protected boolean packageExists(Module module, String packageName) {
-        return jars.packageExists(packageName);
+        return jars.packageExists(module, packageName);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         moduleCache.put(cacheKey, module);
         if(artifact == null)
             return;
-        jars.addJar(artifact);
+        jars.addJar(artifact, module);
         if(module instanceof LazyModule){
             ((LazyModule) module).loadPackageList(artifact);
         }
