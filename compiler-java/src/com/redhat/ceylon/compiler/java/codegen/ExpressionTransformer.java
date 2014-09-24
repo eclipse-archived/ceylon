@@ -2146,8 +2146,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Unary(operator.javacOperator, term);
         }
         
-        Tree.Term term = expr.getTerm();
-
+        Tree.Term term = Util.unwrapExpressionUntilTerm(expr.getTerm());
+        
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         ProducedType valueType = getSupertype(expr.getTerm(), compoundType);
         ProducedType returnType = getMostPreciseType(term, getTypeArgument(valueType, 0));
@@ -2196,6 +2196,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
             boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
+            boolean isPackage = Util.unwrapExpressionUntilTerm(qualified.getPrimary()) instanceof Tree.Package;
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(expr);
@@ -2208,13 +2209,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = naming.tempName("opV");
-            JCExpression getter = transformMemberExpression(qualified, isSuper ? transformSuper(qualified) : make().Ident(varEName), null);
+            JCExpression getter;
+            if (isSuper) {
+                getter = transformMemberExpression(qualified, transformSuper(qualified), null);
+            } else if (isPackage) {
+                getter = transformMemberExpression(qualified, null, null);
+            } else {
+                getter = transformMemberExpression(qualified, make().Ident(varEName), null);
+            }
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
 
             decls = decls.prepend(tmpVVar);
-            if (!isSuper) {
+            if (!isSuper && !isPackage) {
                 // define all the variables
                 decls = decls.prepend(tmpEVar);
             }
