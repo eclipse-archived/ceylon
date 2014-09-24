@@ -42,6 +42,7 @@ public class CeylonUtils {
         private String outRepo;
         private String user;
         private String password;
+        private int timeout = -1;
         private boolean offline;
         private boolean noSystemRepo;
         private boolean noDefRepos;
@@ -227,6 +228,15 @@ public class CeylonUtils {
         }
         
         /**
+         * Sets the timeout in milliseconds for any connections that might be established
+         * to remote repositories (defaults to 20000)
+         */
+        public CeylonRepoManagerBuilder timeout(int timeout){
+            this.timeout = timeout;
+            return this;
+        }
+        
+        /**
          * Enables offline mode that will prevent the module loader from connecting
          * to remote repositories (defaults to false)
          */
@@ -303,7 +313,7 @@ public class CeylonUtils {
                 root = new File(absolute(resolveRepoUrl(repositories, cacheRepo)));
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getMavenOverrides(config));
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getMavenOverrides(config));
 
             // Now we add all the rest of the repositories in the order that they will be searched
             
@@ -463,7 +473,7 @@ public class CeylonUtils {
                 File cachingDir = FileUtil.makeTempDir("ceylonc");
 
                 // HTTP
-                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false);
+                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config));
                 davContentStore.setUsername(user);
                 davContentStore.setPassword(password);
 
@@ -550,6 +560,10 @@ public class CeylonUtils {
 
         private boolean isOffline(CeylonConfig config) {
             return offline || DefaultToolOptions.getDefaultOffline(config);
+        }
+
+        private int getTimeout(CeylonConfig config) {
+            return (timeout >= 0) ? timeout : (int)DefaultToolOptions.getDefaultTimeout(config);
         }
         
         private String getMavenOverrides(CeylonConfig config) {
