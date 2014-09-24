@@ -58,6 +58,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected String systemRepo;
     protected String cacheRepo;
     protected String mavenOverrides;
+    protected int timeout = -1;
     protected boolean noDefRepos;
     protected boolean offline;
     protected Logger log;
@@ -140,6 +141,12 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.offline = offline;
     }
 
+    @OptionArgument(shortName='T', longName="timeout", argumentName="seconds")
+    @Description("Sets the timeout for connections to remote repositories, use 0 for no timeout (default: 20).")
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
     public void setOut(Appendable out) {
         this.out = out;
     }
@@ -167,6 +174,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .noDefaultRepos(noDefRepos)
                 .userRepos(getRepositoryAsStrings())
                 .offline(offline)
+                .timeout((timeout >= 0) ? timeout * 1000 : -1)
                 .logger(log);
         return rmb;
     }
