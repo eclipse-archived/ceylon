@@ -106,7 +106,7 @@ function mmfca$(rt, ta) {
       mm=getrtmm$$(st.t);
     }
     //Satisfied types
-    mm=getrtmm$(ta);
+    mm=getrtmm$$(ta);
     var sts=mm['sts'];
     if (sts) for(var i=0;i<sts.length;i++) {
       st=sts[i];
