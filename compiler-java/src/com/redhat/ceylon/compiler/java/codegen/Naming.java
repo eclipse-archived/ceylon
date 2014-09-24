@@ -1441,7 +1441,7 @@ public class Naming implements LocalId {
     /** Include the wrapper class of the typed declaration, but don't quote it */
     static final int NA_WRAPPER_UNQUOTED = 1<<2;
     static final int NA_Q_LOCAL_INSTANCE = 1<<6;
-    /** Generate a fully qualified name. Requires NO_WRAPPER */
+    /** Generate a fully qualified name. Requires {@code NA_WRAPPER} */
     static final int NA_FQ = 1<<3;
     /** Generate the name of the getter (otherwise the type of the declaration 
      * will be used to determine the name to be generated) */
