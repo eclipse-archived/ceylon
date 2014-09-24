@@ -2734,7 +2734,7 @@ public class StatementTransformer extends AbstractTransformer {
         return result.toList();
     }
 
-    private JCStatement openOuterSubstitutionIfNeeded(
+    JCStatement openOuterSubstitutionIfNeeded(
             Value value, ProducedType t,
             List<JCAnnotation> annots, int modifiers) {
         JCStatement result = null;
