@@ -42,4 +42,6 @@ public abstract class Constants {
     public static final String DEFAULT_TESTTOOL_COMPILATION_FLAGS = "never";
     
     public static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/repo/1";
+    
+    public static final long DEFAULT_TIMEOUT = 20000L;
 }
