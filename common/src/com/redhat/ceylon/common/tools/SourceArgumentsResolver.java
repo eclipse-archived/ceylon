@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 
 public class SourceArgumentsResolver {
     private final Iterable<File> sourceDirs;
@@ -94,7 +95,7 @@ public class SourceArgumentsResolver {
                     path = FileUtil.selectPath(srcs, moduleOrFile);
                     if (path == null) {
                         String srcPath = sourceDirs.toString();
-                        throw new IllegalStateException(CeylonToolMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
+                        throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                     if (!expandSingleSources) {
                         srcFiles.add(file);
@@ -111,7 +112,7 @@ public class SourceArgumentsResolver {
                         path = FileUtil.selectPath(resrcs, moduleOrFile);
                         if (path == null) {
                             String resrcPath = resourceDirs.toString();
-                            throw new IllegalStateException(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
+                            throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                         }
                         resFiles.add(file);
                         // Determine the module path from the file path
@@ -147,9 +148,9 @@ public class SourceArgumentsResolver {
                 if (dir == null || !dir.isDirectory()) {
                     String ps = sourceDirs.toString();
                     ps = ps.substring(1, ps.length() - 1);
-                    throw new IllegalArgumentException(CeylonToolMessages.msg("error.module.not.found", modName, ps));
+                    throw new ToolUsageError(CeylonToolMessages.msg("error.module.not.found", modName, ps));
                 } else {
-                    throw new IllegalArgumentException(CeylonToolMessages.msg("error.not.module", modName));
+                    throw new ToolUsageError(CeylonToolMessages.msg("error.not.module", modName));
                 }
             }
         }
