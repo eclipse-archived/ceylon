@@ -23,6 +23,7 @@ import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.COMPAN
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -30,9 +31,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -41,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.sun.tools.javac.tree.TreeMaker;
 
 public class NamingTest {
     
@@ -76,7 +76,7 @@ public class NamingTest {
         if (!file.exists()) {
             throw new RuntimeException("Unable to find resource " + name);
         }
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false, 20000);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
