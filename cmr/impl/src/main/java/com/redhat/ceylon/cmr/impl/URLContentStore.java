@@ -31,8 +31,6 @@ import java.util.TreeSet;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.redhat.ceylon.common.config.DefaultToolOptions;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -49,6 +47,7 @@ import com.redhat.ceylon.cmr.util.WS;
 import com.redhat.ceylon.cmr.util.WS.Link;
 import com.redhat.ceylon.cmr.util.WS.Parser;
 import com.redhat.ceylon.cmr.util.WS.XMLHandler;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * URL based content store.
@@ -113,8 +112,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             URL rootURL = getURL("?version="+herdRequestedApi);
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
             try{
-                con.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
-                con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
+                con.setConnectTimeout(timeout);
+                con.setReadTimeout(timeout);
                 con.setRequestMethod("OPTIONS");
                 if(con.getResponseCode() != HttpURLConnection.HTTP_OK)
                     return false;
@@ -277,8 +276,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             final URLConnection conn = url.openConnection();
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
-                huc.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
-                huc.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
+                huc.setConnectTimeout(timeout);
+                huc.setReadTimeout(timeout);
                 huc.setRequestMethod("HEAD");
                 addCredentials(huc);
                 int code = huc.getResponseCode();
