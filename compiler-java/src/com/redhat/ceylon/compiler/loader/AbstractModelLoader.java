@@ -606,8 +606,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return decl;
     }
 
-    protected String getPackageNameForQualifiedClassName(ClassMirror classMirror) {
-        String qualifiedName = classMirror.getQualifiedName();
+    public String getPackageNameForQualifiedClassName(String pkg, String qualifiedName){
         // Java array classes we pretend come from java.lang
         if(qualifiedName.equals(CEYLON_OBJECT_ARRAY)
                 || qualifiedName.equals(CEYLON_BOOLEAN_ARRAY)
@@ -620,11 +619,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || qualifiedName.equals(CEYLON_CHAR_ARRAY))
             return "java.lang";
         else
-            return unquotePackageName(classMirror.getPackage());
+            return unquotePackageName(pkg);
+        
+    }
+    
+    protected String getPackageNameForQualifiedClassName(ClassMirror classMirror) {
+        return getPackageNameForQualifiedClassName(classMirror.getPackage().getQualifiedName(), classMirror.getQualifiedName());
     }
     
     private String unquotePackageName(PackageMirror pkg) {
-        return Util.removeChar('$', pkg.getQualifiedName());
+        return unquotePackageName(pkg.getQualifiedName());
+    }
+
+    private String unquotePackageName(String pkg) {
+        return Util.removeChar('$', pkg);
     }
 
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {

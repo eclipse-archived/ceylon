@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.loader.CeylonClassReader;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.code.*;
@@ -1061,13 +1062,19 @@ public class Resolve {
             if (modelLoader != null && !sourceLanguage.isCeylon()) {
                 // Check if the class is accessible according to Ceylon's access rules
                 String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
-                Module scopeModule = modelLoader.lookupModuleByPackageName(scopePackageName);
-                // Ugly special case where we skip the test when we're compiling the language module itself
-                if (scopeModule != modelLoader.getLanguageModule()) {
-                    String importedPackageName = pkgName(name.toString());
-                    Module importedModule = modelLoader.lookupModuleByPackageName(importedPackageName);
-                    if (!modelLoader.isImported(scopeModule, importedModule)) {
-                        return new ImportError(c, scopeModule);
+                Package scopePackage = modelLoader.findPackage(scopePackageName);
+                // Don't check if we failed to find it
+                if(scopePackage != null){
+                    Module scopeModule = scopePackage.getModule();
+                    // Ugly special case where we skip the test when we're compiling the language module itself
+                    if (scopeModule != modelLoader.getLanguageModule()) {
+                        String nameString = name.toString();
+                        String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
+                        Package importedPackage = scopeModule.getPackage(importedPackageName);
+                        // Don't check if we failed to find it
+                        if(importedPackage == null){
+                            return new ImportError(c, scopeModule);
+                        }
                     }
                 }
             }
