@@ -479,7 +479,7 @@ public class CodegenUtil {
      * {@code ceylon.language.sum_.sum} or {@code my.package.Outer.Inner}.
      * for any toplevel or externally visible Ceylon declaration.</p>
      * 
-     * <p>Used by the IDE to support finding/renmaing Ceylon declarations 
+     * <p>Used by the IDE to support finding/renaming Ceylon declarations 
      * called from Java.</p>
      * */
     public static String getJavaNameOfDeclaration(Declaration decl) {
