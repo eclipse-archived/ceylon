@@ -26,6 +26,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -468,5 +470,44 @@ public class CodegenUtil {
     public static boolean isCompanionClassNeeded(TypeDeclaration decl) {
         return decl instanceof Interface 
                 && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
+    }
+    
+    /** 
+     * <p>Returns the fully qualified name java name of the given declaration, 
+     * for example
+     * {@code ceylon.language.sum_.sum} or {@code my.package.Outer.Inner}.
+     * for any toplevel or externally visible Ceylon declaration.</p>
+     * 
+     * <p>Used by the IDE to support finding/renmaing Ceylon declarations 
+     * called from Java.</p>
+     * */
+    public static String getJavaNameOfDeclaration(Declaration decl) {
+        Scope s = decl.getScope();
+        while (!(s instanceof Package)) {
+            if (!(s instanceof TypeDeclaration)) {
+                throw new IllegalArgumentException();
+            }
+            s = s.getContainer();
+        }
+        String result;
+        Naming n = new Naming(null, null);
+        if (decl instanceof TypeDeclaration) {
+            result = n.makeTypeDeclarationName((TypeDeclaration)decl, DeclNameFlag.QUALIFIED);
+        } else if (decl instanceof TypedDeclaration) {
+            if (decl.isToplevel()) {
+                result = n.getName((TypedDeclaration)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
+            } else {
+                Scope container = decl.getContainer();
+                if (container instanceof TypeDeclaration) {
+                    String qualifier = "."+getJavaNameOfDeclaration((TypeDeclaration)container);
+                    result = qualifier+n.getName((TypedDeclaration)decl, Naming.NA_MEMBER);
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            }
+        } else {
+            throw new RuntimeException();
+        }
+        return result.substring(1);// remove initial .
     }
 }
