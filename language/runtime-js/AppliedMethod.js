@@ -14,12 +14,15 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       var _tp = mm.tp[tp];
       var _t = typeArgs.$_get(i).tipo;
       _ta[tp]={t:_t};
-      if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
-        var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
-        for (var j=0; j<restraints.length;j++) {
-          var _r=restraints[j];if (typeof(_r)==='function')_r=getrtmm$$(_r).$t;
-          if (!extendsType(_ta[tp],_r))
-            throw TypeApplicationException$meta$model("Type argument for " + tp + " violates type parameter constraints");
+      if (_tp.sts) {
+        //Must satisty all specified types
+        if (!extendsType(_ta[tp],{t:'i',l:_tp.sts})){
+          throw TypeApplicationException$meta$model("Type argument for " + mm.d[mm.d.length-1] + "." + tp.substring(0,tp.indexOf('$')) + " violates type parameter constraints (satisfied)");
+        }
+      } else if (_tp.of) {
+        //Must be one of these
+        if (!extendsType(_ta[tp],{t:'u',l:_tp.of})){
+          throw TypeApplicationException$meta$model("Type argument for " + mm.d[mm.d.length-1] + "." + tp.substring(0,tp.indexOf('$')) + " violates type parameter constraints (enumerated)");
         }
       }
       i++;
@@ -48,7 +51,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
   atr$($$appliedMethod,'type',function(){
-    return typeLiteral$meta({Type$typeLiteral:(this.$$targs$$&&this.$$targs$$.Container$Method)||mm.$t});
+    return typeLiteral$meta({Type$typeLiteral:restype$(this.$$targs$$.Container$Method,this.$$targs$$.Type$Method||mm.$t)});
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Type'}},$cont:AppliedMethod,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
   atr$($$appliedMethod,'typeArguments',function(){
