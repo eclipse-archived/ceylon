@@ -35,6 +35,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -154,6 +156,16 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
 
                 return make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), typarams.toList(), null, List.<JCExpression>nil(), List.<JCTree>nil());
+            }
+
+            @Override
+            public void loadFromSource(ModuleDescriptor that) {
+                // don't think we care about these
+            }
+
+            @Override
+            public void loadFromSource(PackageDescriptor that) {
+                // don't think we care about these
             }
         });
         

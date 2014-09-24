@@ -55,6 +55,8 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Kinds;
 import com.sun.tools.javac.code.Scope;
@@ -167,6 +169,26 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
                         reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                    }catch(AssertionError error){
+                        // this happens when we have already registered a source file for this decl, hopefully the typechecker
+                        // will catch this and log an error
+                    }
+                }
+
+                @Override
+                public void loadFromSource(ModuleDescriptor that) {
+                    try{
+                        reader.enterClass(names.fromString(pkgName + "." +Naming.MODULE_DESCRIPTOR_CLASS_NAME), tree.getSourceFile());
+                    }catch(AssertionError error){
+                        // this happens when we have already registered a source file for this decl, hopefully the typechecker
+                        // will catch this and log an error
+                    }
+                }
+
+                @Override
+                public void loadFromSource(PackageDescriptor that) {
+                    try{
+                        reader.enterClass(names.fromString(pkgName + "." +Naming.PACKAGE_DESCRIPTOR_CLASS_NAME), tree.getSourceFile());
                     }catch(AssertionError error){
                         // this happens when we have already registered a source file for this decl, hopefully the typechecker
                         // will catch this and log an error

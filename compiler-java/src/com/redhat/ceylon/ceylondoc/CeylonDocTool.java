@@ -94,6 +94,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
@@ -419,6 +421,16 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 @Override
                 public void loadFromSource(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
                     compiledClasses.add(Util.getQuotedFQN(pkgName, decl));
+                }
+
+                @Override
+                public void loadFromSource(ModuleDescriptor that) {
+                    // don't think we care about these
+                }
+
+                @Override
+                public void loadFromSource(PackageDescriptor that) {
+                    // don't think we care about these
                 }
             });
         }

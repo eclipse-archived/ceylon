@@ -21,15 +21,28 @@ package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class SourceDeclarationVisitor extends Visitor implements NaturalVisitor {
     
-    abstract public void loadFromSource(Tree.Declaration decl);
+    public abstract void loadFromSource(ModuleDescriptor that);
+    public abstract void loadFromSource(PackageDescriptor that);
+    public abstract void loadFromSource(Tree.Declaration decl);
     
     protected boolean isNative(Tree.Declaration decl){
         return Util.hasAnnotation(decl.getAnnotationList(), "native", decl.getUnit());
+    }
+    
+    @Override
+    public void visit(Tree.ModuleDescriptor that) {
+        loadFromSource(that);
+    }
+    @Override
+    public void visit(Tree.PackageDescriptor that) {
+        loadFromSource(that);
     }
     
     @Override
