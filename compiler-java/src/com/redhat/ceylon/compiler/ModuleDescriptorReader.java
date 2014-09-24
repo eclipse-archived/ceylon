@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
@@ -64,7 +65,7 @@ class ModuleDescriptorReader {
     private final Module moduleDescriptor;
 
     public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), DefaultToolOptions.getDefaultOffline(), (int)DefaultToolOptions.getDefaultTimeout());
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
