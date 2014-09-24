@@ -27,12 +27,15 @@
     <!-- Directories everything gets built into -->
     <property name="build" location="build" />
     <property name="build.classes" location="${build}/classes" />
+    <property name="build.repo" location="${build}/tempForRepo" />
     <property name="build.dist" location="${build}/dist" />
       <tstamp>
           <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
       </tstamp>        
     <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
+    <property name="ceylon.dist.osgi.repo.jar" value="com.redhat.ceylon.dist.repo_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
     <property name="p2" location="${basedir}/p2" />
+    <property name="repoDir" location="${basedir}/embeddedRepository" />
     <property name="build.dist.plugins" location="${build.dist}/plugins" />
     <property name="build.dist.features" location="${build.dist}/features" />
 
@@ -57,13 +60,20 @@
         </classpath>
     </taskdef>
     
+    <property name="ceylon.ant.lib" location="${ceylon.dist.dir}/lib/ceylon-ant.jar"/>
+
+    <path id="ant-tasks">
+        <pathelement path="${ceylon.ant.lib}"/>
+    </path>
     
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+
     <!-- ################################################################## -->
 
     <!-- Rule to clean everything up -->
     <target name="clean">
         <delete failonerror="false" dir="${build}"/>
-        <delete failonerror="false" dir="${basedir}/defaultRepository"/>
+        <delete failonerror="false" dir="${repoDir}/repo"/>
         <delete failonerror="false" dir="${basedir}/lib/ceylon-bootstrap.jar"/>
     </target>
 
@@ -85,13 +95,22 @@
             match="(Bundle-Version: .*\.)qualifier"
             replace="\1${qualifier}"
             byline="true"/>
+        <copy todir="${build.repo}" >
+            <fileset dir="${repoDir}">
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+        <replaceregexp file="${build.repo}/META-INF/MANIFEST.MF"
+            match="(Bundle-Version: .*\.)qualifier"
+            replace="\1${qualifier}"
+            byline="true"/>
     </target>
 
     <!-- Rule to build osgi bundle jar -->
     <target name="build" depends="classes, updateManifest">
         <mkdir dir="${build}" />
-        <mkdir dir="${basedir}/defaultRepository" />
-        <copy todir="${basedir}/defaultRepository">
+        <mkdir dir="${repoDir}/repo" />
+        <copy todir="${repoDir}/repo">
             <fileset dir="${ceylon.repo.dir}">
                 <include name="**" />
             </fileset>
@@ -103,12 +122,27 @@
         </copy>
         <zip destfile="${build}/${ceylon.dist.osgi.jar}" >
             <fileset dir="${build.classes}" includes="**"/>
-            <zipfileset dir="${ceylon.repo.dir}" prefix="defaultRepository">
-                <include name="**" />
-            </zipfileset>
             <fileset dir="${ceylon.dist.dir}">
                 <include name="lib/ceylon-bootstrap.jar" />
             </fileset>
+        </zip>
+        <ceylon-import-jar 
+            module="org.osgi.core/4.3.1" 
+            jar="${basedir}/lib/org.osgi.core-4.3.1.jar"
+            out="${repoDir}/repo"
+            force="true">
+        </ceylon-import-jar>
+        <ceylon-import-jar 
+            module="com.redhat.ceylon.dist/${module.com.redhat.ceylon.dist.osgi.version}" 
+            jar="${build}/${ceylon.dist.osgi.jar}" 
+            descriptor="${basedir}/module.properties"
+            out="${repoDir}/repo">
+        </ceylon-import-jar>
+        <zip destfile="${build}/${ceylon.dist.osgi.repo.jar}" >
+            <fileset dir="${build.repo}" includes="**"/>
+            <zipfileset dir="${repoDir}/repo" prefix="repo">
+                <include name="**" />
+            </zipfileset>
         </zip>
     </target>
 
@@ -147,12 +181,15 @@
         <mkdir dir="${build.dist.plugins}" />
         <foreach target="copyModuleArchiveForOSGI" param="currentFile">
             <path>
-                <fileset dir="${basedir}/defaultRepository" includes="**/*.jar"/>
-                <fileset dir="${basedir}/defaultRepository" includes="**/*.car"/>
+                <fileset dir="${repoDir}/repo" includes="**/*.jar"/>
+                <fileset dir="${repoDir}/repo" includes="**/*.car"/>
             </path>
         </foreach>
 
         <copy file="${build}/${ceylon.dist.osgi.jar}" overwrite="true" 
+            todir="${build.dist.plugins}">
+        </copy>
+        <copy file="${build}/${ceylon.dist.osgi.repo.jar}" overwrite="true" 
             todir="${build.dist.plugins}">
         </copy>
         <makeurl property="rootUrl" file="${build.dist}"/>

@@ -9,7 +9,8 @@
       version="{$featureVersion}"
       provider-name="Red Hat">
    <description>
-      The Ceylon Distribution Feature provides all the OSGI bundles required to run Ceylon code inside Eclipse
+      The Ceylon Distribution Feature provides all the OSGI bundles required to run Ceylon code inside Eclipse,
+      as well as an embedded Ceylon repository of the Ceylon distribution.
    </description>
 
    <copyright>

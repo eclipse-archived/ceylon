@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ceylon Distribution Embedded Repository
+Bundle-SymbolicName: com.redhat.ceylon.dist.repo
+Bundle-Version: 1.1.0.qualifier
+Eclipse-BundleShape: dir
+Bundle-Vendor: RedHat
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
+ ))"
+Bundle-ActivationPolicy: lazy;exclude:="*"
+
