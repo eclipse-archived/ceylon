@@ -404,6 +404,23 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         addJavacArguments(arguments);
         
+        List<File> srcs = applyCwd(this.sources);
+        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
+        if (expandedModulesOrFiles.isEmpty()) {
+            throw new ToolUsageError("No modules or source files to compile");
+        }
+        
+        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
+        if (sourceFileOpt != null) {
+            for (String moduleOrFile : expandedModulesOrFiles) {
+                validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
+            }
+        }
+        
+        validateSourceArguments(expandedModulesOrFiles);
+        
+        arguments.addAll(expandedModulesOrFiles);
+        
         if (verbose != null) {
             System.out.println(arguments);
             System.out.flush();
@@ -433,16 +450,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
      */
     @Override
     public void run() throws IOException {
-        List<File> srcs = applyCwd(this.sources);
-        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
-        if (expandedModulesOrFiles.isEmpty()) {
-            throw new ToolUsageError("No modules or source files to compile");
-        }
-        
-        validateSourceArguments(expandedModulesOrFiles);
-        
-        arguments.addAll(expandedModulesOrFiles);
-        
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result, compiler.exitState);
     }
