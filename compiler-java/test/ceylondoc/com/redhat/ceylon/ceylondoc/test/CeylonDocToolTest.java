@@ -537,8 +537,6 @@ public class CeylonDocToolTest {
         String[] fileNames = new String[]{
                 "ceylon/net/http/server/internal/JavaHelper.java",
                 "ceylon/interop/java/internal/javaCharArray_.java",
-                "ceylon/interop/java/internal/javaClass_.java",
-                "ceylon/interop/java/internal/javaClassFromInstance_.java",
                 "ceylon/interop/java/internal/javaBooleanArray_.java",
                 "ceylon/interop/java/internal/javaByteArray_.java",
                 "ceylon/interop/java/internal/javaShortArray_.java",
@@ -548,7 +546,7 @@ public class CeylonDocToolTest {
                 "ceylon/interop/java/internal/javaDoubleArray_.java",
                 "ceylon/interop/java/internal/javaStringArray_.java",
                 "ceylon/interop/java/internal/javaObjectArray_.java",
-                "ceylon/interop/java/internal/javaString_.java",
+                "ceylon/interop/java/internal/Util.java"
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
