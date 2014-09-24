@@ -199,11 +199,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize() throws IOException {
-        SourceArgumentsResolver resolver = new SourceArgumentsResolver(roots, resources, Constants.CEYLON_SUFFIX, Constants.JS_SUFFIX);
-        resolver
-            .cwd(cwd)
-            .expandSingleSources(true)
-            .expandAndParse(files);
     }
 
     @Override
