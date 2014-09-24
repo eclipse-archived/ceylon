@@ -216,7 +216,10 @@ public abstract class LazyModule extends Module {
             }
             // The language module is in the classpath and does not have its jarPackages loaded
             if(moduleName.equals(Module.LANGUAGE_MODULE_NAME)){
-                return Util.isSubPackage(moduleName, pkgName);
+                return Util.isSubPackage(moduleName, pkgName)
+                        || pkgName.startsWith("com.redhat.ceylon.compiler.java.runtime")
+                        || pkgName.startsWith("com.redhat.ceylon.compiler.java.language")
+                        || pkgName.startsWith("com.redhat.ceylon.compiler.java.metadata");
             }
             return jarPackages.contains(pkgName);
         }else{
