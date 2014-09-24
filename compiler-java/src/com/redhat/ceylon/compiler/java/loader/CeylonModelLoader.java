@@ -154,6 +154,15 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     public void setupSourceFileObjects(java.util.List<?> treeHolders) {
+        setupSourceFileObjects(treeHolders, reader, names);
+        // If we're bootstrapping the Ceylon language now load the symbols from the source CU
+        if(isBootstrap)
+            symtab.loadCeylonSymbols();
+    }
+
+    public static void setupSourceFileObjects(java.util.List<?> treeHolders, 
+            final ClassReader reader, 
+            final Names names) {
         for(Object treeHolder : treeHolders){
             if (!(treeHolder instanceof CeylonCompilationUnit)) {
                 continue;
@@ -196,11 +205,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 }
             });
         }
-        // If we're bootstrapping the Ceylon language now load the symbols from the source CU
-        if(isBootstrap)
-            symtab.loadCeylonSymbols();
     }
-    
+
     @Override
     public boolean loadPackage(Module module, String packageName, boolean loadDeclarations) {
         synchronized(getLock()){
