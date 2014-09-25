@@ -10,15 +10,20 @@ class Bug1740 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             if ((bar$2 = obj) != null) {
                 bar$3 = bar$2;
             } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists bar = obj"));
-            final .ceylon.language.Callable<? extends .ceylon.language.Boolean> baz = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
-                private final .java.lang.Object $instance$ = bar$3;
-                
-                @.java.lang.Override
-                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
-                    final .java.lang.Object $ceylontmp$that = $param$0;
-                    return .ceylon.language.Boolean.instance($instance$.equals($ceylontmp$that));
+            final .ceylon.language.Callable<? extends .ceylon.language.Boolean> baz = (
+                let
+                {
+                    final .java.lang.Object $instance$ = bar$3;
                 }
-            };
+                returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object $ceylontmp$that = $param$0;
+                        return .ceylon.language.Boolean.instance($instance$.equals($ceylontmp$that));
+                    }
+                };
+            );
         }
     }
     

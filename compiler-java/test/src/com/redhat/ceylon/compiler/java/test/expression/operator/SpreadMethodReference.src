@@ -6,36 +6,46 @@ final class spreadMethodReference_ {
     }
     
     static void spreadMethodReference(final .ceylon.language.Integer i, final .ceylon.language.Callable<? extends .ceylon.language.Integer> im) {
-        .ceylon.language.Callable<? extends .ceylon.language.Integer> nullSafeMethodRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
-            private final .ceylon.language.Integer $instance$ = i;
-            
-            @.java.lang.Override
-            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
-                return (
-                    let
-                    {
-                        .ceylon.language.Integer safe$1 = $instance$;
-                    }
-                    returning safe$1 != null ? $instance$.plus($ceylontmp$other) : null;
-                );
+        .ceylon.language.Callable<? extends .ceylon.language.Integer> nullSafeMethodRef = (
+            let
+            {
+                final .ceylon.language.Integer $instance$ = i;
             }
-        };
-        nullSafeMethodRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
-            private final .ceylon.language.Integer $instance$ = im.$call$();
-            
-            @.java.lang.Override
-            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
-                return (
-                    let
-                    {
-                        .ceylon.language.Integer safe$3 = im.$call$();
-                    }
-                    returning safe$3 != null ? $instance$.plus($ceylontmp$other) : null;
-                );
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.Integer safe$1 = $instance$;
+                        }
+                        returning safe$1 != null ? $instance$.plus($ceylontmp$other) : null;
+                    );
+                }
+            };
+        );
+        nullSafeMethodRef = (
+            let
+            {
+                final .ceylon.language.Integer $instance$ = im.$call$();
             }
-        };
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.Integer safe$3 = im.$call$();
+                        }
+                        returning safe$3 != null ? $instance$.plus($ceylontmp$other) : null;
+                    );
+                }
+            };
+        );
         final VariableBox<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>> spreadMethodRef = new VariableBox<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>>((
             let
             {

@@ -23,32 +23,37 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     
     ActualMethodShortcutSub() {
         super();
-        this.print2$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String=)", (short)-1){
-            private final .ceylon.language.process_ $instance$ = .ceylon.language.process_.get_();
-            
-            @.java.lang.Override
-            public .java.lang.Object $call$() {
-                return (
-                    let
-                    {
-                        $instance$.writeLine();
-                    }
-                    returning null;
-                );
+        this.print2$specifier$ = (
+            let
+            {
+                final .ceylon.language.process_ $instance$ = .ceylon.language.process_.get_();
             }
-            
-            @.java.lang.Override
-            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                final .java.lang.String $ceylontmp$line = ((.ceylon.language.String)$param$0).toString();
-                return (
-                    let
-                    {
-                        $instance$.writeLine($ceylontmp$line);
-                    }
-                    returning null;
-                );
-            }
-        };
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String=)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.writeLine();
+                        }
+                        returning null;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String $ceylontmp$line = ((.ceylon.language.String)$param$0).toString();
+                    return (
+                        let
+                        {
+                            $instance$.writeLine($ceylontmp$line);
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
     }
     
     @.java.lang.Override
