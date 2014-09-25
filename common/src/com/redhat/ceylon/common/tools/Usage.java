@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.common.tools;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -195,9 +196,9 @@ class Usage {
                 printUsage((OptionArgumentException)t);
             }
             
-            if (rootTool.getStacktraces() 
+            if ((rootTool.getStacktraces()
                     || t instanceof FatalToolError
-                    || t instanceof ToolError == false) {
+                    || t instanceof ToolError == false) && !isNetworkTimeoutException(t)) {
                 out.flush();
                 t.printStackTrace(System.err);
             }
@@ -217,6 +218,12 @@ class Usage {
             sb.append(((FatalToolError)t).getErrorMessage());
         } else if (t instanceof ToolError) {
             sb.append(((ToolError)t).getErrorMessage());
+        } else if (isNetworkTimeoutException(t)) {
+            if (t.getClass().getName().endsWith(".RepositoryException")) {
+                sb.append(CeylonToolMessages.msg("error.network.timeout.cmr"));
+            } else {
+                sb.append(CeylonToolMessages.msg("error.network.timeout"));
+            }
         } else {
             sb.append(t.getLocalizedMessage());
         }
@@ -226,6 +233,18 @@ class Usage {
         }
     }
     
+    private boolean isNetworkTimeoutException(Exception ex) {
+        return rootCause(ex) instanceof SocketTimeoutException;
+    }
+    
+    private Throwable rootCause(Throwable th) {
+        if (th.getCause() != null && th.getCause() != th) {
+            return rootCause(th.getCause());
+        } else {
+            return th;
+        }
+    }
+
     private void printFirstLineBadToolName(String toolName) {
         StringBuilder sb = new StringBuilder();
         sb.append(Tools.progName()).append(": ");
