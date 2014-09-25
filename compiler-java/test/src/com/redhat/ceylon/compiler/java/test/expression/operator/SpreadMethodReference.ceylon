@@ -18,8 +18,10 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class SpreadMethodReference() {
-    void m(String[] seq) {
-        Callable<String[],[Integer]> f = seq*.initial;
-    }
+void spreadMethodReference(Integer? i, Integer? im()) {
+    variable value nullSafeMethodRef = i?.plus;
+    nullSafeMethodRef = im()?.plus;
+    variable value spreadMethodRef = [1, 2]*.plus;
+    spreadMethodRef = spreadMethodRef(5)*.times;
+    spreadMethodRef = [1, 2]*.negated*.plus;
 }
