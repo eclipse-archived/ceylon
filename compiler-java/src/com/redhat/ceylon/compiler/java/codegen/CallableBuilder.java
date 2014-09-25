@@ -175,7 +175,8 @@ public class CallableBuilder {
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
-        if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
+        if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
+                && !(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SpreadOp)) {
             Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
