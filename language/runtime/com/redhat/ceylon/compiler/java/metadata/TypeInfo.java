@@ -32,4 +32,9 @@ public @interface TypeInfo {
      * Set to true to get the same special handling as Java method return types wrt. null elements 
      */
     boolean uncheckedNull() default false;
+    
+    /**
+     * Whether the declared type is untrusted.
+     */
+    boolean untrusted() default false;
 }
