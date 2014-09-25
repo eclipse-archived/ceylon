@@ -1,6 +1,12 @@
 package ceylon.language;
 
+import static java.lang.System.err;
+import static java.lang.System.in;
+import static java.lang.System.out;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -35,7 +41,7 @@ public final class process_ implements ReifiedType {
     }
     
     public void writeLine(@Name("line") @Defaulted java.lang.String line) {
-        java.lang.System.out.println(line);
+        out.println(line);
     }
     
     @Ignore
@@ -49,15 +55,15 @@ public final class process_ implements ReifiedType {
     }
     
     public void write(@Name("string") java.lang.String string) {
-        java.lang.System.out.print(string);
+        out.print(string);
     }
     
     public void flush() {
-        java.lang.System.out.flush();
+        out.flush();
     }
     
     public void writeErrorLine(@Name("line") @Defaulted java.lang.String line) {
-        java.lang.System.err.println(line);
+        err.println(line);
     }
     
     @Ignore
@@ -71,19 +77,18 @@ public final class process_ implements ReifiedType {
     }
     
     public void writeError(@Name("string") java.lang.String string) {
-        java.lang.System.err.print(string);
+        err.print(string);
     }
     
     public void flushError() {
-        java.lang.System.err.flush();
+        err.flush();
     }
     
     @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public ceylon.language.String readLine() {
         try {
             if (stdinReader == null) {
-                stdinReader = new java.io.BufferedReader( 
-                        new java.io.InputStreamReader(java.lang.System.in));
+                stdinReader = new BufferedReader(new InputStreamReader(in));
             }
             java.lang.String read = stdinReader.readLine();
             return read == null ? null : ceylon.language.String.instance(read);
