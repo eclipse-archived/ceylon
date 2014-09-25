@@ -1,13 +1,16 @@
 package com.redhat.ceylon.compiler.java.tools;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.UnknownTypeCollector;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.CompilerDelegate;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -69,7 +72,30 @@ public final class CeyloncCompilerDelegate implements
     }
 
     @Override
-    public void prepareForTypeChecking(List<JCCompilationUnit> trees) {
-        CeylonEnter.instance(context).prepareForTypeChecking(trees);
+    public void loadPackageDescriptors(AbstractModelLoader modelLoader) {
+        modelLoader.loadPackageDescriptors();
     }
+
+    @Override
+    public void resolveModuleDependencies(PhasedUnits phasedUnits) {
+        com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+        validator.verifyModuleDependencyTree();
+    }
+
+    @Override
+    public void setupSourceFileObjects(List<JCCompilationUnit> trees, AbstractModelLoader modelLoader) {
+        modelLoader.setupSourceFileObjects(trees);
+    }
+
+    @Override
+    public void loadStandardModules(AbstractModelLoader modelLoader) {
+        com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+        Module languageModule = ceylonContext.getModules().getLanguageModule();
+        if (languageModule.getVersion() == null) {
+            languageModule.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
+        }
+        modelLoader.loadStandardModules();
+    }
+    
 }

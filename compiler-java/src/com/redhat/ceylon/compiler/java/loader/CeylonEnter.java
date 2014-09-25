@@ -34,7 +34,6 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
@@ -58,16 +57,12 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -122,7 +117,6 @@ public class CeylonEnter extends Enter {
     private boolean hasRun = false;
     private PhasedUnits phasedUnits;
     private CompilerDelegate compilerDelegate;
-    private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
     private AbstractModelLoader modelLoader;
     private Options options;
@@ -153,7 +147,6 @@ public class CeylonEnter extends Enter {
         }
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         compilerDelegate = LanguageCompiler.getCompilerDelegate(context);
-        ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
         options = Options.instance(context);
@@ -178,7 +171,7 @@ public class CeylonEnter extends Enter {
     public void main(List<JCCompilationUnit> trees) {
         // complete the javac AST with a completed ceylon model
         timer.startTask("prepareForTypeChecking");
-        compilerDelegate.prepareForTypeChecking(trees);
+        prepareForTypeChecking(trees);
         timer.endTask();
         List<JCCompilationUnit> javaTrees = List.nil();
         List<JCCompilationUnit> ceylonTrees = List.nil();
@@ -294,29 +287,30 @@ public class CeylonEnter extends Enter {
             throw new RuntimeException("Waaaaa, running twice!!!");
         //By now le language module version should be known (as local)
         //or we should use the default one.
-        Module languageModule = ceylonContext.getModules().getLanguageModule();
-        if (languageModule.getVersion() == null) {
-            languageModule.setVersion(TypeChecker.LANGUAGE_MODULE_VERSION);
-        }
+
         // load the standard modules
         timer.startTask("loadStandardModules");
-        modelLoader.loadStandardModules();
+        compilerDelegate.loadStandardModules(modelLoader);
         timer.endTask();
+
         // load the modules we are compiling first
         hasRun = true;
+        
         // make sure we don't load the files we are compiling from their class files
         timer.startTask("setupSourceFileObjects");
-        modelLoader.setupSourceFileObjects(trees);
+        compilerDelegate.setupSourceFileObjects(trees, modelLoader);
         timer.endTask();
+       
         // resolve module dependencies
         timer.startTask("verifyModuleDependencyTree");
-        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
-        validator.verifyModuleDependencyTree();
+        compilerDelegate.resolveModuleDependencies(phasedUnits);
         timer.endTask();
+        
         // now load package descriptors
         timer.startTask("loadPackageDescriptors");
-        modelLoader.loadPackageDescriptors();
+        compilerDelegate.loadPackageDescriptors(modelLoader);
         timer.endTask();
+
         // at this point, abort if we had any errors logged
         timer.startTask("collectTreeErrors");
         collectTreeErrors(false);
@@ -329,6 +323,7 @@ public class CeylonEnter extends Enter {
                 throw new Abort();
         }
     }
+
     
     public void completeCeylonTrees(List<JCCompilationUnit> trees){
         // run the type checker

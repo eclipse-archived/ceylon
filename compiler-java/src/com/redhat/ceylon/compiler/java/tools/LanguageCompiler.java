@@ -348,10 +348,13 @@ public class LanguageCompiler extends JavaCompiler {
     public static interface CompilerDelegate {
         
         ModuleManager getModuleManager();
-        void prepareForTypeChecking(List<JCCompilationUnit> trees);
         PhasedUnit getExternalSourcePhasedUnit(VirtualFile srcDir, VirtualFile file);
         void typeCheck(java.util.List<PhasedUnit> listOfUnits);
         void visitModules(PhasedUnits phasedUnits);
+        void loadStandardModules(AbstractModelLoader modelLoader);
+        void setupSourceFileObjects(List<JCCompilationUnit> trees, AbstractModelLoader modelLoader);
+        void resolveModuleDependencies(PhasedUnits phasedUnits);
+        void loadPackageDescriptors(AbstractModelLoader modelLoader);
     }
     
     private static class RunTwiceException extends RuntimeException {
