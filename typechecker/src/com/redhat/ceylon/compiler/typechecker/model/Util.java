@@ -496,11 +496,24 @@ public class Util {
             ProducedType receivingType, List<ProducedType> typeArguments,
             List<TypeParameter> typeParameters, int count) {
 	    Map<TypeParameter,ProducedType> map = 
-	    		new HashMap<TypeParameter,ProducedType>(count);
-	    ProducedType dt = receivingType;
-	    while (dt!=null) {
-	    	map.putAll(dt.getTypeArguments());
-	    	dt = dt.getQualifyingType();
+	            new HashMap<TypeParameter,ProducedType>(count);
+	    if (receivingType!=null) {
+	        TypeDeclaration rtd = receivingType.getDeclaration();
+            if (rtd instanceof IntersectionType) {
+	            for (ProducedType dt: rtd.getSatisfiedTypes()) {
+	                while (dt!=null) {
+	                    map.putAll(dt.getTypeArguments());
+	                    dt = dt.getQualifyingType();
+	                }
+	            }
+	        }
+	        else {
+	            ProducedType dt = receivingType;
+	            while (dt!=null) {
+	                map.putAll(dt.getTypeArguments());
+	                dt = dt.getQualifyingType();
+	            }
+	        }
 	    }
 	    //now turn the type argument tuple into a
 	    //map from type parameter to argument
@@ -512,12 +525,25 @@ public class Util {
 
 	private static int countTypeParameters(ProducedType receivingType,
             List<TypeParameter> typeParameters) {
-	    ProducedType dt = receivingType;
-		int count = typeParameters.size();
-		while (dt!=null) {
-		    count += dt.getTypeArguments().size();
-		    dt = dt.getQualifyingType();
-		}
+        int count = typeParameters.size();
+        if (receivingType!=null) {
+            TypeDeclaration rtd = receivingType.getDeclaration();
+            if (rtd instanceof IntersectionType) {
+                for (ProducedType dt: rtd.getSatisfiedTypes()) {
+                    while (dt!=null) {
+                        count += dt.getTypeArguments().size();
+                        dt = dt.getQualifyingType();
+                    }
+                }
+            }
+            else {
+                ProducedType dt = receivingType;
+                while (dt!=null) {
+                    count += dt.getTypeArguments().size();
+                    dt = dt.getQualifyingType();
+                }
+            }
+        }
 	    return count;
     }
 
@@ -530,32 +556,7 @@ public class Util {
         	return Collections.emptyList();
         }
     }
-
-    public static Map<TypeParameter,ProducedType> getArgumentsOfOuterType(
-            ProducedType receivingType, List<TypeParameter> typeParameters, 
-            List<ProducedType> typeArguments) {
-        ProducedType dt;
-        int count = countTypeParameters(receivingType, typeParameters);
-        if (count==0) {
-            return Collections.emptyMap();
-        }
-        else {
-        	Map<TypeParameter,ProducedType> map = 
-        			new HashMap<TypeParameter,ProducedType>(count);
-        	dt = receivingType;
-        	while (dt!=null) {
-        		map.putAll(dt.getTypeArguments());
-        		dt = dt.getQualifyingType();
-        	}
-        	//now turn the type argument tuple into a
-        	//map from type parameter to argument
-        	for (int i=0; i<typeParameters.size() && i<typeArguments.size(); i++) {
-        		map.put(typeParameters.get(i), typeArguments.get(i));
-        	}
-        	return map;
-        }
-    }
-    
+	
     static <T> List<T> list(List<T> list, T element) {
         List<T> result = new ArrayList<T>(list.size()+1);
         result.addAll(list);
