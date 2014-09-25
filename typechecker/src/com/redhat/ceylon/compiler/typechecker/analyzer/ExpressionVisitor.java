@@ -1800,39 +1800,15 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; i<paramTypes.size() && i<args.size(); i++) {
                 ProducedType paramType = paramTypes.get(i);
                 Tree.PositionalArgument arg = args.get(i);
-                if (unit.isCallableType(paramType) && 
-                        arg instanceof Tree.ListedArgument) {
+                if (arg instanceof Tree.ListedArgument &&
+                        unit.isCallableType(paramType)) {
                     Tree.ListedArgument la = (Tree.ListedArgument) arg;
                     Tree.Expression e = la.getExpression();
                     if (e!=null) {
                         Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
                         if (term instanceof Tree.FunctionArgument) {
-                            Tree.FunctionArgument anon = 
-                                    (Tree.FunctionArgument) term;
-                            List<Tree.ParameterList> apls = anon.getParameterLists();
-                            if (!apls.isEmpty()) {
-                                List<ProducedType> types = 
-                                        unit.getCallableArgumentTypes(paramType);
-                                List<Tree.Parameter> aps = apls.get(0).getParameters();
-                                for (int j=0; j<types.size() && j<aps.size(); j++) {
-                                    ProducedType type = types.get(j);
-                                    Tree.Parameter ap = aps.get(j);
-                                    if (ap instanceof Tree.InitializerParameter) {
-                                        Parameter parameter = ap.getParameterModel();
-                                        if (parameter.getModel()==null) {
-                                            Value model = new Value();
-                                            model.setUnit(unit);
-                                            model.setType(type);
-                                            model.setName(parameter.getName());
-                                            parameter.setModel(model);
-                                            model.setInitializerParameter(parameter);
-                                            Method fun = anon.getDeclarationModel();
-                                            model.setContainer(fun);
-                                            fun.addMember(model);
-                                        }
-                                    }
-                                }
-                            }
+                            inferParameterTypesFromCallableType(paramType, 
+                                    (Tree.FunctionArgument) term);
                         }
                     }
                 }
@@ -1872,43 +1848,86 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; i<params.size() && i<args.size(); i++) {
                 Parameter param = params.get(i);
                 Tree.PositionalArgument arg = args.get(i);
-                if (param.getModel() instanceof Functional && 
-                        arg instanceof Tree.ListedArgument) {
+                if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = (Tree.ListedArgument) arg;
                     Tree.Expression e = la.getExpression();
                     if (e!=null) {
                         Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
                         if (term instanceof Tree.FunctionArgument) {
-                            Tree.FunctionArgument anon = 
-                                    (Tree.FunctionArgument) term;
-                            Functional f = (Functional) param.getModel();
-                            List<ParameterList> fpls = f.getParameterLists();
-                            List<Tree.ParameterList> apls = anon.getParameterLists();
-                            if (!fpls.isEmpty() && !apls.isEmpty()) {
-                                List<Parameter> fps = fpls.get(0).getParameters();
-                                List<Tree.Parameter> aps = apls.get(0).getParameters();
-                                for (int j=0; j<fps.size() && j<aps.size(); j++) {
-                                    Parameter fp = fps.get(j);
-                                    Tree.Parameter ap = aps.get(j);
-                                    if (ap instanceof Tree.InitializerParameter) {
-                                        Parameter parameter = ap.getParameterModel();
-                                        if (parameter.getModel()==null) {
-                                            ProducedType t = 
-                                                    pr.getTypedParameter(fp).getType();
-                                            Value model = new Value();
-                                            model.setUnit(unit);
-                                            model.setType(t);
-                                            model.setName(parameter.getName());
-                                            parameter.setModel(model);
-                                            model.setInitializerParameter(parameter);
-                                            Method fun = anon.getDeclarationModel();
-                                            model.setContainer(fun);
-                                            fun.addMember(model);
-                                        }
-                                    }
+                            if (param.getModel() instanceof Functional) {
+                                //NOTE: this branch is basically redundant
+                                //      and could be removed
+                                inferParameterTypesFromCallableParameter(pr, 
+                                        param, (Tree.FunctionArgument) term);
+                            }
+                            else { 
+                                ProducedType paramType = 
+                                        pr.getTypedParameter(param).getFullType();
+                                if (unit.isCallableType(paramType)) {
+                                    inferParameterTypesFromCallableType(paramType, 
+                                            (Tree.FunctionArgument) term);
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private void inferParameterTypesFromCallableType(ProducedType paramType,
+            Tree.FunctionArgument anon) {
+        List<Tree.ParameterList> apls = anon.getParameterLists();
+        if (!apls.isEmpty()) {
+            List<ProducedType> types = 
+                    unit.getCallableArgumentTypes(paramType);
+            List<Tree.Parameter> aps = apls.get(0).getParameters();
+            for (int j=0; j<types.size() && j<aps.size(); j++) {
+                ProducedType type = types.get(j);
+                Tree.Parameter ap = aps.get(j);
+                if (ap instanceof Tree.InitializerParameter) {
+                    Parameter parameter = ap.getParameterModel();
+                    if (parameter.getModel()==null) {
+                        Value model = new Value();
+                        model.setUnit(unit);
+                        model.setType(type);
+                        model.setName(parameter.getName());
+                        parameter.setModel(model);
+                        model.setInitializerParameter(parameter);
+                        Method fun = anon.getDeclarationModel();
+                        model.setContainer(fun);
+                        fun.addMember(model);
+                    }
+                }
+            }
+        }
+    }
+
+    private void inferParameterTypesFromCallableParameter(ProducedReference pr,
+            Parameter param, Tree.FunctionArgument anon) {
+        Functional f = (Functional) param.getModel();
+        List<ParameterList> fpls = f.getParameterLists();
+        List<Tree.ParameterList> apls = anon.getParameterLists();
+        if (!fpls.isEmpty() && !apls.isEmpty()) {
+            List<Parameter> fps = fpls.get(0).getParameters();
+            List<Tree.Parameter> aps = apls.get(0).getParameters();
+            for (int j=0; j<fps.size() && j<aps.size(); j++) {
+                Parameter fp = fps.get(j);
+                Tree.Parameter ap = aps.get(j);
+                if (ap instanceof Tree.InitializerParameter) {
+                    Parameter parameter = ap.getParameterModel();
+                    if (parameter.getModel()==null) {
+                        ProducedType t = 
+                                pr.getTypedParameter(fp).getType();
+                        Value model = new Value();
+                        model.setUnit(unit);
+                        model.setType(t);
+                        model.setName(parameter.getName());
+                        parameter.setModel(model);
+                        model.setInitializerParameter(parameter);
+                        Method fun = anon.getDeclarationModel();
+                        model.setContainer(fun);
+                        fun.addMember(model);
                     }
                 }
             }

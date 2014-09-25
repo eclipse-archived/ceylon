@@ -25,4 +25,8 @@ void parameterInference() {
     ((ch)=>!ch.letter);
     Character? found1
             = fun1((ch)=>!ch.letter);
+    
+    void accept(String(Float) fun) => fun(1.0);
+    accept((f)=>f.string);
+
 }
