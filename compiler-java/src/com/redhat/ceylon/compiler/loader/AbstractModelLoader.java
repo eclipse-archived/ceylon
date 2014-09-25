@@ -574,6 +574,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || classMirror.getAnnotation(CEYLON_PACKAGE_ANNOTATION) != null)
             return null;
         
+        // find its package
+        String pkgName = getPackageNameForQualifiedClassName(classMirror);
+        
+        if (pkgName.equals("java.lang")) {
+            module = lookupModuleByPackageName(pkgName);
+        }
+        
         List<Declaration> decls = new ArrayList<Declaration>();
         boolean[] alreadyExists = new boolean[1];
         Declaration decl = getOrCreateDeclaration(module, classMirror, declarationType,
@@ -582,10 +589,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (alreadyExists[0]) {
             return decl;
         }
-        
-        // find its package
-        String pkgName = getPackageNameForQualifiedClassName(classMirror);
-        
+
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         // find/make its Unit
