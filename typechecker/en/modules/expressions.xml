@@ -370,18 +370,36 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     the invocation has an explicit type argument list, and 
                     the <literal>n</literal>th parameter of the function or
                     class is a callable parameter with the same number of 
-                    parameters as the anonymous function, or</para>
+                    parameters as the anonymous function, and with 
+                    <literal>i</literal>th parameter <literal>q</literal>,
+                    or</para>
                 </listitem>
                 <listitem>
                     <para>the function or class has at least one type 
                     parameter, and the invocation has no explicit type 
-                    argument list, and the <literal>n</literal>th parameter
-                    of the function or class is a callable parameter with 
-                    the same number of parameters as the anonymous function, 
-                    and the type of the <literal>i</literal>th parameter 
-                    <literal>q</literal> of the callable parameter does not 
-                    involve any of the type parameters of the generic function 
-                    or class.</para>
+                    argument list, and either:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>the <literal>n</literal>th parameter of the 
+                            function or class is a callable parameter with the 
+                            same number of parameters as the anonymous 
+                            function, and the type <literal>Q</literal> of the 
+                            <literal>i</literal>th parameter <literal>q</literal> 
+                            of the callable parameter does not involve any of 
+                            the type parameters of the generic function or class, 
+                            or</para>
+                        </listitem>
+                        <listitem>
+                            <para>the <literal>n</literal>th parameter of the 
+                            function or class is a value parameter whose type 
+                            does not involve any of the type parameters of the 
+                            generic function or class and represents a function 
+                            whose <literal>n</literal>th parameter is a callable 
+                            parameter with the same number of parameters as the 
+                            anonymous function, and with <literal>i</literal>th 
+                            parameter <literal>q</literal>.</para>
+                        </listitem>
+                    </itemizedlist>
                 </listitem>
             </itemizedlist>
             
@@ -403,7 +421,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             is a tuple type whose <literal>n</literal>th element type is 
             <literal>Callable&lt;P,S&gt;</literal> and <literal>S</literal>
             is in turn a tuple type whose <literal>i</literal>th element type
-            is <literal>X</literal>, then <literal>X</literal> is the inferred
+            is <literal>Q</literal>, then <literal>Q</literal> is the inferred
             type of <literal>p</literal>.</para>
             
         </section>
