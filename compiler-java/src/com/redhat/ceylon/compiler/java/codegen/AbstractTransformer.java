@@ -3094,11 +3094,14 @@ public abstract class AbstractTransformer implements Transformation {
         }
         boolean declaredVoid = decl instanceof Method && Strategy.useBoxedVoid((Method)decl) && Decl.isUnboxedVoid(decl);
         
-        return makeJavaTypeAnnotations(type, declaredVoid, CodegenUtil.hasTypeErased(decl), needsJavaTypeAnnotations(decl));
+        return makeJavaTypeAnnotations(type, declaredVoid, 
+                CodegenUtil.hasTypeErased(decl),
+                CodegenUtil.hasUntrustedType(decl),
+                needsJavaTypeAnnotations(decl));
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean declaredVoid, 
-                                                              boolean hasTypeErased, boolean required) {
+                                                              boolean hasTypeErased, boolean untrusted, boolean required) {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
@@ -3114,6 +3117,10 @@ public abstract class AbstractTransformer implements Transformation {
         if (declaredVoid) {
             annotationArgs.add(
                     make().Assign(naming.makeUnquotedIdent("declaredVoid"), make().Literal(declaredVoid)));
+        }
+        if (untrusted) {
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("untrusted"), make().Literal(untrusted)));
         }
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }

@@ -2320,6 +2320,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markDeclaredVoid(method, methodMirror);
         markUnboxed(method, methodMirror, methodMirror.getReturnType());
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
+        markUntrustedType(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
         klass.getMembers().add(method);
@@ -2510,6 +2511,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         markUnboxed(value, null, fieldMirror.getType());
         markTypeErased(value, fieldMirror, fieldMirror.getType());
+        markUntrustedType(value, fieldMirror, fieldMirror.getType());
         setAnnotations(value, fieldMirror);
         klass.getMembers().add(value);
         DeclarationVisitor.setVisibleScope(value);
@@ -2617,6 +2619,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         markUnboxed(value, methodMirror, methodMirror.getReturnType());
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
+        markUntrustedType(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
         DeclarationVisitor.setVisibleScope(value);
@@ -3070,8 +3073,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             decl.setTypeErased(sameType(type, OBJECT_TYPE));
         }
-        if(hasTypeParameterWithConstraints(type))
+    }
+    
+    private void markUntrustedType(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
+        if (BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "untrusted"))) {
             decl.setUntrustedType(true);
+        }
     }
     
     private void markDeclaredVoid(Method decl, MethodMirror methodMirror) {
@@ -3233,6 +3240,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 markDeclaredVoid(method, meth);
                 markUnboxed(method, meth, meth.getReturnType());
                 markTypeErased(method, meth, meth.getReturnType());
+                markUntrustedType(method, meth, meth.getReturnType());
 
              // now its parameters
                 setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
