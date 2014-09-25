@@ -578,7 +578,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String pkgName = getPackageNameForQualifiedClassName(classMirror);
         
         if (pkgName.equals("java.lang")) {
-            module = lookupModuleByPackageName(pkgName);
+            module = getJDKBaseModule();
         }
         
         List<Declaration> decls = new ArrayList<Declaration>();
