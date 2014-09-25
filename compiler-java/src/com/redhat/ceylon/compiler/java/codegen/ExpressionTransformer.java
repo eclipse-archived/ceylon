@@ -3870,8 +3870,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return transform((Tree.QualifiedTypeExpression)term, transformer);
         } else {
             // do not consider our term to be part of an invocation, we want it to be a Callable
-            boolean oldWi = withinInvocation;
-            withinInvocation = false;
+            boolean oldWi = withinInvocation(false);
             JCExpression primaryExpr;
             try{
                 primaryExpr = transformExpression(term);
@@ -3879,7 +3878,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     primaryExpr = transformer.transform(primaryExpr, null);
                 }
             }finally{
-                withinInvocation = oldWi;
+                withinInvocation(oldWi);
             }
             return primaryExpr;
         }
@@ -4014,7 +4013,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 qualExpr = naming.makeName((Method)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
-            } else if (!withinInvocation) {
+            } else if (!isWithinInvocation()) {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
