@@ -81,7 +81,8 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequential<Element>>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -151,7 +152,8 @@ public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.jav
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequence<Element>>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -179,7 +181,8 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -198,7 +201,8 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -217,7 +221,8 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public .ceylon.language.Sequence getA();
     
@@ -229,7 +234,8 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     public .ceylon.language.Sequence m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty.class);

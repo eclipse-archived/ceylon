@@ -214,7 +214,8 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                     value = "com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>",
-                    erased = true)
+                    erased = true,
+                    untrusted = true)
             public final Local plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>")
             final Local<T> other) {

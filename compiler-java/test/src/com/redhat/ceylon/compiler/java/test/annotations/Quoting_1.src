@@ -130,7 +130,8 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Quoting",
-            erased = true)
+            erased = true,
+            untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .com.redhat.ceylon.compiler.java.test.annotations.Quoting getClone() {
         return (.com.redhat.ceylon.compiler.java.test.annotations.Quoting).ceylon.language.nothing_.get_();
