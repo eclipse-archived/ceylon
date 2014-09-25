@@ -8,7 +8,7 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             captured0$2 = ((.ceylon.language.String)captured0$1).toString();
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o"));
         .ceylon.language.Character captured1$4 = null;
-        if ((captured1$4 = (.ceylon.language.Character).ceylon.language.String.getFirst(captured0$2)) != null) {
+        if ((captured1$4 = .ceylon.language.String.getFirst(captured0$2)) != null) {
             captured1$5 = captured1$4.intValue();
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists captured1 = captured0.first"));
         .ceylon.language.Sequential<? extends .ceylon.language.Character> captured2$7 = null;
@@ -20,7 +20,7 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         if ((captured10$10 = o) instanceof .ceylon.language.String) {
             captured10$11 = ((.ceylon.language.String)captured10$10).toString();
             .ceylon.language.Character captured11$12 = null;
-            if ((captured11$12 = (.ceylon.language.Character).ceylon.language.String.getFirst("a")) != null) {
+            if ((captured11$12 = .ceylon.language.String.getFirst("a")) != null) {
                 captured11$13 = captured11$12.intValue();
                 .ceylon.language.Sequential<? extends .ceylon.language.Character> captured12$14 = null;
                 if ((captured12$14 = s) instanceof .ceylon.language.Sequence) {
