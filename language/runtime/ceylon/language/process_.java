@@ -25,7 +25,7 @@ public final class process_ implements ReifiedType {
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(process_.class);
 
-    private java.io.BufferedReader stdinReader = null;
+    private BufferedReader stdinReader = null;
     
     @SuppressWarnings({"unchecked", "rawtypes"})
     private Sequential<? extends String> args = (Sequential) empty_.get_();
