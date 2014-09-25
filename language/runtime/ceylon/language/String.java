@@ -1477,9 +1477,9 @@ public final class String
     }
 
     @Override
-    @Ignore
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFirst() {
-        return getFromFirst(0);
+        return getFirst(value);
     }
 
     @Ignore
@@ -1487,19 +1487,14 @@ public final class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return get(value, 0);
+            return Character.instance(value.codePointAt(0));
         }
     }
 
-    @Override @Ignore
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getLast() {
-        long length = getSize();
-        if (length==0) {
-            return null;
-        }
-        else {
-            return getFromFirst(length-1);
-        }
+        return getLast(value);
     }
 
     @Ignore
@@ -1507,7 +1502,7 @@ public final class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return get(value, value.length()-1);
+            return Character.instance(value.codePointBefore(value.length()));
         }
     }
 

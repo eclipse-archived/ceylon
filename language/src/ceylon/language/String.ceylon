@@ -95,7 +95,13 @@ shared native final class String(characters)
              separator token will be of size `1`."
             Boolean groupSeparators=true);
     
-    "The rest of the string, without the first element."
+    "The first character in the string."
+    shared actual native Character? first;
+    
+    "The last character in the string."
+    shared actual native Character? last;
+    
+    "The rest of the string, without its first character."
     shared actual native String rest;
     
     //"Get the character at the specified index, or `null` if
