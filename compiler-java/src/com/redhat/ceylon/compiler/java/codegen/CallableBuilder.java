@@ -137,8 +137,6 @@ public class CallableBuilder {
     
     private boolean companionAccess = false;
 
-    private JCVariableDecl instanceField;
-
     private Naming.Substitution instanceSubstitution;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
@@ -170,8 +168,9 @@ public class CallableBuilder {
      *   Anything() ref = someMethod;
      * </pre>
      */
-    public static CallableBuilder methodReference(CeylonTransformer gen, 
+    public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
+        ListBuffer<JCStatement> letStmts = ListBuffer.<JCTree.JCStatement>lb();
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
@@ -188,11 +187,11 @@ public class CallableBuilder {
                 if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
                     primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
                 }
-                cb.instanceField = gen.makeVar(Flags.PRIVATE|Flags.FINAL, 
+                letStmts.add(gen.makeVar(Flags.FINAL, 
                         instanceFieldName, 
                         gen.makeJavaType(qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte), 
                                 Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0), 
-                        primaryExpr);
+                        primaryExpr));
                 
                 if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
                         && ((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration() instanceof TypedDeclaration) {
@@ -233,7 +232,7 @@ public class CallableBuilder {
         }
         cb.useTransformation(tx);
         
-        return cb;
+        return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
     }
     
     /**
@@ -1414,10 +1413,6 @@ public class CallableBuilder {
     public JCNewClass build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
-        
-        if (instanceField != null) {
-            classBody.append(instanceField);
-        }
         
         if (parameterDefaultValueMethods != null) {
             for (MethodDefinitionBuilder mdb : parameterDefaultValueMethods) {
