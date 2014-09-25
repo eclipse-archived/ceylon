@@ -196,7 +196,7 @@ public class CallableBuilder {
                 
                 if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
                         && ((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration() instanceof TypedDeclaration) {
-                    cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), Unfix.$instance$.toString());
+                    cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), instanceFieldName.getName());
                 }
             } finally {
                 gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
