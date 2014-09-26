@@ -545,4 +545,12 @@ public abstract class BoxingVisitor extends Visitor {
         typeParameter.setNonErasedBounds(false);
         return;
     }
+    
+    @Override
+    public void visit(Tree.TypeLiteral that) {
+        super.visit(that);
+        if (!that.getWantsDeclaration()) {
+            CodegenUtil.markRaw(that);
+        }
+    }
 }
