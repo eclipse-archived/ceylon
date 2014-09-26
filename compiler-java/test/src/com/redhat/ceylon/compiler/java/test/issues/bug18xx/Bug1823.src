@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class bug1823_ {
+    
+    private bug1823_() {
+    }
+    
+    static void bug1823() {
+        final .ceylon.language.meta.model.Class e1 = (.ceylon.language.meta.model.Class)(.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Exception.$TypeDescriptor$);
+        final .java.lang.Exception e2 = ((.ceylon.language.Callable<? extends .java.lang.Exception>)(.ceylon.language.Callable)e1).$call$();
+        final .java.lang.Exception e3 = ((.ceylon.language.Callable<? extends .java.lang.Exception>)(.ceylon.language.meta.model.Class)(.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Exception.$TypeDescriptor$)).$call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1823_.bug1823();
+    }
+}
