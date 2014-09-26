@@ -277,7 +277,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(that.getSpecifierOrInitializerExpression() != null
                 && that.getDeclarationModel() != null
                 && that.getType() instanceof Tree.ValueModifier
-                && that.getDeclarationModel().getType() == that.getSpecifierOrInitializerExpression().getExpression().getTypeModel()){
+                && that.getDeclarationModel().getType().equals(that.getSpecifierOrInitializerExpression().getExpression().getTypeModel())){
             that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
         }
         super.visit(that);

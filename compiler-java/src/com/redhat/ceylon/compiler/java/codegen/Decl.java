@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -47,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -68,16 +70,16 @@ public class Decl {
     }
     
     public static boolean equal(Declaration decl, Declaration other) {
+        if (decl instanceof UnionType || decl instanceof IntersectionType
+                || other instanceof UnionType || other instanceof IntersectionType) {
+            return false;
+        }
         return eq(decl, other);
     }
     
     public static boolean equal(Parameter decl, Parameter other) {
         return eq(decl, other);
     }
-    
-    /*public static boolean equal(Declaration decl, Scope scope) {
-        return equal(decl, scope);
-    }*/
     
     public static boolean equalScopes(Scope scope, Scope other) {
         return eq(scope, other);
@@ -848,7 +850,7 @@ public class Decl {
             return decl.isMember()
                     && !decl.isShared()
                     && decl.getContainer() instanceof Class
-                    && primary.getTypeModel().getDeclaration() != decl.getContainer();
+                    && !Decl.equalScopeDecl(decl.getContainer(), primary.getTypeModel().getDeclaration());
         }
         return false;
     }
@@ -860,7 +862,7 @@ public class Decl {
             return decl.isMember()
                     && !decl.isShared()
                     && decl.getContainer() instanceof Interface
-                    && primary.getTypeModel().getDeclaration() != decl.getContainer();
+                    && !Decl.equalScopeDecl(decl.getContainer(), primary.getTypeModel().getDeclaration());
         }
         return false;
     }

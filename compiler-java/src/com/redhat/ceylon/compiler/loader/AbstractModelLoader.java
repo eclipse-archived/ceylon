@@ -1548,7 +1548,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(module.isDefault())
                 continue;
             // skip modules we're not loading things from
-            if(module != getLanguageModule()
+            if(!Decl.equalModules(module,getLanguageModule())
                     && !isModuleInClassPath(module))
                 continue;
             if(module instanceof LazyModule){
@@ -4550,7 +4550,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Set<Module> visited = new HashSet<Module>();
         visited.add(moduleScope);
         for(ModuleImport imp : moduleScope.getImports()){
-            if(imp.getModule() == importedModule)
+            if(Decl.equalModules(imp.getModule(), importedModule))
                 return true;
             if(imp.isExport() && isImportedTransitively(imp.getModule(), importedModule, visited))
                 return true;
@@ -4563,14 +4563,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // every Java module imports the JDK
         // ceylon.language imports the JDK
         if((moduleScope.isJava()
-                || moduleScope == getLanguageModule())
+                || Decl.equalModules(moduleScope, getLanguageModule()))
                 && (JDKUtils.isJDKModule(importedModuleName)
                    || JDKUtils.isOracleJDKModule(importedModuleName)))
             return true;
         // everyone imports the language module
-        if(importedModule == getLanguageModule())
+        if(Decl.equalModules(importedModule, getLanguageModule()))
             return true;
-        if(moduleScope == getLanguageModule()){
+        if(Decl.equalModules(moduleScope, getLanguageModule())){
             // this really sucks, I suppose we should set that up better somewhere else
             if((importedModuleName.equals("com.redhat.ceylon.compiler.java")
                 || importedModuleName.equals("com.redhat.ceylon.typechecker")
@@ -4592,7 +4592,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // only consider exported transitive deps
             if(!imp.isExport())
                 continue;
-            if(imp.getModule() == importedModule)
+            if(Decl.equalModules(imp.getModule(), importedModule))
                 return true;
             if(isImportedSpecialRules(imp.getModule(), importedModule))
                 return true;

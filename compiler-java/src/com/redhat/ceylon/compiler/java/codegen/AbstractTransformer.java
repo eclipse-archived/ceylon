@@ -607,15 +607,15 @@ public abstract class AbstractTransformer implements Transformation {
      */
 
     boolean isBooleanTrue(Declaration decl) {
-        return decl == typeFact.getBooleanTrueDeclaration();
+        return Decl.equal(decl, typeFact.getBooleanTrueDeclaration());
     }
     
     boolean isBooleanFalse(Declaration decl) {
-        return decl == typeFact.getBooleanFalseDeclaration();
+        return Decl.equal(decl, typeFact.getBooleanFalseDeclaration());
     }
     
     boolean isNullValue(Declaration decl) {
-        return decl == typeFact.getNullValueDeclaration();
+        return Decl.equal(decl, typeFact.getNullValueDeclaration());
     }
     
     /**
@@ -796,7 +796,7 @@ public abstract class AbstractTransformer implements Transformation {
                 currentType != null
                 && decl.getContainer() instanceof ClassOrInterface
                 && referenceQualifyingType != null
-                && referenceQualifyingType.getDeclaration() != currentType.getDeclaration();
+                && !Decl.equal(referenceQualifyingType.getDeclaration(), currentType.getDeclaration());
         // quick exit
         if (Decl.equal(decl, modelRefinedDecl) && !forMixinMethod)
             return null;
@@ -904,7 +904,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private ProducedType findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(Interface iface, ProducedType currentType, ProducedType[] found) {
-        if(currentType.getDeclaration() == iface){
+        if(Decl.equal(currentType.getDeclaration(), iface)){
             if(found[0] == null){
                 // first time we find it, just record it
                 found[0] = currentType;
@@ -1244,12 +1244,12 @@ public abstract class AbstractTransformer implements Transformation {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
         // All the following types either are Object or erase to Object
-        if (decl == typeFact.getObjectDeclaration()
-                || decl == typeFact.getIdentifiableDeclaration()
-                || decl == typeFact.getBasicDeclaration()
-                || decl == typeFact.getNullDeclaration()
-                || decl == typeFact.getNullValueDeclaration().getTypeDeclaration()
-                || decl == typeFact.getAnythingDeclaration()
+        if (Decl.equal(decl, typeFact.getObjectDeclaration())
+                || Decl.equal(decl, typeFact.getIdentifiableDeclaration())
+                || Decl.equal(decl, typeFact.getBasicDeclaration())
+                || Decl.equal(decl, typeFact.getNullDeclaration())
+                || Decl.equal(decl, typeFact.getNullValueDeclaration().getTypeDeclaration())
+                || Decl.equal(decl, typeFact.getAnythingDeclaration())
                 || decl instanceof NothingType) {
             return true;
         }
@@ -1274,13 +1274,13 @@ public abstract class AbstractTransformer implements Transformation {
     boolean willEraseToThrowable(ProducedType type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
-        return decl == typeFact.getThrowableDeclaration();
+        return Decl.equal(decl, typeFact.getThrowableDeclaration());
     }
     
     boolean willEraseToSequence(ProducedType type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
-        return decl == typeFact.getTupleDeclaration();
+        return Decl.equal(decl, typeFact.getTupleDeclaration());
     }
     
     // keep in sync with MethodDefinitionBuilder.paramType()
@@ -1451,9 +1451,9 @@ public abstract class AbstractTransformer implements Transformation {
         return declaration != null
                 && (type.isExactly(typeFact.getBooleanDeclaration().getType())
                         || isBooleanTrue(declaration)
-                        || declaration == typeFact.getBooleanTrueClassDeclaration()
+                        || Decl.equal(declaration, typeFact.getBooleanTrueClassDeclaration())
                         || isBooleanFalse(declaration)
-                        || declaration == typeFact.getBooleanFalseClassDeclaration());
+                        || Decl.equal(declaration, typeFact.getBooleanFalseClassDeclaration()));
     }
     
     boolean isCeylonInteger(ProducedType type) {
@@ -1492,7 +1492,7 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isCeylonCallable(ProducedType type) {
         // only say yes for exactly Callable, as this is mostly used for erasure of its second type parameter
         // but we want subtypes of Callable such as the metamodel to have those extra type parameters ATM
-        return type.getDeclaration() == typeFact.getCallableDeclaration();
+        return Decl.equal(type.getDeclaration(), typeFact.getCallableDeclaration());
 //        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
@@ -1501,7 +1501,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isExactlySequential(ProducedType type) {
-        return typeFact().getDefiniteType(type).getDeclaration() == typeFact.getSequentialDeclaration();
+        return Decl.equal(typeFact().getDefiniteType(type).getDeclaration(), typeFact.getSequentialDeclaration());
     }
     
     boolean isCeylonMetamodelDeclaration(ProducedType type) {
@@ -3842,7 +3842,7 @@ public abstract class AbstractTransformer implements Transformation {
                     return typeTester.isInstanceof(varExpr, testedType);
                 } else {
                     // Have to use a reified test
-                    if (declaration != expressionType.getDeclaration()) {
+                    if (!Decl.equal(declaration, expressionType.getDeclaration())) {
                         // do a cheap instanceof test to try to shortcircuit the expensive
                         // Util.isReified()
                         
@@ -4709,7 +4709,7 @@ public abstract class AbstractTransformer implements Transformation {
                 ProducedType typeArgument = typeArguments.get(tp);
                 if(tp.isInvariant()
                         || hasDependentTypeParameters(typeParameters, tp)){
-                    if(typeArgument.getDeclaration() == declaration){
+                    if(Decl.equal(typeArgument.getDeclaration(), declaration)){
                         return true;
                     }
                 }

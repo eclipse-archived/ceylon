@@ -321,7 +321,7 @@ public class CodegenUtil {
             }
         }else if(methodOverrides != null
                 && decl instanceof Method
-                && decl.getRefinedDeclaration() == decl
+                && Decl.equal(decl.getRefinedDeclaration(), decl)
                 && decl.getContainer() instanceof Specification
                 && ((Specification)decl.getContainer()).getDeclaration() instanceof Method
                 && ((Method) ((Specification)decl.getContainer()).getDeclaration()).isShortcutRefinement()
