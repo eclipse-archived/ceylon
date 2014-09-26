@@ -779,6 +779,7 @@ public class RecoveryTest extends CompilerTest {
                 +"  \t- dependency tree: unknownmodule/1.0.0 -> fooxhilio.bastardo/77.9"),
                 new CompilerError(4, "function or value does not exist: 'nanoTime'"),
                 new CompilerError(4, "type does not exist: 'Test'"),
+                new CompilerError(4, "unsupported module name: this namespace is used by Java platform modules"),
                 new CompilerError(5, "duplicate declaration name: 'run'"),
                 new CompilerError(7, "duplicate declaration name: 'run'"),
                 new CompilerError(10, "case must be a toplevel anonymous class: 'alive' is not toplevel"),
@@ -800,7 +801,6 @@ public class RecoveryTest extends CompilerTest {
 
         String[] modules = new String[]{
                 "swing/1.0.0",
-                "java/1.0.0",
                 "web_ide_script/1.0.0",
                 "browser/1.0.0",
                 "timetest/1.0.0",
