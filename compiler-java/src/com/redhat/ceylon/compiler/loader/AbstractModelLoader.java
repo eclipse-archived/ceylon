@@ -610,15 +610,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public String getPackageNameForQualifiedClassName(String pkg, String qualifiedName){
         // Java array classes we pretend come from java.lang
-        if(qualifiedName.equals(CEYLON_OBJECT_ARRAY)
-                || qualifiedName.equals(CEYLON_BOOLEAN_ARRAY)
-                || qualifiedName.equals(CEYLON_BYTE_ARRAY)
-                || qualifiedName.equals(CEYLON_SHORT_ARRAY)
-                || qualifiedName.equals(CEYLON_INT_ARRAY)
-                || qualifiedName.equals(CEYLON_LONG_ARRAY)
-                || qualifiedName.equals(CEYLON_FLOAT_ARRAY)
-                || qualifiedName.equals(CEYLON_DOUBLE_ARRAY)
-                || qualifiedName.equals(CEYLON_CHAR_ARRAY))
+        if(qualifiedName.startsWith(CEYLON_OBJECT_ARRAY)
+                || qualifiedName.startsWith(CEYLON_BOOLEAN_ARRAY)
+                || qualifiedName.startsWith(CEYLON_BYTE_ARRAY)
+                || qualifiedName.startsWith(CEYLON_SHORT_ARRAY)
+                || qualifiedName.startsWith(CEYLON_INT_ARRAY)
+                || qualifiedName.startsWith(CEYLON_LONG_ARRAY)
+                || qualifiedName.startsWith(CEYLON_FLOAT_ARRAY)
+                || qualifiedName.startsWith(CEYLON_DOUBLE_ARRAY)
+                || qualifiedName.startsWith(CEYLON_CHAR_ARRAY))
             return "java.lang";
         else
             return unquotePackageName(pkg);
