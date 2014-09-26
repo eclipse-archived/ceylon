@@ -114,37 +114,40 @@ public class ModuleVisitor extends Visitor {
             else if (name.isEmpty()) {
                 that.addError("missing module name");
             }
-            else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                importPath.addError("reserved module name: 'default'");
-            }
-            else if (name.size()==1 && name.get(0).equals("ceylon")) {
-                importPath.addError("reserved module name: 'ceylon'");
-            }
             else {
-                if (name.get(0).equals("ceylon")) {
-                    importPath.addUsageWarning("discouraged module name: this namespace is used by Ceylon platform modules");
+                String initialName = name.get(0);
+                if (initialName.equals(Module.DEFAULT_MODULE_NAME)) {
+                    importPath.addError("reserved module name: 'default'");
                 }
-                else if (name.get(0).equals("java")||name.get(0).equals("javax")) {
-                    importPath.addUsageWarning("discouraged module name: this namespace is used by Java platform modules");
+                else if (name.size()==1 && initialName.equals("ceylon")) {
+                    importPath.addError("reserved module name: 'ceylon'");
                 }
-                mainModule = moduleManager.getOrCreateModule(name, version);
-                importPath.setModel(mainModule);
-                if (!completeOnlyAST) {
-                    mainModule.setUnit(unit.getUnit());
-                    mainModule.setVersion(version);
-                }
-                String nameString = formatPath(importPath.getIdentifiers());
-				if ( !pkg.getNameAsString().equals(nameString) ) {
-                    importPath
-                        .addError("module name does not match descriptor location: '" + 
-                        		nameString + "' should be '" + pkg.getNameAsString() + "'", 
-                        		8000);
-                }
-                if (!completeOnlyAST) {
-                    moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
-                    mainModule.setAvailable(true);
-                    mainModule.getAnnotations().clear();
-                    buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+                else {
+                    if (initialName.equals("ceylon")) {
+                        importPath.addUsageWarning("discouraged module name: this namespace is used by Ceylon platform modules");
+                    }
+                    else if (initialName.equals("java") || initialName.equals("javax")) {
+                        importPath.addUnsupportedError("unsupported module name: this namespace is used by Java platform modules");
+                    }
+                    mainModule = moduleManager.getOrCreateModule(name, version);
+                    importPath.setModel(mainModule);
+                    if (!completeOnlyAST) {
+                        mainModule.setUnit(unit.getUnit());
+                        mainModule.setVersion(version);
+                    }
+                    String nameString = formatPath(importPath.getIdentifiers());
+                	if ( !pkg.getNameAsString().equals(nameString) ) {
+                        importPath
+                            .addError("module name does not match descriptor location: '" + 
+                            		nameString + "' should be '" + pkg.getNameAsString() + "'", 
+                            		8000);
+                    }
+                    if (!completeOnlyAST) {
+                        moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
+                        mainModule.setAvailable(true);
+                        mainModule.getAnnotations().clear();
+                        buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+                    }
                 }
             }
             HashSet<String> set = new HashSet<String>();
