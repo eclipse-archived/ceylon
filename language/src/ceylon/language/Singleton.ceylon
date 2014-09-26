@@ -32,6 +32,8 @@ shared class Singleton<out Element>(Element element)
     "Returns a `Singleton` with the same element."
     shared actual Singleton<Element> clone() => this;
     
+    string => "[`` element?.string else "<null>" ``]";
+    
     shared actual default Iterator<Element> iterator() {
         object iterator
                 satisfies Iterator<Element> {
@@ -45,12 +47,10 @@ shared class Singleton<out Element>(Element element)
                     return element;
                 }
             }
-            shared actual String string => "``outer.string``.iterator()";
+            string => "``outer.string``.iterator()";
         }
         return iterator;
     }
-    
-    shared actual String string => "[`` element?.string else "<null>" ``]";
     
     "Returns a `Singleton` if the given starting index 
      is `0` and the given `length` is greater than `0`.
