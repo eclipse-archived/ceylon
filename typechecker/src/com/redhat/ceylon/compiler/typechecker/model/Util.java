@@ -254,7 +254,7 @@ public class Util {
         return sut==null || put==null || !sut.equals(put);
     }
     
-    static boolean betterMatch(Declaration d, Declaration r) {
+    static boolean betterMatch(Declaration d, Declaration r, List<ProducedType> signature) {
         if (d instanceof Functional && r instanceof Functional) {
             List<ParameterList> dpls = ((Functional) d).getParameterLists();
             List<ParameterList> rpls = ((Functional) r).getParameterLists();
@@ -284,9 +284,16 @@ public class Util {
                     for (int i=0; i<dplSize; i++) {
                         ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
                         ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
+                        ProducedType argumentType = signature != null && signature.size() >= i ? signature.get(i) : null;
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if(paramType.isExactly(otherType) 
+                                && supportsCoercion(ptd)
+                                // do we have different scores?
+                                && hasWorseScore(getCoercionScore(argumentType, paramType), getCoercionScore(argumentType, otherType))){
+                            return false;
+                        }
                         if (!ptd.inherits(otd) &&
                                 notUnderlyingTypesEqual(paramType, otherType)) {
                             return false;
@@ -302,6 +309,14 @@ public class Util {
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         TypeDeclaration ptd = erase(paramType.getDeclaration());
                         TypeDeclaration otd = erase(otherType.getDeclaration());
+                        if(paramType.isExactly(otherType) 
+                                && supportsCoercion(ptd)){
+                            ProducedType widerArgumentType = getWiderArgumentType(paramType, signature, dplSize);
+                            // do we have different scores?
+                            if(hasWorseScore(getCoercionScore(widerArgumentType, paramType), getCoercionScore(widerArgumentType, otherType))){
+                                return false;
+                            }
+                        }
                         if (!ptd.inherits(otd) &&
                                 notUnderlyingTypesEqual(paramType, otherType)) {
                             return false;
@@ -312,6 +327,152 @@ public class Util {
             }
         }
         return false;
+    }
+
+    private static boolean supportsCoercion(TypeDeclaration decl) {
+        Unit unit = decl.getUnit();
+        return decl.equals(unit.getIntegerDeclaration()) || decl.equals(unit.getFloatDeclaration());
+    }
+
+    private static boolean hasWorseScore(int underlyingTypeCoercionScoreA, int underlyingTypeCoercionScoreB) {
+        if(underlyingTypeCoercionScoreA != underlyingTypeCoercionScoreB){
+            if(underlyingTypeCoercionScoreA > 0 && underlyingTypeCoercionScoreB > 0){
+                // both truncations, prefer the smaller truncation
+                if (underlyingTypeCoercionScoreA > underlyingTypeCoercionScoreB)
+                    return true;
+            }else if(underlyingTypeCoercionScoreA > 0){
+                // A is a truncation, B is a widening, prefer widening
+                return true;
+            }else if(underlyingTypeCoercionScoreA == 0){
+                // A is a perfect match, it's not worse
+                return false;
+            }else if(underlyingTypeCoercionScoreB == 0){
+                // B is a perfect match but A is not, so it's worse
+                return true;
+            }else if(underlyingTypeCoercionScoreB > 0){
+                // A is a widening, B is a truncation, so it's not worse
+                return false;
+            }else{
+                // A is a widening and B is a widening too, A is worse than B
+                // if it widens more than B
+                return underlyingTypeCoercionScoreA < underlyingTypeCoercionScoreB;
+            }
+        }
+        return false;// same score or we don't know
+    }
+
+    private static ProducedType getWiderArgumentType(ProducedType paramType, List<ProducedType> signature, int startAt) {
+        if(startAt >= signature.size())
+            return null;
+        TypeDeclaration decl = paramType.getDeclaration();
+        if(decl.equals(decl.getUnit().getIntegerDeclaration())){
+            int bestScore = 0;
+            ProducedType ret = null;
+            for(int i=startAt;i<signature.size();i++){
+                ProducedType argType = signature.get(i);
+                String underlyingType = argType.getUnderlyingType();
+                int score = 0;
+                if(underlyingType == null || underlyingType.equals("long"))
+                    return argType; // found the wider sort
+                else if(underlyingType.equals("int"))
+                    score = 2;
+                else if(underlyingType.equals("short"))
+                    score = 1;
+                // keep the widest argument type
+                if(score > bestScore){
+                    bestScore = score;
+                    ret = argType;
+                }
+            }
+            return ret;
+        }else if(decl.equals(decl.getUnit().getFloatDeclaration())){
+            int bestScore = 0;
+            ProducedType ret = null;
+            for(int i=startAt;i<signature.size();i++){
+                ProducedType argType = signature.get(i);
+                String underlyingType = argType.getUnderlyingType();
+                int score = 0;
+                if(underlyingType == null || underlyingType.equals("double"))
+                    return argType; // found the wider sort
+                else if(underlyingType.equals("float"))
+                    score = 1;
+                // keep the widest argument type
+                if(score > bestScore){
+                    bestScore = score;
+                    ret = argType;
+                }
+            }
+            return ret;
+        }
+        // not relevant
+        return null;
+    }
+
+    /**
+     * Returns 0 of there's no coercion, > 0 if we have to truncate the argument type to fit the param type,
+     * the higher for the worse truncation, or < 0 if we have to widen the argument type to fit the param
+     * type, the lower for the worse widening.
+     */
+    private static int getCoercionScore(ProducedType argumentType, ProducedType paramType) {
+        if(argumentType == null)
+            return 0;
+        // only consider types of Integer of Float
+        if(paramType.isExactly(argumentType)){
+            String aType = argumentType.getUnderlyingType();
+            String pType = paramType.getUnderlyingType();
+            if(aType == null && pType == null)
+                return 0;
+            Unit unit = argumentType.getDeclaration().getUnit();
+            TypeDeclaration decl = paramType.getDeclaration();
+            if(decl.equals(unit.getIntegerDeclaration())){
+                if(aType == null)
+                    aType = "long";
+                if(pType == null)
+                    pType = "long";
+                int aScore = getPrimitiveScore(aType);
+                int bScore = getPrimitiveScore(pType);
+                /*
+                 * aType aTypeScore pType pTypeScore score
+                 * short 0          short 0          0
+                 * short 0          int   1          -1 (widening)
+                 * short 0          long  2          -2 (widening)
+                 * int   1          short 0          1 (truncation)
+                 * int   1          int   1          0
+                 * int   1          long  2          -1 (widening)
+                 * long  2          short 0          2 (truncation)
+                 * long  2          int   1          1 (truncation)
+                 * long  2          long  2          0
+                 */
+                return aScore - bScore;
+            }else if(decl.equals(unit.getFloatDeclaration())){
+                if(aType == null)
+                    aType = "double";
+                if(pType == null)
+                    pType = "double";
+                int aScore = getPrimitiveScore(aType);
+                int bScore = getPrimitiveScore(pType);
+                /*
+                 * aType  aTypeScore pType  pTypeScore score
+                 * float  0          float  0          0
+                 * float  0          double 1          -1 (widening)
+                 * double 1          float  0          1 (truncation)
+                 * double 1          double 1          0
+                 */
+                return aScore - bScore;
+            }
+        }
+        // no truncation for the rest
+        return 0;
+    }
+
+    private static int getPrimitiveScore(String underlyingType) {
+        if(underlyingType.equals("long"))
+            return 2;
+        if(underlyingType.equals("int") || underlyingType.equals("double"))
+            return 1;
+        if(underlyingType.equals("short") || underlyingType.equals("float"))
+            return 0;
+        return 0;
     }
 
     static boolean strictlyBetterMatch(Declaration d, Declaration r) {
@@ -1172,7 +1333,7 @@ public class Util {
                                 results = new ArrayList<Declaration>(2);
                                 results.add(result);
                             }
-                            addIfBetterMatch(results, d);
+                            addIfBetterMatch(results, d, signature);
                         }
                     }
                 }
@@ -1204,14 +1365,14 @@ public class Util {
         }
     }
 
-    private static void addIfBetterMatch(List<Declaration> results, Declaration d) {
+    private static void addIfBetterMatch(List<Declaration> results, Declaration d, List<ProducedType> signature) {
         boolean add=true;
         for (Iterator<Declaration> i = results.iterator(); i.hasNext();) {
             Declaration o = i.next();
-            if (betterMatch(d, o)) {
+            if (betterMatch(d, o, signature)) {
                 i.remove();
             }
-            else if (betterMatch(o, d)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
+            else if (betterMatch(o, d, signature)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
                 add=false;
             }
         }
@@ -1226,7 +1387,7 @@ public class Util {
         }
         for (Declaration overloaded: abstractionClass.getOverloads()) {
             if (hasMatchingSignature(signature, ellipsis, overloaded, false)) {
-                addIfBetterMatch(results, overloaded);
+                addIfBetterMatch(results, overloaded, signature);
             }
         }
         if (results.size() == 1) {
