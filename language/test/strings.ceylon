@@ -94,6 +94,16 @@ shared void strings() {
     else {
         fail("string first element exists 3");
     }
+    if (exists c = hello.first) {
+        check(c=='h', "hello.first is ``c`` expected h");
+    } else {
+        fail("string.first");
+    }
+    if (exists c = hello.last) {
+        check(c=='o', "hello.last is ``c`` expected o");
+    } else {
+        fail("string.last");
+    }
     if (exists c = hello[hello.size.predecessor]) {
         check(c=='o', "string last element value");
     }
