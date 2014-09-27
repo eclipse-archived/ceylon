@@ -19,3 +19,5 @@ Anything vzz = void (@error Bar bar) {
     class Bar() {}
     return Bar();
 };
+
+void run(Anything b = (){class Bar(){} return Bar();}) {}

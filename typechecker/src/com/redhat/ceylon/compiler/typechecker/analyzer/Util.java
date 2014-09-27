@@ -781,7 +781,7 @@ public class Util {
         }
         if (that instanceof Tree.FunctionArgument) {
             Tree.Type type = ((Tree.FunctionArgument) that).getType();
-            if (type!=null) {
+            if (type!=null && type.getToken()!=null) {
                 return type;
             }
         }
