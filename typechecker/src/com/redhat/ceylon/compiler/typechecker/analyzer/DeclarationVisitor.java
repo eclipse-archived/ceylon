@@ -121,7 +121,7 @@ public class DeclarationVisitor extends Visitor {
     
     private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
-        if ( setModelName(that, model, that.getIdentifier()) ) {
+        if (setModelName(that, model, that.getIdentifier())) {
             if (checkDupe) {
                 checkForDuplicateDeclaration(that, model);
             }
@@ -144,12 +144,14 @@ public class DeclarationVisitor extends Visitor {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
+        setVisibleScope(model);
     }
 
     private void visitArgument(Tree.FunctionArgument that, Declaration model) {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
+        setVisibleScope(model);
     }
 
     private static boolean setModelName(Node that, Declaration model,

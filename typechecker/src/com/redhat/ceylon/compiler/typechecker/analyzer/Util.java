@@ -756,5 +756,29 @@ public class Util {
         }
         return "'" + refined.getName() + "'" + container;
     }
-
+    
+    public static Node getParameterTypeErrorNode(Tree.Parameter p) {
+        if (p instanceof Tree.ParameterDeclaration) {
+            return ((Tree.ParameterDeclaration) p).getTypedDeclaration().getType();
+        }
+        else {
+            return p;
+        }
+    }
+    
+    public static Node getTypeErrorNode(Tree.StatementOrArgument that) {
+        if (that instanceof Tree.TypedDeclaration) {
+            Tree.Type type = ((Tree.TypedDeclaration) that).getType();
+            if (type!=null) {
+                return type;
+            }
+        }
+        if (that instanceof Tree.TypedArgument) {
+            Tree.Type type = ((Tree.TypedArgument) that).getType();
+            if (type!=null) {
+                return type;
+            }
+        }
+        return that;
+    }
 }

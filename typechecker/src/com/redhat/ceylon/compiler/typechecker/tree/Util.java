@@ -84,7 +84,8 @@ public class Util {
     }
 
     /**
-     * Returns the best Node to attach errors to. This code is used by both backends.
+     * Returns the best Node to attach errors to. This code 
+     * is used by both backends.
      */
     public static Node getIdentifyingNode(Node node) {
         Node result = null;
@@ -122,5 +123,5 @@ public class Util {
         }
         return result;
     }
-
+    
 }

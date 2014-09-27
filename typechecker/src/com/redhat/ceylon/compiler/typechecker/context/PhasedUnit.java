@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LocalDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.SupertypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.VisibilityVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -319,6 +321,7 @@ public class PhasedUnit {
                 //System.out.println("Validate member refinement for " + fileName);
                 compilationUnit.visit(new AliasVisitor());
                 compilationUnit.visit(new SupertypeVisitor(true)); //TODO: move to a new phase!
+                compilationUnit.visit(new InheritanceVisitor());
                 compilationUnit.visit(new RefinementVisitor());
                 refinementValidated = true;
             }
@@ -333,6 +336,7 @@ public class PhasedUnit {
             ProducedType.depth.set(-100);
             //System.out.println("Run analysis phase for " + fileName);
             compilationUnit.visit(new ExpressionVisitor());
+            compilationUnit.visit(new VisibilityVisitor());
             compilationUnit.visit(new AnnotationVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
             fullyTyped = true;

@@ -47,7 +47,8 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         if(model != null 
                 && !model.isToplevel()
                 && !model.isMember()
-                && !(model instanceof Method && model.isParameter())){
+                && !(model instanceof Method && model.isParameter())
+                && localNames!=null){
             Integer counter = localNames.get(model.getName());
             if(counter == null)
                 counter = 1;
