@@ -25,19 +25,18 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class VisibilityVisitor extends Visitor {
     
     @Override public void visit(Tree.TypedDeclaration that) {
-        TypedDeclaration td = that.getDeclarationModel();
-        checkVisibility(that, td, td.getType());
+        checkVisibility(that, that.getDeclarationModel());
         super.visit(that);
     }
 
     @Override public void visit(Tree.TypedArgument that) {
-        TypedDeclaration td = that.getDeclarationModel();
-        checkVisibility(that, td, td.getType());
+        checkVisibility(that, that.getDeclarationModel());
         super.visit(that);
     }
 
@@ -46,60 +45,46 @@ public class VisibilityVisitor extends Visitor {
         super.visit(that);
         Class c = that.getDeclarationModel();
         if (that.getParameterList()!=null) {
-            for (Tree.Parameter tp: that.getParameterList().getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getModel()!=null) {
-                        checkParameterVisibility(tp, c, p);
-                    }
-                }
-            }
+            checkParameterVisibility(c, that.getParameterList());
         }
     }
 
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        Method m = that.getDeclarationModel();
-        for (Tree.ParameterList list: that.getParameterLists()) {
-            for (Tree.Parameter tp: list.getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getModel()!=null) {
-                        checkParameterVisibility(tp, m, p);
-                    }
-                }
-            }
-        }
+        checkParameterVisibility(that.getDeclarationModel(), 
+                that.getParameterLists());
     }
 
     @Override
     public void visit(Tree.MethodArgument that) {
         super.visit(that);
-        Method m = that.getDeclarationModel();
-        for (Tree.ParameterList list: that.getParameterLists()) {
-            for (Tree.Parameter tp: list.getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getModel()!=null) {
-                        checkParameterVisibility(tp, m, p);
-                    }
-                }
-            }
-        }
+        checkParameterVisibility(that.getDeclarationModel(), 
+                that.getParameterLists());
     }
 
     @Override
     public void visit(Tree.FunctionArgument that) {
         super.visit(that);
         Method m = that.getDeclarationModel();
-        for (Tree.ParameterList list: that.getParameterLists()) {
-            for (Tree.Parameter tp: list.getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getModel()!=null) {
-                        checkParameterVisibility(tp, m, p);
-                    }
+        checkVisibility(that, m);
+        checkParameterVisibility(m, that.getParameterLists());
+    }
+
+    private void checkParameterVisibility(Method m,
+            List<ParameterList> parameterLists) {
+        for (Tree.ParameterList list: parameterLists) {
+            checkParameterVisibility(m, list);
+        }
+    }
+
+    private void checkParameterVisibility(Declaration m, 
+            Tree.ParameterList list) {
+        for (Tree.Parameter tp: list.getParameters()) {
+            if (tp!=null) {
+                Parameter p = tp.getParameterModel();
+                if (p.getModel()!=null) {
+                    checkParameterVisibility(tp, m, p);
                 }
             }
         }
@@ -232,8 +217,9 @@ public class VisibilityVisitor extends Visitor {
         }
     }
 
-    private static void checkVisibility(Tree.StatementOrArgument that, 
-            Declaration td, ProducedType type) {
+    private static void checkVisibility(Node that, 
+            TypedDeclaration td) {
+        ProducedType type = td.getType();
         if (type!=null) {
             Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {

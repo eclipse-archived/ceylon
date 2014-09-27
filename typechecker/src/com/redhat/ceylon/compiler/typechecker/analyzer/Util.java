@@ -766,7 +766,7 @@ public class Util {
         }
     }
     
-    public static Node getTypeErrorNode(Tree.StatementOrArgument that) {
+    public static Node getTypeErrorNode(Node that) {
         if (that instanceof Tree.TypedDeclaration) {
             Tree.Type type = ((Tree.TypedDeclaration) that).getType();
             if (type!=null) {
@@ -775,6 +775,12 @@ public class Util {
         }
         if (that instanceof Tree.TypedArgument) {
             Tree.Type type = ((Tree.TypedArgument) that).getType();
+            if (type!=null) {
+                return type;
+            }
+        }
+        if (that instanceof Tree.FunctionArgument) {
+            Tree.Type type = ((Tree.FunctionArgument) that).getType();
             if (type!=null) {
                 return type;
             }

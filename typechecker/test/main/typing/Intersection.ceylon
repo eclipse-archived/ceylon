@@ -179,6 +179,7 @@ interface IntersectionCanonicalization {
 }
 
 interface MyMutableList<Element> satisfies List<Element> {}
+
 class Wrapper() {
     
     interface Interface of SubInterface {}
