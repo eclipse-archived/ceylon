@@ -1303,16 +1303,20 @@ public class TypeVisitor extends Visitor {
                     } 
                     else {
                         if (std instanceof TypeParameter) {
-                            st.addError("directly satisfies type parameter: '" + 
-                                    type.getDeclaration().getName(unit) + "'");
+                            st.addError("directly satisfies type parameter: '" + std.getName(unit) + "'");
                             continue;
                         }
                         else if (std instanceof Class) {
-                            st.addError("satisfies a class: '" + 
-                                    type.getDeclaration().getName(unit) + "'");
+                            st.addError("satisfies a class: '" + std.getName(unit) + "'");
                             continue;
                         }
-                        else if (!(std instanceof Interface)) {
+                        else if (std instanceof Interface) {
+                            if (td.isDynamic() && !std.isDynamic()) {
+                                st.addError("dynamic interface satisfies a non-dynamic interface: '" + 
+                                        std.getName(unit) + "'");
+                            }
+                        }
+                        else {
                             st.addError("satisfied type must be an interface");
                             continue;
                         }
