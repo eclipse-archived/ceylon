@@ -20,4 +20,4 @@ Anything vzz = void (@error Bar bar) {
     return Bar();
 };
 
-void run(Anything b = (){class Bar(){} return Bar();}) {}
+void run(@error Anything b = (){class Bar(){} return Bar();}) {}
