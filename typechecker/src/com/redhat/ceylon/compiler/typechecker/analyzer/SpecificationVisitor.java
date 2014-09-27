@@ -530,8 +530,10 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
+        boolean parameterized = false;
         while (m instanceof Tree.ParameterizedExpression) {
         	m = ((Tree.ParameterizedExpression) m).getPrimary();
+        	parameterized = true;
         }
         if (m instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
@@ -573,7 +575,7 @@ public class SpecificationVisitor extends Visitor {
             	        }
             	    }
             	}
-	            if (!lazy) {
+	            if (!lazy || !parameterized) {
 	            	se.visit(this);
 	            }
 	            boolean constant = !isVariable() && !isLate();
@@ -621,7 +623,7 @@ public class SpecificationVisitor extends Visitor {
 	                specify();
 	                m.visit(this);
 	            }
-	            if (lazy) {
+	            if (lazy && parameterized) {
 	                se.visit(this);
 	            }
 	        }

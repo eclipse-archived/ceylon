@@ -136,3 +136,16 @@ interface SelfReference {
     }
 }
 
+void recursivedefs() {
+    String a;
+    @error a => a;
+    String b;
+    @error b = b;
+    @error String c => c;
+    @error String d = d;
+    String e { @error return e; }
+    String f() { return f(); }
+    String g() => g();
+    String h();
+    h() => h();
+}
