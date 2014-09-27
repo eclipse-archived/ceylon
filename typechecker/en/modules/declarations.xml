@@ -906,6 +906,10 @@ TypeConstraints?
             keyword <literal>dynamic</literal>. Dynamic interfaces may be used to model the 
             type of objects defined in dynamically typed native code.</para> 
             
+            <para>Every declaration nested inside a dynamic interface must be declared 
+            <literal>formal</literal>. A dynamic interface may not satisfy any interface 
+            that is not also a dynamic interface.</para>
+            
             <para>Within a dynamic block, defined in <xref linkend="dynamicblocks"/>, 
             assignment of a value with no Ceylon type to a dynamic interface type does not 
             result in an <literal>AssertionError</literal>, as defined in 
