@@ -110,7 +110,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // if the artifact doesn't allow or need signing
     public ArtifactContext getSha1Context() {
         if (suffixes.length == 1) {
-            if (!suffixes[0].endsWith(SHA1) && !isDirectoryName(suffixes[0]) && !isFullName(suffixes[0])) {
+            if (!suffixes[0].endsWith(SHA1) && !isDirectoryName(suffixes[0])) {
                 String[] sha1Suffixes = { suffixes[0] + SHA1 };
                 return new ArtifactContext(name, version, sha1Suffixes);
             }
@@ -213,12 +213,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public static String getSuffixFromNode(Node node) {
         String fileName = node.getLabel();
-        String suffix = getSuffixFromFilename(fileName);
-        if (SHA1.equals(suffix)) {
-            fileName = fileName.substring(0, fileName.length() - 5);
-            suffix = getSuffixFromFilename(fileName) + SHA1;
-        }
-        return suffix;
+        return getSuffixFromFilename(fileName);
     }
 
     /**
@@ -227,6 +222,18 @@ public class ArtifactContext implements Serializable, ContentOptions {
      * of the "full name" results like "module-docs" or "module.properties"
      */
     public static String getSuffixFromFilename(String fileName) {
+        String suffix = getSuffixFromFilename_(fileName);
+        if (SHA1.equals(suffix)) {
+            fileName = fileName.substring(0, fileName.length() - 5);
+            return (fileName.isEmpty()) ? SHA1 : (fileName) + SHA1;
+        } else if (ZIP.equals(suffix)) {
+            fileName = fileName.substring(0, fileName.length() - 4);
+            return (fileName.isEmpty()) ? ZIP : getSuffixFromFilename(fileName) + ZIP;
+        }
+        return suffix;
+    }
+
+    private static String getSuffixFromFilename_(String fileName) {
         for (String suffix : fileNames) {
             if (fileName.equals(suffix)) {
                 return suffix;
@@ -246,12 +253,16 @@ public class ArtifactContext implements Serializable, ContentOptions {
     }
 
     public static String getArtifactName(String name, String version, String suffix) {
-        if (isDirectoryName(suffix) || isFullName(suffix))
-            return suffix;
-        else if (RepositoryManager.DEFAULT_MODULE.equals(name))
-            return name + suffix;
-        else
-            return name + "-" + version + suffix;
+        if (suffix.endsWith(SHA1)) {
+            return getArtifactName(name, version, suffix.substring(0, suffix.length() - 5)) + SHA1;
+        } else {
+            if (isDirectoryName(suffix) || isFullName(suffix))
+                return suffix;
+            else if (RepositoryManager.DEFAULT_MODULE.equals(name))
+                return name + suffix;
+            else
+                return name + "-" + version + suffix;
+        }
     }
 
     /**
@@ -274,6 +285,11 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private static boolean isFullName(String fileName) {
         for (String suffix : fileNames) {
             if (fileName.equals(suffix)) {
+                return true;
+            }
+        }
+        for (String suffix : directoryNames) {
+            if (fileName.equals(suffix + ZIP) || fileName.equals(suffix + ZIP + SHA1)) {
                 return true;
             }
         }
