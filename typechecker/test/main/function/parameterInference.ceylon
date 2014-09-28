@@ -15,7 +15,10 @@ void parameterInference() {
         case (is Integer) { return num.float; } 
         case (is Float) { return num; } 
     }
-    @type:"Float|Integer" value reduced3 = (1..10).reduce<Float>((r, x) => float(r)+x);
+    @type:"Float|Integer" value reduced3 
+            = (1..10).reduce<Float>((r, x) => float(r)+x);
+    @type:"Float|Integer" value reduced4 
+            = (1..10).reduce<Float> { (r, x) => float(r)+x; };
     
     T? fun<T>({T*} ts)(Boolean match(T t)) => ts.find(match);
     Character?(Boolean(Character)) fun1 = fun("goodbye*world");
@@ -28,5 +31,7 @@ void parameterInference() {
     
     void accept(String(Float) fun) => fun(1.0);
     accept((f)=>f.string);
+    accept { (f)=>f.string; };
+    accept { (f) { return f.string; }; };
 
 }
