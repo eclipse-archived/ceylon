@@ -25,6 +25,7 @@ import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.runtime.ClassLoaderHolder;
+
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
@@ -96,7 +97,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 throw new CeylonRuntimeException(msg);
             }
 
-            SecurityActions.invokeRun(runClass, args);
+            try {
+                SecurityActions.invokeRun(runClass, args);
+            } catch (NoSuchMethodException ex) {
+                String type = (Character.isUpperCase(runClassName.charAt(0)) ? "class" : "method");
+                String msg = String.format("Cannot run toplevel %s '%s': it should have no parameters or they should all have default values.", type, runClassName);
+                throw new CeylonRuntimeException(msg);
+            }
         } finally {
             SecurityActions.setContextClassLoader(oldClassLoader);
         }
