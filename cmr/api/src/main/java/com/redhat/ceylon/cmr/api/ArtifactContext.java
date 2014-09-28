@@ -50,10 +50,15 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     // IMPORTANT: Makes sure the elements in this array are ordered in such
     // a way that no ambiguities can occur when matching them one at a time.
-    // So for example DOCS_ZIPPED must appear before ZIP
+    // NB: SHA1 and ZIP are not part of this list because they are supposed
+    // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
         CAR, JAR, JS_MODEL, JS, RESOURCES, SRC, MAVEN_SRC, DOCS,
-        DOCS_ZIPPED, SHA1, INFO, SCRIPTS_ZIPPED, ZIP
+        DOCS_ZIPPED, INFO, SCRIPTS_ZIPPED
+    };
+    
+    private static final String composedSuffixes[] = {
+        ZIP, SHA1
     };
     
     private static final String fileNames[] = {
@@ -245,6 +250,11 @@ public class ArtifactContext implements Serializable, ContentOptions {
             }
         }
         for (String suffix : fileSuffixes) {
+            if (fileName.endsWith(suffix)) {
+                return suffix;
+            }
+        }
+        for (String suffix : composedSuffixes) {
             if (fileName.endsWith(suffix)) {
                 return suffix;
             }
