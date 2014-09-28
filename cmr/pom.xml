@@ -30,7 +30,7 @@
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.jboss.modules>1.3.3.Final</version.jboss.modules>
         <version.sardine.webdav>5.1</version.sardine.webdav>
-        <version.shrinkwrap.resolver>2.1.1</version.shrinkwrap.resolver>
+        <version.shrinkwrap.resolver>2.2.0-beta-1</version.shrinkwrap.resolver>
         <version.net.minidev.json-smart>1.1.1</version.net.minidev.json-smart>
         <version.junit>4.10</version.junit>
         <!-- Maven -->
