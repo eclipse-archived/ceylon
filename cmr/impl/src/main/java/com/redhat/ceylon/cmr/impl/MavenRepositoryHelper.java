@@ -74,5 +74,10 @@ public class MavenRepositoryHelper {
         protected void delete(File file, Node node) {
             // cannot delete from Maven repo
         }
+
+        @Override
+        public boolean canHandleFolders() {
+            return false;
+        }
     }
 }

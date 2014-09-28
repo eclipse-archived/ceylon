@@ -162,4 +162,9 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     public boolean isHerd() {
         return false;
     }
+
+    @Override
+    public boolean canHandleFolders() {
+        return true;
+    }
 }

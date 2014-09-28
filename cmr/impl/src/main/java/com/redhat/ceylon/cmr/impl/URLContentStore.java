@@ -304,6 +304,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
+    public boolean canHandleFolders() {
+        return !isHerd();
+    }
+
+    @Override
     public boolean isSearchable() {
         return connectionAllowed() && isHerd();
     }

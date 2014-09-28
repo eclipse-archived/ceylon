@@ -63,4 +63,6 @@ public interface ContentStore {
     boolean isOffline();
     
     boolean isHerd();
+    
+    boolean canHandleFolders();
 }

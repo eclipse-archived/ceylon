@@ -164,7 +164,13 @@ public class AetherContentStore extends AbstractContentStore {
         return name;
     }
 
+    @Override
     public boolean isHerd() {
+        return false;
+    }
+
+    @Override
+    public boolean canHandleFolders() {
         return false;
     }
 }
