@@ -29,6 +29,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.log.Logger;
 
 /*
@@ -126,6 +128,24 @@ public class ShaSigner {
                 os.close();
             } catch (IOException e) {
                 // don't care
+            }
+        }
+    }
+
+    public static void signArtifact(RepositoryManager repoman, ArtifactContext context, File jarFile, Logger log){
+        ArtifactContext sha1Context = context.getSha1Context();
+        if (sha1Context != null) {
+            sha1Context.setForceOperation(true);
+            String sha1 = sha1(jarFile, log);
+            if(sha1 != null){
+                File shaFile = writeSha1(sha1, log);
+                if(shaFile != null){
+                    try{
+                        repoman.putArtifact(sha1Context, shaFile);
+                    }finally{
+                        shaFile.delete();
+                    }
+                }
             }
         }
     }

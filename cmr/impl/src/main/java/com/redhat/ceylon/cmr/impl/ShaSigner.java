@@ -10,6 +10,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.log.Logger;
 
 /** A container for methods to sign a File using SHA-1.
@@ -109,6 +111,21 @@ public class ShaSigner {
             chars[c++] = Hexadecimal[v%16];
         }
         return new String(chars);
+    }
+
+    public static void signArtifact(RepositoryManager repoman, ArtifactContext context, File jarFile, Logger log){
+        ArtifactContext sha1Context = context.getSha1Context();
+        if (sha1Context != null) {
+            sha1Context.setForceOperation(true);
+            File shaFile = sign(jarFile, log, false);
+            if(shaFile != null){
+                try{
+                    repoman.putArtifact(sha1Context, shaFile);
+                }finally{
+                    shaFile.delete();
+                }
+            }
+        }
     }
 
 }
