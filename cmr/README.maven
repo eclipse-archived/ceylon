@@ -16,5 +16,5 @@ And this might work on Windows:
 
 After that you can do:
 
-    mvn clean install -Dmaven.test.skip
+    mvn clean install -DskipTests
 
