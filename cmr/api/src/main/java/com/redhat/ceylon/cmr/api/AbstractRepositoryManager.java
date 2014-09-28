@@ -116,7 +116,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 // up to the one we found, because we know the list is ordered
                 // and the others were tried first
                 Iterator<String> iter = suffixes.iterator();
-                while (!suffix.equals(iter.next())) {
+                while (iter.hasNext() && !suffix.equals(iter.next())) {
                     iter.remove();
                 }
                 suffixes.remove(suffix);
