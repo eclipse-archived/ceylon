@@ -118,6 +118,19 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return null;
     }
 
+    // Returns the ZIP version of the current context or null
+    // if the current context is already a ZIP artifact or
+    // if the artifact doesn't allow or need zipping
+    public ArtifactContext getZipContext() {
+        if (suffixes.length == 1) {
+            if (!suffixes[0].endsWith(ZIP) && isDirectoryName(suffixes[0])) {
+                String[] sha1Suffixes = { suffixes[0] + ZIP };
+                return new ArtifactContext(name, version, sha1Suffixes);
+            }
+        }
+        return null;
+    }
+
     public ArtifactContext getSuffixContext(String... suffixes) {
         ArtifactContext ac = copy();
         ac.setSuffixes(suffixes);
