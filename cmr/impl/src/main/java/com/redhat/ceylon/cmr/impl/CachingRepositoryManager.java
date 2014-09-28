@@ -62,35 +62,30 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
         this.cachingDir = cachingDir;
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
+    protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {
         try {
-            Node node = getLeafNode(context);
-            // node and file must exist to check cache
-            if (node != null) {
-                ArtifactResult result = caching.getArtifactResult(context);
-                if (result != null) {
-                    boolean valid = false;
-                    File file = result.artifact();
-                    if (file.exists()) {
-                        long lm = node.getLastModified();
-                        valid = (lm == -1 || lm < file.lastModified());
-                    }
-                    if (valid) {
-                        return result;
-                    }
+            ArtifactResult result = caching.getArtifactResult(context);
+            if (result != null) {
+                boolean valid = false;
+                File file = result.artifact();
+                if (file.exists()) {
+                    long lm = node.getLastModified();
+                    valid = (lm == -1 || lm < file.lastModified());
                 }
-
-                final boolean previous = context.isForceOperation();
-                context.setForceOperation(true);
-                try {
-                    context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
-                    caching.putArtifact(context, node.getInputStream());
-                } finally {
-                    context.setForceOperation(previous);
+                if (valid) {
+                    return result;
                 }
-                return caching.getArtifactResult(context);
             }
-            return null;
+
+            final boolean previous = context.isForceOperation();
+            context.setForceOperation(true);
+            try {
+                context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
+                caching.putArtifact(context, node.getInputStream());
+            } finally {
+                context.setForceOperation(previous);
+            }
+            return caching.getArtifactResult(context);
         } catch (IOException e) {
             throw new RepositoryException(e);
         }

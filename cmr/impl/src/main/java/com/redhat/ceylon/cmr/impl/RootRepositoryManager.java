@@ -66,49 +66,43 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         setCache(aaca);
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
-        final Node node = getLeafNode(context);
-        if (node != null) {
-            if (node.isRemote()) {
-                final boolean forceOp = context.isForceOperation();
-                try {
-                    context.setForceOperation(true); // just force the ops
-                    log.debug("Looking up artifact " + context + " from " + node + " to cache it");
-                    InputStream inputStream = node.getInputStream();
-                    // temp fix for https://github.com/ceylon/ceylon-module-resolver/issues/60
-                    // in theory we should not have nodes with null streams, but at least provide a helpful exception
-                    if (inputStream == null) {
-                        throw new RepositoryException("Node " + node + " for repository " + this + " returned a null stream");
-                    }
-                    try {
-                        context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
-                        log.debug(" -> Found it, now caching it");
-                        final File file = putContent(context, node, inputStream);
-                        log.debug("    Caching done: " + file);
-                        String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
-                        File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
-                        FileWriter writer = new FileWriter(originalRepoFile, false);
-                        try {
-                            writer.write(repositoryDisplayString);
-                            writer.close();
-                        } catch(IOException e) {
-                            log.error(e.toString());
-                        }
-                        // we expect the remote nodes to support Ceylon module info
-                        return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
-                    } finally {
-                        IOUtils.safeClose(inputStream);
-                    }
-                } catch (IOException e) {
-                    throw new RepositoryException(e);
-                } finally {
-                    context.setForceOperation(forceOp);
+    protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {
+        if (node.isRemote()) {
+            final boolean forceOp = context.isForceOperation();
+            try {
+                context.setForceOperation(true); // just force the ops
+                log.debug("Looking up artifact " + context + " from " + node + " to cache it");
+                InputStream inputStream = node.getInputStream();
+                // temp fix for https://github.com/ceylon/ceylon-module-resolver/issues/60
+                // in theory we should not have nodes with null streams, but at least provide a helpful exception
+                if (inputStream == null) {
+                    throw new RepositoryException("Node " + node + " for repository " + this + " returned a null stream");
                 }
-            } else {
-                return toArtifactResult(node);
+                try {
+                    log.debug(" -> Found it, now caching it");
+                    final File file = putContent(context, node, inputStream);
+                    log.debug("    Caching done: " + file);
+                    String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
+                    File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
+                    FileWriter writer = new FileWriter(originalRepoFile, false);
+                    try {
+                        writer.write(repositoryDisplayString);
+                        writer.close();
+                    } catch(IOException e) {
+                        log.error(e.toString());
+                    }
+                    // we expect the remote nodes to support Ceylon module info
+                    return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
+                } finally {
+                    IOUtils.safeClose(inputStream);
+                }
+            } catch (IOException e) {
+                throw new RepositoryException(e);
+            } finally {
+                context.setForceOperation(forceOp);
             }
         } else {
-            return null;
+            return toArtifactResult(node);
         }
     }
 

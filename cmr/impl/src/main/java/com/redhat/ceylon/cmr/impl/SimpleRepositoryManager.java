@@ -21,6 +21,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
@@ -48,8 +49,8 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
         setCache(root);
     }
 
-    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
-        return cache.getArtifactResult(this, getLeafNode(context));
+    protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {
+        return cache.getArtifactResult(this, node);
     }
 
     @Override

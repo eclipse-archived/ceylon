@@ -31,6 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -147,6 +148,51 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return displayStrings;
     }
 
+    public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
+        final Node node = getLeafNode(context);
+        if (node != null) {
+            context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
+            if (ArtifactContext.isDirectoryName(node.getLabel())) {
+                return getFolder(context, node);
+            } else {
+                return getArtifactResult(context, node);
+            }
+        } else {
+            return  null;
+        }
+    }
+
+    protected abstract ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException;
+    
+    @Override
+    protected ArtifactResult getFolder(ArtifactContext context, Node node) throws RepositoryException {
+        // fast-path for Herd
+        if (!canHandleFolders(NodeUtils.getRepository(node))) {
+            return downloadZipped(node, context);
+        }
+        
+        return getArtifactResult(context, node);
+    }
+
+    private ArtifactResult downloadZipped(Node node, ArtifactContext context) {
+        if (ArtifactContext.getSuffixFromNode(node).equals(ArtifactContext.DOCS)) {
+            log.debug(String.format("Not downloading folder [%s] to Herd: module-doc zip will be used instead", node.getLabel()));
+            // FIXME This is a completely fake result until that time we actually support auto zipping and unzipping of fodlers
+            return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), null, NodeUtils.getRepositoryDisplayString(node));
+        } else {
+            ArtifactContext zippedContext = context.getZipContext();
+            ArtifactResult zipResult = getArtifactResult(zippedContext);
+            String zipName = zipResult.artifact().getName();
+            File unzippedFolder = new File(zipResult.artifact().getParentFile(), zipName.substring(0, zipName.length() - 4));
+            try {
+                IOUtils.extractArchive(zipResult.artifact(), unzippedFolder);
+            } catch (IOException e) {
+                throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
+            }
+            return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
+        }
+    }
+    
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
         try {
             putArtifactInternal(context, content);
@@ -185,8 +231,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug(" -> " + NodeUtils.getFullPath(parent));
 
         // fast-path for Herd
-        if (isHerd()) {
-            uploadToHerd(parent, context, folder);
+        if (!canHandleFolders()) {
+            uploadZipped(parent, context, folder);
             return;
         }
 
@@ -212,12 +258,43 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private boolean isHerd() {
-        ContentStore cs = cache.getRoot().getService(ContentStore.class);
+        return isHerd(cache);
+    }
+
+    private boolean isHerd(Repository repo) {
+        ContentStore cs = repo.getRoot().getService(ContentStore.class);
         return cs != null && cs.isHerd();
     }
 
-    private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
-        log.debug(String.format("Not uploading folder [%s] to Herd: module-doc zip will be used instead", folder));
+    private boolean canHandleFolders() {
+        return canHandleFolders(cache);
+    }
+
+    private boolean canHandleFolders(Repository repo) {
+        ContentStore cs = repo.getRoot().getService(ContentStore.class);
+        return cs != null && cs.canHandleFolders();
+    }
+
+    private void uploadZipped(Node parent, ArtifactContext context, File folder) {
+        if (context.getSingleSuffix().equals(ArtifactContext.DOCS)) {
+            log.debug(String.format("Not uploading folder [%s] to Herd: module-doc zip will be used instead", folder));
+        } else {
+            File zippedFolder = null;
+            try {
+                try {
+                    zippedFolder = IOUtils.zipFolder(folder);
+                } catch (IOException e) {
+                    throw new RepositoryException("Failed to zip folder for upload to Herd: " + folder);
+                }
+                ArtifactContext zippedContext = context.getZipContext();
+                putArtifact(zippedContext, zippedFolder);
+                ShaSigner.signArtifact(this, zippedContext, zippedFolder, log);
+            } finally {
+                if (zippedFolder != null) {
+                    FileUtil.deleteQuietly(zippedFolder);
+                }
+            }
+        }
     }
 
     protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {

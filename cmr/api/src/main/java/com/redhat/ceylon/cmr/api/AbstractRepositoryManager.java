@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -88,6 +89,10 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         context.setName(name);
         context.setVersion(version);
         return getArtifactResult(context);
+    }
+
+    protected ArtifactResult getFolder(ArtifactContext context, Node node) throws RepositoryException {
+        throw new RepositoryException("RepositoryManager doesn't support folder get: " + context);
     }
 
     public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
