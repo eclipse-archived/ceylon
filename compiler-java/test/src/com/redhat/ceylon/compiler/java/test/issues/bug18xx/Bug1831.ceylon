@@ -17,9 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-void bug1830() {
-    try {
-        
-    }
-    catch (Exception exception)
+@noanno
+class Bug1831B() { shared String qname() => ""; }
+@noanno
+void f(Bug1831B[] bs) {
+    value v = bs*.qname()*.size;
+    value v2 = bs*.string*.size;
+    value v3 = bs*.qname()*.initial(1)*.size;
 }
