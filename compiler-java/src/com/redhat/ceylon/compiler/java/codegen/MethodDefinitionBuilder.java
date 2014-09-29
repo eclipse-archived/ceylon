@@ -29,12 +29,15 @@ import static com.sun.tools.javac.code.TypeTags.VOID;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -329,8 +332,31 @@ public class MethodDefinitionBuilder
         pdb.aliasName(aliasedName);
         pdb.sequenced(decl.isSequenced());
         pdb.defaulted(decl.isDefaulted());
-        pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags, canWiden), gen.makeJavaTypeAnnotations(decl.getModel()));
+        if (isParamTypeLocalToMethod(decl,
+                nonWideningType)) {
+            pdb.type(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()));
+        } else {
+            pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags, canWiden), gen.makeJavaTypeAnnotations(decl.getModel()));
+        }
         return parameter(pdb);
+    }
+
+    private boolean isParamTypeLocalToMethod(Parameter parameter,
+            ProducedType nonWideningType) {
+        Declaration method = parameter.getDeclaration();
+        TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
+        if (paramTypeDecl instanceof TypeParameter
+                && Decl.equalScopeDecl(paramTypeDecl.getContainer(), method)) {
+            return false;
+        }
+        Scope scope = paramTypeDecl.getContainer();
+        while (scope != null && !(scope instanceof Package)) {
+            if (Decl.equalScopeDecl(scope, method)) {
+                return true;
+            }
+            scope = scope.getContainer();
+        }
+        return false;
     }
 
     static JCExpression paramType(AbstractTransformer gen, TypedDeclaration nonWideningDecl,
