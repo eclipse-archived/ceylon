@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -49,7 +50,7 @@ public class RemoteContentStore extends URLContentStore {
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);
-                huc.setReadTimeout(timeout);
+                huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 addCredentials(huc);
                 InputStream stream = conn.getInputStream();
                 int code = huc.getResponseCode();

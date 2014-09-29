@@ -47,6 +47,7 @@ import com.redhat.ceylon.cmr.util.WS;
 import com.redhat.ceylon.cmr.util.WS.Link;
 import com.redhat.ceylon.cmr.util.WS.Parser;
 import com.redhat.ceylon.cmr.util.WS.XMLHandler;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -113,7 +114,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
             try{
                 con.setConnectTimeout(timeout);
-                con.setReadTimeout(timeout);
+                con.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 con.setRequestMethod("OPTIONS");
                 if(con.getResponseCode() != HttpURLConnection.HTTP_OK)
                     return false;
@@ -277,7 +278,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection huc = (HttpURLConnection) conn;
                 huc.setConnectTimeout(timeout);
-                huc.setReadTimeout(timeout);
+                huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 huc.setRequestMethod("HEAD");
                 addCredentials(huc);
                 int code = huc.getResponseCode();
