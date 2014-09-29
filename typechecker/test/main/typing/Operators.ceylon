@@ -1,4 +1,3 @@
-@error;
 class Operators() {
     
     class X() {}
@@ -44,7 +43,7 @@ class Operators() {
     
     @type:"Float" value x9 = 1 + 1.0;
     
-    @error value x10 = 1.0 * 2.5 ^ -0.5;
+    value x10 = 1.0 * 2.5 ^ (-0.5);
     
     @type:"Boolean" value x11 = !( true || false ) && true;
     
@@ -148,8 +147,8 @@ class Operators() {
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
-    @error value x44 = sequence["hello"*];
-    @error value x44u = sequence[*"hello"];
+    //@error value x44 = sequence["hello"*];
+    //@error value x44u = sequence[*"hello"];
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
@@ -368,7 +367,8 @@ class Operators() {
     
     Integer bin1 = $1010_0101;
     Integer bin2 = $1111_0000;
-    Integer bin3 = bin1 and (bin1 not);
+    //Integer bin3 = bin1 and bin2;
+    //Integer bin4 = bin1 and (bin2 or bin1);
     
     Object set = nothing;
     for (@error me in set) {}

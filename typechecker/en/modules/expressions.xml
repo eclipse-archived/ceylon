@@ -2882,52 +2882,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     </section>
     
-    <section id="operatorstyleexpressions">
-        <title>Operator-style member and invocation expressions</title>
-        
-        <para>A member expression or a method invocation with a single positional 
-        argument may be written using an <emphasis>operator-style</emphasis> 
-        syntax.</para>
-        
-        <programlisting>0..max by step</programlisting>
-        
-        <para>This syntax is parsed with an extremely low precedence, just above 
-        the precedence of the assignment operator <literal>=</literal> and below 
-        the precedence of the <literal>then</literal> and <literal>else</literal> 
-        operators.</para>
-        
-        <para>In an <emphasis>operator-style invocation expression</emphasis>, the 
-        invoked method name and optional type arguments occur in an infix location 
-        between two expressions. The first expression is interpreted as the receiver 
-        expression, and the second expression is interpreted as a positional argument 
-        to the first parameter of the method.</para> 
-        
-        <synopsis>OperatorInvocation: ValueExpression MemberName TypeArguments? Expression</synopsis>
-        
-        <para>Operator-style invocation expressions are right-associative.</para>
-        
-        <para>The semantics of this syntax are identical to ordinary invocation 
-        expressions, as defined in <xref linkend="invocationexpressions"/>.</para>
-        
-        <para>In an <emphasis>operator-style member expression</emphasis>, the 
-        member name and optional type arguments occur in a postfix location after
-        an expression. The expression is interpreted as the receiver expression.</para> 
-        
-        <synopsis>OperatorMemberExpression: ValueExpression MemberName TypeArguments?</synopsis>
-        
-        <para>Operator-style member expressions are not associative.</para>
-        
-        <para>The semantics of this syntax are identical to ordinary member expression,
-        as defined in <xref linkend="memberexpressions"/>.</para>
-        
-        <para>An operator-style member or invocation expression is not a legal 
-        expression statement.</para>
-        
-        <!--comment><para>TODO: Should we rather use this syntax as a sugar for invocation
-        of a toplevel function?</para></comment-->
-        
-    </section>
-        
     <section id="metamodelexpressions">
         <title>Metamodel expressions</title>
         

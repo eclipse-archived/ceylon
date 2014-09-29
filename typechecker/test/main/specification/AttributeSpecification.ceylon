@@ -497,8 +497,8 @@ void n9(Person[] people) {
 
 class InitializerWithAnonFunction() {
     shared String name;
-    value val = "hello" filter (Character ch) {
+    value val = "hello".filter ((Character ch) {
         return ch.letter;
-    };
+    });
     name = "gavin";
 }

@@ -790,8 +790,14 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
         { if ($t1.type!=null) $satisfiedTypes.addType($t1.type); }
       )
       (
-        i=INTERSECTION_OP
-        { $satisfiedTypes.setEndToken($i); }
+        ( 
+          i=INTERSECTION_OP
+          { $satisfiedTypes.setEndToken($i); }
+        | 
+          COMMA|UNION_OP
+          { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(INTERSECTION_OP, input)); }
+        )
         (
           t2=abbreviatedType
           { if ($t2.type!=null) {
@@ -808,8 +814,14 @@ caseTypes returns [CaseTypes caseTypes]
       { if ($ct1.type!=null) $caseTypes.addType($ct1.type); 
         if ($ct1.instance!=null) $caseTypes.addBaseMemberExpression($ct1.instance); }
       (
-        u=UNION_OP 
-        { $caseTypes.setEndToken($u); }
+        ( 
+          u=UNION_OP 
+          { $caseTypes.setEndToken($u); }
+        | 
+          COMMA|INTERSECTION_OP
+          { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(UNION_OP, input)); }
+        )
         (
           ct2=caseType
           { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
@@ -1379,7 +1391,12 @@ primary returns [Primary primary]
     ;
 
 specifierParametersStart
-    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (SPECIFY|COMPUTE|specifierParametersStart))
+    : LPAREN 
+    ( 
+      RPAREN (SPECIFY|COMPUTE|specifierParametersStart)
+    | 
+      compilerAnnotations annotatedDeclarationStart
+    )
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
@@ -2012,26 +2029,6 @@ assignmentExpression returns [Term term]
         ee2=functionOrExpression
         { if ($ee2.expression!=null)
               $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
-      | memberReference
-        { qe = new QualifiedMemberExpression(null);
-          Expression e = new Expression(null);
-          e.setTerm($term);
-          qe.setPrimary(e);
-          qe.setMemberOperator(new MemberOp(null));
-          qe.setIdentifier($memberReference.identifier);
-          qe.setTypeArguments(new InferredTypeArguments(null));
-          if ($memberReference.typeArgumentList!=null)
-              qe.setTypeArguments($memberReference.typeArgumentList); 
-          $term = qe; }
-        (
-          positionalArgument
-          { InvocationExpression ie = new InvocationExpression(null);
-            ie.setPrimary(qe);
-            PositionalArgumentList al = new PositionalArgumentList(null);
-            al.addPositionalArgument($positionalArgument.positionalArgument); 
-            ie.setPositionalArgumentList(al);
-            $term = ie; }
-        )?
       )?
     ;
 

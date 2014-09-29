@@ -60,7 +60,7 @@ class ControlStructures() {
         print(n);
     }
     
-    for (i in 0..10 by 3) {}
+    for (i in (0..10).by(3)) {}
     
     /*for (value n in names) {
         print(n);
