@@ -32,7 +32,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -767,5 +769,14 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1825() {
         compareWithJavaSource("bug18xx/bug1825/Bug1825");
+    }
+    
+    @Test
+    public void testBug1830() {
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1830.ceylon");
+        ExitState call2 = task.call2();
+        Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
     }
 }
