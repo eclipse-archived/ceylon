@@ -864,7 +864,7 @@ public class Unit {
         if (args!=null) {
             List<ProducedType> simpleResult = 
                     getSimpleTupleElementTypes(args, 0);
-            if (simpleResult != null){
+            if (simpleResult!=null){
                 return simpleResult;
             }
             ProducedType tst = nonemptyArgs(args)
@@ -874,7 +874,11 @@ public class Unit {
                 if (tal.size()>=3) {
                     List<ProducedType> result = 
                             getTupleElementTypes(tal.get(2));
-                    result.add(0, tal.get(1));
+                    ProducedType arg = tal.get(1);
+                    if (arg==null) {
+                        arg = new UnknownType(this).getType();
+                    }
+                    result.add(0, arg);
                     return result;
                 }
             }

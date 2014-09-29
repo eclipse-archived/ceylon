@@ -1249,7 +1249,11 @@ public class ProducedType extends ProducedReference {
                 // cheaper c-for than foreach
                 for (int i=0, l=tps.size(); i<l; i++) {
                     TypeParameter tp = tps.get(i);
-                    argList.add(args.get(tp));
+                    ProducedType arg = args.get(tp);
+                    if (arg==null) {
+                        arg = new UnknownType(getDeclaration().getUnit()).getType();
+                    }
+                    argList.add(arg);
                 }
                 argList = unmodifiableList(argList);
                 typeArgumentList = argList;
