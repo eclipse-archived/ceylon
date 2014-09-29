@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -693,7 +694,7 @@ public class LinkRenderer {
             try {
                 HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection();
                 con.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
-                con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout());
+                con.setReadTimeout((int) DefaultToolOptions.getDefaultTimeout() * Constants.READ_TIMEOUT_MULTIPLIER);
                 con.setRequestMethod("HEAD");
                 int responseCode = con.getResponseCode();
     
