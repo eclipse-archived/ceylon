@@ -622,14 +622,14 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
-    @Ignore
     public void testBug1761A() {
-        compareWithJavaSource("bug17xx/Bug1761A");
+        assertErrors("bug17xx/Bug1761A",
+                new CompilerError(2, "shared declaration is not a member of a class, interface, or package"));
     }
     @Test
-    @Ignore
     public void testBug1761B() {
-        compareWithJavaSource("bug17xx/Bug1761B");
+        assertErrors("bug17xx/Bug1761B",
+                new CompilerError(1, "type of declaration anonymous function is not visible everywhere declaration is visible: 'Bar' involves an unshared type declaration"));
     }
     
     @Test
