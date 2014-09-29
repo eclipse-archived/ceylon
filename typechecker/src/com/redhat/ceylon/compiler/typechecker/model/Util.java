@@ -1455,9 +1455,6 @@ public class Util {
     }
 
     static boolean isVisible(Declaration member, TypeDeclaration type) {
-        if (member.getName().equals("v")) {
-            member.getVisibleScope();
-        }
         return type instanceof TypeParameter || 
                 type.isVisible(member.getVisibleScope()) &&
                 (member.getVisibleScope()!=null || 
