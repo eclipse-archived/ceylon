@@ -14,10 +14,10 @@ shared Float? parseFloat(String string) {
     // parse the sign first
     Integer sign;
     String unsignedPart;
-    if (string startsWith "-") {
+    if (string.startsWith("-")) {
         sign = -1;
         unsignedPart = string[1...];
-    } else if (string startsWith "+") {
+    } else if (string.startsWith("+")) {
         sign = +1;
         unsignedPart = string[1...];
     } else {
@@ -32,7 +32,7 @@ shared Float? parseFloat(String string) {
         wholePart = unsignedPart[...dot-1];
         String afterWholePart = unsignedPart[dot+1...];
         if (exists mag 
-            = afterWholePart firstIndexWhere Character.letter) {
+            = afterWholePart.firstIndexWhere(Character.letter)) {
             fractionalPart = afterWholePart[...mag-1];
             rest = afterWholePart[mag...];
         }
@@ -43,7 +43,7 @@ shared Float? parseFloat(String string) {
     }
     else {
         if (exists mag
-            = unsignedPart firstIndexWhere Character.letter) {
+            = unsignedPart.firstIndexWhere(Character.letter)) {
             wholePart = unsignedPart[...mag-1];
             rest = unsignedPart[mag...];
         }

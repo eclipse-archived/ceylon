@@ -153,7 +153,7 @@ shared interface Map<out Key,out Item>
                 extends Object()
                 satisfies Map<Key,Result> {
             
-            defines(Object key) => outer defines key;
+            defines(Object key) => outer.defines(key);
             
             shared actual Result? get(Object key) {
                 if (is Key key, defines(key)) {
@@ -169,11 +169,11 @@ shared interface Map<out Key,out Item>
                     => entry.key -> 
                         mapping(entry.key, entry.item);
             
-            iterator() => (outer map mapEntry).iterator();
+            iterator() => outer.map(mapEntry).iterator();
             
             size => outer.size;
             
-            clone() => outer.clone() mapItems mapping;
+            clone() => outer.clone().mapItems(mapping);
             
         }
         return map;
@@ -212,9 +212,9 @@ shared interface Map<out Key,out Item>
             function filterEntry(Key->Item entry) 
                     => filtering(entry.key);
             
-            iterator() => (outer filter filterEntry).iterator();
+            iterator() => outer.filter(filterEntry).iterator();
             
-            clone() => outer.clone() filterKeys filtering;
+            clone() => outer.clone().filterKeys(filtering);
             
         }
         return map;
@@ -244,16 +244,16 @@ shared interface Map<out Key,out Item>
             
             get(Object key) => other[key] else outer[key];
             
-            clone() => outer.clone() patch other.clone();
+            clone() => outer.clone().patch(other.clone());
             
             defines(Object key) 
-                    => (other defines key) || 
-                       (outer defines key);
+                    => other.defines(key) || 
+                       outer.defines(key);
             
             shared actual Boolean contains(Object entry) {
                 if (is Entry<Object,Object> entry) {
                     return entry in other || 
-                            !(other defines entry.key) 
+                            !other.defines(entry.key) 
                                 && entry in outer;
                 }
                 else {
@@ -264,10 +264,10 @@ shared interface Map<out Key,out Item>
             //efficient when map is much smaller than outer,
             //which is probably the common case 
             size => outer.size +
-                    (other.keys count not(outer.defines));
+                    other.keys.count(not(outer.defines));
             
             iterator() => ChainedIterator(other,
-                outer filter not(other.contains));
+                outer.filter(not(other.contains)));
             
         }
         return patch;
