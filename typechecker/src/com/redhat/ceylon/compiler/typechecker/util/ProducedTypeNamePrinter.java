@@ -374,7 +374,14 @@ public class ProducedTypeNamePrinter {
         UnionType ut = new UnionType(u);
         ut.setCaseTypes(elemtypes);
         ProducedType t = ut.getType();
-        return t.isExactly(args.getTypeArgumentList().get(0));
+        ProducedType typeArg = 
+                args.getTypeArgumentList().get(0);
+        if (typeArg==null) {
+            return false;
+        }
+        else {
+            return t.isExactly(typeArg);
+        }
     }
 
     private String getTupleElementTypeNames(ProducedType args, Unit unit) {

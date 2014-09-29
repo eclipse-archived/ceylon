@@ -44,8 +44,8 @@ public class UnionType extends TypeDeclaration {
     public ProducedType getType() {
         List<ProducedType> cts = getCaseTypes();
         for (ProducedType pt: cts) {
-            if (pt.isUnknown()) {
-                return pt;
+            if (pt==null || pt.isUnknown()) {
+                return new UnknownType(unit).getType();
             }
         }
         if (cts.size()==0) {

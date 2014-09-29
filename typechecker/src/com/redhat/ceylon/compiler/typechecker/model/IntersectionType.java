@@ -41,7 +41,7 @@ public class IntersectionType extends TypeDeclaration {
     public ProducedType getType() {
         List<ProducedType> sts = getSatisfiedTypes();
         for (ProducedType pt: sts) {
-            if (pt.isUnknown()) {
+            if (pt==null || pt.isUnknown()) {
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>(sts.size()-1);
                 for (ProducedType st: sts) {
