@@ -287,7 +287,7 @@ public class CeylonEnter extends Enter {
             throw new RuntimeException("Waaaaa, running twice!!!");
         //By now le language module version should be known (as local)
         //or we should use the default one.
-
+        int numParserErrors = log.nerrors;
         // load the standard modules
         timer.startTask("loadStandardModules");
         compilerDelegate.loadStandardModules(modelLoader);
@@ -311,15 +311,16 @@ public class CeylonEnter extends Enter {
         compilerDelegate.loadPackageDescriptors(modelLoader);
         timer.endTask();
 
-        // at this point, abort if we had any errors logged
+        // at this point, abort if we had any errors logged due to module descriptors
         timer.startTask("collectTreeErrors");
         collectTreeErrors(false);
         timer.endTask();
         // check if we abort on errors or not
         if (options.get(OptionName.CEYLONCONTINUE) == null) {
-            // if we didn't have any errors, we can go on, none were logged so
+            // if we didn't have any errors on module descriptors, 
+            // we can go on, none were logged so
             // they can't be re-logged and duplicated later on
-            if(log.nerrors > 0)
+            if(log.nerrors - numParserErrors > 0)
                 throw new Abort();
         }
     }
