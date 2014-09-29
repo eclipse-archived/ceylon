@@ -2012,21 +2012,23 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
-                Declaration etm = ci.getExtendedTypeDeclaration()
-                        .getMember(member.getName(), null, false);
-                if (etm!=null && !etm.equals(member) && etm.refines(member)) {
-                    qmte.addError("inherited member is refined by intervening superclass: '" + 
-                            ((TypeDeclaration) etm.getContainer()).getName() + 
-                            "' refines '" + member.getName() + "' declared by '" + 
-                            ((TypeDeclaration) member.getContainer()).getName() + "'");
-                }
-                for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
-                    Declaration stm = td.getMember(member.getName(), null, false);
-                    if (stm!=null && !stm.equals(member) && stm.refines(member)) {
-                        qmte.addError("inherited member is refined by intervening superinterface: '" + 
-                                ((TypeDeclaration) stm.getContainer()).getName() + 
+                if (ci!=null) {
+                    Declaration etm = ci.getExtendedTypeDeclaration()
+                            .getMember(member.getName(), null, false);
+                    if (etm!=null && !etm.equals(member) && etm.refines(member)) {
+                        qmte.addError("inherited member is refined by intervening superclass: '" + 
+                                ((TypeDeclaration) etm.getContainer()).getName() + 
                                 "' refines '" + member.getName() + "' declared by '" + 
                                 ((TypeDeclaration) member.getContainer()).getName() + "'");
+                    }
+                    for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
+                        Declaration stm = td.getMember(member.getName(), null, false);
+                        if (stm!=null && !stm.equals(member) && stm.refines(member)) {
+                            qmte.addError("inherited member is refined by intervening superinterface: '" + 
+                                    ((TypeDeclaration) stm.getContainer()).getName() + 
+                                    "' refines '" + member.getName() + "' declared by '" + 
+                                    ((TypeDeclaration) member.getContainer()).getName() + "'");
+                        }
                     }
                 }
             }
