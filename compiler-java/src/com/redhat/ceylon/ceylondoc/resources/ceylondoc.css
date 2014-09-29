@@ -6,6 +6,7 @@ body {
 code {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
     font-size: 14px;
+    font-weight: bold;
 }
 
 .module-header {
@@ -144,6 +145,8 @@ code {
 .link {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
 	color: #005580;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .link-custom-text {
@@ -173,6 +176,8 @@ code {
 
 .link-unresolvable {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .link-dropdown {
@@ -215,10 +220,13 @@ code {
 .signature,
 .parameter {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .parameter-default-value {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
+	font-size: 14px;
 	color: rgb(120, 120, 120);
 }
 
@@ -265,12 +273,14 @@ code {
 .keyword {
 	color: darkmagenta;
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .specifier,
 .specifier-rest {
 	color: darkblue;
-	font-size: 12px;
+	font-size: 14px;
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
 	padding-left: 6px;
 }
