@@ -168,7 +168,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * the "outer" invocation (which generates the outer part of the tree) 
      * and even on the "inner" invocation (which generates the inner part of the tree)
      */
-    private int withinSpread = 0;
+    private Tree.QualifiedMemberExpression spreading = null;
     private Naming.SyntheticName memberPrimary = null;
     private ClassOrInterface withinSuperInvocation = null;
     private ClassOrInterface withinDefaultParameterExpression = null;
@@ -3470,22 +3470,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transformSpreadOperator(final Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         at(expr);
-        class Restore implements AutoCloseable {
-            private SyntheticName oldMemberPrimary;
-            Restore() {
-                withinSpread++;
-                oldMemberPrimary = memberPrimary;
-            }
-            @Override
-            public void close() {
-                withinSpread--;
-                memberPrimary = oldMemberPrimary;
-            }
-            
+        
+        boolean spreadMethodReferenceOuter = !expr.equals(this.spreading) && !isWithinInvocation() && isCeylonCallableSubtype(expr.getTypeModel());
+        boolean spreadMethodReferenceInner = expr.equals(this.spreading) && isWithinInvocation();
+        Tree.QualifiedMemberExpression oldSpreading = spreading;
+        if (spreadMethodReferenceOuter) {
+            spreading = expr;
         }
-        try (Restore r = new Restore()) {
-            boolean spreadMethodReferenceOuter = this.withinSpread % 2 == 1 && !isWithinInvocation() && isCeylonCallableSubtype(expr.getTypeModel());
-            boolean spreadMethodReferenceInner = this.withinSpread % 2 == 0 && isWithinInvocation();
+        try {
             Naming.SyntheticName varBaseName = naming.alias("spread");
             ListBuffer<JCStatement> letStmts = ListBuffer.<JCStatement>lb();
             final Naming.SyntheticName srcIterableName;
@@ -3554,7 +3546,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // The code has been called recursively and the part after this if-statement will
                 // be handled by the previous recursion
                 if (spreadMethodReferenceOuter) {
-                    
                     return make().LetExpr(letStmts.toList(), transformedElement);
                 }
                 
@@ -3636,10 +3627,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 typeFact().getSequenceType(returnElementType) 
                                 : typeFact().getSequentialType(returnElementType),
                                 flags);
+            }
+            return spread;
+        } finally {
+            spreading = oldSpreading;
         }
         
-        return spread;
-        }
     }
 
     JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
