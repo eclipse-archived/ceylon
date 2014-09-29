@@ -1511,14 +1511,9 @@ public class DeclarationVisitor extends Visitor {
                 @Override
                 public Map<TypeParameter, ProducedType> initTypeArguments() {
                     Tree.TypeArgumentList tal = that.getTypeArgumentList();
-                    if (tal==null) {
-                        return Collections.<TypeParameter,ProducedType>emptyMap();
-                    }
-                    else {
-                        return getTypeArgumentMap(getDeclaration(), null, 
-                                Util.getTypeArguments(tal, 
-                                        getDeclaration().getTypeParameters(), null));
-                    }
+                    return getTypeArgumentMap(getDeclaration(), null, 
+                            Util.getTypeArguments(tal,
+                                    getDeclaration().getTypeParameters(), null));
                 }
             };
             that.setTypeModel(t);
