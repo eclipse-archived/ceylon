@@ -51,6 +51,60 @@ shared void tuples() {
     check(t.every((Object x) => true), "tuple every");
     check(t.count((Object x) => x is String) == 1, "tuple count");
     
+    "Helper for testing tuples with tails"
+    void with123([Integer, Integer, Integer+] t, String msg) {
+        alias Triplet => [Integer,Integer,Integer+];
+		Triplet? subt = t;
+        check(subt is Triplet, "``msg``: tuples");
+        check(t.lastIndex == 2, "``msg``: tuple lastIndex");
+        Integer v1 = t[0];
+        Integer v2 = t[1];
+        Integer  v3 = t[2];
+        Integer t1 = t.first;
+        check(t1 == 1, "``msg``: tuples first");
+        Integer t2 = t.rest.first;
+        check(t2 == 2, "``msg``: tuple rest.first");
+        Integer t3 = t.rest.rest.first;
+        check(t3 == 3, "``msg``: tuple rest.rest.first");
+        Integer[] t4 = t.rest.rest.rest;
+        check(t4.empty, "``msg``: tuple rest.rest.rest");
+        check(t.reversed.sequence() == {3,2,1}.sequence(), "``msg``: tuple reversed `` t.reversed.sequence() ``");
+        check(t[-2..-1] == {}, "``msg``: tuple[-2..-1] `` t[-2..-1] ``, should be empty");
+        check(t[-2..0] == {1}.sequence(), "``msg``: tuple[-2..0] `` t[-2..0] ``");
+        check(t[0..1] == {1,2}.sequence(), "``msg``: tuple[0..1] `` t[0..1] ``");
+        check(t[1..2] == {2,3}.sequence(), "``msg``: tuple[1..2] `` t[1..2] ``");
+        check(t[2..2] == [3], "``msg``: tuple[2..2] `` t[2..2] ``");
+        check(t[2..3] == [3], "``msg``: tuple[2..3] `` t[2..3] ``");
+        check(t[2..1] == {3,2}.sequence(), "``msg``: tuple[2..1] `` t[2..1] ``");
+        check(t[1..0] == {2,1}.sequence(), "``msg``: tuple[1..0] `` t[1..0] ``");
+        check(t[-2..6] == {1,2,3}.sequence(), "``msg``: tuple[-2..6] `` t[-2..6] ``");
+        check(t[5..6] == {}, "``msg``: tuple[5..6] `` t[5..6] ``");
+        
+        check(t[0:0] == {}, "``msg``: tuple[0] `` t[0] ``");
+        check(t[0:2] == {1,2}.sequence(), "``msg``: tuple[0:2] `` t[0:2] ``");
+        check(t[1:2] == {2,3}.sequence(), "``msg``: tuple[1:2] `` t[1:2] ``");
+        check(t[2:1] == [3], "``msg``: tuple[2:1] `` t[2:1] ``");
+        
+        check(t[-1...] == {1,2,3}.sequence(), "``msg``: tuple[-1...] `` t[-1...] ``");
+        check(t[0...] == {1,2,3}.sequence(), "``msg``: tuple[0...] `` t[0...] ``");
+        check(t[1...] == {2,3}.sequence(), "``msg``: tuple[1...] `` t[1...] ``");
+        check(t[2...] == [3], "``msg``: tuple[2...] `` t[2...] ``");
+        check(t[3...] == {}, "``msg``: tuple[3...] `` t[3...] ``");
+        check(t[...-1] == {}, "``msg``: tuple[...-1] `` t[...-1] ``");
+        check(t[...0] == {1}.sequence(), "``msg``: tuple[...0] `` t[...0] ``");
+        check(t[...1] == {1, 2}.sequence(), "``msg``: tuple[...1] `` t[...1] ``");
+        check(t[...2] == {1, 2, 3}.sequence(), "``msg``: tuple[...2] `` t[...2] ``");
+        check(t[...3] == {1, 2, 3}.sequence(), "``msg``: tuple[...3] `` t[...3] ``");
+        //Check inherited methods work
+        check(1 in t, "``msg``: tuple contains");
+        check(t.find((Object x) => x is Integer) exists, "``msg``: tuple find");
+        check(t.any((Object x) => x is Integer), "``msg``: tuple any");
+        check(t.every((Object x) => true), "``msg``: tuple every");
+        check(t.count((Object x) => x is Integer) == 3, "``msg``: tuple count");
+    }
+    with123([1,2,3], "[1,2,3]");
+    with123([1,2,*(3..3)], "[1,2,*(3..3)]");
+    
     check(LazyList({123}).hash==[123].hash, "tuple hash");
     
     Sequence<String> strings = ["hello", "bye"];
