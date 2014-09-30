@@ -80,13 +80,12 @@ public final class Tuple<Element, First extends Element,
     private Sequential<? extends Element> rest;
 
     /**
-     * The ultimate constructor
-     * @param $reifiedElement
+     * The ultimate constructor.
      * @param array A backing array
-     * @param first index into the {@code array} of the first element of this tuple
-     * @param length number of elements in the {@code array} that are part of this tuple
-     * @param rest index into the {@code array} of the first element of the {@code rest} of this tuple
-     * @param copy whether to copy the array of not.
+     * @param rest The tail of the tuple (not itself a Tuple)
+     * @param copy Whether the backing array should be copied 
+     * (i.e. false only if the caller can guarantee the passed 
+     * array will <strong>never</strong> be modified after the call)
      */
     @SuppressWarnings("unchecked")
     @Ignore
@@ -95,16 +94,10 @@ public final class Tuple<Element, First extends Element,
             Sequential<? extends Element> rest, 
             boolean copy) {
         super($reifiedElement);
-        int length = array.length;
-        if (array.length==0 || 
-                length == 0 ||
-                array.length <= 0) {
+        if (array.length + rest.getSize() == 0) {
             throw new AssertionError("Tuple may not have zero elements");
         }
-        if (length > array.length) {
-            throw new AssertionError("Overflow :" + 
-                    (length) + " > " + array.length);
-        }
+        int length = array.length;
         this.$reifiedElement = $reifiedElement;
         if (copy) {
             this.array = (Element[])Arrays.copyOfRange(array, 
@@ -116,9 +109,6 @@ public final class Tuple<Element, First extends Element,
         this.rest = rest;
         
         if (this.array == null) {
-            throw new AssertionError("");
-        }
-        if (this.array.length == 0) {
             throw new AssertionError("");
         }
         if (this.rest == null) {
@@ -231,7 +221,7 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("First")
     @SuppressWarnings("unchecked")
     public final First getFirst() {
-        return (First)array[0];
+        return (First)getFromFirst(0);
     }
     
     @Annotations({
@@ -341,7 +331,7 @@ public final class Tuple<Element, First extends Element,
         }
         final long lastIndex = getSize()-1;
         
-		if (fromIndex > lastIndex || length <= 0) {
+        if (fromIndex > lastIndex || length <= 0) {
             return getEmptyTuple();
         }
         long l;
@@ -350,10 +340,24 @@ public final class Tuple<Element, First extends Element,
         } else {
             l = length;
         }
-        java.lang.Object[] copy = Arrays.copyOfRange(this.array, 
-        		toInt(fromIndex), toInt(fromIndex+l));
-		return new Tuple<Element,Element,Sequential<? extends Element>>
-                ($reifiedElement, copy, getEmptyTuple(), false);
+        if (fromIndex+l<array.length) {
+            // just chop the array, discarding rest
+            java.lang.Object[] copy = fromIndex+l==array.length ? this.array : Arrays.copyOfRange(this.array, 
+                toInt(fromIndex), toInt(fromIndex+l));
+            return new Tuple<Element,Element,Sequential<? extends Element>>
+                    ($reifiedElement, copy, getEmptyTuple(), false);	
+        } else if (fromIndex >= array.length) {
+            // chop the rest
+            return (Sequential)rest.measure(Integer.instance(fromIndex-array.length), l);
+        } else {
+            // we need the trailing elements of the array and the 
+            // leading elements of rest
+            java.lang.Object[] copy = Arrays.copyOfRange(this.array, 
+                    toInt(fromIndex), toInt(this.array.length));
+            Sequential<Element> rest = (Sequential)this.rest.measure(Integer.instance(0), l-(this.array.length-toInt(fromIndex)));
+            return new Tuple<Element,Element,Sequential<? extends Element>>
+                    ($reifiedElement, copy, rest, false);
+        }
     }
     
     @Annotations({
@@ -373,26 +377,45 @@ public final class Tuple<Element, First extends Element,
             fromIndex = toIndex;
             toIndex = tmp;
         }
-		if (toIndex<0 || fromIndex>lastIndex) {
+        if (toIndex<0 || fromIndex>lastIndex) {
             return getEmptyTuple();
         }
+        // fromIndex < toIndex
         fromIndex= Math.max(fromIndex, 0);
         toIndex = Math.min(toIndex, lastIndex);
-        if (reverse) {
-            int fromInt = Util.toInt(fromIndex);
-            int toInt = Util.toInt(toIndex);
-            java.lang.Object[] reversed = new java.lang.Object[toInt-fromInt+1];
-            for (int ii = toInt, jj = 0; ii >= fromIndex; ii--, jj++) {
-                reversed[jj] = getFromFirst(ii);
+        if (toIndex < array.length 
+                || rest.getEmpty()) {
+            // just chop the array, discarding rest
+            java.lang.Object[] newArray;
+            if (reverse) {
+                int fromInt = Util.toInt(fromIndex);
+                int toInt = Util.toInt(toIndex);
+                newArray = new java.lang.Object[toInt-fromInt+1];
+                for (int ii = toInt, jj = 0; ii >= fromIndex; ii--, jj++) {
+                    newArray[jj] = getFromFirst(ii);
+                }
+            } else {
+                newArray = Arrays.copyOfRange(this.array, 
+                        toInt(fromIndex), toInt(toIndex)+1);
             }
-            return new Tuple<Element, First, Rest>
-                    ($reifiedElement, reversed, getEmptyTuple(), false);
-        }
-        else {
-            java.lang.Object[] copy = Arrays.copyOfRange(this.array, 
-            		toInt(fromIndex), toInt(toIndex)+1);
-			return new Tuple<Element, First, Rest>
-			        ($getReifiedElement$(), copy, getEmptyTuple(), false);
+            return new Tuple<Element, First, Rest>($getReifiedElement$(), newArray, getEmptyTuple(), false);
+        } else if (fromIndex >= array.length) {
+            // chop the rest
+            if (reverse) {
+                return (Sequential)rest.span(Integer.instance(toIndex-array.length), Integer.instance(fromIndex-array.length));
+            } else {
+                return (Sequential)rest.span(Integer.instance(fromIndex-array.length), Integer.instance(toIndex-array.length));
+            }
+        } else {// fromIndex < array.length <= toIndex
+            // we need the trailing elements of the array and the 
+            // leading elements of rest
+            java.lang.Object[] newArray = Arrays.copyOfRange(this.array, 
+                    toInt(fromIndex), this.array.length);
+            Sequential<? extends Element> rest = (Sequential)this.rest.span(
+                    Integer.instance(0), 
+                    Integer.instance(toIndex-array.length));
+            Tuple<Element, First, Rest> result = new Tuple<Element, First, Rest>($getReifiedElement$(), newArray, rest, false);
+            return reverse ? result.getReversed() : result;
         }
     }
     
