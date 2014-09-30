@@ -291,6 +291,15 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
+    public void testHerdCompleteCeylonForJar() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.runtime", null, "", set(), set("1.1.0"), deps(ceylang110, ceycommon110_sh, ceymaven110_opt, ceycmr110, logman, jbossmods), types(art(".JAR")), true, "The Herd"),
+        };
+        testComplete("ceylon", expected, getRepositoryManager(), Type.JAR);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCeylonCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -555,6 +564,16 @@ public class HerdTestCase extends AbstractTest {
                 new ModuleDetails("ceylon.logging", null, "", set(), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
         };
         testSearchResults("ceylon.lo", Type.CAR, expected);
+    }
+    
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredJar() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.logging", null, "", set(), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
+        };
+        testSearchResults("ceylon.lo", Type.JAR, expected);
     }
     
     @Test

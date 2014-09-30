@@ -520,7 +520,7 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
-    public void testSearchModules() throws Exception {
+    public void testSearchModulesAllJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
@@ -535,13 +535,36 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
-    public void testSearchModulesAll() throws Exception {
+    public void testSearchModulesAllCeylonCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 hello,
-                moduletest
+                moduletest,
         };
 
         testSearchResults("", Type.CEYLON_CODE, Retrieval.ALL, expected);
+    }
+
+    @Test
+    public void testSearchModulesAllCar() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
+                hello,
+                moduletest,
+                org_jboss_acme,
+        };
+
+        testSearchResults("", Type.CAR, Retrieval.ALL, expected);
+    }
+
+    @Test
+    public void testSearchModulesAllJar() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                old_jar,
+                older_jar,
+                test_jar,
+        };
+
+        testSearchResults("", Type.JAR, Retrieval.ALL, expected);
     }
 
     @Test
