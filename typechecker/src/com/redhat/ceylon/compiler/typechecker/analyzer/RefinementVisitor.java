@@ -185,6 +185,9 @@ public class RefinementVisitor extends Visitor {
                     getInterveningRefinements(dec.getName(), 
                             signature, root, type, rootType)) {
                 if (isOverloadedVersion(refined)) {
+                    //if this member is overloaded, the
+                    //inherited member it refines must
+                    //also be overloaded
                     legallyOverloaded = true;
                 }
                 found = true;
