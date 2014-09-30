@@ -772,7 +772,7 @@ public class ExpressionVisitor extends Visitor {
                         ((Method) d).isDeclaredVoid() && 
                         !isSatementExpression(sie.getExpression())) {
                     that.addError("function is declared void so specified expression must be a statement: '" + 
-                            d.getName(unit) + "' is declared void");
+                            d.getName(unit) + "' is declared 'void'");
                 }
                 if (d instanceof Value && 
                         that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
@@ -1131,7 +1131,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 if (!isSatementExpression(e)) {
-                    se.addError("function is declared void so specified expression must be a statement: '" +
+                    se.addError("specified expression must be a statement: '" +
                             sd.getName() + "'");
                 }
             }
@@ -1155,7 +1155,7 @@ public class ExpressionVisitor extends Visitor {
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
-                            that.getDeclarationModel().getName() + "'");
+                            that.getDeclarationModel().getName() + "' is declared 'void'");
                 }
             }
         }
@@ -1214,7 +1214,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (d.isDeclaredVoid() && !isSatementExpression(e)) {
                     se.addError("functional argument is declared void so specified expression must be a statement: '" + 
-                            d.getName() + "'");
+                            d.getName() + "' is declared 'void'");
                 }
             }
         }
@@ -1678,7 +1678,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
                     that.addError("void function, setter, or class initializer may not return a value: " +
-                            name + " is declared void");
+                            name + " is declared 'void'");
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     inferReturnType(et, at);
@@ -2946,7 +2946,7 @@ public class ExpressionVisitor extends Visitor {
                     p.isDeclaredVoid() &&
                     !isSatementExpression(se.getExpression())) {
                     ta.addError("functional parameter is declared void so argument may not evaluate to a value: '" +
-                            p.getName() + "'");
+                            p.getName() + "' is declared 'void'");
                 }
             }
         }
