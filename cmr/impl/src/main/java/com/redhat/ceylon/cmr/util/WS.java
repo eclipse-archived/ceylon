@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,14 +96,20 @@ public class WS {
         public void onOK(Parser parser);
     }
     
-    public static void getXML(String url, XMLHandler handler){
-        getXML(url, null, handler);
+    public static void getXML(String url, Param[] params, XMLHandler handler){
+        if(params != null)
+            url += toQueryString(Arrays.asList(params));
+        getXML(url, handler);
     }
     
-    public static void getXML(String url, Param[] params, XMLHandler handler){
+    public static void getXML(String url, List<Param> params, XMLHandler handler){
+        if(params != null)
+            url += toQueryString(params);
+        getXML(url, handler);
+    }
+    
+    public static void getXML(String url, XMLHandler handler){
         try{
-            if(params != null)
-                url += toQueryString(params);
             URL endpoint = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
             connection.setConnectTimeout((int) DefaultToolOptions.getDefaultTimeout());
@@ -223,6 +230,12 @@ public class WS {
             this.values[0] = value != null ? value.toString() : null;
         }
 
+        public Param(String name, Boolean value) {
+            this.name = name;
+            this.values = new String[1];
+            this.values[0] = value != null ? value.toString() : null;
+        }
+
         public void toString(StringBuilder b) {
             if(values.length == 1){
                 b.append(encodeURLQueryParam(name)).append("=").append(encodeURLQueryParam(values[0]));
@@ -251,6 +264,10 @@ public class WS {
         return new Param(name, value);
     }
 
+    public static Param param(String name, Boolean value) {
+        return new Param(name, value);
+    }
+
     private static String encodeURLQueryParam(String name) {
         if(name == null)
             return "";
@@ -263,13 +280,15 @@ public class WS {
         }
     }
 
-    private static String toQueryString(Param[] params){
+    private static String toQueryString(List<Param> params){
         StringBuilder b = new StringBuilder("?");
-        for (int i = 0; i < params.length; i++) {
-            if(i != 0)
+        boolean first = true;
+        for (Param param : params) {
+            if (!first) {
                 b.append("&");
-            Param param = params[i];
+            }
             param.toString(b);
+            first = false;
         }
         return b.toString();
     }
