@@ -50,7 +50,11 @@ public class MainForJsTest {
         tcb.setRepositoryManager(repoman);
         TypeChecker typeChecker = tcb.getTypeChecker();
         for (File x : excludes) {
-            final String ap = x.getPath();
+            String ap = x.getPath();
+            //Fix for Windows
+            if ('/' != File.separatorChar) {
+                ap = ap.replace('/', File.separatorChar);
+            }
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
                 if (pu.getUnit().getFullPath().startsWith(ap)) {
                     typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
