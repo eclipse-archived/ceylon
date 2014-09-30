@@ -922,13 +922,14 @@ public class ExpressionVisitor extends Visitor {
                     checkIsExactlyForInterop(that.getUnit(),
                             refinedParameters.isNamedParametersSupported(),
                             parameterType, refinedParameterType, typeNode, 
-                            "type of parameter " + p.getName() + 
-                            " of " + method.getName() + 
-                            " declared by " + ci.getName() +
-                            " is different to type of corresponding parameter " +
-                            refinedParameter.getName() + " of refined method " + 
-                            refinedMethod.getName() + " of " + 
-                            ((Declaration) refinedMethod.getContainer()).getName());
+                            "type of parameter '" + p.getName() + 
+                            "' of '" + method.getName() + 
+                            "' declared by '" + ci.getName() +
+                            "' is different to type of corresponding parameter '" +
+                            refinedParameter.getName() + "' of refined method '" + 
+                            refinedMethod.getName() + "' of '" + 
+                            ((Declaration) refinedMethod.getContainer()).getName() + 
+                            "'");
                 }
             }
         }
