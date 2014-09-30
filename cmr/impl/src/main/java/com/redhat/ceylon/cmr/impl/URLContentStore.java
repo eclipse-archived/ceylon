@@ -23,6 +23,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -508,14 +509,19 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if(connectionAllowed() && isHerd() && herdSearchModulesURL != null){
             // let's try Herd
             try{
-                WS.getXML(herdSearchModulesURL,
-                          WS.params(WS.param("query", query.getName()),
-                                    WS.param("type", getHerdTypeParam(query.getType())),
-                                    WS.param("start", query.getStart()),
-                                    WS.param("count", query.getCount()),
-                                    WS.param("binaryMajor", query.getBinaryMajor()),
-                                    WS.param("binaryMinor", query.getBinaryMinor())),
-                          new XMLHandler(){
+                List<WS.Param> params = new ArrayList<WS.Param>(10);
+                params.add(WS.param("query", query.getName()));
+                params.add(WS.param("type", getHerdTypeParam(query.getType())));
+                params.add(WS.param("start", query.getStart()));
+                params.add(WS.param("count", query.getCount()));
+                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
+                if (herdVersion >= 4) {
+                    params.add(WS.param("memberName", query.getMemberName()));
+                    params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
+                    params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
+                }
+                WS.getXML(herdSearchModulesURL, params, new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
                         parseSearchModulesResponse(p, result, query.getStart());
