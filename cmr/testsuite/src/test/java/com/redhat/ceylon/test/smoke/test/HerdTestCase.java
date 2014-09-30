@@ -745,4 +745,55 @@ public class HerdTestCase extends AbstractTest {
         Assert.assertEquals(8, pagingInfo2[2]);
 
     }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByMember() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+                new ModuleDetails("ceylon.process", null, "", set("Gavin King"), set("1.1.0"), deps(ceyfile110_sh, javabase7), car7Src, true, "The Herd"),
+        };
+
+        testSearchResultsMember("", Type.JVM, "process", false, false, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByNameAndMember() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.process", null, "", set("Gavin King"), set("1.1.0"), deps(ceyfile110_sh, javabase7), car7Src, true, "The Herd"),
+        };
+
+        testSearchResultsMember("process", Type.JVM, "process", false, false, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByExactMember() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+        };
+
+        testSearchResultsMember("", Type.JVM, "ceylon.language::process", true, false, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByPackage() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+        };
+
+        testSearchResultsMember("", Type.JVM, "ceylon.languag", false, true, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchModulesFilteredByExactPackage() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+        };
+
+        testSearchResultsMember("", Type.JVM, "ceylon.language", true, true, expected);
+    }
 }

@@ -234,6 +234,18 @@ public class AbstractTest {
         return results;
     }
 
+    protected ModuleSearchResult testSearchResultsMember(String q, Type type, String members, boolean memberSearchExact, boolean memberSearchPackageOnly, ModuleDetails[] expected) throws Exception {
+        ModuleQuery query = new ModuleQuery(q, type, Retrieval.ANY);
+        query.setMemberName(members);
+        query.setMemberSearchExact(memberSearchExact);
+        query.setMemberSearchPackageOnly(memberSearchPackageOnly);
+        RepositoryManager manager = getRepositoryManager();
+        ModuleSearchResult results = manager.searchModules(query);
+
+        compareSearchResults(expected, results);
+        return results;
+    }
+
     private void compareSearchResults(ModuleDetails[] expected, ModuleSearchResult results) {
         int i = 0;
         Collection<ModuleDetails> resultsList = results.getResults();

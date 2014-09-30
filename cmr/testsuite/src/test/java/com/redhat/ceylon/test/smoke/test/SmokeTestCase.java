@@ -593,6 +593,58 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testSearchModulesFilteredByMember() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
+                hello,
+        };
+
+        testSearchResultsMember("", Type.JVM, "hello", false, false, expected);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByNameAndMember() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
+        };
+
+        testSearchResultsMember("acme", Type.JVM, "hello", false, false, expected);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByExactMember() throws Exception {
+        ModuleDetails[] expected1 = new ModuleDetails[]{
+                com_acme_helloworld,
+        };
+        testSearchResultsMember("", Type.JVM, "com.acme.helloworld.hello_", true, false, expected1);
+        
+        ModuleDetails[] expected2 = new ModuleDetails[]{
+        };
+        testSearchResultsMember("", Type.JVM, "com.acme.helloworld", true, false, expected2);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByPackage() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
+        };
+
+        testSearchResultsMember("", Type.JVM, "com.acme", false, true, expected);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByExactPackage() throws Exception {
+        ModuleDetails[] expected1 = new ModuleDetails[]{
+                com_acme_helloworld,
+        };
+        testSearchResultsMember("", Type.JVM, "com.acme.helloworld", true, true, expected1);
+        
+        ModuleDetails[] expected2 = new ModuleDetails[]{
+        };
+        testSearchResultsMember("", Type.JVM, "com.acme", true, true, expected2);
+    }
+
+    @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
