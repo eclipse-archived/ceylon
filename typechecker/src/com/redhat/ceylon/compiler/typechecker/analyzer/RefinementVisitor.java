@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeErrorNode;
@@ -158,8 +159,8 @@ public class RefinementVisitor extends Visitor {
             that.addError("non-formal member belongs to dynamic interface");
         }
         List<ProducedType> signature = getSignature(dec);
-        Declaration root = type.getRefinedMember(dec.getName(), 
-                signature, false);
+        Declaration root = 
+                type.getRefinedMember(dec.getName(), signature, false);
         boolean legallyOverloaded = !isOverloadedVersion(dec);
         if (root == null || root.equals(dec)) {
             dec.setRefinedDeclaration(dec);
@@ -604,12 +605,12 @@ public class RefinementVisitor extends Visitor {
                    "' declared by '" + containerName(refinedMember) + "'", 9100);
     }
 
-	private void checkRefiningParameterType(ProducedReference member,
+	private static void checkRefiningParameterType(ProducedReference member,
             ProducedReference refinedMember, ParameterList refinedParams,
             Parameter rparam, ProducedType refinedParameterType,
             Parameter param, ProducedType parameterType, Node typeNode) {
 	    //TODO: consider type parameter substitution!!!
-	    checkIsExactlyForInterop(refinedMember, 
+	    checkIsExactlyForInterop(typeNode.getUnit(), 
 	            refinedParams.isNamedParametersSupported(), 
 	            parameterType, refinedParameterType, typeNode,
 	            "type of parameter '" + param.getName() + "' of '" + 
@@ -618,7 +619,7 @@ public class RefinementVisitor extends Visitor {
 	                    "' is different to type of corresponding parameter '" +
 	                    rparam.getName() + "' of refined member '" + 
 	                    refinedMember.getDeclaration().getName() + "' of '" +
-	                    containerName(refinedMember) + "'", 9200);
+	                    containerName(refinedMember) + "'");
     }
 
 	private void handleUnknownParameterType(ProducedReference member,
@@ -652,22 +653,6 @@ public class RefinementVisitor extends Visitor {
 	                "' refining '" + refinedMember.getDeclaration().getName() +
 	                "' declared by '" + containerName(refinedMember) + "'");
 	    }
-    }
-
-    private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
-            ProducedType parameterType, ProducedType refinedParameterType, Node node, 
-            String message, int code) {
-        if (isCeylon) {
-            // it must be a Ceylon method
-            checkIsExactly(parameterType, refinedParameterType, node, message, 9200);
-        }
-        else {
-            // we're refining a Java method
-            ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit()
-            		.getDefiniteType(refinedParameterType);
-            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, 
-            		node, message);
-        }
     }
 
     private static Tree.ParameterList getParameterList(Tree.Declaration that, int i) {
@@ -727,16 +712,26 @@ public class RefinementVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+        List<ProducedType> sig = new ArrayList<ProducedType>();
         Tree.Term me = that.getBaseMemberExpression();
         while (me instanceof Tree.ParameterizedExpression) {
-            me = ((Tree.ParameterizedExpression) me).getPrimary();
+            sig.clear();
+            Tree.ParameterizedExpression pe = (Tree.ParameterizedExpression) me;
+            Tree.ParameterList pl = pe.getParameterLists().get(0);
+            for (Tree.Parameter p: pl.getParameters()) {
+                if (p!=null && p.getParameterModel()!=null) {
+                    sig.add(p.getParameterModel().getType());
+                }
+                else {
+                    sig.add(null);
+                }
+            }
+            me = pe.getPrimary();
         }
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = getTypedDeclaration(bme.getScope(), 
-                    name(bme.getIdentifier()), 
-                    null, false, //TODO get the signature from the ParameterizedExpression!!!
-                    that.getUnit());
+                    name(bme.getIdentifier()), sig, false, that.getUnit());
             if (d instanceof TypedDeclaration) {
                 that.setDeclaration((TypedDeclaration) d);
                 Scope cs = getRealScope(that.getScope().getContainer());

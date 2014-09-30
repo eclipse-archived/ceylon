@@ -787,4 +787,19 @@ public class Util {
         }
         return that;
     }
+
+    static void checkIsExactlyForInterop(Unit unit, boolean isCeylon,  
+            ProducedType parameterType, ProducedType refinedParameterType, Node node, 
+            String message) {
+        if (isCeylon) {
+            // it must be a Ceylon method
+            checkIsExactly(parameterType, refinedParameterType, node, message, 9200);
+        }
+        else {
+            // we're refining a Java method
+            ProducedType refinedDefiniteType = unit.getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, 
+            		node, message);
+        }
+    }
 }

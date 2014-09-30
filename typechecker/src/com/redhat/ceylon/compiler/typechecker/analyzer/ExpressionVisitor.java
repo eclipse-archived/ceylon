@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
@@ -860,52 +860,75 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void refineValue(Tree.SpecifierStatement that) {
-        Value sv = (Value) that.getRefined();
-        Value v = (Value) that.getDeclaration();
-        ProducedReference rv = getRefinedMember(sv,
-                (ClassOrInterface) v.getContainer());
-        v.setType(rv.getType());
+        Value refinedValue = (Value) that.getRefined();
+        Value value = (Value) that.getDeclaration();
+        ClassOrInterface ci = (ClassOrInterface) value.getContainer();
+        ProducedReference refinedProducedReference = 
+                getRefinedMember(refinedValue, ci);
+        value.setType(refinedProducedReference.getType());
     }
 
     private void refineMethod(Tree.SpecifierStatement that) {
-        Method sm = (Method) that.getRefined();
-        Method m = (Method) that.getDeclaration();
-        ClassOrInterface ci = (ClassOrInterface) m.getContainer();
-        ProducedReference rm = getRefinedMember(sm, ci);
-        m.setType(rm.getType());
-        List<Tree.ParameterList> tpls;
+        Method refinedMethod = (Method) that.getRefined();
+        Method method = (Method) that.getDeclaration();
+        ClassOrInterface ci = (ClassOrInterface) method.getContainer();
+        ProducedReference refinedProducedReference = 
+                getRefinedMember(refinedMethod, ci);
+        method.setType(refinedProducedReference.getType());
+        List<Tree.ParameterList> parameterLists;
         Tree.Term me = that.getBaseMemberExpression();
         if (me instanceof Tree.ParameterizedExpression) {
-            tpls = ((Tree.ParameterizedExpression) me).getParameterLists();
+            parameterLists = 
+                    ((Tree.ParameterizedExpression) me).getParameterLists();
         }
         else {
-            tpls = emptyList();
+            parameterLists = emptyList();
         }
-        for (int i=0; i<sm.getParameterLists().size(); i++) {
-            ParameterList pl = sm.getParameterLists().get(i);
-            ParameterList l = m.getParameterLists().get(i);
-            Tree.ParameterList tpl = tpls.size()<=i ? 
-                    null : tpls.get(i);
-            for (int j=0; j<pl.getParameters().size(); j++) {
-                Parameter p = pl.getParameters().get(j);
-                ProducedType pt = rm.getTypedParameter(p).getFullType();
-                if (tpl==null || tpl.getParameters().size()<=j) {
-                    Parameter vp = l.getParameters().get(j);
-                    vp.getModel().setType(pt);
+        for (int i=0; i<refinedMethod.getParameterLists().size(); i++) {
+            ParameterList refinedParameters = 
+                    refinedMethod.getParameterLists().get(i);
+            ParameterList parameters = 
+                    method.getParameterLists().get(i);
+            Tree.ParameterList parameterList = 
+                    parameterLists.size()<=i ? 
+                            null : parameterLists.get(i);
+            for (int j=0; j<refinedParameters.getParameters().size(); j++) {
+                Parameter refinedParameter = 
+                        refinedParameters.getParameters().get(j);
+                ProducedType refinedParameterType = 
+                        refinedProducedReference
+                            .getTypedParameter(refinedParameter)
+                            .getFullType();
+                if (parameterList==null || 
+                        parameterList.getParameters().size()<=j) {
+                    Parameter p = parameters.getParameters().get(j);
+                    p.getModel().setType(refinedParameterType);
                 }
                 else {
-                    Tree.Parameter tp = tpl.getParameters().get(j);
-                    Parameter rp = tp.getParameterModel();
-                    ProducedType rpt = rp.getModel()
-                    		.getTypedReference()
-                    		.getFullType();
-                    checkIsExactly(rpt, pt, tp, 
-                            "type of parameter " + rp.getName() + 
-                            " of " + m.getName() + 
+                    Tree.Parameter parameter = 
+                            parameterList.getParameters().get(j);
+                    Parameter p = parameter.getParameterModel();
+                    ProducedType parameterType = 
+                            p.getModel().getTypedReference().getFullType();
+                    Node typeNode = parameter;
+                    if (parameter instanceof Tree.ParameterDeclaration) {
+                        Tree.Type type = 
+                                ((Tree.ParameterDeclaration) parameter)
+                                    .getTypedDeclaration().getType();
+                        if (type!=null) {
+                            typeNode = type;
+                        }
+                    }
+                    checkIsExactlyForInterop(that.getUnit(),
+                            refinedParameters.isNamedParametersSupported(),
+                            parameterType, refinedParameterType, typeNode, 
+                            "type of parameter " + p.getName() + 
+                            " of " + method.getName() + 
                             " declared by " + ci.getName() +
                             " is different to type of corresponding parameter " +
-                            p.getName() + " of refined method " + sm.getName() + " of " + 
-                            ((Declaration) sm.getContainer()).getName());
+                            refinedParameter.getName() + " of refined method " + 
+                            refinedMethod.getName() + " of " + 
+                            ((Declaration) refinedMethod.getContainer()).getName());
                 }
             }
         }
