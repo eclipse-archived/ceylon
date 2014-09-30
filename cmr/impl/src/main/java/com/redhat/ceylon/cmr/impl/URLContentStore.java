@@ -346,6 +346,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 return "car";
             else
                 return "jvm";
+        case JAR:
+            if(herdVersion >= 4)
+                return "jar";
+            else
+                return "jvm";
         case JVM:
             return "jvm";
         case SRC:

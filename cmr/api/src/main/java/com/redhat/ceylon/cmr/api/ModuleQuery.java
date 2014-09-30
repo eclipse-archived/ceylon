@@ -16,6 +16,7 @@ public class ModuleQuery {
     public enum Type {
         SRC(ArtifactContext.SRC),
         CAR(ArtifactContext.CAR),
+        JAR(ArtifactContext.JAR),
         JVM(ArtifactContext.CAR, ArtifactContext.JAR),
         JS(ArtifactContext.JS),
         CODE(ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS),
