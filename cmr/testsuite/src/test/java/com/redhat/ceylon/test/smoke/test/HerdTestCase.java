@@ -541,19 +541,31 @@ public class HerdTestCase extends AbstractTest {
     @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
                 new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
                 new ModuleDetails("ceylon.logging", null, "", set(), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
         };
-        testSearchResults("ceylon.l", Type.JVM, expected);
+        testSearchResults("ceylon.lo", Type.JVM, expected);
+    }
+    
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredCar() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.logging", null, "", set(), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
+        };
+        testSearchResults("ceylon.lo", Type.CAR, expected);
     }
     
     @Test
     @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+                new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.logging", null, "", set(), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
         };
-        testSearchResults("ceylon.fil", Type.JS, expected);
+        testSearchResults("ceylon.l", Type.JS, expected);
     }
     
     @Test
@@ -563,6 +575,37 @@ public class HerdTestCase extends AbstractTest {
                 jsonModuleDetailsAll_jvm,
         };
         testSearchResults("ceylon.json", Type.JVM, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredLicense() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.dbc", null, "Apache Software License 2.0", set("Enrique Zamudio"), set("1.1.0"), deps(ceycoll110, ceyinterop110, ceymath110_sh, ceytime110, javabase7, javajdbc7), car7Src, true, "The Herd"),
+        };
+        testSearchResults("Apache Software License 2.0", Type.ALL, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredAuthor() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.dbc", null, "Apache Software License 2.0", set("Enrique Zamudio"), set("1.1.0"), deps(ceycoll110, ceyinterop110, ceymath110_sh, ceytime110, javabase7, javajdbc7), car7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
+        };
+        testSearchResults("Enrique", Type.ALL, expected);
+    }
+    
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredDependencies() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.file", null, "", set("Gavin King"), set("1.1.0"), deps(ceycoll110, javabase7), car7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.io", null, "Apache Software License", set("Stéphane Épardaud"), set("1.1.0"), deps(ceycoll110, ceyfile110_sh, ceyinterop110, javabase7, javatls7), car7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.net", null, "Apache Software License", set("Stéphane Épardaud, Matej Lazar"), set("1.1.0"), deps(ceycoll110_sh, ceyfile110, ceyinterop110, ceyio110_sh, undertow, javabase7, xnioapi, xnionio), car7Src, true, "The Herd"),
+                new ModuleDetails("ceylon.process", null, "", set("Gavin King"), set("1.1.0"), deps(ceyfile110_sh, javabase7), car7Src, true, "The Herd"),
+        };
+        testSearchResults("ceylon.file", Type.JVM, expected);
     }
 
     @Test
