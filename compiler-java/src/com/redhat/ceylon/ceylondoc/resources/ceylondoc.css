@@ -3,6 +3,16 @@ body {
     font-size: 15px;
 }
 
+h1, h2, h3, h4 {
+    font-family: 'PT Sans', 'Source Sans Pro', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; } 
+h4 { font-size: 16px; }
+
 code {
 	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
     font-size: 14px;
