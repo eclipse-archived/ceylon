@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -446,9 +447,12 @@ public class JsCompiler {
                 outRepo.putArtifact(sha1Context, sha1File);
                 //Create the src archive
                 if (opts.isGenerateSourceArchive()) {
-                    SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, opts.getSrcDirs(),
-                            moduleName, moduleVersion, opts.isVerbose(), logger);
-                    sac.copySourceFiles(FileUtil.filesToPathList(jsout.getSources()));
+                    ArtifactCreator sac = CeylonUtils.makeSourceArtifactCreator(
+                            outRepo,
+                            opts.getSrcDirs(),
+                            moduleName, moduleVersion,
+                            opts.isVerbose(), logger);
+                    sac.copy(FileUtil.filesToPathList(jsout.getSources()));
                 }
                 sha1File.deleteOnExit();
                 createResources(moduleName, moduleVersion);
