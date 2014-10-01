@@ -468,7 +468,7 @@ public class FileUtil {
             for(File child : root.listFiles()){
                 File childDest = new File(dest, child.getName());
                 if(child.isDirectory()){
-                    if(!dest.exists() && !childDest.mkdirs())
+                    if(!childDest.exists() && !childDest.mkdirs())
                         throw new IOException("Failed to create dir "+childDest.getPath());
                     copyAll(child, childDest);
                 }else{
