@@ -477,6 +477,8 @@ public class FileUtil {
             }
         }else{
             File childDest = new File(dest, root.getName());
+            if(!dest.mkdirs())
+                throw new IOException("Failed to create dir "+dest.getPath());
             Files.copy(root.toPath(), childDest.toPath(), StandardCopyOption.COPY_ATTRIBUTES);
         }
     }
