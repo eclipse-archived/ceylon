@@ -36,5 +36,7 @@ void parameterInference() {
     
     void variadic(Anything(String)* args) {}
     variadic((string)=>print(string), (string)=>print(string));
-
+    void iterable({Anything(String)*} args) {}
+    iterable { (string)=>print(string),
+        (string)=>print(string) };
 }

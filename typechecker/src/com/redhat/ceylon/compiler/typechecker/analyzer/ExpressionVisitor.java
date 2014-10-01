@@ -35,7 +35,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.MISSING_NAME;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Collections.emptyList;
@@ -1889,7 +1888,8 @@ public class ExpressionVisitor extends Visitor {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
                     inferParameterTypes(pr, param, 
-                            la.getExpression(), true);
+                            la.getExpression(), 
+                            param.isSequenced());
                 }
                 if (!param.isSequenced()) {
                     j++;
@@ -1906,21 +1906,41 @@ public class ExpressionVisitor extends Visitor {
         List<ParameterList> pls = 
                 ((Functional) dec).getParameterLists();
         if (!pls.isEmpty()) {
+            Set<Parameter> foundParameters = new HashSet<Parameter>();
             ParameterList pl = pls.get(0);
-            List<Parameter> params = pl.getParameters();
             List<Tree.NamedArgument> args = 
                     nal.getNamedArguments();
-            for (int i=0; i<params.size() && i<args.size(); i++) {
-                Parameter param = params.get(i);
+            for (int i=0; i<args.size(); i++) {
                 Tree.NamedArgument arg = args.get(i);
                 if (arg instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifiedArgument la = 
                             (Tree.SpecifiedArgument) arg;
-                    Tree.SpecifierExpression se = 
-                            la.getSpecifierExpression();
-                    if (se!=null) {
-                        inferParameterTypes(pr, param, 
-                                se.getExpression(), false);
+                    Parameter param = 
+                            getMatchingParameter(pl, arg, 
+                                    foundParameters);
+                    if (param!=null) {
+                        Tree.SpecifierExpression se = 
+                                la.getSpecifierExpression();
+                        if (se!=null) {
+                            inferParameterTypes(pr, param, 
+                                    se.getExpression(), false);
+                        }
+                    }
+                }
+            }
+            Tree.SequencedArgument sa = nal.getSequencedArgument();
+            if (sa!=null) {
+                Parameter param = 
+                        getUnspecifiedParameter(pr, pl, 
+                                foundParameters);
+                if (param!=null) {
+                    for (Tree.PositionalArgument pa: sa.getPositionalArguments()) {
+                        if (pa instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument la = 
+                                    (Tree.ListedArgument) pa;
+                            inferParameterTypes(pr, param, 
+                                    la.getExpression(), true);
+                        }
                     }
                 }
             }
@@ -1952,7 +1972,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferParameterTypes(ProducedReference pr, 
-            Parameter param, Tree.Expression e, boolean positional) {
+            Parameter param, Tree.Expression e, boolean variadic) {
         if (e!=null) {
             Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
             if (term instanceof Tree.FunctionArgument) {
@@ -1965,8 +1985,8 @@ public class ExpressionVisitor extends Visitor {
                 else { 
                     ProducedType paramType = 
                             pr.getTypedParameter(param).getFullType();
-                    if (positional && param.isSequenced()) {
-                        paramType = unit.getSequentialElementType(paramType);
+                    if (variadic) {
+                        paramType = unit.getIteratedType(paramType);
                     }
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(paramType, 
@@ -2878,7 +2898,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             if (!foundParameters.add(sp)) {
                 sa.addError("duplicate argument for parameter: '" +
-                        sp + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                        sp.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic && isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: '" + 
@@ -2906,13 +2926,22 @@ public class ExpressionVisitor extends Visitor {
         else {
             if (!foundParameters.add(p)) {
                 a.addError("duplicate argument for parameter: '" +
-                        p + "' of '" + pr.getDeclaration().getName(unit) + "'");
+                        p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic && isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: '" + 
                         p.getName() + "' of '" + p.getDeclaration().getName(unit) + "'");
             }
             checkNamedArgument(a, pr, p);
+            //hack in an identifier node just for the backend:
+            //TODO: get rid of this nasty thing
+            if (a.getIdentifier()==null) {
+                Tree.Identifier node = new Tree.Identifier(null);
+                node.setScope(a.getScope());
+                node.setUnit(a.getUnit());
+                node.setText(p.getName());
+                a.setIdentifier(node);
+            }
         }
     }
 
@@ -2997,20 +3026,16 @@ public class ExpressionVisitor extends Visitor {
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na, 
             Set<Parameter> foundParameters) {
-        String name = name(na.getIdentifier());
-        if (MISSING_NAME.equals(name)) {
+        Tree.Identifier id = na.getIdentifier();
+        if (id==null) {
             for (Parameter p: pl.getParameters()) {
                 if (!foundParameters.contains(p)) {
-                    Tree.Identifier node = new Tree.Identifier(null);
-                    node.setScope(na.getScope());
-                    node.setUnit(na.getUnit());
-                    node.setText(p.getName());
-                    na.setIdentifier(node);
                     return p;
                 }
             }
         }
         else {
+            String name = name(id);
             for (Parameter p: pl.getParameters()) {
                 if (p.getName()!=null &&
                         p.getName().equals(name)) {
