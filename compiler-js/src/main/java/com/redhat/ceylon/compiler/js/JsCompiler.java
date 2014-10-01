@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,12 +17,9 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -455,7 +451,16 @@ public class JsCompiler {
                     sac.copy(FileUtil.filesToPathList(jsout.getSources()));
                 }
                 sha1File.deleteOnExit();
-                createResources(moduleName, moduleVersion);
+                if (!resFiles.isEmpty()) {
+                    ArtifactCreator sac = CeylonUtils.makeResourceArtifactCreator(
+                            outRepo,
+                            opts.getSrcDirs(),
+                            opts.getResourceDirs(),
+                            opts.getResourceRootName(),
+                            moduleName, moduleVersion,
+                            opts.isVerbose(), logger);
+                    sac.copy(FileUtil.filesToPathList(resFiles));
+                }
             }
             jsart.deleteOnExit();
             if (modart!=null)modart.deleteOnExit();
@@ -547,58 +552,6 @@ public class JsCompiler {
     /** Returns true if the compiler is currently compiling the language module. */
     public static boolean isCompilingLanguageModule() {
         return compilingLanguageModule;
-    }
-
-    private void createResources(final String moduleName, final String moduleVersion) throws IOException {
-        if (resFiles == null  || resFiles.isEmpty()) {
-            return;
-        }
-        
-        final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
-        ac.setThrowErrorIfMissing(false);
-        
-        File resDir = Files.createTempDirectory(moduleName + "-" + moduleVersion + "-resources").toFile();
-        try {
-            for (File res : resFiles) {
-                File relRes = getDestinationFile(moduleName, res);
-                if (relRes != null) {
-                    // Copy the file to the resource dir
-                    FileUtil.copy(null, res, resDir, relRes);
-                }
-            }
-            
-            outRepo.putArtifact(ac, resDir);
-        } finally {
-            FileUtil.deleteQuietly(resDir);
-        }
-    }
-
-    private File getDestinationFile(String moduleName, File file) {
-        File relRes = new File(FileUtil.relativeFile(opts.getResourceDirs(), file.getPath()));
-        // Check if the resource should be added for this module
-        String resModName = ModuleUtil.moduleName(opts.getSrcDirs(), relRes);
-        if (resModName.equals(moduleName)) {
-            return handleRoot(moduleName, relRes);
-        } else  {
-            return null;
-        }
-    }
-
-    private File handleRoot(String moduleName, File relRes) {
-        if (!ModuleUtil.isDefaultModule(moduleName)) {
-            String rootName = opts.getResourceRootName();
-            if (rootName == null) {
-                rootName = Constants.DEFAULT_RESOURCE_ROOT;
-            }
-            if (!rootName.isEmpty()) {
-                File modulePath = ModuleUtil.moduleToPath(moduleName);
-                File rrp = new File(modulePath, rootName);
-                if (relRes.toPath().startsWith(rrp.toPath())) {
-                    relRes = rrp.toPath().relativize(relRes.toPath()).toFile();
-                }
-            }
-        }
-        return relRes;
     }
 
     /** Create a path for a require call to fetch the specified module. */
