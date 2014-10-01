@@ -205,12 +205,6 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if (hasContent(child) && !urlExists(path)) {
             return null;
         }
-        // FIXME Crappy fix to make sure we don't try to return the "module-doc" folder
-        // at least until we properly support auto-zipping and unzipping of folders
-        // to and from the Herd
-        if (ArtifactContext.DOCS.equals(child) && isHerd()) {
-            return null;
-        }
         final RemoteNode node = createNode(child);
         ContentHandle handle;
         if (hasContent(child))

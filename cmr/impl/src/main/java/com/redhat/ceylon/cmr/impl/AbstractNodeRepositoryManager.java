@@ -175,22 +175,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private ArtifactResult downloadZipped(Node node, ArtifactContext context) {
-        if (ArtifactContext.getSuffixFromNode(node).equals(ArtifactContext.DOCS)) {
-            log.debug(String.format("Not downloading folder [%s] to Herd: module-doc zip will be used instead", node.getLabel()));
-            // FIXME This is a completely fake result until that time we actually support auto zipping and unzipping of fodlers
-            return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), null, NodeUtils.getRepositoryDisplayString(node));
-        } else {
-            ArtifactContext zippedContext = context.getZipContext();
-            ArtifactResult zipResult = getArtifactResult(zippedContext);
-            String zipName = zipResult.artifact().getName();
-            File unzippedFolder = new File(zipResult.artifact().getParentFile(), zipName.substring(0, zipName.length() - 4));
-            try {
-                IOUtils.extractArchive(zipResult.artifact(), unzippedFolder);
-            } catch (IOException e) {
-                throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
-            }
-            return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
+        ArtifactContext zippedContext = context.getZipContext();
+        ArtifactResult zipResult = getArtifactResult(zippedContext);
+        String zipName = zipResult.artifact().getName();
+        File unzippedFolder = new File(zipResult.artifact().getParentFile(), zipName.substring(0, zipName.length() - 4));
+        try {
+            IOUtils.extractArchive(zipResult.artifact(), unzippedFolder);
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
         }
+        return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
     }
     
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
@@ -276,23 +270,19 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private void uploadZipped(Node parent, ArtifactContext context, File folder) {
-        if (context.getSingleSuffix().equals(ArtifactContext.DOCS)) {
-            log.debug(String.format("Not uploading folder [%s] to Herd: module-doc zip will be used instead", folder));
-        } else {
-            File zippedFolder = null;
+        File zippedFolder = null;
+        try {
             try {
-                try {
-                    zippedFolder = IOUtils.zipFolder(folder);
-                } catch (IOException e) {
-                    throw new RepositoryException("Failed to zip folder for upload to Herd: " + folder);
-                }
-                ArtifactContext zippedContext = context.getZipContext();
-                putArtifact(zippedContext, zippedFolder);
-                ShaSigner.signArtifact(this, zippedContext, zippedFolder, log);
-            } finally {
-                if (zippedFolder != null) {
-                    FileUtil.deleteQuietly(zippedFolder);
-                }
+                zippedFolder = IOUtils.zipFolder(folder);
+            } catch (IOException e) {
+                throw new RepositoryException("Failed to zip folder for upload to Herd: " + folder);
+            }
+            ArtifactContext zippedContext = context.getZipContext();
+            putArtifact(zippedContext, zippedFolder);
+            ShaSigner.signArtifact(this, zippedContext, zippedFolder, log);
+        } finally {
+            if (zippedFolder != null) {
+                FileUtil.deleteQuietly(zippedFolder);
             }
         }
     }

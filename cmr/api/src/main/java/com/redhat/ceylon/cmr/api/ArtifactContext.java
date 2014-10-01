@@ -40,7 +40,6 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String SRC = ".src";
     public static final String MAVEN_SRC = "-sources.jar";
     public static final String DOCS = "module-doc";
-    public static final String DOCS_ZIPPED = ".doc.zip";
     public static final String MODULE_PROPERTIES = "module.properties";
     public static final String MODULE_XML = "module.xml";
     public static final String SHA1 = ".sha1";
@@ -54,7 +53,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
         CAR, JAR, JS_MODEL, JS, RESOURCES, SRC, MAVEN_SRC, DOCS,
-        DOCS_ZIPPED, INFO, SCRIPTS_ZIPPED
+        INFO, SCRIPTS_ZIPPED
     };
     
     private static final String composedSuffixes[] = {
