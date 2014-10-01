@@ -1919,6 +1919,7 @@ public class ExpressionVisitor extends Visitor {
                             getMatchingParameter(pl, arg, 
                                     foundParameters);
                     if (param!=null) {
+                        foundParameters.add(param);
                         Tree.SpecifierExpression se = 
                                 la.getSpecifierExpression();
                         if (se!=null) {
