@@ -423,12 +423,14 @@ public class JsCompiler {
             }
             if (compilingLanguageModule) {
                 ArtifactContext artifact = new ArtifactContext("delete", "me", ArtifactContext.JS);
-                outRepo.putArtifact(artifact, jsart);
                 artifact.setForceOperation(true);
+                outRepo.putArtifact(artifact, jsart);
             } else {
                 final ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
+                artifact.setForceOperation(true);
                 outRepo.putArtifact(artifact, jsart);
                 final ArtifactContext martifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS_MODEL);
+                martifact.setForceOperation(true);
                 outRepo.putArtifact(martifact, modart);
                 //js file signature
                 ShaSigner.signArtifact(outRepo, artifact, jsart, logger);
