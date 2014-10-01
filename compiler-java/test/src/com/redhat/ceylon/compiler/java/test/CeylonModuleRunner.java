@@ -53,6 +53,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -357,7 +358,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         String[] files = moduleDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return new File(dir, name).isDirectory() || name.endsWith(".car");
+                return (!name.equals(ArtifactContext.RESOURCES) && (new File(dir, name).isDirectory())) || name.endsWith(".car");
             }
         });
         if (files.length == 0) {
