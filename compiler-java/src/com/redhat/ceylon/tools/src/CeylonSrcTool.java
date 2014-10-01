@@ -19,9 +19,10 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
 @Summary("Fetches source archives from a repository and extracts their contents into a source directory")
-@Description("Fetches the source archive of the given `module` from the " +
+@Description("Fetches any sources, resources, documentation and scripts " +
+        "that can be found for given `module` from the " +
 		"first configured repository to contain the module and extracts " +
-		"the source code into the output source directory. Multiple modules " +
+		"the them into their respective output directories. Multiple modules " +
 		"can be given.\n" +
 		"\n" +
 		"This tool is especially useful for working with example projects.")
@@ -122,6 +123,7 @@ public class CeylonSrcTool extends RepoUsingTool {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null, null);
             }
+            msg("retrieving.module", module).newline();
             ArtifactContext allArtifacts = new ArtifactContext(module.getName(), version, ArtifactContext.SRC, ArtifactContext.RESOURCES, ArtifactContext.DOCS, ArtifactContext.SCRIPTS_ZIPPED);
             List<ArtifactResult> results = getRepositoryManager().getArtifactResults(allArtifacts);
             if (results == null) {
@@ -135,17 +137,17 @@ public class CeylonSrcTool extends RepoUsingTool {
             for (ArtifactResult result : results) {
                 String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
                 if (ArtifactContext.SRC.equals(suffix)) {
-                    msg("extracting.sources").newline();
+                    append("    ").msg("extracting.sources").newline();
                     extractArchive(result, applyCwd(src), "source");
                     hasSources = true;
                 } else if (ArtifactContext.SCRIPTS_ZIPPED.equals(suffix)) {
-                    msg("extracting.scripts").newline();
+                    append("    ").msg("extracting.scripts").newline();
                     extractArchive(result, new File(applyCwd(script), modFolder), "script");
                 } else if (ArtifactContext.RESOURCES.equals(suffix)) {
-                    msg("extracting.resources").newline();
+                    append("    ").msg("extracting.resources").newline();
                     copyResources(result, applyCwd(resource));
                 } else if (ArtifactContext.DOCS.equals(suffix)) {
-                    msg("extracting.docs").newline();
+                    append("    ").msg("extracting.docs").newline();
                     copyFiles(result, "doc", new File(applyCwd(doc), modFolder), "doc");
                 }
             }
