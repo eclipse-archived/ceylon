@@ -346,83 +346,90 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="parametertypeinference">
             <title>Anonymous function parameter type inference</title>
             
-            <para>If the type of a parameter of an anonymous function is not 
-            declared explicitly, and the anonymous function occurs as a 
-            listed argument, as defined in <xref linkend="listedarguments"/>, 
-            in a positional argument list, then in certain cases the type of 
-            the parameter may be inferred.</para>
+            <para>If the type of a parameter of an anonymous function is 
+            not declared explicitly, then the type of the parameter may in 
+            certain cases be inferred if the anonymous function occurs:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>as a listed argument, as defined in 
+                    <xref linkend="listedarguments"/>, in a positional 
+                    argument list, or</para>
+                </listitem>
+                <listitem>
+                    <para>as a specified argument, anonymous argument, or
+                    listed argument, as defined in 
+                    <xref linkend="namedarguments"/>, in a named argument 
+                    list.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>Suppose the type of the <literal>i</literal>th parameter 
-            <literal>p</literal> of an anonymous function occurring as the 
-            <literal>n</literal>th listed argument in a positional argument 
-            list of an invocation expression is not declared explicitly.
-            Then the inferred type of <literal>p</literal> depends upon 
-            whether the invocation expression is a direct invocation, as 
+            <literal>p</literal> of an anonymous function is not declared 
+            explicitly, and further suppose that the anonymous function
+            occurs as the argument to a parameter <literal>x</literal> of
+            some function or class in a direct invocation expression, as 
             defined in <xref linkend="directinvocations"/>.</para>
             
-            <para>If the invocation is a direct invocation of a function or 
-            class, then the type of <literal>p</literal> may be inferred if 
+            <para>Then the type of <literal>p</literal> may be inferred if 
             either:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>the function or class has no type parameters, or 
                     the invocation has an explicit type argument list, and 
-                    the <literal>n</literal>th parameter of the function or
-                    class is a callable parameter with the same number of 
-                    parameters as the anonymous function, and with 
-                    <literal>i</literal>th parameter <literal>q</literal>,
-                    or</para>
+                    <literal>x</literal> is a callable parameter with the 
+                    same number of parameters as the anonymous function, and 
+                    with <literal>i</literal>th parameter <literal>q</literal>,
+                    </para>
                 </listitem>
                 <listitem>
-                    <para>the function or class has at least one type 
-                    parameter, and the invocation has no explicit type 
-                    argument list, and either:</para>
-                    <itemizedlist>
-                        <listitem>
-                            <para>the <literal>n</literal>th parameter of the 
-                            function or class is a callable parameter with the 
-                            same number of parameters as the anonymous 
-                            function, and the type <literal>Q</literal> of the 
-                            <literal>i</literal>th parameter <literal>q</literal> 
-                            of the callable parameter does not involve any of 
-                            the type parameters of the generic function or class, 
-                            or</para>
-                        </listitem>
-                        <listitem>
-                            <para>the <literal>n</literal>th parameter of the 
-                            function or class is a value parameter whose type 
-                            does not involve any of the type parameters of the 
-                            generic function or class and represents a function 
-                            whose <literal>n</literal>th parameter is a callable 
-                            parameter with the same number of parameters as the 
-                            anonymous function, and with <literal>i</literal>th 
-                            parameter <literal>q</literal>.</para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>the function or class has at least one type parameter, 
+                    and the invocation has no explicit type argument list, and 
+                    <literal>x</literal> is a callable parameter with the same 
+                    number of parameters as the anonymous function, and the type 
+                    of the <literal>i</literal>th parameter <literal>q</literal>
+                    of <literal>x</literal> does not involve any of the type 
+                    parameters of the generic function or class, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>x</literal> is a value parameter whose type 
+                    does not involve any of the type parameters of the generic 
+                    function or class and represents a function with the same 
+                    number of parameters as the anonymous function, and with 
+                    <literal>i</literal>th parameter <literal>q</literal>, 
+                    according to <xref linkend="callabletypeoffunction"/>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Then the type of <literal>p</literal> is inferred to be the 
-            type of <literal>q</literal> in the realization of the function 
-            or class, as defined in <xref linkend="realizations"/>.</para>
+            <!--TODO: this is a bit unclear about what happens with variadic
+                      and iterable parameters -->
             
-            <para>Otherwise, if the invocation is is an indirect invocation, 
-            and the callable type of the invoked expression represents a 
-            function whose <literal>n</literal>th parameter is a callable 
-            parameter with the same number of parameters as the anonymous 
-            function, according to <xref linkend="callabletypeoffunction"/>, 
-            then the type of <literal>p</literal> is inferred to be the type 
-            of the corresponding <literal>i</literal>th parameter of this 
-            callable parameter.</para>
+            <para>Then the type of <literal>p</literal> is inferred to be the 
+            type of <literal>q</literal> in the realization of the function or 
+            class, as defined in <xref linkend="realizations"/>.</para>
+            
+            <para>Otherwise, suppose the type of the <literal>i</literal>th
+            parameter <literal>p</literal> of an anonymous function is not
+            declared explicitly, and further suppose that the anonymous function
+            occurs as the <literal>n</literal>th argument in the positional
+            argument list of an indirect invocation expression.</para>
+            
+            <para>Then if the callable type of the invoked expression represents
+            a function whose <literal>n</literal>th parameter is a callable
+            parameter with the same number of parameters as the anonymous
+            function, according to <xref linkend="callabletypeoffunction"/>,
+            then the type of <literal>p</literal> is inferred to be the type of 
+            the corresponding <literal>i</literal>th parameter of this callable 
+            parameter.</para>
             
             <para>That is, if the type of the invoked expression is 
             <literal>Callable&lt;R,T&gt;</literal> where <literal>T</literal>
             is a tuple type whose <literal>n</literal>th element type is 
-            <literal>Callable&lt;P,S&gt;</literal> and <literal>S</literal>
-            is in turn a tuple type whose <literal>i</literal>th element type
-            is <literal>Q</literal>, then <literal>Q</literal> is the inferred
-            type of <literal>p</literal>.</para>
+            <literal>Callable&lt;P,S&gt;</literal> and <literal>S</literal> is 
+            in turn a tuple type whose <literal>i</literal>th element type is 
+            <literal>Q</literal>, then <literal>Q</literal> is the inferred type 
+            of <literal>p</literal>.</para>
             
         </section>
         
