@@ -425,7 +425,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     js = true;
                 } else if (suffix.equalsIgnoreCase(ArtifactContext.RESOURCES)) {
                     append("JS Resources");
-                } else if (suffix.equalsIgnoreCase(ArtifactContext.DOCS) || suffix.equalsIgnoreCase(ArtifactContext.DOCS_ZIPPED)) {
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.DOCS)) {
                     if (docs) {
                         skipComma = true;
                         continue;

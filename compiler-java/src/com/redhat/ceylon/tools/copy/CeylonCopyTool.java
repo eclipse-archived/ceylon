@@ -160,10 +160,8 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             artifacts.remove(ArtifactContext.SCRIPTS_ZIPPED);
         }
         if (BooleanUtil.isTrue(docs)) {
-            artifacts.add(ArtifactContext.DOCS_ZIPPED);
             artifacts.add(ArtifactContext.DOCS);
         } else if (BooleanUtil.isFalse(docs)) {
-            artifacts.remove(ArtifactContext.DOCS_ZIPPED);
             artifacts.remove(ArtifactContext.DOCS);
         }
 
