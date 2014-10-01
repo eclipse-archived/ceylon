@@ -453,8 +453,8 @@ public class JsCompiler {
                     sac.copy(FileUtil.filesToPathList(resFiles));
                 }
             }
-            jsart.deleteOnExit();
-            if (modart!=null)modart.deleteOnExit();
+            FileUtil.deleteQuietly(jsart);
+            if (modart!=null) FileUtil.deleteQuietly(modart);
         }
     }
 
