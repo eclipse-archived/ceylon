@@ -9,6 +9,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -37,6 +38,10 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 public class CeylonSrcTool extends RepoUsingTool {
     
     private File src = DefaultToolOptions.getCompilerSourceDirs().get(0);
+    private File resource = DefaultToolOptions.getCompilerResourceDirs().get(0);
+    private File doc = DefaultToolOptions.getCompilerDocDirs().get(0);
+    private File script = DefaultToolOptions.getCompilerScriptDirs().get(0);
+    private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     
     private List<ModuleSpec> modules;
     
@@ -44,17 +49,42 @@ public class CeylonSrcTool extends RepoUsingTool {
         super(CeylonSrcMessages.RESOURCE_BUNDLE);
     }
     
+    @OptionArgument(shortName='s', longName="src", argumentName="dir")
     @Description("The output source directory (default: `./source`)")
-    @OptionArgument(argumentName="dir")
     public void setSrc(File directory) {
         this.src = directory;
     }
     
-    @OptionArgument(longName="source", argumentName="dirs")
+    @OptionArgument(longName="source", argumentName="dir")
     @Description("An alias for `--src`" +
             " (default: `./source`)")
     public void setSource(File source) {
         setSrc(source);
+    }
+    
+    @OptionArgument(shortName='r', longName="resource", argumentName="dir")
+    @Description("The output resource directory (default: `./resource`)")
+    public void setResource(File resource) {
+        this.resource = resource;
+    }
+    
+    @OptionArgument(longName="doc", argumentName="dirs")
+    @Description("The output doc directory (default: `./doc`)")
+    public void setDocFolders(File doc) {
+        this.doc = doc;
+    }
+    
+    @OptionArgument(shortName='x', longName="script", argumentName="dir")
+    @Description("The output script directory (default: `./script`)")
+    public void setScriptFolders(File script) {
+        this.script = script;
+    }
+
+    @OptionArgument(shortName='R', argumentName="folder-name")
+    @Description("Sets the special resource folder name whose files will " +
+            "end up in the root of the resulting module CAR file (default: ROOT).")
+    public void setResourceRoot(String resourceRoot) {
+        this.resourceRoot = resourceRoot;
     }
     
     @Argument(argumentName="module", multiplicity="+")
@@ -92,30 +122,92 @@ public class CeylonSrcTool extends RepoUsingTool {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null, null);
             }
-            ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(new ArtifactContext(module.getName(), version, ArtifactContext.SRC));
-            if (srcArchive == null) {
+            ArtifactContext allArtifacts = new ArtifactContext(module.getName(), version, ArtifactContext.SRC, ArtifactContext.RESOURCES, ArtifactContext.DOCS, ArtifactContext.SCRIPTS_ZIPPED);
+            List<ArtifactResult> results = getRepositoryManager().getArtifactResults(allArtifacts);
+            if (results == null) {
                 String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
                 errorAppend(err);
                 errorNewline();
                 continue;
             }
-            extractArchive(srcArchive, applyCwd(src));
+            String modFolder = module.getName().replace('.', File.separatorChar);
+            boolean hasSources = false;
+            for (ArtifactResult result : results) {
+                String suffix = ArtifactContext.getSuffixFromFilename(result.artifact().getName());
+                if (ArtifactContext.SRC.equals(suffix)) {
+                    msg("extracting.sources").newline();
+                    extractArchive(result, applyCwd(src), "source");
+                    hasSources = true;
+                } else if (ArtifactContext.SCRIPTS_ZIPPED.equals(suffix)) {
+                    msg("extracting.scripts").newline();
+                    extractArchive(result, new File(applyCwd(script), modFolder), "script");
+                } else if (ArtifactContext.RESOURCES.equals(suffix)) {
+                    msg("extracting.resources").newline();
+                    copyResources(result, applyCwd(resource));
+                } else if (ArtifactContext.DOCS.equals(suffix)) {
+                    msg("extracting.docs").newline();
+                    copyFiles(result, "doc", new File(applyCwd(doc), modFolder), "doc");
+                }
+            }
+            if (!hasSources) {
+                msg("no.sources.found", module).newline();
+            }
         }
     }
 
-    private void extractArchive(ArtifactResult srcArchive, File dir) throws IOException {
+    private void extractArchive(ArtifactResult result, File dir, String name) throws IOException {
         try{
-            IOUtils.extractArchive(srcArchive.artifact(), dir);
+            IOUtils.extractArchive(result.artifact(), dir);
         }catch(IOUtils.UnzipException x){
             switch(x.failure){
             case CannotCreateDestination:
-                throw new RuntimeException(CeylonSrcMessages.msg("unable.create.src.dir", x.dir));
+                throw new RuntimeException(CeylonSrcMessages.msg("unable.create.output.dir", name, x.dir));
             case CopyError:
-                throw new RuntimeException(CeylonSrcMessages.msg("unable.extract.entry", x.entryName, srcArchive.artifact().getAbsolutePath()), x.getCause());
+                throw new RuntimeException(CeylonSrcMessages.msg("unable.extract.entry", x.entryName, result.artifact().getAbsolutePath()), x.getCause());
             case DestinationNotDirectory:
-                throw new RuntimeException(CeylonSrcMessages.msg("not.dir.src.dir", x.dir));
+                throw new RuntimeException(CeylonSrcMessages.msg("not.dir.output.dir", name, x.dir));
             default:
                 throw x;
+            }
+        }
+    }
+
+    private void copyFiles(ArtifactResult result, String fromSubDir, File destDir, String name) {
+        File fromDir = result.artifact();
+        if (fromSubDir != null) {
+            fromDir = new File(fromDir, fromSubDir);
+        }
+        if (!fromDir.isDirectory()) {
+            throw new RuntimeException(CeylonSrcMessages.msg("not.dir.input.dir", name, destDir));
+        }
+        if (!destDir.exists() && !destDir.mkdirs()) {
+            throw new RuntimeException(CeylonSrcMessages.msg("unable.create.output.dir", name, destDir));
+        }
+        if (!destDir.isDirectory()) {
+            throw new RuntimeException(CeylonSrcMessages.msg("not.dir.output.dir", name, destDir));
+        }
+        try {
+            FileUtil.copyAll(fromDir, destDir);
+        } catch (IOException ex) {
+            throw new RuntimeException(CeylonSrcMessages.msg("unable.copy", name, fromDir), ex);
+        }
+    }
+
+    private void copyResources(ArtifactResult result, File destDir) {
+        String[] parts = result.name().split("\\.");
+        // First we copy the main resource files
+        copyFiles(result, parts[0], new File(destDir, parts[0]), "resource");
+        // And now any root resources if they exist
+        String modFolder = result.name().replace('.', File.separatorChar);
+        File destRoot = new File(new File(destDir, modFolder), resourceRoot);
+        for (File f : result.artifact().listFiles()) {
+            if (!f.getName().equals(parts[0])) {
+                // We have found a root resource
+                try {
+                    FileUtil.copyAll(f, destRoot);
+                } catch (IOException ex) {
+                    throw new RuntimeException(CeylonSrcMessages.msg("unable.copy", "resource", f), ex);
+                }
             }
         }
     }
