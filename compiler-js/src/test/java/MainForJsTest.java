@@ -53,7 +53,7 @@ public class MainForJsTest {
             String ap = x.getPath();
             //Fix for Windows
             if ('/' != File.separatorChar) {
-                ap = ap.replace('/', File.separatorChar);
+                ap = ap.replace(File.separatorChar, '/');
             }
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
                 if (pu.getUnit().getFullPath().startsWith(ap)) {
