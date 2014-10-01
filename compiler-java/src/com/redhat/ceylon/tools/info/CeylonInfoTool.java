@@ -103,7 +103,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @OptionArgument(argumentName = "type")
     @Description("The artifact types to show information for. " +
-            "Allowed values include: `all`, `car`, `jvm`, `js`, `src`, `code`, `ceylon` (default is `all`).")
+            "Allowed values include: `all`, `jvm`, `car`, `jar`, `js`, `src`, `code`, `ceylon` (default is `all`).")
     public void setShowType(String showType) {
         this.showType = showType;
     }
@@ -166,6 +166,8 @@ public class CeylonInfoTool extends RepoUsingTool {
         if (showType != null) {
             if ("car".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.CAR;
+            } else if ("jar".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.JAR;
             } else if ("jvm".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.JVM;
             } else if ("js".equalsIgnoreCase(showType)) {
