@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
+import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.util.JarUtils;
 
 /** Creates a .src archive in the specified location, containing the
@@ -22,7 +22,7 @@ import com.redhat.ceylon.cmr.util.JarUtils;
  * 
  * @author Enrique Zamudio
  */
-public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
+public class SourceArtifactCreatorImpl implements ArtifactCreator {
 
     private final ArtifactContext srcContext;
     private final RepositoryManager repoManager;
@@ -33,7 +33,7 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
     private Logger log;
     private final Iterable<? extends File> sourcePaths;
 
-    public SourceArchiveCreatorImpl(RepositoryManager repoManager, Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion, boolean verbose, Logger log) throws IOException {
+    public SourceArtifactCreatorImpl(RepositoryManager repoManager, Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion, boolean verbose, Logger log) throws IOException {
         this.repoManager = repoManager;
         this.verbose = verbose;
         this.log = log;
@@ -49,7 +49,7 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
         srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile));
     }
 
-    public Set<String> copySourceFiles(Collection<String> sources) throws IOException {
+    public Set<String> copy(Collection<String> sources) throws IOException {
         final Set<String> uniqueSources = new HashSet<String>(sources);
         final Set<String> copiedFiles = new HashSet<String>();
         final Set<String> folders = new HashSet<String>();
@@ -83,7 +83,7 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
         return copiedFiles;
     }
 
-    public Iterable<? extends File> getSourcePaths() {
+    public Iterable<? extends File> getPaths() {
         return sourcePaths;
     }
 
