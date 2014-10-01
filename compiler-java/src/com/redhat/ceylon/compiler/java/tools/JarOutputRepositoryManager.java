@@ -40,10 +40,11 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
+import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -99,13 +100,15 @@ public class JarOutputRepositoryManager {
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
         final private Set<String> modifiedSourceFiles = new HashSet<String>();
-        final private Set<String> modifiedResourceFiles = new HashSet<String>();
+        final private Set<String> modifiedResourceFilesRel = new HashSet<String>();
+        final private Set<String> modifiedResourceFilesFull = new HashSet<String>();
         final private Properties writtenClassesMapping = new Properties(); 
         private Logger cmrLog;
         private Options options;
         private RepositoryManager repoManager;
         private ArtifactContext carContext;
-        private SourceArchiveCreator creator;
+        private ArtifactCreator srcCreator;
+        private ArtifactCreator resourceCreator;
         private Module module;
         private Set<String> folders = new HashSet<String>();
         private boolean manifestWritten = false;
@@ -119,8 +122,18 @@ public class JarOutputRepositoryManager {
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
-            this.creator = CeylonUtils.makeSourceArchiveCreator(repoManager, ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
-                    module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
+            this.srcCreator = CeylonUtils.makeSourceArtifactCreator(
+                    repoManager,
+                    ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
+                    module.getNameAsString(), module.getVersion(),
+                    options.get(OptionName.VERBOSE) != null, cmrLog);
+            this.resourceCreator = CeylonUtils.makeResourceArtifactCreator(
+                    repoManager,
+                    ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
+                    ceyloncFileManager.getLocation(CeylonLocation.RESOURCE_PATH),
+                    options.get(OptionName.CEYLONRESOURCEROOT),
+                    module.getNameAsString(), module.getVersion(),
+                    options.get(OptionName.VERBOSE) != null, cmrLog);
             this.module = module;
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
             this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM);
@@ -185,7 +198,8 @@ public class JarOutputRepositoryManager {
         }
 
         public void close() throws IOException {
-            Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
+            Set<String> copiedSourceFiles = srcCreator.copy(modifiedSourceFiles);
+            resourceCreator.copy(modifiedResourceFilesFull);
 
             if (writeOsgiManifest && !manifestWritten) {
                 Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
@@ -226,7 +240,7 @@ public class JarOutputRepositoryManager {
                         }
                         return classWasUpdated;
                     } else {
-                        return modifiedResourceFiles.contains(entryFullName)
+                        return modifiedResourceFilesRel.contains(entryFullName)
                                 || entryFullName.equals(MAPPING_FILE)
                                 || (writeOsgiManifest && OsgiManifest.isManifestFileName(entryFullName))
                                 || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
@@ -287,15 +301,15 @@ public class JarOutputRepositoryManager {
         }
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
-            fileName = fileName.replace(File.separatorChar, '/');
+            String entryName = fileName.replace(File.separatorChar, '/');
             
-            if (!resourceRootPath.isEmpty() && fileName.startsWith(resourceRootPath)) {
+            if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {
                 // Files in the special "resource root path" get moved
                 // to the root of the output JAR/CAR
-                fileName = fileName.substring(resourceRootPath.length());
+                entryName = entryName.substring(resourceRootPath.length());
             }
             
-            String folder = JarUtils.getFolder(fileName);
+            String folder = JarUtils.getFolder(entryName);
             if (folder != null) {
                 folders.add(folder);
             }
@@ -303,15 +317,16 @@ public class JarOutputRepositoryManager {
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar
-            	addMappingEntry(fileName, JarUtils.toPlatformIndependentPath(creator.getSourcePaths(), sourceFile.getPath()));
+            	addMappingEntry(entryName, JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath()));
             } else {
-                modifiedResourceFiles.add(fileName);
-                if (writeOsgiManifest && OsgiManifest.isManifestFileName(fileName)) {
+                modifiedResourceFilesRel.add(entryName);
+                modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
+                if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName)) {
                     this.manifestWritten = true;
-                    return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, fileName, module);
+                    return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, entryName, module);
                 }
             }
-            return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
+            return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, entryName);
         }
 
         private void addMappingEntry(String className,
