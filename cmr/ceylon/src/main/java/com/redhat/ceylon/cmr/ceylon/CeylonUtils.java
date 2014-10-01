@@ -5,16 +5,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.cmr.impl.ResourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
-import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
+import com.redhat.ceylon.cmr.impl.SourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
@@ -587,10 +588,32 @@ public class CeylonUtils {
      * @param log           The CMR logger to use for printing progress info.
      * @throws IOException
      */
-    public static SourceArchiveCreator makeSourceArchiveCreator(RepositoryManager repoManager,
+    public static ArtifactCreator makeSourceArtifactCreator(RepositoryManager repoManager,
                                                                 Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
                                                                 boolean verbose, Logger log) throws IOException {
-        return new SourceArchiveCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
+        return new SourceArtifactCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
+    }
+
+    /**
+     * Create and return a new ResourceArtifactCreator.
+     *
+     * @param repoManager   The output RepositoryManager where the "module-resource" artifact will be placed
+     * @param sourcePaths   The root directories that contain source files
+     * @param resourcePaths The root directories that contain resource files
+     * @param resourceRootName The name of the special resource root folder
+     * @param moduleName    The module name, used for the artifact
+     * @param moduleVersion The module version, used for the artifact
+     * @param verbose       If true, will print additional info about its progress
+     * @param log           The CMR logger to use for printing progress info.
+     * @throws IOException
+     */
+    public static ArtifactCreator makeResourceArtifactCreator(RepositoryManager repoManager,
+                                                                Iterable<? extends File> sourcePaths,
+                                                                Iterable<? extends File> resourcePaths,
+                                                                String resourceRootName,
+                                                                String moduleName, String moduleVersion,
+                                                                boolean verbose, Logger log) throws IOException {
+        return new ResourceArtifactCreatorImpl(repoManager, sourcePaths, resourcePaths, resourceRootName, moduleName, moduleVersion, verbose, log);
     }
 
     public static <T> boolean arrayContains(T[] array, T item) {
