@@ -162,16 +162,16 @@
             <title>Simplified generics</title>
             
             <para>
-            Ceylon does not support Java-style wildcard type parameters, raw types, or any 
-            other kind of existential type. And the Ceylon compiler never even uses any kind 
-            of "non-denotable" type to reason about the type system. So generics-related 
-            error messages are understandable to humans.
+            Ceylon doesn't have raw types, implicit bounds, or wildcard capture. And the 
+            Ceylon compiler never even uses any kind of "non-denotable" type to reason 
+            about the type system. So generics-related error messages are understandable 
+            to humans.
             </para>
             
             <para>
-            Instead of wildcard types, Ceylon features <emphasis>declaration-site variance</emphasis>. 
-            A type parameter may be marked as covariant or contravariant by the class or 
-            interface that declares the parameter.
+            Ceylon features <emphasis>declaration-site variance</emphasis>. A type parameter 
+            may be marked as covariant or contravariant by the class or interface that 
+            declares the parameter.
             </para>
             
             <para>
