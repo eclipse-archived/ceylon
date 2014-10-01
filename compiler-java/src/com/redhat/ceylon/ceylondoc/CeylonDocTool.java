@@ -47,7 +47,6 @@ import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
-import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
@@ -494,22 +493,33 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             // remove the leading module name part
             unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
         }
-        File dir = new File(getOutputFolder(module), join("/", unprefixedName));
+        File dir = new File(getApiOutputFolder(module), join("/", unprefixedName));
         if(shouldInclude(module))
             dir.mkdirs();
         return dir;
     }
 
-    private File getOutputFolder(Module module) {
+    private File getFolder(TypeDeclaration type) {
+        return getFolder(getPackage(type));
+    }
+
+    private File getApiOutputFolder(Module module) {
+        return getOutputFolder(module, "api");
+    }
+
+    private File getDocOutputFolder(Module module) {
+        return getOutputFolder(module, "doc");
+    }
+
+    private File getOutputFolder(Module module, String subDir) {
         File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module), "module-doc");
+        if (subDir != null) {
+            folder = new File(folder, subDir);
+        }
         if (shouldInclude(module)) {
             folder.mkdirs();
         }
         return folder;
-    }
-
-    private File getFolder(TypeDeclaration type) {
-        return getFolder(getPackage(type));
     }
 
     private File getObjectFile(Object modPgkOrDecl) throws IOException {
@@ -520,7 +530,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             file = new File(getFolder(type), filename);
         } else if (modPgkOrDecl instanceof Module) {
             String filename = "index.html";
-            file = new File(getOutputFolder((Module)modPgkOrDecl), filename);
+            file = new File(getApiOutputFolder((Module)modPgkOrDecl), filename);
         } else if (modPgkOrDecl instanceof Package) {
             String filename = "index.html";
             file = new File(getFolder((Package)modPgkOrDecl), filename);
@@ -557,38 +567,19 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 documentModule(module);
                 
                 ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
-                ArtifactContext artifactDocsZip = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS_ZIPPED);
                 
-                File outputFolder = getOutputFolder(module);
-                
-                // find all doc folders to zip
-                List<File> existingDocFolders = new ArrayList<File>(docFolders.size());
-                for(File docFolder : docFolders){
+                // find all doc folders to copy
+                File outputDocFolder = getDocOutputFolder(module);
+                for (File docFolder : docFolders) {
                     File moduleDocFolder = new File(docFolder, join("/", module.getName()));
-                    if(moduleDocFolder.exists())
-                        existingDocFolders.add(moduleDocFolder);
+                    if (moduleDocFolder.exists()) {
+                        FileUtil.copyAll(moduleDocFolder, outputDocFolder);
+                    }
                 }
 
-                // make the doc zip roots
-                IOUtils.ZipRoot[] roots = new IOUtils.ZipRoot[1+existingDocFolders.size()];
-                roots[0] = new IOUtils.ZipRoot(outputFolder, "api");
-                int d=1;
-                for(File docFolder : existingDocFolders){
-                    roots[d] = new IOUtils.ZipRoot(docFolder, "doc");
-                }
-                File docZipFile = IOUtils.zipFolders(roots);
-                File docZipSha1File = ShaSigner.sign(docZipFile, log, verbose != null);
-                
                 repositoryRemoveArtifact(outputRepositoryManager, artifactDocs);
-                repositoryRemoveArtifact(outputRepositoryManager, artifactDocsZip);
-                repositoryRemoveArtifact(outputRepositoryManager, artifactDocsZip.getSha1Context());
                 
-                repositoryPutArtifact(outputRepositoryManager, artifactDocs, outputFolder);
-                repositoryPutArtifact(outputRepositoryManager, artifactDocsZip, docZipFile);
-                repositoryPutArtifact(outputRepositoryManager, artifactDocsZip.getSha1Context(), docZipSha1File);
-                
-                docZipFile.delete();
-                docZipSha1File.delete();
+                repositoryPutArtifact(outputRepositoryManager, artifactDocs, getOutputFolder(module, null));
             }
             if (!documentedOne) {
                 log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
@@ -652,7 +643,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             copyResource("resources/favicon.ico", new File(resourcesDir, "favicon.ico"));
             copyResource("resources/ceylondoc-logo.png", new File(resourcesDir, "ceylondoc-logo.png"));
             copyResource("resources/ceylondoc-icons.png", new File(resourcesDir, "ceylondoc-icons.png"));
-            copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
+            copyResource("resources/NOTICE.txt", new File(getApiOutputFolder(module), "NOTICE.txt"));
         }
         finally {
             currentModule = null;
@@ -728,7 +719,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
     
     private void makeSearch(Module module) throws IOException {
-        Writer writer = openWriter(new File(getOutputFolder(module), "search.html"));
+        Writer writer = openWriter(new File(getApiOutputFolder(module), "search.html"));
         try {
             new Search(module, this, writer).generate();
         } finally {
@@ -907,7 +898,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     private File getResourcesDir(Module module) throws IOException {
-        File dir = new File(getOutputFolder(module), ".resources");
+        File dir = new File(getApiOutputFolder(module), ".resources");
         if (!dir.exists()
                 && !dir.mkdirs()) {
             throw new IOException();
@@ -1024,7 +1015,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
      * @return Gets the base URL
      */
     private URI getBaseUrl(Module module) throws IOException {
-        return getOutputFolder(module).getCanonicalFile().toURI();
+        return getApiOutputFolder(module).getCanonicalFile().toURI();
     }
     
     /**
@@ -1115,7 +1106,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             folder = getFolder((Package)modPkgOrDecl);
         } else if (modPkgOrDecl instanceof Module) {
             Module moduleDecl = (Module)modPkgOrDecl;
-            folder = getOutputFolder(moduleDecl);
+            folder = getApiOutputFolder(moduleDecl);
             filename = Constants.MODULE_DESCRIPTOR;
         } else {
             throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPkgOrDecl));
