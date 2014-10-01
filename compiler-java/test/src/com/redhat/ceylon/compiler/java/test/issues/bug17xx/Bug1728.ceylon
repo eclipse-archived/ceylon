@@ -31,3 +31,22 @@ class Bottom1728(child) extends Mid1728() {
     shared Bottom1728 copy(Side1728|Bottom1728 blob)
             => Bottom1728(blob);
 }
+@noanno
+abstract class Type1728() { shared default Type1728[] children = []; }
+@noanno
+class IntersectionType1728() extends Type1728() {}
+@noanno
+abstract class PrimaryType1728() extends Type1728() {}
+@noanno
+class OptionalType1728() extends PrimaryType1728() {}
+@noanno
+class BaseType1728() extends PrimaryType1728() {}
+@noanno
+class UnionType1728(shared actual [<IntersectionType1728|PrimaryType1728>+] children) extends Type1728() {}
+@noanno
+void use1728() {
+    Bottom1728 bot1 = Bottom1728(Side1728());
+    Bottom1728 bot2 = Bottom1728{child=bot1;};
+    Bottom1728 bot3 = Bottom1728(bot2);
+    UnionType1728 ut = UnionType1728([OptionalType1728(), BaseType1728()]);
+}
