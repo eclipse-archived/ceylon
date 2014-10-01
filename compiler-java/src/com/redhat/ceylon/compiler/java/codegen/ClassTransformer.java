@@ -703,9 +703,20 @@ public class ClassTransformer extends AbstractTransformer {
             if (Strategy.createField(decl, (Value)member)) {
                 // The field itself is created by when we transform the AttributeDeclaration 
                 // but it has to be initialized here so all the fields are initialized in parameter order
+                
+                JCExpression parameterExpr = makeUnquotedIdent(Naming.getAliasedParameterName(decl));
+                ProducedTypedReference typedRef = getTypedReference(value);
+                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                ProducedType paramType = nonWideningType(typedRef, nonWideningTypedRef);
+                if (!paramType.isExactly(decl.getType())) {
+                    // The parameter type follows normal erasure rules, not affected by inheritance
+                    // but the attribute respects non-widening rules, so we may need to cast
+                    // the parameter to the field type (see #1728)
+                    parameterExpr = make().TypeCast(classGen().transformClassParameterType(decl), parameterExpr);
+                }
                 classBuilder.init(make().Exec(
-                        make().Assign(naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_IDENT), 
-                                makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
+                        make().Assign(naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_IDENT),
+                                parameterExpr)));
             }
         }
     }
@@ -729,7 +740,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformParameter(ParameterizedBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
 
-        JCExpression type = classGen().transformClassParameterType(param);
+        JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
