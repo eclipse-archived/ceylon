@@ -384,6 +384,21 @@ public class FileUtil {
         return null;
     }
     
+    /**
+     * Given a relative file path and a list of "search paths"
+     * returns the "full" path relative to the current directory
+     * @param paths A list of folders
+     * @param file A relative path to a file 
+     * @return The "full" path where the file was located or null
+     */
+    public static File applyPath(Iterable<? extends File> paths, String relFile) {
+        File path = searchPaths(paths, relFile);
+        if (path != null) {
+            return new File(path, relFile);
+        }
+        return null;
+    }
+    
     public static boolean sameFile(File a, File b) {
         if(a == null)
             return b == null;
