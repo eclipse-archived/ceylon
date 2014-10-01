@@ -229,7 +229,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         String suffix = getSuffixFromFilename_(fileName);
         if (SHA1.equals(suffix)) {
             fileName = fileName.substring(0, fileName.length() - 5);
-            return (fileName.isEmpty()) ? SHA1 : (fileName) + SHA1;
+            return (fileName.isEmpty()) ? SHA1 : getSuffixFromFilename(fileName) + SHA1;
         } else if (ZIP.equals(suffix)) {
             fileName = fileName.substring(0, fileName.length() - 4);
             return (fileName.isEmpty()) ? ZIP : getSuffixFromFilename(fileName) + ZIP;
