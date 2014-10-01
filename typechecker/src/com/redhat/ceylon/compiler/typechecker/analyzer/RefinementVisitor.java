@@ -883,7 +883,7 @@ public class RefinementVisitor extends Visitor {
         m.setActual(true);
         m.getAnnotations().add(new Annotation("shared"));
         m.getAnnotations().add(new Annotation("actual"));
-        m.setRefinedDeclaration(sm.getRefinedDeclaration());
+        m.setRefinedDeclaration(sm.getRefinedDeclaration()); //Note: this is not the real root, so we set it again in ExpressionVisitor
         m.setUnit(that.getUnit());
         m.setContainer(c);
         m.setShortcutRefinement(true);

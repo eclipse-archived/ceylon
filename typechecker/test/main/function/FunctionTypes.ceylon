@@ -339,7 +339,11 @@ void lazyLazySpec() {
     String lazy2(String s, Float* x);
     lazy2(String s, Float* x) => s;
     String lazy3(String s, Float x=0.0);
-    @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
+    @error lazy3(String s, Float x, Boolean b) => b then s else x.string;
+    String lazy5(String s, Float x=0.0);
+    lazy5(String s, @error Float x=1.0) => s + x.string;
+    String lazy6(String s, Float x=0.0);
+    lazy6(String s, @error Integer x) => s + x.string;
     String lazy4(String s, Float x, Float y);
     @error lazy4(String s, @error Float* x) => s;
     Anything x(String s="")(Integer i);

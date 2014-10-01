@@ -25,7 +25,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
@@ -630,78 +632,80 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ParameterizedExpression that) {
         super.visit(that);
         Tree.Term p = that.getPrimary();
-        if (p instanceof Tree.QualifiedMemberExpression ||
-            p instanceof Tree.BaseMemberExpression) {
-            Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) p;
-            if (p.getTypeModel()!=null && 
-                    mte.getDeclaration()!=null) {
-                ProducedType pt = p.getTypeModel();
-                if (pt!=null) {
-                    for (int j=0; j<that.getParameterLists().size(); j++) {
-                        Tree.ParameterList pl = 
-                                that.getParameterLists().get(j);
-                        ProducedType ct = 
-                                pt.getSupertype(unit.getCallableDeclaration());
-                        String refName = 
-                                mte.getDeclaration().getName();
-                        if (ct==null) {                        
-                            pl.addError("no matching parameter list in referenced declaration: '" + 
-                                    refName + "'");
-                        }
-                        else if (ct.getTypeArgumentList().size()>=2) {
-                            ProducedType tupleType = 
-                                    ct.getTypeArgumentList().get(1);
-                            List<ProducedType> argTypes = 
-                                    unit.getTupleElementTypes(tupleType);
-                            boolean variadic = 
-                                    unit.isTupleLengthUnbounded(tupleType);
-                            boolean atLeastOne = 
-                                    unit.isTupleVariantAtLeastOne(tupleType);
-                            List<Tree.Parameter> params = pl.getParameters();
-                            if (argTypes.size()!=params.size()) {
-                                pl.addError("wrong number of declared parameters: '" + 
-                                        refName  + "' has " + argTypes.size() + 
-                                        " parameters");
-                            }
-                            for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
-                                ProducedType at = argTypes.get(i);
-                                Tree.Parameter param = params.get(i);
-                                ProducedType t = param.getParameterModel().getModel()
-                                        .getTypedReference()
-                                        .getFullType();
-                                String paramName = param.getParameterModel().getName();
-                                checkAssignable(at, t, param, 
-                                        "type of parameter '" + paramName + 
-                                        "' must be a supertype of parameter type in declaration of '" + 
+        if (!hasError(that)) {
+            if (p instanceof Tree.QualifiedMemberExpression ||
+                    p instanceof Tree.BaseMemberExpression) {
+                Tree.MemberOrTypeExpression mte = 
+                        (Tree.MemberOrTypeExpression) p;
+                if (p.getTypeModel()!=null && 
+                        mte.getDeclaration()!=null) {
+                    ProducedType pt = p.getTypeModel();
+                    if (pt!=null) {
+                        for (int j=0; j<that.getParameterLists().size(); j++) {
+                            Tree.ParameterList pl = 
+                                    that.getParameterLists().get(j);
+                            ProducedType ct = 
+                                    pt.getSupertype(unit.getCallableDeclaration());
+                            String refName = 
+                                    mte.getDeclaration().getName();
+                            if (ct==null) {                        
+                                pl.addError("no matching parameter list in referenced declaration: '" + 
                                         refName + "'");
                             }
-                            if (!params.isEmpty()) {
-                                Tree.Parameter lastParam = 
-                                        params.get(params.size()-1);
-                                boolean refSequenced = 
-                                        lastParam.getParameterModel().isSequenced();
-                                boolean refAtLeastOne = 
-                                        lastParam.getParameterModel().isAtLeastOne();
-                                if (refSequenced && !variadic) {
-                                    lastParam.addError("parameter list in declaration of '" + 
-                                            refName + "' does not have a variadic parameter");
+                            else if (ct.getTypeArgumentList().size()>=2) {
+                                ProducedType tupleType = 
+                                        ct.getTypeArgumentList().get(1);
+                                List<ProducedType> argTypes = 
+                                        unit.getTupleElementTypes(tupleType);
+                                boolean variadic = 
+                                        unit.isTupleLengthUnbounded(tupleType);
+                                boolean atLeastOne = 
+                                        unit.isTupleVariantAtLeastOne(tupleType);
+                                List<Tree.Parameter> params = pl.getParameters();
+                                if (argTypes.size()!=params.size()) {
+                                    pl.addError("wrong number of declared parameters: '" + 
+                                            refName  + "' has " + argTypes.size() + 
+                                            " parameters");
                                 }
-                                else if (!refSequenced && variadic) {
-                                    lastParam.addError("parameter list in declaration of '" + 
-                                            refName + "' has a variadic parameter");
+                                for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
+                                    ProducedType at = argTypes.get(i);
+                                    Tree.Parameter param = params.get(i);
+                                    ProducedType t = param.getParameterModel().getModel()
+                                            .getTypedReference()
+                                            .getFullType();
+                                    String paramName = param.getParameterModel().getName();
+                                    checkAssignable(at, t, param, 
+                                            "type of parameter '" + paramName + 
+                                            "' must be a supertype of parameter type in declaration of '" + 
+                                            refName + "'");
                                 }
-                                else if (refAtLeastOne && !atLeastOne) {
-                                    lastParam.addError("variadic parameter in declaration of '" + 
-                                            refName + "' is optional");
+                                if (!params.isEmpty()) {
+                                    Tree.Parameter lastParam = 
+                                            params.get(params.size()-1);
+                                    boolean refSequenced = 
+                                            lastParam.getParameterModel().isSequenced();
+                                    boolean refAtLeastOne = 
+                                            lastParam.getParameterModel().isAtLeastOne();
+                                    if (refSequenced && !variadic) {
+                                        lastParam.addError("parameter list in declaration of '" + 
+                                                refName + "' does not have a variadic parameter");
+                                    }
+                                    else if (!refSequenced && variadic) {
+                                        lastParam.addError("parameter list in declaration of '" + 
+                                                refName + "' has a variadic parameter");
+                                    }
+                                    else if (refAtLeastOne && !atLeastOne) {
+                                        lastParam.addError("variadic parameter in declaration of '" + 
+                                                refName + "' is optional");
+                                    }
+                                    else if (!refAtLeastOne && atLeastOne) {
+                                        lastParam.addError("variadic parameter in declaration of '" + 
+                                                refName + "' is not optional");
+                                    }
                                 }
-                                else if (!refAtLeastOne && atLeastOne) {
-                                    lastParam.addError("variadic parameter in declaration of '" + 
-                                            refName + "' is not optional");
-                                }
+                                pt = ct.getTypeArgumentList().get(0);
+                                that.setTypeModel(pt);
                             }
-                            pt = ct.getTypeArgumentList().get(0);
-                            that.setTypeModel(pt);
                         }
                     }
                 }
@@ -872,64 +876,75 @@ public class ExpressionVisitor extends Visitor {
         Method refinedMethod = (Method) that.getRefined();
         Method method = (Method) that.getDeclaration();
         ClassOrInterface ci = (ClassOrInterface) method.getContainer();
-        ProducedReference refinedProducedReference = 
-                getRefinedMember(refinedMethod, ci);
-        method.setType(refinedProducedReference.getType());
-        List<Tree.ParameterList> parameterLists;
-        Tree.Term me = that.getBaseMemberExpression();
-        if (me instanceof Tree.ParameterizedExpression) {
-            parameterLists = 
-                    ((Tree.ParameterizedExpression) me).getParameterLists();
+        Declaration root = refinedMethod.getRefinedDeclaration();
+        method.setRefinedDeclaration(root);
+        if (getInterveningRefinements(method.getName(), 
+                getSignature(method), root, 
+                ci, (TypeDeclaration) root.getContainer())
+                .isEmpty()) {
+            that.getBaseMemberExpression()
+                .addError("shortcut refinement does not exactly refine any overloaded inherited member");
         }
         else {
-            parameterLists = emptyList();
-        }
-        for (int i=0; i<refinedMethod.getParameterLists().size(); i++) {
-            ParameterList refinedParameters = 
-                    refinedMethod.getParameterLists().get(i);
-            ParameterList parameters = 
-                    method.getParameterLists().get(i);
-            Tree.ParameterList parameterList = 
-                    parameterLists.size()<=i ? 
-                            null : parameterLists.get(i);
-            for (int j=0; j<refinedParameters.getParameters().size(); j++) {
-                Parameter refinedParameter = 
-                        refinedParameters.getParameters().get(j);
-                ProducedType refinedParameterType = 
-                        refinedProducedReference
+            ProducedReference refinedProducedReference = 
+                    getRefinedMember(refinedMethod, ci);
+            method.setType(refinedProducedReference.getType());
+            List<Tree.ParameterList> parameterLists;
+            Tree.Term me = that.getBaseMemberExpression();
+            if (me instanceof Tree.ParameterizedExpression) {
+                parameterLists = 
+                        ((Tree.ParameterizedExpression) me).getParameterLists();
+            }
+            else {
+                parameterLists = emptyList();
+            }
+            for (int i=0; i<refinedMethod.getParameterLists().size(); i++) {
+                ParameterList refinedParameters = 
+                        refinedMethod.getParameterLists().get(i);
+                ParameterList parameters = 
+                        method.getParameterLists().get(i);
+                Tree.ParameterList parameterList = 
+                        parameterLists.size()<=i ? 
+                                null : parameterLists.get(i);
+                for (int j=0; j<refinedParameters.getParameters().size(); j++) {
+                    Parameter refinedParameter = 
+                            refinedParameters.getParameters().get(j);
+                    ProducedType refinedParameterType = 
+                            refinedProducedReference
                             .getTypedParameter(refinedParameter)
                             .getFullType();
-                if (parameterList==null || 
-                        parameterList.getParameters().size()<=j) {
-                    Parameter p = parameters.getParameters().get(j);
-                    p.getModel().setType(refinedParameterType);
-                }
-                else {
-                    Tree.Parameter parameter = 
-                            parameterList.getParameters().get(j);
-                    Parameter p = parameter.getParameterModel();
-                    ProducedType parameterType = 
-                            p.getModel().getTypedReference().getFullType();
-                    Node typeNode = parameter;
-                    if (parameter instanceof Tree.ParameterDeclaration) {
-                        Tree.Type type = 
-                                ((Tree.ParameterDeclaration) parameter)
-                                    .getTypedDeclaration().getType();
-                        if (type!=null) {
-                            typeNode = type;
-                        }
+                    if (parameterList==null || 
+                            parameterList.getParameters().size()<=j) {
+                        Parameter p = parameters.getParameters().get(j);
+                        p.getModel().setType(refinedParameterType);
                     }
-                    checkIsExactlyForInterop(that.getUnit(),
-                            refinedParameters.isNamedParametersSupported(),
-                            parameterType, refinedParameterType, typeNode, 
-                            "type of parameter '" + p.getName() + 
-                            "' of '" + method.getName() + 
-                            "' declared by '" + ci.getName() +
-                            "' is different to type of corresponding parameter '" +
-                            refinedParameter.getName() + "' of refined method '" + 
-                            refinedMethod.getName() + "' of '" + 
-                            ((Declaration) refinedMethod.getContainer()).getName() + 
-                            "'");
+                    else {
+                        Tree.Parameter parameter = 
+                                parameterList.getParameters().get(j);
+                        Parameter p = parameter.getParameterModel();
+                        ProducedType parameterType = 
+                                p.getModel().getTypedReference().getFullType();
+                        Node typeNode = parameter;
+                        if (parameter instanceof Tree.ParameterDeclaration) {
+                            Tree.Type type = 
+                                    ((Tree.ParameterDeclaration) parameter)
+                                    .getTypedDeclaration().getType();
+                            if (type!=null) {
+                                typeNode = type;
+                            }
+                        }
+                        checkIsExactlyForInterop(that.getUnit(),
+                                refinedParameters.isNamedParametersSupported(),
+                                parameterType, refinedParameterType, typeNode, 
+                                "type of parameter '" + p.getName() + 
+                                "' of '" + method.getName() + 
+                                "' declared by '" + ci.getName() +
+                                "' is different to type of corresponding parameter '" +
+                                refinedParameter.getName() + "' of refined method '" + 
+                                refinedMethod.getName() + "' of '" + 
+                                ((Declaration) refinedMethod.getContainer()).getName() + 
+                                "'");
+                    }
                 }
             }
         }
