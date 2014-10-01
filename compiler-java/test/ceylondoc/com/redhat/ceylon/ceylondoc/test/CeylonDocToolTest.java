@@ -21,7 +21,6 @@ package com.redhat.ceylon.ceylondoc.test;
 
 import static com.redhat.ceylon.compiler.typechecker.TypeChecker.LANGUAGE_MODULE_VERSION;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,17 +37,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.JarOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -225,7 +220,6 @@ public class CeylonDocToolTest {
         
         assertFileExists(destDir, includeNonShared);
         assertBasicContent(destDir, includeNonShared);
-        assertZipContent(destDir);
         assertBy(destDir);
         assertLicense(destDir);
         assertParametersDocumentation(destDir);
@@ -442,9 +436,6 @@ public class CeylonDocToolTest {
         assertFileExists(destDirDef, "index.html");
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/bar.object.html");
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/defaultmodule/foo.object.html");
-        
-        assertFileExists(destDirDef, "../default.doc.zip");
-        assertFileExists(destDirDef, "../default.doc.zip.sha1");
     }
 
     @Test
@@ -461,8 +452,6 @@ public class CeylonDocToolTest {
         
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "Nothing.type.html");
-        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".doc.zip");
-        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".doc.zip.sha1");
     }
 
     @Test
@@ -618,9 +607,6 @@ public class CeylonDocToolTest {
     }
     
     private void assertFileExists(File destDir, boolean includeNonShared) {
-        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip");
-        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip.sha1");
-        
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, ".resources/ceylondoc.css");
@@ -686,28 +672,6 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a class='link-one-self' title='Link to this declaration' href='index.html#StubClass'><i class='icon-link'></i></a>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<a class='link-source-code' href='StubClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a>"));
-    }
-    
-    private void assertZipContent(File destDir) throws Exception {
-        Set<String> zipContent = new HashSet<String>();
-        ZipFile zipFile = new ZipFile(new File(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip"));
-        try {
-            Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
-            while (zipEntries.hasMoreElements()) {
-                ZipEntry zipEntry = zipEntries.nextElement();
-                zipContent.add(zipEntry.getName());
-            }
-        } finally {
-            zipFile.close();
-        }
-        
-        assertTrue(zipContent.contains("api/index.html"));
-        assertTrue(zipContent.contains("api/search.html"));
-        assertTrue(zipContent.contains("api/StubClass.type.html"));
-        assertTrue(zipContent.contains("api/.resources/ceylondoc.css"));
-        assertTrue(zipContent.contains("api/.resources/ceylondoc-icons.png"));
-        assertTrue(zipContent.contains("doc/Docs.md"));
-        assertTrue(zipContent.contains("doc/page.html"));
     }
 
     private void assertBy(File destDir) throws Exception {
@@ -1288,8 +1252,8 @@ public class CeylonDocToolTest {
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOut();
-        return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
-                "module-doc");
+        return new File(new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
+                "module-doc"), "api");
     }
 
         
