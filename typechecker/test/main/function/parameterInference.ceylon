@@ -33,5 +33,8 @@ void parameterInference() {
     accept((f)=>f.string);
     accept { (f)=>f.string; };
     accept { (f) { return f.string; }; };
+    
+    void variadic(Anything(String)* args) {}
+    variadic((string)=>print(string), (string)=>print(string));
 
 }

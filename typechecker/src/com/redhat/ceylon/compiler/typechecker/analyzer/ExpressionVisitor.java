@@ -1872,7 +1872,8 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.PositionalArgumentList pal,
             Tree.MemberOrTypeExpression mte) {
-        ProducedReference pr = getInvokedProducedReference(dec, mte);
+        ProducedReference pr = 
+                getInvokedProducedReference(dec, mte);
         List<ParameterList> pls = 
                 ((Functional) dec).getParameterLists();
         if (!pls.isEmpty()) {
@@ -1880,13 +1881,18 @@ public class ExpressionVisitor extends Visitor {
             List<Parameter> params = pl.getParameters();
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
-            for (int i=0; i<params.size() && i<args.size(); i++) {
-                Parameter param = params.get(i);
+            int j=0;
+            for (int i=0; i<args.size() && j<params.size(); i++) {
+                Parameter param = params.get(j);
                 Tree.PositionalArgument arg = args.get(i);
                 if (arg instanceof Tree.ListedArgument) {
-                    Tree.ListedArgument la = (Tree.ListedArgument) arg;
-                    Tree.Expression e = la.getExpression();
-                    inferParameterTypes(pr, param, e);
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) arg;
+                    inferParameterTypes(pr, param, 
+                            la.getExpression(), true);
+                }
+                if (!param.isSequenced()) {
+                    j++;
                 }
             }
         }
@@ -1895,7 +1901,8 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.NamedArgumentList nal,
             Tree.MemberOrTypeExpression mte) {
-        ProducedReference pr = getInvokedProducedReference(dec, mte);
+        ProducedReference pr = 
+                getInvokedProducedReference(dec, mte);
         List<ParameterList> pls = 
                 ((Functional) dec).getParameterLists();
         if (!pls.isEmpty()) {
@@ -1907,11 +1914,13 @@ public class ExpressionVisitor extends Visitor {
                 Parameter param = params.get(i);
                 Tree.NamedArgument arg = args.get(i);
                 if (arg instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifiedArgument la = (Tree.SpecifiedArgument) arg;
-                    Tree.SpecifierExpression se = la.getSpecifierExpression();
+                    Tree.SpecifiedArgument la = 
+                            (Tree.SpecifiedArgument) arg;
+                    Tree.SpecifierExpression se = 
+                            la.getSpecifierExpression();
                     if (se!=null) {
-                        Tree.Expression e = se.getExpression();
-                        inferParameterTypes(pr, param, e);
+                        inferParameterTypes(pr, param, 
+                                se.getExpression(), false);
                     }
                 }
             }
@@ -1942,8 +1951,8 @@ public class ExpressionVisitor extends Visitor {
         return pr;
     }
 
-    private void inferParameterTypes(ProducedReference pr, Parameter param,
-            Tree.Expression e) {
+    private void inferParameterTypes(ProducedReference pr, 
+            Parameter param, Tree.Expression e, boolean positional) {
         if (e!=null) {
             Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
             if (term instanceof Tree.FunctionArgument) {
@@ -1956,6 +1965,9 @@ public class ExpressionVisitor extends Visitor {
                 else { 
                     ProducedType paramType = 
                             pr.getTypedParameter(param).getFullType();
+                    if (positional && param.isSequenced()) {
+                        paramType = unit.getSequentialElementType(paramType);
+                    }
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(paramType, 
                                 (Tree.FunctionArgument) term);
