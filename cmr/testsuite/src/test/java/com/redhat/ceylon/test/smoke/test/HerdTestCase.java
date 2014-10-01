@@ -83,7 +83,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteEmptyJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -111,7 +111,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.runtime", null, null, set(), set("1.1.0"), deps(), types(), true, "The Herd"),
@@ -173,7 +173,7 @@ public class HerdTestCase extends AbstractTest {
     static final SortedSet<ModuleVersionArtifact> car7Js7Src = types(art(".CAR", 7, 0), art(".JS", 7, 0), art(".SRC"));
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeyl() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
@@ -203,7 +203,7 @@ public class HerdTestCase extends AbstractTest {
 
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_jvm,
@@ -212,7 +212,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteNameApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_Api1,
@@ -221,7 +221,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_js,
@@ -230,7 +230,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForSrc() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_jvm,
@@ -239,7 +239,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -265,7 +265,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -290,7 +290,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForJar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.runtime", null, "", set(), set("1.1.0"), deps(ceylang110, ceycommon110_sh, ceymaven110_opt, ceycmr110, logman, jbossmods), types(art(".JAR")), true, "The Herd"),
@@ -299,7 +299,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCeylonCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -315,7 +315,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_jvm,
@@ -324,7 +324,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteStopsAfterCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
@@ -332,7 +332,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylon() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -358,7 +358,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonDot() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -384,7 +384,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_3_1,
@@ -455,7 +455,7 @@ public class HerdTestCase extends AbstractTest {
 
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsComplete() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail1_1_0,
@@ -464,7 +464,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsCompleteApi1() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_5_Api1,
@@ -473,7 +473,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsBinaryIncompatible() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
@@ -481,7 +481,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsFiltered() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail1_0_0,
@@ -491,7 +491,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -519,7 +519,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.runtime", null, null, set(), set("1.1.0"), deps(), types(), true, "The Herd"),
@@ -547,7 +547,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
@@ -557,7 +557,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredCar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.locale", "", "", set(), set("1.1.0"), deps(ceycoll110_sh, ceytime110_sh), car7Js7Src, true, "The Herd"),
@@ -567,7 +567,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.runtime", null, "", set(), set("1.1.0"), deps(ceylang110, ceycommon110_sh, ceymaven110_opt, ceycmr110, logman, jbossmods), types(art(".JAR")), true, "The Herd"),
@@ -576,7 +576,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
@@ -587,7 +587,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredComplete() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_jvm,
@@ -596,7 +596,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredLicense() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.dbc", null, "Apache Software License 2.0", set("Enrique Zamudio"), set("1.1.0"), deps(ceycoll110, ceyinterop110, ceymath110_sh, ceytime110, javabase7, javajdbc7), car7Src, true, "The Herd"),
@@ -605,7 +605,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.dbc", null, "Apache Software License 2.0", set("Enrique Zamudio"), set("1.1.0"), deps(ceycoll110, ceyinterop110, ceymath110_sh, ceytime110, javabase7, javajdbc7), car7Src, true, "The Herd"),
@@ -615,7 +615,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredDependencies() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.file", null, "", set("Gavin King"), set("1.1.0"), deps(ceycoll110, javabase7), car7Src, true, "The Herd"),
@@ -627,7 +627,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredCompleteApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetailsAll_Api1,
@@ -636,7 +636,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchPaged() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.dbc", null, "Apache Software License 2.0", set("Enrique Zamudio"), set("1.1.0"), deps(ceycoll110, ceyinterop110, ceymath110_sh, ceytime110, javabase7, javajdbc7), car7Src, true, "The Herd"),
@@ -646,7 +646,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -681,7 +681,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -692,7 +692,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged2() throws Exception {
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
@@ -765,7 +765,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
@@ -776,7 +776,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByNameAndMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.process", null, "", set("Gavin King"), set("1.1.0"), deps(ceyfile110_sh, javabase7), car7Src, true, "The Herd"),
@@ -786,7 +786,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByExactMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
@@ -796,7 +796,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByPackage() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
@@ -806,7 +806,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByExactPackage() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, "http://www.apache.org/licenses/LICENSE-2.0.html", set("Enrique Zamudio", "Gavin King", "Stephane Epardaud", "Tako Schotanus", "Tom Bentley"), set("1.1.0"), deps(), car7Js7, true, "The Herd"),
