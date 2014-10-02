@@ -771,11 +771,11 @@
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>[X*]</literal> means <literal>Sequential&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>,</para>
+                    <para><literal>[]</literal> means <literal>Empty</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>[]</literal> means <literal>Empty</literal>,</para>
+                    <para><literal>[X*]</literal> means <literal>Sequential&lt;X&gt;</literal> 
+                    for any type <literal>X</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
@@ -784,6 +784,16 @@
                 <listitem>
                     <para><literal>[X,Y]</literal> means 
                     <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal> for 
+                    any types <literal>X,Y</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X,Y*]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,Sequential&lt;Y&gt;&gt;</literal> for 
+                    any types <literal>X,Y</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X,Y+]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,Sequence&lt;Y&gt;&gt;</literal> for 
                     any types <literal>X,Y</literal>, and</para>
                 </listitem>
                 <listitem>
