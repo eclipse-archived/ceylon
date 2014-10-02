@@ -122,32 +122,31 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (hasRemote) {
             // Create a .missing file in the cache to mark that we tried to locate the file but it didn't exist 
             Node parent = cache.findParent(context);
-            if (parent == null) {
-                parent = cache.createParent(context);
-            }
-            context.toNode(parent);
-            try {
-                File parentDir = fileContentStore.getFile(parent);
-                String[] names = cache.getArtifactNames(context);
-                File missingFile = new File(parentDir, names[0].concat(MISSING));
-                if (!missingFile.exists()) {
-                    if (context.getSearchRepository() == cache) {
-                        ArtifactContext unpreferred = new ArtifactContext(context.getName(), context.getVersion(), context.getSuffixes());
-                        unpreferred.copySettingsFrom(context);
-                        return getArtifactResult(unpreferred);
-                    } else {
-                        parentDir.mkdirs();
-                        try (FileWriter writer = new FileWriter(missingFile, false)) {
-                            // We write the list of remote repositories we tried
-                            // This is not currently used but might be useful in the future
-                            writer.write(reps.toString());
-                        } catch(IOException e) {
-                            log.error(e.toString());
+            if (parent != null) {
+                context.toNode(parent);
+                try {
+                    File parentDir = fileContentStore.getFile(parent);
+                    String[] names = cache.getArtifactNames(context);
+                    File missingFile = new File(parentDir, names[0].concat(MISSING));
+                    if (!missingFile.exists()) {
+                        if (context.getSearchRepository() == cache) {
+                            ArtifactContext unpreferred = new ArtifactContext(context.getName(), context.getVersion(), context.getSuffixes());
+                            unpreferred.copySettingsFrom(context);
+                            return getArtifactResult(unpreferred);
+                        } else {
+                            parentDir.mkdirs();
+                            try (FileWriter writer = new FileWriter(missingFile, false)) {
+                                // We write the list of remote repositories we tried
+                                // This is not currently used but might be useful in the future
+                                writer.write(reps.toString());
+                            } catch(IOException e) {
+                                log.error(e.toString());
+                            }
                         }
                     }
+                } finally {
+                    ArtifactContext.removeNode(parent);
                 }
-            } finally {
-                ArtifactContext.removeNode(parent);
             }
         }
         
