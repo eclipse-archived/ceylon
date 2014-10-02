@@ -54,6 +54,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
     protected static final String ORIGIN = ".origin";
+    protected static final String MISSING = ".missing";
 
     private List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
     private List<Repository> allRoots;
@@ -158,7 +159,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                 return getArtifactResult(context, node);
             }
         } else {
-            return  null;
+            return artifactNotFound(context);
         }
     }
 

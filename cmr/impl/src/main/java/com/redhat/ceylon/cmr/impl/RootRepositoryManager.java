@@ -42,6 +42,7 @@ import com.redhat.ceylon.common.config.Repositories;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootRepositoryManager extends AbstractNodeRepositoryManager {
+    private final File rootDir;
     private final FileContentStore fileContentStore;
 
     private static File getRootDir() {
@@ -61,7 +62,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (!rootDir.isDirectory()) {
             throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
         }
-        fileContentStore = new FileContentStore(rootDir);
+        this.rootDir = rootDir;
+        this.fileContentStore = new FileContentStore(rootDir);
         final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
         setCache(aaca);
     }
@@ -104,6 +106,30 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         } else {
             return toArtifactResult(node);
         }
+    }
+
+    @Override
+    protected ArtifactResult artifactNotFound(ArtifactContext context) throws RepositoryException {
+        // Create a .missing file in the cache to mark that we tried to locate the file but it didn't exist 
+        Node parent = cache.findParent(context);
+        if (parent == null) {
+            parent = cache.createParent(context);
+        }
+        context.toNode(parent);
+        try {
+            File parentDir = fileContentStore.getFile(parent);
+            parentDir.mkdirs();
+            String[] names = cache.getArtifactNames(context);
+            File missingFile = new File(parentDir, names[0].concat(MISSING));
+            try (FileWriter writer = new FileWriter(missingFile, false)) {
+                writer.write("");
+            } catch(IOException e) {
+                log.error(e.toString());
+            }
+        } finally {
+            ArtifactContext.removeNode(parent);
+        }
+        return super.artifactNotFound(context);
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {

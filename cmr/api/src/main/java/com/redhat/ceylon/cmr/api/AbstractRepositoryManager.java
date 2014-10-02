@@ -95,6 +95,10 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         throw new RepositoryException("RepositoryManager doesn't support folder get: " + context);
     }
 
+    protected ArtifactResult artifactNotFound(ArtifactContext context) throws RepositoryException {
+        return null;
+    }
+    
     public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
         final List<ArtifactResult> results = new ArrayList<>();
         ArtifactResult result = null;
