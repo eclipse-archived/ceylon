@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -110,7 +112,7 @@ public class TypeHierarchyVisitor extends Visitor {
                     sortDAGAndBuildMetadata(classOrInterface, that);
             if (concrete) {
                 checkForFormalsNotImplemented(that, 
-                        orderedTypes, classOrInterface);
+                        orderedTypes, (Class) classOrInterface);
             }
             checkForDoubleMemberInheritanceNotOverridden(that, 
                     orderedTypes, classOrInterface);
@@ -334,14 +336,15 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, 
-            List<Type> orderedTypes, Declaration declaration) {
+            List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
             if (!members.formals.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
                     Declaration declaringType = (Declaration) example.getContainer();
-                    if (!declaration.equals(declaringType)) {
+                    if (!clazz.equals(declaringType)) {
+                        addUnimplementedFormal(clazz, example);
                         that.addError("formal member '" + example.getName() + 
                                 "' of '" + declaringType.getName() +
                                 "' not implemented in class hierarchy", 300);
@@ -372,6 +375,7 @@ public class TypeHierarchyVisitor extends Visitor {
                                 }
                             }
                             Declaration declaringType = (Declaration) f.getContainer();
+                            addUnimplementedFormal(clazz, f);
                             that.addError("overloaded formal member '" + f.getName() + 
                                     "(" + paramTypes + ")' of '" + declaringType.getName() +
                                     "' not implemented in class hierarchy"/*, 300*/);
@@ -386,6 +390,19 @@ public class TypeHierarchyVisitor extends Visitor {
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }*/
         }
+    }
+
+    private void addUnimplementedFormal(Class clazz, Declaration member) {
+        ProducedReference unimplemented = 
+                member.getProducedReference(clazz.getType(), 
+                        Collections.<ProducedType>emptyList());
+        List<ProducedReference> list = 
+                clazz.getUnimplementedFormals();
+        if (list.isEmpty()) {
+            list = new ArrayList<ProducedReference>();
+            clazz.setUnimplementedFormals(list);
+        }
+        list.add(unimplemented);
     }
 
     //accumulate all members of a type hierarchy

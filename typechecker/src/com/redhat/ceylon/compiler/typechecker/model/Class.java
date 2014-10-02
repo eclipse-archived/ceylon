@@ -15,6 +15,8 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean anonymous;
     private boolean fin;
     private List<Declaration> overloads;
+    private List<ProducedReference> unimplementedFormals = 
+            Collections.<ProducedReference>emptyList();
 
     @Override
     public boolean isAnonymous() {
@@ -115,5 +117,14 @@ public class Class extends ClassOrInterface implements Functional {
     @Override
     public boolean isFunctional() {
         return true;
+    }
+    
+    public List<ProducedReference> getUnimplementedFormals() {
+        return unimplementedFormals;
+    }
+    
+    public void setUnimplementedFormals(
+            List<ProducedReference> unimplementedFormals) {
+        this.unimplementedFormals = unimplementedFormals;
     }
 }
