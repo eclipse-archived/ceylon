@@ -45,7 +45,7 @@ public class CeylonDocAntTest extends AntBasedTest {
     public void testDocumentModuleFoo() throws Exception {
         AntResult result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
-        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/api/a/index.html").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
     }
     
@@ -53,7 +53,7 @@ public class CeylonDocAntTest extends AntBasedTest {
     public void testDocumentModuleDefault() throws Exception {
         AntResult result = ant("default-module");
         Assert.assertEquals(0, result.getStatusCode());
-        Assert.assertTrue(new File(result.getOut(), "default/module-doc/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "default/module-doc/api/index.html").exists());
     }
 
     @Test
@@ -69,14 +69,14 @@ public class CeylonDocAntTest extends AntBasedTest {
     private void testDocumentModuleLinks(String target) throws Exception {
         AntResult result = ant(target);
         Assert.assertEquals(0, result.getStatusCode());
-        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
-        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/module-doc/b/index.html").exists());
-        File cFile = new File(result.getOut(), "com/example/bar/1.0/module-doc/b/C.type.html");
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/api/a/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/module-doc/api/b/index.html").exists());
+        File cFile = new File(result.getOut(), "com/example/bar/1.0/module-doc/api/b/C.type.html");
         Assert.assertTrue(cFile.exists());
         Assert.assertEquals(2, new File(result.getOut(), "com/example").list().length);
         
         String total = readFile(cFile);
-        assertContains(total, "<a class='link' href='file://"+result.getOut().getPath()+"/com/example/foo/1.0/module-doc/a/I.type.html' title='Go to com.example.foo.a::I'>I</a>");
+        assertContains(total, "<a class='link' href='file://"+result.getOut().getPath()+"/com/example/foo/1.0/module-doc/api/a/I.type.html' title='Go to com.example.foo.a::I'>I</a>");
     }
 
     private String readFile(File cFile) throws IOException {
@@ -95,7 +95,7 @@ public class CeylonDocAntTest extends AntBasedTest {
     public void testDocumentModuleFooTwice() throws Exception {
         AntResult result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
-        File index = new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html");
+        File index = new File(result.getOut(), "com/example/foo/1.0/module-doc/api/a/index.html");
         Assert.assertTrue(index.exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
         assertNotContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo/1.0, it's up to date");
@@ -114,8 +114,8 @@ public class CeylonDocAntTest extends AntBasedTest {
     public void testDocumentModuleFooAndBarTogether() throws Exception {
         AntResult result = ant("foo-and-bar");
         Assert.assertEquals(0, result.getStatusCode());
-        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
-        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/module-doc/b/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/api/a/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/module-doc/api/b/index.html").exists());
     }
 
 }
