@@ -42,6 +42,7 @@ import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ceylon.language.Anything;
@@ -198,6 +199,94 @@ public class RecoveryTest extends CompilerTest {
         compile(1,
                 "declaration/DeclarationRecoveryClassExtends.ceylon");
         // TODO assert we didn't generate anything
+    }
+    
+    @Test
+    public void testRcvDeclarationRecoveryMissingRefinedMembers(){
+        compile(1,
+                "declaration/DeclarationRecoveryMissingRefinedMembers");
+    }
+    
+     
+    
+    private void testDeclarationRecovery(
+            String prerequisites,
+            String test,
+            ExpectedError expectedErrors) {
+        // compile the interface
+        compile("declaration/"+prerequisites+".ceylon");
+        // compiler the broken class
+        compileIgnoringErrors(
+                expectedErrors, 
+            "declaration/"+test+".ceylon");
+        
+        // compile and run the usage of the broken class
+        compileAndRun(
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration."+Character.toLowerCase(test.charAt(0)) + test.substring(1)+"Usage",
+                "declaration/"+test+"Usage.ceylon");
+    }
+    
+    @Test
+    public void testMissingActualAttributes() {
+        testDeclarationRecovery("FormalAttributes", "MissingActualAttributes", new ExpectedError() {
+            @Override
+            public boolean expected(CompilerError e) {
+                return e.message != null
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+            }
+        });
+    }
+    
+    @Test
+    public void testMissingActualMethods() {
+        testDeclarationRecovery("FormalMethods", "MissingActualMethods", new ExpectedError() {
+            @Override
+            public boolean expected(CompilerError e) {
+                return e.message != null
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+            }
+        });
+    }
+    
+    @Test
+    @Ignore
+    public void testMissingActualClasses() {
+        testDeclarationRecovery("FormalClasses", "MissingActualClasses", new ExpectedError() {
+            @Override
+            public boolean expected(CompilerError e) {
+                return e.message != null
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+            }
+        });
+    }
+    
+    @Test
+    public void testBrokenActualMethodParameters() {
+        testDeclarationRecovery("FormalMethods", "BrokenActualMethodParameters", new ExpectedError() {
+            @Override
+            public boolean expected(CompilerError e) {
+                String m = e.message;
+                return m != null
+                        && (m.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy")
+                                ||m.matches("member does not have the same number of parameters as the member it refines: '[a-zA-Z0-9_]+' declared by '[a-zA-Z0-9_]+' refining '[a-zA-Z0-9_]+' declared by '[a-zA-Z0-9_]+'")
+                                ||m.matches("member must have the same number of parameter lists as refined member: 'tpMethodAUnary' in 'FormalMethods'")
+                                ||m.matches("missing parameter list in function declaration")
+                                ||m.matches("type of parameter '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' declared by '[a-zA-Z0-9_]+' is different to type of corresponding parameter '[a-zA-Z0-9_]+' of refined member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+': '[a-zA-Z0-9_()]+' is not exactly '[a-zA-Z0-9_()]+'")
+                                ||m.matches("member must have the same number of parameter lists as refined member: '[a-zA-Z0-9_]+' in '[a-zA-Z0-9_]+'"));
+            }
+        });
+    }
+    
+    @Test
+    @Ignore
+    public void testBrokenActualClassParameters() {
+        testDeclarationRecovery("FormalClasses", "BrokenActualClassParameters", new ExpectedError() {
+            @Override
+            public boolean expected(CompilerError e) {
+                return e.message != null
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+            }
+        });
     }
     
     @Test

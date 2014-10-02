@@ -59,6 +59,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
+import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
@@ -288,6 +289,34 @@ public abstract class CompilerTest {
         for(CompilerError actualError : actualErrors){
             Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
         }
+    }
+    
+    public interface ExpectedError {
+        boolean expected(CompilerError e);
+    }
+    
+    protected void compareErrors(TreeSet<CompilerError> actualErrors, ExpectedError expectedErrors) {
+        for(CompilerError actualError : actualErrors){
+            System.err.println(actualError.lineNumber+": "+actualError.message);
+        }
+        
+        //  make sure we don't have unexpected ones
+        for(CompilerError actualError : actualErrors){
+            if (!expectedErrors.expected(actualError)) {
+                Assert.fail("Unexpected error: "+actualError);
+            }
+        }
+    }
+    
+    protected void compileIgnoringErrors(ExpectedError expectedErrors, String... ceylon) {
+        ErrorCollector c = new ErrorCollector();
+        ExitState exitState = getCompilerTask(c, ceylon).call2();
+        assert(exitState.javacExitCode == Main.EXIT_ERROR);
+        assert(exitState.ceylonState == CeylonState.ERROR);
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors, 
+                expectedErrors
+        );
     }
     
     protected void compareWithJavaSourceWithPositions(String name) {
