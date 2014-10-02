@@ -152,17 +152,43 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
         final Node node = getLeafNode(context);
         if (node != null) {
-            context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
-            if (ArtifactContext.isDirectoryName(node.getLabel())) {
-                return getFolder(context, node);
+            String foundSuffix = ArtifactContext.getSuffixFromNode(node);
+            // First handle all the artifact we didn't find
+            ArtifactResult result = handleNotFound(context, foundSuffix);
+            if (result != null) {
+                // Seems we were able to find this artifact anyway, so lets return it
+                return result;
             } else {
-                return getArtifactResult(context, node);
+                // Now return the artifact we found
+                context.setSuffixes(foundSuffix); // Make sure we'll have only one suffix
+                if (ArtifactContext.isDirectoryName(node.getLabel())) {
+                    return getFolder(context, node);
+                } else {
+                    return getArtifactResult(context, node);
+                }
             }
         } else {
-            return artifactNotFound(context);
+            return handleNotFound(context, null);
         }
     }
 
+    private ArtifactResult handleNotFound(ArtifactContext context, String foundSuffix) {
+        String[] suffixes = context.getSuffixes();
+        for (String suffix : suffixes) {
+            if (suffix.equals(foundSuffix)) {
+                break;
+            }
+            context.setSuffixes(suffix); // Make sure we'll have only one suffix
+            ArtifactResult result = artifactNotFound(context);
+            if (result != null) {
+                // Seems we were able to find this artifact anyway, so lets return it
+                return result;
+            }
+        }
+        context.setSuffixes(suffixes); // Restore the original suffixes
+        return null;
+    }
+    
     protected abstract ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException;
     
     @Override
