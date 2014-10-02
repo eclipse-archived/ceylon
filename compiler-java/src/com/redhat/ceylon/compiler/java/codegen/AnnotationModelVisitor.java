@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;

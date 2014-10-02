@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -154,7 +155,7 @@ public class StatementTransformer extends AbstractTransformer {
                 if (error == null) {
                     stmt.visit(v);
                 } else {
-                    v.append(error.makeThrow(this));
+                    v.append(this.makeThrowUnresolvedCompilationError(error));
                     break;
                 }
             }
@@ -2708,7 +2709,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (initOrSpec != null) {
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(initOrSpec.getExpression().getTerm());
                 if (error != null) {
-                    return List.<JCStatement>of(error.makeThrow(this));
+                    return List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error));
                 }
                 initialValue = expressionGen().transformExpression(initOrSpec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 

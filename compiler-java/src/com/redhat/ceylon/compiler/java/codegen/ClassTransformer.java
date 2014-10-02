@@ -43,8 +43,12 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
+import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
+import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
+import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -66,6 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -78,7 +83,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -97,6 +101,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -173,6 +178,8 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.constructorModifiers(PRIVATE);
                 transformClassAlias((Tree.AnyClass)def, classBuilder);
             }
+            
+            addMissingUnrefinedMembers(def, cls, classBuilder);
         }
         
         if (def instanceof Tree.AnyInterface) {
@@ -228,6 +235,250 @@ public class ClassTransformer extends AbstractTransformer {
         
         return result;
     }
+
+    /** 
+     * Recover from members not being refined in the class hierarchy 
+     * by generating a stub method that throws.
+     */
+    private void addMissingUnrefinedMembers(
+            Node def,
+            Class classModel,
+            ClassDefinitionBuilder classBuilder) {
+        
+        for (ProducedReference unrefined : classModel.getUnimplementedFormals()) {
+            Declaration formalMember = unrefined.getDeclaration();//classModel.getMember(memberName, null, false);
+            String errorMessage  = "formal member '"+formalMember.getName()+"' of '"+((TypeDeclaration)formalMember.getContainer()).getName()+"' not implemented in class hierarchy";
+            java.util.List<ProducedType> params = new java.util.ArrayList<ProducedType>();
+            if (formalMember instanceof Generic) {
+                for (TypeParameter tp: ((Generic) formalMember).getTypeParameters()) {
+                    params.add(tp.getType());
+                }
+            }
+            if (formalMember instanceof Value) {
+                addRefinedThrowerAttribute(classBuilder, errorMessage, classModel,
+                        (Value)formalMember);
+            } else if (formalMember instanceof Method) {
+                addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
+                        (Method)formalMember);
+            } else if (formalMember instanceof Class
+                    && formalMember.isClassMember()) {
+                addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
+                        (Class)formalMember, unrefined);
+            }
+            // formal member class of interface handled in
+            // makeDelegateToCompanion()
+        }
+    
+    }
+
+    private void addRefinedThrowerMethod(ClassDefinitionBuilder classBuilder,
+            String message, ClassOrInterface classModel, Class formalClass, ProducedReference unrefined) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, 
+                naming.getInstantiatorMethodName(formalClass));
+        mdb.modifiers(transformClassDeclFlags(formalClass) &~ABSTRACT);
+        for (TypeParameter tp: formalClass.getTypeParameters()) {
+            mdb.typeParameter(tp);
+            mdb.reifiedTypeParameter(tp);
+        }
+        for (Parameter formalP : formalClass.getParameterList().getParameters()) {
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, formalP.getName());
+            pdb.sequenced(formalP.isSequenced());
+            pdb.defaulted(formalP.isDefaulted());
+            pdb.type(makeJavaType(unrefined.getTypedParameter(formalP).getType()), null);
+            mdb.parameter(pdb);
+        }
+        mdb.resultType(makeJavaType(unrefined.getType()), null);
+        mdb.body(makeThrowUnresolvedCompilationError(message));
+        classBuilder.method(mdb);
+    }
+
+    private Iterable<java.util.List<Parameter>> overloads(Functional f) {
+        java.util.List<java.util.List<Parameter>> result = new ArrayList<java.util.List<Parameter>>();
+        result.add(f.getParameterLists().get(0).getParameters());
+        int ii = 0;
+        for (Parameter p : f.getParameterLists().get(0).getParameters()) {
+            if (p.isDefaulted()
+                    || (p.isSequenced() && !p.isAtLeastOne())) {
+                result.add(f.getParameterLists().get(0).getParameters().subList(0, ii));
+            }
+            ii++;
+        }
+        return result;
+    }
+    
+    private void addRefinedThrowerMethod(ClassDefinitionBuilder classBuilder,
+            String error, ClassOrInterface classModel,
+            Method formalMethod) {
+        Method refined = refineMethod(classModel, 
+                classModel.getType().getTypedMember(formalMethod, Collections.<ProducedType>emptyList()),
+                classModel, formalMethod, classModel.getUnit());
+        // TODO When the method in inherited from an interface and is defaulted 
+        // we need to generate a DPM as well, otherwise the class is missing
+        // the DPM and javac barfs.
+        for (java.util.List<Parameter> parameterList : overloads(refined)) {
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method(this, refined);
+            mdb.isOverride(true);
+            mdb.modifiers(transformMethodDeclFlags(refined));
+            for (TypeParameter tp: formalMethod.getTypeParameters()) {
+                mdb.typeParameter(tp);
+                mdb.reifiedTypeParameter(tp);
+            }
+            for (Parameter param : parameterList) {
+                mdb.parameter(param, null, 0, false);
+            }
+            mdb.resultType(refined, 0);
+            mdb.body(makeThrowUnresolvedCompilationError(error));
+            classBuilder.method(mdb);
+        }
+    }
+
+    private Class refineClass(
+            Scope container,
+            ProducedReference pr,
+            ClassOrInterface classModel, 
+            Class formalClass,
+            Unit unit) {
+        Class refined = new Class();
+        refined.setActual(true);
+        refined.setShared(formalClass.isShared());
+        refined.setContainer(container);
+        refined.setExtendedType(formalClass.getType());
+        refined.setDeprecated(formalClass.isDeprecated());
+        refined.setName(formalClass.getName());
+        refined.setRefinedDeclaration(formalClass.getRefinedDeclaration());
+        refined.setScope(container);
+        //refined.setType(pr.getType());
+        refined.setUnit(unit);
+        for (ParameterList formalPl : formalClass.getParameterLists()) {
+            ParameterList refinedPl = new ParameterList();
+            for (Parameter formalP : formalPl.getParameters()){
+                Parameter refinedP = new Parameter();
+                refinedP.setAtLeastOne(formalP.isAtLeastOne());
+                refinedP.setDeclaration(refined);
+                refinedP.setDefaulted(formalP.isDefaulted());
+                refinedP.setDeclaredAnything(formalP.isDeclaredAnything());
+                refinedP.setHidden(formalP.isHidden());
+                refinedP.setSequenced(formalP.isSequenced());
+                refinedP.setName(formalP.getName());
+                final ProducedTypedReference typedParameter = pr.getTypedParameter(formalP);
+                MethodOrValue paramModel;
+                if (formalP.getModel() instanceof Value) {
+                    Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
+                    paramValueModel.setInitializerParameter(refinedP);
+                    paramModel = paramValueModel;
+                } else {
+                    Method paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Method)formalP.getModel(), unit);
+                    paramFunctionModel.setInitializerParameter(refinedP);
+                    paramModel = paramFunctionModel; 
+                }
+                refinedP.setModel(paramModel);
+                refinedPl.getParameters().add(refinedP);
+            }
+            refined.addParameterList(refinedPl);
+        }
+        return refined;
+    }
+    
+    private Method refineMethod(
+            Scope container,
+            ProducedTypedReference pr,
+            ClassOrInterface classModel, 
+            Method formalMethod,
+            Unit unit) {
+        Method refined = new Method();
+        refined.setActual(true);
+        refined.setShared(formalMethod.isShared());
+        refined.setContainer(container);
+        refined.setDefault(true);// in case there are subclasses
+        refined.setDeferred(false);
+        refined.setDeprecated(formalMethod.isDeprecated());
+        refined.setName(formalMethod.getName());
+        refined.setRefinedDeclaration(formalMethod.getRefinedDeclaration());
+        refined.setScope(container);
+        refined.setType(pr.getType());
+        refined.setUnit(unit);
+        refined.setUnboxed(formalMethod.getUnboxed());
+        refined.setUntrustedType(formalMethod.getUntrustedType());
+        refined.setTypeErased(formalMethod.getTypeErased());
+        for (ParameterList formalPl : formalMethod.getParameterLists()) {
+            ParameterList refinedPl = new ParameterList();
+            for (Parameter formalP : formalPl.getParameters()){
+                Parameter refinedP = new Parameter();
+                refinedP.setAtLeastOne(formalP.isAtLeastOne());
+                refinedP.setDeclaration(refined);
+                refinedP.setDefaulted(formalP.isDefaulted());
+                refinedP.setDeclaredAnything(formalP.isDeclaredAnything());
+                refinedP.setHidden(formalP.isHidden());
+                refinedP.setSequenced(formalP.isSequenced());
+                refinedP.setName(formalP.getName());
+                final ProducedTypedReference typedParameter = pr.getTypedParameter(formalP);
+                MethodOrValue paramModel;
+                if (formalP.getModel() instanceof Value) {
+                    Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
+                    paramValueModel.setInitializerParameter(refinedP);
+                    paramModel = paramValueModel;
+                } else {
+                    Method paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Method)formalP.getModel(), unit);
+                    paramFunctionModel.setInitializerParameter(refinedP);
+                    paramModel = paramFunctionModel; 
+                }
+                refinedP.setModel(paramModel);
+                refinedPl.getParameters().add(refinedP);
+            }
+            refined.addParameterList(refinedPl);
+        }
+        return refined;
+    }
+
+    /**
+     * Adds a getter (and possibly a setter) to {@code classBuilder} 
+     * which throws
+     * @param classBuilder The class builder to add the method to
+     * @param error The message
+     * @param classModel The class which doesn't refine {@code formalAttribute}
+     * @param formalAttribute The formal attribute that hasn't been refined in {@code classModel}
+     */
+    private void addRefinedThrowerAttribute(
+            ClassDefinitionBuilder classBuilder, String error,
+            ClassOrInterface classModel, Value formalAttribute) {
+        Value refined = refineValue(formalAttribute, formalAttribute.getProducedTypedReference(null, null), classModel, classModel.getUnit());
+        AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
+        getterBuilder.skipField();
+        getterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
+        getterBuilder.getterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
+        classBuilder.attribute(getterBuilder);
+        if (formalAttribute.isVariable()) {
+            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, refined.getName(), refined);
+            setterBuilder.skipField();
+            setterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
+            setterBuilder.setterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
+            classBuilder.attribute(setterBuilder);
+        }
+    }
+
+    private Value refineValue(Value formalAttribute,
+            ProducedTypedReference producedValue,
+            Scope container, 
+            Unit unit) {
+        Value refined = new Value();
+        refined.setActual(true);
+        refined.setContainer(container);
+        refined.setName(formalAttribute.getName());
+        refined.setRefinedDeclaration(formalAttribute.getRefinedDeclaration());
+        refined.setScope(container);
+        refined.setVariable(formalAttribute.isVariable());
+        
+        refined.setShared(formalAttribute.isShared());
+        refined.setTransient(formalAttribute.isTransient());
+        refined.setType(producedValue.getType());// TODO
+        refined.setTypeErased(formalAttribute.getTypeErased());
+        refined.setUnboxed(formalAttribute.getUnboxed());
+        refined.setUntrustedType(formalAttribute.getUntrustedType());
+        refined.setUnit(unit);
+        return refined;
+    }
+
+    
 
     private void transformClassAlias(final Tree.AnyClass def,
             ClassDefinitionBuilder classBuilder) {
@@ -965,8 +1216,12 @@ public class ClassTransformer extends AbstractTransformer {
             }
             TypeDeclaration innerType = (TypeDeclaration) member;
             Tree.Declaration innerTypeTree = findInnerType(def, innerType.getName());
-            if(innerTypeTree != null && errors().hasDeclarationError(innerTypeTree))
-                continue;
+            if(innerTypeTree != null) {
+                TransformationPlan plan = errors().hasDeclarationAndMarkBrokenness(innerTypeTree);
+                if (plan instanceof Drop) {
+                    continue;
+                }
+            }
             JCAnnotation atMember = makeAtMember(innerType.getType());
             members = members.prepend(atMember);
         }
@@ -1129,6 +1384,9 @@ public class ClassTransformer extends AbstractTransformer {
                 Declaration sub = (Declaration)model.getMember(method.getName(), null, false);
                 if (sub instanceof Method) {
                     Method subMethod = (Method)sub;
+                    if (subMethod.getParameterLists().isEmpty()) {
+                        continue;
+                    }
                     java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = producedTypeParameterBounds(
                             typedMember, subMethod);
                     final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<ProducedType>emptyList());
@@ -1446,8 +1704,12 @@ public class ClassTransformer extends AbstractTransformer {
                 null,  // TODO Type args
                 makeSelect(qualifierThis, (targetMethodName != null) ? targetMethodName : methodName),
                 arguments.toList());
-        
-        if (!explicitReturn) {
+        if (isUnimplementedMemberClass(currentType, typedMember)) {
+            concreteWrapper.body(makeThrowUnresolvedCompilationError(
+                    // TODO encapsulate the error message
+                    "formal member '"+typedMember.getDeclaration().getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
+            current().broken();
+        } else if (!explicitReturn) {
             concreteWrapper.body(gen().make().Exec(expr));
         } else {
             // deal with erasure and stuff
@@ -1475,6 +1737,18 @@ public class ClassTransformer extends AbstractTransformer {
             concreteWrapper.body(gen().make().Return(expr));
         }
         return concreteWrapper;
+    }
+
+    private boolean isUnimplementedMemberClass(ProducedType currentType, ProducedReference typedMember) {
+        if (typedMember instanceof ProducedType
+                && currentType.getDeclaration() instanceof Class) {// member class
+            for (ProducedReference formal : ((Class)currentType.getDeclaration()).getUnimplementedFormals()) {
+                if (formal.getDeclaration().equals(typedMember.getDeclaration())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isInheritedTwiceWithDifferentTypeArguments(ProducedType currentType, Interface iface) {
@@ -1729,7 +2003,7 @@ public class ClassTransformer extends AbstractTransformer {
                 v.visit(methDecl);
                 
                 // Generate the method
-                classBuilder.method(methDecl);
+                classBuilder.method(methDecl, Errors.GENERATE);
             }
         } else {
             // Normal case, just generate the specifier statement
@@ -2027,7 +2301,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (specOrInit != null) {
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(specOrInit.getExpression());
                 if (error != null) {
-                    builder.getterBlock(make().Block(0, List.<JCStatement>of(error.makeThrow(this))));
+                    builder.getterBlock(make().Block(0, List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error))));
                 } else {
                     Value declarationModel = decl.getDeclarationModel();
                     ProducedTypedReference typedRef = getTypedReference(declarationModel);
@@ -2104,7 +2378,7 @@ public class ClassTransformer extends AbstractTransformer {
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
 
-    public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
+    public List<JCTree> transformWrappedMethod(Tree.AnyMethod def, TransformationPlan plan) {
         final Method model = def.getDeclarationModel();
         if (model.isParameter()) {
             return List.nil();
@@ -2122,7 +2396,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        builder.methods(classGen().transform(def, builder));
+        builder.methods(classGen().transform(def, plan, builder));
         
         // Toplevel method
         if (Strategy.generateMain(def)) {
@@ -2194,9 +2468,16 @@ public class ClassTransformer extends AbstractTransformer {
         return mdb;
     }
 
-    public List<MethodDefinitionBuilder> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+    public List<MethodDefinitionBuilder> transform(Tree.AnyMethod def, TransformationPlan plan, ClassDefinitionBuilder classBuilder) {
         if (def.getDeclarationModel().isParameter()) {
             return List.nil();
+        }
+        if (plan instanceof ThrowerMethod) {
+            addRefinedThrowerMethod(classBuilder, 
+                    plan.getErrorMessage().getMessage(), 
+                    (Class)def.getDeclarationModel().getContainer(),
+                    (Method)def.getDeclarationModel().getRefinedDeclaration());
+            return List.<MethodDefinitionBuilder>nil();
         }
         // Transform the method body of the 'inner-most method'
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(Decl.isMpl(def.getDeclarationModel())
@@ -2556,7 +2837,7 @@ public class ClassTransformer extends AbstractTransformer {
             term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(term);
             if (error != null) {
-                return List.<JCStatement>of(error.makeThrow(this));
+                return List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error));
             }
         }
         if (!isLazy && term instanceof Tree.FunctionArgument) {
@@ -3475,7 +3756,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(Decl.getDefaultArgument(currentParam).getExpression());
             if (error != null) {
-                methodBuilder.body(error.makeThrow(this));
+                methodBuilder.body(this.makeThrowUnresolvedCompilationError(error));
             } else {
                 JCExpression expr = expressionGen().transform(currentParam);
                 JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
@@ -3525,7 +3806,8 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.inInitializer = prevInInitializer;
             visitor.defs = prevDefs;
         }
-
+ 
+        addMissingUnrefinedMembers(def, klass, objectClassBuilder);
         satisfaction(satisfiesTypes, klass, objectClassBuilder);
         
         TypeDeclaration decl = model.getType().getDeclaration();

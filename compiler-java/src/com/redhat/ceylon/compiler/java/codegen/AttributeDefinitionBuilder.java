@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -257,7 +258,7 @@ public class AttributeDefinitionBuilder {
         
         if (readable) {
             if (variableInitThrow != null) {
-                getterBuilder.block(owner.make().Block(0, List.<JCStatement>of(variableInitThrow.makeThrow(owner))));
+                getterBuilder.block(owner.make().Block(0, List.<JCStatement>of(owner.makeThrowUnresolvedCompilationError(variableInitThrow))));
             }
             getterBuilder.modifiers(getGetSetModifiers());
             getterBuilder.annotationFlags(annotationFlags);
@@ -272,7 +273,7 @@ public class AttributeDefinitionBuilder {
 
         if (writable) {
             if (variableInitThrow != null) {
-                setterBuilder.block(owner.make().Block(0, List.<JCStatement>of(variableInitThrow.makeThrow(owner))));
+                setterBuilder.block(owner.make().Block(0, List.<JCStatement>of(owner.makeThrowUnresolvedCompilationError(variableInitThrow))));
             }
             setterBuilder.modifiers(getGetSetModifiers());
             // mark it with @Ignore if it's late but not variable

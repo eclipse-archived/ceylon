@@ -27,6 +27,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -592,8 +593,8 @@ public class ClassDefinitionBuilder
         return this;
     }
 
-    public ClassDefinitionBuilder method(Tree.AnyMethod method) {
-        methods(gen.classGen().transform(method, this));
+    public ClassDefinitionBuilder method(Tree.AnyMethod method, TransformationPlan plan) {
+        methods(gen.classGen().transform(method, plan, this));
         return this;
     }
 

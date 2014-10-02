@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -194,7 +195,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCStatement result;
         HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(tree.getExpression());
         if (error != null) {
-            result = error.makeThrow(this);
+            result = this.makeThrowUnresolvedCompilationError(error);
         } else {
             result = at(tree).Exec(transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
         }
@@ -208,9 +209,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCStatement  result;
         HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(op.getBaseMemberExpression());
         if (error != null) {
-            result = error.makeThrow(this);
+            result = this.makeThrowUnresolvedCompilationError(error);
         } else if ((error = errors().getFirstExpressionErrorAndMarkBrokenness(op.getSpecifierExpression().getExpression())) != null) {
-            result = error.makeThrow(this);
+            result = this.makeThrowUnresolvedCompilationError(error);
         } else {
             result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
         }
@@ -3210,7 +3211,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
         HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(extendedType);
         if (error != null) {
-            classBuilder.superCall(error.makeThrow(this));
+            classBuilder.superCall(this.makeThrowUnresolvedCompilationError(error));
             return;
         }
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {

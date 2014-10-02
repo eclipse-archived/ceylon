@@ -17,16 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.codegen;
+package com.redhat.ceylon.compiler.java.codegen.recovery;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
-import com.sun.tools.javac.util.List;
 
 @SuppressWarnings("serial")
-public class HasErrorException extends RuntimeException {
+public class HasErrorException 
+        extends RuntimeException implements LocalizedError {
 
     private final Message message;
     private final Node node;
@@ -40,16 +38,7 @@ public class HasErrorException extends RuntimeException {
         return message;
     }
     
-    public Node getErrorNode() {
+    public Node getNode() {
         return node;
     }
-    
-    public JCThrow makeThrow(AbstractTransformer gen) {
-        String errorMessage = getErrorMessage().getMessage();
-        return gen.at(getErrorNode()).Throw(gen.make().NewClass(null, List.<JCExpression>nil(), 
-                gen.make().QualIdent(gen.syms().ceylonUnresolvedCompilationErrorType.tsym), 
-                List.<JCExpression>of(gen.make().Literal(errorMessage != null ? errorMessage : "compiler bug: error with unknown message")),
-                null));
-    }
-
 }

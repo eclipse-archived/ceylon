@@ -45,6 +45,9 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
+import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.LocalizedError;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -99,6 +102,7 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.JCTree.LetExpr;
@@ -462,7 +466,7 @@ public abstract class AbstractTransformer implements Transformation {
             JCStatement transStat;
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
-                transStat = error.makeThrow(this);
+                transStat = this.makeThrowUnresolvedCompilationError(error);
             } else {
                 transStat = make().Return(expressionGen().transformExpression(expression.getExpression(), boxing, type));
             }
@@ -489,7 +493,7 @@ public abstract class AbstractTransformer implements Transformation {
             JCStatement transStmt;
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
-                transStmt = error.makeThrow(this);
+                transStmt = this.makeThrowUnresolvedCompilationError(error);
             } else {
                 transStmt = make().Exec(expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type));
             }
@@ -2229,7 +2233,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     private ClassDefinitionBuilder ccdb;
     
-    ClassDefinitionBuilder current() {
+    public ClassDefinitionBuilder current() {
         return ((AbstractTransformer)gen()).ccdb; 
     }
     
@@ -4740,4 +4744,16 @@ public abstract class AbstractTransformer implements Transformation {
         return termType;
     }
     
+    public JCThrow makeThrowUnresolvedCompilationError(String exceptionMessage) {
+        return make().Throw(make().NewClass(null, 
+                List.<JCExpression>nil(),
+                make().QualIdent(syms().ceylonUnresolvedCompilationErrorType.tsym),
+                List.<JCExpression>of(make().Literal(exceptionMessage)), null));
+    }
+    
+    public JCThrow makeThrowUnresolvedCompilationError(LocalizedError error) {
+        String errorMessage = error.getErrorMessage().getMessage();
+        at(error.getNode());
+        return makeThrowUnresolvedCompilationError(errorMessage != null ? errorMessage : "compiler bug: error with unknown message");
+    }
 }

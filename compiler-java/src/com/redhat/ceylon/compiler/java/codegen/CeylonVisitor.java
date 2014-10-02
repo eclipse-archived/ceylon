@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -67,8 +70,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      */
 
     public void visit(Tree.TypeAliasDeclaration decl){
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
+        }
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
         if (Decl.withinClassOrInterface(decl)) {
@@ -92,8 +97,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ClassOrInterface decl) {
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
+        }
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -114,7 +121,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         for (Tree.Statement stmt : that.getStatements()) {
             HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
             if (error != null) {
-                append(error.makeThrow(gen));
+                append(gen.makeThrowUnresolvedCompilationError(error));
             } else {
                 stmt.visit(this);
             }
@@ -134,8 +141,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ObjectDefinition decl) {
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
+        }
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -148,7 +157,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeDeclaration decl){
-        if (gen.errors().hasDeclarationAndMarkBrokenness(decl)) {
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
         }
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -173,8 +183,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
+        }
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
@@ -196,9 +208,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
-        if (gen.errors().hasDeclarationAndMarkBrokenness(getterSetterPairing.getGetter(decl))) {
+        }
+        TransformationPlan getterPlan = gen.errors().hasDeclarationAndMarkBrokenness(getterSetterPairing.getGetter(decl));
+        if (getterPlan instanceof Drop) {
             // For setters we also give up if the getter has a declaration error
             // because there's little chance we'll be able to generate a correct setter
             return;
@@ -224,16 +239,18 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AnyMethod decl) {
-        if(gen.errors().hasDeclarationAndMarkBrokenness(decl))
+        TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
+        if (plan instanceof Drop) {
             return;
+        }
         if (Decl.isNative(decl) && Decl.isToplevel(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
                 && (!Decl.isDeferred(decl) || Decl.isCaptured(decl))) {
-            classBuilder.method(decl);
+            classBuilder.method(decl, plan);
         } else {
-            appendList(gen.classGen().transformWrappedMethod(decl));
+            appendList(gen.classGen().transformWrappedMethod(decl, plan));
         }
         gen.resetCompilerAnnotations(annots);
     }

@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -305,7 +306,7 @@ public class CeylonTransformer extends AbstractTransformer {
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
             if (expressionError != null) {
-                return List.<JCTree>of(expressionError.makeThrow(this));
+                return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             } else {
                 return List.<JCTree>of(makeVariableBoxDecl(
                         initialValue, declarationModel));
@@ -391,7 +392,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         if (Decl.isLocal(declarationModel)) {
             if (expressionError != null) {
-                return List.<JCTree>of(expressionError.makeThrow(this));
+                return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             }
             builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier()));
             if(initialValue != null)
