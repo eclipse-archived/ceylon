@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.config.Repositories;
@@ -42,7 +43,6 @@ import com.redhat.ceylon.common.config.Repositories;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootRepositoryManager extends AbstractNodeRepositoryManager {
-    private final File rootDir;
     private final FileContentStore fileContentStore;
 
     private static File getRootDir() {
@@ -62,7 +62,6 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (!rootDir.isDirectory()) {
             throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
         }
-        this.rootDir = rootDir;
         this.fileContentStore = new FileContentStore(rootDir);
         final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
         setCache(aaca);
@@ -110,26 +109,54 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     @Override
     protected ArtifactResult artifactNotFound(ArtifactContext context) throws RepositoryException {
-        // Create a .missing file in the cache to mark that we tried to locate the file but it didn't exist 
-        Node parent = cache.findParent(context);
-        if (parent == null) {
-            parent = cache.createParent(context);
-        }
-        context.toNode(parent);
-        try {
-            File parentDir = fileContentStore.getFile(parent);
-            parentDir.mkdirs();
-            String[] names = cache.getArtifactNames(context);
-            File missingFile = new File(parentDir, names[0].concat(MISSING));
-            try (FileWriter writer = new FileWriter(missingFile, false)) {
-                writer.write("");
-            } catch(IOException e) {
-                log.error(e.toString());
+        boolean hasRemote = false;
+        StringBuilder reps = new StringBuilder();
+        for (Repository rep : getRepositories()) {
+            if (rep.getRoot().isRemote() && !isOffline(rep)) {
+                hasRemote = true;
+                reps.append(rep.getDisplayString());
+                reps.append('\n');
             }
-        } finally {
-            ArtifactContext.removeNode(parent);
         }
+
+        if (hasRemote) {
+            // Create a .missing file in the cache to mark that we tried to locate the file but it didn't exist 
+            Node parent = cache.findParent(context);
+            if (parent == null) {
+                parent = cache.createParent(context);
+            }
+            context.toNode(parent);
+            try {
+                File parentDir = fileContentStore.getFile(parent);
+                String[] names = cache.getArtifactNames(context);
+                File missingFile = new File(parentDir, names[0].concat(MISSING));
+                if (!missingFile.exists()) {
+                    if (context.getSearchRepository() == cache) {
+                        ArtifactContext unpreferred = new ArtifactContext(context.getName(), context.getVersion(), context.getSuffixes());
+                        unpreferred.copySettingsFrom(context);
+                        return getArtifactResult(unpreferred);
+                    } else {
+                        parentDir.mkdirs();
+                        try (FileWriter writer = new FileWriter(missingFile, false)) {
+                            // We write the list of remote repositories we tried
+                            // This is not currently used but might be useful in the future
+                            writer.write(reps.toString());
+                        } catch(IOException e) {
+                            log.error(e.toString());
+                        }
+                    }
+                }
+            } finally {
+                ArtifactContext.removeNode(parent);
+            }
+        }
+        
         return super.artifactNotFound(context);
+    }
+    
+    private boolean isOffline(Repository repo) {
+        ContentStore cs = repo.getRoot().getService(ContentStore.class);
+        return cs != null && cs.isOffline();
     }
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {

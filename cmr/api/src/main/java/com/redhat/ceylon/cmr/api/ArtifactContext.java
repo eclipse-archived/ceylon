@@ -409,7 +409,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return ac;
     }
 
-    protected ArtifactContext copySettingsFrom(ArtifactContext ac) {
+    public ArtifactContext copySettingsFrom(ArtifactContext ac) {
         localOnly = ac.localOnly;
         ignoreSHA = ac.ignoreSHA;
         ignoreCache = ac.ignoreCache;
