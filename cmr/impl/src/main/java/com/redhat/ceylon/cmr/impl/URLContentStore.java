@@ -198,7 +198,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     public OpenNode find(Node parent, String child) {
-        final String path = getFullPath(parent, child);
+        final String path = compatiblePath(getFullPath(parent, child));
         // only test the URL if we are looking at the child level
         // otherwise, pretend that folders exist, we'll find out soon
         // enough
@@ -215,10 +215,31 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return node;
     }
 
+    protected String compatiblePath(String fullPath) {
+        if (isHerd() && herdVersion == 3) {
+            // For version 3 herd we transform requests for foo/1/module-doc.zip[.sha1]
+            // to foo/1/foo-1.doc.zip[sha1] for backwards compatibility
+            if (fullPath.endsWith(ArtifactContext.SHA1)) {
+                return compatiblePath(fullPath.substring(0, fullPath.length() - 5)) + ArtifactContext.SHA1;
+            }
+            if (fullPath.endsWith(ArtifactContext.DOCS + ArtifactContext.ZIP)) {
+                fullPath = fullPath.substring(0, fullPath.length() - 15);
+                String[] parts = fullPath.split("\\/");
+                String name = parts[1];
+                for (int i = 2; i < parts.length - 1; i++) {
+                    name += "." + parts[i];
+                }
+                String version = parts[parts.length - 1];
+                fullPath = fullPath + "/" + name + "-" + version + ".doc.zip";
+            }
+        }
+        return fullPath;
+    }
+    
     protected abstract ContentHandle createContentHandle(Node parent, String child, String path, Node node);
 
     protected String getUrlAsString(Node node) {
-        return getUrlAsString(NodeUtils.getFullPath(node, SEPARATOR));
+        return getUrlAsString(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
     }
 
     protected String getUrlAsString(String path) {
@@ -226,7 +247,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     protected URL getURL(Node node) {
-        return getURL(NodeUtils.getFullPath(node, SEPARATOR));
+        return getURL(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
     }
 
     protected URL getURL(String path) {

@@ -125,7 +125,7 @@ public class RemoteContentStore extends URLContentStore {
         }
 
         public InputStream getBinariesAsStream() throws IOException {
-            final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
+            final URL url = getURL(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
             log.debug("Fetching resource: " + url);
             return openStream(url);
         }
@@ -135,12 +135,12 @@ public class RemoteContentStore extends URLContentStore {
         }
 
         public long getLastModified() throws IOException {
-            final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
+            final URL url = getURL(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
             return lastModified(url);
         }
 
         public long getSize() throws IOException {
-            final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
+            final URL url = getURL(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
             return size(url);
         }
 
