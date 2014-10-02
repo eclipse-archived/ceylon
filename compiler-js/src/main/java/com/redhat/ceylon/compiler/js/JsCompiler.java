@@ -444,7 +444,7 @@ public class JsCompiler {
                             opts.isVerbose(), logger);
                     sac.copy(FileUtil.filesToPathList(jsout.getSources()));
                 }
-                if (!resFiles.isEmpty()) {
+                if (resFiles != null && !resFiles.isEmpty()) {
                     ArtifactCreator sac = CeylonUtils.makeResourceArtifactCreator(
                             outRepo,
                             opts.getSrcDirs(),
