@@ -59,7 +59,7 @@ shared abstract class Object()
      instance with the `hash` of the instance. Subclasses 
      are encouraged to refine this implementation to produce 
      a more meaningful representation."
-    shared default String string =>
-            className(this) + "@" + hash.string;
+    shared default String string
+            => className(this) + "@" + hash.string;
     
 }
