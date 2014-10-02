@@ -653,7 +653,7 @@ public class LinkRenderer {
         moduleUrlBuilder.append(Util.join("/", module.getName()));
         moduleUrlBuilder.append("/");
         moduleUrlBuilder.append(module.getVersion());
-        moduleUrlBuilder.append("/module-doc/");
+        moduleUrlBuilder.append("/module-doc/api/");
         return moduleUrlBuilder.toString();
     }
     
