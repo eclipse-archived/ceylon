@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -76,6 +77,43 @@ public class SmokeTestCase extends AbstractTest {
 
         File def = manager.getArtifact(RepositoryManager.DEFAULT_MODULE, null);
         Assert.assertNotNull("Default module not found", def);
+    }
+
+    @Test
+    public void testGetMultiple() throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+        Repository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        builder.addRepository(externalRepo);
+        RepositoryManager manager = builder.buildRepository();
+
+        ArtifactContext artifact = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
+        List<ArtifactResult> json = manager.getArtifactResults(artifact);
+        Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json);
+        Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json.size());
+        File root = new File(manager.getRepositories().get(1).getDisplayString());
+        File missing = new File(root, "ceylon/json/1.0.0/ceylon.json-1.0.0.scripts.zip.missing");
+        Assert.assertTrue("Marker file .missing not found", missing.exists());
+    }
+
+    @Test
+    public void testGetMultipleCached() throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000);
+        Repository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        builder.addRepository(externalRepo);
+        RepositoryManager manager = builder.buildRepository();
+
+        ArtifactContext artifact1 = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
+        List<ArtifactResult> json1 = manager.getArtifactResults(artifact1);
+        Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json1);
+        Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json1.size());
+        File root = new File(manager.getRepositories().get(1).getDisplayString());
+        File missing = new File(root, "ceylon/json/1.0.0/ceylon.json-1.0.0.scripts.zip.missing");
+        Assert.assertTrue("Marker file .missing not found", missing.exists());
+
+        ArtifactContext artifact2 = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.SRC);
+        List<ArtifactResult> json2 = manager.getArtifactResults(artifact2);
+        Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json2);
+        Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json2.size());
     }
 
     @Test
