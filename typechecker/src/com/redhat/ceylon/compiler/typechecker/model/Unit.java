@@ -1358,15 +1358,21 @@ public class Unit {
         boolean atLeastOne = false;
         for (int i=0; i<=max; i++) {
             Parameter p = params.get(i);
-            ProducedType ft = pr.getTypedParameter(p).getFullType();
-            if (firstDefaulted<0 && p.isDefaulted()) {
-                firstDefaulted = i;
+            ProducedType ft;
+            if (p.getModel() == null) {
+                ft = new UnknownType(this).getType();
             }
-            if (i==max && p.isSequenced()) {
-                sequenced = true;
-                atLeastOne = p.isAtLeastOne();
-                if (ft!=null) {
-                    ft = getIteratedType(ft);
+            else {
+                ft = pr.getTypedParameter(p).getFullType();
+                if (firstDefaulted<0 && p.isDefaulted()) {
+                    firstDefaulted = i;
+                }
+                if (i==max && p.isSequenced()) {
+                    sequenced = true;
+                    atLeastOne = p.isAtLeastOne();
+                    if (ft!=null) {
+                        ft = getIteratedType(ft);
+                    }
                 }
             }
             paramTypes.add(ft);
