@@ -20,7 +20,7 @@ shared interface ConstrainedAnnotation<out Value=Annotation,
     
     "Can this annotation occur on the given program 
      element?"
-    shared Boolean occurs(Annotated programElement) =>
-            programElement is ProgramElement;
+    shared Boolean occurs(Annotated programElement)
+            => programElement is ProgramElement;
     
 }
