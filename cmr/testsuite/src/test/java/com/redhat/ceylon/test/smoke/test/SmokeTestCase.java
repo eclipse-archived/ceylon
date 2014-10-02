@@ -573,13 +573,26 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
-    public void testSearchModulesAllCeylonCode() throws Exception {
+    public void testSearchModulesAllCeylonCodeAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 hello,
                 moduletest,
         };
 
         testSearchResults("", Type.CEYLON_CODE, Retrieval.ALL, expected);
+    }
+
+    @Test
+    public void testSearchModulesAllCeylonCodeAny() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                com_acme_helloworld,
+                hello,
+                jsonly,
+                moduletest,
+                org_jboss_acme,
+        };
+
+        testSearchResults("", Type.CEYLON_CODE, Retrieval.ANY, expected);
     }
 
     @Test
