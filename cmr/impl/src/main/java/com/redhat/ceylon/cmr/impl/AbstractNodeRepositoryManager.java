@@ -204,14 +204,18 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     private ArtifactResult downloadZipped(Node node, ArtifactContext context) {
         ArtifactContext zippedContext = context.getZipContext();
         ArtifactResult zipResult = getArtifactResult(zippedContext);
-        String zipName = zipResult.artifact().getName();
-        File unzippedFolder = new File(zipResult.artifact().getParentFile(), zipName.substring(0, zipName.length() - 4));
-        try {
-            IOUtils.extractArchive(zipResult.artifact(), unzippedFolder);
-        } catch (IOException e) {
-            throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
+        if (zipResult != null) {
+            String zipName = zipResult.artifact().getName();
+            File unzippedFolder = new File(zipResult.artifact().getParentFile(), zipName.substring(0, zipName.length() - 4));
+            try {
+                IOUtils.extractArchive(zipResult.artifact(), unzippedFolder);
+            } catch (IOException e) {
+                throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
+            }
+            return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
+        } else {
+            return null;
         }
-        return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
     }
     
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
