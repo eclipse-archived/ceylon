@@ -24,11 +24,7 @@ public class FileUtil {
      */
     public static File makeTempDir(String prefix){
         try {
-            File dir = File.createTempFile(prefix, "");
-            if(!dir.delete() || !dir.mkdirs()) {
-                throw new RuntimeException("Failed to create tmp dir: "+dir);
-            }
-            return dir;
+            return Files.createTempDirectory(prefix).toFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
