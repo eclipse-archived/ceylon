@@ -135,14 +135,14 @@ public class CMRTestHTTP extends CompilerTest {
         carFile = getModuleArchive(moduleA, "6.6.6");
         assertFalse(carFile.exists());
         
-        rq.check(32);
+        rq.check(33);
     }
 
     
     @Test
     public void testMdlHTTPOutputRepo() throws IOException{
-        testMdlHTTPOutputRepo(true, 37);
-        testMdlHTTPOutputRepo(false, 98);
+        testMdlHTTPOutputRepo(true, 38);
+        testMdlHTTPOutputRepo(false, 99);
     }
     
     private void testMdlHTTPOutputRepo(boolean herd, int requests) throws IOException{
@@ -185,8 +185,8 @@ public class CMRTestHTTP extends CompilerTest {
 
     @Test
     public void testMdlHTTPMixedCompilation() throws IOException{
-        testMdlHTTPMixedCompilation(false, 189);
-        testMdlHTTPMixedCompilation(true, 76);
+        testMdlHTTPMixedCompilation(false, 191);
+        testMdlHTTPMixedCompilation(true, 78);
     }
     
     private void testMdlHTTPMixedCompilation(boolean herd, int requests) throws IOException{
