@@ -173,7 +173,7 @@
         <para>Thus, the structure of the source directory containing the 
         module <literal>org.hello</literal> might be the following:</para>
         
-        <programlisting><![CDATA[source/
+        <screen><![CDATA[source/
     org/
         hello/
             module.ceylon      //the module descriptor
@@ -182,7 +182,7 @@
             default/
                 DefaultHello.ceylon
             personalized/
-                PersonalizedHello.ceylon]]></programlisting>
+                PersonalizedHello.ceylon]]></screen>
                 
         <para>The source code for multiple modules may be contained in a
         single source directory.</para>
