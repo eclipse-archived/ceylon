@@ -795,30 +795,30 @@ public class LinkRenderer {
         if( containsOptional || containsSequential || containsSequence || containsIterable || containsEntry || containsCallable || containsTuple ) {
             StringBuilder sb = new StringBuilder();
             sb.append("<span class='link-dropdown'>");
-            sb.append(link);
+            sb.append(link.replaceAll("class='link'", "class='link type-identifier'"));
             sb.append("<span class='dropdown'>");
             sb.append("<a class='dropdown-toggle' data-toggle='dropdown' href='#'><b title='Show more links' class='caret'></b></a>");
             sb.append("<ul class='dropdown-menu'>");    
             if( containsOptional ) {
-                sb.append(getLinkMenuItem(unit.getNothingDeclaration(), "abbreviations X? means X|Nothing"));
+                sb.append(getLinkMenuItem(unit.getNullDeclaration(), "abbreviations X? means Null|X"));
             }
             if( containsSequential ) {
-                sb.append(getLinkMenuItem(unit.getSequentialDeclaration(), "abbreviations X[] or [X*] means Sequential&lt;X&gt;"));
+                sb.append(getLinkMenuItem(unit.getSequentialDeclaration(), "abbreviation X[] or [X*] means Sequential&lt;X&gt;"));
             }
             if( containsSequence ) {
-                sb.append(getLinkMenuItem(unit.getSequenceDeclaration(), "abbreviations [X+] means Sequence&lt;X&gt;"));
+                sb.append(getLinkMenuItem(unit.getSequenceDeclaration(), "abbreviation [X+] means Sequence&lt;X&gt;"));
             }
             if( containsIterable ) {
-                sb.append(getLinkMenuItem(unit.getIterableDeclaration(), "abbreviations {X+} or {X*} means Iterable&lt;X,Nothing&gt; or Iterable&lt;X,Null&gt;"));
+                sb.append(getLinkMenuItem(unit.getIterableDeclaration(), "abbreviation {X+} or {X*} means Iterable&lt;X,Nothing&gt; or Iterable&lt;X,Null&gt;"));
             }
             if( containsEntry ) {
-                sb.append(getLinkMenuItem(unit.getEntryDeclaration(), "abbreviations X-&gt;Y means Entry&lt;X,Y&gt;"));
+                sb.append(getLinkMenuItem(unit.getEntryDeclaration(), "abbreviation X-&gt;Y means Entry&lt;X,Y&gt;"));
             }
             if( containsCallable ) {
-                sb.append(getLinkMenuItem(unit.getCallableDeclaration(), "abbreviations X(Y,Z) means Callable&lt;X,[Y,Z]&gt;"));
+                sb.append(getLinkMenuItem(unit.getCallableDeclaration(), "abbreviation X(Y,Z) means Callable&lt;X,[Y,Z]&gt;"));
             }
             if( containsTuple ) {
-                sb.append(getLinkMenuItem(unit.getTupleDeclaration(), "abbreviations [X,Y] means Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;"));
+                sb.append(getLinkMenuItem(unit.getTupleDeclaration(), "abbreviation [X,Y] means Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;"));
             }
             sb.append("</ul>"); // dropdown-menu
             sb.append("</span>"); // dropdown
