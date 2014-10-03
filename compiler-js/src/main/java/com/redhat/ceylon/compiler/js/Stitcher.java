@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -31,20 +34,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
 public class Stitcher {
 
     private static TypeCheckerBuilder langmodtc;
+    private static Path tmpDir;
+    
     public static final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
     public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
     public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
 
-    private static void compileLanguageModule(final String line, Writer writer)
+    private static int compileLanguageModule(final String line, Writer writer)
             throws IOException {
-        File tmpdir = File.createTempFile("ceylonjs", "clsrc");
-        tmpdir.delete();
-        tmpdir = new File(tmpdir.getAbsolutePath());
-        tmpdir.mkdir();
-        tmpdir.deleteOnExit();
-        final File tmpout = new File(tmpdir, Constants.DEFAULT_MODULE_DIR);
+        File clsrcTmpDir = Files.createTempDirectory(tmpDir, "clsrc").toFile();
+        final File tmpout = new File(clsrcTmpDir, Constants.DEFAULT_MODULE_DIR);
         tmpout.mkdir();
-        tmpout.deleteOnExit();
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
                 .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true);
 
@@ -73,7 +73,7 @@ public class Stitcher {
         final TypeChecker tc = langmodtc.getTypeChecker();
         tc.process();
         if (tc.getErrors() > 0) {
-            System.exit(1);
+            return 1;
         }
 
         //Compile these files
@@ -116,11 +116,12 @@ public class Stitcher {
             }
         } else {
             System.out.println("Can't find generated js for language module in " + compsrc.getAbsolutePath());
-            System.exit(1);
+            return 1;
         }
+        return 0;
     }
 
-    private static void encodeModel(final File moduleFile) throws IOException {
+    private static int encodeModel(final File moduleFile) throws IOException {
         final String name = moduleFile.getName();
         final File file = new File(moduleFile.getParentFile(),
                 name.substring(0,name.length()-3)+ArtifactContext.JS_MODEL);
@@ -148,14 +149,18 @@ public class Stitcher {
             writer.write("ex$.$CCMM$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
-            compileLanguageModule("MODEL.js", writer);
+            int exitCode = compileLanguageModule("MODEL.js", writer);
+            if (exitCode != 0) {
+                return exitCode;
+            }
             JsCompiler.endWrapper(writer);
         } finally {
             ShaSigner.sign(file, new JsJULLogger(), true);
         }
+        return 0;
     }
 
-    private static void stitch(File infile, Writer writer, String version) throws IOException {
+    private static int stitch(File infile, Writer writer, String version) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
@@ -174,7 +179,10 @@ public class Stitcher {
                     } else if (line.startsWith("//#COMPILE ")) {
                         final String sourceFiles = line.substring(11);
                         System.out.println("Compiling language module sources: " + sourceFiles);
-                        compileLanguageModule(sourceFiles, writer);
+                        int exitCode = compileLanguageModule(sourceFiles, writer);
+                        if (exitCode != 0) {
+                            return exitCode;
+                        }
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.write(line);
                         writer.write("\n");
@@ -184,6 +192,7 @@ public class Stitcher {
         } finally {
             if (reader != null) reader.close();
         }
+        return 0;
     }
 
     public static void main(String[] args) throws IOException {
@@ -194,23 +203,34 @@ public class Stitcher {
             System.exit(1);
             return;
         }
-        File infile = new File(args[0]);
-        if (infile.exists() && infile.isFile() && infile.canRead()) {
-            File outfile = new File(args[1]);
-            if (!outfile.getParentFile().exists()) {
-                outfile.getParentFile().mkdirs();
+        int exitCode = 0;
+        tmpDir = Files.createTempDirectory("ceylonjs-stitcher");
+        try {
+            File infile = new File(args[0]);
+            if (infile.exists() && infile.isFile() && infile.canRead()) {
+                File outfile = new File(args[1]);
+                if (!outfile.getParentFile().exists()) {
+                    outfile.getParentFile().mkdirs();
+                }
+                exitCode = encodeModel(outfile);
+                if (exitCode == 0) {
+                    final int p0 = args[1].indexOf(".language-");
+                    final String version = args[1].substring(p0+10,args[1].length()-3);
+                    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
+                        exitCode = stitch(infile, writer, version);
+                    } finally {
+                        ShaSigner.sign(outfile, new JsJULLogger(), true);
+                    }
+                }
+            } else {
+                System.err.println("Input file is invalid: " + infile);
+                exitCode = 2;
             }
-            encodeModel(outfile);
-            final int p0 = args[1].indexOf(".language-");
-            final String version = args[1].substring(p0+10,args[1].length()-3);
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
-                stitch(infile, writer, version);
-            } finally {
-                ShaSigner.sign(outfile, new JsJULLogger(), true);
-            }
-        } else {
-            System.err.println("Input file is invalid: " + infile);
-            System.exit(2);
+        } finally {
+            FileUtil.deleteQuietly(tmpDir.toFile());
+        }
+        if (exitCode != 0) {
+            System.exit(exitCode);
         }
     }
 }
