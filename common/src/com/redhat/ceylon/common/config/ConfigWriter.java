@@ -66,7 +66,7 @@ public class ConfigWriter {
                     in = new FileInputStream(source);
                     if (overwriteSource) {
                         // Send the output to a temporary file first
-                        tmpFile = File.createTempFile(source.getName(), "tmp", source.getAbsoluteFile().getParentFile());
+                        tmpFile = File.createTempFile(source.getName(), ".tmp", source.getAbsoluteFile().getParentFile());
                         out = new FileOutputStream(tmpFile);
                     } else {
                         // First create any parent directories if necessary
