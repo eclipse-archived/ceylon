@@ -84,7 +84,7 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
         for(Message message : errors){
             if(isError(that, message)) {
                 TransformationPlan plan;
-                if (message.getCode() == MEMBER_HAS_WRONG_NUMBER_OF_PARAMETERS
+                /*if (message.getCode() == MEMBER_HAS_WRONG_NUMBER_OF_PARAMETERS
                         && model.isActual()
                         && model.isClassMember()) {
                     plan = new ThrowerMethod(that, message);
@@ -101,7 +101,7 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
                         && model.isActual()
                         && model.isClassMember()) {
                     plan = new ThrowerMethod(that, message);
-                } else if (message.getCode() == FORMAL_MEMBER_UNIMPLEMENTED_IN_CLASS_HIERARCHY
+                } else*/ if (message.getCode() == FORMAL_MEMBER_UNIMPLEMENTED_IN_CLASS_HIERARCHY
                         && (model instanceof Class 
                             || (model instanceof Value
                                     && ((Value)model).getTypeDeclaration().isAnonymous()))) {

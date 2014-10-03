@@ -262,7 +262,7 @@ public class ClassTransformer extends AbstractTransformer {
                         (Method)formalMember);
             } else if (formalMember instanceof Class
                     && formalMember.isClassMember()) {
-                addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
+                addRefinedThrowerInstantiatorMethod(classBuilder, errorMessage, classModel,
                         (Class)formalMember, unrefined);
             }
             // formal member class of interface handled in
@@ -271,7 +271,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     }
 
-    private void addRefinedThrowerMethod(ClassDefinitionBuilder classBuilder,
+    private void addRefinedThrowerInstantiatorMethod(ClassDefinitionBuilder classBuilder,
             String message, ClassOrInterface classModel, Class formalClass, ProducedReference unrefined) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, 
                 naming.getInstantiatorMethodName(formalClass));
@@ -400,6 +400,11 @@ public class ClassTransformer extends AbstractTransformer {
         refined.setUnboxed(formalMethod.getUnboxed());
         refined.setUntrustedType(formalMethod.getUntrustedType());
         refined.setTypeErased(formalMethod.getTypeErased());
+        ArrayList<TypeParameter> refinedTp = new ArrayList<TypeParameter>();;
+        for (TypeParameter formalTp : formalMethod.getTypeParameters()) {
+            refinedTp.add(formalTp);
+        }
+        refined.setTypeParameters(refinedTp);
         for (ParameterList formalPl : formalMethod.getParameterLists()) {
             ParameterList refinedPl = new ParameterList();
             for (Parameter formalP : formalPl.getParameters()){
