@@ -362,7 +362,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         } else {
                             write(" &amp; ");
                         }
-                        write(linkRenderer().to(satisfiedType).getLink());
+                        linkToType(satisfiedType);
                     }
                 }
 
@@ -376,7 +376,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         } else {
                             write(" | ");
                         }
-                        write(linkRenderer().to(caseType).getLink());
+                        linkToType(caseType);
                     }
                 }
 

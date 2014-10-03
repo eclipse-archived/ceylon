@@ -216,16 +216,16 @@ code, pre {
 	color: rgb(120, 120, 120);
 }
 
-.type-identifier {
+.identifier, .identifier a.link {
+    color: rgb(0,51,153);
+}
+
+.type-identifier, .type-identifier a.link {
     color: rgb(153,0,102);
 }
 
 .sub-navbar-name .package-identifier a {
     font-family: 'Source Sans Pro', Arial, 'Helvetica Neue', Helvetica, sans-serif;
-}
-
-.identifier {
-    color: rgb(0,51,153);
 }
 
 .modifiers {

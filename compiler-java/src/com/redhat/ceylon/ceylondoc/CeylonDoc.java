@@ -37,8 +37,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -62,6 +64,10 @@ public abstract class CeylonDoc extends Markup {
 
     protected final void linkToDeclaration(Declaration declaration) throws IOException {
         linkRenderer().to(declaration).write();
+    }
+    
+    protected final void linkToType(ProducedType type) throws IOException {
+        linkRenderer().to(type).write();
     }
     
     protected final void writeHeader(String title, String... additionalCss) throws IOException {

@@ -244,8 +244,7 @@ public class LinkRenderer {
     }
 
     public void write() throws IOException {
-        String link = getLink();
-        writer.write(link);
+        writer.write(getLink());
     }
 
     private String processModule(Module module) {
@@ -473,25 +472,28 @@ public class LinkRenderer {
     }
     
     private String getLinkText(Declaration decl) {
-        String text;
         if( customText != null  ) {
-            text = customText;
+            return customText;
         } else if (to instanceof String) {
             String name = removeTypeLiteralPrefix((String) to);
             if (from instanceof Element) {
                 String aliasedName = ((Element) from).getUnit().getAliasedName(decl);
                 if (aliasedName != null && !aliasedName.equals(decl.getName()) && aliasedName.equals(name)) {
-                    text = decl.getQualifiedNameString();
+                    return decl.getQualifiedNameString();
                 } else {
-                    text = name;
+                    return name;
                 }
             } else {
-                text = name;
+                return name;
             }
         } else {
-            text = decl.getName();
+            if (decl instanceof TypeDeclaration) {
+                return "<span class='type-identifier'>" + decl.getName() + "</span>";
+            }
+            else {
+                return "<span class='identifier'>" + decl.getName() + "</span>";
+            }
         }
-        return text;
     }
     
     private String removeTypeLiteralPrefix(String text) {
