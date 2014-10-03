@@ -50,7 +50,7 @@ public class DocToolToolTest {
     
     @Before
     public void setup(){
-        dir = FileUtil.makeTempDir("DocToolToolTest");
+        dir = FileUtil.makeTempDir("ceylon-DocToolToolTest-");
     }
 
     @After

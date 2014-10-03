@@ -107,7 +107,7 @@ public class NewProjectToolTest {
         ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
         Assert.assertNotNull(model);
         Assert.assertTrue(model.isPorcelain());
-        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, 
@@ -137,7 +137,7 @@ public class NewProjectToolTest {
         ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
         Assert.assertNotNull(model);
         Assert.assertTrue(model.isPorcelain());
-        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         
         File srcTemplates = new File("../ceylon-dist/templates");
@@ -173,7 +173,7 @@ public class NewProjectToolTest {
         ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
         Assert.assertNotNull(model);
         Assert.assertTrue(model.isPorcelain());
-        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, 
@@ -202,7 +202,7 @@ public class NewProjectToolTest {
         ToolModel<CeylonNewTool> newModel = pluginLoader.loadToolModel("new");
         Assert.assertNotNull(newModel);
         Assert.assertTrue(newModel.isPorcelain());
-        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool newTool = pluginFactory.bindArguments(newModel, 

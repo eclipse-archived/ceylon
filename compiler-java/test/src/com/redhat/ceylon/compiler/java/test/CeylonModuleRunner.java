@@ -115,7 +115,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             File srcDir = new File(testModule.srcDirectory());
             File resDir = new File(testModule.resDirectory());
-            outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
+            outRepo = Files.createTempDirectory("ceylon-module-runner-").toFile();
             
             String[] modules = testModule.modules();
             if(modules.length == 0)

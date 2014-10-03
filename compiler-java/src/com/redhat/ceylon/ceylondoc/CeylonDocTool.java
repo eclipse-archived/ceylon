@@ -534,7 +534,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     @Override
     public void run() throws Exception {
         // make a temp dest folder
-        tempDestDir = Files.createTempDirectory("ceylond").toFile();
+        tempDestDir = Files.createTempDirectory("ceylon-doc-").toFile();
         try {
             // create the documentation
             makeDoc();

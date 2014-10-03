@@ -237,7 +237,7 @@ public abstract class AntBasedTest {
                 exec.insertBefore(argOptiopnC,  exec.getFirstChild());
             }
         }
-        actualBuildFile = File.createTempFile("ceylon-ant-test.", "build.xml");
+        actualBuildFile = File.createTempFile("ceylon-ant-test-", "-build.xml");
         TransformerFactory.newInstance().newTransformer().transform(
                 new DOMSource(document), 
                 new StreamResult(actualBuildFile));
@@ -252,7 +252,7 @@ public abstract class AntBasedTest {
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
         System.setProperty(ARG_VERBOSE, "false");
         System.setProperty(ARG_SRC, "test/src/com/redhat/ceylon/itest");
-        out = Files.createTempDirectory("ceylon-ant-test-out.d").toFile();
+        out = Files.createTempDirectory("ceylon-anttest-out-").toFile();
         System.setProperty(ARG_OUT, out.getPath());
         System.setProperty("basedir", new File("x").getAbsoluteFile().getParent());
     }

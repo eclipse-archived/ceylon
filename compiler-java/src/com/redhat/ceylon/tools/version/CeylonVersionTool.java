@@ -333,7 +333,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         // Write to a temp file in the same directory, and then atomically rename
         // so if anything goes wrong we've not destroyed the original file
         File target = new File(moduleDescriptorPath);
-        File temp = File.createTempFile("module", ".ceylon_tmp", target.getParentFile());
+        File temp = File.createTempFile("ceylon-module-", ".tmp", target.getParentFile());
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(temp), encoding)) {
             writer.append(tokenStream.toString());
         } catch (IOException e) {

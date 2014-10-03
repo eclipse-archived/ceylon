@@ -189,7 +189,7 @@ public abstract class CeylonAntTask extends Task {
                 if (Commandline.toString(args).length() > MAX_COMMAND_LENGTH) {
                     BufferedWriter out = null;
                     try {
-                        tmpFile = File.createTempFile("ceyloncmd", "ant");
+                        tmpFile = File.createTempFile("ceylon-ant-", "cmd");
                         out = new BufferedWriter(new FileWriter(tmpFile));
                         for (int i = 1; i < args.length; i++) {
                             out.write(args[i]);
