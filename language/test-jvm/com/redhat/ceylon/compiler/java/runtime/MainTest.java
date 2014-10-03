@@ -180,12 +180,17 @@ public class MainTest {
 
     private static File jar(File sourceFile, String destDir) throws IOException {
         File jarFile = File.createTempFile("testmain", ".jar");
-        JarOutputStream jar = new JarOutputStream(new FileOutputStream(jarFile));
-        String dirName = destDir.isEmpty() ? sourceFile.getName() : destDir+"/"+sourceFile.getName();
-        ZipEntry entry = new ZipEntry(dirName);
-        jar.putNextEntry(entry);
-        // relative to this file
-        IOUtils.copyStream(new FileInputStream(sourceFile), jar, true, true);
+        try {
+            JarOutputStream jar = new JarOutputStream(new FileOutputStream(jarFile));
+            String dirName = destDir.isEmpty() ? sourceFile.getName() : destDir+"/"+sourceFile.getName();
+            ZipEntry entry = new ZipEntry(dirName);
+            jar.putNextEntry(entry);
+            // relative to this file
+            IOUtils.copyStream(new FileInputStream(sourceFile), jar, true, true);
+        } catch (Exception ex) {
+            FileUtil.deleteQuietly(jarFile);
+            throw ex;
+        }
         return jarFile;
     }
 }
