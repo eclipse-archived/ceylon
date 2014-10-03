@@ -58,6 +58,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -98,6 +99,7 @@ public class AbstractTest {
                 return FileVisitResult.CONTINUE;
             }
         });
+        FileUtil.deleteQuietly(temp.toFile());
     }
 
     protected File getRepositoryRoot() throws URISyntaxException {
