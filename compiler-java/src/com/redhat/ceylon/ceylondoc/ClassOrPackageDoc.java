@@ -45,6 +45,7 @@ import org.antlr.runtime.CommonToken;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -349,42 +350,78 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             if (typeParam.isConstrained()) {
                 open("div class='type-parameter-constraint'");
 
-                write("<span class='type-parameter-keyword'>given </span>");
-                write("<span class='type-parameter'>", typeParam.getName(), "</span>");
-
-                List<ProducedType> satisfiedTypes = typeParam.getSatisfiedTypes();
-                if (satisfiedTypes != null && !satisfiedTypes.isEmpty()) {
-                    write("<span class='type-parameter-keyword'> satisfies </span>");
-                    boolean first = true;
-                    for (ProducedType satisfiedType : satisfiedTypes) {
-                        if (first) {
-                            first = false;
-                        } else {
-                            write(" &amp; ");
-                        }
-                        linkToType(satisfiedType);
-                    }
-                }
-
-                List<ProducedType> caseTypes = typeParam.getCaseTypes();
-                if (caseTypes != null && !caseTypes.isEmpty()) {
-                    write("<span class='type-parameter-keyword'> of </span>");
-                    boolean first = true;
-                    for (ProducedType caseType : caseTypes) {
-                        if (first) {
-                            first = false;
-                        } else {
-                            write(" | ");
-                        }
-                        linkToType(caseType);
-                    }
-                }
+                write("<span class='type-parameter-keyword'>given</span>");
+                write(" ");
+                around("span class='type-parameter'", typeParam.getName());
+                
+                writeSatisfiedTypes(typeParam);
+                writeCaseTypes(typeParam);
 
                 if (typeParam.getParameterList() != null) {
                     writeParameterList(typeParam);
                 }
 
                 close("div");
+            }
+        }
+    }
+
+    protected final void writeInheritance(TypeDeclaration typeDeclaration) throws IOException {
+        if (typeDeclaration.getCaseTypes()!=null &&
+                !typeDeclaration.getCaseTypes().isEmpty()) {
+            open("div class='inheritance-satisfies'");
+            writeCaseTypes(typeDeclaration);
+            close("div");
+        }
+        if (typeDeclaration instanceof Class &&
+                typeDeclaration.getExtendedType()!=null) {
+            open("div class='inheritance-extends'");
+            write("<span class='keyword'>extends</span>");
+            write(" ");
+            linkToType(typeDeclaration.getExtendedType());
+            close("div");
+        }
+        if (typeDeclaration.getSatisfiedTypes()!=null &&
+                !typeDeclaration.getSatisfiedTypes().isEmpty()) {
+            open("div class='inheritance-of'");
+            writeSatisfiedTypes(typeDeclaration);
+            close("div");
+        }
+    }
+
+    private void writeCaseTypes(TypeDeclaration typeDeclaration) throws IOException {
+        List<ProducedType> caseTypes = typeDeclaration.getCaseTypes();
+        if (caseTypes != null && !caseTypes.isEmpty()) {
+            write(" ");
+            write("<span class='type-parameter-keyword'>of</span>");
+            write(" ");
+            boolean first = true;
+            for (ProducedType caseType : caseTypes) {
+                if (first) {
+                    first = false;
+                } else {
+                    write(" | ");
+                }
+                linkToType(caseType);
+            }
+        }
+    }
+
+    private void writeSatisfiedTypes(TypeDeclaration typeDeclaration)
+            throws IOException {
+        List<ProducedType> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
+        if (satisfiedTypes != null && !satisfiedTypes.isEmpty()) {
+            write(" ");
+            write("<span class='keyword'>satisfies</span>");
+            write(" ");
+            boolean first = true;
+            for (ProducedType satisfiedType : satisfiedTypes) {
+                if (first) {
+                    first = false;
+                } else {
+                    write(" &amp; ");
+                }
+                linkToType(satisfiedType);
             }
         }
     }

@@ -82,6 +82,14 @@ code, pre {
 	padding-right: 6px;
 }
 
+.sub-navbar-package {
+    font-size: 16px;
+}
+
+.sub-navbar-package .package-identifier .link {
+    vertical-align: top;
+}
+
 .sub-navbar-menu {
 	margin-top: 1em;
 	text-align: center;
@@ -251,6 +259,7 @@ code, pre {
 .type-parameter {
 	font-style: italic;
 	padding-right: 2px;
+	padding-left: 1px;
 	color: grey;
 }
 
@@ -258,8 +267,13 @@ code, pre {
     font-family: Inconsolata, Monaco, Courier, monospace;
 }
 
-.type-parameter-constraint {
+.type-parameter-constraint, 
+.inheritance-satisfies, 
+.inheritance-extends, 
+.inheritance-of {
 	padding-left: 30px;
+	font-size: 16px;
+	padding-top: 3px;
 }
 
 .type-parameter-keyword {
@@ -269,10 +283,6 @@ code, pre {
 .type-parameter-value a {
     color: #005580;
     font-style: normal;
-}
-
-.sub-navbar .type-parameter-constraint {
-	padding-top: 4px;
 }
 
 .decl-label, a.decl-label {
@@ -340,7 +350,9 @@ div .type-alias-specifier {
 .type-tabs .nav-tabs>.active>a {}
 
 .type-tabs .nav-tabs a>.disabled,
-.type-tabs .nav-tabs>.active>a>.disabled {}
+.type-tabs .nav-tabs>.active>a>.disabled {
+    color: #aaa;
+}
 
 .type-tabs li>a.hint {
     color: rgb(180,180,180);

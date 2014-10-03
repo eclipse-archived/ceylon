@@ -277,11 +277,12 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='sub-navbar-inner'");
         
         open("span class='sub-navbar-package'");
+        writeIcon(pkg);
         writePackageNavigation(pkg);
         close("span");
         
         write("<br/>");
-        writeClassName();
+        writeClassSignature();
         close("div"); // sub-navbar-inner
         
         open("div class='sub-navbar-menu'");
@@ -317,18 +318,29 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div"); // sub-navbar
     }
     
-    private void writeClassName() throws IOException {
+    private void writeClassSignature() throws IOException {
         open("span class='sub-navbar-label'");
         write(getClassLabel());
         close("span");
         writeIcon(klass);
         open("span class='sub-navbar-name'");
+        writeQualifyingType(klass);
         open("span class='type-identifier'");
         write(klass.getName());
         close("span");
         writeTypeParameters(klass.getTypeParameters());
         close("span");
+        writeInheritance(klass);
         writeTypeParametersConstraints(klass.getTypeParameters());
+    }
+
+    private void writeQualifyingType(TypeDeclaration klass) throws IOException {
+        if (klass.isClassOrInterfaceMember()) {
+            TypeDeclaration container = (TypeDeclaration) klass.getContainer();
+            writeQualifyingType(container);
+            linkToDeclaration(container);
+            write(".");
+        }
     }    
 
     private void writeDescription() throws IOException {
@@ -358,13 +370,13 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='tab-content'");
 
         open("div class='tab-pane active' id='tabDocumentation'");
-        if (!klass.getUnit().getAnythingDeclaration().equals(klass) &&
+        /*if (!klass.getUnit().getAnythingDeclaration().equals(klass) &&
                 klass.getExtendedTypeDeclaration()!=null) {
             writeListOnSummary("extended", "Extended class: ", 
                     singletonList(klass.getExtendedTypeDeclaration()));
         }
         writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
-        writeEnclosingType();
+        writeEnclosingType();*/
         writeAnnotationConstructors();
 
         around("div class='doc'", getDoc(klass, linkRenderer()));
