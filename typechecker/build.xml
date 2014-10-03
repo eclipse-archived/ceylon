@@ -204,7 +204,7 @@
             <include name="**/*.html"/>
           <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
           <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
-<link type='text/css' href='../shared/css/dreamweaver.css' rel='stylesheet'/>
+<link type='text/css' href='../shared/css/ceylon.css' rel='stylesheet'/>
 <link type='text/css' href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'/>
 <script src='../shared/css/rainbow.min.js' type='text/javascript'></script>
 <script src='../shared/css/ceylon.js' type='text/javascript'></script>]]></replacevalue>
