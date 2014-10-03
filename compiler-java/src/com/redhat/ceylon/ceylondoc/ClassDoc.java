@@ -25,6 +25,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
+import static java.util.Collections.singletonList;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -357,6 +358,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='tab-content'");
 
         open("div class='tab-pane active' id='tabDocumentation'");
+        if (!klass.getUnit().getAnythingDeclaration().equals(klass) &&
+                klass.getExtendedTypeDeclaration()!=null) {
+            writeListOnSummary("extended", "Extended class: ", 
+                    singletonList(klass.getExtendedTypeDeclaration()));
+        }
         writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
         writeEnclosingType();
         writeAnnotationConstructors();

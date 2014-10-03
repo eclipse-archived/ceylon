@@ -240,6 +240,10 @@ code, pre {
    font-size: 14px;
 }
 
+.signature a, .satisfied a, .extended a {
+    color: rgb(153,0,102);
+}
+
 .void {
     color: rgb(76,76,76);
 }
