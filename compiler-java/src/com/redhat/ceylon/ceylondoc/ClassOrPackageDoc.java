@@ -92,7 +92,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + alias.getName() + "' nowrap");
         writeIcon(alias);
-        write(alias.getName());
+        around("span class='decl-label'", alias.getName());
         close("td");
         
         open("td");
@@ -102,7 +102,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(alias));
         write(" ");
+        open("span class='type-identifier'");
         write(alias.getName());
+        close("span");
         if (!alias.getTypeParameters().isEmpty()) {
             writeTypeParameters(alias.getTypeParameters());
             writeTypeParametersConstraints(alias.getTypeParameters());
@@ -125,7 +127,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + d.getName() + "' nowrap");
         writeIcon(d);
-        around("a class='link-discreet' href='"+ linkRenderer().to(d).getUrl() +"'", d.getName());
+        around("a class='decl-label' href='"+ linkRenderer().to(d).getUrl() +"'", d.getName());
         close("td");
         
         open("td");
@@ -149,7 +151,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + d.getName() + "' nowrap");
         writeIcon(d);
-        write(d.getName());
+        around("span class='decl-label'", d.getName());
         close("td");
         
         open("td");
@@ -170,7 +172,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         
         write(" ");
+        open("span class='identifier'");
         write(d.getName());
+        close("span");
         if( isConstantValue(d) ) {
             writeConstantValue((Value) d);
         }
@@ -312,8 +316,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     protected final void writeTypeParameters(List<TypeParameter> typeParameters) throws IOException {
         if (typeParameters != null && !typeParameters.isEmpty()) {
-            write("<span class='type-parameter'>");
             write("&lt;");
+            write("<span class='type-parameter'>");
             boolean first = true;
             for (TypeParameter typeParam : typeParameters) {
                 if (first) {
@@ -335,8 +339,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     write("</span>");
                 }
             }
-            write("&gt;");
             write("</span>");
+            write("&gt;");
         }
     }
     
@@ -433,7 +437,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     writeFunctionalParameter(param);
                 } else {
                     linkRenderer().to(param.getType()).write();
-                    write(" ", param.getName());
+                    write(" ");
+                    open("span class='parameter'");
+                    write(param.getName());
+                    close("span");
                 }
                 
                 if (param.isDefaulted()) {

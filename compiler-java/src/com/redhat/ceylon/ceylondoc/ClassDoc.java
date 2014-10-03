@@ -322,7 +322,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("span");
         writeIcon(klass);
         open("span class='sub-navbar-name'");
+        open("span class='type-identifier'");
         write(klass.getName());
+        close("span");
         writeTypeParameters(klass.getTypeParameters());
         close("span");
         writeTypeParametersConstraints(klass.getTypeParameters());
@@ -631,8 +633,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         writeParameterLinksIfRequired(klass);
         writeIcon(klass);
+        
+        open("span class='decl-label'");
         write(klass.getName());
         writeParameterList(klass);
+        close("span");
         
         open("div class='description'");
         writeParameters(klass);

@@ -78,27 +78,19 @@ code, pre {
 }
 
 .sub-navbar-label {
-	color: rgb(142, 78, 134);;
+	color: rgb(76,76,76);
 	padding-right: 6px;
 }
 
-.sub-navbar-name {
-	color: #333;
-}
-
-.sub-navbar-name a {
-	color: #333;
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
 .sub-navbar-package {
-	color: #333;
+	//color: #333;
 	font-size: 16px;
+	font-family: Inconsolata, Monaco, Courier, monospace;
+	font-weight: bold;
 }
 
 .sub-navbar-package a {
-    color: #333;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    //color: #333;
 }
 
 .sub-navbar-menu {
@@ -107,6 +99,7 @@ code, pre {
 	line-height: 15px;
 	position: relative;
 	top: -4px;
+	font-weight: bold;
 }
 
 .sub-navbar-menu a {
@@ -115,7 +108,8 @@ code, pre {
 }
 
 .sub-navbar-menu .accesskey {
-	color: #0088cc;
+	//color: #0088cc;
+	text-decoration: underline;
 }
 
 .section {
@@ -123,8 +117,6 @@ code, pre {
 }
 .section .title {
     font-weight: bold;
-    //font-size: 13px;
-    //color: rgb(90, 90, 90);
 }
 .section .title:HOVER {
 	text-decoration: none;
@@ -179,14 +171,6 @@ code, pre {
 	color: #0088cc;
 }
 
-.link-discreet {
-	color: black;
-}
-
-.link-discreet:HOVER {
-	color: black;
-}
-
 .link-unresolvable {
 	font-family: Inconsolata, Monaco, Courier, monospace;
 	font-weight: bold;
@@ -234,22 +218,43 @@ code, pre {
 .parameter {
 	font-family: Inconsolata, Monaco, Courier, monospace;
 	font-weight: bold;
-	//font-size: 14px;
+	font-size: 14px;
 }
 
 .parameter-default-value {
 	font-family: Inconsolata, Monaco, Courier, monospace;
-	//font-size: 14px;
+	font-size: 14px;
 	color: rgb(120, 120, 120);
 }
 
-.modifiers,
+.type-identifier {
+    color: rgb(153,0,102);
+}
+
+.identifier {
+    color: rgb(0,51,153);
+}
+
+.modifiers {
+	color: rgb(51,153,204);
+}
+
+.parameter {
+    //color: rgb(102,51,153);
+}
+
 .void {
-	color: rgb(120, 120, 120);
+    color: rgb(76,76,76);
 }
 
 .type-parameter {
 	font-style: italic;
+	padding-right: 2px;
+	color: grey;
+}
+
+.satisfied .type-parameter {
+    font-family: Inconsolata, Monaco, Courier, monospace;
 }
 
 .type-parameter-constraint {
@@ -257,7 +262,7 @@ code, pre {
 }
 
 .type-parameter-keyword {
-	color: rgb(142, 69, 133);
+	color: rgb(76,76,76);
 }
 
 .type-parameter-value a {
@@ -265,36 +270,28 @@ code, pre {
     font-style: normal;
 }
 
-.sub-navbar .type-parameter {
-	color: rgb(120, 120, 120);
-}
-
 .sub-navbar .type-parameter-constraint {
 	padding-top: 4px;
-	color: rgb(120, 120, 120);
 }
 
-.sub-navbar .type-parameter-keyword {
-	color: rgb(142, 78, 134);
+.decl-label, a.decl-label {
+    font-size: 14px;
+    font-family: Inconsolata, Monaco, Courier, monospace;
+    font-weight: bold;
+    color: #333;
 }
 
 .literal {
     color: darkblue;
-    font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
 }
 
 .keyword {
-	color: darkmagenta;
-	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
+	color: rgb(76,76,76);
 	font-weight: bold;
-	//font-size: 14px;
 }
 
 .specifier,
 .specifier-rest {
-	color: darkblue;
-	//font-size: 14px;
-	font-family: Inconsolata, Menlo, Monaco, Courier, monospace;
 	padding-left: 6px;
 }
 
@@ -329,20 +326,20 @@ div .type-alias-specifier {
 } 
 
 .type-tabs li>a {
-    color: #555;
-    font-size: 13px;
+    color: #333;
+    font-size: 14px;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-.type-tabs .nav-tabs>.active>a {
+.type-tabs .nav-tabs {
     font-weight: bold;
 }
 
+.type-tabs .nav-tabs>.active>a {}
+
 .type-tabs .nav-tabs a>.disabled,
-.type-tabs .nav-tabs>.active>a>.disabled {
-    color: rgb(180,180,180);
-}
+.type-tabs .nav-tabs>.active>a>.disabled {}
 
 .type-tabs li>a.hint {
     color: rgb(180,180,180);
@@ -546,22 +543,6 @@ code {
 	color: #333; /* default bootstrap color is red */
     border:none;
     background-color:inherit;
-}
-
-div .syntaxhighlighter {
-  margin-bottom: 10px !important;
-}
-
-.doc .syntaxhighlighter {
-  display: block;
-  margin-left: 10px !important;
-  padding-left: 10px !important;
-  font-size: 13px;
-  line-height: 20px;
-  word-break: break-all;
-  word-wrap: break-word;
-  white-space: pre;
-  white-space: pre-wrap;
 }
 
 [class^='icon-'] {
