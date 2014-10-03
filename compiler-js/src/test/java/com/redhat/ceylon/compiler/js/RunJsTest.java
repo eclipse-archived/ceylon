@@ -11,6 +11,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
+
 /** To run this you need to execute the nodetest ant target first. */
 public class RunJsTest {
 
@@ -18,7 +20,7 @@ public class RunJsTest {
 
     @BeforeClass
     public static void setup() throws IOException {
-        tmpModules = File.createTempFile("ceylon", "runjstest");
+        tmpModules = Files.createTempDirectory("ceylon-runjstest").toFile();
         tmpModules.delete();
         tmpModules.mkdir();
         File sub = new File(tmpModules, "check/0.1");
@@ -42,7 +44,7 @@ public class RunJsTest {
 
     @AfterClass
     public static void cleanup() {
-        tmpModules.delete();
+        FileUtil.deleteQuietly(tmpModules);
     }
 
     @Test
