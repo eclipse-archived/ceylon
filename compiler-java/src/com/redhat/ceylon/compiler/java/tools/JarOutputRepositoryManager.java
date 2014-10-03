@@ -83,13 +83,21 @@ public class JarOutputRepositoryManager {
     }
 
     public void flush() throws IOException {
+        Exception ex = null;
         try{
             for(ProgressiveJar jarFile : openJars.values()){
-                jarFile.close();
+                try {
+                    jarFile.close();
+                } catch (Exception e) {
+                    ex = e;
+                }
             }
         }finally{
             // make sure we clear on return and throw, so we don't try to flush again on throw
             openJars.clear();
+        }
+        if (ex instanceof IOException) {
+            throw (IOException)ex;
         }
     }
     
@@ -151,14 +159,9 @@ public class JarOutputRepositoryManager {
             this.resourceRootPath = rrp + rootName + "/";
             this.taskListener = taskListener;
             
-            setupJarOutput();
-        }
-
-        private void setupJarOutput() throws IOException {
-            File targetJarFile = repoManager.getArtifact(carContext);
-            outputJarFile = File.createTempFile("car", ".tmp");
-            originalJarFile = targetJarFile;
-            jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
+            this.originalJarFile = repoManager.getArtifact(carContext);
+            this.outputJarFile = File.createTempFile("ceylon-compiler-", ".car");
+            this.jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
         }
 
         private Properties getPreviousMapping() throws IOException {
@@ -198,33 +201,37 @@ public class JarOutputRepositoryManager {
         }
 
         public void close() throws IOException {
-            Set<String> copiedSourceFiles = srcCreator.copy(modifiedSourceFiles);
-            resourceCreator.copy(modifiedResourceFilesFull);
-
-            if (writeOsgiManifest && !manifestWritten) {
-                Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
-                writeManifestJarEntry(manifest);
-            }
-            if (writeMavenManifest) {
-                writeMavenManifest(module);
-            }
-
-            Properties previousMapping = getPreviousMapping();
-            writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles));
-            
-            JarUtils.finishUpdatingJar(
-                    originalJarFile, outputJarFile, carContext, jarOutputStream,
-                    getJarFilter(previousMapping, copiedSourceFiles),
-                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders, options.isSet(OptionName.CEYLONPACK200));
-            
-            String info;
-            if(module.isDefault())
-                info = module.getNameAsString();
-            else
-                info = module.getNameAsString() + "/" + module.getVersion();
-            cmrLog.info("Created module " + info);
-            if(taskListener instanceof CeylonTaskListener){
-                ((CeylonTaskListener) taskListener).moduleCompiled(module.getNameAsString(), module.getVersion());
+            try {
+                Set<String> copiedSourceFiles = srcCreator.copy(modifiedSourceFiles);
+                resourceCreator.copy(modifiedResourceFilesFull);
+    
+                if (writeOsgiManifest && !manifestWritten) {
+                    Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
+                    writeManifestJarEntry(manifest);
+                }
+                if (writeMavenManifest) {
+                    writeMavenManifest(module);
+                }
+    
+                Properties previousMapping = getPreviousMapping();
+                writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles));
+                
+                JarUtils.finishUpdatingJar(
+                        originalJarFile, outputJarFile, carContext, jarOutputStream,
+                        getJarFilter(previousMapping, copiedSourceFiles),
+                        repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders, options.isSet(OptionName.CEYLONPACK200));
+                
+                String info;
+                if(module.isDefault())
+                    info = module.getNameAsString();
+                else
+                    info = module.getNameAsString() + "/" + module.getVersion();
+                cmrLog.info("Created module " + info);
+                if(taskListener instanceof CeylonTaskListener){
+                    ((CeylonTaskListener) taskListener).moduleCompiled(module.getNameAsString(), module.getVersion());
+                }
+            } finally {
+                FileUtil.deleteQuietly(outputJarFile);
             }
         }
 

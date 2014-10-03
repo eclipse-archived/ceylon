@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -400,15 +401,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         
         initModules(modules);
         initPhasedUnits();
-
-        // make a temp dest folder
-        try {
-            this.tempDestDir = File.createTempFile("ceylond", "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tempDestDir.delete();
-        tempDestDir.mkdirs();
     }
 
     private void initTypeCheckedUnits(TypeChecker typeChecker) {
@@ -541,7 +533,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        makeDoc();    
+        // make a temp dest folder
+        tempDestDir = Files.createTempDirectory("ceylond").toFile();
+        try {
+            // create the documentation
+            makeDoc();
+        } finally {
+            FileUtil.deleteQuietly(tempDestDir);
+        }
     }
     
     private void makeDoc() throws IOException {
@@ -553,38 +552,34 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         collectSubclasses();
         collectAnnotationConstructors();
 
-        try{
-            // document every module
-            boolean documentedOne = false;
-            for(Module module : modules){
-                if (isEmpty(module)) {
-                    log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
-                } else {
-                    documentedOne = true;
-                }
-                    
-                documentModule(module);
+        // document every module
+        boolean documentedOne = false;
+        for(Module module : modules){
+            if (isEmpty(module)) {
+                log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
+            } else {
+                documentedOne = true;
+            }
                 
-                ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
-                
-                // find all doc folders to copy
-                File outputDocFolder = getDocOutputFolder(module);
-                for (File docFolder : docFolders) {
-                    File moduleDocFolder = new File(docFolder, join("/", module.getName()));
-                    if (moduleDocFolder.exists()) {
-                        FileUtil.copyAll(moduleDocFolder, outputDocFolder);
-                    }
+            documentModule(module);
+            
+            ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            
+            // find all doc folders to copy
+            File outputDocFolder = getDocOutputFolder(module);
+            for (File docFolder : docFolders) {
+                File moduleDocFolder = new File(docFolder, join("/", module.getName()));
+                if (moduleDocFolder.exists()) {
+                    FileUtil.copyAll(moduleDocFolder, outputDocFolder);
                 }
+            }
 
-                repositoryRemoveArtifact(outputRepositoryManager, artifactDocs);
-                
-                repositoryPutArtifact(outputRepositoryManager, artifactDocs, getOutputFolder(module, null));
-            }
-            if (!documentedOne) {
-                log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
-            }
-        } finally {
-            FileUtil.delete(tempDestDir);
+            repositoryRemoveArtifact(outputRepositoryManager, artifactDocs);
+            
+            repositoryPutArtifact(outputRepositoryManager, artifactDocs, getOutputFolder(module, null));
+        }
+        if (!documentedOne) {
+            log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
         }
     }
 

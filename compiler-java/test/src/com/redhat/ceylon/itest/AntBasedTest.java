@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +55,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.OSUtil;
 
 public abstract class AntBasedTest {
@@ -250,9 +252,7 @@ public abstract class AntBasedTest {
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
         System.setProperty(ARG_VERBOSE, "false");
         System.setProperty(ARG_SRC, "test/src/com/redhat/ceylon/itest");
-        out = File.createTempFile("ceylon-ant-test.", ".out.d");
-        out.delete();
-        out.mkdirs();
+        out = Files.createTempDirectory("ceylon-ant-test-out.d").toFile();
         System.setProperty(ARG_OUT, out.getPath());
         System.setProperty("basedir", new File("x").getAbsoluteFile().getParent());
     }
@@ -262,20 +262,10 @@ public abstract class AntBasedTest {
         System.setProperties(savedProperties);
     }
     
-    private void deleteRecursively(File file) {
-        if (file.isDirectory()) {
-            for (File child : file.listFiles()) {
-                deleteRecursively(child);
-            }
-        }
-        System.out.println("deleting: "+file.getPath());
-        file.delete();
-    }
-    
     @After
     public void deleteOut() {
-        deleteRecursively(actualBuildFile);    
-        deleteRecursively(out);
+        FileUtil.deleteQuietly(actualBuildFile);    
+        FileUtil.deleteQuietly(out);
     }
     
     protected void saveGlobalState() throws Exception {
