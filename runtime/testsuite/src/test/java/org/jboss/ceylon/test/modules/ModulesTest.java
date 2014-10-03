@@ -18,22 +18,24 @@
 package org.jboss.ceylon.test.modules;
 
 import java.io.File;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import ceylon.modules.spi.Argument;
-import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.junit.Assert;
+
+import ceylon.modules.spi.Argument;
+import ceylon.modules.spi.Constants;
+
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * Modules test helper.
@@ -91,14 +93,9 @@ public abstract class ModulesTest {
     }
 
     protected void testArchive(Archive module, String run, Archive... libs) throws Throwable {
-        File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
-            public File run() {
-                return new File(System.getProperty("ceylon.user.repo", System.getProperty("java.io.tmpdir")));
-            }
-        });
-
-        List<File> files = new ArrayList<File>();
+        File tmpdir = Files.createTempDirectory("ceylon-runtime-tests").toFile();
         try {
+            List<File> files = new ArrayList<File>();
             files.add(createModuleFile(tmpdir, module));
             for (Archive lib : libs) {
                 files.add(createModuleFile(tmpdir, lib));
@@ -129,8 +126,7 @@ public abstract class ModulesTest {
 
             execute(version != null ? name + "/" + version : name, args);
         } finally {
-            for (File file : files)
-                delete(file);
+            FileUtil.deleteQuietly(tmpdir);
         }
     }
 
