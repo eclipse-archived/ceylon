@@ -35,7 +35,7 @@ Rainbow.extend( "ceylon", [
   },
   {
     name: "comment",
-    pattern: /\/\*[\s\S]*?\*\/|(\/\/).*?$/gm
+    pattern: /\/\*[\s\S]*?\*\/|(\/\/).*?$|(\#\!).*?$/gm
   },
   {
     name: "entity.function",
