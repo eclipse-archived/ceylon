@@ -86,10 +86,7 @@ PRE, PRE SPAN,
 }
 
 .screen, .synopsis {
-    //font-size: 85%;
     line-height: 1.4em;
-    //border-left: none;
-    //margin: 15px !important;
     font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
 }
 

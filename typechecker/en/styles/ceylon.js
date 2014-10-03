@@ -1,7 +1,7 @@
 /**
-* Java patterns
+* Ceylon patterns
 *
-* @author Leo Accend
+* @author Gavin King
 * @version 1.0.0
 */
 Rainbow.extend( "ceylon", [
