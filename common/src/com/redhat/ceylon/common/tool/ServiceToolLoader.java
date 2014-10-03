@@ -101,7 +101,7 @@ public abstract class ServiceToolLoader extends ToolLoader {
         // First the ones from CEYLON_HOME/bin
         File ceylonHome = FileUtil.getInstallDir();
         if (ceylonHome != null) {
-            findPluginInPath(new File(ceylonHome, Constants.CEYLON_BIN_DIR), names);
+            findPathPlugins(new File(ceylonHome, Constants.CEYLON_BIN_DIR), names);
         }
         // Then look in /etc/ceylon/bin and /etc/ceylon/bin/{moduleName}/
         // (or their equivalents on Windows and MacOS)
