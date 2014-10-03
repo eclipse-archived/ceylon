@@ -451,6 +451,7 @@ public abstract class CeylonDoc extends Markup {
     }
     
     protected final void writePackageNavigation(Package pkg) throws IOException {
+        open("span class='package-identifier'");
         if (!module.isDefault()) {
             List<String> moduleNames = module.getName();
             List<String> pkgNames = pkg.getName();
@@ -472,6 +473,7 @@ public abstract class CeylonDoc extends Markup {
         } else {
             linkRenderer().to(pkg).write();
         }
+        close("span");
     }
     
     protected final void writePackagesTable(String title, List<Package> packages) throws IOException {
@@ -750,7 +752,8 @@ public abstract class CeylonDoc extends Markup {
         public void visit(Tree.PackageLiteral that) {
             try {
                 write("`");
-                around("span class='keyword'", "package ");
+                around("span class='keyword'", "package");
+                write(" ");
                 linkRenderer().to(that.getImportPath().getModel()).write();
                 write("`");
                 super.visit(that);

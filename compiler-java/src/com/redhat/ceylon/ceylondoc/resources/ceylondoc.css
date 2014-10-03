@@ -82,17 +82,6 @@ code, pre {
 	padding-right: 6px;
 }
 
-.sub-navbar-package {
-	//color: #333;
-	font-size: 16px;
-	font-family: Inconsolata, Monaco, Courier, monospace;
-	font-weight: bold;
-}
-
-.sub-navbar-package a {
-    //color: #333;
-}
-
 .sub-navbar-menu {
 	margin-top: 1em;
 	text-align: center;
@@ -229,6 +218,10 @@ code, pre {
 
 .type-identifier {
     color: rgb(153,0,102);
+}
+
+.sub-navbar-name .package-identifier a {
+    font-family: 'Source Sans Pro', Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 .identifier {
