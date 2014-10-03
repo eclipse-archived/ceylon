@@ -261,6 +261,7 @@ public class RecoveryTest extends CompilerTest {
     }
     
     @Test
+    @Ignore
     public void testBrokenActualMethodParameters() {
         testDeclarationRecovery("FormalMethods", "BrokenActualMethodParameters", new ExpectedError() {
             @Override
