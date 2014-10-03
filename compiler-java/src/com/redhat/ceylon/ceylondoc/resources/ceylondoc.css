@@ -236,6 +236,10 @@ code, pre {
     //color: rgb(102,51,153);
 }
 
+.by, .license {
+   font-size: 14px;
+}
+
 .void {
     color: rgb(76,76,76);
 }
