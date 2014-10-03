@@ -204,7 +204,7 @@ public class Stitcher {
             return;
         }
         int exitCode = 0;
-        tmpDir = Files.createTempDirectory("ceylonjs-stitcher");
+        tmpDir = Files.createTempDirectory("ceylon-jsstitcher-");
         try {
             File infile = new File(args[0]);
             if (infile.exists() && infile.isFile() && infile.canRead()) {

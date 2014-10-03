@@ -20,7 +20,7 @@ public class RunJsTest {
 
     @BeforeClass
     public static void setup() throws IOException {
-        tmpModules = Files.createTempDirectory("ceylon-runjstest").toFile();
+        tmpModules = Files.createTempDirectory("ceylon-runjstest-").toFile();
         tmpModules.delete();
         tmpModules.mkdir();
         File sub = new File(tmpModules, "check/0.1");

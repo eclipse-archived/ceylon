@@ -34,7 +34,7 @@ public class JsOutput {
     }
     protected Writer getWriter() throws IOException {
         if (writer == null) {
-            outfile = File.createTempFile("jsout", ".tmp");
+            outfile = File.createTempFile("ceylon-jsout-", ".tmp");
             writer = new OutputStreamWriter(new FileOutputStream(outfile), encoding);
         }
         return writer;
@@ -56,7 +56,7 @@ public class JsOutput {
 
     public void encodeModel(final JsIdentifierNames names) throws IOException {
         if (modfile == null) {
-            modfile = File.createTempFile("jsmod", ".tmp");
+            modfile = File.createTempFile("ceylon-jsmod-", ".tmp");
             try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
                 JsCompiler.beginWrapper(fw);
                 fw.write("ex$.$CCMM$=");
