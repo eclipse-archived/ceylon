@@ -72,8 +72,7 @@ public abstract class CeylonDoc extends Markup {
         around("title", title);
 
         tag("link href='" + linkRenderer().getResourceUrl("favicon.ico") + "' rel='shortcut icon'");
-        tag("link href='" + linkRenderer().getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='" + linkRenderer().getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("ceylon.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("bootstrap.min.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("ceylondoc.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Inconsolata|PT+Sans' rel='stylesheet' type='text/css'");
@@ -84,7 +83,7 @@ public abstract class CeylonDoc extends Markup {
             }
             tag("link href='" + linkRenderer().getResourceUrl(css) + "' rel='stylesheet' type='text/css'");
         }
-
+        
         close("head");
         open("body");
         
@@ -100,9 +99,8 @@ public abstract class CeylonDoc extends Markup {
         
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.8.2.min.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("bootstrap.min.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shAutoloader.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shBrushCeylon.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("rainbow.min.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylon.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("index.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylondoc.js") + "'");
         

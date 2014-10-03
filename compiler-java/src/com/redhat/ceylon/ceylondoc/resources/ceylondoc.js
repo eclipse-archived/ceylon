@@ -3,60 +3,6 @@ function enableInfoKeybordShortcut(key) {
 	$("#"+key+" .info").addClass("text-info");
 }
 
-
-/*
- * AUTOMATIC SYNTAX HIGHLIGHTING FOR PRE TAGS 
- */
-$(".doc pre").each(function() {
-	var pre = $(this);
-	if( !pre.hasClass("brush:") ) {
-		pre.addClass("brush: ceylon");
-		pre.hide();
-	}
-});
-
-
-/*
- * SYNTAX HIGHLIGHTER
- */
-$(function(){
-	try{
-		if (SyntaxHighlighter!= null) {
-			var startend = location.hash.substr(1).split(',');
-			var startLine = parseInt(startend[0]);
-			var endLine = parseInt(startend[1]);
-			var lines = [];
-			for (var ii = startLine; ii <= endLine; ii++) {
-				lines.push(ii);
-			}
-			SyntaxHighlighter.defaults['highlight'] = lines;
-			SyntaxHighlighter.defaults['gutter'] = false;
-			SyntaxHighlighter.defaults['toolbar'] = false;
-			SyntaxHighlighter.autoloader(
-					'ceylon                 ' + resourceBaseUrl + 'shBrushCeylon.js',
-					'css                    ' + resourceBaseUrl + 'shBrushCss.js',
-					'java                   ' + resourceBaseUrl + 'shBrushJava.js',
-					'js jscript javascript  ' + resourceBaseUrl + 'shBrushJScript.js',
-					'plain text             ' + resourceBaseUrl + 'shBrushPlain.js',
-					'xml xhtml xslt html    ' + resourceBaseUrl + 'shBrushXml.js'
-			);
-			SyntaxHighlighter.all();
-			setTimeout(function() {
-				jQuery('div.number'+startLine).each(function() {
-					this.scrollIntoView(true);
-				});
-			}, 10);
-		}
-	} catch(error) {
-		if(error instanceof ReferenceError || error instanceof TypeError){
-			// ignore this one
-		} else {
-			throw error;
-		}
-	}
-});
-
-
 /*
  * COLLAPSIBLE TYPE HIERARCHY
  */

@@ -628,16 +628,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             copyResource("resources/bootstrap.min.js", new File(resourcesDir, "bootstrap.min.js"));
             copyResource("resources/jquery-1.8.2.min.js", new File(resourcesDir, "jquery-1.8.2.min.js"));
             
-            copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
-            copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
-            copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
-            copyResource("resources/shAutoloader.js", new File(resourcesDir, "shAutoloader.js"));
-            copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
-            copyResource("resources/shBrushCss.js", new File(resourcesDir, "shBrushCss.js"));
-            copyResource("resources/shBrushJava.js", new File(resourcesDir, "shBrushJava.js"));
-            copyResource("resources/shBrushJScript.js", new File(resourcesDir, "shBrushJScript.js"));
-            copyResource("resources/shBrushPlain.js", new File(resourcesDir, "shBrushPlain.js"));
-            copyResource("resources/shBrushXml.js", new File(resourcesDir, "shBrushXml.js"));
+            copyResource("resources/ceylon.css", new File(resourcesDir, "ceylon.css"));
+            copyResource("resources/rainbow.min.js", new File(resourcesDir, "rainbow.min.js"));
+            copyResource("resources/ceylon.js", new File(resourcesDir, "ceylon.js"));
             
             copyResource("resources/favicon.ico", new File(resourcesDir, "favicon.ico"));
             copyResource("resources/ceylondoc-logo.png", new File(resourcesDir, "ceylondoc-logo.png"));
@@ -794,20 +787,18 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.tag("meta charset='UTF-8'");
                 markup.around("title", pu.getUnit().getFilename());
                 markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
-                markup.tag("link href='" + getResourceUrl(pkg, "shCore.css") + "' rel='stylesheet' type='text/css'");
-                markup.tag("link href='" + getResourceUrl(pkg, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+                markup.tag("link href='" + getResourceUrl(pkg, "ceylon.css") + "' rel='stylesheet' type='text/css'");
                 
                 markup.open("script type='text/javascript'");
                 markup.write("var resourceBaseUrl = '" + getResourceUrl(pkg, "") + "'");
                 markup.close("script");
                 
                 markup.around("script src='" + getResourceUrl(pkg, "jquery-1.8.2.min.js") + "' type='text/javascript'");
-                markup.around("script src='" + getResourceUrl(pkg, "shCore.js") + "' type='text/javascript'");
-                markup.around("script src='" + getResourceUrl(pkg, "shAutoloader.js") + "' type='text/javascript'");
-                markup.around("script src='" + getResourceUrl(pkg, "shBrushCeylon.js") + "' type='text/javascript'");
+                markup.around("script src='" + getResourceUrl(pkg, "rainbow.min.js") + "' type='text/javascript'");
+                markup.around("script src='" + getResourceUrl(pkg, "ceylon.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "ceylondoc.js") + "' type='text/javascript'"); 
                 markup.close("head");
-                markup.open("body", "pre class='brush: ceylon'");
+                markup.open("body", "pre data-language='ceylon'");
                 // XXX source char encoding
                 BufferedReader input = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
                 try{

@@ -391,10 +391,10 @@ public class Util {
                 return;
             
             if( meta == null || meta.length() == 0 ) {
-                out.append("<pre>");
+                out.append("<pre data-language=\"ceylon\">");
             }
             else {
-                out.append("<pre class=\"brush: ").append(meta).append("\">");
+                out.append("<pre data-language=\"").append(meta).append("\">");
             }
 
             for (final String s : lines) {

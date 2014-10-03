@@ -614,10 +614,9 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, ".resources/bootstrap.min.css");
         assertFileExists(destDir, ".resources/bootstrap.min.js");
         assertFileExists(destDir, ".resources/jquery-1.8.2.min.js");
-        assertFileExists(destDir, ".resources/shCore.css");
-        assertFileExists(destDir, ".resources/shThemeDefault.css");
-        assertFileExists(destDir, ".resources/shCore.js");
-        assertFileExists(destDir, ".resources/shBrushCeylon.js");
+        assertFileExists(destDir, ".resources/ceylon.css");
+        assertFileExists(destDir, ".resources/ceylon.js");
+        assertFileExists(destDir, ".resources/rainbow.min.js");
         assertFileExists(destDir, ".resources/ceylondoc-logo.png");
         assertFileExists(destDir, ".resources/ceylondoc-icons.png");
         assertFileExists(destDir, ".resources/favicon.ico");
@@ -906,9 +905,9 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<script type='text/javascript' src='.resources/shBrushCeylon.js'>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<pre class=\"brush: ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
+                Pattern.compile("<pre data-language=\"ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<pre class=\"brush: ceylon\">shared actual default Integer hash \\{"));
+                Pattern.compile("<pre data-language=\"ceylon\">shared actual default Integer hash \\{"));
     }
     
     private void assertWikiStyleLinkSyntax(File destDir) throws Exception {
