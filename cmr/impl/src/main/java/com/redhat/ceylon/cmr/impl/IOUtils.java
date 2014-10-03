@@ -218,7 +218,7 @@ public class IOUtils {
             if (!zipRoot.root.isDirectory())
                 throw new IOException("Zip root must be a folder");
         }
-        File zipFile = File.createTempFile("module-doc", ".zip");
+        File zipFile = File.createTempFile("ceylon-zipper-", ".zip");
         try {
             ZipOutputStream os = new ZipOutputStream(new FileOutputStream(zipFile));
             try {
@@ -343,7 +343,7 @@ public class IOUtils {
 
     public static File toTempFile(InputStream inputStream) throws IOException {
         try {
-            final File tempFile = File.createTempFile("ceylon-", "-pom.xml");
+            final File tempFile = File.createTempFile("ceylon-ioutils-", ".tmp");
             writeToFile(tempFile, inputStream);
             return tempFile;
         } finally {

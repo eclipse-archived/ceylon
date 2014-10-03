@@ -51,7 +51,7 @@ public class ResourceArtifactCreatorImpl implements ArtifactCreator {
         final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
         ac.setThrowErrorIfMissing(false);
         
-        File resDir = Files.createTempDirectory(moduleName + "-" + moduleVersion + "-resources").toFile();
+        File resDir = Files.createTempDirectory("ceylon-resources-").toFile();
         try {
             for (String res : resFiles) {
                 File relRes = getDestinationFile(moduleName, res);

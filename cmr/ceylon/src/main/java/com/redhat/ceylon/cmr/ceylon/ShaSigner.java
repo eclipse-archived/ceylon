@@ -94,7 +94,7 @@ public class ShaSigner {
     public static File writeSha1(String sha1, Logger log) {
         File shaFile;
         try{
-            shaFile = File.createTempFile("jar", ".sha1");
+            shaFile = File.createTempFile("ceylon-signer-", ".sha1");
         }catch (IOException x){
             log.warning("Failed to create temporary file for the SHA-1 signature"
                     +", no SHA-1 signature will be made");

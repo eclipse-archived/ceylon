@@ -471,7 +471,7 @@ public class CeylonUtils {
                 StructureBuilder structureBuilder = new FileContentStore(repoFolder);
                 return new SimpleRepositoryManager(structureBuilder, log);
             } else {
-                File cachingDir = FileUtil.makeTempDir("ceylonc");
+                File cachingDir = FileUtil.makeTempDir("ceylon-webdav-cache-");
 
                 // HTTP
                 WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config));

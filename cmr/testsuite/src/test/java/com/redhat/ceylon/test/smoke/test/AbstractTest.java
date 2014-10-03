@@ -72,7 +72,7 @@ public class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        temp = Files.createTempDirectory("temp-");
+        temp = Files.createTempDirectory("ceylon-cmrtest-");
     }
 
     @After

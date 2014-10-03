@@ -122,7 +122,7 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
 
         @Override
         public File getContentAsFile() throws IOException {
-            final File temp = File.createTempFile("in-memory-", ".car");
+            final File temp = File.createTempFile("ceylon-in-memory-", ".car");
             IOUtils.copyStream(getBinariesAsStream(), new FileOutputStream(temp), false, true);
             temp.deleteOnExit();
             return temp;

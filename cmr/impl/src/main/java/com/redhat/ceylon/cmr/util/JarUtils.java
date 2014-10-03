@@ -114,7 +114,7 @@ public final class JarUtils {
         packer.properties().put(Packer.DEFLATE_HINT, Packer.TRUE);
         packer.properties().put(Packer.SEGMENT_LIMIT, "-1");
         packer.properties().put(Packer.MODIFICATION_TIME, Packer.LATEST);
-        File tmp = File.createTempFile("ceylon", "pack200", outputFile.getParentFile());
+        File tmp = File.createTempFile("ceylon-jarutils-", ".pack200", outputFile.getParentFile());
         try {
             try (OutputStream out = new FileOutputStream(tmp)) {
                 try (JarFile in = new JarFile(outputFile)) {
