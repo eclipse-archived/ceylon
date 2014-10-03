@@ -20,7 +20,7 @@ pre .constant.numeric {
 }
 
 pre .string, pre .char {
-    color: blue;
+    color: darkcyan;
 }
 
 pre .entity.function {

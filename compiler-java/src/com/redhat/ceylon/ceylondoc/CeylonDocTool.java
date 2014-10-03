@@ -788,6 +788,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.around("title", pu.getUnit().getFilename());
                 markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
                 markup.tag("link href='" + getResourceUrl(pkg, "ceylon.css") + "' rel='stylesheet' type='text/css'");
+                markup.tag("link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'");
                 
                 markup.open("script type='text/javascript'");
                 markup.write("var resourceBaseUrl = '" + getResourceUrl(pkg, "") + "'");
@@ -798,7 +799,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.around("script src='" + getResourceUrl(pkg, "ceylon.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "ceylondoc.js") + "' type='text/javascript'"); 
                 markup.close("head");
-                markup.open("body", "pre data-language='ceylon'");
+                markup.open("body", "pre data-language='ceylon' style='font-family: Inconsolata, Monaco, Courier, monospace'");
                 // XXX source char encoding
                 BufferedReader input = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
                 try{
