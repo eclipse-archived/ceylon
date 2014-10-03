@@ -179,7 +179,7 @@ public class MainTest {
     }
 
     private static File jar(File sourceFile, String destDir) throws IOException {
-        File jarFile = File.createTempFile("testmain", ".jar");
+        File jarFile = File.createTempFile("ceylonlang-testmain-", ".jar");
         try {
             JarOutputStream jar = new JarOutputStream(new FileOutputStream(jarFile));
             String dirName = destDir.isEmpty() ? sourceFile.getName() : destDir+"/"+sourceFile.getName();
