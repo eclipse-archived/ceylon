@@ -93,7 +93,7 @@ public abstract class ModulesTest {
     }
 
     protected void testArchive(Archive module, String run, Archive... libs) throws Throwable {
-        File tmpdir = Files.createTempDirectory("ceylon-runtime-tests").toFile();
+        File tmpdir = Files.createTempDirectory("ceylon-runtimetests-").toFile();
         try {
             List<File> files = new ArrayList<File>();
             files.add(createModuleFile(tmpdir, module));
