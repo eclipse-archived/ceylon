@@ -905,7 +905,8 @@ parameterDeclaration returns [TypedDeclaration declaration]
         { m.setType(new FunctionModifier($FUNCTION_MODIFIER));
           $declaration=m; }
       | DYNAMIC
-        { a.setType(new DynamicModifier($DYNAMIC)); }
+        { a.setType(new DynamicModifier($DYNAMIC));
+          m.setType(new DynamicModifier($DYNAMIC)); }
       | VALUE_MODIFIER
         { a.setType(new ValueModifier($VALUE_MODIFIER)); }
       )

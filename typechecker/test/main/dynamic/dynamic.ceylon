@@ -279,3 +279,17 @@ shared void printVariadic(dynamic args) {
           printVaradic(*args);
      }
 }
+
+dynamic jsfun(dynamic arg(dynamic a)) {
+    dynamic { 
+        return arg(1).something;
+    }
+}
+
+void calljsfun() {
+    dynamic {
+        dynamic anonfun = (dynamic x)=>x+1;
+        dynamic result = anonfun(3);
+        jsfun((a) => a.whatever);
+    }
+}
