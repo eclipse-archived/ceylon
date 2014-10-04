@@ -390,6 +390,13 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             moduleFilters.add(spec.getName());
         }
         builder.setModuleFilters(moduleFilters);
+        String fileEncoding  = getEncoding();
+        if (fileEncoding == null) {
+            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+        }
+        if (fileEncoding != null) {
+            builder.encoding(fileEncoding);
+        }
         
         typeChecker = builder.getTypeChecker();
         // collect all units we are typechecking
