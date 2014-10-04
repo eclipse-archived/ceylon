@@ -3,6 +3,7 @@ package com.redhat.ceylon.tools.info;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -375,10 +376,25 @@ public class CeylonInfoTool extends RepoUsingTool {
         if (version.getLicense() != null) {
             msg("module.license").append(version.getLicense()).newline();
         }
+        if (version.getAuthors() != null && !version.getAuthors().isEmpty()) {
+            outputAuthors(version.getAuthors());
+        }
         if (!version.getDependencies().isEmpty()) {
             msg("module.dependencies", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
             recurseDependencies(version, 0);
         }
+    }
+
+    private String summary(String doc) {
+        StringBuilder result = new StringBuilder();
+        String[] lines = doc.split("\n");
+        for (int i = 0; i < lines.length && i < 5; i++) {
+            result.append(lines[i]).append('\n');
+        }
+        if (lines.length > 5) {
+            result.append("...").append('\n');
+        }
+        return result.toString();
     }
 
     private RepoUsingTool outputArtifacts(Set<ModuleVersionArtifact> types) throws IOException {
