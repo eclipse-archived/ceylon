@@ -54,10 +54,15 @@ public class ConfigParser {
                 public void onOption(String name, String value, String text) {
                     if (replaceVars) {
                         // Special "variable" to get the current directory for this config file
+                        // and a couple of other special directories
                         if (value.startsWith("${DIR}")) {
-                            try {
-                                value = currentDir.getCanonicalPath() + value.substring(6);
-                            } catch (IOException e) { }
+                            value = FileUtil.absoluteFile(currentDir).getPath() + value.substring(6);
+                        } else if (value.startsWith("${USER_DIR}")) {
+                            value = FileUtil.absoluteFile(FileUtil.getUserDir()).getPath() + value.substring(6);
+                        } else if (value.startsWith("${SYSTEM_DIR}")) {
+                            value = FileUtil.absoluteFile(FileUtil.getSystemConfigDir()).getPath() + value.substring(6);
+                        } else if (value.startsWith("${CEYLON_HOME}") || value.startsWith("${INSTALL_DIR}")) {
+                            value = FileUtil.absoluteFile(FileUtil.getInstallDir()).getPath() + value.substring(6);
                         }
                     }
                     
