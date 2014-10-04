@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.File;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +40,6 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;

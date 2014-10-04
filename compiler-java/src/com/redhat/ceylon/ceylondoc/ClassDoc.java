@@ -25,7 +25,6 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
-import static java.util.Collections.singletonList;
 
 import java.io.IOException;
 import java.io.Writer;
