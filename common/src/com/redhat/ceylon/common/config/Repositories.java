@@ -140,6 +140,9 @@ public class Repositories {
 
         public SimpleRepository(String name, String url, Credentials credentials) {
             this.name = name;
+            if (url.startsWith("~/") || url.startsWith("~\\")) {
+                url = new File(System.getProperty("user.home"), url.substring(2)).getPath();
+            }
             this.url = url;
             this.credentials = credentials;
         }
