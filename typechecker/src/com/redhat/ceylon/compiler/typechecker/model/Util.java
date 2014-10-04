@@ -73,7 +73,7 @@ public class Util {
     /**
      * Get the declaration that contains the specified scope, if any.
      */
-    public static Declaration getContainingDeclaration(Scope scope) {
+    public static Declaration getContainingDeclarationOfScope(Scope scope) {
         while (!(scope instanceof Package)) {
             if (scope instanceof Declaration) {
                 return (Declaration) scope;

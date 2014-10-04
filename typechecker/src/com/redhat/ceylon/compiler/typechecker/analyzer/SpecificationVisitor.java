@@ -4,7 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -605,7 +605,7 @@ public class SpecificationVisitor extends Visitor {
 	            }
                 else if (withinDeclaration && constant && 
                         !that.getRefinement()) {
-                    Declaration dec = getContainingDeclaration(that.getScope());
+                    Declaration dec = getContainingDeclarationOfScope(that.getScope());
                     if (dec!=null && dec.equals(member)) {
                         that.addError("cannot specify " + shortdesc() + 
                                 " from within its own body: '" + member.getName() + "'");
