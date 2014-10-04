@@ -20,11 +20,23 @@ public class CeylonConfigTest {
     
     @Before
     public void setup() throws IOException {
-        testConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
-        localConfig = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
-        mergedConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
-        CeylonConfig localConfig2 = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
-        mergedConfig.merge(localConfig2);
+        String org = System.getProperty("ceylon.home");
+        try {
+            if (org == null) {
+                System.setProperty("ceylon.home", "/tmp");
+            }
+            testConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+            localConfig = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+            mergedConfig = CeylonConfigFinder.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+            CeylonConfig localConfig2 = CeylonConfigFinder.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+            mergedConfig.merge(localConfig2);
+        } finally {
+            if (org == null) {
+                System.clearProperty("ceylon.home");
+            } else {
+                System.setProperty("ceylon.home", org);
+            }
+        }
     }
     
     @Test
@@ -80,6 +92,14 @@ public class CeylonConfigTest {
         Assert.assertTrue(compareCurrentDir("test/src/com/redhat/ceylon/common/test", testConfig.getOption("test.currentdir-simple")));
         Assert.assertTrue(compareCurrentDir("test/src/com/redhat/ceylon/common/test/with/extra/path", testConfig.getOption("test.currentdir-extra")));
         Assert.assertTrue(compareCurrentDir("before/${DIR}", testConfig.getOption("test.currentdir-fake")));
+    }
+    
+    @Test
+    public void testOtherDirs() {
+        Assert.assertFalse(testConfig.getOption("test.userdir").equals("${USER_DIR}"));
+        Assert.assertFalse(testConfig.getOption("test.systemdir").equals("${SYSTEM_DIR}"));
+        Assert.assertFalse(testConfig.getOption("test.ceylonhome").equals("${CEYLON_HOME}"));
+        Assert.assertFalse(testConfig.getOption("test.installdir").equals("${INSTALL_DIR}"));
     }
     
     @Test

@@ -99,7 +99,7 @@ public class RepositoriesTest {
         Assert.assertTrue(lookup.length == 4);
         assertRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!");
         assertRepository(lookup[1], "Three", "foobar", null, null);
-        assertRepository(lookup[2], "Four", "foobar", null, null);
+        assertRepository(lookup[2], "Four", new File(System.getProperty("user.home"), "foobar").getPath(), null, null);
         assertRepository(lookup[3], "%lookup-4", "foobar", null, null);
     }
     
@@ -107,8 +107,16 @@ public class RepositoriesTest {
     public void testGetRemoteLookupRepositories() {
         Repository[] lookup = repos.getRemoteLookupRepositories();
         Assert.assertTrue(lookup.length == 2);
-        assertRepository(lookup[0], "Four", "foobar", null, null);
+        assertRepository(lookup[0], "Four", new File(System.getProperty("user.home"), "foobar").getPath(), null, null);
         assertRepository(lookup[1], "%remote-2", "foobar", null, null);
+    }
+    
+    @Test
+    public void testGetOtherLookupRepositories() {
+        Repository[] lookup = repos.getOtherLookupRepositories();
+        Assert.assertTrue(lookup.length == 2);
+        assertRepository(lookup[0], "Four", new File(System.getProperty("user.home"), "foobar").getPath(), null, null);
+        assertRepository(lookup[1], "%other-2", new File(System.getProperty("user.home"), "fubar").getPath(), null, null);
     }
     
     @Test
