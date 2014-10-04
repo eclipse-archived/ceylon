@@ -52,6 +52,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     private boolean showVersions;
     private boolean showDependencies;
     private boolean showIncompatible;
+    private boolean showFullDescription;
     private String showType;
     private int depth = 1;
     private String findMember;
@@ -94,6 +95,12 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Description("Also show versions incompatible with the current Ceylon installation")
     public void setShowIncompatible(boolean showIncompatible) {
         this.showIncompatible = showIncompatible;
+    }
+    
+    @Option(longName="show-full-description")
+    @Description("Shows the full description for module details")
+    public void setShowFullDescription(boolean showFullDescription) {
+        this.showFullDescription = showFullDescription;
     }
     
     @Option(longName="require-all")
@@ -371,7 +378,11 @@ public class CeylonInfoTool extends RepoUsingTool {
             msg("module.origin").append(version.getOrigin()).newline();
         }
         if (version.getDoc() != null) {
-            msg("module.description").append(version.getDoc()).newline();
+            String docs = version.getDoc();
+            if (!showFullDescription) {
+                docs = summary(version.getDoc());
+            }
+            msg("module.description").append(docs).newline();
         }
         if (version.getLicense() != null) {
             msg("module.license").append(version.getLicense()).newline();
@@ -395,6 +406,19 @@ public class CeylonInfoTool extends RepoUsingTool {
             result.append("...").append('\n');
         }
         return result.toString();
+    }
+
+    private void outputAuthors(NavigableSet<String> authors) throws IOException {
+        msg("module.authors");
+        boolean first = true;
+        for (String author : authors) {
+            if (!first) {
+                append(", ");
+            }
+            append(author);
+            first = false;
+        }
+        newline();
     }
 
     private RepoUsingTool outputArtifacts(Set<ModuleVersionArtifact> types) throws IOException {
