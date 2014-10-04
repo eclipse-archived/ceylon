@@ -58,11 +58,13 @@ public class ConfigParser {
                         if (value.startsWith("${DIR}")) {
                             value = FileUtil.absoluteFile(currentDir).getPath() + value.substring(6);
                         } else if (value.startsWith("${USER_DIR}")) {
-                            value = FileUtil.absoluteFile(FileUtil.getUserDir()).getPath() + value.substring(6);
+                            value = FileUtil.absoluteFile(FileUtil.getUserDir()).getPath() + value.substring(11);
                         } else if (value.startsWith("${SYSTEM_DIR}")) {
-                            value = FileUtil.absoluteFile(FileUtil.getSystemConfigDir()).getPath() + value.substring(6);
+                            value = FileUtil.absoluteFile(FileUtil.getSystemConfigDir()).getPath() + value.substring(13);
                         } else if (value.startsWith("${CEYLON_HOME}") || value.startsWith("${INSTALL_DIR}")) {
-                            value = FileUtil.absoluteFile(FileUtil.getInstallDir()).getPath() + value.substring(6);
+                            if (FileUtil.getInstallDir() != null) {
+                                value = FileUtil.absoluteFile(FileUtil.getInstallDir()).getPath() + value.substring(14);
+                            }
                         }
                     }
                     
