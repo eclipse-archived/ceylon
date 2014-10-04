@@ -4,6 +4,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -12,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -33,7 +36,7 @@ public class SpecificationVisitor extends Visitor {
     
     private SpecificationState specified = 
             new SpecificationState(false, false);
-    private boolean withinDeclaration = true;
+    private boolean withinDeclaration = false;
     private boolean inLoop = false;
     private boolean declared = false;
     private boolean hasParameter = false;
@@ -604,8 +607,15 @@ public class SpecificationVisitor extends Visitor {
 	            }
                 else if (withinDeclaration && constant && 
                         !that.getRefinement()) {
-                    that.addError("cannot specify " + shortdesc() + 
-                            " being declared: '" + member.getName() + "'", 803);
+                    Declaration dec = getContainingDeclaration(that.getScope());
+                    if (dec!=null && dec.equals(member)) {
+                        that.addError("cannot specify " + shortdesc() + 
+                                " from within its own body: '" + member.getName() + "'");
+                    }
+                    else {
+                        that.addError("cannot specify " + shortdesc() + 
+                                " declared in outer scope: '" + member.getName() + "'", 803);
+                    }
                 }
 	            else if (specified.possibly && constant) {
 	            	if (specified.definitely) {

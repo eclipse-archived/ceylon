@@ -59,8 +59,21 @@ public class Util {
      * Get the declaration that contains the specified declaration, if any.
      */
     public static Declaration getContainingDeclaration(Declaration d) {
-        if (d.isToplevel())return null;
+        if (d.isToplevel()) return null;
         Scope scope = d.getContainer();
+        while (!(scope instanceof Package)) {
+            if (scope instanceof Declaration) {
+                return (Declaration) scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+
+    /**
+     * Get the declaration that contains the specified scope, if any.
+     */
+    public static Declaration getContainingDeclaration(Scope scope) {
         while (!(scope instanceof Package)) {
             if (scope instanceof Declaration) {
                 return (Declaration) scope;
