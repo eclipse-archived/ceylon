@@ -875,8 +875,12 @@ parameters returns [ParameterList parameterList]
     ;
 
 parameter returns [ParameterDeclaration parameter]
-    : parameterDeclaration
+    : compilerAnnotations
+      annotations
+      parameterDeclaration
       { TypedDeclaration d = $parameterDeclaration.declaration;
+        d.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
+        d.setAnnotationList($annotations.annotationList);
         if (d instanceof AttributeDeclaration) {
             ValueParameterDeclaration vp = new ValueParameterDeclaration(null);
             vp.setTypedDeclaration(d);
@@ -946,12 +950,8 @@ parameterDeclarationOrRef returns [Parameter parameter]
       r=parameterRef
       { $parameter=$r.parameter; }
     | 
-      compilerAnnotations
-      annotations
       p=parameter
-      { $parameter=$p.parameter;
-        $p.parameter.getTypedDeclaration().setAnnotationList($annotations.annotationList);
-        $p.parameter.getTypedDeclaration().getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      { $parameter=$p.parameter; }
     ;
 
 typeParameters returns [TypeParameterList typeParameterList]
