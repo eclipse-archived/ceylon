@@ -20,6 +20,7 @@ package com.redhat.ceylon.test.smoke.test;
 import java.io.File;
 import java.util.SortedSet;
 
+import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
@@ -311,7 +312,7 @@ public class HerdTestCase extends AbstractTest {
                 new ModuleDetails("ceylon.test", null, "Apache Software License", set("Tom Bentley", "Tomáš Hradec"), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
                 new ModuleDetails("ceylon.time", null, "", set("Diego Coronel", "Roland Tepp"), set("1.1.0"), deps(ceycoll110), car7Js7Src, true, "The Herd"),
         };
-        testComplete("ceylon", expected, getRepositoryManager(), Type.CEYLON_CODE);
+        testComplete("ceylon", expected, getRepositoryManager(), Type.CEYLON_CODE, Retrieval.ALL, null, null);
     }
 
     @Test
