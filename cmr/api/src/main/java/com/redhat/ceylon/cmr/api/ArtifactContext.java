@@ -52,8 +52,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // NB: SHA1 and ZIP are not part of this list because they are supposed
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
-        CAR, JAR, JS_MODEL, JS, RESOURCES, SRC, MAVEN_SRC, DOCS,
-        INFO, SCRIPTS_ZIPPED
+        CAR, JAR, JS_MODEL, JS, RESOURCES, SRC, MAVEN_SRC, DOCS, SCRIPTS_ZIPPED
     };
     
     private static final String composedSuffixes[] = {
