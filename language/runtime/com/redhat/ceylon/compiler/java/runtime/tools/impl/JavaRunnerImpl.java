@@ -69,16 +69,34 @@ public class JavaRunnerImpl implements JavaRunner {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        setupClassLoader();
+        initialiseMetamodel();
     }
 
     @Override
     public void run(String... arguments){
+        if(moduleClassLoader == null)
+            throw new ceylon.language.AssertionError("Cannot call run method after cleanup is called");
+        // now load and invoke the main class
+        invokeMain(module, arguments);
+    }
+    
+    @Override
+    public ClassLoader getModuleClassLoader() {
+        if(moduleClassLoader == null)
+            throw new ceylon.language.AssertionError("Cannot get class loader after cleanup is called");
+        return moduleClassLoader;
+    }
+
+    private void setupClassLoader(){
         // make a Class loader for this module if required
         if(loadedModulesInCurrentClassLoader.contains(module))
             moduleClassLoader = delegateClassLoader;
         else
             moduleClassLoader = makeModuleClassLoader();
-        // initialise the metamodel
+    }
+
+    private void initialiseMetamodel() {
         Set<String> registered = new HashSet<String>();
         registerInMetamodel("ceylon.language", registered);
         registerInMetamodel("com.redhat.ceylon.typechecker", registered);
@@ -91,16 +109,15 @@ public class JavaRunnerImpl implements JavaRunner {
                 registerInMetamodel(extraModule, registered);
             }
         }
-        // now load and invoke the main class
-        invokeMain(module, arguments);
     }
-    
+
     @Override
     public void cleanup() {
         if(moduleClassLoader != delegateClassLoader
                 && moduleClassLoader instanceof URLClassLoader){
             try {
                 ((URLClassLoader) moduleClassLoader).close();
+                moduleClassLoader = null;
             } catch (IOException e) {
                 // ignore
                 e.printStackTrace();
@@ -236,10 +253,4 @@ public class JavaRunnerImpl implements JavaRunner {
             registerInMetamodel(dep.name(), registered);
         }
     }
-
-    @Override
-    public ClassLoader getModuleClassLoader() {
-        return moduleClassLoader;
-    }
-
 }
