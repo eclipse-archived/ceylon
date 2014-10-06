@@ -1047,37 +1047,37 @@ public class CeylonDocToolTest {
         String linkStart = "<a class='link' href='" + repoUrl + "/com/redhat/ceylon/ceylondoc/test/modules/dependency";
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a> fceB")));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'><span class='type-identifier'>B</span></a> <span class='identifier'>fceB</span>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote(linkStart + "/c/1.0/module-doc/api/C.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.c::C'>C</a> fceC")));
+                Pattern.compile(Pattern.quote(linkStart + "/c/1.0/module-doc/api/C.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.c::C'><span class='type-identifier'>C</span></a> <span class='identifier'>fceC</span>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("b = " + linkStart + "/b/1.0/module-doc/api/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>b</a>")));
+                Pattern.compile(Pattern.quote("b = " + linkStart + "/b/1.0/module-doc/api/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'><code>b</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("B = " + linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a>")));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'><span class='type-identifier'>B</span></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("B.b = " + linkStart + "/b/1.0/module-doc/api/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>B.b</a>")));
+                Pattern.compile(Pattern.quote("B.b = " + linkStart + "/b/1.0/module-doc/api/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'><code>B.b</code></a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("b2 = " + linkStart + "/b/1.0/module-doc/api/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>b2</a>")));
+                Pattern.compile(Pattern.quote("b2 = " + linkStart + "/b/1.0/module-doc/api/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'><code>b2</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("B2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>B2</a>")));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'><code>B2</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("B2.b2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>B2.b2</a>")));
+                Pattern.compile(Pattern.quote("B2.b2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'><code>B2.b2</code></a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = " + linkStart + "/b/1.0/module-doc/api/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b</a>")));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = " + linkStart + "/b/1.0/module-doc/api/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = " + linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B</a>")));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = " + linkStart + "/b/1.0/module-doc/api/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b</a>")));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = " + linkStart + "/b/1.0/module-doc/api/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b</code></a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = " + linkStart + "/b/1.0/module-doc/api/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2</a>")));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = " + linkStart + "/b/1.0/module-doc/api/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2</a>")));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/api/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2</code></a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</a>")));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/api/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'><code>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</code></a>")));
     }
     
     private void assertSharedParameterOfClass(File destDir) throws Exception {
