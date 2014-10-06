@@ -456,16 +456,17 @@ public class LinkRenderer {
     private String getUnresolvableLink(final String docLinkText) {
         StringBuilder unresolvable = new StringBuilder();
         unresolvable.append("<span class='link-unresolvable'>");
-        if( printWikiStyleLinks ) {
-            unresolvable.append("[");
-        }
-        if (customText != null && !customText.equals(docLinkText)) {
+        boolean hasCustomText = 
+                customText != null && !customText.equals(docLinkText);
+        if (hasCustomText) {
             unresolvable.append(customText);
-            unresolvable.append("|");
+            unresolvable.append(" (");
         }
-        unresolvable.append(docLinkText);
-        if( printWikiStyleLinks ) {
-            unresolvable.append("]");
+        unresolvable.append("<code>")
+                    .append(docLinkText)
+                    .append("</code>");
+        if (hasCustomText) {
+            unresolvable.append(")");
         }
         unresolvable.append("</span>");
         return unresolvable.toString();
@@ -640,9 +641,9 @@ public class LinkRenderer {
         StringBuilder spanBuilder = new StringBuilder();
         spanBuilder.append("<span title='");
         spanBuilder.append(d.getQualifiedNameString());
-        spanBuilder.append("'>");
+        spanBuilder.append("'><code>");
         spanBuilder.append(getLinkText(d));
-        spanBuilder.append("</span>");
+        spanBuilder.append("</code></span>");
         return spanBuilder.toString();
     }
 
