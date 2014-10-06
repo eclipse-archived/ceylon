@@ -213,11 +213,15 @@ code {
 	color: rgb(120, 120, 120);
 }
 
-.identifier, .identifier a.link {
+.identifier, 
+.identifier a.link,
+.identifier a.link code {
     color: rgb(0,51,153);
 }
 
-.type-identifier, .type-identifier a.link {
+.type-identifier, 
+.type-identifier a.link, 
+.type-identifier a.link code {
     color: rgb(153,0,102);
 }
 
