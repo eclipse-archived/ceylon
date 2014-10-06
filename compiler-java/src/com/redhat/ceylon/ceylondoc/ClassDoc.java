@@ -609,7 +609,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("tr", "td");
         write(title);
         writeIcon(superType);
-        linkRenderer().to(superType).write();
+        linkRenderer().to(superType).withinText(true).write();
         open("div class='inherited-members'");
         
         boolean first = true;
