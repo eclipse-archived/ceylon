@@ -476,6 +476,7 @@ public class CeylonDocToolTest {
                 "ceylon.process",
                 "ceylon.test",
                 "ceylon.time",
+                "ceylon.transaction",
                 "ceylon.unicode"
         };
         

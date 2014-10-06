@@ -272,6 +272,7 @@ public class MiscTest extends CompilerTest {
                 "process",
                 "promise",
                 "time",
+                "transaction",
                 "unicode"
         };
         String[] extraModules = {
