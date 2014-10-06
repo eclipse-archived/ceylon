@@ -35,6 +35,7 @@ import javax.xml.bind.DatatypeConverter;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
@@ -335,12 +336,15 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if(connectionAllowed() && isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
-                WS.getXML(herdCompleteModulesURL,
-                          WS.params(WS.param("module", query.getName()),
-                                    WS.param("type", getHerdTypeParam(query.getType())),
-                                    WS.param("binaryMajor", query.getBinaryMajor()),
-                                    WS.param("binaryMinor", query.getBinaryMinor())),
-                          new XMLHandler(){
+                List<WS.Param> params = new ArrayList<WS.Param>(10);
+                params.add(WS.param("module", query.getName()));
+                params.add(WS.param("type", getHerdTypeParam(query.getType())));
+                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
+                if (herdVersion >= 4) {
+                    params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
+                }
+                WS.getXML(herdCompleteModulesURL, params, new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
                         parseSearchModulesResponse(p, result, query.getStart());
@@ -353,37 +357,50 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     private String getHerdTypeParam(Type type) {
-        switch(type){
-        case JS:
-            return "javascript";
-        case CAR:
-            if(herdVersion >= 4)
-                return "car";
-            else
+        if (herdVersion >= 4) {
+            String[] suffixes = type.getSuffixes();
+            StringBuilder arts = new StringBuilder(suffixes[0]);
+            for (int i = 1; i < suffixes.length; i++) {
+                arts.append(",");
+                arts.append(suffixes[i]);
+            }
+            return arts.toString();
+        } else {
+            switch(type){
+            case JS:
+                return "javascript";
+            case CAR:
                 return "jvm";
-        case JAR:
-            if(herdVersion >= 4)
-                return "jar";
-            else
+            case JAR:
                 return "jvm";
-        case JVM:
-            return "jvm";
-        case SRC:
-            return "source";
-        case CODE:
-            if(herdVersion >= 3)
-                return "code";
-            else
+            case JVM:
+                return "jvm";
+            case SRC:
+                return "source";
+            case CODE:
+                if(herdVersion >= 3)
+                    return "code";
+                else
+                    return "all";
+            case CEYLON_CODE:
+                if(herdVersion >= 3)
+                    return "code";
+                else
+                    return "all";
+            case ALL:
+                // TODO Implement retrieval of various types at at time
                 return "all";
-        case CEYLON_CODE:
-            if(herdVersion >= 4)
-                return "ceylon";
-            else if(herdVersion >= 3)
-                return "code";
-            else
-                return "all";
+            default:
+                throw new RuntimeException("Missing enum case handling");
+            }
+        }
+    }
+
+    private String getHerdRetrievalParam(Retrieval retrieval) {
+        switch (retrieval) {
+        case ANY:
+            return "any";
         case ALL:
-            // TODO Implement retrieval of various types at at time
             return "all";
         default:
             throw new RuntimeException("Missing enum case handling");
@@ -395,13 +412,16 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if(connectionAllowed() && isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
-                WS.getXML(herdCompleteVersionsURL,
-                          WS.params(WS.param("module", lookup.getName()),
-                                    WS.param("version", lookup.getVersion()),
-                                    WS.param("type", getHerdTypeParam(lookup.getType())),
-                                    WS.param("binaryMajor", lookup.getBinaryMajor()),
-                                    WS.param("binaryMinor", lookup.getBinaryMinor())),
-                          new XMLHandler(){
+                List<WS.Param> params = new ArrayList<WS.Param>(10);
+                params.add(WS.param("module", lookup.getName()));
+                params.add(WS.param("version", lookup.getVersion()));
+                params.add(WS.param("type", getHerdTypeParam(lookup.getType())));
+                params.add(WS.param("binaryMajor", lookup.getBinaryMajor()));
+                params.add(WS.param("binaryMinor", lookup.getBinaryMinor()));
+                if (herdVersion >= 4) {
+                    params.add(WS.param("retrieval", getHerdRetrievalParam(lookup.getRetrieval())));
+                }
+                WS.getXML(herdCompleteVersionsURL, params, new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
                         parseCompleteVersionsResponse(p, result);
@@ -540,6 +560,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
+                    params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 WS.getXML(herdSearchModulesURL, params, new XMLHandler(){
                     @Override
