@@ -242,7 +242,21 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                     }
+                    else if(td.getContainer() instanceof TypeDeclaration == false
+                            || d.getContainer() instanceof TypeDeclaration == false){
+                        // one of the two must be a local type, they should both be
+                        if(td.getContainer() instanceof TypeDeclaration
+                                || d.getContainer() instanceof TypeDeclaration)
+                            return false;
+                        // must be the same container
+                        if(!td.getContainer().equals(d.getContainer()))
+                            return false;
+                        // just delegate equality
+                        if(!tqt.isExactly(qt))
+                            return false;
+                    }
                     else {
+                            
                         TypeDeclaration totd = 
                                 (TypeDeclaration) td.getContainer();
                         ProducedType tqts = tqt.getSupertypeInternal(totd);
