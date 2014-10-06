@@ -237,7 +237,7 @@ public class SpecificationVisitor extends Visitor {
                 		member instanceof Value && 
                 		!(((Value) member).isTransient())) {
                 	that.addError("reference to value within its initializer: '" + 
-                			member.getName() + "'");
+                            member.getName() + "'", 1460);
                 }
                 else if (!metamodel && !isForwardReferenceable() && !hasParameter) {
                     if (declaration.getContainer() instanceof Class) {
