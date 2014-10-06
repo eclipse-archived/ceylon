@@ -142,8 +142,13 @@ public class AbstractTest {
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
-                                ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        ModuleQuery lookup = new ModuleQuery(query, type);
+            ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        testComplete(query, expected, manager, type, ModuleQuery.Retrieval.ANY, binaryMajor, binaryMinor);
+    }
+
+    protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
+                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, Integer binaryMajor, Integer binaryMinor) {
+        ModuleQuery lookup = new ModuleQuery(query, type, retrieval);
         lookup.setBinaryMajor(binaryMajor);
         lookup.setBinaryMinor(binaryMinor);
         ModuleSearchResult result = manager.completeModules(lookup);
