@@ -34,6 +34,27 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
     private String errMessage;
     private Declaration model;
     
+    static class DeclExprErrorVisitor extends Visitor implements NaturalVisitor {
+        public void visit(Tree.BaseMemberExpression that) {
+            for (Message e : that.getErrors()) {
+                if (e.getCode() == 1460) {
+                    throw new HasErrorException(that, e);
+                }
+            }
+        }
+        public void visit(Tree.Declaration that) {
+            // don't visit other declarations
+        }
+        
+        @Override
+        public void handleException(Exception e, Node that) {
+            // rethrow
+            throw (RuntimeException)e;
+        }
+        
+    }
+    DeclExprErrorVisitor ev = new DeclExprErrorVisitor();
+    
     DeclarationErrorVisitor(ExpressionErrorVisitor expressionVisitor) {
         this.expressionVisitor = expressionVisitor;
     }
@@ -142,8 +163,13 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
-        // don't go there
+        try {
+            that.visit(ev);
+        } catch (HasErrorException e) {
+            newplan(new Drop(e.getNode(), e.getErrorMessage()));
+        }
     }
+    
     
     @Override
     public void visit(Tree.InitializerParameter that) {
