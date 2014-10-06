@@ -789,4 +789,13 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1831() {
         compareWithJavaSource("bug18xx/Bug1831");
     }
+    
+    @Test
+    public void testBug1836() {
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1836.ceylon");
+        ExitState call2 = task.call2();
+        Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
+    }
 }
