@@ -609,7 +609,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("tr", "td");
         write(title);
         writeIcon(superType);
-        linkRenderer().to(superType).withinText(true).write();
+        open("code");
+        //TODO: it would be better if LinkRenderer added the code tags
+        linkRenderer().to(superType)/*.withinText(true)*/.write();
+        close("code");
         open("div class='inherited-members'");
         
         boolean first = true;
