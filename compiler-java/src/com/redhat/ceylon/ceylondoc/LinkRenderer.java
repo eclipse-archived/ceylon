@@ -97,7 +97,8 @@ public class LinkRenderer {
                 TypeDeclaration type = (TypeDeclaration) declaration;
                 String typeUrl = getUrl(type, null);
                 if (typeUrl != null) {
-                    result = buildLinkElement(typeUrl, getLinkText(type), "Go to " + type.getQualifiedNameString());
+                    result = buildLinkElement(typeUrl, getLinkText(type), 
+                            "Go to " + type.getQualifiedNameString());
 
                 } else {
                     result = buildSpanElementWithNameAndTooltip(declaration);
@@ -282,6 +283,9 @@ public class LinkRenderer {
     private String processProducedType(ProducedType producedType) {
         String result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
         result = decodeResult(result);
+        if (withinText) {
+            result = "<code>" + result + "</code>";
+        }
         result = decorateWithLinkDropdownMenu(result, producedType);
         return result;
     }

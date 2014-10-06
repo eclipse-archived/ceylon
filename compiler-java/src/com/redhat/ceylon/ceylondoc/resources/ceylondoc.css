@@ -20,6 +20,10 @@ code, pre {
     border: none;
 }
 
+code {
+    padding: 0px;
+}
+
 .module-header {
 	float: left;
 	display: block;

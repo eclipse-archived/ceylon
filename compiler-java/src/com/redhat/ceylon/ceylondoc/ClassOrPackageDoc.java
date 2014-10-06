@@ -100,7 +100,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeLinkOneSelf(alias);
         writeLinkSource(alias);
         writeTagged(alias);
-        open("div class='signature'");
+        open("code class='signature'");
         around("span class='modifiers'", getModifiers(alias));
         write(" ");
         open("span class='type-identifier'");
@@ -116,7 +116,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         if (!alias.getTypeParameters().isEmpty()) {
             close("div"); // type-alias-specifier
         }
-        close("div"); // signature
+        close("code"); // signature
         writeDescription(alias);
         close("td");
         
@@ -137,11 +137,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeLinkOneSelf(d);
         writeLinkSourceCode(d);
         writeTagged(d);
-        open("div class='signature'");
+        open("code class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         linkRenderer().to(d.getType()).printAbbreviated(!isAbbreviatedType(d)).printTypeParameterDetail(true).write();
-        close("div");
+        close("code");
         writeDescription(d);
         close("td");
         
@@ -636,13 +636,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 if (first) {
                     first = false;
                     open("div class='throws section'");
-                    around("span class='title'", "Throws: ");
+                    around("span class='title'", "Throws ");
                     open("ul");
                 }
 
                 open("li");
                 
-                linkRenderer().to(excType).withinText(true).useScope(decl).write();
+                String text = "<span class='type-identifier'>" + excType + "</span>";
+                linkRenderer().to(text).withinText(true).useScope(decl).write();
 
                 if (excDesc != null) {
                     write(Util.wikiToHTML(excDesc, linkRenderer().useScope(decl)));
@@ -680,7 +681,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             return;
 
         open("div class='see section'");
-        around("span class='title'", "See also: ");
+        around("span class='title'", "See also ");
         
         open("span class='value'");
         boolean first = true;
