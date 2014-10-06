@@ -78,6 +78,7 @@ public class LinkRenderer {
     private CeylonDocTool ceylonDocTool;
     private Writer writer;
     private String customText;
+    private boolean withinText;
     private Referenceable scope;
     private Declaration anchor;
     private boolean printAbbreviated = true;
@@ -163,6 +164,11 @@ public class LinkRenderer {
 
     public LinkRenderer useCustomText(String customText) {
         this.customText = customText;
+        return this;
+    }
+    
+    public LinkRenderer withinText(boolean text) {
+        withinText = text;
         return this;
     }
     
@@ -632,18 +638,24 @@ public class LinkRenderer {
         	linkBuilder.append(" title='").append(toolTip).append("'");
         }
         linkBuilder.append(">");
+        if (customText==null && withinText) {
+            linkBuilder.append("<code>");
+        }
         linkBuilder.append(text);
+        if (customText==null && withinText) {
+            linkBuilder.append("</code>");
+        }
         linkBuilder.append("</a>");
         return linkBuilder.toString();
     }
     
     private String buildSpanElementWithNameAndTooltip(Declaration d) {
         StringBuilder spanBuilder = new StringBuilder();
-        spanBuilder.append("<span title='");
+        spanBuilder.append("<code title='");
         spanBuilder.append(d.getQualifiedNameString());
-        spanBuilder.append("'><code>");
+        spanBuilder.append("'>");
         spanBuilder.append(getLinkText(d));
-        spanBuilder.append("</code></span>");
+        spanBuilder.append("</code>");
         return spanBuilder.toString();
     }
 

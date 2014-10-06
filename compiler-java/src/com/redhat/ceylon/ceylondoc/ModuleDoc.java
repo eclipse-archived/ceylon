@@ -148,13 +148,15 @@ public class ModuleDoc extends CeylonDoc {
         open("span title='" + tooltip + "'");
         writeIcon(moduleImport);
         close("span");
-        open("span class='decl-label'");
+        open("code class='decl-label'");
         linkRenderer().to(moduleImport.getModule()).write();
-        close("span");
+        close("code");
         close("td");
         
         open("td class='shrink'");
+        open("code");
         write(moduleImport.getModule().getVersion());
+        close("code");
         close("td");
         
         open("td");

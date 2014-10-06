@@ -61,14 +61,6 @@ public abstract class CeylonDoc extends Markup {
         return new LinkRenderer(tool, writer, getFromObject());
     }
 
-    protected final void linkToDeclaration(Declaration declaration) throws IOException {
-        linkRenderer().to(declaration).write();
-    }
-    
-    protected final void linkToType(ProducedType type) throws IOException {
-        linkRenderer().to(type).write();
-    }
-    
     protected final void writeHeader(String title, String... additionalCss) throws IOException {
         write("<!DOCTYPE html>");
         open("html");

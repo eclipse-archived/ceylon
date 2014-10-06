@@ -93,7 +93,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + alias.getName() + "' nowrap");
         writeIcon(alias);
-        around("span class='decl-label'", alias.getName());
+        around("code class='decl-label'", alias.getName());
         close("td");
         
         open("td");
@@ -128,7 +128,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + d.getName() + "' nowrap");
         writeIcon(d);
-        around("a class='decl-label' href='"+ linkRenderer().to(d).getUrl() +"'", d.getName());
+        open("a class='decl-label' href='"+ linkRenderer().to(d).getUrl() +"'");
+        around("code", d.getName());
+        close("a");
         close("td");
         
         open("td");
@@ -152,7 +154,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         open("td id='" + d.getName() + "' nowrap");
         writeIcon(d);
-        around("span class='decl-label'", d.getName());
+        around("code class='decl-label'", d.getName());
         close("td");
         
         open("td");
@@ -162,7 +164,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         if(d instanceof Functional)
             writeParameterLinksIfRequired((Functional) d);
-        open("div class='signature'");
+        open("code class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         
@@ -191,7 +193,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 tool.warningSetterDoc(d.getQualifiedNameString(), d);
             }
         }
-        close("div");
+        close("code");
         writeDescription(d);
         close("td");
         close("tr");
@@ -305,11 +307,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             open("div class='refined section'");
             around("span class='title'", "Refines ");
             if (bottomMostRefinedDecl != null && bottomMostRefinedDecl != topMostRefinedDecl) {
-                linkRenderer().to(bottomMostRefinedDecl).useCustomText(getNameWithContainer(bottomMostRefinedDecl)).write();
+                linkRenderer().to(bottomMostRefinedDecl).withinText(true)
+                    .useCustomText(getNameWithContainer(bottomMostRefinedDecl)).write();
                 around("span class='title'", " ultimately refines ");
-                linkRenderer().to(topMostRefinedDecl).useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
+                linkRenderer().to(topMostRefinedDecl).withinText(true)
+                    .useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
             } else {
-                linkRenderer().to(topMostRefinedDecl).useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
+                linkRenderer().to(topMostRefinedDecl).withinText(true)
+                    .useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
             }
             close("div");
         }
@@ -378,7 +383,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             open("div class='inheritance-extends'");
             write("<span class='keyword'>extends</span>");
             write(" ");
-            linkToType(typeDeclaration.getExtendedType());
+            linkRenderer().to(typeDeclaration.getExtendedType()).write();
             close("div");
         }
         if (typeDeclaration.getSatisfiedTypes()!=null &&
@@ -402,7 +407,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else {
                     write(" | ");
                 }
-                linkToType(caseType);
+                linkRenderer().to(caseType).write();
             }
         }
     }
@@ -421,7 +426,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else {
                     write(" &amp; ");
                 }
-                linkToType(satisfiedType);
+                linkRenderer().to(satisfiedType).write();
             }
         }
     }
@@ -475,9 +480,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else {
                     linkRenderer().to(param.getType()).write();
                     write(" ");
-                    open("span class='parameter'");
-                    write(param.getName());
-                    close("span");
+                    around("span class='parameter'", param.getName());
                 }
                 
                 if (param.isDefaulted()) {
@@ -555,6 +558,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                             open("ul");
                         }
                         open("li");
+                        open("code");
+                        
                         around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
                         
                         // if parameter is function, we need to produce links to its parameters
@@ -565,6 +570,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         if (!isEmpty(parameterDocData.defaultValue)) {
                             around("span class='parameter-default-value' title='Parameter default value'", " = " + parameterDocData.defaultValue);
                         }
+                        
+                        close("code");
+                        
                         if (!isEmpty(parameterDocData.doc)) {
                             around("div class='doc section'", parameterDocData.doc);
                         }
@@ -634,7 +642,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
                 open("li");
                 
-                linkRenderer().to(excType).useScope(decl).write();
+                linkRenderer().to(excType).withinText(true).useScope(decl).write();
 
                 if (excDesc != null) {
                     write(Util.wikiToHTML(excDesc, linkRenderer().useScope(decl)));
@@ -682,7 +690,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             } else {
                 first = false;
             }
-            linkRenderer().to(target).useScope(decl).printAbbreviated(false).printTypeParameters(false).write();
+            linkRenderer().to(target).withinText(true).useScope(decl)
+                .printAbbreviated(false).printTypeParameters(false).write();
         }
         close("span");
         

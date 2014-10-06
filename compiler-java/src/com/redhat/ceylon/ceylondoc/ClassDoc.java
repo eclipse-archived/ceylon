@@ -337,7 +337,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (klass.isClassOrInterfaceMember()) {
             TypeDeclaration container = (TypeDeclaration) klass.getContainer();
             writeQualifyingType(container);
-            linkToDeclaration(container);
+            linkRenderer().to(container).write();
             write(".");
         }
     }    
@@ -487,7 +487,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             write("<span class='hierarchy-arrow-none'></span>");
         }
         writeIcon(type);
-        linkRenderer().to(type).printTypeParameters(false).printAbbreviated(false).write();
+        linkRenderer().to(type).withinText(true).printTypeParameters(false).printAbbreviated(false).write();
     }
     
     private List<TypeDeclaration> collectSupertypes(TypeDeclaration type) {
@@ -543,7 +543,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     }
 
-    private void writeEnclosingType() throws IOException {
+    /*private void writeEnclosingType() throws IOException {
         if (klass.isMember()) {
             ClassOrInterface enclosingType = (ClassOrInterface) klass.getContainer();
             open("div class='enclosingType section'");
@@ -552,7 +552,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             linkToDeclaration(enclosingType);
             close("div");
         }
-    }
+    }*/
     
     private void writeAnnotationConstructors() throws IOException {
         if( klass.isAnnotation() ) {
@@ -609,7 +609,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("tr", "td");
         write(title);
         writeIcon(superType);
-        linkToDeclaration(superType);
+        linkRenderer().to(superType).write();
         open("div class='inherited-members'");
         
         boolean first = true;
@@ -619,7 +619,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             } else {
                 first = false;
             }
-            linkToDeclaration(member);
+            linkRenderer().withinText(true).to(member).write();
         }
         
         close("div");
@@ -651,10 +651,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeParameterLinksIfRequired(klass);
         writeIcon(klass);
         
-        open("span class='decl-label'");
+        open("code class='decl-label'");
         write(klass.getName());
         writeParameterList(klass);
-        close("span");
+        close("code");
         
         open("div class='description'");
         writeParameters(klass);

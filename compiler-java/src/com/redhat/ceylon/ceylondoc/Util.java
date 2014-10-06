@@ -376,7 +376,11 @@ public class Util {
     }
     
     public static String getNameWithContainer(Declaration d) {
-        return ((TypeDeclaration)d.getContainer()).getName() + "." + d.getName();
+        return "<code><span class='type-identifier'>" + 
+                ((TypeDeclaration)d.getContainer()).getName() + 
+                "</span>.<span class='" + 
+                (d instanceof TypeDeclaration ? "type-identifier" : "identifier") + 
+                "'>" + d.getName() + "</span></code>";
     }    
     
     private static class CeylondocBlockEmitter implements BlockEmitter {
@@ -434,6 +438,7 @@ public class Util {
             String customText = pipeIndex != -1 ? content.substring(0, pipeIndex) : null;
             String link = new LinkRenderer(linkRenderer).
                     to(content).
+                    withinText(true).
                     useCustomText(customText).
                     printTypeParameters(false).
                     printWikiStyleLinks(true).
