@@ -483,8 +483,14 @@ public class InvocationGenerator {
                 first = false;
             }
             if (sequencedType != null) {
+                final Map<TypeParameter,ProducedType> seqtargs;
+                if (forceSequenced && args.size() > 0) {
+                    seqtargs = that.getUnit().getNonemptyIterableType(sequencedType).getTypeArguments();
+                } else {
+                    seqtargs = gen.getTypeUtils().wrapAsIterableArguments(sequencedType);
+                }
                 SequenceGenerator.closeSequenceWithReifiedType(that,
-                        gen.getTypeUtils().wrapAsIterableArguments(sequencedType), gen);
+                        seqtargs, gen);
             }
             return argvars;
         }
