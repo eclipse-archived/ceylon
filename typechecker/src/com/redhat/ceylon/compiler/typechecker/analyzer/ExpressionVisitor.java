@@ -1675,7 +1675,7 @@ public class ExpressionVisitor extends Visitor {
             that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
             String name = returnDeclaration.getName();
-            if (name==null || name.startsWith("anonymous#")) {
+            if (name==null || returnDeclaration.isAnonymous()) {
                 name = "anonymous function";
             }
             else {

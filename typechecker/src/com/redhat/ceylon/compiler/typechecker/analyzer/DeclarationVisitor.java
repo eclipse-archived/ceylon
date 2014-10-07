@@ -581,6 +581,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.FunctionArgument that) {
         Method m = new Method();
         m.setName("anonymous#"+fid++);
+        m.setAnonymous(true);
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);

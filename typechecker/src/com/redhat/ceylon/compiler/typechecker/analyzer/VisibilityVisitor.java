@@ -209,7 +209,7 @@ public class VisibilityVisitor extends Visitor {
     }
 
     private static String getName(Declaration td) {
-        if (td.getName().startsWith("anonymous#")) {
+        if (td.isAnonymous()) {
             return "anonymous function";
         }
         else {
