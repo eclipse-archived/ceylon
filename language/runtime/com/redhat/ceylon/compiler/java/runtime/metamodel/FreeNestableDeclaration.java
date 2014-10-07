@@ -56,7 +56,7 @@ public abstract class FreeNestableDeclaration
 
     @Override
     public boolean getToplevel() {
-        return declaration.isToplevel();
+        return declaration.isToplevel() && declaration.getQualifier() == null;
     }
 
     @Override
