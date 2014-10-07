@@ -9,7 +9,10 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -32,6 +35,8 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 7)
 @Class
 @ValueType
+@TypeParameters(@TypeParameter(value="T", variance=Variance.OUT,
+                satisfies="ceylon.language::Object"))
 public final class ObjectArray<T> implements ReifiedType {
     
     public ObjectArray(@Ignore TypeDescriptor $reifiedT, 
@@ -79,13 +84,15 @@ public final class ObjectArray<T> implements ReifiedType {
     /**
      * Set the element with the given {@link index} to the
      * given {@link element} value.
+     * @throws ArrayStoreException if the given element can
+     *         not be stored in the array. 
      */
     public void set(
             @Name("index")
             int index,
             @Name("element")
-            @TypeInfo("T|ceylon.language::Null") 
-            T element) {
+            @TypeInfo("ceylon.language::Anything") 
+            java.lang.Object element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -93,7 +100,7 @@ public final class ObjectArray<T> implements ReifiedType {
     public static <T> void set(
             T[] value,
             int index,
-            T element) {
+            java.lang.Object element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -119,8 +126,11 @@ public final class ObjectArray<T> implements ReifiedType {
     /**
      * Efficiently copy a measure of this Java object array 
      * to the given Java object array.
+     * @throws ArrayStoreException if an element of this array
+     *         can not be stored in the given array 
      */
-    public void copyTo(@Name("destination") T[] destination, 
+    public void copyTo(
+            @Name("destination") java.lang.Object[] destination, 
             @Name("sourcePosition") @Defaulted int sourcePosition, 
             @Name("destinationPosition") @Defaulted int destinationPosition, 
             @Name("length") @Defaulted int length){
@@ -128,26 +138,30 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination){
+    public static <T> void copyTo(T[] array, 
+            java.lang.Object[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, 
+    public static <T> void copyTo(T[] array, 
+            java.lang.Object[] destination, 
             int sourcePosition){
         System.arraycopy(array, sourcePosition, destination, 
                 0, array.length-sourcePosition);
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, 
+    public static <T> void copyTo(T[] array, 
+            java.lang.Object[] destination, 
             int sourcePosition, int destinationPosition){
         System.arraycopy(array, sourcePosition, destination, 
                 destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
-    public static <T> void copyTo(T[] array, T[] destination, 
+    public static <T> void copyTo(T[] array, 
+            java.lang.Object[] destination, 
             int sourcePosition, int destinationPosition, 
             int length){
         System.arraycopy(array, sourcePosition, destination, 
@@ -155,35 +169,35 @@ public final class ObjectArray<T> implements ReifiedType {
     }
 
     @Ignore
-    public int copyTo$sourcePosition(T[] destination){
+    public int copyTo$sourcePosition(java.lang.Object[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$destinationPosition(T[] destination, 
+    public int copyTo$destinationPosition(java.lang.Object[] destination, 
             int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(T[] destination, 
+    public int copyTo$length(java.lang.Object[] destination, 
             int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(T[] destination){
+    public void copyTo(java.lang.Object[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(T[] destination, 
+    public void copyTo(java.lang.Object[] destination, 
                        int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(T[] destination, 
+    public void copyTo(java.lang.Object[] destination, 
                        int sourcePosition, 
                        int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
