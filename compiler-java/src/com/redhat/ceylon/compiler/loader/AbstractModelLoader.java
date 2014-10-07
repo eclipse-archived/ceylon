@@ -741,9 +741,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // see where that method belongs
             ClassMirror enclosingClass = method.getEnclosingClass();
             while(enclosingClass.isAnonymous()){
-                // that's the anonymous class
-                enclosingClass = enclosingClass.getEnclosingClass();
-                // now get the enclosing method
+                // this gives us the method in which the anonymous class is, which should be the one we're looking for
                 method = enclosingClass.getEnclosingMethod();
                 if(method == null)
                     return null;
