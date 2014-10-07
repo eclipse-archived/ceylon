@@ -77,7 +77,7 @@ final class bug1165_ {
                         P arg$2$0 = (
                             let
                             {
-                                .ceylon.language.Iterable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), .ceylon.language.Null.$TypeDescriptor$, 3, false){
+                                .ceylon.language.Iterable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
                                     
                                     @.java.lang.Override
                                     protected final .java.lang.Object $evaluate$(int $index$) {
@@ -89,7 +89,7 @@ final class bug1165_ {
                                             return (
                                                 let
                                                 {
-                                                    .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, false){
+                                                    .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                                                         
                                                         @.java.lang.Override
                                                         protected final .java.lang.Object $evaluate$(int $index$) {

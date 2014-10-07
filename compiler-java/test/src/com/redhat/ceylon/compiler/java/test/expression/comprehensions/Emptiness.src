@@ -238,7 +238,7 @@ final class emptiness_ {
         (
             let
             {
-                .ceylon.language.Iterable arg$6$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                .ceylon.language.Iterable arg$6$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
                     
                     @.java.lang.Override
                     protected final .java.lang.Object $evaluate$(int $index$) {

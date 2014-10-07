@@ -651,7 +651,7 @@ final class moreOverloads_ {
         .java.nio.file.Files.copy(.java.nio.file.Paths.get(new .java.net.URI("", "", "")), .java.nio.file.Paths.get(new .java.net.URI("")), (
             let
             {
-                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$27$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.nio.file.StandardCopyOption, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$27$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.nio.file.StandardCopyOption, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                     
                     @.java.lang.Override
                     protected final .java.lang.Object $evaluate$(int $index$) {
