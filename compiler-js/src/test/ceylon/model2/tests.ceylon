@@ -80,7 +80,6 @@ shared void test() {
     typeTests();
     modulesTests();
     testModelLoader();
-    locals();
     issues();
     results();
 }
