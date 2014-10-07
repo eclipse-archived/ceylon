@@ -140,22 +140,8 @@ public class JsCompiler {
                 .password(options.getPass())
                 .buildOutputManager();
         logger = opts.getLogger();
-        if(logger == null)
+        if(logger == null) {
             logger = new JsLogger(opts);
-        String outDir = options.getOutRepo();
-        if(!isURL(outDir)){
-            File root = new File(outDir);
-            if (root.exists()) {
-                if (!(root.isDirectory() && root.canWrite())) {
-                    logger.error("Cannot write to "+root+". Stop.");
-                    exitCode = 1;
-                }
-            } else {
-                if (!root.mkdirs()) {
-                    logger.error("Cannot create "+root+". Stop.");
-                    exitCode = 1;
-                }
-            }
         }
         types = new TypeUtils(tc.getContext().getModules().getLanguageModule());
     }
@@ -401,6 +387,21 @@ public class JsCompiler {
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected void finish() throws IOException {
+        String outDir = opts.getOutRepo();
+        if(!isURL(outDir)){
+            File root = new File(outDir);
+            if (root.exists()) {
+                if (!(root.isDirectory() && root.canWrite())) {
+                    logger.error("Cannot write to "+root+". Stop.");
+                    exitCode = 1;
+                }
+            } else {
+                if (!root.mkdirs()) {
+                    logger.error("Cannot create "+root+". Stop.");
+                    exitCode = 1;
+                }
+            }
+        }
         for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
             JsOutput jsout = entry.getValue();
 
