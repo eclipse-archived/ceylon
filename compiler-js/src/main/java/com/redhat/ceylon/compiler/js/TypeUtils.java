@@ -613,6 +613,7 @@ public class TypeUtils {
         gen.out("[");
         boolean first = true;
         for (String p : parts) {
+            if (p.startsWith("anonymous#"))continue;
             if (first)first=false;else gen.out(",");
             gen.out("'", p, "'");
         }
@@ -659,31 +660,48 @@ public class TypeUtils {
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
-            final Declaration _cont = Util.getContainingDeclaration(d);
+            Declaration _cont = Util.getContainingDeclaration(d);
             gen.out(",$cont:");
-            if (_cont instanceof Value) {
-                if (gen.defineAsProperty(_cont)) {
-                    gen.qualify(that, _cont);
-                    gen.out("$prop$");
+            boolean generateName = true;
+            if (_cont.getName().startsWith("anonymous#")) {
+                //Anon functions don't have metamodel so go up until we find a non-anon container
+                Declaration _supercont = Util.getContainingDeclaration(_cont);
+                while (_supercont != null && _supercont.getName().startsWith("anonymous#")) {
+                    _supercont = Util.getContainingDeclaration(_supercont);
                 }
-                gen.out(gen.getNames().getter(_cont));
-            } else if (_cont instanceof Setter) {
-                gen.out("{setter:");
-                if (gen.defineAsProperty(_cont)) {
-                    gen.qualify(that, _cont);
-                    gen.out("$prop$", gen.getNames().getter(((Setter) _cont).getGetter()), ".set");
+                if (_supercont == null) {
+                    //If the container is a package, add it because this isn't really toplevel
+                    generateName = false;
+                    gen.out("0");
                 } else {
-                    gen.out(gen.getNames().setter(((Setter) _cont).getGetter()));
+                    _cont = _supercont;
                 }
-                gen.out("}");
-            } else {
-                boolean inProto = gen.opts.isOptimize()
-                        && (_cont.getContainer() instanceof TypeDeclaration);
-                final String path = gen.qualifiedPath(that, _cont, inProto);
-                if (path != null && !path.isEmpty()) {
-                    gen.out(path, ".");
+            }
+            if (generateName) {
+                if (_cont instanceof Value) {
+                    if (gen.defineAsProperty(_cont)) {
+                        gen.qualify(that, _cont);
+                        gen.out("$prop$");
+                    }
+                    gen.out(gen.getNames().getter(_cont));
+                } else if (_cont instanceof Setter) {
+                    gen.out("{setter:");
+                    if (gen.defineAsProperty(_cont)) {
+                        gen.qualify(that, _cont);
+                        gen.out("$prop$", gen.getNames().getter(((Setter) _cont).getGetter()), ".set");
+                    } else {
+                        gen.out(gen.getNames().setter(((Setter) _cont).getGetter()));
+                    }
+                    gen.out("}");
+                } else {
+                    boolean inProto = gen.opts.isOptimize()
+                            && (_cont.getContainer() instanceof TypeDeclaration);
+                    final String path = gen.qualifiedPath(that, _cont, inProto);
+                    if (path != null && !path.isEmpty()) {
+                        gen.out(path, ".");
+                    }
+                    gen.out(gen.getNames().name(_cont));
                 }
-                gen.out(gen.getNames().name(_cont));
             }
         }
         if (tparms != null && !tparms.isEmpty()) {
