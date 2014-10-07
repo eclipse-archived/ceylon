@@ -616,6 +616,8 @@ final class test_Strings_ {
             final .java.lang.String s$74 = s$73;
             items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = s$74;
         }
+        items[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = s;
+        ((.java.lang.Object[])items)[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = java;
         java.take_Strings(items);
         final .ceylon.language.String[] ceylonStrings = new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
         final .ceylon.language.Array<.ceylon.language.String> ceylonStringArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .ceylon.language.String>.getArray(ceylonStrings);

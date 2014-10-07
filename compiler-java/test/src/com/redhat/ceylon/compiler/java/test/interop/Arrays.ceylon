@@ -325,6 +325,9 @@ void test_Strings() {
     if (exists s) {
         items.set(1, s);
     }
+    items.set(1, s);
+    // should pass the typechecker and fail at runtime
+    items.set(1, java);
     //for (String s2 in items) { print(s2); }
     java.take_Strings(items);
     
