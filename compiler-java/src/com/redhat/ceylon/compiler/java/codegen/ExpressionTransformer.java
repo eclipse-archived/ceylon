@@ -70,7 +70,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -1416,12 +1419,55 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(list.isEmpty())
                 return makeErroneous(value, "compiler bug: empty iterable literal with sequenced arguments: "+value);
             ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
-            seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
+            seqElemType = wrapInOptionalForInterop(seqElemType, expectedType, containsUncheckedNulls(list));
             ProducedType absentType = typeFact().getIteratedAbsentType(value.getTypeModel());
             return makeLazyIterable(sequencedArgument, seqElemType, absentType, 0);
         } else {
             return makeEmpty();
         }
+    }
+
+    private boolean containsUncheckedNulls(java.util.List<Tree.PositionalArgument> list) {
+        for(Tree.PositionalArgument arg : list){
+            if(arg instanceof Tree.ListedArgument){
+                if(containsUncheckedNulls(((Tree.ListedArgument) arg).getExpression()))
+                    return true;
+            }else if(arg instanceof Tree.Comprehension){
+                if(containsUncheckedNulls((Tree.Comprehension)arg))
+                    return true;
+            }else if(arg instanceof Tree.SpreadArgument){
+                if(containsUncheckedNulls(((Tree.SpreadArgument) arg).getExpression()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsUncheckedNulls(Tree.Term term){
+        if(term instanceof Tree.Expression){
+            return containsUncheckedNulls(((Tree.Expression) term).getTerm());
+        }else if(term instanceof Tree.SequenceEnumeration){
+            Tree.SequencedArgument sequencedArgument = ((Tree.SequenceEnumeration) term).getSequencedArgument();
+            if(sequencedArgument == null)
+                return false;
+            return containsUncheckedNulls(sequencedArgument.getPositionalArguments());
+        }else
+            return com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls(term);
+    }
+    
+    private boolean containsUncheckedNulls(Tree.Comprehension comp) {
+        Tree.ComprehensionClause clause = comp.getInitialComprehensionClause();
+        while(clause instanceof Tree.ExpressionComprehensionClause == false){
+            if(clause instanceof Tree.ForComprehensionClause)
+                clause = ((Tree.ForComprehensionClause) clause).getComprehensionClause();
+            else if(clause instanceof Tree.IfComprehensionClause)
+                clause = ((Tree.IfComprehensionClause) clause).getComprehensionClause();
+            else
+                return false;// error recovery
+        }
+        if(clause instanceof Tree.ExpressionComprehensionClause)
+            return containsUncheckedNulls(((Tree.ExpressionComprehensionClause) clause).getExpression());
+        return false;
     }
 
     public JCExpression transform(Tree.Tuple value) {
@@ -4578,12 +4624,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType elementType = comp.getInitialComprehensionClause().getTypeModel();
         // get rid of anonymous types
         elementType = typeFact().denotableType(elementType);
-        elementType = wrapInOptionalForInterop(elementType, expectedType);
+        elementType = wrapInOptionalForInterop(elementType, expectedType, containsUncheckedNulls(comp));
         return new ComprehensionTransformation(comp, elementType).transformComprehension();
     }
 
-    private ProducedType wrapInOptionalForInterop(ProducedType elementType, ProducedType expectedType) {
-        if(expectedType != null && iteratesOverOptional(expectedType) && !typeFact().isOptionalType(elementType))
+    private ProducedType wrapInOptionalForInterop(ProducedType elementType, ProducedType expectedType, boolean containsUncheckedNull) {
+        if(expectedType != null && containsUncheckedNull && iteratesOverOptional(expectedType) && !typeFact().isOptionalType(elementType))
             return typeFact().getOptionalType(elementType);
         return elementType;
     }

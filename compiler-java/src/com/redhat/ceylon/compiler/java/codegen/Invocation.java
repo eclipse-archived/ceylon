@@ -33,6 +33,7 @@ import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -1163,9 +1164,11 @@ class NamedArgumentInvocation extends Invocation {
         // and possibly needs to be merged
         Parameter parameter = sequencedArgument.getParameter();
         ProducedType parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
-        // find out the individual type
-        ProducedType iteratedType = gen.typeFact().getIteratedType(parameterType);
-        ProducedType absentType = gen.typeFact().getIteratedAbsentType(parameterType);
+        // find out the individual type, we use the argument type for the value, and the param type for the temp variable
+        ProducedType tupleType = Util.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
+        ProducedType argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
+        ProducedType iteratedType = gen.typeFact().getIteratedType(argumentsType);
+        ProducedType absentType = gen.typeFact().getIteratedAbsentType(argumentsType);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
