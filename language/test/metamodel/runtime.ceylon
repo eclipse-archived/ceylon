@@ -1057,10 +1057,10 @@ shared void checkLocalTypes(){
     class Foo(shared String str) {
         shared class Bar() {}
     }
-    // at this point we're only making sure that we don't have exceptions here, because local
-    // types are not fully implemented yet
     Object methodType = `Foo.str`.type;
     value innerType = `Foo.Bar`;
+    // all real tests are in Locals.ceylon
+    locals();
 }
 
 @test
