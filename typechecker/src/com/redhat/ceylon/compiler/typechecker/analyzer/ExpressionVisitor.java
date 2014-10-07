@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactl
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
@@ -16,6 +17,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
@@ -2289,7 +2291,7 @@ public class ExpressionVisitor extends Visitor {
     	else {
     		List<Tree.PositionalArgument> args = 
     		        sa.getPositionalArguments();
-    		att = getTupleType(args, false);
+    		att = getTupleType(args, unit, false);
     	}
         ProducedType spt = sp.getType();
         addToUnionOrIntersection(tp, inferredTypes,
@@ -2812,7 +2814,7 @@ public class ExpressionVisitor extends Visitor {
                         else {
                             //we have something exotic, a union of tuple types
                             //or whatever, so just check the whole argument tuple
-                            checkAssignable(getTupleType(pal.getPositionalArguments(), false), 
+                            checkAssignable(getTupleType(pal.getPositionalArguments(), unit, false), 
                                     paramTypesAsTuple, pal,
                                     "argument list type must be assignable to parameter list type");
                         }
@@ -3014,7 +3016,7 @@ public class ExpressionVisitor extends Visitor {
         sa.setParameter(p);
         List<Tree.PositionalArgument> args = sa.getPositionalArguments();
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
-        ProducedType att = getTupleType(args, false)
+        ProducedType att = getTupleType(args, unit, false)
                 .getSupertype(unit.getIterableDeclaration());
         if (!isTypeUnknown(att) && !isTypeUnknown(paramType)) {
             checkAssignable(att, paramType, sa, 
@@ -5295,88 +5297,6 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
     }
     
-    private ProducedType getTupleType(List<Tree.PositionalArgument> es, 
-            boolean requireSequential) {
-        ProducedType result = unit.getType(unit.getEmptyDeclaration());
-        ProducedType ut = unit.getNothingDeclaration().getType();
-        for (int i=es.size()-1; i>=0; i--) {
-            Tree.PositionalArgument a = es.get(i);
-            ProducedType t = a.getTypeModel();
-            if (t!=null) {
-                ProducedType et = unit.denotableType(t);
-                if (a instanceof Tree.SpreadArgument) {
-                    /*if (requireSequential) { 
-                        checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
-                    }*/
-                    ut = unit.getIteratedType(et);
-                    result = spreadType(et, unit, requireSequential);
-                }
-                else if (a instanceof Tree.Comprehension) {
-                    ut = et;
-                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
-                    result = icc.getPossiblyEmpty() ? 
-                            unit.getSequentialType(et) : 
-                            unit.getSequenceType(et);
-                    if (!requireSequential) {
-                        ProducedType it = producedType(unit.getIterableDeclaration(), 
-                                et, icc.getFirstTypeModel());
-                        result = intersectionType(result, it, unit);
-                    }
-                }
-                else {
-                    ut = unionType(ut, et, unit);
-                    result = producedType(unit.getTupleDeclaration(), ut, et, result);
-                }
-            }
-        }
-        return result;
-    }
-    
-    private ProducedType spreadType(ProducedType et, Unit unit,
-            boolean requireSequential) {
-        if (et==null) return null;
-        if (requireSequential) {
-            if (unit.isSequentialType(et)) {
-                //if (et.getDeclaration() instanceof TypeParameter) {
-                    return et;
-                /*}
-                else {
-                    // if it's already a subtype of Sequential, erase 
-                    // out extraneous information, like that it is a
-                    // String, just keeping information about what
-                    // kind of tuple it is
-                    List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
-                    boolean variadic = unit.isTupleLengthUnbounded(et);
-                    boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
-                    int minimumLength = unit.getTupleMinimumLength(et);
-                    if (variadic) {
-                        ProducedType spt = elementTypes.get(elementTypes.size()-1);
-                        elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
-                    }
-                    return unit.getTupleType(elementTypes, variadic, 
-                            atLeastOne, minimumLength);
-                }*/
-            }
-            else {
-                // transform any Iterable into a Sequence without
-                // losing the information that it is nonempty, in
-                // the case that we know that for sure
-                ProducedType st = unit.isNonemptyIterableType(et) ?
-                        unit.getSequenceType(unit.getIteratedType(et)) :
-                        unit.getSequentialType(unit.getIteratedType(et));
-                // unless this is a tuple constructor, remember
-                // the original Iterable type arguments, to
-                // account for the possibility that the argument
-                // to Absent is a type parameter
-                //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
-                // for now, just return the sequential type:
-                return st;
-            }
-        }
-        else {
-            return et;
-        }
-    }
     
     @Override public void visit(Tree.Dynamic that) {
         super.visit(that);
@@ -5402,7 +5322,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType tt = null;
         Tree.SequencedArgument sa = that.getSequencedArgument();
         if (sa!=null) {
-            tt = getTupleType(sa.getPositionalArguments(), true);
+            tt = getTupleType(sa.getPositionalArguments(), unit, true);
         }
         else {
             tt = unit.getType(unit.getEmptyDeclaration());
@@ -5420,7 +5340,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType st = null;
         Tree.SequencedArgument sa = that.getSequencedArgument();
         if (sa!=null) {
-            ProducedType tt = getTupleType(sa.getPositionalArguments(), false);
+            ProducedType tt = getTupleType(sa.getPositionalArguments(), unit, false);
             if (tt!=null) {
                 st = tt.getSupertype(unit.getIterableDeclaration());
                 if (st==null) {

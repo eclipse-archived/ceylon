@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -800,6 +803,89 @@ public class Util {
             ProducedType refinedDefiniteType = unit.getDefiniteType(refinedParameterType);
             checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, 
             		node, message);
+        }
+    }
+
+    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, Unit unit,
+            boolean requireSequential) {
+        ProducedType result = unit.getType(unit.getEmptyDeclaration());
+        ProducedType ut = unit.getNothingDeclaration().getType();
+        for (int i=es.size()-1; i>=0; i--) {
+            Tree.PositionalArgument a = es.get(i);
+            ProducedType t = a.getTypeModel();
+            if (t!=null) {
+                ProducedType et = unit.denotableType(t);
+                if (a instanceof Tree.SpreadArgument) {
+                    /*if (requireSequential) { 
+                        checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
+                    }*/
+                    ut = unit.getIteratedType(et);
+                    result = spreadType(et, unit, requireSequential);
+                }
+                else if (a instanceof Tree.Comprehension) {
+                    ut = et;
+                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
+                    result = icc.getPossiblyEmpty() ? 
+                            unit.getSequentialType(et) : 
+                            unit.getSequenceType(et);
+                    if (!requireSequential) {
+                        ProducedType it = producedType(unit.getIterableDeclaration(), 
+                                et, icc.getFirstTypeModel());
+                        result = intersectionType(result, it, unit);
+                    }
+                }
+                else {
+                    ut = unionType(ut, et, unit);
+                    result = producedType(unit.getTupleDeclaration(), ut, et, result);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static ProducedType spreadType(ProducedType et, Unit unit,
+            boolean requireSequential) {
+        if (et==null) return null;
+        if (requireSequential) {
+            if (unit.isSequentialType(et)) {
+                //if (et.getDeclaration() instanceof TypeParameter) {
+                    return et;
+                /*}
+                else {
+                    // if it's already a subtype of Sequential, erase 
+                    // out extraneous information, like that it is a
+                    // String, just keeping information about what
+                    // kind of tuple it is
+                    List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+                    boolean variadic = unit.isTupleLengthUnbounded(et);
+                    boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
+                    int minimumLength = unit.getTupleMinimumLength(et);
+                    if (variadic) {
+                        ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                        elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+                    }
+                    return unit.getTupleType(elementTypes, variadic, 
+                            atLeastOne, minimumLength);
+                }*/
+            }
+            else {
+                // transform any Iterable into a Sequence without
+                // losing the information that it is nonempty, in
+                // the case that we know that for sure
+                ProducedType st = unit.isNonemptyIterableType(et) ?
+                        unit.getSequenceType(unit.getIteratedType(et)) :
+                        unit.getSequentialType(unit.getIteratedType(et));
+                // unless this is a tuple constructor, remember
+                // the original Iterable type arguments, to
+                // account for the possibility that the argument
+                // to Absent is a type parameter
+                //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
+                // for now, just return the sequential type:
+                return st;
+            }
+        }
+        else {
+            return et;
         }
     }
 }
