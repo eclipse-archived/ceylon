@@ -279,7 +279,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
             for (ModuleImport moduleImport : module.getImports()) {
                 Module importedModule = moduleImport.getModule();
-                if (importedModule.isJava()) {
+                if (JDKUtils.isJDKModule(importedModule.getNameAsString())) {
                     String version = importedModule.getVersion();
                     main.put(Require_Capability, getRequireCapabilityJavaSE(version));
                     break;
