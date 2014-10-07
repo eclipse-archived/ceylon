@@ -52,6 +52,7 @@ public class CallBuilder {
     private JCExpression arrayInstanceReifiedType;
     private JCExpression arrayInstanceCast;
     private int arrayInstanceDimensions;
+    private boolean arrayWriteNeedsCast;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -248,7 +249,14 @@ public class CallBuilder {
             result = gen.make().Indexed(this.methodOrClass, arguments.head);
             break;
         case ARRAY_WRITE:
-            result = gen.make().Assign(gen.make().Indexed(this.methodOrClass, arguments.head), arguments.tail.head);
+            {
+                JCExpression array;
+                if(arrayWriteNeedsCast)
+                    array = gen.make().TypeCast(gen.make().TypeArray(gen.make().Type(gen.syms().objectType)), this.methodOrClass);
+                else
+                    array = this.methodOrClass;
+                result = gen.make().Assign(gen.make().Indexed(array, arguments.head), arguments.tail.head);
+            }
             break;
         case NEW_ARRAY:
             // methodOrClass must be a ArrayType, so we get the element type out
@@ -313,5 +321,9 @@ public class CallBuilder {
 
     public void javaArrayInstanceNeedsCast(JCExpression requiredType) {
         this.arrayInstanceCast = requiredType;
+    }
+
+    public void javaArrayWriteNeedsCast(boolean arrayWriteNeedsCast) {
+        this.arrayWriteNeedsCast = arrayWriteNeedsCast;
     }
 }

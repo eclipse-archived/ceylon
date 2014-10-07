@@ -2997,9 +2997,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                     || transformedPrimary.selector.equals("set"))){
             if(transformedPrimary.selector.equals("get"))
                 callBuilder.arrayRead(transformedPrimary.expr);
-            else if(transformedPrimary.selector.equals("set"))
+            else if(transformedPrimary.selector.equals("set")){
                 callBuilder.arrayWrite(transformedPrimary.expr);
-            else
+                ProducedType arrayType = invocation.getQmePrimary().getTypeModel();
+                if(isJavaObjectArray(arrayType) && invocation instanceof PositionalInvocation){
+                    ProducedType elementType = arrayType.getTypeArgumentList().get(0);
+                    ProducedType argumentType = ((PositionalInvocation)invocation).getArgumentType(1);
+                    if(!argumentType.isSubtypeOf(typeFact().getOptionalType(elementType)))
+                        callBuilder.javaArrayWriteNeedsCast(true);
+                }
+            }else
                 return makeErroneous(invocation.getNode(), "compiler bug: extraneous array selector: "+transformedPrimary.selector);
         } else if (invocation.isUnknownArguments()) {
             // if we have an unknown parameter list, like Callble<Ret,Args>, need to prepend the callable
