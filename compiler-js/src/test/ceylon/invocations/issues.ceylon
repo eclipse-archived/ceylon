@@ -70,6 +70,18 @@ void testIssue376() {
   check(bug376_4(*zeroes)==0, "#376 0's defaulted 3");
 }
 
+[Boolean,Boolean] i427(String expression, {Anything*} eval) =>
+    [ eval is {String*}, eval is {Anything+} ];
+
+void test427() {
+    check(i427("{}", {}) == [true,false], "#427 1");
+    check(i427{ "named <empty>"; } == [true, false], "#427 2");
+    check(i427("{\"a\"}", {"a"}) == [true, true], "#427 3");
+    value x = {"a"};
+    check(i427("let x={\"a\"} in x", x) == [true, true], "#427 4");
+    check(i427{ "named \"a\""; "a" } == [true, true], "#427 5");
+}
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -78,4 +90,5 @@ void testIssues() {
   methodBug314<Object>(*t);
   testIssue326();
   testIssue376();
+  test427();
 }
