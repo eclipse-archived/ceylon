@@ -797,4 +797,10 @@ public class IssuesTest_1500_1999 extends CompilerTest {
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
         Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
     }
+    
+    @Test
+    public void testBug1845() {
+        compareWithJavaSource("bug18xx/Bug1845");
+    }
+    
 }
