@@ -2923,12 +2923,17 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtContainerType, attributes);
     }
 
-    List<JCAnnotation> makeAtLocalDeclaration(String qualifier) {
+    List<JCAnnotation> makeAtLocalDeclaration(String qualifier, boolean skipContainerClass) {
         List<JCExpression> attributes = List.nil();
         if(qualifier != null && !qualifier.isEmpty()){
             JCExpression scopeAttribute = make().Assign(naming.makeUnquotedIdent("qualifier"), 
                                                         make().Literal(qualifier));
             attributes = List.of(scopeAttribute);
+        }
+        if(skipContainerClass){
+            JCExpression skipAttribute = make().Assign(naming.makeUnquotedIdent("isPackageLocal"), 
+                                                        make().Literal(true));
+            attributes = attributes.prepend(skipAttribute);
         }
         return makeModelAnnotation(syms().ceylonAtLocalDeclarationType, attributes);
     }
@@ -4573,13 +4578,15 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    private Declaration getDeclarationContainer(Declaration declaration) {
+    protected Declaration getDeclarationContainer(Declaration declaration) {
         // Here we can use getContainer, we don't care about scopes
         Scope container = declaration.getContainer();
         while(container != null){
             if(container instanceof Package)
                 return null;
-            if(container instanceof Declaration)
+            if(container instanceof Declaration
+                    // skip anonymous methods
+                    && (container instanceof Method == false || !((Declaration) container).isAnonymous()))
                 return (Declaration) container;
             container = container.getContainer();
         }

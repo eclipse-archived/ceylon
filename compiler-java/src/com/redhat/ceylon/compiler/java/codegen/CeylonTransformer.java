@@ -394,7 +394,7 @@ public class CeylonTransformer extends AbstractTransformer {
             if (expressionError != null) {
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             }
-            builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier()));
+            builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier(), false));
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;

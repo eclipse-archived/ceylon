@@ -1265,7 +1265,8 @@ public class ClassTransformer extends AbstractTransformer {
         }else{
             if(model instanceof Interface)
                 classBuilder.annotations(makeLocalContainerPath((Interface) model));
-            classBuilder.annotations(makeAtLocalDeclaration(model.getQualifier()));
+            Declaration declarationContainer = getDeclarationContainer(model);
+            classBuilder.annotations(makeAtLocalDeclaration(model.getQualifier(), declarationContainer == null));
         }
         
     }
@@ -2413,7 +2414,7 @@ public class ClassTransformer extends AbstractTransformer {
             builder.annotations(makeAtLocalDeclarations(def));
         }
         if(Decl.isLocal(model)){
-            builder.annotations(makeAtLocalDeclaration(model.getQualifier()));
+            builder.annotations(makeAtLocalDeclaration(model.getQualifier(), false));
         }
         
         List<JCTree> result = builder.build();

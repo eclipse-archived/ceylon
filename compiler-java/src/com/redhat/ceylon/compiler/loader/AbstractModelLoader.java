@@ -718,6 +718,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private Scope getLocalContainer(Package pkg, ClassMirror classMirror, Declaration declaration) {
         AnnotationMirror localContainerAnnotation = classMirror.getAnnotation(CEYLON_LOCAL_CONTAINER_ANNOTATION);
+        String qualifier = getAnnotationStringValue(classMirror, CEYLON_LOCAL_DECLARATION_ANNOTATION, "qualifier");
+        
+        // deal with types local to functions in the body of toplevel non-lazy attributes, whose container is ultimately the package
+        Boolean isPackageLocal = getAnnotationBooleanValue(classMirror, CEYLON_LOCAL_DECLARATION_ANNOTATION, "isPackageLocal");
+        if(BooleanUtil.isTrue(isPackageLocal)){
+            // make sure it still knows it's a local
+            declaration.setQualifier(qualifier);
+            return null;
+        }
+
         LocalDeclarationContainer methodDecl = null;
         // we get a @LocalContainer annotation for local interfaces
         if(localContainerAnnotation != null){
@@ -831,7 +841,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
 
         // we have the method, now find the proper local qualifier if any
-        String qualifier = getAnnotationStringValue(classMirror, CEYLON_LOCAL_DECLARATION_ANNOTATION, "qualifier");
         if(qualifier == null)
             return null;
         declaration.setQualifier(qualifier);
