@@ -25,6 +25,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
 
     private Map<String,Integer> localNames;
+    private String prefix;
     
     private void visitLocalDecl(Tree.Declaration that) {
         Declaration model = that.getDeclarationModel();
@@ -55,7 +57,12 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
             else
                 counter = counter + 1;
             localNames.put(model.getName(), counter);
-            model.setQualifier(counter.toString());
+            String qualifier;
+            if(prefix != null)
+                qualifier = prefix + counter.toString();
+            else
+                qualifier = counter.toString();
+            model.setQualifier(qualifier);
         }
     }
 
@@ -150,5 +157,23 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         
         localNames = oldLocalNames;
+    }
+
+    @Override
+    public void visit(Tree.AttributeDeclaration that) {
+        Value model = that.getDeclarationModel();
+        if(model != null && model.isToplevel()){
+            Map<String,Integer> oldLocalNames = localNames;
+            String oldPrefix = prefix;
+            localNames = new HashMap<String,Integer>();
+            prefix = "1"+model.getName()+"$";
+
+            super.visit(that);
+        
+            localNames = oldLocalNames;
+            prefix = oldPrefix;
+        }else{
+            super.visit(that);
+        }
     }
 }
