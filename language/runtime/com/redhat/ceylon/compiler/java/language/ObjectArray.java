@@ -253,7 +253,7 @@ public final class ObjectArray<T> implements ReifiedType {
     }
     
     /**
-     * A Ceylon <code>Iterable&lt;T&gt;<code> containing 
+     * A Ceylon <code>Iterable&lt;T?&gt;<code> containing 
      * the elements of this Java object array.
      */
     @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
