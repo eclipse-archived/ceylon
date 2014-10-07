@@ -25,7 +25,7 @@ class Bug1360() {
     
 }
 @noanno
-interface I<T> {
+interface I<T> given T satisfies Object {
     shared void main(ObjectArray<T> s=nothing) {}
 }
 @noanno

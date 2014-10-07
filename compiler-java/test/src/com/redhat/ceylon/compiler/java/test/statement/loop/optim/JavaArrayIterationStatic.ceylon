@@ -134,35 +134,16 @@ class JavaArrayIterationStatic() {
             print(element);
         }
     }
-    void nativeArrayOfObjectsOpt(ObjectArray<Object?> array) {
-        for (element in array.array) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsOptIterable(ObjectArray<Object?> array) {
-        for (element in array.iterable) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsTp<T>(ObjectArray<T> array) {
+    void nativeArrayOfObjectsTp<T>(ObjectArray<T> array) 
+        given T satisfies Object {
         for (element in array.array) {
             print(element);
         }
     }
-    void nativeArrayOfObjectsTpIterable<T>(ObjectArray<T> array) {
+    void nativeArrayOfObjectsTpIterable<T>(ObjectArray<T> array) 
+        given T satisfies Object {
         for (element in array.iterable) {
             print(element);
-        }
-    }
-    
-    void nativeArrayOfObjectsTpOpt<T>(ObjectArray<T?> array) {
-        for (element in array.array) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsTpOptIterable<T>(ObjectArray<T?> array) {
-        for (element in array.iterable) {
-            print(element else "null");
         }
     }
     
@@ -179,11 +160,6 @@ class JavaArrayIterationStatic() {
     
     void nativeArrayOfIntegersOpt(ObjectArray<Integer> array) {
         for (element in array.array) {
-            print(element else 0);
-        }
-    }
-    void nativeArrayOfIntegersOptIterable(ObjectArray<Integer?> array) {
-        for (element in array.iterable) {
             print(element else 0);
         }
     }

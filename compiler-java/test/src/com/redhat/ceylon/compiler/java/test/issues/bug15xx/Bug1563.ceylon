@@ -25,7 +25,10 @@ void bug1563(){
 }
 
 @noanno
-void bug1563_helper<T,U>(){
+void bug1563_helper<T,U>() 
+        given T satisfies Object 
+        given U satisfies Object {
+    
     value array1 = ObjectArray<T>(0);
     assert(array1 is ObjectArray<Integer>);
     
