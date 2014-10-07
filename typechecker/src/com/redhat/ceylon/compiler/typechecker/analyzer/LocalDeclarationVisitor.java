@@ -30,6 +30,27 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
+/**
+ * Visitor which attributes qualifiers to local types, such that they will have a unique qualifier
+ * in their closest declaration container which is reified at runtime.
+ * 
+ * For example:
+ * 
+ * void m() {
+ *   if(true){ 
+ *     class Local(){}
+ *   }else{
+ *     class Local(){}
+ *   }
+ * }
+ * 
+ * Then at runtime, since the conditional scope is gone, they will both be named Local and have
+ * the same method container, so equality would break. With this visitor the first one will have
+ * a qualifier of 1, and the second of 2, which we test in equals/hashCode, so we fix runtime
+ * equality for local types.
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
 
     private Map<String,Integer> localNames;
@@ -162,6 +183,18 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value model = that.getDeclarationModel();
+        /*
+         * we need a prefix to local type qualifiers for values in toplevel attributes
+         * so that we can make a difference between qualifiers for:
+         * 
+         * Anything() toplevel1 = void(){ class Local(){} }
+         * Anything() toplevel2 = void(){ class Local(){} }
+         * 
+         * Since both local types have the same name and the same package container at runtime,
+         * and there's no proper ordering in a package, so we use 1toplevel1$ as a prefix. It
+         * starts with a number because there's heuristics in the runtime model that local types
+         * must start with a number.
+         */
         if(model != null && model.isToplevel()){
             Map<String,Integer> oldLocalNames = localNames;
             String oldPrefix = prefix;
