@@ -245,6 +245,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',funct
   if (this.$parent)return this.$parent;
   var mm=getrtmm$$(this.tipo);
   var _c=mm.$cont;
+  if (_c===0)return this.containingPackage;
   if (_c) {
     if (_c.t === undefined && _c.get && _c.$crtmm$) {
       return OpenValue$jsint(this.containingPackage, _c);

@@ -167,7 +167,8 @@ function funtypearg$(fun) {
 function coicont$(coi) {
   if (coi.$parent)return coi.$parent;
   var cont = getrtmm$$(coi.tipo).$cont;
-  if (cont === undefined)return null;
+  if (cont===undefined)return null;
+  if (cont===0)return coi.containingPackage;
   var cmm=getrtmm$$(cont);
   var _t={t:cont};
   var _out=undefined;

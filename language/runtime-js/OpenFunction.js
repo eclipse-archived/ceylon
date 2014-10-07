@@ -33,7 +33,7 @@ $$openFunction.equals=function(o) {
 $$openFunction.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},d:['$','Object','$m','equals']};}
 atr$($$openFunction,'container',function(){
   if (this.$parent)return this.$parent;
-  if (this.toplevel)return this.containingPackage;
+  if (this.toplevel || this.tipo.$crtmm$.$cont===0)return this.containingPackage;
   return typeLiteral$meta({Type$typeLiteral:this.tipo.$crtmm$.$cont});
 },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
 atr$($$openFunction,'annotation',function(){

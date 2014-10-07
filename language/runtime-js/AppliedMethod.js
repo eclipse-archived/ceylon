@@ -72,7 +72,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     return funmodstr$($$appliedMethod);
   },undefined,$_Object({}).$prop$getString.$crtmm$);
   atr$($$appliedMethod,'container',function(){
-    if (this.toplevel)return this.containingPackage;
+    if (this.toplevel || getrtmm$$(this.tipo).$cont===0)return this.containingPackage;
     if (this.$parent===undefined)this.$parent=typeLiteral$meta({Type$typeLiteral:getrtmm$$(this.tipo).$cont});
     return this.$parent;
   },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Type$meta$model,a:{Type$Type:{t:Anything}}}]},$cont:AppliedMethod,d:['ceylon.language.meta.model','Model','$at','container']};});
