@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -42,7 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LocalTypeVisitor extends Visitor {
+public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
 
     private HasTypeVisitor hasTypeVisitor = new HasTypeVisitor();
     
