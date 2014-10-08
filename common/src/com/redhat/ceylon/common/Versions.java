@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.0.1 "Unflatzburged"
+    // The current version is Ceylon 1.1.0 "Ultimate Ship The Second"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -28,7 +28,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Unflatzburged";
+    public static final String CEYLON_VERSION_NAME = "Ultimate Ship The Second";
     /**
      * The version number + code name description string.
      */
