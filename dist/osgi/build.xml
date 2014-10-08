@@ -182,7 +182,7 @@
         <mkdir dir="${build.dist.plugins}" />
         <foreach target="copyModuleArchiveForOSGI" param="currentFile">
             <path>
-                <fileset dir="${repoDir}/repo" includes="**/*.jar"/>
+                <fileset dir="${repoDir}/repo" includes="**/*.jar" excludes="**/org.osgi.core-4.3.1.jar"/>
                 <fileset dir="${repoDir}/repo" includes="**/*.car"/>
             </path>
         </foreach>
