@@ -241,6 +241,15 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
+    public void testHerdCompleteFilteredMembers() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetailsAll_jvm,
+        };
+        testComplete("ceylon.json", expected, getRepositoryManager(), Type.JVM, Retrieval.ANY, null, null, "ParseException");
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.3.1", "0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0"), deps(), car7Js7Src, true, "The Herd"),
@@ -489,6 +498,15 @@ public class HerdTestCase extends AbstractTest {
                 jsonVersionDetail1_0_1,
         };
         testListVersions("ceylon.json", "1.0", expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteVersionsMembersFiltered() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                jsonVersionDetail1_0_1,
+        };
+        testListVersions("ceylon.json", "1.0", expected, getRepositoryManager(), null, null, "ParseException");
     }
 
     @Test

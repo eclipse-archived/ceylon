@@ -148,9 +148,15 @@ public class AbstractTest {
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
                                 ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, Integer binaryMajor, Integer binaryMinor) {
+        testComplete(query, expected, manager, type, retrieval, binaryMajor, binaryMinor, null);
+    }
+
+    protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
+                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, Integer binaryMajor, Integer binaryMinor, String memberSearch) {
         ModuleQuery lookup = new ModuleQuery(query, type, retrieval);
         lookup.setBinaryMajor(binaryMajor);
         lookup.setBinaryMinor(binaryMinor);
+        lookup.setMemberName(memberSearch);
         ModuleSearchResult result = manager.completeModules(lookup);
         compareSearchResults(expected, result);
     }
@@ -167,9 +173,15 @@ public class AbstractTest {
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
                                     RepositoryManager manager, Integer binaryMajor, Integer binaryMinor) throws Exception {
+        testListVersions(query, versionQuery, expected, manager, binaryMajor, binaryMinor, null);
+    }
+
+    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
+                                    RepositoryManager manager, Integer binaryMajor, Integer binaryMinor, String memberSearch) throws Exception {
         ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, ModuleQuery.Type.JVM);
         lookup.setBinaryMajor(binaryMajor);
         lookup.setBinaryMinor(binaryMinor);
+        lookup.setMemberName(memberSearch);
         ModuleVersionResult result = manager.completeVersions(lookup);
         int i = 0;
         Assert.assertEquals(expected.length, result.getVersions().size());
