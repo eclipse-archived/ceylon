@@ -481,7 +481,8 @@ public class LinkRenderer {
             unresolvable.append(" (");
         }
         if (withinText) unresolvable.append("<code>");
-        unresolvable.append(docLinkText);
+        int index = docLinkText.indexOf('|')+1;
+        unresolvable.append(docLinkText.substring(index));
         if (withinText) unresolvable.append("</code>");
         if (hasCustomText) {
             unresolvable.append(")");
