@@ -341,7 +341,14 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 params.add(WS.param("type", getHerdTypeParam(query.getType())));
                 params.add(WS.param("binaryMajor", query.getBinaryMajor()));
                 params.add(WS.param("binaryMinor", query.getBinaryMinor()));
+                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                    // Earlier version of the Herd didn't support member searches so let's not pretend they did
+                    return;
+                }
                 if (herdVersion >= 4) {
+                    params.add(WS.param("memberName", query.getMemberName()));
+                    params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
+                    params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 WS.getXML(herdCompleteModulesURL, params, new XMLHandler(){
@@ -408,18 +415,25 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void completeVersions(ModuleVersionQuery lookup, final ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery query, final ModuleVersionResult result) {
         if(connectionAllowed() && isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
                 List<WS.Param> params = new ArrayList<WS.Param>(10);
-                params.add(WS.param("module", lookup.getName()));
-                params.add(WS.param("version", lookup.getVersion()));
-                params.add(WS.param("type", getHerdTypeParam(lookup.getType())));
-                params.add(WS.param("binaryMajor", lookup.getBinaryMajor()));
-                params.add(WS.param("binaryMinor", lookup.getBinaryMinor()));
+                params.add(WS.param("module", query.getName()));
+                params.add(WS.param("version", query.getVersion()));
+                params.add(WS.param("type", getHerdTypeParam(query.getType())));
+                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
+                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                    // Earlier version of the Herd didn't support member searches so let's not pretend they did
+                    return;
+                }
                 if (herdVersion >= 4) {
-                    params.add(WS.param("retrieval", getHerdRetrievalParam(lookup.getRetrieval())));
+                    params.add(WS.param("memberName", query.getMemberName()));
+                    params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
+                    params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
+                    params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
                 }
                 WS.getXML(herdCompleteVersionsURL, params, new XMLHandler(){
                     @Override
@@ -556,6 +570,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 params.add(WS.param("count", query.getCount()));
                 params.add(WS.param("binaryMajor", query.getBinaryMajor()));
                 params.add(WS.param("binaryMinor", query.getBinaryMinor()));
+                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                    // Earlier version of the Herd didn't support member searches so let's not pretend they did
+                    return;
+                }
                 if (herdVersion >= 4) {
                     params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
