@@ -22,9 +22,10 @@ public class JsOutput {
     private Writer writer;
     protected String clalias = "";
     protected final Module module;
+    protected boolean modelDone;
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
-    final MetamodelVisitor mmg;
+    protected final MetamodelVisitor mmg;
     final String encoding;
 
     protected JsOutput(Module m, String encoding) throws IOException {
@@ -54,19 +55,31 @@ public class JsOutput {
     }
     Set<File> getSources() { return s; }
 
+    /** Writes the model file to a temporary file. */
+    protected void writeModelFile() throws IOException {
+        modfile = File.createTempFile("ceylon-jsmod-", ".tmp");
+        try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
+            JsCompiler.beginWrapper(fw);
+            fw.write("ex$.$CCMM$=");
+            ModelEncoder.encodeModel(mmg.getModel(), fw);
+            fw.write(";\n");
+            JsCompiler.endWrapper(fw);
+        } finally {
+        }
+    }
+
+    /** Write the function to retrieve or define the model JSON map. */
+    protected void writeModelRetriever() throws IOException {
+        out("require('", JsCompiler.scriptPath(module), "-model').$CCMM$");
+    }
+
     public void encodeModel(final JsIdentifierNames names) throws IOException {
-        if (modfile == null) {
-            modfile = File.createTempFile("ceylon-jsmod-", ".tmp");
-            try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(modfile), encoding)) {
-                JsCompiler.beginWrapper(fw);
-                fw.write("ex$.$CCMM$=");
-                ModelEncoder.encodeModel(mmg.getModel(), fw);
-                fw.write(";\n");
-                JsCompiler.endWrapper(fw);
-            } finally {
-            }
-            out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
-                    JsCompiler.scriptPath(module), "-model').$CCMM$;return _CTM$;}\n");
+        if (!modelDone) {
+            modelDone = true;
+            writeModelFile();
+            out("\nvar _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=");
+            writeModelRetriever();
+            out(";return _CTM$;}\n");
             getWriter().write("ex$.$CCMM$=$CCMM$;\n");
             if (!JsCompiler.isCompilingLanguageModule()) {
                 Module clm = module.getLanguageModule();
