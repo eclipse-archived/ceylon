@@ -281,7 +281,15 @@ public class LinkRenderer {
     }
 
     private String processProducedType(ProducedType producedType) {
-        String result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
+        String result;
+        boolean wasWithinText = withinText;
+        withinText = false;
+        try {
+            result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
+        }
+        finally {
+            withinText = wasWithinText;
+        }
         result = decodeResult(result);
         if (withinText) {
             result = "<code>" + result + "</code>";
@@ -472,9 +480,9 @@ public class LinkRenderer {
             unresolvable.append(customText);
             unresolvable.append(" (");
         }
-        unresolvable.append("<code>")
-                    .append(docLinkText)
-                    .append("</code>");
+        if (withinText) unresolvable.append("<code>");
+        unresolvable.append(docLinkText);
+        if (withinText) unresolvable.append("</code>");
         if (hasCustomText) {
             unresolvable.append(")");
         }
@@ -632,7 +640,7 @@ public class LinkRenderer {
     private String buildLinkElement(String url, String text, String toolTip) {
         StringBuilder linkBuilder = new StringBuilder();
         linkBuilder.append("<a ");
-        if( customText != null ) {
+        if (customText != null) {
             linkBuilder.append("class='link-custom-text'");
         } else {
             linkBuilder.append("class='link'");
@@ -655,11 +663,13 @@ public class LinkRenderer {
     
     private String buildSpanElementWithNameAndTooltip(Declaration d) {
         StringBuilder spanBuilder = new StringBuilder();
-        spanBuilder.append("<code title='");
+        spanBuilder.append("<span title='");
         spanBuilder.append(d.getQualifiedNameString());
         spanBuilder.append("'>");
+        if (withinText) spanBuilder.append("<code>");
         spanBuilder.append(getLinkText(d));
-        spanBuilder.append("</code>");
+        if (withinText) spanBuilder.append("</code>");
+        spanBuilder.append("</span>");
         return spanBuilder.toString();
     }
 
