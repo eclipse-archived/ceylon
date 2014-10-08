@@ -85,6 +85,7 @@ public class JsOutput {
                 Module clm = module.getLanguageModule();
                 clalias = names.moduleAlias(clm) + ".";
                 require(clm, names);
+                out(clalias, "$addmod$(ex$,'", module.getNameAsString(), "/", module.getVersion(), "');\n");
             }
         }
     }
