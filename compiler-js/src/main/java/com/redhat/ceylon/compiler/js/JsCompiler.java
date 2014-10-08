@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -453,12 +455,23 @@ public class JsCompiler {
                             opts.getResourceRootName(),
                             moduleName, moduleVersion,
                             opts.isVerbose(), logger);
-                    sac.copy(FileUtil.filesToPathList(resFiles));
+                    sac.copy(FileUtil.filesToPathList(filterForModule(resFiles, opts.getResourceDirs(), moduleName)));
                 }
             }
             FileUtil.deleteQuietly(jsart);
             if (modart!=null) FileUtil.deleteQuietly(modart);
         }
+    }
+
+    private Collection<File> filterForModule(List<File> files, List<File> roots, String moduleName) {
+        ArrayList<File> result = new ArrayList<File>(files.size());
+        for (File f : files) {
+            String rel = FileUtil.relativeFile(roots, f.getPath());
+            if (rel.startsWith(moduleName + "/") || rel.startsWith(moduleName + "\\")) {
+                result.add(f);
+            }
+        }
+        return result;
     }
 
     /** Print all the errors found during compilation to the specified stream. 
