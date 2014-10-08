@@ -3,9 +3,13 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -47,18 +51,24 @@ public class ResourceArtifactCreatorImpl implements ArtifactCreator {
         if (resFiles == null  || resFiles.isEmpty()) {
             return Collections.emptySet();
         }
+        Map<String,File> toCopy = new HashMap<String,File>();
+        for (String res : resFiles) {
+            File relRes = getDestinationFile(moduleName, res);
+            if (relRes != null) {
+                toCopy.put(res, relRes);
+            }
+        }
+        if(toCopy.isEmpty())
+            return Collections.emptySet();
         
         final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
         ac.setThrowErrorIfMissing(false);
         
         File resDir = Files.createTempDirectory("ceylon-resources-").toFile();
         try {
-            for (String res : resFiles) {
-                File relRes = getDestinationFile(moduleName, res);
-                if (relRes != null) {
-                    // Copy the file to the resource dir
-                    FileUtil.copy(null, new File(res), resDir, relRes);
-                }
+            for (Map.Entry<String, File> res : toCopy.entrySet()) {
+                // Copy the file to the resource dir
+                FileUtil.copy(null, new File(res.getKey()), resDir, res.getValue());
             }
             
             repoManager.putArtifact(ac, resDir);
