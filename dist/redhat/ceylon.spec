@@ -5,7 +5,7 @@
 %define section free
 
 %define major_version 1
-%define minor_version 0
+%define minor_version 1
 %define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}.%{micro_version}
 
@@ -67,7 +67,7 @@ cp -pr templates/* $RPM_BUILD_ROOT%{ceylon_home}/templates
 cp -pr contrib/* $RPM_BUILD_ROOT%{ceylon_home}/contrib
 
 %post
-%{_sbindir}/update-alternatives --install %{_bindir}/ceylon ceylon %{ceylon_home}/bin/ceylon 10000
+%{_sbindir}/update-alternatives --install %{_bindir}/ceylon ceylon %{ceylon_home}/bin/ceylon 11000
 
 %postun
 if [ $1 -eq 0 ] ; then
@@ -88,6 +88,8 @@ fi
 
 
 %changelog
+* Wed Oct 08 2014 Stephane Epardaud <separdau@redhat.com> 1.1.0-0
+- Update for 1.1.0
 * Sun Nov 10 2013 Tako Schotanus <tschotan@redhat.com> 1.0.0-0
 - Update for 1.0.0
 - Added contrib folder

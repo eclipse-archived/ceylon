@@ -77,19 +77,20 @@ After the build finishes the command line tools will be located in the `bin` dir
     * `compile`    - Compile a Ceylon program for the Java backend
     * `compile-js` - Compile a Ceylon program for the JavaScript backend
     * `doc`        - Document a Ceylon program
+    * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `info`       - Print information about modules in repositories
     * `new`        - Generate a new Ceylon project
+    * `plugin`     - Package or install command-line plugins
     * `run`        - Run a Ceylon program on the Java VM
     * `run-js`     - Run a Ceylon program on node.js (JavaScript)
     * `src`        - Fetch source archives from a repository and extract them
     * `test`       - Test a Ceylon program on the Java VM
     * `version`    - Show and update version numbers in module descriptors
-    * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `help`       - Displays help about another tool
 
 The API documentation for the language module `ceylon.language` may be found here:
 
-- `repo/ceylon/language/1.0.0/module-doc`
+- `repo/ceylon/language/1.1.0/module-doc/api`
 
 ## Running the sample programs
 
@@ -232,5 +233,8 @@ Jesse Sightler, Oleg Kulikov, Raimund Klein, Sergej Koščejev,
 Chris Marshall, Simon Thum, Maia Kozheva, Shelby, Aslak Knutsen, 
 Fabien Meurisse, Paco Soberón, sjur, Xavier Coulon, Akber Choudhry,
 Ari Kast, Dan Allen, Deniz Türkoglu, F. Meurisse, Jean-Charles Roger,
-Johannes Lehmann.
+Johannes Lehmann, Alexander Altman, allentc, Chris Horne, drochetti,
+gabriel-mirea, Georg Ragaller, Griffin DeJohn, Harald Wellmann,
+Henning Burdack, klinger, Lucas Werkmeister, Luke, Michael Musgrove,
+Oliver Gondža, Renato Athaydes, Stephane Gallès, Stephen Crawley.
 
