@@ -2,7 +2,7 @@ shared class CeylonClass<Element>()
     extends JavaClass<Element>()
     satisfies JavaInterface<Element>{
     
-    shared actual void foo<T>(){} 
+    shared actual void foo<T>() given T satisfies Object{} 
 }
 
 shared interface CeylonInterface<Element> satisfies JavaInterface<Element>{}
