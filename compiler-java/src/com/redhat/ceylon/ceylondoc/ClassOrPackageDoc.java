@@ -141,6 +141,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         linkRenderer().to(d.getType()).printAbbreviated(!isAbbreviatedType(d)).printTypeParameterDetail(true).write();
+        writeTypeParametersConstraints(d.getTypeParameters());
         close("code");
         writeDescription(d);
         close("td");
