@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 public class ModuleSearchResult {
     
-    public static class ModuleDetails {
+    public static class ModuleDetails implements Comparable<ModuleDetails> {
         private String name;
         private NavigableSet<ModuleVersionDetails> versions = new TreeSet<ModuleVersionDetails>();
 
@@ -83,6 +83,30 @@ public class ModuleSearchResult {
 
         public NavigableSet<ModuleVersionArtifact> getArtifactTypes() {
             return (getLastVersion() != null) ? getLastVersion().getArtifactTypes() : null;
+        }
+        
+        @Override
+        public int hashCode() {
+            // This only work well for details within the same result!
+            return name.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            // This only work well for details within the same result!
+            if (obj instanceof ModuleDetails) {
+                return name.equals(((ModuleDetails) obj).name);
+            }
+            return false;
+        }
+
+        @Override
+        public int compareTo(ModuleDetails o) {
+            int res = name.compareTo(o.name);
+            if (res == 0) {
+                return getLastVersion().compareTo(o.getLastVersion());
+            }
+            return res;
         }
         
         @Override
