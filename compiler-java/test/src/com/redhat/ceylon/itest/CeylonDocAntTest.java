@@ -76,7 +76,7 @@ public class CeylonDocAntTest extends AntBasedTest {
         Assert.assertEquals(2, new File(result.getOut(), "com/example").list().length);
         
         String total = readFile(cFile);
-        assertContains(total, "<a class='link' href='file://"+result.getOut().getPath()+"/com/example/foo/1.0/module-doc/api/a/I.type.html' title='Go to com.example.foo.a::I'>I</a>");
+        assertContains(total, "<a class='link' href='file://"+result.getOut().getPath()+"/com/example/foo/1.0/module-doc/api/a/I.type.html' title='Go to com.example.foo.a::I'><span class='type-identifier'>I</span></a>");
     }
 
     private String readFile(File cFile) throws IOException {
