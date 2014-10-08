@@ -11,4 +11,8 @@ void switchFooBar() {
     switch (fb) 
     case (foo) { @error print(fb.y); } //TODO: instance cases should narrow!
     case (bar) { @error print(fb.x); } //TODO: instance cases should narrow!
+    switch (fb) 
+    case (foo, bar) {}
+    switch (fb) 
+    case (foo|bar) {}
 }

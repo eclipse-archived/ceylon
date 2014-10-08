@@ -1984,7 +1984,7 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <synopsis>Case: CaseValue ("," CaseValue)* | "is" Type</synopsis>
+            <synopsis>Case: CaseValue ("|" CaseValue)* | "is" Type</synopsis>
             <synopsis>CaseValue: LiteralCase | BaseExpression</synopsis>
             <synopsis>LiteralCase: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
             
@@ -2055,7 +2055,7 @@ else {
             
             <programlisting>Boolean? maybe = ... ;
 switch (maybe) 
-case (null, false) {
+case (null | false) {
     return false;
 }
 case (true) { 

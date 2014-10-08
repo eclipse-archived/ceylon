@@ -1477,16 +1477,25 @@ dynamicObject returns [Dynamic dynamic]
       { nal.setEndToken($RBRACKET); }
     ;
     
-expressions returns [ExpressionList expressionList]
+valueCaseList returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
-      e1=expression 
-      { $expressionList.addExpression($e1.expression); }
-      ( c=COMMA 
-        { $expressionList.setEndToken($c); }
+      ie1=intersectionExpression 
+      { Expression e = new Expression(null);
+        e.setTerm($ie1.term);
+        $expressionList.addExpression(e); }
+      ( 
         (
-          e2=expression 
-          { if ($e2.expression!=null) {
-                $expressionList.addExpression($e2.expression);
+          c=COMMA 
+          { $expressionList.setEndToken($c); }
+        | u=UNION_OP
+          { $expressionList.setEndToken($u); }
+        )
+        (
+          ie2=intersectionExpression
+          { if ($ie2.term!=null) {
+                Expression e = new Expression(null);
+                e.setTerm($ie2.term);
+                $expressionList.addExpression(e);
                 $expressionList.setEndToken(null); } }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
@@ -3116,9 +3125,9 @@ caseItem returns [CaseItem item]
     ;
 
 matchCaseCondition returns [MatchCase item]
-    : expressions
+    : valueCaseList
       { $item = new MatchCase(null);
-        $item.setExpressionList($expressions.expressionList); }
+        $item.setExpressionList($valueCaseList.expressionList); }
     ;
 
 isCaseCondition returns [IsCase item]
