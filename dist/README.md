@@ -1,6 +1,6 @@
 # Ceylon distribution
 
-This is the 1.1 "Unflatzburged" release of the Ceylon command line tools (version 
+This is the 1.1 "Ultimate Ship The Second" release of the Ceylon command line tools (version 
 1.1.0). This is a production version of the platform.
 
 Ceylon is a programming language for writing large programs in a team environment. 
