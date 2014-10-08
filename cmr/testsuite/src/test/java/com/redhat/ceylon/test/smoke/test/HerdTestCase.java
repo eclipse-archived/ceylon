@@ -410,55 +410,55 @@ public class HerdTestCase extends AbstractTest {
     }
 
     public static final ModuleVersionDetails jsonVersionDetail0_3_1 =                 
-            new ModuleVersionDetails("0.3.1", "A JSON parser / serialiser", "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.3.1", "A JSON parser / serialiser", "Apache Software License", set("Stéphane Épardaud"), 
                     deps(new ModuleDependencyInfo("ceylon.collection", "0.3.1", false, false)), 
                     types(new ModuleVersionArtifact(".car", 2, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail0_4 =                 
-            new ModuleVersionDetails("0.4", jsonDoc0_4, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.4", jsonDoc0_4, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(new ModuleDependencyInfo("ceylon.collection", "0.4", false, false)), 
                     types(new ModuleVersionArtifact(".car", 3, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail0_5 =                 
-            new ModuleVersionDetails("0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(new ModuleDependencyInfo("ceylon.collection", "0.5", false, true)), 
                     types(new ModuleVersionArtifact(".car", 4, 0),
                             new ModuleVersionArtifact(".js", 0, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail0_5_Api1 =                 
-            new ModuleVersionDetails("0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(), 
                     types(),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail0_6 = 
-            new ModuleVersionDetails("0.6", null, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.6", null, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(new ModuleDependencyInfo("ceylon.collection", "0.6", false, true)), 
                     types(new ModuleVersionArtifact(".car", 5, 0),
                             new ModuleVersionArtifact(".js", 0, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail0_6_1 = 
-            new ModuleVersionDetails("0.6.1", null, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "0.6.1", null, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(new ModuleDependencyInfo("ceylon.collection", "0.6.1", false, true)), 
                     types(new ModuleVersionArtifact(".car", 5, 0),
                             new ModuleVersionArtifact(".js", 0, 0),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail1_0_0 =                 
-            new ModuleVersionDetails("1.0.0", null, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "1.0.0", null, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(ceycoll100_sh), 
                     car6Js6Src,
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail1_0_1 =                 
-            new ModuleVersionDetails("1.0.1", null, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "1.0.1", null, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(ceycoll100_sh), 
                     car6Js6Src,
                     true, "The Herd (http://localhost:9000/test)");
     public static final ModuleVersionDetails jsonVersionDetail1_1_0 =                 
-            new ModuleVersionDetails("1.1.0", null, "Apache Software License", set("Stéphane Épardaud"), 
+            new ModuleVersionDetails("", "1.1.0", null, "Apache Software License", set("Stéphane Épardaud"), 
                     deps(ceycoll110_sh), 
                     car7Js7Src,
                     true, "The Herd (http://localhost:9000/test)");
