@@ -502,9 +502,13 @@ public class LinkRenderer {
                 result = "<span class='type-identifier'>" + name + "</span>";
             }
             else {
+                if (decl instanceof Method) {
+                    name = name + "()";
+                }
                 result = "<span class='identifier'>" + name + "</span>";
             }
-            if (decl.isMember()) {
+            if (decl.isMember() &&
+                    decl.getContainer()!=from) {
                 result = getLinkText((Declaration) decl.getContainer())
                         + '.' + result;
             }
