@@ -1907,7 +1907,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void completeLazyAliasTypeParameters(TypeDeclaration alias, ClassMirror mirror) {
         // type parameters
-        setTypeParameters(alias, mirror);
+        setTypeParameters(alias, mirror, true);
     }
 
     private void completeLazyAlias(TypeDeclaration alias, ClassMirror mirror, String aliasAnnotationName) {
@@ -1920,7 +1920,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void completeTypeParameters(ClassOrInterface klass, ClassMirror classMirror) {
-        setTypeParameters(klass, classMirror);
+        boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
+        setTypeParameters(klass, classMirror, isCeylon);
     }
 
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
@@ -2307,7 +2308,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
-        setTypeParameters(method, methodMirror);
+        setTypeParameters(method, methodMirror, isCeylon);
 
         // and its return type
         // do not log an additional error if we had one from checking if it was overriding
@@ -3239,7 +3240,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 method.setMethodMirror(meth);
 
                 // type params first
-                setTypeParameters(method, meth);
+                setTypeParameters(method, meth, true);
 
                 method.setType(obtainType(meth.getReturnType(), meth, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
                         "toplevel method", method));
@@ -3818,7 +3819,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     // from java type info
     @SuppressWarnings("deprecation")
-    private void setTypeParameters(Scope scope, List<TypeParameter> params, List<TypeParameterMirror> typeParameters) {
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, List<TypeParameterMirror> typeParameters, boolean isCeylon) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
         for(TypeParameterMirror typeParam : typeParameters){
@@ -3837,6 +3838,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             params.add(param);
         }
+        boolean needsObjectBounds = !isCeylon && scope instanceof Method;
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(TypeParameterMirror typeParam : typeParameters){
@@ -3846,7 +3848,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ProducedType boundType;
                 // we turn java's default upper bound java.lang.Object into ceylon.language.Object
                 if(sameType(bound, OBJECT_TYPE)){
-                    // avoid adding java's default upper bound if it's just there with no meaning
+                    // avoid adding java's default upper bound if it's just there with no meaning,
+                    // especially since we do not want it for types
                     if(bounds.size() == 1)
                         break;
                     boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
@@ -3854,23 +3857,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     boundType = getNonPrimitiveType(Decl.getModuleContainer(scope), bound, scope, VarianceLocation.INVARIANT);
                 param.getSatisfiedTypes().add(boundType);
             }
+            if(needsObjectBounds && param.getSatisfiedTypes().isEmpty()){
+                ProducedType boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
+                param.getSatisfiedTypes().add(boundType);
+            }
         }
     }
 
     // method
-    private void setTypeParameters(Method method, MethodMirror methodMirror) {
+    private void setTypeParameters(Method method, MethodMirror methodMirror, boolean isCeylon) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(methodMirror);
         if(typeParameters != null) {
             setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters, methodMirror.getTypeParameters());
         } else {
-            setTypeParameters(method, params, methodMirror.getTypeParameters());
+            setTypeParameters(method, params, methodMirror.getTypeParameters(), isCeylon);
         }
     }
 
     // class
-    private void setTypeParameters(TypeDeclaration klass, ClassMirror classMirror) {
+    private void setTypeParameters(TypeDeclaration klass, ClassMirror classMirror, boolean isCeylon) {
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classMirror);
         List<TypeParameterMirror> mirrorTypeParameters = classMirror.getTypeParameters();
         if(typeParameters != null) {
@@ -3884,7 +3891,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return;
             List<TypeParameter> params = new ArrayList<TypeParameter>(mirrorTypeParameters.size());
             klass.setTypeParameters(params);
-            setTypeParameters(klass, params, mirrorTypeParameters);
+            setTypeParameters(klass, params, mirrorTypeParameters, isCeylon);
         }
     }        
 
