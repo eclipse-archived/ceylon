@@ -183,7 +183,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         AnnotationValue majorVer = ceylonAnnotation.value("major");
         AnnotationValue minorVer = ceylonAnnotation.value("minor");
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(getVersionFromFilename(moduleName, moduleArchive.getName()));
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.setDoc(doc != null ? doc.asString() : null);
         mvd.setLicense(license != null ? license.asString() : null);
         if (by != null) {

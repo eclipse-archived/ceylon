@@ -155,7 +155,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 major = Integer.parseInt(bin);
             }
         }
-        ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(info.getDependencies());
         

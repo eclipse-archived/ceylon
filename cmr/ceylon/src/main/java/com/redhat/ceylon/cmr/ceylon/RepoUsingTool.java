@@ -236,7 +236,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
                 if (forceCompilation || checkCompilation) {
-                    versions = Collections.singletonList(new ModuleVersionDetails(result.version()));
+                    versions = Collections.singletonList(new ModuleVersionDetails(name, result.version()));
                 } else {
                     return (result.version() != null) ? result.version() : "";
                 }
@@ -525,10 +525,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             for (File srcDir : srcDirs) {
                 try{
                     ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, applyCwd(srcDir));
+                    String module = mdr.getModuleName();
                     String version = mdr.getModuleVersion();
                     // PS In case the module descriptor was found but could not be parsed
                     // we'll create an invalid details object
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(version != null ? version : "");
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(module != null ? module : "", version != null ? version : "");
                     mvd.setLicense(mdr.getModuleLicense());
                     List<String> by = mdr.getModuleAuthors();
                     if (by != null) {

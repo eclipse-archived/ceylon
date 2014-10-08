@@ -102,7 +102,7 @@ public class JDKRepository extends AbstractRepository {
                 name = "";
             for (String module : JDK_MODULES) {
                 if (module.startsWith(name)) {
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(JDK_VERSION);
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
                     mvd.setDoc(doc(module));
                     mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
                     mvd.setRemote(false);
@@ -125,7 +125,7 @@ public class JDKRepository extends AbstractRepository {
                 return;
             if (query.getVersion() != null && !query.getVersion().equals(JDK_VERSION))
                 return;
-            final ModuleVersionDetails newVersion = result.addVersion(JDK_VERSION);
+            final ModuleVersionDetails newVersion = result.addVersion(query.getName(), JDK_VERSION);
             newVersion.setDoc(doc(query.getName()));
             newVersion.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             newVersion.setVersion(JDK_VERSION);
@@ -157,7 +157,7 @@ public class JDKRepository extends AbstractRepository {
                     }
                     if (query.getStart() == null || found++ >= query.getStart()) {
                         // are we interested in this result or did we need to skip it?
-                        ModuleVersionDetails mvd = new ModuleVersionDetails(JDK_VERSION);
+                        ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
                         mvd.setDoc(doc(module));
                         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
                         mvd.setRemote(false);

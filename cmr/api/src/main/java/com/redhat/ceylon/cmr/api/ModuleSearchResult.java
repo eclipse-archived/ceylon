@@ -29,7 +29,7 @@ public class ModuleSearchResult {
                 String origin) {
             this.name = name;
             for (String v : versions) {
-                ModuleVersionDetails mvd = new ModuleVersionDetails(v);
+                ModuleVersionDetails mvd = new ModuleVersionDetails(name, v);
                 mvd.setDoc(doc);
                 mvd.setLicense(license);
                 mvd.getAuthors().addAll(authors);

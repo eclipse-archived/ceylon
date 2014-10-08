@@ -7,6 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
+    private String module;
     private String version;
     private String doc;
     private String license;
@@ -17,23 +18,24 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
     private NavigableSet<String> members = new TreeSet<>();
 
-    public ModuleVersionDetails(String version) {
+    public ModuleVersionDetails(String module, String version) {
         assert(version != null);
+        this.module = module;
         this.version = version;
     }
 
     // THis constructor is only used by the unit tests
-    public ModuleVersionDetails(String version, String doc, String license, String... by) {
-        this(version);
+    public ModuleVersionDetails(String module, String version, String doc, String license, String... by) {
+        this(module, version);
         this.doc = doc;
         this.license = license;
         this.authors.addAll(Arrays.asList(by));
     }
 
-    public ModuleVersionDetails(String version, String doc, String license, Set<String> authors, 
+    public ModuleVersionDetails(String module, String version, String doc, String license, Set<String> authors, 
             Set<ModuleDependencyInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
             boolean remote, String origin) {
-        this(version);
+        this(module, version);
         this.doc = doc;
         this.license = license;
         this.authors.addAll(authors);
@@ -41,6 +43,10 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         this.artifactTypes.addAll(artifactTypes);
         this.remote = remote;
         this.origin = origin;
+    }
+
+    public String getModule() {
+        return module;
     }
 
     public String getVersion() {
@@ -143,7 +149,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     @Override
     public String toString() {
         return "ModuleVersionDetails[ "
-                + "version: " + version
+                + module + "/" + version
                 + ", doc: " + ((doc != null) ? ((doc.length() > 10) ? doc.substring(0, 10) + "..." : doc) : null)
                 + ", license: " + license
                 + ", by: " + authors

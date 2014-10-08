@@ -421,7 +421,7 @@ public abstract class AbstractRepository implements Repository {
             // try every known suffix
             boolean found = false;
             boolean foundInfo = false;
-            ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+            ModuleVersionDetails mvd = new ModuleVersionDetails(name, version);
             String[] suffixes = lookup.getType().getSuffixes();
             // When we need to find ALL requested suffixes we maintain a set of those not found yet
             HashSet<String> suffixesToFind = null;
@@ -667,7 +667,7 @@ public abstract class AbstractRepository implements Repository {
         }
         if (mvd == null) {
             // We didn't get any useful information, so we'll just create a dummy
-            mvd = new ModuleVersionDetails(latestVersion);
+            mvd = new ModuleVersionDetails(moduleName, latestVersion);
         }
         mvd.setRemote(root.isRemote());
         mvd.setOrigin(getDisplayString());
