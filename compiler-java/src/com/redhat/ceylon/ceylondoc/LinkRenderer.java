@@ -492,50 +492,26 @@ public class LinkRenderer {
     }
     
     private String getLinkText(Declaration decl) {
-        if( customText != null  ) {
+        if (customText != null) {
             return customText;
-        } else if (to instanceof String) {
-            String name = removeTypeLiteralPrefix((String) to);
-            if (from instanceof Element) {
-                String aliasedName = ((Element) from).getUnit().getAliasedName(decl);
-                if (aliasedName != null && !aliasedName.equals(decl.getName()) && aliasedName.equals(name)) {
-                    return decl.getQualifiedNameString();
-                } else {
-                    return name;
-                }
-            } else {
-                return name;
-            }
-        } else {
+        }
+        else {
+            String name = decl.getName();
+            String result;
             if (decl instanceof TypeDeclaration) {
-                return "<span class='type-identifier'>" + decl.getName() + "</span>";
+                result = "<span class='type-identifier'>" + name + "</span>";
             }
             else {
-                return "<span class='identifier'>" + decl.getName() + "</span>";
+                result = "<span class='identifier'>" + name + "</span>";
             }
+            if (decl.isMember()) {
+                result = getLinkText((Declaration) decl.getContainer())
+                        + '.' + result;
+            }
+            return result;
         }
     }
     
-    private String removeTypeLiteralPrefix(String text) {
-        if( text.startsWith("module ") ) {
-            return text.substring(7);
-        } else if( text.startsWith("package ") ) {
-            return text.substring(8);
-        } else if( text.startsWith("class ") ) {
-            return text.substring(6);                        
-        } else if( text.startsWith("interface ") ) {
-            return text.substring(10);
-        } else if( text.startsWith("function ") ) {
-            return text.substring(9);
-        } else if( text.startsWith("value ") ) {
-            return text.substring(6);
-        } else if( text.startsWith("alias ") ) {
-            return text.substring(6);
-        } else {
-            return text;
-        }
-    }
-
     private Package getPackage(Scope scope) {
         while (!(scope instanceof Package)) {
             scope = scope.getContainer();

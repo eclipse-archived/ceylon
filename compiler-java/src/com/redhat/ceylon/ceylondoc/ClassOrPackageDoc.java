@@ -642,9 +642,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
                 open("li");
                 
-                open("span class='type-identifier'"); //TODO: move this into the LinkRenderer
                 linkRenderer().to(excType).withinText(true).useScope(decl).write();
-                close("span");
                 
                 if (excDesc != null) {
                     write(Util.wikiToHTML(excDesc, linkRenderer().useScope(decl)));
