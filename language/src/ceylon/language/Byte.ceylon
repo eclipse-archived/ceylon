@@ -66,10 +66,13 @@ shared native final class Byte(congruent)
     
     //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
     
+    "Whether this byte is even."
     shared native Boolean even;
     
+    "Whether this byte is zero."
     shared native Boolean zero;
     
+    "Whether this byte is one."
     shared native Boolean unit;
     
     "This byte interpreted as an unsigned integer in the

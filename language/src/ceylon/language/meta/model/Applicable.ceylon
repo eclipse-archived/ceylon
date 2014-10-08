@@ -12,8 +12,6 @@ shared sealed interface Applicable<out Type=Anything> {
     
     "Type-unsafe application by name, to be used when the argument types are unknown until runtime.
      
-     If you need to pass [[null]] values, use the [[nullArgument]] singleton.
-     
      This has the same behaviour as invoking the applicable directly, but exchanges compile-time type
      safety with runtime checks."
     throws(`class IncompatibleTypeException`, "If any argument is not assignable to this applicable's corresponding parameter")
