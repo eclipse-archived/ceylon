@@ -20,7 +20,9 @@
 package com.redhat.ceylon.tools.importjar;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -34,6 +36,7 @@ import java.lang.reflect.WildcardType;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -78,6 +81,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private ModuleSpec module;
     private File jarFile;
     private File descriptor;
+    private boolean updateDescriptor;
     private boolean force;
     private boolean dryRun;
     private boolean showClasses;
@@ -86,6 +90,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private Set<String> jarClassNames;
     private Set<Type> checkedTypes;
     private boolean hasErrors;
+    private boolean hasProblems;
 
     public CeylonImportJarTool() {
         super(ImportJarMessages.RESOURCE_BUNDLE);
@@ -125,6 +130,12 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         this.jarFile = jarFile;
     }
     
+    @Option(longName="update-descriptor")
+    @Description("Whenever possible will create or adjust the descriptor file with the necessary definitions.")
+    public void setUpdateDescriptor(boolean updateDescriptor) {
+        this.updateDescriptor = updateDescriptor;
+    }
+    
     @Option(longName="force")
     @Description("Skips sanity checks and forces publication of the JAR.")
     public void setForce(boolean force) {
@@ -158,51 +169,68 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     public void initialize() {
         setSystemProperties();
         File f = applyCwd(jarFile);
-        checkReadableFile(f, "error.jarFile");
+        checkReadableFile(f, "error.jarFile", true);
         if(!f.getName().toLowerCase().endsWith(".jar"))
             throw new ImportJarException("error.jarFile.notJar", new Object[]{f.toString()}, null);
         
+        if (descriptor == null) {
+            String baseName = f.getName().substring(0, f.getName().length() - 4);
+            File desc = new File(f.getParentFile(), baseName + ".module.xml");
+            if (!desc.isFile()) {
+                desc = new File(f.getParentFile(), baseName + ".module.properties");
+                if (desc.isFile() || updateDescriptor) {
+                    descriptor = desc;
+                }
+            } else {
+                descriptor = desc;
+            }
+        }
         if (descriptor != null) {
-            checkReadableFile(applyCwd(descriptor), "error.descriptorFile");
+            checkReadableFile(applyCwd(descriptor), "error.descriptorFile", !updateDescriptor);
             if(!(descriptor.toString().toLowerCase().endsWith(".xml") ||
                     descriptor.toString().toLowerCase().endsWith(".properties")))
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
         }
     }
 
-    private void checkReadableFile(File f, String keyPrefix) {
-        if(!f.exists())
+    private void checkReadableFile(File f, String keyPrefix, boolean required) {
+        if (f.exists()) {
+            if(f.isDirectory())
+                throw new ImportJarException(keyPrefix + ".isDirectory", new Object[]{f.toString()}, null);
+            if(!f.canRead())
+                throw new ImportJarException(keyPrefix + ".notReadable", new Object[]{f.toString()}, null);
+        } else if (required) {
             throw new ImportJarException(keyPrefix + ".doesNotExist", new Object[]{f.toString()}, null);
-        if(f.isDirectory())
-            throw new ImportJarException(keyPrefix + ".isDirectory", new Object[]{f.toString()}, null);
-        if(!f.canRead())
-            throw new ImportJarException(keyPrefix + ".notReadable", new Object[]{f.toString()}, null);
+        }
     }
     
     // Check the public API for the JAR we're importing and report any problems that are found
-    private void checkPublicApi() throws IOException {
+    private void checkPublicApi(Set<ModuleDependencyInfo> expectedDependencies) throws IOException {
         Set<String> externalClasses = gatherExternalClasses();
         
         if (descriptor != null) {
             File descriptorFile = applyCwd(descriptor);
-            if (descriptor.toString().toLowerCase().endsWith(".xml")) {
-                checkModuleXml(descriptorFile, externalClasses);
-            } else if(descriptor.toString().toLowerCase().endsWith(".properties")) {
-                checkModuleProperties(descriptorFile, externalClasses);
+            if (descriptorFile.exists()) {
+                if (descriptor.toString().toLowerCase().endsWith(".xml")) {
+                    checkModuleXml(descriptorFile, externalClasses, expectedDependencies);
+                } else if(descriptor.toString().toLowerCase().endsWith(".properties")) {
+                    checkModuleProperties(descriptorFile, externalClasses, expectedDependencies);
+                }
             }
         }
         
         if (!externalClasses.isEmpty()) {
-            hasErrors = true;
             if (!showClasses) {
                 Set<String> externalPackages = getPackagesFromClasses(externalClasses);
                 if (!externalPackages.isEmpty()) {
-                    Set<String> jdkPackages = gatherJdkModules(externalPackages);
-                    if (!jdkPackages.isEmpty()) {
+                    Set<String> jdkModules = gatherJdkModules(externalPackages);
+                    if (!jdkModules.isEmpty()) {
                         msg("info.declare.jdk.imports").newline();
-                        for (String pkg : jdkPackages) {
-                            append("    ").append(pkg).newline();
+                        for (String mod : jdkModules) {
+                            append("    ").append(mod).newline();
+                            expectedDependencies.add(new ModuleDependencyInfo(mod, JDKUtils.jdk.version, false, true));
                         }
+                        hasProblems = true;
                     }
                     if (!externalPackages.isEmpty()) {
                         msg("info.declare.module.imports").newline();
@@ -212,10 +240,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                         for (String pkg : externalPackages) {
                             append("    ").append(pkg);
                             if (showSuggestions) {
-                                outputSuggestions(pkg);
+                                outputSuggestions(pkg, expectedDependencies);
                             }
                             newline();
                         }
+                        hasErrors = true;
                     }
                 }
                 Set<String> externalDefaultClasses = getDefaultPackageClasses(externalClasses);
@@ -224,12 +253,14 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     for (String cls : externalDefaultClasses) {
                         append("    ").append(cls).newline();
                     }
+                    hasErrors = true;
                 }
             } else {
                 msg("info.declare.class.imports").newline();
                 for (String cls : externalClasses) {
                     append("    ").append(cls).newline();
                 }
+                hasErrors = true;
             }
         }
     }
@@ -264,25 +295,35 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         return externalClasses;
     }
     
-    private void outputSuggestions(String pkg) throws IOException {
+    private void outputSuggestions(String pkg, Set<ModuleDependencyInfo> expectedDependencies) throws IOException {
         flush();
-        Set<String> suggestions = findSuggestions(pkg);
+        ModuleDependencyInfo dep = null;
+        Set<ModuleDetails> suggestions = findSuggestions(pkg);
         if (!suggestions.isEmpty()) {
             append(", ");
             if (suggestions.size() > 1) {
                 msg("info.try.importing.multiple");
-                for (String s : suggestions) {
+                for (ModuleDetails md : suggestions) {
                     newline();
-                    append("        ").append(s);
+                    String modver = md.getName() + "/" + md.getLastVersion().getVersion();
+                    append("        ").append(modver);
+                    dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
                 }
             } else {
-                msg("info.try.importing", suggestions.iterator().next());                
+                ModuleDetails md = suggestions.iterator().next();
+                String modver = md.getName() + "/" + md.getLastVersion().getVersion();
+                msg("info.try.importing", modver);
+                dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+            }
+            if (dep != null) {
+                expectedDependencies.add(dep);
+                hasProblems = true;
             }
         }
     }
 
-    private Set<String> findSuggestions(String pkg) {
-        Set<String> suggestions = new TreeSet<>();
+    private Set<ModuleDetails> findSuggestions(String pkg) {
+        Set<ModuleDetails> suggestions = new TreeSet<>();
         ModuleVersionQuery query = new ModuleVersionQuery("", null, ModuleQuery.Type.JVM);
         query.setBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
         query.setBinaryMinor(Versions.JVM_BINARY_MINOR_VERSION);
@@ -291,9 +332,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         query.setMemberSearchPackageOnly(true);
         ModuleSearchResult result = getRepositoryManager().completeModules(query);
         for (ModuleDetails mvd : result.getResults()) {
-            if (mvd.getLastVersion().getMembers().isEmpty()) continue; // FIXME Remove when Herd implements searching for members
-            String modver = mvd.getName() + "/" + mvd.getLastVersion().getVersion();
-            suggestions.add(modver);
+            suggestions.add(mvd);
         }
         return suggestions;
     }
@@ -579,10 +618,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // Check the properties descriptor file for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkModuleProperties(File descriptorFile, Set<String> externalClasses) throws IOException {
+    private void checkModuleProperties(File descriptorFile, Set<String> externalClasses, Set<ModuleDependencyInfo> expectedDependencies) throws IOException {
         try{
             ModuleInfo dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
-            checkDependencies(dependencies, externalClasses);
+            checkDependencies(dependencies, externalClasses, expectedDependencies);
         }catch(ImportJarException x){
             throw x;
         }catch(IOException x){
@@ -595,10 +634,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // Check the XML descriptor file for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkModuleXml(File descriptorFile, Set<String> externalClasses) throws IOException {
+    private void checkModuleXml(File descriptorFile, Set<String> externalClasses, Set<ModuleDependencyInfo> expectedDependencies) throws IOException {
         try{
             ModuleInfo dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
-            checkDependencies(dependencies, externalClasses);
+            checkDependencies(dependencies, externalClasses, expectedDependencies);
         }catch(ImportJarException x){
             throw x;
         }catch(IOException x){
@@ -611,7 +650,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // Check the given dependencies for problems and at the same time
     // remove all classes that are found within the imported modules
     // from the given set of external class names
-    private void checkDependencies(ModuleInfo dependencies, Set<String> externalClasses) throws IOException {
+    private void checkDependencies(ModuleInfo dependencies, Set<String> externalClasses, Set<ModuleDependencyInfo> expectedDependencies) throws IOException {
         if (!dependencies.getDependencies().isEmpty()) {
             msg("info.checkingDependencies").newline();
             TreeSet<ModuleDependencyInfo> sortedDeps = new TreeSet<>(dependencies.getDependencies());
@@ -632,11 +671,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                             msg("info.ok");
                         } else {
                             msg("error.markShared");
-                            hasErrors = true;
+                            dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), true);
+                            hasProblems = true;
                         }
                     } else {
                         if (dep.isExport()) {
                             msg("info.okButUnused");
+                            dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), false);
                         } else {
                             msg("info.ok");
                         }
@@ -652,11 +693,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                                     msg("info.ok");
                                 } else {
                                     msg("error.markShared");
-                                    hasErrors = true;
+                                    dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), true);
+                                    hasProblems = true;
                                 }
                             } else {
                                 if (dep.isExport()) {
                                     msg("info.okButUnused");
+                                    dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), false);
                                 } else {
                                     msg("info.ok");
                                 }
@@ -671,6 +714,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     }
                 }
                 append("]").newline();
+                expectedDependencies.add(dep);
             }
         }
     }
@@ -701,11 +745,34 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     @Override
     public void run() throws IOException {
-        if (!force) {
-            checkPublicApi();
+        Set<ModuleDependencyInfo> expectedDependencies = new TreeSet<ModuleDependencyInfo>();        
+        if (!force || updateDescriptor) {
+            checkPublicApi(expectedDependencies);
         }
-        if (!hasErrors) {
-            msg("info.noProblems");
+        if (hasProblems) {
+            if (updateDescriptor && descriptor != null) {
+                if (!dryRun) {
+                    File descriptorFile = applyCwd(descriptor);
+                    if (descriptor.toString().toLowerCase().endsWith(".xml")) {
+                        updateDescriptorXml(expectedDependencies, descriptorFile);
+                    } else if(descriptor.toString().toLowerCase().endsWith(".properties")) {
+                        updateDescriptorProperties(expectedDependencies, descriptorFile);
+                    }
+                }
+            } else {
+                hasErrors = true;
+            }
+        }
+        if (!hasErrors || force) {
+            if (!hasErrors) {
+                if (force && !updateDescriptor) {
+                    msg("info.forcedUpdate");
+                } else {
+                    msg("info.noProblems");
+                }
+            } else {
+                msg("error.problemsFoundForced");
+            }
             if (!dryRun) {
                 msg("info.noProblems.publishing").newline();
                 publish();
@@ -717,5 +784,28 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         } else {
             throw new ToolUsageError(Messages.msg(ImportJarMessages.RESOURCE_BUNDLE, "error.problemsFound"));
         }
+    }
+
+    private void updateDescriptorProperties(Set<ModuleDependencyInfo> expectedDependencies, File descriptorFile) throws IOException {
+        Properties deps = new Properties();
+        for (ModuleDependencyInfo mdi : expectedDependencies) {
+            String key = mdi.getName();
+            String val = mdi.getVersion();
+            if (mdi.isExport()) {
+                key = "+" + key;
+            }
+            if (mdi.isOptional()) {
+                key = key + "?";
+            }
+            deps.setProperty(key, val);
+        }
+        try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(descriptorFile), "UTF-8")) {
+            deps.store(out, "Generated by 'ceylon import-jar'");
+        }
+    }
+
+    private void updateDescriptorXml(Set<ModuleDependencyInfo> expectedDependencies, File descriptorFile) throws IOException {
+        append("Updating of XML module descriptor not yet implemented.").newline();
+        hasErrors = true;
     }
 }
