@@ -120,12 +120,13 @@
                 <include name="lib/ceylon-bootstrap.jar" />
             </fileset>
         </copy>
-        <zip destfile="${build}/${ceylon.dist.osgi.jar}" >
+        <jar destfile="${build}/${ceylon.dist.osgi.jar}" 
+            manifest="${build.classes}/META-INF/MANIFEST.MF">
             <fileset dir="${build.classes}" includes="**"/>
             <fileset dir="${ceylon.dist.dir}">
                 <include name="lib/ceylon-bootstrap.jar" />
             </fileset>
-        </zip>
+        </jar>
         <ceylon-import-jar 
             module="org.osgi.core/4.3.1" 
             jar="${basedir}/lib/org.osgi.core-4.3.1.jar"
@@ -138,12 +139,12 @@
             descriptor="${basedir}/module.properties"
             out="${repoDir}/repo">
         </ceylon-import-jar>
-        <zip destfile="${build}/${ceylon.dist.osgi.repo.jar}" >
-            <fileset dir="${build.repo}" includes="**"/>
+        <jar destfile="${build}/${ceylon.dist.osgi.repo.jar}" 
+            manifest="${build.repo}/META-INF/MANIFEST.MF">
             <zipfileset dir="${repoDir}/repo" prefix="repo">
                 <include name="**" />
             </zipfileset>
-        </zip>
+        </jar>
     </target>
 
     <target name="copyModuleArchiveForOSGI">
