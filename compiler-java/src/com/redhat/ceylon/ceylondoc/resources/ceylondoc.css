@@ -256,13 +256,17 @@ code {
 	color: grey;
 }
 
-.type-parameter-constraint, 
+.sub-navbar-inner .type-parameter-constraint, 
 .inheritance-satisfies, 
 .inheritance-extends, 
 .inheritance-of {
 	padding-left: 30px;
 	font-size: 16px;
 	padding-top: 3px;
+}
+
+.signature .type-parameter-constraint {
+    padding-left: 60px;
 }
 
 .type-parameter-keyword {
