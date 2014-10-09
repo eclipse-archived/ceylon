@@ -1117,7 +1117,8 @@ public class CMRTest extends CompilerTest {
         final Manifest manifest = getManifest(
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a", "1.1.0");
 
-        assertEquals("ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
+        assertEquals("ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport" +
+                ",com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
                 manifest.getMainAttributes().get(OsgiManifest.Require_Bundle));
     }
 
@@ -1167,11 +1168,12 @@ public class CMRTest extends CompilerTest {
 
         final String[] requireBundle = ((String) manifest.getMainAttributes()
                 .get(OsgiManifest.Require_Bundle)).split(",");
-        assertEquals(2, requireBundle.length);
+        assertEquals(3, requireBundle.length);
 
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0"));
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0",
+                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
     }
 
     @Test
@@ -1191,10 +1193,11 @@ public class CMRTest extends CompilerTest {
         final String[] requireBundle = ((String) manifest.getMainAttributes()
                 .get(OsgiManifest.Require_Bundle)).split(",");
 
-        assertEquals(2, requireBundle.length);
+        assertEquals(3, requireBundle.length);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0;visibility:=reexport"));
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0;visibility:=reexport",
+                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
     }
 
     @Test
