@@ -10,7 +10,11 @@ Plus some usefull tools for making RPMs:
 
  - `sudo yum install rpmdevtools`
 
-Now we'll set up the build environemnt for making an RPM:
+Also make sure you've got "docbook2X" installed:
+
+ - `sudo yum install docbook2X`
+
+Now we'll set up the build environment for making an RPM:
 
  - `rpmdev-setuptree`
 
