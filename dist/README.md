@@ -1,6 +1,6 @@
 # Ceylon distribution
 
-This is the 1.1 "Ultimate Ship The Second" release of the Ceylon 
+This is the 1.1 _"Ultimate Ship The Second"_ release of the Ceylon 
 command line tools (version 1.1.0). This is a production version of 
 the platform.
 
