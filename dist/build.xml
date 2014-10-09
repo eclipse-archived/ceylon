@@ -121,8 +121,14 @@ Some more basic ant tasks:
         </ant>
     </target>
 
+    <target name="update" depends="update-all">
+    </target>
+
     <target name="update-all" depends="git-update-dist,siblings,git-update"
             description="Updates sibling projects with latest code from git">
+    </target>
+
+    <target name="status" depends="status-all">
     </target>
 
     <target name="status-all" depends="git-status-dist,siblings,git-status"
