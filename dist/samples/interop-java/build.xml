@@ -18,13 +18,13 @@
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-        <ceylon-compile>
+        <ceylon-compile encoding="UTF-8">
             <module name="com.example.interop" />
         </ceylon-compile>
     </target>
 
     <target name="doc" depends="compile">
-        <ceylon-doc>
+        <ceylon-doc encoding="UTF-8">
             <module name="com.example.interop" />
         </ceylon-doc>
     </target>

@@ -21,19 +21,19 @@
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-        <ceylon-compile>
+        <ceylon-compile encoding="UTF-8">
             <module name="com.example.helloworld" />
         </ceylon-compile>
     </target>
 
     <target name="compile-js" depends="ceylon-ant-taskdefs">
-        <ceylon-compile-js>
+        <ceylon-compile-js encoding="UTF-8">
             <module name="com.example.helloworld" />
         </ceylon-compile-js>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
-        <ceylon-doc>
+        <ceylon-doc encoding="UTF-8">
             <module name="com.example.helloworld" />
         </ceylon-doc>
     </target>
