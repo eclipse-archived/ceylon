@@ -76,6 +76,9 @@ Some more basic ant tasks:
         <antcall target="setup" />
     </target>
 
+    <target name="publish" depends="publish-all">
+    </target>
+
     <target name="publish-all" depends="siblings,clean-projects,install-all,publish-all-quick"
             description="Publishes all sibling projects" />
     <target name="publish-all-quick" depends="siblings">
