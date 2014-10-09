@@ -291,7 +291,7 @@ public class LinkRenderer {
             withinText = wasWithinText;
         }
         result = decodeResult(result);
-        if (withinText) {
+        if (withinText && customText==null) {
             result = "<code>" + result + "</code>";
         }
         result = decorateWithLinkDropdownMenu(result, producedType);
@@ -306,7 +306,14 @@ public class LinkRenderer {
         if( url != null ) {
             return buildLinkElement(url, getLinkText(decl), "Go to " + decl.getQualifiedNameString());
         } else {
-            return declName;
+            String result = declName;
+            if (withinText) {
+                result = "<code>" + result + "</code>";
+            }
+            if (customText != null) {
+                result = customText + " (" + result + ")";
+            }
+            return result;
         }
     }
     
