@@ -12,8 +12,8 @@ Bundle-ClassPath: .,
 Export-Package: com.redhat.ceylon.launcher,
  com.redhat.ceylon.dist.osgi
 Bundle-ActivationPolicy: lazy;exclude:="*"
-Import-Package: org.osgi.framework,
- org.osgi.framework.wiring
+Import-Package: org.osgi.framework;version="1.6",
+ org.osgi.framework.wiring;version="1.0"
 Require-Bundle: ceylon.language;bundle-version="1.1.0",
  ceylon.runtime;bundle-version="1.1.0",
  com.github.rjeschke.txtmark;bundle-version="0.11",
