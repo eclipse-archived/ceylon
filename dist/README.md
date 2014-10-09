@@ -5,14 +5,15 @@ command line tools (version 1.1.0). This is a production version of
 the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
-for the Java and JavaScript virtual machines. Ceylon features a 
-flexible and very readable syntax, a unique and uncommonly elegant 
+for the Java and JavaScript virtual machines. The language features 
+a flexible and very readable syntax, a unique and uncommonly elegant 
 static type system, a powerful module architecture, and excellent 
-tooling, including an awesome Eclipse-based IDE. Ceylon enables the 
-development of cross-platform modules which execute portably in both 
-virtual machine environments. Alternatively, a Ceylon module may 
-target one or the other platform, in which case it may interoperate 
-with native code written for the platform.
+tooling, including an awesome Eclipse-based IDE.
+
+Ceylon enables the development of cross-platform modules which 
+execute portably in both virtual machine environments. Alternatively, 
+a Ceylon module may target one or the other platform, in which case 
+it may interoperate with native code written for that platform.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
