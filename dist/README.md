@@ -1,15 +1,18 @@
 # Ceylon distribution
 
-This is the 1.1 "Ultimate Ship The Second" release of the Ceylon command line tools (version 
-1.1.0). This is a production version of the platform.
+This is the 1.1 "Ultimate Ship The Second" release of the Ceylon 
+command line tools (version 1.1.0). This is a production version of 
+the platform.
 
-Ceylon is a programming language for writing large programs in a team environment. 
-The language is elegant, highly readable, extremely typesafe, and makes it easy to 
-get things done. And it's easy to learn for programmers who are familiar with 
-mainstream languages used in business computing. Ceylon has a full-featured 
-Eclipse-based development environment, allowing developers to take best advantage 
-of the powerful static type system. Programs written in Ceylon execute on any 
-Java 7 compatible JVM or Node.js.
+Ceylon is a modern, modular, statically typed programming language 
+for the Java and JavaScript virtual machines. Ceylon features a 
+flexible and very readable syntax, a unique and uncommonly elegant 
+static type system, a powerful module architecture, and excellent 
+tooling, including an awesome Eclipse-based IDE. Ceylon enables the 
+development of cross-platform modules which execute portably in both 
+virtual machine environments. Alternatively, a Ceylon module may 
+target one or the other platform, in which case it may interoperate 
+with native code written for the platform.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
@@ -28,49 +31,67 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Building the distribution
 
-- Make sure you have the [Java 7 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Ant 1.8+](http://ant.apache.org/) installed and that both are working correctly
-- Make sure you have [Git set up correctly](https://help.github.com/articles/set-up-git)
-- Make sure you have [GitHub SSH access set up correctly](https://help.github.com/articles/generating-ssh-keys)
+To begin, make sure you have:
 
-For the rest of the steps this assumes you have cloned the `ceylon-dist` repository
-and you are currently inside it reading this file. If not first do:
+- the [Java 7 JDK][] and [Ant 1.8+][] installed, with both 
+  functioning correctly,
+- [Git set up][] correctly, and
+- [GitHub SSH][] access set up correctly.
 
-- Create a new directory for the Ceylon project
-- Inside that directory clone ceylon-dist by typing
+[Java 7 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[Ant 1.8+](http://ant.apache.org/)
+[Git set up]: https://help.github.com/articles/set-up-git
+[GitHub SSH]: https://help.github.com/articles/generating-ssh-keys
+
+For the rest of the steps we will assume you have cloned the 
+`ceylon-dist` repository and you are currently inside it reading 
+this file. If not, first:
+
+- create a new directory for the Ceylon project, and then
+- inside that directory, clone `ceylon-dist` by typing:
 
 <!-- lang: bash -->
     $ git clone git@github.com:ceylon/ceylon-dist.git
 
-Now that you have everything you need continue with the following steps:
+Now you have everything you need continue with the following steps.
 
-- Go into the newly created ceylon-dist directory and run the setup
+- Go into the newly created `ceylon-dist` directory and run the 
+  setup:
 
 <!-- lang: bash -->
     $ cd ceylon-dist ; ant setup
 
-- Now to build the complete distribution run
+- Now, to build the complete distribution, run:
 
 <!-- lang: bash -->
     $ ant clean publish-all
 
-After this you'll have a newly built distribution in the `dist` folder of your current directory.
-You can run the `ceylon` command without any further setup or installation by simply running
+After this you'll have a newly built distribution in the `dist` 
+folder of your current directory. You can run the `ceylon` command 
+without any further setup or installation by simply running
 
 <!-- lang: bash -->
     $ dist/bin/ceylon
 
-But it's advisable to add the `ceylon` command to your PATH environment variable (either by adding the `bin` folder to your PATH or by creating a symbolic link to it in an appropriate place like `~/bin/`).
+But it's advisable to add the `ceylon` command to your `PATH` 
+environment variable (either by adding the `bin` folder to your 
+`PATH` or by creating a symbolic link to it in an appropriate place 
+like `~/bin/`).
 
-If at any time you want to update the distribution to the latest code from GitHub just run
+If at any time you want to update the distribution to the latest 
+code from GitHub just run
 
 <!-- lang: bash -->
     $ ant update-all
     $ ant clean publish-all
 
-NB: The `update-all` command assumes that your projects are "clean", that is you don't have uncommitted changes.
-If that's not the case you'll have to manually update those projects or first stash your changes (using `git stash`).
+NB: The `update-all` command assumes that your projects are "clean", 
+that is you don't have uncommitted changes. If that's not the case 
+you'll have to manually update those projects or first stash your 
+changes (using `git stash`).
 
-After the build finishes the command line tools will be located in the `bin` directory.
+After the build finishes the command line tools will be located in 
+the `bin` directory.
 
 - `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
     * `new`        - Create a new Ceylon project
@@ -88,14 +109,15 @@ After the build finishes the command line tools will be located in the `bin` dir
     * `version`    - Show and update version numbers in module descriptors
     * `help`       - Displays help about another tool
 
-The API documentation for the language module `ceylon.language` may be found here:
+The API documentation for the language module `ceylon.language` may 
+be found here:
 
 - `repo/ceylon/language/1.1.0/module-doc/api`
 
 ## Running the sample programs
 
-To compile and run the samples, start from the distribution directory containing
-this file.
+To compile and run the samples, start from the distribution 
+directory containing this file.
 
 ### Sample module
 
@@ -144,15 +166,16 @@ Note: this is only available for the Java backend.
 
 ## Tool usage
 
-To see a list of command line options for a particular subcommand use the 
-`help` subcommand. For example, to get help on the `compile` tool:
+To see a list of command line options for a particular subcommand,
+use the `help` subcommand. For example, to get help on the `compile` 
+tool:
 
     ./bin/ceylon help compile
 
 ## Ant tasks for Ceylon
 
-We include support for Ceylon ant tasks which are documented on
-at <http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
+We include support for Ceylon ant tasks which are documented at 
+<http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
 
 To run the "hello world" program using ant, type:
 
@@ -171,9 +194,9 @@ Bugs and suggestions may be reported in GitHub's issue tracker.
 
 ## Systems where Ceylon is known to work
 
-Since Ceylon is running on the JVM it should work on every platform that 
-supports a Java 7 compatible JVM. However we have tested the following 
-platforms to make sure it works:
+Since Ceylon is running on the JVM it should work on every platform 
+that supports a Java 7 compatible JVM. However we have tested the 
+following platforms to make sure it works:
 
 ### Linux
 
@@ -194,32 +217,34 @@ platforms to make sure it works:
 
 The Ceylon distribution is and contains work released
 
-- partly under the ASL v2.0 as provided in the `LICENSE-ASL` file that accompanied 
-  this code, and
-- partly under the GPL v2 + Classpath Exception as provided in the `LICENSE-GPL-CP`
-  file that accompanied this code.
+- partly under the ASL v2.0 as provided in the `LICENSE-ASL` file 
+  that accompanied this code, and
+- partly under the GPL v2 + Classpath Exception as provided in the 
+  `LICENSE-GPL-CP` file that accompanied this code.
 
 ### License terms for 3rd Party Works
 
-This software uses a number of other works, the license terms of which are 
-documented in the `NOTICE` file that accompanied this code.
+This software uses a number of other works, the license terms of 
+which are documented in the `NOTICE` file that accompanied this code.
 
 ### Repository
 
 The content of this code repository, [available here on GitHub][ceylon-dist], 
-is released under the ASL v2.0 as provided in the `LICENSE-ASL` file that accompanied 
-this code.
+is released under the ASL v2.0 as provided in the `LICENSE-ASL` file 
+that accompanied this code.
 
 [ceylon-dist]: https://github.com/ceylon/ceylon-dist
 
-By submitting a "pull request" or otherwise contributing to this repository, you
-agree to license your contribution under the license mentioned above.
+By submitting a "pull request" or otherwise contributing to this 
+repository, you agree to license your contribution under the license 
+mentioned above.
 
 ## Acknowledgement
 
-We're deeply indebted to the community volunteers who contributed a substantial part
-of the current Ceylon codebase, working often in their own spare time. The following 
-people have contributed to this release:
+We're deeply indebted to the community volunteers who contributed a 
+substantial part of the current Ceylon codebase, working often in 
+their own spare time. The following people have contributed to this 
+release:
 
 Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, 
 Tom Bentley, Aleš Justin, David Festal, Max Rydahl Andersen, 
