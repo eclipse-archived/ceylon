@@ -324,9 +324,13 @@ public class JarEntryManifestFileObject implements JavaFileObject {
          */
         private String getRequireBundle() {
             StringBuilder requires = new StringBuilder();
+            boolean distImportAlreadyFound = false;
             for (ModuleImport anImport : module.getImports()) {
                 Module m = anImport.getModule();
                 String moduleName = m.getNameAsString();
+                if ("com.redhat.ceylon.dist".equals(moduleName)) {
+                    distImportAlreadyFound = true;
+                }
                 if (!JDKUtils.isJDKModule(moduleName)
                         && !JDKUtils.isOracleJDKModule(moduleName)
                         && !m.equals(module)) {
@@ -345,9 +349,12 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                     }
                 }
             }
-            if (isLanguageModule()) {
-                requires.append(",com.redhat.ceylon.dist")
-                .append(";bundle-version=").append(module.getVersion()).append(";visibility:=reexport");
+            if (! distImportAlreadyFound) {
+                if (requires.length() > 0) {
+                    requires.append(",");
+                }
+                requires.append("com.redhat.ceylon.dist")
+                .append(";bundle-version=").append(module.getLanguageModule().getVersion()).append(";visibility:=reexport");
             }
             return requires.toString();
         }
