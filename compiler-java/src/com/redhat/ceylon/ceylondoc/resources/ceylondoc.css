@@ -206,7 +206,7 @@ code {
 }
 
 .parameter, .parameter-default-value, .signature {
-	font-weight: bold;
+	//font-weight: bold;
 }
 
 .parameter-default-value {
@@ -279,7 +279,7 @@ code {
 }
 
 .decl-label, a.decl-label {
-    font-weight: bold;
+    //font-weight: bold;
     color: #333;
 }
 
@@ -289,7 +289,7 @@ code {
 
 .keyword {
 	color: rgb(76,76,76);
-	font-weight: bold;
+	//font-weight: bold;
 }
 
 .specifier,
