@@ -17,18 +17,25 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationValue;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Index;
+import org.jboss.jandex.Indexer;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -40,15 +47,6 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
-
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationValue;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.Index;
-import org.jboss.jandex.IndexReader;
-import org.jboss.jandex.Indexer;
-import org.jboss.jandex.JarIndexer;
 
 /**
  * Byte hacks / utils.
@@ -93,7 +91,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
      * @return module info list
      */
     private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile) {
-        Index index = readModuleIndex(jarFile);
+        Index index = readModuleIndex(jarFile, false);
         final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
@@ -118,25 +116,27 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return new ModuleInfo(null, infos);
     }
 
-    private synchronized static Index readModuleIndex(final File jarFile) {
-        final Index index;
+    private synchronized static Index readModuleIndex(final File jarFile, boolean everything) {
         try {
-            // TODO -- remove this with new Jandex release
-            final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
-            // remove the index file if it is older than the jar file
-            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
-                indexFile.delete();
-            if (indexFile.exists() == false) {
-                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
-            }
-
-            try (InputStream stream = new FileInputStream(indexFile)) {
-                index = new IndexReader(stream).read();
+            try(JarFile jar = new JarFile(jarFile)){
+                Enumeration<JarEntry> entries = jar.entries();
+                Indexer indexer = new Indexer();
+                while (entries.hasMoreElements()) {
+                    JarEntry entry = entries.nextElement();
+                    String name = entry.getName().toLowerCase();
+                    if(everything
+                            || name.endsWith("/_module.class")
+                            || name.endsWith("/$_module.class")){
+                        try(InputStream stream = jar.getInputStream(entry)){
+                            indexer.index(stream);
+                        }
+                    }
+                }
+                return indexer.complete();
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to read index for module " + jarFile.getPath(), e);
         }
-        return index;
     }
     
     private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
@@ -151,7 +151,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
 
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
-        Index index = readModuleIndex(moduleArchive);
+        Index index = readModuleIndex(moduleArchive, false);
         final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
@@ -165,7 +165,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
 
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
-        Index index = readModuleIndex(moduleArchive);
+        Index index = readModuleIndex(moduleArchive, true);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
@@ -234,7 +234,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
     
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        Index index = readModuleIndex(moduleArchive);
+        Index index = readModuleIndex(moduleArchive, false);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
