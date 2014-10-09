@@ -16,6 +16,8 @@
 
 # Make sure rpmbuild leaves JAR files alone!
 %define __jar_repack 0
+%global __provides_exclude ^.*$
+%global __requires_exclude ^.*$
 
 Name: ceylon-%{version}
 Epoch: 0
@@ -53,15 +55,13 @@ export LANG=en_US.UTF-8
 %install
 rm -rf $RPM_BUILD_ROOT%{ceylon_home}
 # CEYLON_HOME and subdirs
-mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,doc/en,samples,templates}
-mkdir -p $RPM_BUILD_ROOT%{_mandir}
+mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,samples,templates}
 
 rm -f bin/*.bat
 cp -pr bin/* $RPM_BUILD_ROOT%{ceylon_home}/bin
 cp -pr repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
 cp -pr lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
-cp -pr doc/en/* $RPM_BUILD_ROOT%{ceylon_home}/doc/en
-cp -pr doc/man/* $RPM_BUILD_ROOT%{_mandir}
+cp -pr doc/* $RPM_BUILD_ROOT%{ceylon_home}/doc
 cp -pr samples/* $RPM_BUILD_ROOT%{ceylon_home}/samples
 cp -pr templates/* $RPM_BUILD_ROOT%{ceylon_home}/templates
 cp -pr contrib/* $RPM_BUILD_ROOT%{ceylon_home}/contrib
@@ -81,13 +81,15 @@ fi
 %{ceylon_home}/repo/*
 %{ceylon_home}/lib/*
 %doc %{ceylon_home}/doc/*
-%doc %{_mandir}/*
 %{ceylon_home}/samples/*
 %{ceylon_home}/templates/*
 %{ceylon_home}/contrib/*
 
 
 %changelog
+* Wed Oct 09 2014 Tako Schotanus <tschotan@redhat.com> 1.1.0-1
+- Not scanning files for (OSGi) Provides and Requires definitions anymore
+- Not copying manual pages to the global directory anymore because that conflicts with the alternatives
 * Wed Oct 08 2014 Stephane Epardaud <separdau@redhat.com> 1.1.0-0
 - Update for 1.1.0
 * Sun Nov 10 2013 Tako Schotanus <tschotan@redhat.com> 1.0.0-0
