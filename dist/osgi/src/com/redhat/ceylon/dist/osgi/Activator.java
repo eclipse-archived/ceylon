@@ -164,7 +164,12 @@ public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
         Bundle bundle = context.getBundle();
-        loadBundleAsModule(bundle);
+        try {
+            loadBundleAsModule(bundle);
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public static void loadBundleAsModule(Bundle bundle) {
