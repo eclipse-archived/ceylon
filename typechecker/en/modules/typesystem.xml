@@ -1267,7 +1267,8 @@ alias Y => List<X>;]]></programlisting>
     
     shared formal Integer compare(Other that);
     
-    shared Integer reverseCompare(Other that) => that.compare(this) of Other;
+    shared Integer reverseCompare(Other that) 
+            => that.compare(this) of Other;
     
 }]]></programlisting>
             
