@@ -433,7 +433,7 @@ public class RecoveryTest extends CompilerTest {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassSetterBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassSetterBody_main",
-                "function or value does not exist: 'asdfClassSetterBody'", 
+                "unknown type", 
                 1, 2, 3, 4, 5);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassSetterBody");
     }
@@ -487,7 +487,7 @@ public class RecoveryTest extends CompilerTest {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryInterfaceSetterBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceSetterBody_main",
-                "function or value does not exist: 'asdfClassSetterBody'", 
+                "unknown type", 
                 1, 2, 3, 4, 5);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceSetterBody");
     }
