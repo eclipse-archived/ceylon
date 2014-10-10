@@ -1368,7 +1368,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (member instanceof Class
                     && Strategy.generateInstantiator(member)
-                    && !model.isAbstract()
+                    && !model.isAbstract() && !model.isFormal()
                     && model.getDirectMember(member.getName(), null, false) == null) {
                 // instantiator method implementation
                 Class klass = (Class)member;
