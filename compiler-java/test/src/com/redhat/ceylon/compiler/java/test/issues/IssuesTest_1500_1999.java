@@ -815,6 +815,11 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
     
     @Test
+    public void testBug1851() {
+        compareWithJavaSource("bug18xx/Bug1851");
+    }
+    
+    @Test
     public void testBug1852() {
         assertErrors(new String[]{"bug18xx/Bug1852.ceylon"},
                 defaultOptions,
