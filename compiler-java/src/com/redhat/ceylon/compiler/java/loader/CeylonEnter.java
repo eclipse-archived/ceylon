@@ -59,6 +59,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -521,6 +522,12 @@ public class CeylonEnter extends Enter {
                     logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
+                protected void out(UsageWarning err) {
+                    setSource();
+                    Node node = getIdentifyingNode(err.getTreeNode());
+                    logWarning(getPosition(node), "ceylon", err.getMessage());
+                }
+                @Override
                 protected void out(Node that, String message) {
                     setSource();
                     logError(getPosition(that), "ceylon", message);
@@ -616,6 +623,7 @@ public class CeylonEnter extends Enter {
         JavacAssertionVisitor(CeylonPhasedUnit cpu, boolean runAssertions){
             this.cpu = cpu;
             this.runAssertions = runAssertions;
+            this.includeUsageWarnings(true);
         }
         
         @Override

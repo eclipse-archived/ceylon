@@ -60,6 +60,10 @@ public final class CeyloncCompilerDelegate implements
             pu.analyseFlow();
         }
 
+        for (PhasedUnit pu : listOfUnits) { 
+            pu.analyseUsage();
+        }
+        
         UnknownTypeCollector utc = new UnknownTypeCollector();
         for (PhasedUnit pu : listOfUnits) { 
             pu.getCompilationUnit().visit(utc);
