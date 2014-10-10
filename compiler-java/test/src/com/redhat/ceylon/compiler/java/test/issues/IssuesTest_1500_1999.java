@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.TreeSet;
 
 import javax.tools.Diagnostic;
+import javax.tools.Diagnostic.Kind;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -811,6 +812,15 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     @Test
     public void testBug1849() {
         compareWithJavaSource("bug18xx/Bug1849");
+    }
+    
+    @Test
+    public void testBug1852() {
+        assertErrors(new String[]{"bug18xx/Bug1852.ceylon"},
+                defaultOptions,
+                null,
+                new Diagnostic.Kind[]{Diagnostic.Kind.WARNING},
+                new CompilerError(Kind.WARNING, "", 21, "declaration is never used: 's'"));
     }
     
 }
