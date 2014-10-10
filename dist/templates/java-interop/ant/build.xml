@@ -4,8 +4,12 @@
 -->
 <project name="@[module.name]" default="run">
 
-    <property name="ceylon.home" value="@[ceylon.home]"/>
-    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar"/>
+    <!-- Try to determine where Ceylon is installed -->
+    <property environment="env"/>
+    <property name="ceylon.home" value="@[ceylon.home]" />
+    <property name="env.CEYLON_HOME" value="${ceylon.home}"/>
+
+    <property name="ceylon.ant.lib" value="${env.CEYLON_HOME}/lib/ceylon-ant.jar"/>
     <property name="source.encoding" value="UTF-8"/>
 
     <target name="ceylon-ant-taskdefs">

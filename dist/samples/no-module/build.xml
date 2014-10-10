@@ -4,8 +4,12 @@
 -->
 <project name="project" default="default">
 
+    <!-- Try to determine where Ceylon is installed -->
+    <property environment="env"/>
     <property name="ceylon.home" value="../.." />
-    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar" />
+    <property name="env.CEYLON_HOME" value="${ceylon.home}"/>
+
+    <property name="ceylon.ant.lib" value="${env.CEYLON_HOME}/lib/ceylon-ant.jar" />
 
     <target name="ceylon-ant-taskdefs">
         <path id="ant-tasks">
