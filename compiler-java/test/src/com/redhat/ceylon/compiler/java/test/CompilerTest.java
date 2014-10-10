@@ -35,8 +35,10 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 
@@ -224,22 +226,46 @@ public abstract class CompilerTest {
     }
     
     protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
-        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, expectedErrors);
+        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, null, expectedErrors);
     }
     
-    protected void assertErrors(String[] ceylonFiles, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
+    protected void assertErrors(String[] ceylonFiles, 
+            List<String> options, 
+            Throwable expectedException, 
+            CompilerError... expectedErrors) {
+        assertErrors(ceylonFiles, options, expectedException, null, expectedErrors);
+    }
+    
+    protected void assertErrors(String[] ceylonFiles, 
+            List<String> options, 
+            Throwable expectedException, 
+            Diagnostic.Kind[] kinds,
+            CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
         
         CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
 
+        if (kinds == null) {
+            kinds = new Diagnostic.Kind[]{Diagnostic.Kind.ERROR};
+        }
+        
+        boolean expectedToFail = false;
+        for (Diagnostic.Kind kind : kinds) {
+            if (kind == Diagnostic.Kind.ERROR) {
+                expectedToFail = true;
+                break;
+            }
+        }
         // now compile it all the way
         Throwable ex = null;
         ExitState exitState = task.call2();
         switch (exitState.ceylonState) {
         case OK:
-            Assert.fail("Compilation successful (it should have failed!)");
+            if (expectedToFail) {
+                Assert.fail("Compilation successful (it should have failed!)");
+            }
             break;
         case BUG:
             if (expectedException == null) {
@@ -248,6 +274,9 @@ public abstract class CompilerTest {
             ex = exitState.abortingException;
             break;
         case ERROR:
+            if (!expectedToFail) {
+                Assert.fail("Compilation successful (it should have failed!)");
+            }
             break;
         case SYS:
             Assert.fail("System error");
@@ -266,7 +295,7 @@ public abstract class CompilerTest {
             Assert.fail("Expected compiler exception " + expectedException);
         }
         
-        TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
+        TreeSet<CompilerError> actualErrors = collector.get(kinds);
         compareErrors(actualErrors, expectedErrors);
     }
     
@@ -274,7 +303,7 @@ public abstract class CompilerTest {
         return (o1 == o2) || o1.equals(o2);
     }
     
-    protected void compareErrors(TreeSet<CompilerError> actualErrors, CompilerError... expectedErrors) {
+    protected void compareErrors(Set<CompilerError> actualErrors, CompilerError... expectedErrors) {
         TreeSet<CompilerError> expectedErrorSet = new TreeSet<CompilerError>(Arrays.asList(expectedErrors));
         // first dump the actual errors
         for(CompilerError actualError : actualErrors){

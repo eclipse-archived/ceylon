@@ -19,7 +19,10 @@
  */
 package com.redhat.ceylon.compiler.java.test;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.tools.Diagnostic;
@@ -43,7 +46,8 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
             return Classification.CRASH;
         } else if (code != null && code.startsWith("compiler.err.ceylon.codegen.erroneous")) {
             return Classification.BACKEND;
-        } else if (code != null && code.startsWith("compiler.err.ceylon")) {
+        } else if (code != null && (code.startsWith("compiler.err.ceylon")
+                    || code.startsWith("compiler.warn.ceylon"))) {
             return Classification.FRONTEND;
         }
         return Classification.BACKEND;
@@ -65,10 +69,22 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
                 classifyDiagnostic(diagnostic)));
     }
     
-    public TreeSet<CompilerError> get(Diagnostic.Kind kind) {
+    public Set<CompilerError> getAll() {
+        return get(EnumSet.allOf(Diagnostic.Kind.class));
+    }
+    
+    public TreeSet<CompilerError> get(Diagnostic.Kind... kinds) {
+        EnumSet<Diagnostic.Kind> s = EnumSet.noneOf(Diagnostic.Kind.class);
+        for (Diagnostic.Kind kind : kinds) {
+            s.add(kind);
+        }
+        return get(s);
+    }
+    
+    public TreeSet<CompilerError> get(EnumSet<Diagnostic.Kind> kinds) {
         TreeSet<CompilerError> result = new TreeSet<CompilerError>();
         for (CompilerError diagnostic : actualErrors) {
-            if (diagnostic.kind == kind) {
+            if (kinds.contains(diagnostic.kind)) {
                 result.add(diagnostic);
             }
         }
