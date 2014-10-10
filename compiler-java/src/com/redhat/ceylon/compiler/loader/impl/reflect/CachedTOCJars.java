@@ -210,6 +210,14 @@ public class CachedTOCJars {
         return null;
     }
 
+    public byte[] getContents(Module module, String path) {
+        CachedTOCJar jar = jars.get(module);
+        if(jar != null && !jar.skipContents && jar.containsFile(path)){
+            return jar.getContents(path);
+        }
+        return null;
+    }
+
     @Override
     public String toString(){
         return "CachedTOCJars[jars="+jars+"]";
