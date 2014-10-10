@@ -13,6 +13,7 @@ import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ZipResource;
@@ -22,6 +23,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class FreeModule implements ceylon.language.meta.declaration.Module,
@@ -113,22 +116,38 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         } else {
             fullPath = fullPath.substring(1);
         }
-        final File car = new File(declaration.getUnit().getFullPath());
-        //First let's look inside the car
-        try (ZipFile zip = new ZipFile(car)) {
-            ZipEntry e = zip.getEntry(fullPath);
-            if (e != null && !e.isDirectory()) {
-                return new ZipResource(car, fullPath);
+        
+        String moduleUnitFullPath = declaration.getUnit().getFullPath();
+        if (moduleUnitFullPath != null) {
+            final File car = new File(declaration.getUnit().getFullPath());
+            //First let's look inside the car
+            try (ZipFile zip = new ZipFile(car)) {
+                ZipEntry e = zip.getEntry(fullPath);
+                if (e != null && !e.isDirectory()) {
+                    return new ZipResource(car, fullPath);
+                }
+            } catch (IOException ex) {
+                throw new ceylon.language.Exception(new ceylon.language.String(
+                        "Searching for resource " + path), ex);
             }
-        } catch (IOException ex) {
-            throw new ceylon.language.Exception(new ceylon.language.String(
-                    "Searching for resource " + path), ex);
+            //Then as a fall-back let's look in the module's resource dir...
+            final File target = new File(new File(car.getParentFile(), "module-resources"), fullPath);
+            if (target.exists() && target.isFile() && target.canRead()) {
+                return new FileResource(target);
+            }
+        } else {
+            RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
+            if (moduleManager != null) {
+                RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
+                if (modelLoader != null) {
+                    final byte[] contents = modelLoader.getContents(declaration, fullPath);
+                    if (contents != null) {
+                        return new ByteArrayResource(contents, "classpath:" + fullPath);
+                    }
+                }
+            }
         }
-        //Then as a fall-back let's look in the module's resource dir...
-        final File target = new File(new File(car.getParentFile(), "module-resources"), fullPath);
-        if (target.exists() && target.isFile() && target.canRead()) {
-            return new FileResource(target);
-        }
+        
         return null;
     }
 

@@ -62,6 +62,14 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         return jars.packageExists(module, packageName);
     }
 
+    public byte[] getContents(String path) {
+        return jars.getContents(path);
+    }
+
+    public byte[] getContents(Module module, String path) {
+        return jars.getContents(module, path);
+    }
+    
     @Override
     protected Class<?> loadClass(Module module, String name) {
         ClassLoader classLoader = classLoaders.get(module);
