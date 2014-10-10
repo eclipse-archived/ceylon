@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.codegen.recovery;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -33,27 +34,6 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
     private boolean expectingError;
     private String errMessage;
     private Declaration model;
-    
-    static class DeclExprErrorVisitor extends Visitor implements NaturalVisitor {
-        public void visit(Tree.BaseMemberExpression that) {
-            for (Message e : that.getErrors()) {
-                if (e.getCode() == 1460) {
-                    throw new HasErrorException(that, e);
-                }
-            }
-        }
-        public void visit(Tree.Declaration that) {
-            // don't visit other declarations
-        }
-        
-        @Override
-        public void handleException(Exception e, Node that) {
-            // rethrow
-            throw (RuntimeException)e;
-        }
-        
-    }
-    DeclExprErrorVisitor ev = new DeclExprErrorVisitor();
     
     DeclarationErrorVisitor(ExpressionErrorVisitor expressionVisitor) {
         this.expressionVisitor = expressionVisitor;
@@ -158,18 +138,22 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.Body that) {
-        // don't go there
+        // don't go there: we don't really care about block errors
     }
     
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
-        try {
-            that.visit(ev);
-        } catch (HasErrorException e) {
-            newplan(new Drop(e.getNode(), e.getErrorMessage()));
-        }
+        // don't go there: we don't really care about expression errors
     }
     
+    @Override
+    public void visit(Tree.Type that) {
+        // type inference is used but the type of 
+        // the inferred expression is unknown due to other errors
+        if (that.getTypeModel().containsUnknowns()) {
+            newplan(new Drop(that, new AnalysisError(that, "unknown type")));
+        }
+    }
     
     @Override
     public void visit(Tree.InitializerParameter that) {
