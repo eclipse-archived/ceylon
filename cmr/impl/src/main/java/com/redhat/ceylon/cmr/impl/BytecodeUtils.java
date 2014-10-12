@@ -124,7 +124,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
                     String name = entry.getName().toLowerCase();
-                    if(everything
+                    if(everything && name.endsWith(".class")
                             || name.endsWith("/module_.class")
                             || name.endsWith("/$module_.class")){
                         try(InputStream stream = jar.getInputStream(entry)){
