@@ -461,7 +461,7 @@ public class MiscTest extends CompilerTest {
                 "run",
                 "--rep",
                 "build/test-cars",
-                "com.example.helloworld/1.0.0"
+                "com.example.helloworld/1.1.0"
         };
         launchCeylon(args3);
     }
