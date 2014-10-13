@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -119,7 +120,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         
         String moduleUnitFullPath = declaration.getUnit().getFullPath();
         if (moduleUnitFullPath != null) {
-            final File car = new File(declaration.getUnit().getFullPath());
+            final File car = new File(moduleUnitFullPath);
             //First let's look inside the car
             try (ZipFile zip = new ZipFile(car)) {
                 ZipEntry e = zip.getEntry(fullPath);
@@ -140,9 +141,10 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             if (moduleManager != null) {
                 RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
                 if (modelLoader != null) {
-                    final byte[] contents = modelLoader.getContents(declaration, fullPath);
+                    byte[] contents = modelLoader.getContents(declaration, fullPath);
                     if (contents != null) {
-                        return new ByteArrayResource(contents, "classpath:" + fullPath);
+                        URI uri = modelLoader.getContentUri(declaration, fullPath);
+                        return new ByteArrayResource(contents, uri);
                     }
                 }
             }
