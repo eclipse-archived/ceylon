@@ -30,10 +30,7 @@ public class SequenceGenerator {
                 gen.out("}return ", gen.getClAlias(), "getFinished();},function(){return ");
                 if (gen.isInDynamicBlock() && expr instanceof Tree.SpreadArgument
                         && Util.isTypeUnknown(expr.getTypeModel())) {
-                    //TODO should we remove this check and just let it blow up anyway?
-                    TypeUtils.generateDynamicCheck(((Tree.SpreadArgument)expr).getExpression(),
-                            node.getUnit().getAnythingDeclaration().getType(), gen, true,
-                            seqType.getTypeArguments());
+                    TypeUtils.spreadArrayCheck(((Tree.SpreadArgument)expr).getExpression(), gen);
                 } else {
                     expr.visit(gen);
                 }

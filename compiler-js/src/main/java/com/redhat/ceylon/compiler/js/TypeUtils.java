@@ -356,6 +356,15 @@ public class TypeUtils {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
     }
 
+    static void spreadArrayCheck(final Tree.Term term, final GenerateJsVisitor gen) {
+        String tmp = gen.getNames().createTempVariable();
+        gen.out("(", tmp, "=");
+        term.visit(gen);
+        gen.out(",Array.isArray(", tmp, ")?", tmp);
+        gen.out(":function(){throw new TypeError('Expected JS Array (",
+                term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
+    }
+
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
     static void generateDynamicCheck(final Tree.Term term, ProducedType t,
             final GenerateJsVisitor gen, final boolean skipSelfDecl,
@@ -372,7 +381,7 @@ public class TypeUtils {
             String tmp = gen.getNames().createTempVariable();
             gen.out("(", tmp, "=");
             term.visit(gen);
-            String errmsg = "dynamic value cannot be used here";
+            final String errmsg;
             if (checkFloat) {
                 gen.out(",typeof(", tmp, ")==='number'?", gen.getClAlias(), "Float(", tmp, ")");
                 errmsg = "Expected Float";
@@ -385,9 +394,9 @@ public class TypeUtils {
                         && typeArguments.containsKey(t.getDeclaration())) {
                     t = typeArguments.get(t.getDeclaration());
                 }
-                errmsg = "Expected " + t.getProducedTypeQualifiedName();
                 TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
                 gen.out(")?", tmp);
+                errmsg = "Expected " + t.getProducedTypeQualifiedName();
             }
             gen.out(":function(){throw new TypeError('", errmsg, " (",
                     term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
