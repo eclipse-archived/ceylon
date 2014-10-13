@@ -137,5 +137,7 @@ shared void issues() {
         check(test418 == "OK!", "#418.1");
         test418 = "Again";
         check(test418 == "Again", "#418.2");
+        //431
+        check((dynamic [for (i in 0:10) i^3]).size == 10, "#431");
     }
 }
