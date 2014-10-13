@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 
 import ceylon.language.Iterator;
@@ -26,6 +27,7 @@ public class SerializationContextImpl
         implements SerializationContext, ReifiedType {
     
     private final IdentityHashMap<Object, Object> instanceToId = new IdentityHashMap<>();
+    private final HashMap<Object, SerializableReference<Object>> idToReference = new HashMap<Object, SerializableReference<Object>>();
     
     public SerializationContextImpl() {
         super(TypeDescriptor.klass(SerializableReferenceImpl.class, ceylon.language.Object.$TypeDescriptor$), Null.$TypeDescriptor$);
@@ -59,13 +61,18 @@ public class SerializationContextImpl
                 && otherInstance != instance) {
             throw new ceylon.language.AssertionError("A different instance has already been registered with id "+id+": \"" + otherInstance +"\", \""+ instance+"\"");
         }
-        return new SerializableReferenceImpl(reified$Instance, this, id, instance);
+        SerializableReferenceImpl ref = new SerializableReferenceImpl(reified$Instance, this, id, instance);
+        SerializableReference<Object> prevReference = idToReference.put(id, ref);
+        if (prevReference != null) {
+            throw new ceylon.language.AssertionError("A different instance has already been registered with id "+id+": \"" + prevReference.instance() +"\", \""+ instance+"\"");
+        }
+        return ref;
     }
 
     @Override
     public Iterator<? extends SerializableReference<Object>> iterator() {
         return new Iterator<SerializableReference<Object>>() {
-            private final java.util.Iterator<Object> iter = instanceToId.keySet().iterator();
+            private final java.util.Iterator<SerializableReference<Object>> iter = idToReference.values().iterator();
             @Override
             public Object next() {
                 if (!iter.hasNext()) {

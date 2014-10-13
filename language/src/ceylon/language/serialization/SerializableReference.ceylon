@@ -12,7 +12,7 @@ interface SerializableReference<Instance> satisfies Reference<Instance> {
     /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor(ClassModel classModel));
     
     "The instance."
-    Instance instance();
+    shared formal Instance instance();
     
     /*"Force reconstruction of the instance."
     throws (`class AssertionError`,

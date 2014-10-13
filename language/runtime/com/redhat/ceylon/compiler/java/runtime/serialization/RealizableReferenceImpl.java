@@ -77,13 +77,6 @@ class RealizableReferenceImpl<Instance>
         throw new AssertionError("Illegal state");
     }
     
-    /*
-    @Override
-    public / *Deconstructed<Instance>* / Object serialize(Deconstructor deconstructor) {
-        // TODO What does this mean in the context of derserialization?
-        throw new AssertionError("WTF?");
-    }*/
-    
     @Override
     public Instance instance() {
         // !!!!! XXX MUST NOT LEAK PARTIALLY BUILT OBJECTS

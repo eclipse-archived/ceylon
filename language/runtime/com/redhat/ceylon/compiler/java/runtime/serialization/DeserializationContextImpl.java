@@ -88,8 +88,8 @@ public class DeserializationContextImpl
         idToReference.put(id, reference);
     }
     
-    void update(Object id, RealizableReference<Object> reference) {
-        idToReference.put(id, reference);
+    Reference<Object> update(Object id, RealizableReference<Object> reference) {
+        return idToReference.put(id, reference);
     }
 
     /**

@@ -112,7 +112,10 @@ class DeserializableReferenceImpl<Instance>
     @Override
     public RealizableReference<Instance> deserialize(Deconstructed deconstructed) {
         RealizableReferenceImpl result = new RealizableReferenceImpl<Instance>(reified$Instance, context, id, classModel, instance, deconstructed);
-        context.update(id, result);
+        Reference prevRef = context.update(id, result);
+        if (prevRef != this) {
+            throw new AssertionError("reference already been deserialized: " + this);
+        }
         return result;
     }
     
