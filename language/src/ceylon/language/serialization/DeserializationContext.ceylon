@@ -4,15 +4,19 @@ import ceylon.language.meta.model {
 }
 
 "A context representing deserialization of many objects from
- a given input stream. The serialization library is 
- responsible for processing the stream and registering the
- [[deconstructed states|Deconstructed]] of the objects with
- the context. Then, it may obtain a reference to a fully
- deconstructed object via [[StatefulReference.instance]],
- and return it to the client.
+ a given input stream. 
  
  The serialization library obtains an instance by calling 
- [[deserialization()]]."
+ [[deserialization]] and is then 
+ responsible for processing the stream and registering the
+ [[deconstructed instances|reference]] with the context.
+ The 
+ [[Deconstructed state|Deconstructed]] of each instance 
+ can be [[supplied|DeserializeableReference.deserialize]]
+ to its reference and finally a complete 
+ [[instance|StatefulReference.instance]], can be obtained 
+ and returned it to the client.
+ "
 shared sealed
 interface DeserializationContext
         satisfies {Reference<Object?>*} {

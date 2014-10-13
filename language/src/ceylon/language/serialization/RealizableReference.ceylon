@@ -6,7 +6,7 @@ interface RealizableReference<Instance> satisfies Reference<Instance> {
     shared formal
     /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor);*/
     
-    "Get the instance. During deserialization, could force 
+    "The reconstructed instance. This method can force 
      reconstruction."
     throws (`class AssertionError`,
         "if there is a problem reconstructing the object

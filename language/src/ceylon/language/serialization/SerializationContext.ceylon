@@ -1,14 +1,15 @@
 "A context representing serialization of many objects to a 
- single output stream. The client is responsible for 
- [[registering|reference]] the objects to be serialized with the context, 
- assigning them each a unique identifier. Then, the 
- serialization library is responsible for iterating the 
- registered objects in the context and persisting their 
- [[deconstructed states|Deconstructed]] to the output 
- stream.
+ single output stream. 
  
  The serialization library obtains an instance by calling 
- [[serialization()]]."
+ [[serialization()]] and then  
+ [[registers|reference]] the objects to be serialized, 
+ assigning them each a unique identifier. Then, the 
+ serialization library is responsible for iterating the 
+ instances registered with the context and persisting their 
+ [[deconstructed states|Deconstructed]] to the output 
+ stream.
+ "
 shared sealed
 interface SerializationContext
         satisfies {SerializableReference<Object?>*} /*& Category<Object>*/ {

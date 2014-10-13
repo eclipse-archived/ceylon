@@ -2,7 +2,7 @@ import ceylon.language.meta.model {
     ClassModel
 }
 
-"A reference to an [[Instance]] of a class, with a certain 
+"A reference to an instance of a class, with a certain 
  [[identifer|id]]."
 shared sealed
 interface Reference<Instance>

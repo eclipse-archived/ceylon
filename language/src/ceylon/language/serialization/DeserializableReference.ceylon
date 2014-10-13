@@ -1,4 +1,5 @@
-"A stateless reference that can be deserialized to produce a [[RealizableReference]]."
+"A stateless reference to an instance that can be deserialized to 
+ produce a [[RealizableReference]]."
 shared sealed
 interface DeserializableReference<Instance> satisfies Reference<Instance> {
     

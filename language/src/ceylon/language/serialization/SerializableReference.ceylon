@@ -6,16 +6,12 @@ import ceylon.language.meta.model {
 shared sealed
 interface SerializableReference<Instance> satisfies Reference<Instance> {
     
-    "Get the flattened state of the instance."
+    "Records the state of the instance in a deconstructor obtained 
+     from the given function."
     shared formal
     /*Deconstructed<Instance>*/ void serialize(Deconstructor deconstructor(ClassModel classModel));
     
-    "Get the instance. During deserialization, could force 
-     reconstruction."
-    throws (`class AssertionError`,
-        "if there is a problem reconstructing the object
-         or any object it references")
-    shared formal
+    "The instance."
     Instance instance();
     
     /*"Force reconstruction of the instance."
