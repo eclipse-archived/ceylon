@@ -637,13 +637,16 @@ public class CeylonEnter extends Enter {
         }
         
         protected int getPosition(int line, int characterInLine) {
-            if (line<0) {
+            if (line<1) {
                 return -1;
             }
             try {
                 return cpu.getLineMap().getPosition(line,characterInLine);
             }
             catch (ArrayIndexOutOfBoundsException aie) {
+                if (line<2) {
+                    return -1;
+                }
                 return cpu.getLineMap().getPosition(line-1, 0);
             }
         }
