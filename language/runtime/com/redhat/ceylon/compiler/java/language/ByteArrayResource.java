@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.language;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 
 import ceylon.language.Resource;
 
@@ -21,9 +22,9 @@ public class ByteArrayResource implements Resource {
     @Ignore
     protected final ceylon.language.Resource$impl $ceylon$language$Resource$this;
     private final byte[] contents;
-    private String uri;
+    private URI uri;
 
-    public ByteArrayResource(byte[] contents, String uri) {
+    public ByteArrayResource(byte[] contents, URI uri) {
         this.contents = contents;
         this.uri = uri;
         $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
@@ -46,7 +47,7 @@ public class ByteArrayResource implements Resource {
 
     @Override
     public java.lang.String getUri() {
-        return uri;
+        return uri.toString();
     }
 
     @Override
