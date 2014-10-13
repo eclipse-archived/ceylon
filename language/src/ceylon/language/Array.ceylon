@@ -95,6 +95,6 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Element[] sort(
         Comparison comparing(Element x, Element y));
     
-    shared actual Boolean equals(Object other) => (super of List<Element>).equals(other);
+    shared actual Boolean equals(Object that) => (super of List<Element>).equals(that);
     shared actual Integer hash => (super of List<Element>).hash;
 }
