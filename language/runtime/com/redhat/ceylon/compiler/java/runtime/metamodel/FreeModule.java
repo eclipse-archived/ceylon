@@ -118,10 +118,24 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             fullPath = fullPath.substring(1);
         }
         
+        // First lets ask the module manager for the contents of the resource
+        RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
+        if (moduleManager != null) {
+            RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
+            if (modelLoader != null) {
+                byte[] contents = modelLoader.getContents(declaration, fullPath);
+                if (contents != null) {
+                    URI uri = modelLoader.getContentUri(declaration, fullPath);
+                    return new ByteArrayResource(contents, uri);
+                }
+            }
+        }
+        
+        // Second let's see if we can find the on-disk location of the module
         String moduleUnitFullPath = declaration.getUnit().getFullPath();
         if (moduleUnitFullPath != null) {
             final File car = new File(moduleUnitFullPath);
-            //First let's look inside the car
+            // Then let's look inside the car
             try (ZipFile zip = new ZipFile(car)) {
                 ZipEntry e = zip.getEntry(fullPath);
                 if (e != null && !e.isDirectory()) {
@@ -131,22 +145,11 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
                 throw new ceylon.language.Exception(new ceylon.language.String(
                         "Searching for resource " + path), ex);
             }
-            //Then as a fall-back let's look in the module's resource dir...
+
+            // And finally as a fall-back let's look in the module's resource dir...
             final File target = new File(new File(car.getParentFile(), "module-resources"), fullPath);
             if (target.exists() && target.isFile() && target.canRead()) {
                 return new FileResource(target);
-            }
-        } else {
-            RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
-            if (moduleManager != null) {
-                RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
-                if (modelLoader != null) {
-                    byte[] contents = modelLoader.getContents(declaration, fullPath);
-                    if (contents != null) {
-                        URI uri = modelLoader.getContentUri(declaration, fullPath);
-                        return new ByteArrayResource(contents, uri);
-                    }
-                }
             }
         }
         
