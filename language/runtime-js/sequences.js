@@ -90,3 +90,13 @@ return sarg$;
 $init$sarg();
 ex$.$init$sarg=$init$sarg;
 $init$sarg();
+//Turn a comprehension into a native array
+function nfor$(c) {
+  var a = [];
+  var item;
+  for (var iter = c.iterator();(item=iter.next())!==getFinished();){
+    a.push(item);
+  }
+  return a;
+}
+ex$.nfor$=nfor$;
