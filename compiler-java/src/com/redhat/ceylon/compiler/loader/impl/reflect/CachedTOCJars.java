@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.loader.impl.reflect;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -112,6 +114,29 @@ public class CachedTOCJars {
                         zf.close();
                     }
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                throw new RuntimeException("Missing entry: "+path+" in jar file: "+ jar.getPath());
+            }
+            throw new RuntimeException("No file associated with artifact : " + artifact.toString());
+        }
+
+        URI getContentUri(String path){
+            if (artifact instanceof ContentAwareArtifactResult) {
+                return ((ContentAwareArtifactResult) artifact).getContentUri(path);
+            }
+            File jar = artifact.artifact();
+            if (jar != null) {
+                try {
+                    ZipFile zf = new ZipFile(jar);
+                    try{
+                        ZipEntry entry = zf.getEntry(path);
+                        if(entry != null)
+                            return new URI("classpath:" + jar.getPath() + "!" + entry.getName());
+                    }finally{
+                        zf.close();
+                    }
+                } catch (IOException | URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
                 throw new RuntimeException("Missing entry: "+path+" in jar file: "+ jar.getPath());
@@ -210,10 +235,27 @@ public class CachedTOCJars {
         return null;
     }
 
+    public URI getContentUri(String path) {
+        for(CachedTOCJar jar : jars.values()){
+            if(!jar.skipContents && jar.containsFile(path)){
+                return jar.getContentUri(path);
+            }
+        }
+        return null;
+    }
+
     public byte[] getContents(Module module, String path) {
         CachedTOCJar jar = jars.get(module);
         if(jar != null && !jar.skipContents && jar.containsFile(path)){
             return jar.getContents(path);
+        }
+        return null;
+    }
+
+    public URI getContentUri(Module module, String path) {
+        CachedTOCJar jar = jars.get(module);
+        if(jar != null && !jar.skipContents && jar.containsFile(path)){
+            return jar.getContentUri(path);
         }
         return null;
     }
