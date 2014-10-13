@@ -525,7 +525,9 @@ public class InvocationGenerator {
                 isComp = argList.getSequencedArgument().getPositionalArguments().size() == 1
                         && argList.getSequencedArgument().getPositionalArguments().get(0) instanceof Tree.Comprehension;
             }
-            if (!isComp) {
+            if (isComp) {
+                gen.out(gen.getClAlias(), "nfor$(");
+            } else {
                 gen.out("[");
             }
             boolean first = true;
@@ -534,7 +536,7 @@ public class InvocationGenerator {
                 arg.visit(gen);
             }
             if (isComp) {
-                gen.out(".sequence()");
+                gen.out(")");
             } else {
                 gen.out("]");
             }
