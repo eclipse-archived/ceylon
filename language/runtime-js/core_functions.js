@@ -190,6 +190,8 @@ function is$(obj,type){
       }
       return false;
     }
+    //Native arrays with no reified type args are NOT Ceylon objects.
+    if (obj.$$targs$$===undefined && Array.isArray(obj))return false;
     if (type.t==='T') {
       if (is$(obj,{t:Tuple})) {
         if (obj.$$targs$$ && obj.$$targs$$.t==='T') {
