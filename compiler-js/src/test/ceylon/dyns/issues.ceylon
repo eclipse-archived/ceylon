@@ -59,7 +59,7 @@ void issue366() {
         }
         fail("Issue 366 #3");
     } catch (Throwable ex) {
-        check("xpected ceylon.language::Anything" in ex.message, "Issue 366 #3.2 msg ``ex.message``");
+        check("xpected JS Array" in ex.message, "Issue 366 #3.2 msg ``ex.message``");
     }
     dynamic {
         check({1,2,*f366_3()}.sequence().size == 4, "Issue 366 #4");
