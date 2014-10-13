@@ -1855,7 +1855,6 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(final Tree.Dynamic that) {
-        //this is value{xxx}
         invoker.nativeObject(that.getNamedArgumentList());
     }
 

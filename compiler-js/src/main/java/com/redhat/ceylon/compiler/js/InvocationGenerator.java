@@ -499,13 +499,14 @@ public class InvocationGenerator {
 
     /** Generate the code to create a native js object. */
     void nativeObject(Tree.NamedArgumentList argList) {
+        final List<Tree.NamedArgument> nargs = argList.getNamedArguments();
         if (argList.getSequencedArgument() == null) {
             gen.out("{");
             boolean first = true;
-            for (Tree.NamedArgument arg : argList.getNamedArguments()) {
+            for (Tree.NamedArgument arg : nargs) {
                 if (first) { first = false; } else { gen.out(","); }
                 String argName = arg.getIdentifier().getText();
-                if (gen.getNames().isReservedWord(argName)) {
+                if (JsIdentifierNames.isReservedWord(argName)) {
                     gen.out("$_");
                 }
                 gen.out(argName, ":");
@@ -514,22 +515,32 @@ public class InvocationGenerator {
             gen.out("}");
         } else {
             String arr = null;
-            if (argList.getNamedArguments().size() > 0) {
+            boolean isComp = false;
+            if (nargs.size() > 0) {
                 gen.out("function()");
                 gen.beginBlock();
                 arr = names.createTempVariable();
                 gen.out("var ", arr, "=");
+            } else {
+                isComp = argList.getSequencedArgument().getPositionalArguments().size() == 1
+                        && argList.getSequencedArgument().getPositionalArguments().get(0) instanceof Tree.Comprehension;
             }
-            gen.out("[");
+            if (!isComp) {
+                gen.out("[");
+            }
             boolean first = true;
             for (Tree.PositionalArgument arg : argList.getSequencedArgument().getPositionalArguments()) {
                 if (first) { first = false; } else { gen.out(","); }
                 arg.visit(gen);
             }
-            gen.out("]");
-            if (argList.getNamedArguments().size() > 0) {
+            if (isComp) {
+                gen.out(".sequence()");
+            } else {
+                gen.out("]");
+            }
+            if (nargs.size() > 0) {
                 gen.endLine(true);
-                for (Tree.NamedArgument arg : argList.getNamedArguments()) {
+                for (Tree.NamedArgument arg : nargs) {
                     gen.out(arr, ".", arg.getIdentifier().getText(), "=");
                     arg.visit(gen);
                     gen.endLine(true);
