@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +67,16 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         return jars.getContents(path);
     }
 
+    public URI getContentUri(String path) {
+        return jars.getContentUri(path);
+    }
+
     public byte[] getContents(Module module, String path) {
         return jars.getContents(module, path);
+    }
+    
+    public URI getContentUri(Module module, String path) {
+        return jars.getContentUri(module, path);
     }
     
     @Override
