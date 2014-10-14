@@ -34,6 +34,7 @@
         <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>
         <module name="com.github.lookfirst.sardine" slot="5.1"/>
         <module name="net.minidev.json-smart" slot="1.1.1"/>
+        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>
