@@ -88,6 +88,8 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
   that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
   that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
+  that.union=function(t,$mpt){return coiut$(that,t,$mpt.Other$Union);}
+  that.intersection=function(t,$mpt){return coiit$(that,t,$mpt.Other$intersection);}
   Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
                    Type$Class:that.$$targs$$.Type$AppliedClass},that);
   set_type_args(that,$$targs$$,AppliedClass);

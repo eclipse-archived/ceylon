@@ -57,4 +57,7 @@ shared native class AppliedInterface<out Type>() satisfies Interface<Type>
   shared actual native Member<Container, Kind>? getDeclaredClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(
     String name, ClosedType<Anything>* types) given Kind satisfies ClassOrInterface<Anything>;
   shared actual native Type[] caseValues;
+
+  shared actual native ClosedType<Type|Other> union<Other>(ClosedType<Other> other);
+  shared actual native ClosedType<Type&Other> intersection<Other>(ClosedType<Other> other);
 }

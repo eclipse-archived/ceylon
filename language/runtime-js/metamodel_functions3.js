@@ -551,3 +551,15 @@ function allann$(mm) {
   }
   return a||[];
 }
+//Union Type of the receiving type with a new one
+function coiut$(coi,t,ot){
+  if (is$(t,{t:AppliedUnionType$jsint}))return t.union(coi,{Other$union:{t:coi.$$targs$$.Type$ClassOrInterface}});
+  var _ut={t:'u',l:[{t:coi.$$targs$$.Type$ClassOrInterface},ot]};
+  return AppliedUnionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedUnionType:_ut});
+}
+//Intersection type of the receiving type with a new one
+function coiit$(coi,t,ot){
+  if (is$(t,{t:AppliedIntersectionType$jsint}))return t.intersection(coi,{Other$intersection:{t:coi.$$targs$$.Type$ClassOrInterface}});
+  var _ut={t:'i',l:[{t:coi.$$targs$$.Type$ClassOrInterface},{t:ot}]};
+  return AppliedIntersectionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedIntersectionType:_ut});
+}
