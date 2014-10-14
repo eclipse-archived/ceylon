@@ -3,7 +3,7 @@
 shared sealed
 interface DeserializableReference<Instance> satisfies Reference<Instance> {
     
-    "Associate the given [[state]] with the instance, 
+    "Associate the given [[state|deconstructed]] with the instance, 
      returning a [[RealizableReference]]."
     shared formal RealizableReference<Instance> deserialize(/*Deconstructed<Instance>*/ Deconstructed deconstructed);
 }

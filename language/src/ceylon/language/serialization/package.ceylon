@@ -23,7 +23,7 @@
  The serializer:
  
  * the serializer will obtain a [[SerializationContext]] by 
-   calling [[serialization()]] ,
+   calling [[serialization]] ,
  * the framework will implement [[Deconstructor]] in order to 
    be notified about instances being serialized,
  * the framework will be responsible for adding instances to the 
@@ -34,7 +34,7 @@
  The deserializer:
  
  * the deserializer will obtain a [[DeserializationContext]] by 
-   calling [[deserialization()]]
+   calling [[deserialization]]
  * the framework sill implement [[Deconstructed]] in order to 
    provide serialized state to instances being reconstructed.
  * the framework will be responsible for registering all the 

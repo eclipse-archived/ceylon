@@ -27,6 +27,7 @@ shared interface Deconstructed
         "if the value is absent")
     shared formal Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute);
     
+    "The array element at the given index."
     shared formal Instance|Reference<Instance> getElement<Instance>(Integer index);
     
     //shared formal Array<Element>

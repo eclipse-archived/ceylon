@@ -2,7 +2,7 @@
  single output stream. 
  
  The serialization library obtains an instance by calling 
- [[serialization()]] and then  
+ [[serialization]] and then  
  [[registers|reference]] the objects to be serialized, 
  assigning them each a unique identifier. Then, the 
  serialization library is responsible for iterating the 
@@ -14,8 +14,8 @@ shared sealed
 interface SerializationContext
         satisfies {SerializableReference<Object?>*} /*& Category<Object>*/ {
     // XXX Category<Object> but ought to be Category<Object?>, surely?
-    "Create a reference to the given [[instance]] of 
-     [[Class]], assigning it the given [[identifer|id]]."
+    "Create a reference to the given [[instance]], assigning it 
+     the given [[identifer|id]]."
     throws (`class AssertionError`,
         "if there is already an instance with the given
          identifier")

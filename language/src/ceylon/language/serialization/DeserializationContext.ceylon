@@ -12,9 +12,9 @@ import ceylon.language.meta.model {
  [[deconstructed instances|reference]] with the context.
  The 
  [[Deconstructed state|Deconstructed]] of each instance 
- can be [[supplied|DeserializeableReference.deserialize]]
+ can be [[supplied|ceylon.language.serialization::DeserializeableReference.deserialize]]
  to its reference and finally a complete 
- [[instance|StatefulReference.instance]], can be obtained 
+ [[instance|ceylon.language.serialization::StatefulReference.instance]], can be obtained 
  and returned it to the client.
  "
 shared sealed
