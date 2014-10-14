@@ -25,6 +25,8 @@
 //#COMPILE Boolean.js,jsint/TpMap,tuples.js,metamodel_functions1.js,metamodel_functions2.js,jsint/JsResource,AppliedClass.js,AppliedMemberClass.js,jsint/AppliedInterface,AppliedMemberInterface.js,AppliedFunction.js,jsint/AppliedValue,AppliedMethod.js,AppliedAttribute.js,metamodel_functions3.js,metamodel_functions4.js,jsint/FreeClass,jsint/FreeInterface,OpenFunction.js,jsint/OpenValue,OpenSetter.js,FunParamDecl.js,ValParamDecl.js,metamodel_functions5.js
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
+//Serialization
+//#COMPILE serialization/package,serialization/Deconstructed,serialization/Deconstructor,serialization/DeserializableReference,serialization/DeserializationContext,serialization/RealizableReference,serialization/Reference,serialization/SerializableReference,serialization/SerializationContext,serialization/serialization,serialization/deserialization
 
 function NatErr(e) {
     var that = new NatErr.$$;
