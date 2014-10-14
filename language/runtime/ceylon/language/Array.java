@@ -222,6 +222,17 @@ public final class Array<Element>
     	}
     	
         int size = Util.toInt(elements.getSize());
+        if(elements instanceof ceylon.language.String){
+            int[] array = new int[size];
+            java.lang.String string = elements.toString();
+            int offset = 0;
+            for (int i=0; i<size; i++) {
+                int codePoint = string.codePointAt(offset);
+                offset += java.lang.Character.charCount(codePoint);
+                array[i] = codePoint;
+            }
+            return array;
+        }
         final java.lang.Class<?> clazz = 
         		$reifiedElement.getArrayElementClass();
         
