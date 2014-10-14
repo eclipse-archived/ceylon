@@ -26,7 +26,7 @@
 //#COMPILE module,package,meta/package,meta/model/package,meta/declaration/package
 //#COMPILE process.js,process,language,system,operatingSystem,runtime,parseInteger,parseFloat,formatInteger,parseBoolean,className
 //Serialization
-//#COMPILE serialization/package,serialization/Deconstructed,serialization/Deconstructor,serialization/DeserializableReference,serialization/DeserializationContext,serialization/RealizableReference,serialization/Reference,serialization/SerializableReference,serialization/SerializationContext,serialization/serialization,serialization/deserialization
+//#COMPILE serialization/package,serialization/Deconstructed,serialization/Deconstructor,serialization/DeserializableReference,serialization/DeserializationContext,serialization/RealizableReference,serialization/Reference,serialization/SerializableReference,serialization/SerializationContext,serialization/serialization,serialization/deserialization,jsint/JsSerCtxt,jsint/JsDeserCtxt
 
 function NatErr(e) {
     var that = new NatErr.$$;
