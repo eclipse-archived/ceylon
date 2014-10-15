@@ -5,8 +5,8 @@ import ceylon.language.meta.model {
 "A reference to an instance of a class, with a certain 
  [[identifer|id]]."
 shared sealed
-interface Reference<Instance>
-        of SerializableReference<Instance> | RealizableReference<Instance> | DeserializableReference<Instance> {
+interface Reference<Instance> {
+        //of SerializableReference<Instance> | RealizableReference<Instance> | DeserializableReference<Instance> {
     
     "The unique identifier of the instance."
     shared formal Object id;
