@@ -1306,9 +1306,9 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
-        Iterator<Element> iter = iterator();
-        java.lang.Object elem;
-        while (!((elem = iter.next()) instanceof Finished)) {
+        final int size = (int) getSize();
+        for (int i=0; i<size; i++) {
+            Element elem = getFromFirst(i);
             if (elem != null && elem.equals(element)) {
                 return true;
             }
@@ -1322,9 +1322,9 @@ public final class Array<Element>
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
-        Iterator<Element> iter = iterator();
-        java.lang.Object elem;
-        while (!((elem = iter.next()) instanceof Finished)) {
+        final int size = (int) getSize();
+        for (int i=0; i<size; i++) {
+            Element elem = getFromFirst(i);
             if (elem != null && selecting.$call$(elem).booleanValue()) {
                 count++;
             }
@@ -1349,7 +1349,7 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     public Element getLast() {
         // ok to cast here, since we know the size must fit in an int
-        final int size = (int)getSize();
+        final int size = (int) getSize();
         return size > 0 ? unsafeItem(size-1) : null;
     }
     
@@ -1386,7 +1386,7 @@ public final class Array<Element>
     skip(@Name("skipping") long skipping) {
         int intSkip = toInt(skipping);
         // ok to cast here, since we know the size must fit in an int
-        int length = (int)getSize();
+        int length = (int) getSize();
         if (skipping <= 0) {
             return this;
         }
