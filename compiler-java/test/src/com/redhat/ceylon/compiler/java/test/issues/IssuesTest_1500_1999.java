@@ -828,4 +828,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new CompilerError(Kind.WARNING, "", 21, "declaration is never used: 's'"));
     }
     
+    @Test
+    public void testBug1857() {
+        assertErrors("bug18xx/Bug1857",
+                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß'"));
+    }
 }
