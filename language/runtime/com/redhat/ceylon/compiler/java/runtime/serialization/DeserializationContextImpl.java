@@ -9,6 +9,7 @@ import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.meta.model.ClassModel;
+import ceylon.language.serialization.DeserializableReference;
 import ceylon.language.serialization.DeserializationContext;
 import ceylon.language.serialization.Reference;
 import ceylon.language.serialization.RealizableReference;
@@ -31,7 +32,7 @@ public class DeserializationContextImpl
 
     // TODO Shouldn't this be keyed on (id, class), and in fact shouldn't 
     // the classed-ness of ids be a concern of the serialization library?
-    private final Map<Object, Reference<Object>> idToReference = new HashMap<>();
+    private final Map<Object, DeserializingReference<?>> idToReference = new HashMap<>();
     
     public DeserializationContextImpl() {
         super(ceylon.language.Object.$TypeDescriptor$, Null.$TypeDescriptor$);
@@ -42,7 +43,7 @@ public class DeserializationContextImpl
             TypeDescriptor reified$Instance, 
             Object id,
             @SuppressWarnings("rawtypes") ceylon.language.meta.model.Class classModel) {
-        Reference<Object> ref = idToReference.get(id);
+        DeserializingReference<?> ref = idToReference.get(id);
         if (ref != null) {
             if (ref.getClazz().equals(classModel)) {
                 return (Reference)ref;
@@ -53,7 +54,9 @@ public class DeserializationContextImpl
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);
         }
-        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel, null);
+        ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, (Reference)null);
+        idToReference.put(id, ref);
+        return (Reference)ref;
     }
     
     @Override
@@ -63,7 +66,7 @@ public class DeserializationContextImpl
             Object id,
             @SuppressWarnings("rawtypes") ceylon.language.meta.model.MemberClass classModel,
             Reference<Outer> outerReference) {
-        Reference<Object> ref = idToReference.get(id);
+        DeserializingReference<?> ref = idToReference.get(id);
         if (ref != null) {
             if (ref.getClazz().equals(classModel)) {
                 return (Reference)ref;
@@ -74,7 +77,9 @@ public class DeserializationContextImpl
         if (classModel.getDeclaration().getAbstract()) {
             throw new AssertionError("class is abstract: " + classModel);
         }
-        return new DeserializableReferenceImpl<Instance>(reified$Instance, this, id, classModel, outerReference);
+        ref = new DeserializingReference<Instance>(reified$Instance, this, id, classModel, outerReference);
+        idToReference.put(id, ref);
+        return (Reference)ref;
     }
 
     boolean containsId(Object id) {
@@ -82,22 +87,11 @@ public class DeserializationContextImpl
     }
     
     /**
-     * Registers a reference to against its id.
-     */
-    void put(Object id, DeserializableReferenceImpl<Object> reference) {
-        idToReference.put(id, reference);
-    }
-    
-    Reference<Object> update(Object id, RealizableReference<Object> reference) {
-        return idToReference.put(id, reference);
-    }
-
-    /**
      * Returns the reference to the instance with the given id. 
      * Never returns null.
      */
     Object leakReferred(Object id) {
-        Reference<Object> reference = idToReference.get(id);
+        DeserializingReference<?> reference = idToReference.get(id);
         if (reference == null) {
             throw new AssertionError("cannot obtain reference to unregistered id: " + id);
         }
@@ -107,7 +101,7 @@ public class DeserializationContextImpl
     @Override
     public Iterator<? extends Reference<Object>> iterator() {
         return new Iterator<Reference<Object>>() {
-            private final java.util.Iterator<Reference<Object>> iter = idToReference.values().iterator();
+            private final java.util.Iterator<DeserializingReference<?>> iter = idToReference.values().iterator();
             @Override
             public Object next() {
                 if (iter.hasNext()) {
