@@ -131,8 +131,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "The number of elements returned by the [[iterator]] of 
      this stream, if the iterator terminates. In the case of 
      an infinite stream, this operation never terminates."
-    shared default Integer size 
-            => count((Element e) => true);
+    shared default Integer size => count((e) => true);
     
     "Determines if this stream has more elements than the 
      given [[length]]. This is an efficient operation for
@@ -1294,7 +1293,7 @@ shared interface Iterable<out Element, out Absent=Null>
      be truncated, as indicated by an ellipse."
     shared actual default String string {
         value strings = take(31)
-                .map((Element e) => e?.string else "<null>")
+                .map((e) => e?.string else "<null>")
                 .sequence();
         if (strings.empty) {
             return "{}";
