@@ -49,7 +49,7 @@ class DeserializableReferenceImpl<Instance>
             // MemberClass<Container, Type, Arguments>
             clazz = (java.lang.Class)((TypeDescriptor.Class)typeArguments[1]).getKlass();
             outerClass = ((TypeDescriptor.Class)typeArguments[0]).getKlass();
-            outer = (($InstanceLeaker$)context.getReference(outerReference.getId())).$leakInstance$();
+            outer = context.leakReferred(outerReference.getId());
         } else {
             throw new AssertionError("unexpected class model: " 
                     + (classModel != null ? classModel.getClass().getName() : "null"));

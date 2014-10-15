@@ -96,12 +96,12 @@ public class DeserializationContextImpl
      * Returns the reference to the instance with the given id. 
      * Never returns null.
      */
-    Reference<Object> getReference(Object id) {
+    Object leakReferred(Object id) {
         Reference<Object> reference = idToReference.get(id);
         if (reference == null) {
             throw new AssertionError("cannot obtain reference to unregistered id: " + id);
         }
-        return reference;
+        return (($InstanceLeaker$)reference).$leakInstance$();
     }
 
     @Override
