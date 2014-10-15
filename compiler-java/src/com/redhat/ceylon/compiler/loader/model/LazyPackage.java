@@ -131,7 +131,8 @@ public class LazyPackage extends Package {
             d = getDirectMemberFromSource(name);
             
             if (d == null
-                    && Character.isLowerCase(name.charAt(0))) {
+                    && Character.isLowerCase(name.charAt(0))
+                    && Character.isUpperCase(Character.toUpperCase(name.charAt(0)))) {
                 // Might be trying to get an annotation constructor for a Java annotation type
                 // So try to find the annotation type
                 String annotationName = Character.toUpperCase(name.charAt(0)) + (name.length() > 1 ? name.substring(1) : "");
