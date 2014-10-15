@@ -169,7 +169,13 @@ public class RefinementVisitor extends Visitor {
                         dec.getName(), 1300);
             }
             else if (!legallyOverloaded) {
-                that.addError("overloaded member does not refine an inherited overloaded member");
+                if (dec.isActual()) {
+                    that.addError("overloaded member does not refine an inherited overloaded member: " + 
+                            dec.getName());
+                }
+                else {
+                    that.addError("duplicate or overloaded member name: " + dec.getName());
+                }
             }
         }
         else {
