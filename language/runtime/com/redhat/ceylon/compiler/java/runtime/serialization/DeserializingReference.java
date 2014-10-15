@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -27,18 +28,40 @@ public class DeserializingReference<Instance>
     implements DeserializableReference<Instance>, RealizableReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
     
     private final TypeDescriptor reified$Instance;
+    /** 
+     * The reference has not state because 
+     * {@link #deserialize(Deconstructed)} has not yet been called. 
+     */
+    static final int ST_STATELESS = 0;
+    /** 
+     * The reference has state but is not 
+     * yet initialized because {@link Serializable#$deserialize$(Deconstructed)}
+     * has not yet been called
+     */
+    static final int ST_UNINITIALIZED = 1;
+    /** 
+     * The reference has been initialized but has 
+     * dependent references which have not yet been queued for 
+     * initialization.
+     */
+    static final int ST_UNINITIALIZED_REFS = 2;
+    /**
+     * The reference has been initialized and all its direct 
+     * dependent references have been queued for initialization.
+     */
+    static final int ST_INITIALIZED = 3;
     
-    private static final int ST_STATELESS = 0; 
-    private static final int ST_UNINITIALIZED = 1;
-    private static final int ST_UNINITIALIZED_REFS = 2;
-    private static final int ST_INITIALIZED = 3;
-    
+    static final int ST_ERROR = 4;
+    /** The current state of this reference */
     private int state;
-    
+    /** The id of this reference */
     private final Object id;
+    /** The possibly partially initialized instance */
     private final Instance instance;
     @SuppressWarnings("rawtypes")
+    /** The class model of this reference */
     private final ClassModel classModel;
+    /** The state associated with this reference. May be null */
     private Deconstructed deconstructed;
     
     DeserializingReference(TypeDescriptor reified$Instance, 
@@ -179,45 +202,52 @@ public class DeserializingReference<Instance>
      */
     @Override
     public Object reconstruct() {
-        if (getState() != ST_INITIALIZED) {
-            LinkedList<DeserializingReference<?>> queue = new LinkedList<DeserializingReference<?>>();
-            queue.addLast(this);
-            while (!queue.isEmpty()) {
-                DeserializingReference<?> r = queue.removeFirst();
-                if (r.getState() == ST_UNINITIALIZED) {
-                    ((Serializable)r.instance).$deserialize$(r.deconstructed);
-                    r.state = ST_UNINITIALIZED_REFS;
-                }
-                if (r.getState() == ST_UNINITIALIZED_REFS) {
-                    for (DeserializingReference<Object> referred : r.references()) {
-                        if (referred.getState() == ST_STATELESS) {
-                            throw new AssertionError("reference " + referred.getId() + " has not been deserialized");
-                        }
-                        DeserializingReference<?> statefulReferred = (DeserializingReference<?>)referred;
-                        if (statefulReferred.getState() != ST_INITIALIZED) {
-                            queue.addLast(statefulReferred);
-                        }
-                    }
-                    // This is actually too weak: If an exception is thrown
-                    // while initialising some other thing (already in, or 
-                    // yet to be added to the queue), then it will be possible 
-                    // to obtain a reference to a broken thing
-                    // We could track this on a per-instance basis 
-                    // (but that means tracking the reverse dependencies, transitively)
-                    // Or on a per-context basis, so that instance always 
-                    // throws if there was ever an exception, even if the 
-                    // broken object is not each reachable from the 
-                    // instance being sought
-                    
-                    r.state = ST_INITIALIZED;
-                    r.deconstructed = null;
-                }
-            }
-        }
-        if (getState() != ST_INITIALIZED) {
+        if (getState() == ST_ERROR) {
             throw new AssertionError("broken graph");
         }
-        return null;
+        IdentityHashMap<DeserializingReference<?>, Object> i = new IdentityHashMap<DeserializingReference<?>, Object>();
+        try {
+            if (getState() != ST_INITIALIZED) {
+                LinkedList<DeserializingReference<?>> queue = new LinkedList<DeserializingReference<?>>();
+                queue.addLast(this);
+                while (!queue.isEmpty()) {
+                    DeserializingReference<?> r = queue.removeFirst();
+                    i.put(r,  null);
+                    if (r.getState() == ST_UNINITIALIZED) {
+                        ((Serializable)r.instance).$deserialize$(r.deconstructed);
+                        r.state = ST_UNINITIALIZED_REFS;
+                    }
+                    if (r.getState() == ST_UNINITIALIZED_REFS) {
+                        for (DeserializingReference<Object> referred : r.references()) {
+                            if (referred.getState() == ST_STATELESS) {
+                                throw new AssertionError("reference " + referred.getId() + " has not been deserialized");
+                            }
+                            DeserializingReference<?> statefulReferred = (DeserializingReference<?>)referred;
+                            if (statefulReferred.getState() != ST_INITIALIZED) {
+                                queue.addLast(statefulReferred);
+                            }
+                        }
+                        r.state = ST_INITIALIZED;
+                        r.deconstructed = null;
+                    }
+                }
+            }
+            return null;
+        } catch (Exception|AssertionError e) {
+            // If anything went wrong mark every object we encountered as 
+            // being broken. Otherwise it's possible to call instance() a 
+            // second time and encounter a partially constructed object
+            // in the returned object graph.
+            
+            // This isn't ideal, as it marks as broken 
+            // objects whose subgraph is fine, just because they're reachable 
+            // from a broken graph. But it saves having to track the 
+            // reverse dependencies 
+            for (DeserializingReference<?> r : i.keySet()) {
+                r.state = ST_ERROR;
+            }
+            throw e;
+        }
     }
     
     /**
