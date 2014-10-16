@@ -351,10 +351,10 @@ public class LinkRenderer {
             }
         }
         
-        if (scope instanceof Annotated) {
+        if (docLink != null && scope instanceof Annotated) {
             Annotation docAnnotation = getAnnotation(((Annotated) scope).getAnnotations(), "doc");
             if (docAnnotation != null) {
-                ceylonDocTool.warningBrokenLink(docLinkText, scope);
+                ceylonDocTool.warningBrokenLink(docLinkText, docLink, scope);
             }
         }
 

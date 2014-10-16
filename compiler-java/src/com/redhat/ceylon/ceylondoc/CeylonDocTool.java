@@ -1180,18 +1180,18 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     protected void warningMissingDoc(String name, Referenceable scope) {
         if (!ignoreMissingDoc) {
-            log.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(scope)));
+            log.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));
         }
     }
 
-    protected void warningBrokenLink(String link, Referenceable scope) {
+    protected void warningBrokenLink(String docLinkText, Tree.DocLink docLink, Referenceable scope) {
         if (!ignoreBrokenLink) {
-            log.warning(CeylondMessages.msg("warn.brokenLink", link, getWhere(scope), getPosition(scope)));
+            log.warning(CeylondMessages.msg("warn.brokenLink", docLinkText, getWhere(scope), getPosition(docLink)));
         }
     }
     
     protected void warningSetterDoc(String name, TypedDeclaration scope) {
-        log.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(scope)));
+        log.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(getNode(scope))));
     }
 
     protected void warningMissingThrows(Declaration d) {
@@ -1243,7 +1243,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 }
             }
             if (!isDocumented) {
-                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d), getPosition(d)));
+                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d), getPosition(getNode(d))));
             }
         }
     }
@@ -1285,8 +1285,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return where;
     }
     
-    private String getPosition(Referenceable scope) {
-        Node node = getNode(scope);
+    private String getPosition(Node node) {
         if (node != null && 
                 node.getToken() != null && 
                 node.getUnit() != null && 
