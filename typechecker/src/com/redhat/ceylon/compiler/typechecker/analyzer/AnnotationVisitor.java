@@ -496,6 +496,12 @@ public class AnnotationVisitor extends Visitor {
             text = text.substring(DOC_LINK_ALIAS.length());
         }
         
+        boolean parentheses = false;
+        if( text.endsWith("()") ) {
+            parentheses = true;
+            text = text.substring(0, text.length()-2);
+        }
+        
         int scopeIndex = text.indexOf("::");
         
         String packageName;
@@ -579,19 +585,25 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         
-        if (kind != null && base != null && (names.length == 1 || names.length == that.getQualified().size() + 1)) {
-            if (DOC_LINK_CLASS.equals(kind) && !(base instanceof Class)) {
-                that.addUsageWarning("linked declaration is not a class: '" + base.getName() + "'");
-            } else if (DOC_LINK_INTERFACE.equals(kind) && !(base instanceof Interface)) {
-                that.addUsageWarning("linked declaration is not an interface: '" + base.getName() + "'");
-            } else if (DOC_LINK_ALIAS.equals(kind) && !(base instanceof TypeAlias)) {
-                that.addUsageWarning("linked declaration is not a type alias: '" + base.getName() + "'");
-            } else if (DOC_LINK_FUNCTION.equals(kind) && !(base instanceof Method)) {
-                that.addUsageWarning("linked declaration is not a function: '" + base.getName() + "'");
-            } else if (DOC_LINK_VALUE.equals(kind) && !(base instanceof Value)) {
-                that.addUsageWarning("linked declaration is not a value: '" + base.getName() + "'");
+        if( base != null ) {
+            if (kind != null && (names.length == 1 || names.length == that.getQualified().size() + 1)) {
+                if (DOC_LINK_CLASS.equals(kind) && !(base instanceof Class)) {
+                    that.addUsageWarning("linked declaration is not a class: '" + base.getName() + "'");
+                } else if (DOC_LINK_INTERFACE.equals(kind) && !(base instanceof Interface)) {
+                    that.addUsageWarning("linked declaration is not an interface: '" + base.getName() + "'");
+                } else if (DOC_LINK_ALIAS.equals(kind) && !(base instanceof TypeAlias)) {
+                    that.addUsageWarning("linked declaration is not a type alias: '" + base.getName() + "'");
+                } else if (DOC_LINK_FUNCTION.equals(kind) && !(base instanceof Method)) {
+                    that.addUsageWarning("linked declaration is not a function: '" + base.getName() + "'");
+                } else if (DOC_LINK_VALUE.equals(kind) && !(base instanceof Value)) {
+                    that.addUsageWarning("linked declaration is not a value: '" + base.getName() + "'");
+                }
             }
-        }        
+            if( parentheses && !(base instanceof Functional) ) {
+                that.addUsageWarning("linked declaration is not a function: '" + base.getName() + "'");
+            }
+        }
+
     }
 
     @Override 
