@@ -1770,7 +1770,7 @@ public class ExpressionVisitor extends Visitor {
             //note: the following is nice, even though
             //      it is not actually blessed by the
             //      language spec!
-            return unit.isSequenceType(receivingType) ?
+            return unit.isNonemptyIterableType(receivingType) ?
                     unit.getSequenceType(pt) :
                     unit.getSequentialType(pt);
         }
