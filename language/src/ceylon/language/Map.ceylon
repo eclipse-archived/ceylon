@@ -44,7 +44,7 @@ shared interface Map<out Key,out Item>
      belonging to this map."
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Key->Anything entry, defines(entry.key)) {
+        if (is Key->Item entry, defines(entry.key)) {
             if (exists item = get(entry.key)) {
                 if (exists entryItem = entry.item) {
                     return item==entryItem;
@@ -229,20 +229,26 @@ shared interface Map<out Key,out Item>
      
      That is, for any `key` in the resulting patched map:
      
-         map.patch(other)[key] == other[key] else map[key]
+         map.patch(other)[key] == other.defines(key) then other[key] else map[key]
      
      This is a lazy operation producing a view of this map
      and the given map."
     shared default
     Map<Key|OtherKey,Item|OtherItem> patch<OtherKey,OtherItem>
             (Map<OtherKey,OtherItem> other) 
-            given OtherKey satisfies Object 
-            given OtherItem satisfies Object {
+            given OtherKey satisfies Object {
         object patch 
                 extends Object()
                 satisfies Map<Key|OtherKey,Item|OtherItem> {
-            
-            get(Object key) => other[key] else outer[key];
+            shared actual <Item|OtherItem>? get(Object key) {
+                if (is Map<OtherKey,Object> other) {
+                    return other[key] else outer[key];
+                } else if (other.defines(key)) {
+                    return other[key];
+                } else {
+                    return outer[key];
+                }
+            }
             
             clone() => outer.clone().patch(other.clone());
             
@@ -251,7 +257,7 @@ shared interface Map<out Key,out Item>
                        outer.defines(key);
             
             shared actual Boolean contains(Object entry) {
-                if (is Entry<Object,Object> entry) {
+                if (is Object->Anything entry) {
                     return entry in other || 
                             !other.defines(entry.key) 
                                 && entry in outer;
