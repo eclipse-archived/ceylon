@@ -919,6 +919,8 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubTopLevelMethod = <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'><code><span class='identifier'>stubTopLevelMethod\\(\\)</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("stubTopLevelMethod() = <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'><code><span class='identifier'>stubTopLevelMethod\\(\\)</span></code></a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("function stubTopLevelMethod = <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'><code><span class='identifier'>stubTopLevelMethod\\(\\)</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubTopLevelAttribute = <a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'><code><span class='identifier'>stubTopLevelAttribute</span></code></a>"));
@@ -941,6 +943,8 @@ public class CeylonDocToolTest {
                 Pattern.compile("stubObject = <a class='link' href='index.html#stubObject' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject'><code><span class='identifier'>stubObject</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubObject.foo = <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'><code><span class='type-identifier'>stubObject</span>.<span class='identifier'>foo\\(\\)</span></code></a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("stubObject.foo() = <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'><code><span class='type-identifier'>stubObject</span>.<span class='identifier'>foo\\(\\)</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubObject.stubInnerObject = <a class='link' href='stubObject.object.html#stubInnerObject' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.stubInnerObject'><code><span class='type-identifier'>stubObject</span>.<span class='identifier'>stubInnerObject</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
