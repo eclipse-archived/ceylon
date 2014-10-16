@@ -1,6 +1,5 @@
 import ceylon.language.meta.declaration {
-    ClassOrInterfaceDeclaration,
-    TypeParameter
+    ClassOrInterfaceDeclaration
 }
 
 import ceylon.language.meta.model {

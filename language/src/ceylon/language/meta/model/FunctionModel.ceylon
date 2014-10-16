@@ -1,6 +1,5 @@
 import ceylon.language.meta.declaration {
-    FunctionDeclaration,
-    TypeParameter
+    FunctionDeclaration
 }
 import ceylon.language.meta.model {
     ClosedType = Type

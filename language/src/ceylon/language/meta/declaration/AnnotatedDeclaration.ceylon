@@ -17,11 +17,11 @@ shared sealed interface AnnotatedDeclaration of NestableDeclaration
     """The annotation instances of the given 
        annotation type on this declaration.
        
-       For example, you can list all the [[See|ceylon.language::See]] 
+       For example, you can list all the [[SeeAnnotations|ceylon.language::SeeAnnotation]] 
        annotations on [[List|ceylon.language::List]]
        with the following code:
        
-           for(annot in `interface List`.annotations<See>()){
+           for(annot in `interface List`.annotations<SeeAnnotation>()){
                for(elems in annot.programElements){
                    print("See: ``elems``");
                }

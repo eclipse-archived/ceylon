@@ -1,9 +1,3 @@
-import ceylon.language.meta.model {
-    Member,
-    Model,
-    AppliedType = Type
-}
-
 "Type alias declaration. While type aliases are erased (substituted for what they alias is a better term) from every 
  declaration that uses them during compile-time, the declaration of the type alias is still visible at run-time."
 shared sealed interface AliasDeclaration 
