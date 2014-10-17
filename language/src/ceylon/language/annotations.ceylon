@@ -251,3 +251,10 @@ shared final annotation class OptionalImportAnnotation()
 shared annotation OptionalImportAnnotation optional() 
         => OptionalImportAnnotation();
 
+shared final annotation class SuppressWarningsAnnotation([String*] warnings)
+        satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
+            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
+
+"Annotation to suppress the given warnings when typechecking the annotated element"
+shared annotation SuppressWarningsAnnotation suppressWarnings(String* warnings) 
+        => SuppressWarningsAnnotation(warnings);
