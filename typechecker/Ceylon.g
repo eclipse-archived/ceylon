@@ -3391,17 +3391,21 @@ metaLiteral returns [MetaLiteral meta]
       { m = new ModuleLiteral($d1);
         m.setEndToken($MODULE); 
         $meta=m; }
-      p1=packagePath
-      { m.setImportPath($p1.importPath); 
-        m.setEndToken(null); }
+      (
+        p1=packagePath
+        { m.setImportPath($p1.importPath); 
+          m.setEndToken(null); }
+      )?
     |
       PACKAGE
       { p = new PackageLiteral($d1);
         p.setEndToken($PACKAGE); 
         $meta=p; }
-      p2=packagePath
-      { p.setImportPath($p2.importPath); 
-        p.setEndToken(null); }
+      (
+        p2=packagePath
+        { p.setImportPath($p2.importPath); 
+          p.setEndToken(null); }
+      )?
     |
       CLASS_DEFINITION
       { c = new ClassLiteral($d1);
@@ -3417,31 +3421,37 @@ metaLiteral returns [MetaLiteral meta]
           bme.setIdentifier($ot.identifier);
           bme.setTypeArguments(new InferredTypeArguments(null));
           c.setObjectExpression(bme); }
-      )
+      )?
     |
       INTERFACE_DEFINITION
       { i = new InterfaceLiteral($d1);
         i.setEndToken($INTERFACE_DEFINITION); 
         $meta=i; }
-      it=type
-      { i.setType($it.type); 
-        i.setEndToken(null); }
+      (
+        it=type
+        { i.setType($it.type); 
+          i.setEndToken(null); }
+      )?
     |
       ALIAS
       { a = new AliasLiteral($d1);
         a.setEndToken($ALIAS); 
         $meta=a; }
-      at=type
-      { a.setType($at.type); 
-        a.setEndToken(null); }
+      (
+        at=type
+        { a.setType($at.type); 
+          a.setEndToken(null); }
+      )?
     |
       TYPE_CONSTRAINT
       { tp = new TypeParameterLiteral($d1);
         tp.setEndToken($TYPE_CONSTRAINT); 
         $meta=tp; }
-      tt=type
-      { tp.setType($tt.type); 
+      (
+        tt=type
+        { tp.setType($tt.type); 
         tp.setEndToken(null); }
+      )?
     |
       (
         VALUE_MODIFIER
@@ -3471,13 +3481,15 @@ metaLiteral returns [MetaLiteral meta]
         vo=MEMBER_OP
         { v.setEndToken($vo); }
       )?
-      vm=memberName
-      { v.setIdentifier($vm.identifier); 
-        v.setEndToken(null); }
       (
-        //recognize type argument list here even though illegal 
-        ta6=typeArguments
-        { v.setTypeArgumentList($ta6.typeArgumentList); }
+        vm=memberName
+        { v.setIdentifier($vm.identifier); 
+          v.setEndToken(null); }
+        (
+          //recognize type argument list here even though illegal 
+          ta6=typeArguments
+          { v.setTypeArgumentList($ta6.typeArgumentList); }
+        )?
       )?
     |
       FUNCTION_MODIFIER
@@ -3500,13 +3512,15 @@ metaLiteral returns [MetaLiteral meta]
         fo=MEMBER_OP
         { f.setEndToken($fo); }
       )?
-      fm=memberName
-      { f.setIdentifier($fm.identifier); 
-        f.setEndToken(null); }
       (
-        //recognize type argument list here even though illegal 
-        ta5=typeArguments
-        { f.setTypeArgumentList($ta5.typeArgumentList); }
+        fm=memberName
+        { f.setIdentifier($fm.identifier); 
+          f.setEndToken(null); }
+        (
+          //recognize type argument list here even though illegal 
+          ta5=typeArguments
+          { f.setTypeArgumentList($ta5.typeArgumentList); }
+        )?
       )?
     |
       (abbreviatedType MEMBER_OP) =>

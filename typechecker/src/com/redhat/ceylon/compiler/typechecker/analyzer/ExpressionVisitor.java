@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -6500,7 +6501,14 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.PackageLiteral that) {
         super.visit(that);
-        Package p = TypeVisitor.getPackage(that.getImportPath());
+        Package p;
+        if (that.getImportPath()==null) {
+            that.setImportPath(new ImportPath(null));
+            p = unit.getPackage();
+        }
+        else {
+            p = TypeVisitor.getPackage(that.getImportPath());
+        }
         that.getImportPath().setModel(p);
         that.setTypeModel(unit.getPackageDeclarationType());
     }
@@ -6508,7 +6516,14 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.ModuleLiteral that) {
         super.visit(that);
-        Module m = TypeVisitor.getModule(that.getImportPath());
+        Module m;
+        if (that.getImportPath()==null) {
+            that.setImportPath(new ImportPath(null));
+            m = unit.getPackage().getModule();
+        }
+        else {
+            m = TypeVisitor.getModule(that.getImportPath());
+        }
         that.getImportPath().setModel(m);
         that.setTypeModel(unit.getModuleDeclarationType());
     }
@@ -6537,13 +6552,15 @@ public class ExpressionVisitor extends Visitor {
         finally {
             declarationLiteral = false;
         }
-        ProducedType t = null;
-        TypeDeclaration d = null;
+        ProducedType t;
+        TypeDeclaration d;
         Tree.StaticType type = that.getType();
         Tree.BaseMemberExpression oe = that.getObjectExpression();
+        Node errorNode;
 		if (type != null) {
         	t = type.getTypeModel();
         	d = t.getDeclaration();
+        	errorNode = type;
         }
 		else if (oe != null ) {
         	t = oe.getTypeModel();
@@ -6551,40 +6568,60 @@ public class ExpressionVisitor extends Visitor {
         	if (!d.isAnonymous()) {
         		oe.addError("must be a reference to an anonymous class");
         	}
+        	errorNode = oe;
         }
+		else {
+		    errorNode = that;
+            ClassOrInterface classOrInterface = 
+                    getContainingClassOrInterface(that.getScope());
+		    if (that instanceof Tree.ClassLiteral ||
+		        that instanceof Tree.InterfaceLiteral) {
+		        d = classOrInterface;
+		        if (d==null) {
+		            errorNode.addError("no containing type");
+		            return; //EARLY EXIT!!
+		        }
+		        else {
+		            t = classOrInterface.getType();
+		        }
+		    }
+		    else {
+		        errorNode.addError("missing type reference");
+		        return; //EARLY EXIT!!
+		    }
+		}
         // FIXME: should we disallow type parameters in there?
-        if (t != null) {
+        if (t!=null) {
             that.setDeclaration(d);
             that.setWantsDeclaration(true);
             if (that instanceof Tree.ClassLiteral) {
                 if (!(d instanceof Class)) {
-                    if (type != null) {
-                        type.addError("referenced declaration is not a class" +
+                    if (d != null) {
+                        errorNode.addError("referenced declaration is not a class" +
                                 getDeclarationReferenceSuggestion(d));
                     }
                 }
-//                else {
-//                    checkNonlocal(that, d);
-//                }
                 that.setTypeModel(unit.getClassDeclarationType());
             }
             else if (that instanceof Tree.InterfaceLiteral) {
                 if (!(d instanceof Interface)) {
-                    type.addError("referenced declaration is not an interface" +
-                            getDeclarationReferenceSuggestion(d));
+                    if (d!=null) {
+                        errorNode.addError("referenced declaration is not an interface" +
+                                getDeclarationReferenceSuggestion(d));
+                    }
                 }
                 that.setTypeModel(unit.getInterfaceDeclarationType());
             }
             else if (that instanceof Tree.AliasLiteral) {
                 if (!(d instanceof TypeAlias)) {
-                    type.addError("referenced declaration is not a type alias" +
+                    errorNode.addError("referenced declaration is not a type alias" +
                             getDeclarationReferenceSuggestion(d));
                 }
                 that.setTypeModel(unit.getAliasDeclarationType());
             }
             else if (that instanceof Tree.TypeParameterLiteral) {
                 if (!(d instanceof TypeParameter)) {
-                    type.addError("referenced declaration is not a type parameter" +
+                    errorNode.addError("referenced declaration is not a type parameter" +
                             getDeclarationReferenceSuggestion(d));
                 }
                 that.setTypeModel(unit.getTypeParameterDeclarationType());
@@ -6596,7 +6633,7 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Class) {
 //                    checkNonlocal(that, t.getDeclaration());
                     if (((Class) d).isAbstraction()) {
-                        that.addError("class constructor is overloaded");
+                        errorNode.addError("class constructor is overloaded");
                     }
                     else {
                         that.setTypeModel(unit.getClassMetatype(t));
@@ -6614,7 +6651,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MemberLiteral that) {
-        if (that instanceof Tree.FunctionLiteral||
+        if (that instanceof Tree.FunctionLiteral ||
             that instanceof Tree.ValueLiteral) {
             declarationLiteral = true;
         }
@@ -6624,8 +6661,9 @@ public class ExpressionVisitor extends Visitor {
         finally {
             declarationLiteral = false;
         }
-        if (that.getIdentifier() != null) {
-            String name = name(that.getIdentifier());
+        Tree.Identifier id = that.getIdentifier();
+        if (id!=null) {
+            String name = name(id);
             ProducedType qt = null;
             TypeDeclaration qtd = null;
             Tree.StaticType type = that.getType();
@@ -6649,7 +6687,8 @@ public class ExpressionVisitor extends Visitor {
             	}
             	//checkNonlocalType(that.getType(), qtd);
             	String container = "type '" + qtd.getName(unit) + "'";
-            	TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
+            	TypedDeclaration member = 
+            	        getTypedMember(qtd, name, null, false, unit);
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
             			that.addError("method or attribute is ambiguous: '" +
@@ -6666,16 +6705,17 @@ public class ExpressionVisitor extends Visitor {
             	}
             }
             else {
-                TypedDeclaration result = getTypedDeclaration(that.getScope(), 
-                        name, null, false, unit);
+                TypedDeclaration result = 
+                        getTypedDeclaration(that.getScope(), 
+                                name, null, false, unit);
                 if (result!=null) {
                     checkBaseVisibility(that, result, name);
                     setMemberMetatype(that, result);
                 }
                 else {
                     that.addError("function or value does not exist: '" +
-                            name(that.getIdentifier()) + "'", 100);
-                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                            name(id) + "'", 100);
+                    unit.getUnresolvedReferences().add(id);
                 }
             }
         }
