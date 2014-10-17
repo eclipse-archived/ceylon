@@ -178,7 +178,8 @@ public class MiscTest extends CompilerTest {
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
                 Arrays.asList("-sourcepath", compilerSourcePath, 
                               "-d", "build/classes-runtime", "-Xbootstrapceylon",
-                              "-cp", getClassPathAsPathExcludingLanguageModule()
+                              "-cp", getClassPathAsPathExcludingLanguageModule(),
+                              "-suppress-warnings", "ceylonNamespace"
                               /*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
@@ -320,8 +321,10 @@ public class MiscTest extends CompilerTest {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
-                moduleNames, null);
+                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk",
+                        "-suppress-warnings", "ceylonNamespace",
+                        "-cp", getClassPathAsPath()), 
+                        moduleNames, null);
         Boolean result = task.call();
         Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
     }
