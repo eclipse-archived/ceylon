@@ -134,7 +134,9 @@ public abstract class CompilerTest {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", "-cp", getClassPathAsPath());
+        defaultOptions = new ArrayList<String>(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
+                "-cp", getClassPathAsPath(),
+                "-suppress-warnings", "compilerAnnotation"));
     }
 
     public static String getClassPathAsPath() {
