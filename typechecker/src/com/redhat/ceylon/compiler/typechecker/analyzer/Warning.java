@@ -12,5 +12,6 @@ public enum Warning {
     ceylonNamespace,
     javaNamespace, 
     suppressedAlready, 
-    suppressesNothing;
+    suppressesNothing, 
+    unknownWarning;
 }

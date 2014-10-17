@@ -44,7 +44,11 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
     }
     
     private E parseName(String name) {
-        return Enum.valueOf(enumType, name);
+        try {
+            return Enum.valueOf(enumType, name);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
     
     public void visitAny(Node that) {
@@ -53,11 +57,14 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
             Message error = errorIter.next();
             if (error instanceof UsageWarning) {
                 UsageWarning warning = (UsageWarning)error;
-                E w = parseName(warning.getWarningName());
-                Integer numSuppressed = counts.get(w);
-                if (suppressed.get(w) != null) {
+                E warningName = parseName(warning.getWarningName());
+                if (warningName == null) {
+                    continue;
+                }
+                Integer numSuppressed = counts.get(warningName);
+                if (suppressed.get(warningName) != null) {
                     warning.setSuppressed(true);
-                    counts.put(w, numSuppressed.intValue()+1);
+                    counts.put(warningName, numSuppressed.intValue()+1);
                 }
             }
         }
@@ -101,7 +108,7 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
 
     private EnumMap<E,Boolean> pre(AnnotationList al) {
         EnumMap<E,Boolean> added = new EnumMap(enumType);
-        for (Map.Entry<E, Tree.StringLiteral> entry : getWarningNames(findSuppressWarnings(al)).entrySet()) {
+        for (Map.Entry<E, Tree.StringLiteral> entry : getWarningNames(findSuppressWarnings(al), true).entrySet()) {
             E warning = entry.getKey();
             Boolean suppressedByAnnotation = this.suppressed.get(warning);
             if (suppressedByAnnotation == null) {// not suppressed
@@ -119,7 +126,7 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
     }
 
     private void post(EnumMap<E, Integer> priorCounts, EnumMap<E,Boolean> added, AnnotationList al) {
-        for (Map.Entry<E, Tree.StringLiteral> warningName : getWarningNames(findSuppressWarnings(al)).entrySet()) {
+        for (Map.Entry<E, Tree.StringLiteral> warningName : getWarningNames(findSuppressWarnings(al), false).entrySet()) {
             Integer before = priorCounts.get(warningName.getKey());
             if (before == null) {
                 before = 0;
@@ -159,14 +166,23 @@ public class WarningSuppressionVisitor<E extends Enum<E>> extends Visitor {
         return null;
     }
     
-    private Map<E, Tree.StringLiteral> getWarningNames(Tree.Annotation anno) {
+    private Map<E, Tree.StringLiteral> getWarningNames(Tree.Annotation anno, 
+            final boolean warnAboutUnknownWarnings) {
         if (anno == null) {
             return Collections.emptyMap();
         }
         final Map<E, Tree.StringLiteral> suppressed = new HashMap<E, Tree.StringLiteral>(2);
         anno.visit(new Visitor() {
             public void visit(Tree.StringLiteral that) {
-                suppressed.put(parseName(that.getText()), that);
+                String warningName = that.getText();
+                E warning = parseName(warningName);
+                if (warning == null) {
+                    if (warnAboutUnknownWarnings) {
+                        that.addUsageWarning(Warning.unknownWarning, "unknown warning: " + warningName);
+                    }
+                } else {
+                    suppressed.put(warning, that);
+                }
             }
         });
         return suppressed;
