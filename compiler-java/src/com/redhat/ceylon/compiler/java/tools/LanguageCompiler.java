@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -65,6 +66,7 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
@@ -383,8 +385,24 @@ public class LanguageCompiler extends JavaCompiler {
             
             PhasedUnit externalPhasedUnit = compilerDelegate.getExternalSourcePhasedUnit(srcDir, file);
             
+            String suppressWarnings = options.get(OptionName.CEYLONSUPPRESSWARNINGS);
+            final EnumSet<Warning> suppressedWarnings;
+            if (suppressWarnings != null) {
+                if (suppressWarnings.trim().isEmpty()) {
+                    suppressedWarnings = EnumSet.allOf(Warning.class);
+                } else {
+                    suppressedWarnings = EnumSet.noneOf(Warning.class);
+                    for (String name : suppressWarnings.trim().split(" *, *")) {
+                        suppressedWarnings.add(Warning.valueOf(name));
+                    }
+                }
+            } else {
+                suppressedWarnings = EnumSet.noneOf(Warning.class);
+            }
+            
             if (externalPhasedUnit != null) {
                 phasedUnit = new CeylonPhasedUnit(externalPhasedUnit, filename, map);
+                phasedUnit.setSuppressedWarnings(suppressedWarnings);
                 phasedUnits.addPhasedUnit(externalPhasedUnit.getUnitFile(), phasedUnit);
                 gen.setMap(map);
                 
@@ -428,6 +446,7 @@ public class LanguageCompiler extends JavaCompiler {
                      */
                     com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
                     phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
+                    phasedUnit.setSuppressedWarnings(suppressedWarnings);
                     phasedUnits.addPhasedUnit(file, phasedUnit);
                     gen.setMap(map);
 

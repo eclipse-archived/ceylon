@@ -311,10 +311,10 @@ public class CeylonEnter extends Enter {
         timer.startTask("loadPackageDescriptors");
         compilerDelegate.loadPackageDescriptors(modelLoader);
         timer.endTask();
-
+        
         // at this point, abort if we had any errors logged due to module descriptors
         timer.startTask("collectTreeErrors");
-        collectTreeErrors(false);
+        collectTreeErrors(false, false);
         timer.endTask();
         // check if we abort on errors or not
         if (options.get(OptionName.CEYLONCONTINUE) == null) {
@@ -484,10 +484,10 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(localInterfaceVisitor);
         }
         
-        collectTreeErrors(true);
+        collectTreeErrors(true, true);
     }
 
-    private void collectTreeErrors(boolean runAssertions) {
+    private void collectTreeErrors(boolean runAssertions, final boolean reportWarnings) {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
         for (PhasedUnit pu : listOfUnits) {
@@ -522,10 +522,12 @@ public class CeylonEnter extends Enter {
                     logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
-                protected void out(UsageWarning err) {
-                    setSource();
-                    Node node = getIdentifyingNode(err.getTreeNode());
-                    logWarning(getPosition(node), "ceylon", err.getMessage());
+                protected void out(UsageWarning warning) {
+                    if (reportWarnings && !warning.isSuppressed()) {
+                        setSource();
+                        Node node = getIdentifyingNode(warning.getTreeNode());
+                        logWarning(getPosition(node), "ceylon", warning.getMessage());
+                    }
                 }
                 @Override
                 protected void out(Node that, String message) {
@@ -569,6 +571,8 @@ public class CeylonEnter extends Enter {
                 protected void out(AnalysisError err) {}
                 @Override
                 protected void out(UnsupportedError err) {}
+                @Override
+                protected void out(UsageWarning warn) {}
                 @Override
                 protected void out(Node that, ParseError err) {}
                 @Override

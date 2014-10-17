@@ -45,6 +45,7 @@ import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -167,6 +168,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
+    private String suppressWarnings;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -258,6 +260,20 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Passes an option to the underlying java compiler.")
     public void setJavac(List<String> javac) {
         this.javac = javac;
+    }
+    
+    @Option
+    @OptionArgument(argumentName = "warnings")
+    @Description("Suppress the reporting of the given warnings. " +
+            "If no `warnings` are given then suppresss the reporting of all warnings, " +
+            "otherwise just suppresss those which are present. " +
+            "Allowed flags include: " +
+            "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
+            "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
+            "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
+            "`javaNamespace`.")
+    public void setSuppressWarnings(String warnings) {
+        this.suppressWarnings = warnings;
     }
 
     private List<String> arguments;
@@ -400,6 +416,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 arguments.add("-rep");
                 arguments.add(uri.toString());
             }
+        }
+        
+        if (suppressWarnings != null) {
+            arguments.add("-suppress-warnings");
+            arguments.add(suppressWarnings);
         }
         
         addJavacArguments(arguments);

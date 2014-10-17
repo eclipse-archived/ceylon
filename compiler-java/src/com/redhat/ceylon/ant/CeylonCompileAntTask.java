@@ -89,6 +89,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Boolean noOsgi;
     private Boolean noPom;
     private Boolean pack200;
+    private String suppressWarnings;
 
     private List<File> compileList = new ArrayList<File>(2);
     private Set<Module> modules = null;
@@ -128,6 +129,14 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      */
     public void setPack200(Boolean pack200) {
         this.pack200 = pack200;
+    }
+
+    public String getSuppressWarnings() {
+        return suppressWarnings;
+    }
+
+    public void setSuppressWarnings(String suppressWarnings) {
+        this.suppressWarnings = suppressWarnings;
     }
 
     /**
@@ -440,6 +449,14 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
         if (pack200!= null && pack200.booleanValue())
             appendOption(cmd, "--pack200");
+        
+        if (suppressWarnings != null) {
+            if (suppressWarnings.isEmpty()) {
+                appendOption(cmd, "--suppress-warnings");
+            } else {
+                appendOption(cmd, "--suppress-warnings=" + suppressWarnings);
+            }
+        }
         
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");

@@ -204,7 +204,8 @@ public class RecognizedOptions {
         SRC,
         BOOTSTRAPCEYLON,
         CEYLONDISABLEOPT,
-        CEYLONDISABLEOPT_CUSTOM);
+        CEYLONDISABLEOPT_CUSTOM,
+        CEYLONSUPPRESSWARNINGS);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -283,7 +284,8 @@ public class RecognizedOptions {
         XD,
         BOOTSTRAPCEYLON,
         CEYLONDISABLEOPT,
-        CEYLONDISABLEOPT_CUSTOM);
+        CEYLONDISABLEOPT_CUSTOM,
+        CEYLONSUPPRESSWARNINGS);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
@@ -391,6 +393,7 @@ public class RecognizedOptions {
         new COption(CEYLONRESOURCEROOT,     "opt.arg.path",      "opt.ceylonresourceroot"),
         new COption(CEYLONDISABLEOPT,                            "opt.ceylondisableopt"),
         new COption(CEYLONDISABLEOPT_CUSTOM,                     "opt.ceylondisableopt.suboptlist"),
+        new COption(CEYLONSUPPRESSWARNINGS, "opt.arg.value",     "opt.ceylonsuppresswarnings"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {
