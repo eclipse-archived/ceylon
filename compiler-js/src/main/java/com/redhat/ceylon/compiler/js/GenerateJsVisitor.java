@@ -674,9 +674,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void addToPrototype(Node node, ClassOrInterface d, List<Tree.Statement> statements) {
-        boolean enter = opts.isOptimize();
+        final boolean isSerial = d instanceof com.redhat.ceylon.compiler.typechecker.model.Class
+                && ((com.redhat.ceylon.compiler.typechecker.model.Class)d).isSerializable();
+        boolean enter = opts.isOptimize() || isSerial;
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
-        if (enter) {
+        if (enter && !isSerial) {
             enter = !statements.isEmpty();
             if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
                 com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
@@ -694,20 +696,25 @@ public class GenerateJsVisitor extends Visitor
             
             out("(function(", names.self(d), ")");
             beginBlock();
-            for (Statement s: statements) {
-                addToPrototype(d, s, plist);
-            }
-            //Generated attributes with corresponding parameters will remove them from the list
-            if (plist != null) {
-                for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
-                    generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+            if (opts.isOptimize()) {
+                for (Statement s: statements) {
+                    addToPrototype(d, s, plist);
+                }
+                //Generated attributes with corresponding parameters will remove them from the list
+                if (plist != null) {
+                    for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
+                        generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                    }
+                }
+                if (d.isMember()) {
+                    ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                    if (coi != null && d.inherits(coi)) {
+                        out(names.self(d), ".", names.name(d),"=", names.name(d), ";");
+                    }
                 }
             }
-            if (d.isMember()) {
-                ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
-                if (coi != null && d.inherits(coi)) {
-                    out(names.self(d), ".", names.name(d),"=", names.name(d), ";");
-                }
+            if (isSerial) {
+                TypeGenerator.addSerializer((com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
             }
             endBlock();
             out(")(", names.name(d), ".$$.prototype)");
@@ -3143,6 +3150,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** This interface is used inside type initialization method. */
     static interface PrototypeInitCallback {
+        /** Generates a function that adds members to a prototype, then calls it. */
         void addToPrototypeCallback();
     }
 
