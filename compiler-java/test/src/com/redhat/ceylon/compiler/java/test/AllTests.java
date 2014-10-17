@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
 import com.redhat.ceylon.compiler.java.test.model.ValueTypeTest;
 import com.redhat.ceylon.compiler.java.test.quoting.QuotingTest;
 import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
+import com.redhat.ceylon.compiler.java.test.reporting.ReportingTest;
 import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.OptimizationTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
@@ -102,6 +103,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTest.class,
+    ReportingTest.class
 })
 public class AllTests {
 }
