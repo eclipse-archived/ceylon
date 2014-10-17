@@ -1,8 +1,17 @@
-function(){
-  var o=this.instance();
-  if (o === null) return AppliedClass$jsint(?);
-  //Get the type
-  var t=o.getT$all()[o.getT$name()];
-  var mm = getrtmm$(t);
-  console.log("CLAZZ " + t + " META " + require('util').inspect(mm));
-}
+  var _inst=this.$$targs$$.Instance$SerRefImpl;
+  var mm=getrtmm$$(_inst.t);
+  var args;
+  if (mm && mm.ps) {
+    args={t:'T',l:[]};
+    for (var i=0; i < mm.ps.length; i++) {
+      var pt=mm.ps[i].$t;
+      if (typeof pt === 'string') {
+        pt=this.instance().$$targs$$[pt];
+        if (!pt)console.log("AGUAS! no encuentro tipo de parametro " + mm.ps[i].$t + " en " + require('util').inspect(this.instance().$$targs$$));
+      }
+      args.l.push(pt);
+    }
+  } else {
+    args={t:Empty};
+  }
+  return AppliedClass(_inst.t,{Type$AppliedClass:_inst,Arguments$AppliedClass:args},_inst.a);

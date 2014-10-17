@@ -6,8 +6,8 @@ native class JsDeserCtxt() satisfies DeserializationContext {
   shared dynamic refs;
   shared dynamic ids;
   dynamic {
-    refs = dynamic[];
-    ids  = dynamic[];
+    refs = dynamic[\ithis];
+    ids  = dynamic[\ithis];
   }
   shared actual native Reference<Instance> reference<Instance>(
         Object id, Class<Instance> clazz);

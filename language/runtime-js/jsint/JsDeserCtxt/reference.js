@@ -6,5 +6,5 @@ function(id,model,$mpt){
     throw AssertionError("reference already made to instance with a different class");
   }
   if (model.declaration.abstract)throw AssertionError("class is abstract: " + model.string);
-  return DeserRefImpl(this, id, model, {Instance$DeserRefImpl:$mpt.Instance$reference});
+  return DeserRefImpl$jsint(this, id, model, null, {Instance$DeserRefImpl:$mpt.Instance$reference,Outer$DeserRefImpl:{t:Nothing}});
 }

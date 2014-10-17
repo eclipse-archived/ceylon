@@ -8,6 +8,6 @@ function(id, model, outerRef,$mpt){
   if (model.declaration.abstract) {
     throw AssertionError("class is abstract: " + model.string);
   }
-  return new DeserRefImpl(this, id, model, outerRef,
+  return new DeserRefImpl$jsint(this, id, model, outerRef,
     {Instance$DeserRefImpl:$mpt.Instance$memberReference,Outer$DeserRefImpl:$mpt.Outer$memberReference});
 }
