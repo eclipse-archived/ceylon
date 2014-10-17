@@ -524,9 +524,11 @@ public class AnnotationVisitor extends Visitor {
             Package pack = that.getUnit().getPackage().getModule().getPackage(packageName);
             if (pack == null) {
                 if (DOC_LINK_MODULE.equals(kind)) {
-                    that.addUsageWarning("module does not exist: '" + packageName + "'");
+                    that.addUsageWarning(Warning.doclink, 
+                                "module does not exist: '" + packageName + "'");
                 } else {
-                    that.addUsageWarning("package does not exist: '" + packageName + "'");
+                    that.addUsageWarning(Warning.doclink, 
+                                "package does not exist: '" + packageName + "'");
                 }
             }
             else {
@@ -536,7 +538,8 @@ public class AnnotationVisitor extends Visitor {
                     if (pack.equals(rootPack)) {
                         that.setModule(pack.getModule());
                     } else {
-                        that.addUsageWarning("module does not exist: '" + packageName + "'");
+                        that.addUsageWarning(Warning.doclink,
+                                    "module does not exist: '" + packageName + "'");
                     }
                 }
                 if (names.length > 0) {
@@ -549,7 +552,8 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         if (base==null) {
-            that.addUsageWarning("declaration does not exist: '" + 
+            that.addUsageWarning(Warning.doclink,
+                    "declaration does not exist: '" + 
                     (names.length > 0 ? names[0] : text) + "'");
         }
         else {
@@ -570,7 +574,8 @@ public class AnnotationVisitor extends Visitor {
                 if (base instanceof TypeDeclaration || base instanceof Functional) {
                     Declaration qualified = base.getMember(names[i], null, false);
                     if (qualified==null) {
-                        that.addUsageWarning("member declaration or parameter does not exist: '" + names[i] + "'");
+                        that.addUsageWarning(Warning.doclink,
+                                    "member declaration or parameter does not exist: '" + names[i] + "'");
                         break;
                     }
                     else {
@@ -579,7 +584,8 @@ public class AnnotationVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.addUsageWarning("not a type or functional declaration: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink,
+                                "not a type or functional declaration: '" + base.getName() + "'");
                     break;
                 }
             }
@@ -588,19 +594,19 @@ public class AnnotationVisitor extends Visitor {
         if( base != null ) {
             if (kind != null && (names.length == 1 || names.length == that.getQualified().size() + 1)) {
                 if (DOC_LINK_CLASS.equals(kind) && !(base instanceof Class)) {
-                    that.addUsageWarning("linked declaration is not a class: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink, "linked declaration is not a class: '" + base.getName() + "'");
                 } else if (DOC_LINK_INTERFACE.equals(kind) && !(base instanceof Interface)) {
-                    that.addUsageWarning("linked declaration is not an interface: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink, "linked declaration is not an interface: '" + base.getName() + "'");
                 } else if (DOC_LINK_ALIAS.equals(kind) && !(base instanceof TypeAlias)) {
-                    that.addUsageWarning("linked declaration is not a type alias: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink, "linked declaration is not a type alias: '" + base.getName() + "'");
                 } else if (DOC_LINK_FUNCTION.equals(kind) && !(base instanceof Method)) {
-                    that.addUsageWarning("linked declaration is not a function: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink, "linked declaration is not a function: '" + base.getName() + "'");
                 } else if (DOC_LINK_VALUE.equals(kind) && !(base instanceof Value)) {
-                    that.addUsageWarning("linked declaration is not a value: '" + base.getName() + "'");
+                    that.addUsageWarning(Warning.doclink, "linked declaration is not a value: '" + base.getName() + "'");
                 }
             }
             if( parentheses && !(base instanceof Functional) ) {
-                that.addUsageWarning("linked declaration is not a function: '" + base.getName() + "'");
+                that.addUsageWarning(Warning.doclink, "linked declaration is not a function: '" + base.getName() + "'");
             }
         }
 

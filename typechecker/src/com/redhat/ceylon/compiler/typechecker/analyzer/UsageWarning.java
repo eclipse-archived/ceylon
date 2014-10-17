@@ -9,8 +9,25 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
  */
 public class UsageWarning extends AnalysisMessage {
     
-	public UsageWarning(Node treeNode, String message) {
-		super(treeNode, message);
-	}
+    private final String name;
     
+    private boolean suppressed;
+    
+    public UsageWarning(Node treeNode, String message, String name) {
+        super(treeNode, message);
+        this.name = name;
+        this.suppressed = false;
+    }
+    
+    public String getWarningName() {
+        return name;
+    }
+    
+    public boolean isSuppressed() {
+        return suppressed;
+    }
+    
+    public void setSuppressed(boolean suppressed) {
+        this.suppressed = suppressed;
+    }
 }

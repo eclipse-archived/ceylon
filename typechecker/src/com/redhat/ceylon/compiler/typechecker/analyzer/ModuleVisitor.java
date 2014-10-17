@@ -124,7 +124,8 @@ public class ModuleVisitor extends Visitor {
                 }
                 else {
                     if (initialName.equals("ceylon")) {
-                        importPath.addUsageWarning("discouraged module name: this namespace is used by Ceylon platform modules");
+                        importPath.addUsageWarning(Warning.ceylonNamespace,
+                                "discouraged module name: this namespace is used by Ceylon platform modules");
                     }
                     else if (initialName.equals("java") || initialName.equals("javax")) {
                         importPath.addUnsupportedError("unsupported module name: this namespace is used by Java platform modules");
@@ -186,10 +187,12 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 if (name.get(0).equals("ceylon")) {
-                    importPath.addUsageWarning("discouraged package name: this namespace is used by Ceylon platform modules");
+                    importPath.addUsageWarning(Warning.ceylonNamespace,
+                            "discouraged package name: this namespace is used by Ceylon platform modules");
                 }
                 else if (name.get(0).equals("java")||name.get(0).equals("javax")) {
-                    importPath.addUsageWarning("discouraged package name: this namespace is used by Java platform modules");
+                    importPath.addUsageWarning(Warning.javaNamespace,
+                            "discouraged package name: this namespace is used by Java platform modules");
                 }
                 importPath.setModel(pkg);
                 if (!completeOnlyAST) {

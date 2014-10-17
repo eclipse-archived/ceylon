@@ -218,9 +218,9 @@ public abstract class Node {
     public void addUnsupportedError(String message) {
         addError( new UnsupportedError(this, message) );
     }
-
-    public void addUsageWarning(String message) {
-        addError( new UsageWarning(this, message) );
+    
+    public <E extends Enum<E>> void addUsageWarning(E warningName, String message) {
+        addError( new UsageWarning(this, message, warningName.toString()) );
     }
     
     public void addParseError(ParseError error) {

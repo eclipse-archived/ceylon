@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.lang.ref.WeakReference;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -23,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.VisibilityVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -44,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -73,7 +76,7 @@ public class PhasedUnit {
     private boolean usageAnalyzed = false;
     private boolean literalsProcessed = false;
     private boolean moduleVisited = false;
-
+    private EnumSet<Warning> suppressedWarnings = EnumSet.noneOf(Warning.class);
     public VirtualFile getSrcDir() {
         return srcDir;
     }
@@ -211,7 +214,8 @@ public class PhasedUnit {
             for (int i=0; i<fn.length(); i = fn.offsetByCodePoints(i, 1)) {
                 int cp = fn.codePointAt(i);
                 if (cp>127) {
-                    compilationUnit.addUsageWarning("source file name has non-ASCII characters: " + fn);
+                    compilationUnit.addUsageWarning(Warning.filenameNonAscii,
+                            "source file name has non-ASCII characters: " + fn);
                 }
             }
             for (Unit u: unit.getPackage().getUnits()) {
@@ -226,8 +230,9 @@ public class PhasedUnit {
                         }
                         compilationUnit.addError(errorMessage);                        
                     } else {
-                        compilationUnit.addUsageWarning("source file names differ only by case: " +
-                                unit.getFullPath() + " and " + u.getFullPath());
+                        compilationUnit.addUsageWarning(Warning.filenameClaselessCollision,
+                                "source file names differ only by case: " +
+                                        unit.getFullPath() + " and " + u.getFullPath());
                     }
                 }
             }
@@ -366,6 +371,7 @@ public class PhasedUnit {
             compilationUnit.visit(rc);
             compilationUnit.visit(new UsageVisitor(rc));
             compilationUnit.visit(new DeprecationVisitor());
+            compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, suppressedWarnings));
             usageAnalyzed = true;
         }
     }
@@ -428,5 +434,9 @@ public class PhasedUnit {
 
     public boolean isScanningDeclarations() {
         return scanningDeclarations;
+    }
+
+    public void setSuppressedWarnings(EnumSet<Warning> suppressedWarnings) {
+        this.suppressedWarnings = suppressedWarnings;
     }
 }
