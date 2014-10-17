@@ -306,6 +306,9 @@ public class TypeGenerator {
         gen.endLine(true);
         gen.share(d);
         initializeType(that, gen);
+        if (d.isSerializable()) {
+            addDeserializer(d, gen);
+        }
     }
 
     static void callSuperclass(final Tree.ExtendedType extendedType, final Class d, final Node that,
@@ -414,6 +417,26 @@ public class TypeGenerator {
                     gen.getNames().self(sub), ".", gen.getNames().setter(d));
             gen.endLine(true);
         }
+    }
+
+    /** Add serialize method to a class. Can be on the prototype or the instance, depending on the style being used. */
+    static void addSerializer(final com.redhat.ceylon.compiler.typechecker.model.Class d,
+            final GenerateJsVisitor gen) {
+        final String dc = gen.getNames().createTempVariable();
+        gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
+        gen.beginBlock();
+        gen.out("/*TODO serialize internal state */");
+        gen.endBlockNewLine();
+    }
+    /** Add deserialize method to a class. This one resides directly under the class constructor, since it creates
+     * an uninitialized instance and adds state to it. */
+    static void addDeserializer(final com.redhat.ceylon.compiler.typechecker.model.Class d,
+            final GenerateJsVisitor gen) {
+        final String dc = gen.getNames().createTempVariable();
+        gen.out(gen.getNames().name(d), ".deser$$=function(", dc, ")");
+        gen.beginBlock();
+        gen.out("/*TODO deserialize internal state */");
+        gen.endBlockNewLine();
     }
 
     public static class StaticTypeComparator implements Comparator<Tree.StaticType> {
