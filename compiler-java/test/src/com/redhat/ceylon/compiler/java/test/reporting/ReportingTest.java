@@ -71,5 +71,15 @@ public class ReportingTest extends CompilerTest {
                 new Kind[]{Kind.WARNING},
                 new CompilerError(Kind.WARNING, "", 3, "warnings already suppressed by annotation"));
     }
+    
+    @Test
+    public void testUnknownWarningInAnno() {
+        assertErrors(new String[]{"UnknownWarningInAnno.ceylon"},
+                defaultOptions,
+                null,
+                new Kind[]{Kind.WARNING},
+                new CompilerError(Kind.WARNING, "", 1, "unknown warning: blahblah"));
+    }
+    
 
 }
