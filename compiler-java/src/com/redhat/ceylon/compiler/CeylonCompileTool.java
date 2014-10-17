@@ -45,7 +45,6 @@ import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -168,7 +167,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
-    private String suppressWarnings;
+    private String suppressWarnings = DefaultToolOptions.getCompilerSuppressWarnings();
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
