@@ -230,7 +230,7 @@ public class PhasedUnit {
                         }
                         compilationUnit.addError(errorMessage);                        
                     } else {
-                        compilationUnit.addUsageWarning(Warning.filenameClaselessCollision,
+                        compilationUnit.addUsageWarning(Warning.filenameCaselessCollision,
                                 "source file names differ only by case: " +
                                         unit.getFullPath() + " and " + u.getFullPath());
                     }

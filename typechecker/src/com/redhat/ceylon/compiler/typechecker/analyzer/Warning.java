@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 public enum Warning {
     filenameNonAscii,
-    filenameClaselessCollision,
+    filenameCaselessCollision,
     deprecation,
     compilerAnnotation,
     doclink,
