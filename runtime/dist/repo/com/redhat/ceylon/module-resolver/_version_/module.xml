@@ -38,6 +38,7 @@
         <system export="true">
             <paths>
                 <path name="javax/xml"/>
+                <path name="javax/xml/bind"/>
                 <path name="javax/xml/namespace"/>
                 <path name="javax/xml/parsers"/>
                 <path name="javax/xml/stream"/>
