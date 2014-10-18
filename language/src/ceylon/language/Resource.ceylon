@@ -3,11 +3,21 @@ import ceylon.language.meta.declaration {
 }
 
 "A file packaged within a module. A `Resource` may be 
- obtained by calling [[Module.resourceByPath]]. For example:
+ obtained by calling [[Module.resourceByPath]]. For example,
+ this code loads a resource from the subdirectory 
+ `com/redhat/example/` of the resource directory:
      
      Module mod = `module com.redhat.example`;
      assert (exists resource 
-        = mod.resourceByPath(\"com/redhat/example/file.txt\"));
+        = mod.resourceByPath(\"file.txt\"));
+     print(resource.textContent());
+ 
+ Alternatively, a resource may be identified by a 
+ fully-qualified path beginning with `/`, for example:
+ 
+     Module mod = `module com.redhat.example`;
+     assert (exists resource 
+        = mod.resourceByPath(\"/com/redhat/example/file.txt\"));
      print(resource.textContent());"
 by("Enrique Zamudio")
 see (`function Module.resourceByPath`)
