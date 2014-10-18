@@ -1409,7 +1409,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Should we support inline <literal>object</literal> declarations, for 
             example:</para>
             <programlisting>iterator => object satisfies Iterable&lt;Nothing&gt; { next() => finished; }</programlisting>
-            <para>Or, alternatively, a kind of named argument ""instantiation" syntax for
+            <para>Or, alternatively, a kind of named argument "instantiation" syntax for
             interfaces and abstract classes:</para>
             <programlisting>iterator => Iterable { next() => finished; }</programlisting>
             <para>The first option is more flexible, but also more verbose. The second is
@@ -3084,8 +3084,22 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
             
-            <synopsis>TypeDec: "`" TypeKeyword MemberDecQualifier? (TypeName | MemberName) "`"</synopsis>
+            <synopsis>TypeDec: "`" TypeKeyword ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
             
+            <para>For a class or interface reference expression, the name of 
+            the class or interface is optional. In this case, the class or
+            interface reference is to the immediately containing class or
+            interface, if any, as defined in <xref linkend="selfreferences"/>. 
+            For alias or type parameter reference expressions, the name of 
+            the alias or type parameter is required.</para> 
+            
+            <programlisting>ClassDeclaration thisClass = `class`;</programlisting>
+            <programlisting>ClassDeclaration personClass = `class Person`;</programlisting>
+            <programlisting>ClassDeclaration thisInterface = `interface`;</programlisting>
+            <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
+            <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
+            <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
+
             <para>A <emphasis>value reference expression</emphasis> or
             <emphasis>function reference expression</emphasis> is an optional 
             member declaration qualifier, followed by the name of a function,
@@ -3103,10 +3117,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             referenced declaration must match the kind of reference indicated
             by the keyword.</para>
             
-            <programlisting>ClassDeclaration personClass = `class Person`;</programlisting>
-            <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
-            <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
-            <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
             <programlisting>ValueDeclaration personNameAttribute = `value Person.name`;</programlisting>
             <programlisting>FunctionDeclaration personSayMethod = `function Person.say`;</programlisting>
             <programlisting>FunctionDeclaration processWriteMethod = `function process.write`;</programlisting>
@@ -3121,26 +3131,34 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             name, as defined by <xref linkend="packages"/>, with the keyword
             <literal>package</literal>, surrounded by backticks.</para>
             
-            <synopsis>PackageDec: "`" "package" FullPackageName "`"</synopsis>
+            <synopsis>PackageDec: "`" "package" FullPackageName? "`"</synopsis>
             
             <para>The package name must refer to a package from which an 
             <literal>import</literal> statement in the same compilation unit may 
             import declarations, as defined by <xref linkend="imports"/>.</para>
             
-            <programlisting>Package modelPackage = `package ceylon.language.meta.model`;</programlisting>
+            <para>If there is no explicit package name, the package reference
+            is to the package in which the package reference expression occurs.</para>
+            
+            <programlisting>Package currentPackage = `package`;
+Package modelPackage = `package ceylon.language.meta.model`;</programlisting>
             
             <para>A <emphasis>module reference expression</emphasis> is a module
             name, as defined by <xref linkend="modulenamesandversionidentifiers"/>, 
             with the keyword <literal>module</literal>, surrounded by backticks.</para>
             
-            <synopsis>ModuleDec: "`" "module" FullPackageName "`"</synopsis>
+            <synopsis>ModuleDec: "`" "module" FullPackageName? "`"</synopsis>
             
             <para>The module name must refer to the module to which the 
             compilation unit belongs, as specified by <xref linkend="sourcelayout"/>, 
             or to a module imported by the module to which the compilation unit 
             belongs, as defined by <xref linkend="moduledescriptors"/>.</para>
             
-            <programlisting>Module languageModule = `module ceylon.language`;</programlisting>
+            <para>If there is no explicit module name, the module reference
+            is to the package in which the module reference expression occurs.</para>
+            
+            <programlisting>Module currentModule = `module`;
+Module languageModule = `module ceylon.language`;</programlisting>
         
         </section>
         
