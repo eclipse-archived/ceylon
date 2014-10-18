@@ -361,3 +361,21 @@ void objectMemberRefs() {
     Function<Anything,[]|[String]> fun = `process.writeLine`;
     Value<String[],Nothing> att = `process.arguments`;
 }
+
+void testImplicitRefs() {
+    Module mod = `module`;
+    Package pack = `package`;
+    class C() {
+        ClassDeclaration clazz = `class`;
+        @error value int = `interface`; 
+    } 
+    interface I {
+        void run() {
+            InterfaceDeclaration int = `interface`;
+            @error value clazz = `class`;
+        } 
+    } 
+    @error value int = `interface`; 
+    @error value clazz = `class`; 
+}
+
