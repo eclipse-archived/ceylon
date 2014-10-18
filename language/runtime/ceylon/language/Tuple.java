@@ -624,7 +624,7 @@ public final class Tuple<Element, First extends Element,
         array[0] = e;
         arraycopy(this.array, 0, array, 1, length);
         return new Tuple<java.lang.Object, Other, Tuple<Element,? extends First,? extends Rest>>
-                (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
+                (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest, false);
     }
     
     @Annotations({
@@ -635,12 +635,17 @@ public final class Tuple<Element, First extends Element,
     public <Other> Tuple<java.lang.Object, First, ? extends Sequential<?>>
     withTrailing(@Ignore TypeDescriptor $reifiedOther,
                  @Name("element") Other e) {
-        int length = this.array.length;
-        java.lang.Object[] array = new java.lang.Object[length+1];
-        arraycopy(this.array, 0, array, 0, length);
-        array[length] = e;
-        return new Tuple<java.lang.Object, First, Sequential<?>>
-                (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
+        if (rest.getEmpty()) {
+            int length = this.array.length;
+            java.lang.Object[] array = new java.lang.Object[length+1];
+            arraycopy(this.array, 0, array, 0, length);
+            array[length] = e;
+            return new Tuple<java.lang.Object, First, Sequential<?>>
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
+        } else {
+            return new Tuple<java.lang.Object, First, Sequential<?>>
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest.withTrailing($reifiedOther, e));
+        }
     }
     
     @Annotations({
@@ -651,17 +656,22 @@ public final class Tuple<Element, First extends Element,
     public <Other> Tuple<java.lang.Object,First,Sequential<?>>
     append(@Ignore TypeDescriptor $reifiedOther, 
            @Name("elements") Sequential<? extends Other> es) {
-        int length = this.array.length;
-        java.lang.Object[] array = new java.lang.Object[length+Util.toInt(es.getSize())];
-        arraycopy(this.array, 0, array, 0, length);
-        int ii = length;
-        Iterator<?> iter = es.iterator();
-        java.lang.Object o;
-        while (!((o = iter.next()) instanceof Finished)) {
-            array[ii++] = o;
+        if (rest.getEmpty()) {
+            int length = this.array.length;
+            java.lang.Object[] array = new java.lang.Object[length+Util.toInt(es.getSize())];
+            arraycopy(this.array, 0, array, 0, length);
+            int ii = length;
+            Iterator<?> iter = es.iterator();
+            java.lang.Object o;
+            while (!((o = iter.next()) instanceof Finished)) {
+                array[ii++] = o;
+            }
+            return new Tuple<java.lang.Object,First,Sequential<?>>
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
+        } else {
+            return new Tuple<java.lang.Object,First,Sequential<?>>
+                    (TypeDescriptor.union($reifiedElement,$reifiedOther), array, rest.append($reifiedOther, es));
         }
-        return new Tuple<java.lang.Object,First,Sequential<?>>
-                (TypeDescriptor.union($reifiedElement,$reifiedOther), array);
     }
 
     /** Gets the underlying array. Used for iteration using a C-style for */

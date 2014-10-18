@@ -54,7 +54,7 @@ shared void tuples() {
     "Helper for testing tuples with tails"
     void with123([Integer, Integer, Integer+] t, String msg) {
         alias Triplet => [Integer,Integer,Integer+];
-		Triplet? subt = t;
+        Triplet? subt = t;
         check(subt is Triplet, "``msg``: tuples");
         check(t.lastIndex == 2, "``msg``: tuple lastIndex");
         Integer v1 = t[0];
@@ -124,4 +124,9 @@ shared void tuples() {
     //[Integer+] ints = [1,2,3];
     //check(ints.append(5..7)==[1,2,3,5,6,7], "tuple append");
     //check(ints.prepend(5..7)==[5,6,7,1,2,3], "tuple prepend");
+    
+    // #573, concatenate is used to get a Tuple with a nonempty rest (not optimized to array)
+    check(["a", *concatenate(["b"])].append(["c"]) == ["a", "b", "c"], "Tuple.append with sequential rest");
+    check(["b", *concatenate(["c"])].withLeading("a") == ["a", "b", "c"], "Tuple.withLeading with sequential rest");
+    check(["a", *concatenate(["b"])].withTrailing("c") == ["a", "b", "c"], "Tuple.withTrailing with sequential rest");
 }
