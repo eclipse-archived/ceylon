@@ -53,12 +53,19 @@ public class LiteralVisitor extends Visitor {
                 String group = m.group(1);
                 int start = that.getStartIndex()+m.start(1);
                 int end = that.getStartIndex()+m.end(1);
-                int linesCount = text.substring(0, m.start(1)).split("\n").length;
+                String[] linesUpTo = text.substring(0, m.start(1)).split("\n");
                 CommonToken token = new CommonToken(ASTRING_LITERAL, group);
                 token.setStartIndex(start);
                 token.setStopIndex(end-1);
                 token.setTokenIndex(that.getToken().getTokenIndex());
-                token.setLine(that.getToken().getLine()+linesCount-1);
+                int line = 
+                        that.getToken().getLine() +
+                        linesUpTo.length-1;
+                int charInLine = 
+                        linesUpTo.length==0 ? 
+                                0 : linesUpTo[linesUpTo.length-1].length();
+                token.setLine(line);
+                token.setCharPositionInLine(charInLine);
                 that.addDocLink(new Tree.DocLink(token));
             }
         }
