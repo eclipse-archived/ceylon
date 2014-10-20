@@ -45,6 +45,7 @@ import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -270,8 +271,25 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
-            "`javaNamespace`.")
+            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
     public void setSuppressWarnings(String warnings) {
+        if (warnings != null
+                && !warnings.isEmpty()) {
+            for (String warningName : warnings.trim().split(" *, *")) {
+                try {
+                    Warning.valueOf(warningName);
+                } catch (IllegalArgumentException e) {
+                    StringBuffer sb = new StringBuffer();
+                    for (Warning w : Warning.values()) {
+                        sb.append(w.name()).append(", ");
+                    }
+                    sb.setLength(sb.length() - 2);
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg(
+                            "option.error.syntax.suppress.warnings", 
+                            warningName, sb.toString()));
+                }
+            }
+        }
         this.suppressWarnings = warnings;
     }
 
