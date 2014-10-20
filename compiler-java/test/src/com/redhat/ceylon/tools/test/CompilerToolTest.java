@@ -414,4 +414,19 @@ public class CompilerToolTest extends CompilerTest {
         }
         
     }
+    
+    @Test
+    public void testUnknownWarning()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    options("--suppress-warnings=blah"));
+            Assert.fail("Tool should have thrown an exception");
+        } catch (OptionArgumentException e) {
+            // We expect this, not a FatalToolError
+        }
+        
+    }
 }
