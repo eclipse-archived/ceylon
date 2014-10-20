@@ -42,7 +42,7 @@ public final class Array<Element>
     private final java.lang.Object array;
     private final int size;
     private final TypeDescriptor $reifiedElement;
-    private final java.lang.Class<?> arrayElementClass;
+    private final int elementType;
 
     
     @Ignore
@@ -75,144 +75,108 @@ public final class Array<Element>
     	while ((elem=iterator.next())!=finished_.get_()) {
     		list.add((Element) elem);
     	}
-    	final int size = Util.toInt(list.size());
-
-    	final java.lang.Class<?> clazz = 
-    			$reifiedElement.getArrayElementClass();
-    	if (!$reifiedElement.containsNull()) {
-    		if (clazz==String.class) {
-    			//note: we don't unbox strings in an Array<String?>
-    			//      because it would break javaObjectArray()
-    			java.lang.String[] array = 
-    					new java.lang.String[size];
-    			for (int i=0; i<size; i++) {
-    				String s = (String) list.get(i);
-    				array[i] = s==null ? null : s.value;
-    			}
-    			return array;
-    		}
-    		else if (clazz==Integer.class) {
-    			long[] array = new long[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((Integer) list.get(i)).value;
-    			}
-    			return array;
-    		}
-    		else if (clazz==Float.class) {
-    			double[] array = new double[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((Float) list.get(i)).value;
-    			}
-    			return array;
-    		}
-    		else if (clazz==Character.class) {
-    			int[] array = new int[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((Character) list.get(i))
-    						.codePoint;
-    			}
-    			return array;
-    		}
-    		else if (clazz==Boolean.class) {
-    			boolean[] array = new boolean[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((Boolean) list.get(i))
-    						.booleanValue();
-    			}
-    			return array;
-    		}
-            else if (clazz==Byte.class) {
-                byte[] array = new byte[size];
-                for (int i=0; i<size; i++) {
-                    array[i] = 
-                            ((Byte) list.get(i)).value;
-                }
-                return array;
-            }
-    		else if (clazz==java.lang.Boolean.class) {
-    			boolean[] array = new boolean[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Boolean) list.get(i))
-    						.booleanValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Character.class) {
-    			char[] array = new char[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Character) list.get(i))
-    						.charValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Float.class) {
-    			float[] array = new float[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Float) list.get(i))
-    						.floatValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Double.class) {
-    			double[] array = new double[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Double) list.get(i))
-    						.doubleValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Byte.class) {
-    			byte[] array = new byte[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Byte) list.get(i))
-    						.byteValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Short.class) {
-    			short[] array = new short[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Short) list.get(i))
-    						.shortValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Integer.class) {
-    			int[] array = new int[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Integer) list.get(i))
-    						.intValue();
-    			}
-    			return array;
-    		}
-    		else if (clazz==java.lang.Long.class) {
-    			long[] array = new long[size];
-    			for (int i=0; i<size; i++) {
-    				array[i] = 
-    						((java.lang.Long) list.get(i))
-    						.longValue();
-    			}
-    			return array;
-    		}
-    	}
     	
-        java.lang.Object[] array = (java.lang.Object[]) 
-        		java.lang.reflect.Array.newInstance(clazz, size);
-        for (int i=0; i<size; i++) {
-    		array[i] = list.get(i);
+    	final int size = list.size();
+
+    	switch (elementType($reifiedElement)) {
+    	case 13:
+    	    //note: we don't unbox strings in an Array<String?>
+    	    //      because it would break javaObjectArray()
+    	    java.lang.String[] stringArray = new java.lang.String[size];
+    	    for (int i=0; i<size; i++) {
+    	        String string = (String) list.get(i);
+    	        stringArray[i] = string==null ? null : string.value;
+    	    }
+    	    return stringArray;
+    	case 0:
+    	    long[] longPrecisionArray = new long[size];
+    	    for (int i=0; i<size; i++) {
+    	        longPrecisionArray[i] = ((Integer) list.get(i)).value;
+    	    }
+    	    return longPrecisionArray;
+    	case 2:
+    	    double[] doublePrecisionArray = new double[size];
+    	    for (int i=0; i<size; i++) {
+    	        doublePrecisionArray[i] = ((Float) list.get(i)).value;
+    	    }
+    	    return doublePrecisionArray;
+    	case 4:
+    	    int[] codepointArray = new int[size];
+    	    for (int i=0; i<size; i++) {
+    	        codepointArray[i] = ((Character) list.get(i)).codePoint;
+    	    }
+    	    return codepointArray;
+    	case 8:
+    	    boolean[] boolArray = new boolean[size];
+    	    for (int i=0; i<size; i++) {
+    	        boolArray[i] = ((Boolean) list.get(i)).booleanValue();
+    	    }
+    	    return boolArray;
+    	case 6:
+    	    byte[] bitsArray = new byte[size];
+    	    for (int i=0; i<size; i++) {
+    	        bitsArray[i] = ((Byte) list.get(i)).value;
+    	    }
+    	    return bitsArray;
+    	case 9:
+    	    boolean[] booleanArray = new boolean[size];
+    	    for (int i=0; i<size; i++) {
+    	        booleanArray[i] = (java.lang.Boolean) list.get(i);
+    	    }
+    	    return booleanArray;
+    	case 10:
+    	    char[] charArray = new char[size];
+    	    for (int i=0; i<size; i++) {
+    	        charArray[i] = (java.lang.Character) list.get(i);
+    	    }
+    	    return charArray;
+    	case 12:
+    	    float[] floatArray = new float[size];
+    	    for (int i=0; i<size; i++) {
+    	        floatArray[i] = (java.lang.Float) list.get(i);
+    	    }
+    	    return floatArray;
+    	case 3:
+    	    double[] doubleArray = new double[size];
+    	    for (int i=0; i<size; i++) {
+    	        doubleArray[i] = (java.lang.Double) list.get(i);
+    	    }
+    	    return doubleArray;
+    	case 7:
+    	    byte[] byteArray = new byte[size];
+    	    for (int i=0; i<size; i++) {
+    	        byteArray[i] = (java.lang.Byte) list.get(i);
+    	    }
+    	    return byteArray;
+    	case 11:
+    	    short[] shortArray = new short[size];
+    	    for (int i=0; i<size; i++) {
+    	        shortArray[i] = (java.lang.Short) list.get(i);
+    	    }
+    	    return shortArray;
+    	case 5:
+    	    int[] intArray = new int[size];
+    	    for (int i=0; i<size; i++) {
+    	        intArray[i] = (java.lang.Integer) list.get(i);
+    	    }
+    	    return intArray;
+    	case 1:
+    	    long[] longArray = new long[size];
+    	    for (int i=0; i<size; i++) {
+    	        longArray[i] =(java.lang.Long) list.get(i);
+    	    }
+    	    return longArray;
+    	default:
+    	    java.lang.Class<?> clazz = 
+    	            $reifiedElement.getArrayElementClass();
+    	    java.lang.Object[] array = (java.lang.Object[]) 
+    	            java.lang.reflect.Array.newInstance(clazz, size);
+    	    for (int i=0; i<size; i++) {
+    	        array[i] = list.get(i);
+    	    }
+    	    return array;
     	}
-        return array;
+
     }
     
     private static <Element> java.lang.Object createArrayFromList(
@@ -220,402 +184,330 @@ public final class Array<Element>
             final List<? extends Element> elements) {
         
     	if (elements instanceof Array) {
-    		return createArrayFromArray($reifiedElement, (Array<? extends Element>) elements);
+    		return createArrayFromArray($reifiedElement, 
+    		        (Array<? extends Element>) elements);
     	}
     	
         int size = Util.toInt(elements.getSize());
-        if(elements instanceof ceylon.language.String){
+        
+        if (elements instanceof ceylon.language.String) {
             int[] array = new int[size];
             java.lang.String string = elements.toString();
-            int offset = 0;
-            for (int i=0; i<size; i++) {
+            for (int i=0, offset = 0; i<size; i++) {
                 int codePoint = string.codePointAt(offset);
                 offset += java.lang.Character.charCount(codePoint);
                 array[i] = codePoint;
             }
             return array;
         }
-        final java.lang.Class<?> clazz = 
-        		$reifiedElement.getArrayElementClass();
-        
-        if (!$reifiedElement.containsNull()) {
-        	if (clazz==String.class) {
-        		//note: we don't unbox strings in an Array<String?>
-        		//      because it would break javaObjectArray()
-        		java.lang.String[] array = 
-        				new java.lang.String[size];
-        		for (int i=0; i<size; i++) {
-        			String s = (String) 
-        					elements.getFromFirst(i);
-        			array[i] = s==null ? null : s.value;
-        		}
-        		return array;
-        	}
-        	else if (clazz==Integer.class) {
-        		long[] array = new long[size];
-        		for (int i=0; i<size; i++) {
-        			Integer e = (Integer)
-        					elements.getFromFirst(i);
-        			array[i] = e.value;
-        		}
-        		return array;
-        	}
-        	else if (clazz==Float.class) {
-        		double[] array = new double[size];
-        		for (int i=0; i<size; i++) {
-        			Float e = (Float)
-        					elements.getFromFirst(i);
-        			array[i] = e.value;
-        		}
-        		return array;
-        	}
-        	else if (clazz==Character.class) {
-        		int[] array = new int[size];
-        		for (int i=0; i<size; i++) {
-        			Character e = (Character)
-        					elements.getFromFirst(i);
-        			array[i] = e.codePoint;
-        		}
-        		return array;
-        	}
-        	else if (clazz==Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		for (int i=0; i<size; i++) {
-        			Boolean e = (Boolean)
-        					elements.getFromFirst(i);
-        			array[i] = e.booleanValue();
-        		}
-        		return array;
-        	}
-            else if (clazz==Byte.class) {
-                byte[] array = new byte[size];
-                for (int i=0; i<size; i++) {
-                    Byte e = (Byte)
-                            elements.getFromFirst(i);
-                    array[i] = e.value;
-                }
-                return array;
-            }
-        	else if (clazz==java.lang.Boolean.class) {
-        		boolean[] array = new boolean[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Boolean e = (java.lang.Boolean)
-        					elements.getFromFirst(i);
-        			array[i] = e.booleanValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Character.class) {
-        		char[] array = new char[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Character e = (java.lang.Character)
-        					elements.getFromFirst(i);
-        			array[i] = e.charValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Float.class) {
-        		float[] array = new float[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Float e = (java.lang.Float)
-        					elements.getFromFirst(i);
-        			array[i] = e.floatValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Double.class) {
-        		double[] array = new double[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Double e = (java.lang.Double)
-        					elements.getFromFirst(i);
-        			array[i] = e.doubleValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Byte.class) {
-        		byte[] array = new byte[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Byte e = (java.lang.Byte)
-        					elements.getFromFirst(i);
-        			array[i] = e.byteValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Short.class) {
-        		short[] array = new short[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Short e = (java.lang.Short)
-        					elements.getFromFirst(i);
-        			array[i] = e.shortValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Integer.class) {
-        		int[] array = new int[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Integer e = (java.lang.Integer)
-        					elements.getFromFirst(i);
-        			array[i] = e.intValue();
-        		}
-        		return array;
-        	}
-        	else if (clazz==java.lang.Long.class) {
-        		long[] array = new long[size];
-        		for (int i=0; i<size; i++) {
-        			java.lang.Long e = (java.lang.Long)
-        					elements.getFromFirst(i);
-        			array[i] = e.longValue();
-        		}
-        		return array;
-        	}
-        }
 
-        java.lang.Object[] array = (java.lang.Object[]) 
-        		java.lang.reflect.Array.newInstance(clazz, size);
-        for (int i=0; i<size; i++) {
-        	array[i] = elements.getFromFirst(i);
+        switch (elementType($reifiedElement)) {
+        case 13:
+            //note: we don't unbox strings in an Array<String?>
+            //      because it would break javaObjectArray()
+            java.lang.String[] stringArray = new java.lang.String[size];
+            for (int i=0; i<size; i++) {
+                String string = (String) elements.getFromFirst(i);
+                stringArray[i] = string==null ? null : string.value;
+            }
+            return stringArray;
+        case 0:
+            long[] longPrecisionArray = new long[size];
+            for (int i=0; i<size; i++) {
+                Integer e = (Integer) elements.getFromFirst(i);
+                longPrecisionArray[i] = e.value;
+            }
+            return longPrecisionArray;
+        case 2:
+            double[] doublePrecisionArray = new double[size];
+            for (int i=0; i<size; i++) {
+                Float e = (Float) elements.getFromFirst(i);
+                doublePrecisionArray[i] = e.value;
+            }
+            return doublePrecisionArray;
+        case 4:
+            int[] codepointArray = new int[size];
+            for (int i=0; i<size; i++) {
+                Character e = (Character) elements.getFromFirst(i);
+                codepointArray[i] = e.codePoint;
+            }
+            return codepointArray;
+        case 8:
+            boolean[] boolArray = new boolean[size];
+            for (int i=0; i<size; i++) {
+                Boolean e = (Boolean) elements.getFromFirst(i);
+                boolArray[i] = e.booleanValue();
+            }
+            return boolArray;
+        case 6:
+            byte[] bitsArray = new byte[size];
+            for (int i=0; i<size; i++) {
+                Byte e = (Byte) elements.getFromFirst(i);
+                bitsArray[i] = e.value;
+            }
+            return bitsArray;
+        case 9:
+            boolean[] booleanArray = new boolean[size];
+            for (int i=0; i<size; i++) {
+                booleanArray[i] = (java.lang.Boolean)
+                        elements.getFromFirst(i);
+            }
+            return booleanArray;
+        case 10:
+            char[] charArray = new char[size];
+            for (int i=0; i<size; i++) {
+                charArray[i] = (java.lang.Character)
+                        elements.getFromFirst(i);
+            }
+            return charArray;
+        case 12:
+            float[] floatArray = new float[size];
+            for (int i=0; i<size; i++) {
+                floatArray[i] = (java.lang.Float)
+                        elements.getFromFirst(i);
+            }
+            return floatArray;
+        case 3:
+            double[] doubleArray = new double[size];
+            for (int i=0; i<size; i++) {
+                doubleArray[i] = (java.lang.Double)
+                        elements.getFromFirst(i);
+            }
+            return doubleArray;
+        case 7:
+            byte[] byteArray = new byte[size];
+            for (int i=0; i<size; i++) {
+                byteArray[i] = (java.lang.Byte)
+                        elements.getFromFirst(i);
+            }
+            return byteArray;
+        case 11:
+            short[] shortArray = new short[size];
+            for (int i=0; i<size; i++) {
+                shortArray[i] = (java.lang.Short)
+                        elements.getFromFirst(i);
+            }
+            return shortArray;
+        case 5:
+            int[] intArray = new int[size];
+            for (int i=0; i<size; i++) {
+                intArray[i] = (java.lang.Integer)
+                        elements.getFromFirst(i);
+            }
+            return intArray;
+        case 1:
+            long[] longArray = new long[size];
+            for (int i=0; i<size; i++) {
+                longArray[i] = (java.lang.Long)
+                        elements.getFromFirst(i);
+            }
+            return longArray;
+        default:
+            java.lang.Class<?> clazz = 
+                    $reifiedElement.getArrayElementClass();
+            java.lang.Object[] objectArray = (java.lang.Object[]) 
+                    java.lang.reflect.Array.newInstance(clazz, size);
+            for (int i=0; i<size; i++) {
+                objectArray[i] = elements.getFromFirst(i);
+            }
+            return objectArray;
         }
-        return array;
     }
-    
+
     private static <Element> java.lang.Object createArrayFromArray(
             final TypeDescriptor $reifiedElement,
             final Array<? extends Element> elements) {
-        
-    	final int size = Util.toInt(elements.getSize());
+
+        final int size = Util.toInt(elements.getSize());
         final java.lang.Class<?> clazz = 
                 $reifiedElement.getArrayElementClass();
-        
-        if (!$reifiedElement.containsNull()) {
-            if (clazz==String.class) {
-                //note: we don't unbox strings in an Array<String?>
-                //      because it would break javaObjectArray()
-            	java.lang.String[] array = 
-            			new java.lang.String[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
+
+        switch (elementType($reifiedElement)) {
+        case 13:  
+            //note: we don't unbox strings in an Array<String?>
+            //      because it would break javaObjectArray()
+            java.lang.String[] stringArray = new java.lang.String[size];
+            arraycopy(elements.array, 0, stringArray, 0, size);
+            return stringArray;
+        case 0:
+            long[] longPrecisionArray = new long[size];
+            arraycopy(elements.array, 0, longPrecisionArray, 0, size);
+        case 2:
+            double[] doublePrecisionArray = new double[size];
+            arraycopy(elements.array, 0, doublePrecisionArray, 0, size);
+            return doublePrecisionArray;
+        case 4:
+            int[] codepointArray = new int[size];
+            arraycopy(elements.array, 0, codepointArray, 0, size);
+            return codepointArray;
+        case 8:
+            boolean[] boolArray = new boolean[size];
+            arraycopy(elements.array, 0, boolArray, 0, size);
+            return boolArray;
+        case 6:
+            byte[] bitsArray = new byte[size];
+            arraycopy(elements.array, 0, bitsArray, 0, size);
+            return bitsArray;
+        case 9:
+            boolean[] booleanArray = new boolean[size];
+            arraycopy(elements.array, 0, booleanArray, 0, size);
+            return booleanArray;
+        case 10:
+            char[] charArray = new char[size];
+            arraycopy(elements.array, 0, charArray, 0, size);
+            return charArray;
+        case 12:
+            float[] floatArray = new float[size];
+            arraycopy(elements.array, 0, floatArray, 0, size);
+            return floatArray;
+        case 3:
+            double[] doubleArray = new double[size];
+            arraycopy(elements.array, 0, doubleArray, 0, size);
+            return doubleArray;
+        case 7:
+            byte[] byteArray = new byte[size];
+            arraycopy(elements.array, 0, byteArray, 0, size);
+            return byteArray;
+        case 11:
+            short[] shortArray = new short[size];
+            arraycopy(elements.array, 0, shortArray, 0, size);
+            return shortArray;
+        case 5:
+            int[] intArray = new int[size];
+            arraycopy(elements.array, 0, intArray, 0, size);
+            return intArray;
+        case 1:
+            long[] longArray = new long[size];
+            arraycopy(elements.array, 0, longArray, 0, size);
+            return longArray;
+        default:
+            java.lang.Object[] objectArray = (java.lang.Object[]) 
+            java.lang.reflect.Array.newInstance(clazz, size);
+            java.lang.Object otherArray = elements.array;
+            if (otherArray.getClass()==objectArray.getClass()) {
+                arraycopy(otherArray, 0, objectArray, 0, size);
             }
-            else if (clazz==Integer.class) {
-                long[] array = new long[size];
-                arraycopy(elements.array, 
-                		0, array, 0, size);
+            else {
+                for (int i=0; i<size; i++) {
+                    objectArray[i] = elements.getFromFirst(i);
+                }
             }
-            else if (clazz==Float.class) {
-                double[] array = new double[size];
-                arraycopy(elements.array, 
-                		0, array, 0, size);
-                return array;
-            }
-            else if (clazz==Character.class) {
-                int[] array = new int[size];
-                arraycopy(elements.array, 
-                		0, array, 0, size);
-                return array;
-            }
-            else if (clazz==Boolean.class) {
-                boolean[] array = new boolean[size];
-                arraycopy(elements.array, 
-                		0, array, 0, size);
-                return array;
-            }
-            else if (clazz==Byte.class) {
-                byte[] array = new byte[size];
-                arraycopy(elements.array, 
-                        0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Boolean.class) {
-            	boolean[] array = new boolean[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-            	return array;
-            }
-            else if (clazz==java.lang.Character.class) {
-                char[] array = new char[size];
-                arraycopy(elements.array, 
-                		0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Float.class) {
-            	float[] array = new float[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Double.class) {
-            	double[] array = new double[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Byte.class) {
-            	byte[] array = new byte[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Short.class) {
-            	short[] array = new short[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Integer.class) {
-            	int[] array = new int[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
-            else if (clazz==java.lang.Long.class) {
-            	long[] array = new long[size];
-            	arraycopy(elements.array, 
-            			0, array, 0, size);
-                return array;
-            }
+            return objectArray;
         }
-        
-        java.lang.Object[] array = (java.lang.Object[]) 
-        		java.lang.reflect.Array.newInstance(clazz, size);
-       java.lang.Object otherArray = elements.array;
-        if (otherArray.getClass()==array.getClass()) {
-        	arraycopy(otherArray, 0, array, 0, size);
-        }
-        else {
-        	for (int i=0; i<size; i++) {
-        		array[i] = elements.getFromFirst(i);
-        	}
-        }
-        return array;
     }
     
     private static <Element> java.lang.Object createArrayWithElement(
         final TypeDescriptor $reifiedElement,
-        final int size, 
-        Element element) {
-        java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
-        if (!$reifiedElement.containsNull()) {
-            if (clazz==String.class) {
-                //note: we don't unbox strings in an Array<String?>
-                //      because it would break javaObjectArray()
-                java.lang.String[] array = new java.lang.String[size];
-                if (element!=null) {
-                    String s = (String) element;
-                    Arrays.fill(array, s.value);
-                }
-                return array;
+        final int size, final Element element) {
+        switch (elementType($reifiedElement)) {
+        case 0:
+            long[] longPrecisionArray = new long[size];
+            if (element!=null) {
+                long value = ((Integer) element).value;
+                if (value!=0l) Arrays.fill(longPrecisionArray, value);
             }
-            else if (clazz==Integer.class) {
-                long[] array = new long[size];
-                if (element!=null) {
-                    long value = ((Integer) element).value;
-                    if (value!=0l) Arrays.fill(array, value);
-                }
-                return array;
+            return longPrecisionArray;
+        case 1:
+            long[] longArray = new long[size];
+            if (element!=null) {
+                long longValue = (java.lang.Long) element;
+                if (longValue!=0l) Arrays.fill(longArray, longValue);
             }
-            else if (clazz==Float.class) {
-                double[] array = new double[size];
-                if (element!=null) {
-                    double value = ((Float) element).value;
-                    if (value!=0.0d) Arrays.fill(array, value);
-                }
-                return array;
+            return longArray;
+        case 2:
+            double[] doublePrecisionArray = new double[size];
+            if (element!=null) {
+                double value = ((Float) element).value;
+                if (value!=0.0d) Arrays.fill(doublePrecisionArray, value);
             }
-            else if (clazz==Character.class) {
-                int[] array = new int[size];
-                if (element!=null) {
-                    int value = ((Character) element).codePoint;
-                    if (value!=0) Arrays.fill(array, value);
-                }
-                return array;
+            return doublePrecisionArray;
+        case 3:
+            double[] doubleArray = new double[size];
+            if (element!=null) {
+                double value = (java.lang.Double) element;
+                if (value!=0.0d) Arrays.fill(doubleArray, value);
             }
-            else if (clazz==Boolean.class) {
-                boolean[] array = new boolean[size];
-                if (element!=null) {
-                    boolean value = ((Boolean) element).booleanValue();
-                    if (value!=false) Arrays.fill(array, value);
-                }
-                return array;
+            return doubleArray;
+        case 4:
+            int[] codepointArray = new int[size];
+            if (element!=null) {
+                int value = ((Character) element).codePoint;
+                if (value!=0) Arrays.fill(codepointArray, value);
             }
-            else if (clazz==Byte.class) {
-                byte[] array = new byte[size];
-                if (element!=null) {
-                    byte value = ((Byte) element).value;
-                    if (value!=0.0d) Arrays.fill(array, value);
-                }
-                return array;
+            return codepointArray;
+        case 5:
+            int[] intArray = new int[size];
+            if (element!=null) {
+                int intValue = (java.lang.Integer) element;
+                if (intValue!=0) Arrays.fill(intArray, intValue);
             }
-            else if (clazz==java.lang.Boolean.class) {
-                boolean[] array = new boolean[size];
-                if (element!=null) {
-                    boolean value = ((java.lang.Boolean) element).booleanValue();
-                    if (value!=false) Arrays.fill(array, value);
-                }
-                return array;
+            return intArray;
+        case 6:
+            byte[] byteArray = new byte[size];
+            if (element!=null) {
+                byte value = ((Byte) element).value;
+                if (value!=0.0d) Arrays.fill(byteArray, value);
             }
-            else if (clazz==java.lang.Character.class) {
-                char[] array = new char[size];
-                if (element!=null) {
-                    char value = ((java.lang.Character) element).charValue();
-                    if (value!=0) Arrays.fill(array, value);
-                }
-                return array;
+            return byteArray;
+        case 7:
+            byte[] bitsArray = new byte[size];
+            byte value = (java.lang.Byte) element;
+            if (value!=0) Arrays.fill(bitsArray, value);
+            return bitsArray;
+        case 8:
+            boolean[] boolArray = new boolean[size];
+            if (element!=null) {
+                boolean boolValue = ((Boolean) element).booleanValue();
+                if (boolValue!=false) Arrays.fill(boolArray, boolValue);
             }
-            else if (clazz==java.lang.Float.class) {
-                float[] array = new float[size];
-                if (element!=null) {
-                    float value = ((java.lang.Float) element).floatValue();
-                    if (value!=0.0f) Arrays.fill(array, value);
-                }
-                return array;
+            return boolArray;
+        case 9:
+            boolean[] booleanArray = new boolean[size];
+            if (element!=null) {
+                boolean booleanValue = (java.lang.Boolean) element;
+                if (booleanValue!=false) Arrays.fill(booleanArray, booleanValue);
             }
-            else if (clazz==java.lang.Double.class) {
-                double[] array = new double[size];
-                if (element!=null) {
-                    double value = ((java.lang.Double) element).doubleValue();
-                    if (value!=0.0d) Arrays.fill(array, value);
-                }
-                return array;
+            return booleanArray;
+        case 10:
+            char[] charArray = new char[size];
+            if (element!=null) {
+                char charValue = (java.lang.Character) element;
+                if (charValue!=0) Arrays.fill(charArray, charValue);
             }
-            else if (clazz==java.lang.Byte.class) {
-                byte[] array = new byte[size];
-                byte value = ((java.lang.Byte) element).byteValue();
-                if (value!=0) Arrays.fill(array, value);
-                return array;
+            return charArray;
+        case 11:
+            short[] shortArray = new short[size];
+            if (element!=null) {
+                short shortValue = (java.lang.Short) element;
+                if (shortValue!=0) Arrays.fill(shortArray, shortValue);
             }
-            else if (clazz==java.lang.Short.class) {
-                short[] array = new short[size];
-                if (element!=null) {
-                    short value = ((java.lang.Short) element).shortValue();
-                    if (value!=0) Arrays.fill(array, value);
-                }
-                return array;
+            return shortArray;
+        case 12:
+            float[] floatArray = new float[size];
+            if (element!=null) {
+                float floatValue = (java.lang.Float) element;
+                if (floatValue!=0.0f) Arrays.fill(floatArray, floatValue);
             }
-            else if (clazz==java.lang.Integer.class) {
-                int[] array = new int[size];
-                if (element!=null) {
-                    int value = ((java.lang.Integer) element).intValue();
-                    if (value!=0) Arrays.fill(array, value);
-                }
-                return array;
+            return floatArray;
+        case 13:
+            //note: we don't unbox strings in an Array<String?>
+            //      because it would break javaObjectArray()
+            java.lang.String[] stringArray = new java.lang.String[size];
+            if (element!=null) {
+                String s = (String) element;
+                Arrays.fill(stringArray, s.value);
             }
-            else if (clazz==java.lang.Long.class) {
-                long[] array = new long[size];
-                if (element!=null) {
-                    long value = ((java.lang.Long) element).longValue();
-                    if (value!=0l) Arrays.fill(array, value);
-                }
-                return array;
+            return stringArray;
+        default:
+            java.lang.Class<?> elementClass = 
+                    $reifiedElement.getArrayElementClass();
+            java.lang.Object[] objectArray = (java.lang.Object[]) 
+                    java.lang.reflect.Array.newInstance(elementClass, size);
+            if (element!=null) {
+                Arrays.fill(objectArray, element);
             }
+            return objectArray;
         }
-        
-        java.lang.Object[] array = 
-                (java.lang.Object[]) java.lang.reflect.Array
-                        .newInstance(clazz, size);
-        if (element!=null) {
-            Arrays.fill(array, element);
-        }
-        return array;
     }
         
     @Ignore
@@ -624,7 +516,7 @@ public final class Array<Element>
         this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
         this.array = array;
-        this.arrayElementClass = $reifiedElement.getArrayElementClass();
+        this.elementType = elementType($reifiedElement);
         this.size = java.lang.reflect.Array.getLength(array);
     }
     
@@ -1094,74 +986,41 @@ public final class Array<Element>
     @SuppressWarnings("unchecked")
     @Ignore
     public Element unsafeItem(int index) {
-        if (array instanceof long[]) {
-            long val = ((long[])array)[index];
-            if (arrayElementClass == Integer.class) {
-                return (Element) Integer.instance(val);
-            }
-            else {
-                return (Element) java.lang.Long.valueOf(val);
-            }
-        } 
-        else if (array instanceof double[]) {
-            double val = ((double[])array)[index];
-            if (arrayElementClass == Float.class) {
-                return (Element) Float.instance(val);
-            }
-            else {
-                return (Element) java.lang.Double.valueOf(val);
-            }
-        } 
-        else if (array instanceof int[]) {
-            int val = ((int[])array)[index];
-            if (arrayElementClass == Character.class) {
-                return (Element) Character.instance(val);
-            }
-            else {
-                return (Element) java.lang.Integer.valueOf(val);
-            }
-        } 
-        else if (array instanceof byte[]) {
-            byte val = ((byte[])array)[index];
-            if (arrayElementClass == Byte.class) {
-                return (Element) Byte.instance(val);
-            }
-            else {
-                return (Element) java.lang.Byte.valueOf(val);
-            }
-        } 
-        else if (array instanceof boolean[]) {
-            boolean val = ((boolean[])array)[index];
-            if (arrayElementClass == Boolean.class) {
-                return (Element) Boolean.instance(val);
-            }
-            else {
-                return (Element) java.lang.Boolean.valueOf(val);
-            }
-        } 
-        else if (array instanceof char[]) {
-            char val = ((char[])array)[index];
-            return (Element) java.lang.Character.valueOf(val);
-        } 
-        else if (array instanceof short[]) {
-            short val = ((short[])array)[index];
-            return (Element) java.lang.Short.valueOf(val);
-        } 
-        else if (array instanceof float[]) {
-            float val = ((float[])array)[index];
-            return (Element) java.lang.Float.valueOf(val);
-        } 
-        else if (array instanceof java.lang.String[]) {
-            java.lang.String val = ((java.lang.String[])array)[index];
-            if (arrayElementClass == String.class) {
-                return (Element) String.instance(val);
-            }
-            else {
-                return (Element) val;
-            }
-        } 
-        else {
+        switch (elementType) {
+        case 0:
+            return (Element) Integer.instance(((long[])array)[index]);
+        case 1:
+            return (Element) (java.lang.Long) ((long[])array)[index];
+        case 2:
+            return (Element) Float.instance(((double[])array)[index]);
+        case 3:
+            return (Element) (java.lang.Double) ((double[])array)[index];
+        case 4:
+            return (Element) Character.instance(((int[])array)[index]);
+        case 5:
+            return (Element) (java.lang.Integer) ((int[])array)[index];
+        case 6:
+            return (Element) Byte.instance(((byte[])array)[index]);
+        case 7:
+            return (Element) (java.lang.Byte) ((byte[])array)[index];
+        case 8:
+            return (Element) Boolean.instance(((boolean[])array)[index]);
+        case 9:
+            return (Element) (java.lang.Boolean) ((boolean[])array)[index];
+        case 10:
+            return (Element) (java.lang.Character) ((char[])array)[index];
+        case 11:
+            return (Element) (java.lang.Short) ((short[])array)[index];
+        case 12:
+            return (Element) (java.lang.Float) ((float[])array)[index];
+        case 13:
+            return (Element) String.instance(((java.lang.String[])array)[index]);
+        case 14:
+            return (Element) ((java.lang.String[])array)[index];
+        case 15:
             return (Element) ((java.lang.Object[])array)[index];
+        default: 
+            throw new AssertionError("unknown element type");
         }
     }
 
@@ -1178,77 +1037,57 @@ public final class Array<Element>
         }
         else {
             int idx = (int) index; //typecast is safe 'cos we just checked above
-            if (array instanceof long[]) {
-                if (element instanceof Integer) {
-                    ((long[])array)[idx] = ((Integer)element).value;
-                }
-                else {
-                    ((long[])array)[idx] = 
-                            ((java.lang.Long) element).longValue();
-                }
-            }
-            else if (array instanceof double[]) {
-                if (element instanceof Float) {
-                    ((double[])array)[idx] = 
-                            ((Float)element).value;
-                }
-                else {
-                    ((double[])array)[idx] = 
-                            ((java.lang.Double)element).doubleValue();
-                }
-            }
-            else if (array instanceof int[]) {
-                if (element instanceof Character) {
-                    ((int[])array)[idx] = ((Character)element).codePoint;
-                }
-                else {
-                    ((int[])array)[idx] = 
-                            ((java.lang.Integer)element).intValue();
-                }
-            }
-            else if (array instanceof byte[]) {
-                if (element instanceof Byte) {
-                    ((byte[])array)[idx] = ((Byte)element).value;
-                }
-                else {
-                    ((byte[])array)[idx] = 
-                            ((java.lang.Byte)element).byteValue();
-                }
-            }
-            else if (array instanceof boolean[]) {
-                if (element instanceof Boolean) {
-                    ((boolean[])array)[idx] = 
-                            ((Boolean)element).booleanValue();
-                }
-                else {
-                    ((boolean[])array)[idx] = 
-                            ((java.lang.Boolean)element).booleanValue();
-                }
-            }
-            else if (array instanceof char[]) {
-                ((char[])array)[idx] = 
-                        ((java.lang.Character)element).charValue();
-            }
-            else if (array instanceof short[]) {
-                ((short[])array)[idx] = 
-                        ((java.lang.Short)element).shortValue();
-            }
-            else if (array instanceof float[]) {
-                ((float[])array)[idx] = 
-                        ((java.lang.Float)element).floatValue();
-            }
-            else if (array instanceof java.lang.String[]) {
-                if (element instanceof String) {
-                    ((java.lang.String[])array)[idx] = 
-                            ((String)element).value;
-                }
-                else {
-                    ((java.lang.String[])array)[idx] = 
-                            ((java.lang.String)element);
-                }
-            }
-            else {
-                ((java.lang.Object[])array)[idx] = element;
+            switch (elementType) {
+            case 0:
+                ((long[]) array)[idx] = ((Integer) element).value;
+                break;
+            case 1:
+                ((long[]) array)[idx] = (java.lang.Long) element;
+                break;
+            case 2:
+                ((double[]) array)[idx] = ((Float) element).value;
+                break;
+            case 3:
+                ((double[]) array)[idx] = (java.lang.Double) element;
+                break;
+            case 4:
+                ((int[]) array)[idx] = ((Character) element).codePoint;
+                break;
+            case 5:
+                ((int[]) array)[idx] = (java.lang.Integer) element;
+                break;
+            case 6:
+                ((byte[]) array)[idx] = ((Byte)element).value;
+                break;
+            case 7:
+                ((byte[]) array)[idx] = (java.lang.Byte) element;
+                break;
+            case 8:
+                ((boolean[]) array)[idx] = ((Boolean) element).booleanValue();
+                break;
+            case 9:
+                ((boolean[]) array)[idx] = (java.lang.Boolean) element;
+                break;
+            case 10:
+                ((char[]) array)[idx] = (java.lang.Character) element;
+                break;
+            case 11:
+                ((short[]) array)[idx] = (java.lang.Short) element;
+                break;
+            case 12:
+                ((float[]) array)[idx] = (java.lang.Float) element;
+                break;
+            case 13:
+                ((java.lang.String[]) array)[idx] = ((String) element).value;
+                break;
+            case 14:
+                ((java.lang.String[]) array)[idx] = (java.lang.String) element;
+                break;
+            case 15:
+                ((java.lang.Object[]) array)[idx] = element;
+                break;
+            default:
+                throw new AssertionError("unknown element type");
             }
         }
     }
@@ -1476,262 +1315,8 @@ public final class Array<Element>
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
                        @Name("destinationPosition") @Defaulted int destinationPosition, 
                        @Name("length") @Defaulted int length){
-        if (array instanceof java.lang.Object[] && 
-                    destination.array instanceof java.lang.Object[] ||
-            array instanceof java.lang.String[] && 
-                    destination.array instanceof java.lang.String[] ||
-            array instanceof boolean[] && destination.array instanceof boolean[] ||
-            array instanceof int[] && destination.array instanceof int[] ||
-            array instanceof long[] && destination.array instanceof long[] ||
-            array instanceof float[] && destination.array instanceof float[] ||
-            array instanceof double[] && destination.array instanceof double[] ||
-            array instanceof char[] && destination.array instanceof char[] ||
-            array instanceof byte[] && destination.array instanceof byte[] ||
-            array instanceof short[] && destination.array instanceof short[]) {
-                arraycopy(array, sourcePosition, destination.array, 
+        arraycopy(array, sourcePosition, destination.array, 
                         destinationPosition, length);
-        }
-        //TODO: can these cases even happen? If the Element 
-        //      type is the same, the array type is the same!
-        else {
-            for (int i=0; i<length; i++) {
-                int desti = i+destinationPosition;
-                int sourcei = i+sourcePosition;
-                if (destination.array instanceof double[]) {
-                    double[] target = (double[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Float) {
-                            target[desti] = 
-                                    ((Float) val).value;
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.Double) val).doubleValue();
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof float[]) {
-                    float[] target = (float[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = 
-                                ((java.lang.Float) val).floatValue();
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof long[]) {
-                    long[] target = (long[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Integer) {
-                            target[desti] = 
-                                    ((Integer) val).value;
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.Long) val).longValue();
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof int[]) {
-                    int[] target = (int[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Character) {
-                            target[desti] = 
-                                    ((Character) val).codePoint;
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.Integer) val).intValue();
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof short[]) {
-                    short[] target = (short[]) destination.array;
-                    if (array instanceof Object[]) {
-                        //TODO: think about java wrapper types here!!!
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = 
-                                ((java.lang.Short) val).shortValue();
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof byte[]) {
-                    byte[] target = (byte[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Byte) {
-                            target[desti] = 
-                                    ((Byte) val).value;
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.Byte) val).byteValue();
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof boolean[]) {
-                    boolean[] target = (boolean[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Boolean) {
-                            target[desti] = 
-                                    ((Boolean) val).booleanValue();
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.Boolean) val).booleanValue();
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof char[]) {
-                    char[] target = (char[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = 
-                                ((java.lang.Character) val).charValue();
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else if (destination.array instanceof java.lang.String[]) {
-                    java.lang.String[] target = 
-                            (java.lang.String[]) destination.array;
-                    if (array instanceof Object[]) {
-                        java.lang.Object val = 
-                                ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof String) {
-                            String s = (String) val;
-                            target[desti] = s.value;
-                        }
-                        else {
-                            target[desti] = (java.lang.String) val;
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-                else {
-                    java.lang.Object[] target = 
-                            (java.lang.Object[]) destination.array;
-                    if (array instanceof long[]) {
-                        if ($reifiedElement==Integer.$TypeDescriptor$) {
-                            target[desti] = 
-                                    Integer.instance(((long[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    java.lang.Long.valueOf(((long[])array)[sourcei]);
-                        }
-                    }
-                    else if (array instanceof int[]) {
-                        if ($reifiedElement==Character.$TypeDescriptor$) {
-                            target[desti] = 
-                                    Character.instance(((int[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    java.lang.Integer.valueOf(((int[])array)[sourcei]);
-                        }
-                    }
-                    else if (array instanceof short[]) {
-                        target[desti] = 
-                                java.lang.Short.valueOf(((short[])array)[sourcei]);
-                    }
-                    else if (array instanceof byte[]) {
-                        if ($reifiedElement==Byte.$TypeDescriptor$) {
-                            target[desti] = 
-                                    Byte.instance(((byte[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    java.lang.Byte.valueOf(((byte[])array)[sourcei]);
-                        }
-                    }
-                    else if (array instanceof double[]) {
-                        if ($reifiedElement==Float.$TypeDescriptor$) {
-                            target[desti] = 
-                                    Float.instance(((double[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    java.lang.Double.valueOf(((double[])array)[sourcei]);
-                        }
-                    }
-                    else if (array instanceof float[]) {
-                        target[desti] = 
-                                java.lang.Float.valueOf(((float[])array)[sourcei]);
-                    }
-                    else if (array instanceof boolean[]) {
-                        if ($reifiedElement==Boolean.$TypeDescriptor$) {
-                            target[desti] = 
-                                    Boolean.instance(((boolean[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    java.lang.Boolean.valueOf(((boolean[])array)[sourcei]);
-                        }
-                    }
-                    else if (array instanceof char[]) {
-                        target[desti] = 
-                                java.lang.Character.valueOf(((char[])array)[sourcei]);
-                    }
-                    else if (array instanceof java.lang.String[]) {
-                        if ($reifiedElement==String.$TypeDescriptor$) {
-                            target[desti] = 
-                                    String.instance(((java.lang.String[])array)[sourcei]);
-                        }
-                        else {
-                            target[desti] = 
-                                    ((java.lang.String[])array)[sourcei];
-                        }
-                    }
-                    else {
-                        throw new AssertionError(
-                                "unexpected array types in copyTo()");
-                    }
-                }
-            }
-        }
     }
     
     @Override
@@ -1877,6 +1462,63 @@ public final class Array<Element>
             }
         };
         Collections.<Element>sort(list, comparator);
+    }
+    
+    private static int elementType(TypeDescriptor $reifiedElement) {
+        if ($reifiedElement.containsNull()) {
+            return 15;
+        }
+        
+        java.lang.Class<?> arrayElementClass = 
+                $reifiedElement.getArrayElementClass();
+        if (arrayElementClass == Integer.class) {
+            return 0;
+        }
+        else if (arrayElementClass == java.lang.Long.class) {
+            return 1;
+        }
+        else if (arrayElementClass == Float.class) {
+            return 2;
+        }
+        else if (arrayElementClass == java.lang.Double.class) {
+            return 3;
+        } 
+        else if (arrayElementClass == Character.class) {
+            return 4;
+        }
+        else if (arrayElementClass == java.lang.Integer.class) {
+            return 5;
+        } 
+        else if (arrayElementClass == Byte.class) {
+            return 6;
+        }
+        else if (arrayElementClass == java.lang.Byte.class) {
+            return 7;
+        } 
+        else if (arrayElementClass == Boolean.class) {
+            return 8;
+        }
+        else if (arrayElementClass == java.lang.Boolean.class) {
+            return 9;
+        } 
+        else if (arrayElementClass == java.lang.Character.class) {
+            return 10;
+        } 
+        else if (arrayElementClass == java.lang.Short.class) {
+            return 11;
+        } 
+        else if (arrayElementClass == java.lang.Float.class) {
+            return 12;
+        } 
+        else if (arrayElementClass == String.class) {
+            return 13;
+        }
+        else if (arrayElementClass == java.lang.String.class) {
+            return 14;
+        } 
+        else {
+            return 15;
+        }
     }
     
 }
