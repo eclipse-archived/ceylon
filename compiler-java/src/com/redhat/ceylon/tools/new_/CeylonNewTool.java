@@ -155,8 +155,11 @@ public class CeylonNewTool extends CeylonBaseTool {
         }
         
         String sourceFolder = Constants.DEFAULT_SOURCE_DIR;
+        String baseDir = env.get("base.dir");
+        if (project.getDirectory() == null) {
+            project.setDirectory(new File(baseDir));
+        }
         try {
-            String baseDir = env.get("base.dir");
             CeylonConfig config = CeylonConfig.createFromLocalDir(new File(baseDir));
             List<File> srcs = DefaultToolOptions.getCompilerSourceDirs(config);
             if (!srcs.isEmpty()) {
