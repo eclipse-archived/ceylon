@@ -40,8 +40,10 @@ public final class Array<Element>
         implements List<Element> {
     
     private final java.lang.Object array;
-    
+    private final int size;
     private final TypeDescriptor $reifiedElement;
+    private final java.lang.Class<?> arrayElementClass;
+
     
     @Ignore
     public Array(final TypeDescriptor $reifiedElement, 
@@ -615,13 +617,15 @@ public final class Array<Element>
         }
         return array;
     }
-    
+        
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
         this.array = array;
+        this.arrayElementClass = $reifiedElement.getArrayElementClass();
+        this.size = java.lang.reflect.Array.getLength(array);
     }
     
     @Ignore
@@ -755,7 +759,7 @@ public final class Array<Element>
 
     @Override
     public Array<Element> spanFrom(@Name("from") Integer from) {
-        return span(from, Integer.instance(getSize()));
+        return span(from, Integer.instance(size));
     }
     
     @Override
@@ -779,7 +783,6 @@ public final class Array<Element>
         if (fromIndex<0) {
             fromIndex = 0;
         }
-        long size = getSize();
         if (toIndex>=size) {
             toIndex = size-1;
         }
@@ -911,7 +914,6 @@ public final class Array<Element>
         if (fromIndex<0) {
             fromIndex=0;
         }
-        long size = getSize();
         if (toIndex > size) {
             toIndex = size;
         }
@@ -965,23 +967,23 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
-        return getEmpty() ? null : Integer.instance(getSize() - 1);
+        return getEmpty() ? null : Integer.instance(size - 1);
     }
 
     @Override
     public boolean getEmpty() {
-        return getSize() == 0;
+        return size == 0;
     }
 
     @Override
     public long getSize() {
-        return java.lang.reflect.Array.getLength(array);
+        return size;
     }
 
     @Override
     public boolean defines(@Name("index") Integer key) {
         long ind = key.longValue();
-        return ind >= 0 && ind < getSize();
+        return ind >= 0 && ind < size;
     }
     
     @Ignore
@@ -989,8 +991,7 @@ public final class Array<Element>
         
         private int index = 0;
         // ok to cast here, since we know the size must fit in an int
-        private final int size = (int) getSize();
-
+        
         private ArrayIterator(TypeDescriptor $reified$Element) {
             super($reified$Element);
         }
@@ -1017,7 +1018,7 @@ public final class Array<Element>
 
         ArrayIterable() {
             // ok to cast here, since we know the size must fit in an int
-            super($reifiedElement, array, (int)Array.this.getSize());
+            super($reifiedElement, array, (int)size);
         }
         
         protected ArrayIterable(java.lang.Object array, int start,
@@ -1067,54 +1068,33 @@ public final class Array<Element>
 
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element getFromLast(@Name("index") long key) {
-        int index = toInt(key);
-        int size = toInt(getSize());
-        return index < 0 || index >= size ?
-            null : unsafeItem(size-index-1);
+    public Element getFromLast(@Name("index") long index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
+        else {
+            //typecast is safe because we just checked
+            return unsafeItem(size-1-(int) index);
+        }
     }
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element getFromFirst(@Name("index") long key) {
-        int index = toInt(key);
-        return index < 0 || index >= getSize() ? 
-                null : unsafeItem(index);
+    public Element getFromFirst(@Name("index") long index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
+        else {
+            //typecast is safe because we just checked
+            return unsafeItem((int) index);
+        }
     }
     
     // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")
     @Ignore
     public Element unsafeItem(int index) {
-        java.lang.Class<?> arrayElementClass = 
-                $reifiedElement.getArrayElementClass();
-        if (array instanceof char[]) {
-            char val = ((char[])array)[index];
-            return (Element) java.lang.Character.valueOf(val);
-        } 
-        else if (array instanceof byte[]) {
-            byte val = ((byte[])array)[index];
-            if (arrayElementClass == Byte.class) {
-                return (Element) Byte.instance(val);
-            }
-            else {
-                return (Element) java.lang.Byte.valueOf(val);
-            }
-        } 
-        else if (array instanceof short[]) {
-            short val = ((short[])array)[index];
-            return (Element) java.lang.Short.valueOf(val);
-        } 
-        else if (array instanceof int[]) {
-            int val = ((int[])array)[index];
-            if (arrayElementClass == Character.class) {
-                return (Element) Character.instance(val);
-            }
-            else {
-                return (Element) java.lang.Integer.valueOf(val);
-            }
-        } 
-        else if (array instanceof long[]) {
+        if (array instanceof long[]) {
             long val = ((long[])array)[index];
             if (arrayElementClass == Integer.class) {
                 return (Element) Integer.instance(val);
@@ -1122,10 +1102,6 @@ public final class Array<Element>
             else {
                 return (Element) java.lang.Long.valueOf(val);
             }
-        } 
-        else if (array instanceof float[]) {
-            float val = ((float[])array)[index];
-            return (Element) java.lang.Float.valueOf(val);
         } 
         else if (array instanceof double[]) {
             double val = ((double[])array)[index];
@@ -1136,6 +1112,24 @@ public final class Array<Element>
                 return (Element) java.lang.Double.valueOf(val);
             }
         } 
+        else if (array instanceof int[]) {
+            int val = ((int[])array)[index];
+            if (arrayElementClass == Character.class) {
+                return (Element) Character.instance(val);
+            }
+            else {
+                return (Element) java.lang.Integer.valueOf(val);
+            }
+        } 
+        else if (array instanceof byte[]) {
+            byte val = ((byte[])array)[index];
+            if (arrayElementClass == Byte.class) {
+                return (Element) Byte.instance(val);
+            }
+            else {
+                return (Element) java.lang.Byte.valueOf(val);
+            }
+        } 
         else if (array instanceof boolean[]) {
             boolean val = ((boolean[])array)[index];
             if (arrayElementClass == Boolean.class) {
@@ -1144,6 +1138,18 @@ public final class Array<Element>
             else {
                 return (Element) java.lang.Boolean.valueOf(val);
             }
+        } 
+        else if (array instanceof char[]) {
+            char val = ((char[])array)[index];
+            return (Element) java.lang.Character.valueOf(val);
+        } 
+        else if (array instanceof short[]) {
+            short val = ((short[])array)[index];
+            return (Element) java.lang.Short.valueOf(val);
+        } 
+        else if (array instanceof float[]) {
+            float val = ((float[])array)[index];
+            return (Element) java.lang.Float.valueOf(val);
         } 
         else if (array instanceof java.lang.String[]) {
             java.lang.String val = ((java.lang.String[])array)[index];
@@ -1162,7 +1168,6 @@ public final class Array<Element>
     public void set(
             @Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
-        long size = getSize();
         if (index<0) {
             throw new AssertionError("array index " + index + 
                     " may not be negative");
@@ -1172,34 +1177,8 @@ public final class Array<Element>
                     " must be less than size of array " + size);
         }
         else {
-            int idx = toInt(index);
-            if (array instanceof char[]) {
-                ((char[])array)[idx] = 
-                        ((java.lang.Character)element).charValue();
-            }
-            else if (array instanceof byte[]) {
-                if (element instanceof Byte) {
-                    ((byte[])array)[idx] = ((Byte)element).value;
-                }
-                else {
-                    ((byte[])array)[idx] = 
-                            ((java.lang.Byte)element).byteValue();
-                }
-            }
-            else if (array instanceof short[]) {
-                ((short[])array)[idx] = 
-                        ((java.lang.Short)element).shortValue();
-            }
-            else if (array instanceof int[]) {
-                if (element instanceof Character) {
-                    ((int[])array)[idx] = ((Character)element).codePoint;
-                }
-                else {
-                    ((int[])array)[idx] = 
-                            ((java.lang.Integer)element).intValue();
-                }
-            }
-            else if (array instanceof long[]) {
+            int idx = (int) index; //typecast is safe 'cos we just checked above
+            if (array instanceof long[]) {
                 if (element instanceof Integer) {
                     ((long[])array)[idx] = ((Integer)element).value;
                 }
@@ -1207,10 +1186,6 @@ public final class Array<Element>
                     ((long[])array)[idx] = 
                             ((java.lang.Long) element).longValue();
                 }
-            }
-            else if (array instanceof float[]) {
-                ((float[])array)[idx] = 
-                        ((java.lang.Float)element).floatValue();
             }
             else if (array instanceof double[]) {
                 if (element instanceof Float) {
@@ -1222,6 +1197,24 @@ public final class Array<Element>
                             ((java.lang.Double)element).doubleValue();
                 }
             }
+            else if (array instanceof int[]) {
+                if (element instanceof Character) {
+                    ((int[])array)[idx] = ((Character)element).codePoint;
+                }
+                else {
+                    ((int[])array)[idx] = 
+                            ((java.lang.Integer)element).intValue();
+                }
+            }
+            else if (array instanceof byte[]) {
+                if (element instanceof Byte) {
+                    ((byte[])array)[idx] = ((Byte)element).value;
+                }
+                else {
+                    ((byte[])array)[idx] = 
+                            ((java.lang.Byte)element).byteValue();
+                }
+            }
             else if (array instanceof boolean[]) {
                 if (element instanceof Boolean) {
                     ((boolean[])array)[idx] = 
@@ -1231,6 +1224,18 @@ public final class Array<Element>
                     ((boolean[])array)[idx] = 
                             ((java.lang.Boolean)element).booleanValue();
                 }
+            }
+            else if (array instanceof char[]) {
+                ((char[])array)[idx] = 
+                        ((java.lang.Character)element).charValue();
+            }
+            else if (array instanceof short[]) {
+                ((short[])array)[idx] = 
+                        ((java.lang.Short)element).shortValue();
+            }
+            else if (array instanceof float[]) {
+                ((float[])array)[idx] = 
+                        ((java.lang.Float)element).floatValue();
             }
             else if (array instanceof java.lang.String[]) {
                 if (element instanceof String) {
@@ -1306,7 +1311,6 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
-        final int size = (int) getSize();
         for (int i=0; i<size; i++) {
             Element elem = getFromFirst(i);
             if (elem != null && elem.equals(element)) {
@@ -1322,7 +1326,6 @@ public final class Array<Element>
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
-        final int size = (int) getSize();
         for (int i=0; i<size; i++) {
             Element elem = getFromFirst(i);
             if (elem != null && selecting.$call$(elem).booleanValue()) {
@@ -1336,7 +1339,7 @@ public final class Array<Element>
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
-        if (getSize()>0) {
+        if (size>0) {
             return unsafeItem(0);
         }
         else {
@@ -1348,8 +1351,6 @@ public final class Array<Element>
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")
     public Element getLast() {
-        // ok to cast here, since we know the size must fit in an int
-        final int size = (int) getSize();
         return size > 0 ? unsafeItem(size-1) : null;
     }
     
@@ -1386,7 +1387,7 @@ public final class Array<Element>
     skip(@Name("skipping") long skipping) {
         int intSkip = toInt(skipping);
         // ok to cast here, since we know the size must fit in an int
-        int length = (int) getSize();
+        int length = (int) size;
         if (skipping <= 0) {
             return this;
         }
@@ -1400,7 +1401,7 @@ public final class Array<Element>
     public Iterable<? extends Element, ?> 
     take(@Name("taking") long taking) {
         // ok to cast here, since we know the size must fit in an int
-        int length = (int)getSize();
+        int length = (int)size;
         if (taking >= length) {
             return this;
         }
@@ -1415,11 +1416,12 @@ public final class Array<Element>
     by(@Name("step") long step) {
         if (step <= 0) {
             throw new AssertionError("step size must be greater than zero");
-        } else if (step == 1) {
+        }
+        else if (step == 1) {
             return this;
         }
         return new ArrayIterable(array, 0, 
-                toInt((getSize()+step-1)/step), 
+                toInt((size+step-1)/step), 
                 toInt(step));
     }
     
@@ -1739,7 +1741,6 @@ public final class Array<Element>
     }
     
     public void reverseInPlace() {
-        int size = (int) getSize();
         if (array instanceof java.lang.Object[]) {
             for (int index=0; index<size/2; index++) {
                 java.lang.Object[] arr = (java.lang.Object[]) array;
@@ -1847,7 +1848,7 @@ public final class Array<Element>
             }
             @Override
             public int size() {
-                return (int)Array.this.getSize();
+                return (int)size;
             }
             @Override
             public java.lang.Object[] toArray() {
