@@ -240,8 +240,10 @@ shared interface Map<out Key,out Item>
         object patch 
                 extends Object()
                 satisfies Map<Key|OtherKey,Item|OtherItem> {
+            Boolean otherItemObject = other is Map<OtherKey,Object>;
+            
             shared actual <Item|OtherItem>? get(Object key) {
-                if (is Map<OtherKey,Object> other) {
+                if (otherItemObject) {
                     return other[key] else outer[key];
                 } else if (other.defines(key)) {
                     return other[key];
