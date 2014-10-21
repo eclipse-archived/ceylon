@@ -2981,8 +2981,8 @@ public class ExpressionVisitor extends Visitor {
                 node = a;
             }
             checkAssignable(argType, pt, node,
-                    "named argument must be assignable to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
+                    "named argument must be assignable to parameter '" + 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
                                 " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
                             2100);
@@ -3367,9 +3367,9 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
             checkAssignable(at, paramType, a, 
                     "argument must be assignable to parameter '" + 
-                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + 
-                            (pr.getQualifyingType()==null ? "'" : 
-                                "' in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
+                            p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
+                            (pr.getQualifyingType()==null ? "" : 
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2100);
         }
     }
