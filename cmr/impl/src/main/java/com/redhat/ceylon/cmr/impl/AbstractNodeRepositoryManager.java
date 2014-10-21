@@ -306,7 +306,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             try {
                 zippedFolder = IOUtils.zipFolder(folder);
             } catch (IOException e) {
-                throw new RepositoryException("Failed to zip folder for upload to Herd: " + folder);
+                throw new RepositoryException("Failed to zip folder for upload to Herd: " + folder, e);
             }
             ArtifactContext zippedContext = context.getZipContext();
             putArtifact(zippedContext, zippedFolder);
