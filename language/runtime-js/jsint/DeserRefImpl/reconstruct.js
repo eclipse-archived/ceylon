@@ -9,17 +9,22 @@ function(){
         var r=queue.shift();
         i.push(r);
         if (r.state_==1) {
-          r.inst_.deser$$(r.decons_);
+          r.inst_=this.clazz.tipo.deser$$(r.decons_);
+          //TODO add outer ref if available
           r.state_=2;
         }
         if (r.state_==2) {
           //iterar por r.references()
+          var referred;for(var iter=this.decons_.iterator();(referred=iter.next())!=getFinished();){
+            while (!is$(referred,{t:'u',l:[{t:Finished},{t:Reference$serialization}]}))referred=iter.next();
+            if (referred===getFinished())break;
             if (referred.state_==undefined) {
               throw AssertionError("reference " + referred.id.string + " has not been deserialized");
             }
             if (referred.state_!=3) {
               queue.push(referred);
             }
+          }
           r.state_=3;
           r.decons_=null;
         }
