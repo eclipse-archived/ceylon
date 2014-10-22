@@ -307,7 +307,7 @@ public class TypeGenerator {
         gen.share(d);
         initializeType(that, gen);
         if (d.isSerializable()) {
-            addDeserializer(d, gen);
+            addDeserializer(that, d, gen);
         }
     }
 
@@ -420,22 +420,55 @@ public class TypeGenerator {
     }
 
     /** Add serialize method to a class. Can be on the prototype or the instance, depending on the style being used. */
-    static void addSerializer(final com.redhat.ceylon.compiler.typechecker.model.Class d,
+    static void addSerializer(final Node node, final com.redhat.ceylon.compiler.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
         gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
         gen.beginBlock();
+        //Call super.ser$$ if possible
+        com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
+            if (et.isSerializable()) {
+                if (gen.qualify(node, et)) {
+                    gen.out(".");
+                }
+                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$(", dc, ");");
+                et = null;
+                gen.endLine();
+            }
+        }
         gen.out("/*TODO serialize internal state */");
         gen.endBlockNewLine();
     }
     /** Add deserialize method to a class. This one resides directly under the class constructor, since it creates
      * an uninitialized instance and adds state to it. */
-    static void addDeserializer(final com.redhat.ceylon.compiler.typechecker.model.Class d,
+    static void addDeserializer(final Node that, final com.redhat.ceylon.compiler.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
-        gen.out(gen.getNames().name(d), ".deser$$=function(", dc, ")");
+        final String ni = gen.getNames().createTempVariable();
+        gen.out(gen.getNames().name(d), ".deser$$=function(", dc, ",", ni, ")");
         gen.beginBlock();
+        //Call super.deser$$ if possible
+        boolean create = true;
+        com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
+            if (et.isSerializable()) {
+                gen.out(ni, "=");
+                if (gen.qualify(that, et)) {
+                    gen.out(".");
+                }
+                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$(", dc, ");");
+                gen.endLine();
+                create = false;
+            }
+        }
+        //Otherwise create a new instance
+        if (create) {
+            gen.out(ni, "=new ", gen.getNames().name(d), ".$$;");
+            gen.endLine();
+        }
         gen.out("/*TODO deserialize internal state */");
+        gen.out("return ", ni, ";");
         gen.endBlockNewLine();
     }
 
