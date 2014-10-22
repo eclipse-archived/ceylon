@@ -446,7 +446,7 @@ public final class Array<Element>
             byte[] byteArray = new byte[size];
             if (element!=null) {
                 byte value = ((Byte) element).value;
-                if (value!=0.0d) Arrays.fill(byteArray, value);
+                if (value!=0) Arrays.fill(byteArray, value);
             }
             return byteArray;
         case 7:
@@ -494,8 +494,8 @@ public final class Array<Element>
             //      because it would break javaObjectArray()
             java.lang.String[] stringArray = new java.lang.String[size];
             if (element!=null) {
-                String s = (String) element;
-                Arrays.fill(stringArray, s.value);
+                String string = (String) element;
+                Arrays.fill(stringArray, string.value);
             }
             return stringArray;
         default:
