@@ -134,12 +134,13 @@ public class InvocationGenerator {
                         boolean isUnion=false;
                         if (callableArgs.getDeclaration() instanceof UnionType) {
                             if (callableArgs.getCaseTypes().size() == 2) {
-                                callableArgs = callableArgs.minus(gen.getTypeUtils().empty.getType());
+                                callableArgs = callableArgs.minus(that.getUnit().getEmptyDeclaration().getType());
                             }
                             isUnion=callableArgs.getDeclaration() instanceof UnionType;
                         }
                         //This is the type of the first argument
-                        boolean isSequenced = !(isUnion || gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration()));
+                        boolean isSequenced = !(isUnion || that.getUnit().getTupleDeclaration().equals(
+                                callableArgs.getDeclaration()));
                         ProducedType argtype = isUnion ? callableArgs :
                             callableArgs.getDeclaration() instanceof TypeParameter ? callableArgs :
                             callableArgs.getTypeArgumentList().get(
@@ -159,15 +160,16 @@ public class InvocationGenerator {
                                     p.setSequenced(true);
                                 } else if (!isSequenced) {
                                     ProducedType next = isUnion ? null : callableArgs.getTypeArgumentList().get(2);
-                                    if (next != null && next.getSupertype(gen.getTypeUtils().tuple) == null) {
+                                    if (next != null && next.getSupertype(that.getUnit().getTupleDeclaration()) == null) {
                                         //It's not a tuple, so no more regular parms. It can be:
                                         //empty|tuple if defaulted params
                                         //empty if no more params
                                         //sequential if sequenced param
                                         if (next.getDeclaration() instanceof UnionType) {
                                             //empty|tuple
-                                            callableArgs = next.minus(gen.getTypeUtils().empty.getType());
-                                            isSequenced = !gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration());
+                                            callableArgs = next.minus(that.getUnit().getEmptyDeclaration().getType());
+                                            isSequenced = !that.getUnit().getTupleDeclaration().equals(
+                                                    callableArgs.getDeclaration());
                                             argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
                                         } else {
                                             //we'll bet on sequential (if it's empty we don't care anyway)
@@ -372,7 +374,7 @@ public class InvocationGenerator {
                     }
                     if (opened) {
                         SequenceGenerator.closeSequenceWithReifiedType(that,
-                                gen.getTypeUtils().wrapAsIterableArguments(sequencedType), gen);
+                                TypeUtils.wrapAsIterableArguments(sequencedType), gen);
                         gen.out(".chain(");
                         sequencedType=null;
                     } else if (!first) {
@@ -391,14 +393,15 @@ public class InvocationGenerator {
                         } else if (pd == null) {
                             if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
                                     && ((Tree.MemberOrTypeExpression)primary).getDeclaration() == null
-                                    && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((gen.getTypeUtils().tuple))) {
+                                    && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((
+                                            that.getUnit().getTupleDeclaration()))) {
                                 //Spread dynamic parameter
                                 ProducedType tupleType = arg.getTypeModel();
                                 ProducedType targ = tupleType.getTypeArgumentList().get(2);
                                 arg.visit(gen);
                                 gen.out(".$_get(0)");
                                 int i = 1;
-                                while (!targ.getDeclaration().inherits(gen.getTypeUtils().empty)) {
+                                while (!targ.getDeclaration().inherits(that.getUnit().getEmptyDeclaration())) {
                                     gen.out(",");
                                     arg.visit(gen);
                                     gen.out(".$_get("+(i++)+")");
@@ -431,7 +434,7 @@ public class InvocationGenerator {
                                 moreParams = ((com.redhat.ceylon.compiler.typechecker.model.Class)pdd).getParameterList().getParameters();
                             } else {
                                 //Check the parameters of the primary (obviously a callable, so this is a Tuple)
-                                List<Parameter> cparms = gen.getTypeUtils().convertTupleToParameters(
+                                List<Parameter> cparms = TypeUtils.convertTupleToParameters(
                                         primary.getTypeModel().getTypeArgumentList().get(1));
                                 cparms.remove(0);
                                 moreParams = cparms;
@@ -463,13 +466,15 @@ public class InvocationGenerator {
                         if (expr == null) {
                             //it's a comprehension
                             TypeUtils.printTypeArguments(that,
-                                    gen.getTypeUtils().wrapAsIterableArguments(arg.getTypeModel()), gen, false, null);
+                                    TypeUtils.wrapAsIterableArguments(arg.getTypeModel()), gen, false, null);
                         } else {
-                            ProducedType spreadType = TypeUtils.findSupertype(gen.getTypeUtils().sequential,
+                            ProducedType spreadType = TypeUtils.findSupertype(
+                                    that.getUnit().getSequentialDeclaration(),
                                     expr.getTypeModel());
                             if (spreadType == null) {
                                 //Go directly to Iterable
-                                spreadType = TypeUtils.findSupertype(gen.getTypeUtils().iterable, expr.getTypeModel());
+                                spreadType = TypeUtils.findSupertype(that.getUnit().getIterableDeclaration(),
+                                        expr.getTypeModel());
                             }
                             TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen, false,
                                     spreadType.getVarianceOverrides());
@@ -487,7 +492,7 @@ public class InvocationGenerator {
                 if (forceSequenced && args.size() > 0) {
                     seqtargs = that.getUnit().getNonemptyIterableType(sequencedType).getTypeArguments();
                 } else {
-                    seqtargs = gen.getTypeUtils().wrapAsIterableArguments(sequencedType);
+                    seqtargs = TypeUtils.wrapAsIterableArguments(sequencedType);
                 }
                 SequenceGenerator.closeSequenceWithReifiedType(that,
                         seqtargs, gen);

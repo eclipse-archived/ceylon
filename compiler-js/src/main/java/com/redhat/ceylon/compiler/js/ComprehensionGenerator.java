@@ -86,7 +86,7 @@ class ComprehensionGenerator {
                 gen.endBlock(); // end one more block - this one is for the function
                 gen.out(",");
                 TypeUtils.printTypeArguments(that,
-                        gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen, false, null);
+                        TypeUtils.wrapAsIterableArguments(that.getTypeModel()), gen, false, null);
                 gen.out(")");
                 return;
             } else {
@@ -248,7 +248,7 @@ class ComprehensionGenerator {
         }
         gen.endBlock();
         gen.out(",");
-        TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()),
+        TypeUtils.printTypeArguments(that, TypeUtils.wrapAsIterableArguments(that.getTypeModel()),
                 gen, false, null);
         gen.out(")");
     }

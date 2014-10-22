@@ -188,7 +188,7 @@ public class SequenceGenerator {
         for (Map.Entry<TypeParameter,ProducedType> e : types.entrySet()) {
             if (e.getKey().getName().equals("Element")) {
                 elem = e.getValue();
-            } else if (e.getKey().equals(gen.getTypeUtils().iterable.getTypeParameters().get(1))) {
+            } else if (e.getKey().equals(that.getUnit().getIterableDeclaration().getTypeParameters().get(1))) {
                 //If it's Nothing, it's nonempty
                 nonempty = "ceylon.language::Nothing".equals(e.getValue().getProducedTypeQualifiedName());
             }

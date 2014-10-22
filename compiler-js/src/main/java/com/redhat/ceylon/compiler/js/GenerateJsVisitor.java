@@ -112,7 +112,6 @@ public class GenerateJsVisitor extends Visitor
 
     private List<? extends Statement> currentStatements = null;
     
-    private final TypeUtils types;
     private Writer out;
     private final Writer originalOut;
     final Options opts;
@@ -136,7 +135,7 @@ public class GenerateJsVisitor extends Visitor
     private final JsOutput jsout;
 
     public GenerateJsVisitor(JsOutput out, Options options, JsIdentifierNames names,
-            List<CommonToken> tokens, TypeUtils typeUtils) throws IOException {
+            List<CommonToken> tokens) throws IOException {
         this.jsout = out;
         this.opts = options;
         this.out = out.getWriter();
@@ -144,11 +143,9 @@ public class GenerateJsVisitor extends Visitor
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
-        types = typeUtils;
         invoker = new InvocationGenerator(this, names, retainedVars);
     }
 
-    TypeUtils getTypeUtils() { return types; }
     InvocationGenerator getInvoker() { return invoker; }
 
     /** Returns the helper component to handle naming. */
@@ -714,7 +711,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             if (isSerial) {
-                TypeGenerator.addSerializer((com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
+                TypeGenerator.addSerializer(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
             }
             endBlock();
             out(")(", names.name(d), ".$$.prototype)");
