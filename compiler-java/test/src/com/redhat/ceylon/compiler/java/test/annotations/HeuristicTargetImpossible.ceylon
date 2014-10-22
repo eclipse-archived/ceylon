@@ -17,10 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-"Bla bla."
-by("Stef FroMage", "Tomas Hradec")
-license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.annotations "1.2.3" {
-    import java.base "7";
-    import javax.xml "7";
+class ImpossibleAttributeTargets() {
+    @error
+    fieldTarget
+    shared String s4 => "";
+    @error
+    fieldTarget
+    shared String s5 {
+        return "";
+    }
+    @error
+    fieldTarget
+    assign s5 {
+        
+    }
+}
+@error
+constructorTarget
+interface ImpossibleInterfaceTargets {
+}
+
+void impossibleMethodTargets(
+    @error
+    fieldTarget
+    String s,
+    @error
+    localVariableTarget
+    String s2) {
 }

@@ -17,10 +17,46 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-"Bla bla."
-by("Stef FroMage", "Tomas Hradec")
-license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.annotations "1.2.3" {
-    import java.base "7";
-    import javax.xml "7";
+import ceylon.language.meta.declaration{
+    ClassDeclaration
+}
+
+"Targeting annotations on a class"
+typeTarget
+constructorTarget
+class HeuristicTarget1() {
+    
+}
+
+"Targeting annotations on parameters and attributes"
+class HeuristicTarget2(
+    parameterTarget
+    fieldTarget
+    methodTarget
+    shared String s, s2) {
+    
+    parameterTarget
+    fieldTarget
+    methodTarget
+    shared String s2;
+    
+    fieldTarget
+    methodTarget
+    shared variable String s3=s;
+
+}
+
+"Targeting annotations on object definitions"
+typeTarget
+constructorTarget
+fieldTarget
+methodTarget
+object heuristicTarget3 {
+}
+
+annotationTypeTarget
+typeTarget
+constructorTarget
+final annotation class HeuristicAnnotationClass() 
+        satisfies OptionalAnnotation<HeuristicAnnotationClass, ClassDeclaration> {
 }

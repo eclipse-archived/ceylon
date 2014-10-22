@@ -249,4 +249,29 @@ public class AnnotationsTest extends CompilerTest {
     public void testBug1565(){
         compareWithJavaSource("Bug1565");
     }
+    
+    @Test
+    public void testHeuristicTarget(){
+        // those cases where the intersection of the possible @Taget's
+        // and the actual transformed outputs of the annotated element is 
+        // a singletone: we can unambiguously determine which target 
+        // to apply it to
+        compile("Targets.java");
+        compareWithJavaSource("HeuristicTarget");
+    }
+    @Test
+    public void testHeuristicTargetImpossible(){
+        // those cases where the intersection of the possible @Taget's
+        // and the actual transformed outputs of the annotated element is empty
+        compile("Targets.java");
+        compile("HeuristicTargetImpossible.ceylon");
+    }
+    @Test
+    public void testHeuristicTargetAmbiguous(){
+        // those cases where the intersection of the possible @Taget's
+        // and the actual transformed outputs of the annotated element has 
+        // two or more elements
+        compile("Targets.java");
+        compile("HeuristicTargetAmbiguous.ceylon");
+    }
  }
