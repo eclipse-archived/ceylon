@@ -675,7 +675,7 @@ public class GenerateJsVisitor extends Visitor
                 && ((com.redhat.ceylon.compiler.typechecker.model.Class)d).isSerializable();
         boolean enter = opts.isOptimize() || isSerial;
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
-        if (enter && !isSerial) {
+        if (opts.isOptimize()) {
             enter = !statements.isEmpty();
             if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
                 com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
