@@ -20,6 +20,10 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.EnumSet;
+import java.util.List;
+
+import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 
 /**
@@ -33,6 +37,23 @@ public class AnnotationProxyClass extends Class {
 
     public AnnotationProxyClass(LazyInterface iface) {
         this.iface = iface;
+    }
+    
+    /**
+     * The elements in the {@code @Target} annotation, or null if 
+     * the annotation type lacks the {@code @Target} annotation.
+     */
+    public EnumSet<AnnotationTarget> getAnnotationTarget() {
+        AnnotationMirror targetAnno = iface.classMirror.getAnnotation("java.lang.annotation.Target");
+        if (targetAnno != null) {
+            List<String> targets = (List)targetAnno.getValue();
+            EnumSet<AnnotationTarget> result = EnumSet.<AnnotationTarget>noneOf(AnnotationTarget.class);
+            for (String name : targets) {
+                result.add(AnnotationTarget.valueOf(name));
+            }
+            return result;
+        }
+        return null;
     }
 
 }

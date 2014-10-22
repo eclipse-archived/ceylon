@@ -28,5 +28,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class AnnotationProxyMethod extends Method {
+    
+    private AnnotationProxyClass proxyClass;
+    
+    public AnnotationProxyClass getProxyClass() {
+        return proxyClass;
+    }
+    
+    public void setProxyClass(AnnotationProxyClass proxyClass) {
+        this.proxyClass = proxyClass;
+    }
 
 }

@@ -228,7 +228,7 @@ public class LazyPackage extends Package {
      * @param iface
      */
     private void makeInteropAnnotation(LazyInterface iface) {
-        Class klass = new AnnotationProxyClass(iface);
+        AnnotationProxyClass klass = new AnnotationProxyClass(iface);
         klass.setContainer(this);
         klass.setScope(this);
         klass.setName(iface.getName()+"$Proxy");
@@ -242,7 +242,8 @@ public class LazyPackage extends Package {
         ParameterList classpl = new ParameterList();
         klass.addParameterList(classpl);
         
-        Method ctor = new AnnotationProxyMethod();
+        AnnotationProxyMethod ctor = new AnnotationProxyMethod();
+        ctor.setProxyClass(klass);
         ctor.setContainer(this);
         klass.setScope(this);
         ctor.setAnnotation(true);
