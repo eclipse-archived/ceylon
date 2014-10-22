@@ -36,22 +36,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 /** A convenience class to help with the handling of certain type declarations. */
 public class TypeUtils {
 
-    final TypeDeclaration tuple;
-    final TypeDeclaration iterable;
-    final TypeDeclaration sequential;
-    final TypeDeclaration _null;
-    final TypeDeclaration empty;
     static final List<String> splitMetamodelAnnotations = Arrays.asList("ceylon.language::doc",
             "ceylon.language::throws", "ceylon.language::see", "ceylon.language::by");
-
-    TypeUtils(Module languageModule) {
-        final com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
-        tuple = (TypeDeclaration)pkg.getDirectMember("Tuple", null, false);
-        iterable = (TypeDeclaration)pkg.getDirectMember("Iterable", null, false);
-        sequential = (TypeDeclaration)pkg.getDirectMember("Sequential", null, false);
-        _null = (TypeDeclaration)pkg.getDirectMember("Null", null, false);
-        empty = (TypeDeclaration)pkg.getDirectMember("Empty", null, false);
-    }
 
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, final Map<TypeParameter,ProducedType> targs,
@@ -345,10 +331,11 @@ public class TypeUtils {
         return null;
     }
 
-    Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
+    static Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
         HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+        final TypeDeclaration iterable = pt.getDeclaration().getUnit().getIterableDeclaration();
         r.put(iterable.getTypeParameters().get(0), pt);
-        r.put(iterable.getTypeParameters().get(1), _null.getType());
+        r.put(iterable.getTypeParameters().get(1), pt.getDeclaration().getUnit().getNullDeclaration().getType());
         return r;
     }
 
@@ -430,10 +417,12 @@ public class TypeUtils {
     }
 
     /** Turns a Tuple type into a parameter list. */
-    List<Parameter> convertTupleToParameters(ProducedType _tuple) {
+    static List<Parameter> convertTupleToParameters(ProducedType _tuple) {
         ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
         TypeDeclaration tdecl = _tuple.getDeclaration();
+        final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
+        final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
         while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
             Parameter _p = null;
             if (tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
@@ -455,7 +444,7 @@ public class TypeUtils {
                     }
                     _p.setDefaulted(true);
                 }
-            } else if (tdecl.inherits(sequential)) {
+            } else if (tdecl.inherits(tdecl.getUnit().getSequentialDeclaration())) {
                 //Handle Sequence, for nonempty variadic parameters
                 _p = new Parameter();
                 _p.setModel(new Value());
@@ -484,7 +473,9 @@ public class TypeUtils {
         gen.out("[");
         int pos = 1;
         TypeDeclaration tdecl = _tuple.getDeclaration();
-        while (!(gen.getTypeUtils().empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
+        final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
+        final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
+        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
             if (pos > 1) gen.out(",");
             gen.out("{");
             pos++;
@@ -493,16 +484,16 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (gen.getTypeUtils().tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
+            if (tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
                     && tdecl.getCaseTypeDeclarations().size()==2
-                    && tdecl.getCaseTypeDeclarations().contains(gen.getTypeUtils().tuple))) {
-                if (gen.getTypeUtils().tuple.equals(tdecl)) {
+                    && tdecl.getCaseTypeDeclarations().contains(tuple))) {
+                if (tuple.equals(tdecl)) {
                     metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 } else {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (gen.getTypeUtils().tuple.equals(mt.getDeclaration())) {
+                        if (tuple.equals(mt.getDeclaration())) {
                             metamodelTypeNameOrList(gen.getCurrentPackage(), mt.getTypeArgumentList().get(1), gen);
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
@@ -510,15 +501,15 @@ public class TypeUtils {
                     }
                     gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
                 }
-            } else if (tdecl.inherits(gen.getTypeUtils().sequential)) {
-                ProducedType _t2 = _tuple.getSupertype(gen.getTypeUtils().sequential);
+            } else if (tdecl.inherits(tdecl.getUnit().getSequentialDeclaration())) {
+                ProducedType _t2 = _tuple.getSupertype(tdecl.getUnit().getSequentialDeclaration());
                 //Handle Sequence, for nonempty variadic parameters
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
-                _tuple = gen.getTypeUtils().empty.getType();
+                _tuple = empty.getType();
             } else if (tdecl instanceof UnionType) {
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple, gen);
-                tdecl = gen.getTypeUtils().empty; _tuple=null;
+                tdecl = empty; _tuple=null;
             } else {
                 gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
                 if (pos > 100) {
@@ -850,7 +841,8 @@ public class TypeUtils {
         } else if (type instanceof UnionType) {
             //It still could be a Tuple with first optional type
             List<TypeDeclaration> cts = type.getCaseTypeDeclarations();
-            if (cts.size()==2 && cts.contains(gen.getTypeUtils().empty) && cts.contains(gen.getTypeUtils().tuple)) {
+            if (cts.size()==2 && cts.contains(type.getUnit().getEmptyDeclaration())
+                    && cts.contains(type.getUnit().getTupleDeclaration())) {
                 //yup...
                 gen.out("{t:'T',l:");
                 encodeTupleAsParameterListForRuntime(pt,false,gen);
