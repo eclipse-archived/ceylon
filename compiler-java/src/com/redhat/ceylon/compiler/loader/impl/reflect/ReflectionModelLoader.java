@@ -66,6 +66,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
         findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE);
         findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_MODEL);
         findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_MODEL_DECLARATION);
+        findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_SERIALIZATION);
     }
     
     @Override
