@@ -100,34 +100,41 @@ public class TypeUtils {
         } else if (pt.isUnknown()) {
             gen.out(gen.getClAlias(), "Anything");
         } else {
-            final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
-            if (modAlias != null && !modAlias.isEmpty()) {
-                gen.out(modAlias, ".");
-            }
-            if (t.getContainer() instanceof ClassOrInterface) {
-                final Scope scope = node == null ? null : Util.getContainingClassOrInterface(node.getScope());
-                List<ClassOrInterface> parents = new ArrayList<>();
-                ClassOrInterface parent = (ClassOrInterface)t.getContainer();
-                parents.add(0, parent);
-                while (parent.getContainer() instanceof ClassOrInterface) {
-                    parent = (ClassOrInterface)parent.getContainer();
-                    parents.add(0, parent);
-                }
-                for (ClassOrInterface p : parents) {
-                    if (p==scope) {
-                        if (gen.opts.isOptimize()) {
-                            gen.out(gen.getNames().self(p), ".");
-                        }
-                    } else {
-                        gen.out(gen.getNames().name(p), ".");
-                    }
-                }
-            }
+            gen.out(qualifiedTypeContainer(node, imported, t, gen));
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
                 gen.out(gen.getNames().name(t));
             }
         }
+    }
+
+    static String qualifiedTypeContainer(final Node node, final boolean imported, final TypeDeclaration t,
+            final GenerateJsVisitor gen) {
+        final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
+        final StringBuilder sb = new StringBuilder();
+        if (modAlias != null && !modAlias.isEmpty()) {
+            sb.append(modAlias).append('.');
+        }
+        if (t.getContainer() instanceof ClassOrInterface) {
+            final Scope scope = node == null ? null : Util.getContainingClassOrInterface(node.getScope());
+            List<ClassOrInterface> parents = new ArrayList<>();
+            ClassOrInterface parent = (ClassOrInterface)t.getContainer();
+            parents.add(0, parent);
+            while (parent.getContainer() instanceof ClassOrInterface) {
+                parent = (ClassOrInterface)parent.getContainer();
+                parents.add(0, parent);
+            }
+            for (ClassOrInterface p : parents) {
+                if (p==scope) {
+                    if (gen.opts.isOptimize()) {
+                        sb.append(gen.getNames().self(p)).append('.');
+                    }
+                } else {
+                    sb.append(gen.getNames().name(p)).append('.');
+                }
+            }
+        }
+        return sb.toString();
     }
 
     /** Prints out an object with a type constructor under the property "t" and its type arguments under
