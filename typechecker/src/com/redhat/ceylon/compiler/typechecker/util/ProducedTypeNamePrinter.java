@@ -92,11 +92,12 @@ public class ProducedTypeNamePrinter {
                 Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
                     ProducedType dt = pt.eliminateNull();
-                    if (!isPrimitiveAbbreviatedType(dt)) {
-                        return lt() + getProducedTypeName(dt, unit) + gt() + "?";
+                    String dtn = getProducedTypeName(dt, unit);
+                    if (isPrimitiveAbbreviatedType(dt)) {
+                        return dtn + "?";
                     }
                     else {
-                        return getProducedTypeName(dt, unit) + "?";
+                        return lt() + dtn + gt() + "?";
                     }
                 }
                 if (abbreviateEmpty(pt)) {
@@ -104,20 +105,24 @@ public class ProducedTypeNamePrinter {
                 }
                 if (abbreviateSequential(pt)) {
                     ProducedType it = u.getIteratedType(pt);
-                    if (!isPrimitiveAbbreviatedType(it)) {
-                        return lt() + getProducedTypeName(it, unit) + gt() + "[]";
+                    String etn = getProducedTypeName(it, unit);
+                    if (isPrimitiveAbbreviatedType(it)) {
+                        return etn + "[]";
                     }
                     else {
-                        return getProducedTypeName(it, unit) + "[]";
+                        return lt() + etn + gt() + "[]";
                     }
                 }
                 if (abbreviateSequence(pt)) {
                     ProducedType it = u.getIteratedType(pt);
-                    if (!isPrimitiveAbbreviatedType(it)) {
-                        return "[" + lt() + getProducedTypeName(it, unit) + gt() + "+]";
+                    String etn = getProducedTypeName(it, unit);
+                    if (isPrimitiveAbbreviatedType(it) || 
+                            it.getDeclaration() instanceof UnionType ||
+                            it.getDeclaration() instanceof IntersectionType ) {
+                        return "[" + etn + "+]";
                     }
                     else {
-                        return "[" + getProducedTypeName(it, unit) + "+]";
+                        return "[" + lt() + etn + gt() + "+]";
                     }
                 }
                 if (abbreviateIterable(pt)) {
@@ -128,7 +133,9 @@ public class ProducedTypeNamePrinter {
                     }
                     String etn = getProducedTypeName(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
-                    if (isPrimitiveAbbreviatedType(it)) {
+                    if (isPrimitiveAbbreviatedType(it) || 
+                            it.getDeclaration() instanceof UnionType ||
+                            it.getDeclaration() instanceof IntersectionType) {
                         return "{" + etn + many + "}";
                     }
                     else {
@@ -145,13 +152,12 @@ public class ProducedTypeNamePrinter {
                     ProducedType rt = tal.get(0);
                     String paramTypes = getTupleElementTypeNames(tal.get(1), unit);
                     if (rt!=null && paramTypes!=null) {
-                        if (!isPrimitiveAbbreviatedType(rt)) {
-                            return lt() + getProducedTypeName(rt, unit) + gt() + 
-                                    "(" + paramTypes + ")";
+                        String rtn = getProducedTypeName(rt, unit);
+                        if (isPrimitiveAbbreviatedType(rt)) {
+                            return rtn + "(" + paramTypes + ")";
                         }
                         else {
-                            return getProducedTypeName(rt, unit) + 
-                                    "(" + paramTypes + ")";
+                            return lt() + rtn + gt() + "(" + paramTypes + ")";
                         }
                     }
                 }
