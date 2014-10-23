@@ -711,7 +711,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             if (isSerial) {
-                TypeGenerator.addSerializer(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
+                SerializationHelper.addSerializer(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, this);
             }
             endBlock();
             out(")(", names.name(d), ".$$.prototype)");
@@ -2966,7 +2966,7 @@ public class GenerateJsVisitor extends Visitor
                 out("[");
                 _end = "]";
             } else {
-                out(".$_get(");
+                out(".getFromFirst(");
                 _end = ")";
             }
             if (!isNaturalLiteral(_elemexpr.getTerm())) {
