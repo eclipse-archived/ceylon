@@ -230,7 +230,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     
     private boolean installScripts(RepositoryManager repositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
         String version = module.getVersion();
-        if(!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
+        if((version == null || version.isEmpty()) && !module.getName().equals(Module.DEFAULT_MODULE_NAME)){
             version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
             if(version == null)
                 return false;
@@ -247,10 +247,10 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             }
         }else{
             // obtain it from the repo
-            ArtifactContext context = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.SCRIPTS_ZIPPED);
+            ArtifactContext context = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
             ArtifactResult result = repositoryManager.getArtifactResult(context);
             if(result == null){
-                String err = getModuleNotFoundErrorMessage(repositoryManager, module.getName(), module.getVersion());
+                String err = getModuleNotFoundErrorMessage(repositoryManager, module.getName(), version);
                 errorAppend(err);
                 errorNewline();
                 return false;
@@ -341,7 +341,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     private boolean addScripts(RepositoryManager outputRepositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
         String version = module.getVersion();
-        if(!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
+        if((version == null || version.isEmpty()) && !module.getName().equals(Module.DEFAULT_MODULE_NAME)){
             version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
             if(version == null)
                 return false;
