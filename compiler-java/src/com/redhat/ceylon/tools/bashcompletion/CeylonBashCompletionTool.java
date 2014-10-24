@@ -281,6 +281,10 @@ public class CeylonBashCompletionTool implements Tool {
     }
 
     private CompletionResults completeToolNames(String partial) {
+        if(partial.indexOf(',') != -1){
+            // complete the last tool after the comma, even if it's empty
+            partial = partial.substring(partial.lastIndexOf(',')+1);
+        }
         CompletionResults results = new CompletionResults();
         results.setPartial(partial);
         for (String toolName : toolLoader.getToolNames()) {

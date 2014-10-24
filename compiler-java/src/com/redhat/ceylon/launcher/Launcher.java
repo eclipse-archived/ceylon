@@ -79,10 +79,13 @@ public class Launcher {
             Integer result = (Integer)setupMethod.invoke(mainTool, (Object)args);
             if (result == 0 /* SC_OK */) {
                 try {
-                    Method toolGetter = mainClass.getMethod("getTool");
-                    Object tool = toolGetter.invoke(mainTool);
-                    Method verboseGetter = tool.getClass().getMethod("getVerbose");
-                    verbose = (String)verboseGetter.invoke(tool);
+                    Method toolGetter = mainClass.getMethod("getTools");
+                    Object[] tools = (Object[]) toolGetter.invoke(mainTool);
+                    // just use the first one since they share args
+                    if(tools != null && tools.length > 0){
+                        Method verboseGetter = tools[0].getClass().getMethod("getVerbose");
+                        verbose = (String)verboseGetter.invoke(tools[0]);
+                    }
                 } catch (Exception ex) {
                     // Probably doesn't have a --verbose option
                 }
