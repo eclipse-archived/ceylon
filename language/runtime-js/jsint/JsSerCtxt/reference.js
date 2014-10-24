@@ -1,7 +1,13 @@
 function(id,inst,$mpt){
+  for (var i=1;i<this.refs.length;i++){
+    if (id.equals(this.refs[i].id)){
+      var cur=this.refs[i].instance();
+      throw AssertionError('A different instance has already been registered with id '+id.string+': "'
+                         +(cur?cur.string:"null")+'", "'+(inst?inst.string:"null")+'"');
+    }
+  }
   var cur=this.instances.indexOf(inst);
   if (cur>0 && inst !== null && this.instances[cur]!==inst) {
-    cur=this.instances[cur];
     throw AssertionError('A different instance has already been registered with id '+id.string+': "'
                          +(cur?cur.string:"null")+'", "'+(inst?inst.string:"null")+'"');
   }
