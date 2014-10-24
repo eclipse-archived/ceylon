@@ -376,7 +376,11 @@ class Usage {
     }
 
     private boolean validToolName() {
-        return rootTool.getToolModel() != null;
+        for(String toolName : rootTool.getToolNames()){
+            if(rootTool.getToolModel(toolName) == null)
+                return false;
+        }
+        return true;
     }
 
     private void printSuggestions(List<String> l) {

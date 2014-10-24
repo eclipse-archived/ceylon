@@ -147,6 +147,14 @@ public class CeylonTool implements Tool {
         return toolName;
     }
     
+    public String[] getToolNames() {
+        if(toolName == null)
+            return new String[0];
+        if(toolName.indexOf(',') != -1)
+            return toolName.split(",");
+        return new String[]{toolName};
+    }
+
     /** The arguments passed to the tool to run */
     public List<String> getToolArguments() {
         return toolArgs;
@@ -280,16 +288,23 @@ public class CeylonTool implements Tool {
         return result;
     }
 
+    // Warning: this method called by reflection in Launcher
     public int execute() throws Exception {
-        int result;
+        int result = 0;
         Exception error = null;
         CeylonConfig oldConfig = null;
         try {
-            ToolModel<Tool> model = getToolModel();
-            Tool tool = getTool(model);
-            oldConfig = setupConfig(tool);
-            run(model, tool);
-            result = SC_OK;
+            for(String singleToolName : getToolNames()){
+                ToolModel<Tool> model = getToolModel(singleToolName);
+                Tool tool = getTool(model);
+                oldConfig = setupConfig(tool);
+                try{
+                    run(model, tool);
+                    result = SC_OK;
+                } finally {
+                    CeylonConfig.set(oldConfig);
+                }
+            }
         } catch (NoSuchToolException e) {
             error = e;
             result = SC_NO_SUCH_TOOL;
@@ -308,8 +323,6 @@ public class CeylonTool implements Tool {
         } catch (Exception e) {
             error = e;
             result = SC_TOOL_EXCEPTION;
-        } finally {
-            CeylonConfig.set(oldConfig);
         }
         if (error != null) {
             Usage.handleException(this, getToolName(), error);
@@ -412,9 +425,13 @@ public class CeylonTool implements Tool {
         env.put("SCRIPT_DIR", (new File(script)).getParent());
     }
 
-    // WARNING: this is called by reflection: do not REMOVE!!!
-    public Tool getTool() {
-        return getTool(getToolModel());
+    // WARNING: this is called by reflection in Launcher: do not REMOVE!!!
+    public Tool[] getTools() {
+        String[] toolNames = getToolNames();
+        Tool[] tools = new Tool[toolNames.length];
+        for(int i=0;i<toolNames.length;i++)
+            tools[i] = getTool(getToolModel(toolNames[i]));
+        return tools;
     }
     
     public Tool getTool(ToolModel<?> model) {
