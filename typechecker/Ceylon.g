@@ -1968,7 +1968,48 @@ functionOrExpression returns [Expression expression]
 conditionalExpression returns [Term term]
     : ifExpression
       { $term = $ifExpression.term; }
-    //| switchExpression
+    | switchExpression
+      { $term = $switchExpression.term; }
+    ;
+
+switchExpression returns [SwitchExpression term]
+    : switchHeader
+      { $term = new SwitchExpression(null);
+        $term.setSwitchClause($switchHeader.clause); }
+      caseExpressions
+      { $term.setSwitchCaseList($caseExpressions.switchCaseList); }
+    ;
+
+caseExpressions returns [SwitchCaseList switchCaseList]
+    : { $switchCaseList = new SwitchCaseList(null); }
+      (
+        caseExpression
+        { $switchCaseList.addCaseClause($caseExpression.clause); }
+      )+
+      (
+        defaultCaseExpression
+        { $switchCaseList.setElseClause($defaultCaseExpression.clause); }
+      )?
+    ;
+    
+caseExpression returns [CaseClause clause]
+    : CASE_CLAUSE 
+      { $clause = new CaseClause($CASE_CLAUSE); }
+      caseItemList
+      { $clause.setCaseItem($caseItemList.item); }
+      disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($disjunctionExpression.term); 
+        $clause.setExpression(e); }
+    ;
+
+defaultCaseExpression returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($disjunctionExpression.term); 
+        $clause.setExpression(e); }
     ;
 
 ifExpression returns [IfExpression term]
@@ -3133,6 +3174,13 @@ caseBlock returns [CaseClause clause]
       { $clause.setBlock($block.block); }
     ;
 
+defaultCaseBlock returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      block
+      { $clause.setBlock($block.block); }
+    ;
+
 caseItemList returns [CaseItem item]
     : LPAREN //TODO: we really should not throw away this token!
       (
@@ -3142,13 +3190,6 @@ caseItemList returns [CaseItem item]
       RPAREN 
       { if ($item!=null) 
             $item.setEndToken($RPAREN); }
-    ;
-
-defaultCaseBlock returns [ElseClause clause]
-    : ELSE_CLAUSE 
-      { $clause = new ElseClause($ELSE_CLAUSE); }
-      block
-      { $clause.setBlock($block.block); }
     ;
 
 caseItem returns [CaseItem item]

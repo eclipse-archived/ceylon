@@ -733,8 +733,12 @@
 "An if/then/else conditional expression."
 ^(IF_EXPRESSION:TERM
     IF_CLAUSE
-    ELSE_CLAUSE
-    Method declarationModel;)
+    ELSE_CLAUSE)
+
+"A switch/case/else conditional expression."
+^(SWITCH_EXPRESSION:TERM
+    SWITCH_CLAUSE
+    SWITCH_CASE_LIST)
 
 "A named argument."
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
