@@ -79,8 +79,8 @@ shared void testBasicDeserializationOfObject() {
             shared actual Type getTypeArgument(TypeParameter typeParameter) {
                 assert(exists element = `Container<Integer>`.declaration.getTypeParameterDeclaration("Element"));
                 assert (typeParameter == element);
-                assert(exists result =`Container<Integer>`.typeArguments[0]);
-                return result;
+                assert(is TypeParameter->Type<Anything> result =`Container<Integer>`.typeArguments.first);
+                return result.item;
             }
             
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
@@ -110,8 +110,8 @@ shared void testBasicDeserializationOfArray() {
             shared actual Type getTypeArgument(TypeParameter typeParameter) {
                 assert(exists element = `Array<Integer>`.declaration.getTypeParameterDeclaration("Element"));
                 assert (typeParameter == element);
-                assert(exists result =`Array<Integer>`.typeArguments[0]);
-                return result;
+                assert(is TypeParameter->Type<Anything> result =`Array<Integer>`.typeArguments.first);
+                return result.item;
             }
             
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
@@ -160,8 +160,8 @@ shared void testDerserializationDeserializeTwice() {
         shared actual Type getTypeArgument(TypeParameter typeParameter) {
             assert(exists element = `Array<Integer>`.declaration.getTypeParameterDeclaration("Element"));
             assert (typeParameter == element);
-            assert(exists result =`Array<Integer>`.typeArguments[0]);
-            return result;
+            assert(exists result =`Array<Integer>`.typeArguments.first);
+            return result.item;
         }
         
         shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
@@ -199,8 +199,8 @@ shared void testDerserializationInstanceTwice() {
             shared actual Type getTypeArgument(TypeParameter typeParameter) {
                 assert(exists element = `Container<Integer>`.declaration.getTypeParameterDeclaration("Element"));
                 assert (typeParameter == element);
-                assert(exists result =`Container<Integer>`.typeArguments[0]);
-                return result;
+                assert(exists result =`Container<Integer>`.typeArguments.first);
+                return result.item;
             }
             
             shared actual Instance|Reference<Instance> getValue<Instance>(ValueDeclaration attribute) {
