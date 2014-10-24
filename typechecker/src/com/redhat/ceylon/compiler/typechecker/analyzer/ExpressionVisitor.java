@@ -170,6 +170,28 @@ public class ExpressionVisitor extends Visitor {
                 .getFullType());
     }
     
+    @Override public void visit(Tree.IfExpression that) {
+        super.visit(that);
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        Tree.IfClause ifClause = that.getIfClause();
+        if (ifClause!=null) {
+            ProducedType t = ifClause.getExpression().getTypeModel();
+            if (t!=null) {
+                list.add(t);
+            }
+        }
+        Tree.ElseClause elseClause = that.getElseClause();
+        if (elseClause!=null) {
+            ProducedType t = elseClause.getExpression().getTypeModel();
+            if (t!=null) {
+                list.add(t);
+            }
+        }
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(list);
+        that.setTypeModel(ut.getType());
+    }
+    
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
         super.visit(that);
         that.setTypeModel(that.getExpression().getTypeModel());

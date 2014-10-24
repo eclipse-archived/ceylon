@@ -414,9 +414,11 @@
     ELSE_CLAUSE?)
 ^(IF_CLAUSE:CONTROL_CLAUSE
     CONDITION_LIST
-    BLOCK?)
+    BLOCK?
+    EXPRESSION?)
 ^(ELSE_CLAUSE:CONTROL_CLAUSE
-    BLOCK?)
+    BLOCK?
+    EXPRESSION?)
 
 ^(SWITCH_STATEMENT:CONTROL_STATEMENT
     SWITCH_CLAUSE
@@ -428,7 +430,8 @@
     ELSE_CLAUSE?)
 ^(CASE_CLAUSE:CONTROL_CLAUSE
     CASE_ITEM
-    BLOCK?)
+    BLOCK?
+    EXPRESSION?)
     
 ^(CASE_ITEM)
 ^(MATCH_CASE:CASE_ITEM
@@ -725,6 +728,12 @@
     PARAMETER_LIST*
     EXPRESSION?
     BLOCK?
+    Method declarationModel;)
+
+"An if/then/else conditional expression."
+^(IF_EXPRESSION:TERM
+    IF_CLAUSE
+    ELSE_CLAUSE
     Method declarationModel;)
 
 "A named argument."

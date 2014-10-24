@@ -1148,7 +1148,10 @@ unambiguousType
     ;
 
 statement returns [Statement statement]
-    : directiveStatement
+    : /*(IF_CLAUSE conditions THEN_CLAUSE) => 
+      expressionOrSpecificationStatement
+      { $statement = $expressionOrSpecificationStatement.statement; }
+    |*/ directiveStatement
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
@@ -1618,6 +1621,11 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
       { sequencedArgument = new SequencedArgument(null);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
         (
+          (FOR_CLAUSE | IF_CLAUSE conditions ~THEN_CLAUSE)=>
+          c1=comprehension
+          { if ($c1.comprehension!=null)
+                $sequencedArgument.addPositionalArgument($c1.comprehension); }
+        | 
           pa1=positionalArgument
           { if ($pa1.positionalArgument!=null)
                 $sequencedArgument.addPositionalArgument($pa1.positionalArgument); }
@@ -1625,28 +1633,25 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
           sa1=spreadArgument
           { if ($sa1.positionalArgument!=null)
                 $sequencedArgument.addPositionalArgument($sa1.positionalArgument); }
-        |
-          c1=comprehension
-          { if ($c1.comprehension!=null)
-                $sequencedArgument.addPositionalArgument($c1.comprehension); }
         )
         (
           c=COMMA
           { $sequencedArgument.setEndToken($c); }
           (
+            (FOR_CLAUSE | IF_CLAUSE conditions ~THEN_CLAUSE)=>
+            c2=comprehension
+            { if ($c2.comprehension!=null) {
+                  $sequencedArgument.addPositionalArgument($c2.comprehension);
+                  sequencedArgument.setEndToken(null); } }
+          | 
             pa2=positionalArgument
             { if ($pa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($pa2.positionalArgument); 
                   sequencedArgument.setEndToken(null); } }
-          |
+          | 
             sa2=spreadArgument
             { if ($sa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($sa2.positionalArgument); 
-                  sequencedArgument.setEndToken(null); } }
-          |
-            c2=comprehension
-            { if ($c2.comprehension!=null) {
-                  $sequencedArgument.addPositionalArgument($c2.comprehension);
                   sequencedArgument.setEndToken(null); } }
           |
             { displayRecognitionError(getTokenNames(), 
@@ -1953,8 +1958,42 @@ functionOrExpression returns [Expression expression]
       f=anonymousFunction
       { $expression = new Expression(null);
         $expression.setTerm($f.function); }
+    | ce=conditionalExpression
+      { $expression = new Expression(null); 
+        $expression.setTerm($ce.term); }
     | e=expression
       { $expression = $e.expression; }
+    ;
+
+conditionalExpression returns [Term term]
+    : ifExpression
+      { $term = $ifExpression.term; }
+    //| switchExpression
+    ;
+
+ifExpression returns [IfExpression term]
+    : IF_CLAUSE
+      { $term = new IfExpression(null); 
+        IfClause ic = new IfClause($IF_CLAUSE);
+        ElseClause ec = new ElseClause(null);
+        $term.setIfClause(ic);
+        $term.setElseClause(ec); } 
+      conditions
+      { $term.getIfClause().setConditionList($conditions.conditionList); }
+      (
+        THEN_CLAUSE
+        de1=disjunctionExpression
+        { Expression e = new Expression($THEN_CLAUSE);
+          e.setTerm($de1.term);
+          $term.getIfClause().setExpression(e); }
+      )?
+      (
+        ELSE_CLAUSE
+        de2=disjunctionExpression
+        { Expression e = new Expression($ELSE_CLAUSE);
+          e.setTerm($de2.term);
+          $term.getElseClause().setExpression(e); }
+      )?
     ;
 
 anonymousFunction returns [FunctionArgument function]
@@ -1996,7 +2035,8 @@ comprehension returns [Comprehension comprehension]
 comprehensionClause returns [ComprehensionClause comprehensionClause]
     : forComprehensionClause 
       { $comprehensionClause = $forComprehensionClause.comprehensionClause; }
-    | ifComprehensionClause 
+    | (IF_CLAUSE conditions ~THEN_CLAUSE) => 
+      ifComprehensionClause 
       { $comprehensionClause = $ifComprehensionClause.comprehensionClause; }
     | expressionComprehensionClause 
       { $comprehensionClause = $expressionComprehensionClause.comprehensionClause; }
@@ -2074,11 +2114,7 @@ thenElseExpression returns [Term term]
     //      to distinguish between "if (...) then" and 
     //      the control structure "if (...) { ... }"
     /*| 
-      ( 
-        IF_CLAUSE LPAREN ( existsCondition | nonemptyCondition | isCondition ) RPAREN
-      | 
-        TYPE_CONSTRAINT LPAREN specifiedConditionVariable RPAREN 
-      )+
+      IF_CLAUSE conditions
       THEN_CLAUSE disjunctionExpression
       (ELSE_CLAUSE disjunctionExpression)?*/
     ;
