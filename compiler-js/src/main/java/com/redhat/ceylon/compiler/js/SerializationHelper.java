@@ -46,10 +46,19 @@ public class SerializationHelper {
         if ("ceylon.language".equals(pkgname)) {
             pkgname = "$";
         }
-        for (Value v : serializableValues(d)) {
+        List<Value> vals = serializableValues(d);
+        if (vals.size() > 1) {
+            final String pkvar = gen.getNames().createTempVariable();
+            gen.out("var ", pkvar, "=lmp$(ex$,'", pkgname, "');");
+            gen.endLine();
+            pkgname = pkvar;
+        } else {
+            pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
+        }
+        for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
-            gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(", gen.getClAlias(),
-                    "lmp$(ex$,'", pkgname, "'),this.$prop$", gen.getNames().getter(v),")", ",",
+            gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
+                    pkgname, ",this.$prop$", gen.getNames().getter(v),")", ",",
                     "this.", gen.getNames().name(v), ",{Instance$putValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out("this.$$targs$$.", vd.getName(), "$", d.getName());
@@ -105,7 +114,7 @@ public class SerializationHelper {
         for (TypeParameter tp : d.getTypeParameters()) {
             gen.out(ni, ".$$targs$$.", tp.getName(), "$", d.getName(), "={t:", dc, ".getTypeArgument(",
                     gen.getClAlias(), "OpenTypeParam$jsint(", typename, ",'",
-                    tp.getName(), "$", d.getName(), "')).item.tipo};");
+                    tp.getName(), "$", d.getName(), "')).tipo};");
             //TODO type arguments to the type argument itself
             gen.endLine();
         }
@@ -113,10 +122,19 @@ public class SerializationHelper {
         if ("ceylon.language".equals(pkgname)) {
             pkgname = "$";
         }
-        for (Value v : serializableValues(d)) {
+        List<Value> vals = serializableValues(d);
+        if (vals.size() > 1) {
+            final String pkvar = gen.getNames().createTempVariable();
+            gen.out("var ", pkvar, "=lmp$(ex$,'", pkgname, "');");
+            gen.endLine();
+            pkgname = pkvar;
+        } else {
+            pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
+        }
+        for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
             gen.out(ni, ".", gen.getNames().name(v), "_=", dc, ".getValue(", gen.getClAlias(),
-                    "OpenValue$jsint(", gen.getClAlias(), "lmp$(ex$,'", pkgname, "'),", gen.getNames().name(d),".$$.prototype.$prop$",
+                    "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.$prop$",
                     gen.getNames().getter(v),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
@@ -143,9 +161,4 @@ public class SerializationHelper {
         return vals;
     }
 
-    static String internalQualifiedName(com.redhat.ceylon.compiler.typechecker.model.Class d, GenerateJsVisitor gen) {
-        StringBuilder sb = new StringBuilder(TypeUtils.qualifiedTypeContainer(null, false, d, gen));
-        sb.append(gen.getNames().name(d));
-        return sb.toString();
-    }
 }
