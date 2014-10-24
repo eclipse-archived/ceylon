@@ -2961,7 +2961,7 @@ public class GenerateJsVisitor extends Visitor
                 out("[");
                 _end = "]";
             } else {
-                out(".getFromFirst(");
+                out(".$_get(");
                 _end = ")";
             }
             if (!isNaturalLiteral(_elemexpr.getTerm())) {
