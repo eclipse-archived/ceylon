@@ -2,7 +2,7 @@ import ceylon.language.meta.declaration {
   TypeParameter, OpenType, Variance, NestableDeclaration
 }
 
-native class OpenTypeParam(container, _fname) satisfies TypeParameter {
+shared native class OpenTypeParam(container, _fname) satisfies TypeParameter {
     shared actual NestableDeclaration container;
     shared String _fname;
     shared native actual Boolean defaulted;
