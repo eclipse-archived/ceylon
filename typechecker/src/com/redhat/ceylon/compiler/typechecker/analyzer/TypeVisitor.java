@@ -941,6 +941,15 @@ public class TypeVisitor extends Visitor {
     }
 
     @Override 
+    public void visit(Tree.ObjectExpression that) {
+        Class o = that.getAnonymousClass();
+        o.setExtendedType(null);
+        o.getSatisfiedTypes().clear();
+        defaultSuperclass(that.getExtendedType(), o);
+        super.visit(that);
+    }
+
+    @Override 
     public void visit(Tree.ClassDefinition that) {
         Class cd = that.getDeclarationModel();
         cd.setExtendedType(null);

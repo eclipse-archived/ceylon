@@ -344,6 +344,21 @@ objectDeclaration returns [ObjectDefinition declaration]
       )
     ;
 
+objectExpression returns [ObjectExpression term]
+    : OBJECT_DEFINITION
+      { $term = new ObjectExpression($OBJECT_DEFINITION); }
+      ( 
+        extendedType
+        { $term.setExtendedType($extendedType.extendedType); } 
+      )?
+      ( 
+        satisfiedTypes
+        { $term.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+      )?
+      classBody
+      { $term.setClassBody($classBody.classBody); }
+    ;
+
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
     @init { MethodDefinition def=null;
             MethodDeclaration dec=null; }
@@ -1105,7 +1120,7 @@ declarationStart
     | ASSIGN
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
-    | OBJECT_DEFINITION
+    | OBJECT_DEFINITION (LIDENTIFIER|UIDENTIFIER) //to disambiguate object expressions
     | ALIAS 
     | variadicType LIDENTIFIER
     | DYNAMIC (LIDENTIFIER|UIDENTIFIER)
@@ -1963,6 +1978,9 @@ functionOrExpression returns [Expression expression]
         $expression.setTerm($ce.term); }
     | e=expression
       { $expression = $e.expression; }
+    | oe=objectExpression
+      { $expression = new Expression(null); 
+        $expression.setTerm($oe.term); }
     ;
 
 conditionalExpression returns [Term term]

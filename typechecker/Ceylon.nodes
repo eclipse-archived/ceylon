@@ -730,6 +730,13 @@
     BLOCK?
     Method declarationModel;)
 
+"An anonymous function."
+^(OBJECT_EXPRESSION:TERM
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    CLASS_BODY
+    Class anonymousClass;)
+
 "An if/then/else conditional expression."
 ^(IF_EXPRESSION:TERM
     IF_CLAUSE

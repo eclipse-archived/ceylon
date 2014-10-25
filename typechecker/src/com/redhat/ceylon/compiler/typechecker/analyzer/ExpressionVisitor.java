@@ -1333,12 +1333,25 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type rt = 
                 beginReturnScope(new Tree.VoidModifier(that.getToken()));
         Declaration od = 
-                beginReturnDeclaration(that.getDeclarationModel());
+                beginReturnDeclaration(that.getAnonymousClass());
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
         validateEnumeratedSupertypes(that, 
                 that.getAnonymousClass());
+    }
+    
+    @Override public void visit(Tree.ObjectExpression that) {
+        Tree.Type rt = 
+                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+        Declaration od = 
+                beginReturnDeclaration(that.getAnonymousClass());
+        super.visit(that);
+        endReturnDeclaration(od);
+        endReturnScope(rt, null);
+        validateEnumeratedSupertypes(that, 
+                that.getAnonymousClass());
+        that.setTypeModel(unit.denotableType(that.getAnonymousClass().getType()));
     }
     
     @Override public void visit(Tree.ClassDeclaration that) {

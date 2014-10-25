@@ -267,6 +267,15 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectExpression that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
+    }
+    
+    @Override
     public void visit(Tree.Body that) {
         boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
         super.visit(that);
