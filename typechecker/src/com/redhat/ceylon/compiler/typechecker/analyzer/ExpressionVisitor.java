@@ -174,18 +174,24 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         List<ProducedType> list = new ArrayList<ProducedType>();
         Tree.IfClause ifClause = that.getIfClause();
-        if (ifClause!=null) {
+        if (ifClause!=null && ifClause.getExpression()!=null) {
             ProducedType t = ifClause.getExpression().getTypeModel();
             if (t!=null) {
                 addToUnion(list, t);
             }
         }
+        else {
+            that.addError("missing then expression");
+        }
         Tree.ElseClause elseClause = that.getElseClause();
-        if (elseClause!=null) {
+        if (elseClause!=null && elseClause.getExpression()!=null) {
             ProducedType t = elseClause.getExpression().getTypeModel();
             if (t!=null) {
                 addToUnion(list, t);
             }
+        }
+        else {
+            that.addError("missing else expression");
         }
         UnionType ut = new UnionType(unit);
         ut.setCaseTypes(list);
@@ -193,24 +199,35 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.SwitchExpression that) {
+        Tree.Expression ose = switchExpression;
+        switchExpression = that.getSwitchClause().getExpression();
         super.visit(that);
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
-            ProducedType t = cc.getExpression().getTypeModel();
-            if (t!=null) {
-                addToUnion(list, t);
+
+        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
+        if (switchCaseList!=null && switchExpression!=null) {
+            checkCases(switchCaseList);
+            if (switchCaseList.getElseClause()==null) {
+                checkCasesExhaustive(switchCaseList, that.getSwitchClause());
             }
-        }
-        Tree.ElseClause elseClause = that.getSwitchCaseList().getElseClause();
-        if (elseClause!=null) {
-            ProducedType t = elseClause.getExpression().getTypeModel();
-            if (t!=null) {
-                addToUnion(list, t);
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                ProducedType t = cc.getExpression().getTypeModel();
+                if (t!=null) {
+                    addToUnion(list, t);
+                }
             }
+            Tree.ElseClause elseClause = that.getSwitchCaseList().getElseClause();
+            if (elseClause!=null) {
+                ProducedType t = elseClause.getExpression().getTypeModel();
+                if (t!=null) {
+                    addToUnion(list, t);
+                }
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            that.setTypeModel(ut.getType());
         }
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(list);
-        that.setTypeModel(ut.getType());
+        switchExpression = ose;        
     }
     
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
