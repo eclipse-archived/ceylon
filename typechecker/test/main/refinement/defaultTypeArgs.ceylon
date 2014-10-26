@@ -74,3 +74,6 @@ shared interface TraitA<@error Representation = TraitA>
         given Representation satisfies TraitA<Representation> {
     shared formal Representation modfiyA();
 }
+
+class UX() extends UM<String>() {}
+class UM<S,@error P=UM<P>>() {}

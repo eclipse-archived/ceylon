@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.DefaultTypeArgVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
@@ -308,6 +309,7 @@ public class PhasedUnit {
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
+                compilationUnit.visit(new DefaultTypeArgVisitor());
                 compilationUnit.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
                 compilationUnit.visit(new TypeVisitor());
                 typeDeclarationsScanned = true;
