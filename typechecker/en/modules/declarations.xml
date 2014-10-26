@@ -476,10 +476,6 @@ TypeConstraints?
             parameter list, then the type of the first parameter list is 
             <literal>[]|P</literal>.</para>
             
-            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
-            defaulted parameters may only occur in the first parameter list. This restriction
-            will be removed.</para></comment>
-            
             <!--
             <para>If the declared type of the parameter is an optional type (a subtype of
             <literal>Null</literal>) then the default argument expression must be a value
@@ -614,10 +610,6 @@ TypeConstraints?
             <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
             containing just a variadic parameter of type <literal>T+</literal> is 
             <literal>[T+]</literal>.</para>
-            
-            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
-            a variadic parameters may only occur in the first parameter list. This restriction
-            will be removed.</para></comment>
             
         </section>
         
