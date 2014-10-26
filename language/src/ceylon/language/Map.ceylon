@@ -44,7 +44,7 @@ shared interface Map<out Key,out Item>
      belonging to this map."
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Key->Item entry, defines(entry.key)) {
+        if (is Object->Anything entry, defines(entry.key)) {
             if (exists item = get(entry.key)) {
                 if (exists entryItem = entry.item) {
                     return item==entryItem;
