@@ -690,18 +690,12 @@ public class RefinementVisitor extends Visitor {
                         p.addError("defaulted parameter must occur before variadic parameter");
                     }
                     foundDefault = true;
-                    if (!pl.isFirst()) {
-                        p.addError("only the first parameter list may have defaulted parameters");
-                    }
                 }
                 else if (pm.isSequenced()) {
                     if (foundSequenced) {
                         p.addError("parameter list may have at most one variadic parameter");
                     }
                     foundSequenced = true;
-                    if (!pl.isFirst()) {
-                        p.addError("only the first parameter list may have a variadic parameter");
-                    }
                     if (foundDefault && 
                             pm.isAtLeastOne()) {
                         p.addError("parameter list with defaulted parameters may not have a nonempty variadic parameter");

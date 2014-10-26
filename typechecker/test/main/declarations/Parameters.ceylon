@@ -50,7 +50,7 @@ class Parameters() {
     	shared actual void greet(@error String greeting="hello") {}
     }
     
-    void method()(@error String name="gavin")(@error String* names) {}
+    void method()(String name="gavin")(String* names) {}
     
     void func(String* x, @error String* y) {}
     
