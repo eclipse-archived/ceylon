@@ -1995,7 +1995,31 @@ switchExpression returns [SwitchExpression term]
       { $term = new SwitchExpression(null);
         $term.setSwitchClause($switchHeader.clause); }
       caseExpressions
-      { $term.setSwitchCaseList($caseExpressions.switchCaseList); }
+      { $term.setSwitchCaseList($caseExpressions.switchCaseList);
+        //TODO: huge copy/paste job from switchCaseElse 
+        Expression ex = $switchHeader.clause.getExpression();
+        if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
+          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
+            CaseItem item = cc.getCaseItem();
+            if (item instanceof IsCase) {
+              IsCase ic = (IsCase) item;
+              Variable v = new Variable(null);
+              v.setType(new SyntheticVariable(null));
+              v.setIdentifier(id);
+              SpecifierExpression se = new SpecifierExpression(null);
+              Expression e = new Expression(null);
+              BaseMemberExpression bme = new BaseMemberExpression(null);
+              bme.setIdentifier(id);
+              bme.setTypeArguments( new InferredTypeArguments(null) );
+              e.setTerm(bme);
+              se.setExpression(e);
+              v.setSpecifierExpression(se);
+              ic.setVariable(v);
+            }
+          } 
+        }
+      }
     ;
 
 caseExpressions returns [SwitchCaseList switchCaseList]
