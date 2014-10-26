@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
@@ -4328,6 +4329,14 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.InOp that) {
         super.visit(that);
         visitInOperator(that);
+    }
+    
+    @Override public void visit(Tree.LetExpression that) {
+        super.visit(that);
+        Tree.Expression e = that.getLetClause().getExpression();
+        if (e!=null) {
+            that.setTypeModel(e.getTypeModel());
+        }
     }
     
     @Override

@@ -1955,6 +1955,37 @@ functionOrExpression returns [Expression expression]
         $expression.setTerm($f.function); }
     | e=expression
       { $expression = $e.expression; }
+    | l=let
+      { $expression = new Expression(null);
+        $expression.setTerm($l.let); }
+    ;
+
+let returns [LetExpression let]
+    @init { LetClause lc=null; }
+    : LET
+      { $let = new LetExpression(null); 
+        lc = new LetClause($LET);
+        $let.setLetClause(lc); }
+      LPAREN
+      { lc.setEndToken($LPAREN); }
+      (
+        v1=specifiedVariable
+        { lc.setEndToken(null);
+          lc.addVariable($v1.variable); }
+        (
+          COMMA
+          { lc.setEndToken($COMMA); }
+          v2=specifiedVariable
+          { lc.setEndToken(null); 
+            lc.addVariable($v2.variable); }
+        )*
+      )?
+      RPAREN
+      { lc.setEndToken($RPAREN); }
+      disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($disjunctionExpression.term);
+        lc.setExpression(e); }
     ;
 
 anonymousFunction returns [FunctionArgument function]
@@ -3282,15 +3313,15 @@ resources returns [ResourceList resources]
     : LPAREN 
     { $resources = new ResourceList($LPAREN); }
     (
-    r1=resource
-    { $resources.addResource($r1.resource); }
-    (
-      c=COMMA 
-      { $resources.setEndToken($c); }
-      r2=resource
-      { $resources.addResource($r2.resource);
-        $resources.setEndToken(null); }
-    )*
+      r1=resource
+      { $resources.addResource($r1.resource); }
+      (
+        c=COMMA 
+        { $resources.setEndToken($c); }
+        r2=resource
+        { $resources.addResource($r2.resource);
+          $resources.setEndToken(null); }
+      )*
     )?
     RPAREN
     { $resources.setEndToken($RPAREN); }
