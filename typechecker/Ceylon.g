@@ -1988,6 +1988,38 @@ conditionalExpression returns [Term term]
       { $term = $ifExpression.term; }
     | switchExpression
       { $term = $switchExpression.term; }
+    | tryCatchExpression
+      { $term = $tryCatchExpression.term; }
+    ;
+
+tryCatchExpression returns [TryExpression term]
+    :{ $term = new TryExpression(null); }
+      tryExpression 
+      { $term.setTryClause($tryExpression.clause); }
+      (
+        catchExpression
+        { $term.addCatchClause($catchExpression.clause); }
+      )*
+    ;
+
+tryExpression returns [TryClause clause]
+    : TRY_CLAUSE 
+      { $clause = new TryClause($TRY_CLAUSE); }
+      de2=disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($de2.term);
+        $clause.setExpression(e); }
+    ;
+
+catchExpression returns [CatchClause clause]
+    : CATCH_CLAUSE 
+      { $clause = new CatchClause($CATCH_CLAUSE); }
+      catchVariable
+      { $clause.setCatchVariable($catchVariable.catchVariable); }
+      de=disjunctionExpression
+      { Expression e = new Expression(null);
+          e.setTerm($de.term);
+          $clause.setExpression(e); }
     ;
 
 switchExpression returns [SwitchExpression term]
@@ -3347,11 +3379,11 @@ tryCatchFinally returns [TryCatchStatement statement]
       { $statement.setTryClause($tryBlock.clause); }
       (
         catchBlock
-      { $statement.addCatchClause($catchBlock.clause); }
+        { $statement.addCatchClause($catchBlock.clause); }
       )* 
       ( 
         finallyBlock
-      { $statement.setFinallyClause($finallyBlock.clause); }
+        { $statement.setFinallyClause($finallyBlock.clause); }
       )?
     ;
 

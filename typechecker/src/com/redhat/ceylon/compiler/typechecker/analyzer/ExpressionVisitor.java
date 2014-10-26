@@ -5818,13 +5818,37 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
+        checkCatches(that.getCatchClauses());
+    }
+
+    @Override
+    public void visit(Tree.TryExpression that) {
+        super.visit(that);
+        checkCatches(that.getCatchClauses());
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        Tree.Expression te = that.getTryClause().getExpression();
+        if (te!=null) {
+            addToUnion(list, te.getTypeModel());
+        }
         for (Tree.CatchClause cc: that.getCatchClauses()) {
+            Tree.Expression ce = cc.getExpression();
+            if (te!=null) {
+                addToUnion(list, ce.getTypeModel());
+            }
+        }
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(list);
+        that.setTypeModel(ut.getType());
+    }
+
+    private void checkCatches(List<Tree.CatchClause> catchClauses) {
+        for (Tree.CatchClause cc: catchClauses) {
             if (cc.getCatchVariable()!=null && 
                     cc.getCatchVariable().getVariable()!=null) {
                 ProducedType ct = cc.getCatchVariable()
                         .getVariable().getType().getTypeModel();
                 if (ct!=null) {
-                    for (Tree.CatchClause ecc: that.getCatchClauses()) {
+                    for (Tree.CatchClause ecc: catchClauses) {
                         if (ecc.getCatchVariable()!=null &&
                                 ecc.getCatchVariable().getVariable()!=null) {
                             if (cc==ecc) break;
