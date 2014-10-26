@@ -116,19 +116,21 @@ public class VisibilityVisitor extends Visitor {
     private void validateSupertypes(Node that, TypeDeclaration td) {
         if (td instanceof TypeAlias) {
             ProducedType at = td.getExtendedType();
-            if (!isCompletelyVisible(td, at)) {
-                that.addError("aliased type is not visible everywhere type alias '" + 
-                        td.getName() + "' is visible: '" + 
-                        at.getProducedTypeName(that.getUnit()) +
-                        "' involves an unshared type declaration", 
-                        713);
-            }
-            if (!checkModuleVisibility(td, at)) {
-                that.addError("aliased type of type alias '" + td.getName() + 
-                        "' that is visible outside this module comes from an imported module that is not re-exported: '" +
-                        at.getProducedTypeName(that.getUnit()) +
-                        "' involves an unexported type declaration", 
-                        714);
+            if (at!=null) {
+                if (!isCompletelyVisible(td, at)) {
+                    that.addError("aliased type is not visible everywhere type alias '" + 
+                            td.getName() + "' is visible: '" + 
+                            at.getProducedTypeName(that.getUnit()) +
+                            "' involves an unshared type declaration", 
+                            713);
+                }
+                if (!checkModuleVisibility(td, at)) {
+                    that.addError("aliased type of type alias '" + td.getName() + 
+                            "' that is visible outside this module comes from an imported module that is not re-exported: '" +
+                            at.getProducedTypeName(that.getUnit()) +
+                            "' involves an unexported type declaration", 
+                            714);
+                }
             }
         }
         else {
