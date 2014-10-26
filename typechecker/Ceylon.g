@@ -3040,9 +3040,16 @@ switchCaseElse returns [SwitchStatement statement]
       { $statement.setSwitchClause($switchHeader.clause); }
       cases
       { $statement.setSwitchCaseList($cases.switchCaseList);
-        Expression ex = $switchHeader.clause.getExpression();
+        Identifier id = null;
+        Expression ex = $switchHeader.clause.getSwitched().getExpression();
         if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
-          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+        }
+        TypedDeclaration var = $switchHeader.clause.getSwitched().getVariable();
+        if (var!=null) {
+          id = var.getIdentifier();
+        }
+        if (id!=null) {
           for (CaseClause cc: $cases.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
@@ -3070,10 +3077,20 @@ switchHeader returns [SwitchClause clause]
       { $clause = new SwitchClause($SWITCH_CLAUSE); }
       LPAREN 
       (
-      expression 
-      { $clause.setExpression($expression.expression); }
+        switched 
+        { $clause.setSwitched($switched.switched); }
       )?
       RPAREN
+    ;
+
+switched returns [Switched switched]
+    @init { $switched = new Switched(null); }
+    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+        => specifiedVariable
+        { $switched.setVariable($specifiedVariable.variable); }
+      | expression
+        { $switched.setExpression($expression.expression); }
+      )
     ;
 
 cases returns [SwitchCaseList switchCaseList]
@@ -3228,11 +3245,11 @@ tryCatchFinally returns [TryCatchStatement statement]
       { $statement.setTryClause($tryBlock.clause); }
       (
         catchBlock
-      { $statement.addCatchClause($catchBlock.clause); }
+        { $statement.addCatchClause($catchBlock.clause); }
       )* 
       ( 
         finallyBlock
-      { $statement.setFinallyClause($finallyBlock.clause); }
+        { $statement.setFinallyClause($finallyBlock.clause); }
       )?
     ;
 

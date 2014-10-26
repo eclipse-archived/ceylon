@@ -96,6 +96,7 @@ public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
     private Tree.Expression switchExpression;
+    private Tree.Variable switchVariable;
     private Declaration returnDeclaration;
     private boolean isCondition;
     private boolean dynamic;
@@ -5473,7 +5474,14 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    if (switchExpression!=null) {
+                    if (switchVariable!=null) {
+                        ProducedType st = switchVariable.getType().getTypeModel();
+                        if (!isTypeUnknown(st)) {
+                            checkAssignable(t, st, e, 
+                                    "case must be assignable to switch variable type");
+                        }
+                    }
+                    else if (switchExpression!=null) {
                         ProducedType st = switchExpression.getTypeModel();
                         if (!isTypeUnknown(st)) {
                             if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
@@ -5522,18 +5530,35 @@ public class ExpressionVisitor extends Visitor {
         if (t!=null) {
             t.visit(this);
         }
+        ProducedType st;
+        if (switchVariable!=null) {
+            st = switchVariable.getType().getTypeModel();
+        }
+        else if (switchExpression!=null) {
+            st = switchExpression.getTypeModel();
+        }
+        else {
+            //NOTE: early exit!
+            return;
+        }
         Tree.Variable v = that.getVariable();
-        if (switchExpression!=null) {
-            ProducedType st = switchExpression.getTypeModel();
-            if (v!=null) {
-                if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
-                    v.visit(this);
-                }
-                initOriginalDeclaration(v);
+        if (v!=null) {
+            if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
+                v.visit(this);
             }
-            if (t!=null) {
-                ProducedType pt = t.getTypeModel();
-                ProducedType it = intersectionType(pt, st, unit);
+            initOriginalDeclaration(v);
+        }
+        if (t!=null) {
+            ProducedType pt = t.getTypeModel();
+            ProducedType it = intersectionType(pt, st, unit);
+            if (switchVariable!=null) {
+                if (it.isExactly(unit.getNothingDeclaration().getType())) {
+                    that.addError("narrows to Nothing type: '" + 
+                            pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                            st.getProducedTypeName(unit) + "'");
+                }
+            }
+            else if (switchExpression!=null) {
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
                         that.addError("narrows to Nothing type: '" + 
@@ -5543,10 +5568,10 @@ public class ExpressionVisitor extends Visitor {
                     /*checkAssignable(ct, switchType, cc.getCaseItem(), 
                         "case type must be a case of the switch type");*/
                 }
-                if (v!=null) {
-                    v.getType().setTypeModel(it);
-                    v.getDeclarationModel().setType(it);
-                }
+            }
+            if (v!=null) {
+                v.getType().setTypeModel(it);
+                v.getDeclarationModel().setType(it);
             }
         }
     }
@@ -5554,7 +5579,23 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         Tree.Expression ose = switchExpression;
-        switchExpression = that.getSwitchClause().getExpression();
+        Tree.Variable osv = switchVariable;
+        Tree.Switched switched = that.getSwitchClause().getSwitched();
+        Tree.Expression e = switched.getExpression();
+        Tree.Variable v = switched.getVariable();
+        if (e!=null) {
+            switchExpression = e;
+        }
+        else if (v!=null) {
+            switchVariable = v;
+            Tree.SpecifierExpression se = v.getSpecifierExpression();
+            if (se == null) {
+                v.addError("missing switched expression");
+            }
+            else {
+                switchExpression = se.getExpression();
+            }
+        }
         super.visit(that);
         Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
         if (switchCaseList!=null && switchExpression!=null) {
@@ -5564,6 +5605,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         switchExpression = ose;
+        switchVariable = osv;
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
@@ -5578,7 +5620,7 @@ public class ExpressionVisitor extends Visitor {
                 checkCasesDisjoint(cc, occ);
             }
         }
-        if (hasIsCase) {
+        if (hasIsCase && switchVariable==null && switchExpression!=null) {
             Tree.Term st = switchExpression.getTerm();
             if (st instanceof Tree.BaseMemberExpression) {
                 checkReferenceIsNonVariable((Tree.BaseMemberExpression) st, true);
