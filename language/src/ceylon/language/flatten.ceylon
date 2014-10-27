@@ -5,5 +5,6 @@
  That is, if `fun` has type `W([X,Y,Z])` then `flatten(fun)` 
  has type `W(X,Y,Z)`."
 see(`function unflatten`)
-shared native Callable<Return,Args> flatten<Return,Args>(Return tupleFunction(Args tuple))
+shared native Return(*Args) flatten<Return,Args>
+        (Return tupleFunction(Args tuple))
         given Args satisfies Anything[];
