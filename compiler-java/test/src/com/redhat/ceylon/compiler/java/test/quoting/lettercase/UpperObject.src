@@ -45,15 +45,18 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     public final void m() {
         getInnerObject().m();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object[]{new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object()};
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -62,9 +65,9 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (Object.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Object\' before it was set");
         }

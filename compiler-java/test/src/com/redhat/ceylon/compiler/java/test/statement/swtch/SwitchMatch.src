@@ -16,22 +16,25 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
     private switchMatch_foo_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_()};
+            value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (switchMatch_foo_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'switchMatch_foo\' before it was set");
         }
@@ -48,22 +51,25 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
     private switchMatch_bar_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_()};
+            value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (switchMatch_bar_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'switchMatch_bar\' before it was set");
         }

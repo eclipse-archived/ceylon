@@ -41,22 +41,25 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         final boolean b2 = toString().equals(token) || "and".equals(token);
         return b2;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_()};
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (bug1119Addition_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1119Addition\' before it was set");
         }

@@ -1177,87 +1177,96 @@ final class toplevelN1_ {
     
     private toplevelN1_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{0L};
+            value = 0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelN1_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelN1\' before it was set");
         }
     }
     
     public static void set_(final long toplevelN1) {
-        value[0] = toplevelN1;
+        value = toplevelN1;
     }
 }
 final class toplevelN2_ {
     
     private toplevelN2_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{0L};
+            value = 0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelN2_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelN2\' before it was set");
         }
     }
     
     public static void set_(final long toplevelN2) {
-        value[0] = toplevelN2;
+        value = toplevelN2;
     }
 }
 final class toplevelI1_ {
     
     private toplevelI1_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{0L};
+            value = 0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelI1_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelI1\' before it was set");
         }
     }
     
     public static void set_(final long toplevelI1) {
-        value[0] = toplevelI1;
+        value = toplevelI1;
     }
 }
 final class toplevelGetterN1_ {

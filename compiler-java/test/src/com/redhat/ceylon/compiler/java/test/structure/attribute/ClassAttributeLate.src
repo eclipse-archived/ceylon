@@ -3,35 +3,42 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeLate() {
+        this.$init$lateAttr = false;
+        this.$init$lateVariableAttr = false;
     }
-    private long[] lateAttr;
+    private long lateAttr;
+    private volatile boolean $init$lateAttr;
     
     public final long getLateAttr() {
-        try {
-            return lateAttr[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (this.$init$lateAttr) {
+            return lateAttr;
+        } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateAttr\'");
         }
     }
     
     public final void setLateAttr(final long lateAttr) {
-        if (this.lateAttr != null) throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
-        this.lateAttr = new long[1];
-        this.lateAttr[0] = lateAttr;
+        if (!this.$init$lateAttr) {
+            this.lateAttr = lateAttr;
+            this.$init$lateAttr = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
-    private long[] lateVariableAttr;
+    private long lateVariableAttr;
+    private volatile boolean $init$lateVariableAttr;
     
     public final long getLateVariableAttr() {
-        try {
-            return lateVariableAttr[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (this.$init$lateVariableAttr) {
+            return lateVariableAttr;
+        } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariableAttr\'");
         }
     }
     
     public final void setLateVariableAttr(final long lateVariableAttr) {
-        if (this.lateVariableAttr == null) this.lateVariableAttr = new long[1];
-        this.lateVariableAttr[0] = lateVariableAttr;
+        this.lateVariableAttr = lateVariableAttr;
+        this.$init$lateVariableAttr = true;
     }
     
     private final void init$priv$() {

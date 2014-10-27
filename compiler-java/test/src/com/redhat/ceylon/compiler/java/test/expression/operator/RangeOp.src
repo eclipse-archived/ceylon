@@ -85,22 +85,25 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     private rangeOpF_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_[]{new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_()};
+            value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (rangeOpF_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'rangeOpF\' before it was set");
         }
@@ -117,22 +120,25 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     private rangeOpE_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_[]{new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_()};
+            value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (rangeOpE_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'rangeOpE\' before it was set");
         }

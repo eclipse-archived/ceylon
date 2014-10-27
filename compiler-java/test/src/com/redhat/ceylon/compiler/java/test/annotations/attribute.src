@@ -7,23 +7,26 @@ final class attr1_ {
     
     private attr1_() {
     }
-    private static final long[] value;
+    private static final long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{1L};
+            value = 1L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (attr1_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr1\' before it was set");
         }
@@ -36,15 +39,18 @@ final class attr2_ {
     
     private attr2_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{1L};
+            value = 1L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
@@ -52,9 +58,9 @@ final class attr2_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (attr2_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr2\' before it was set");
         }
@@ -63,7 +69,7 @@ final class attr2_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr2) {
-        value[0] = attr2;
+        value = attr2;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

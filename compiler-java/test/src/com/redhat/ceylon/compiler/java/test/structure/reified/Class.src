@@ -145,15 +145,18 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
     
     private toplevelObject_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_()};
+            value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -162,9 +165,9 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
     public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelObject_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelObject\' before it was set");
         }

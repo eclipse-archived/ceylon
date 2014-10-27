@@ -19,38 +19,43 @@ final class toplevelAttributeLate_ {
     
     private toplevelAttributeLate_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelAttributeLate_.$init$value) {
+            return value;
+        } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLate\'");
         }
     }
     
     public static void set_(final long toplevelAttributeLate) {
-        if (value != null) throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
-        value = new long[1];
-        value[0] = toplevelAttributeLate;
+        if (!toplevelAttributeLate_.$init$value) {
+            value = toplevelAttributeLate;
+            toplevelAttributeLate_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
 final class toplevelAttributeLateVariable_ {
     
     private toplevelAttributeLateVariable_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelAttributeLateVariable_.$init$value) {
+            return value;
+        } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLateVariable\'");
         }
     }
     
     public static void set_(final long toplevelAttributeLateVariable) {
-        if (value == null) value = new long[1];
-        value[0] = toplevelAttributeLateVariable;
+        value = toplevelAttributeLateVariable;
+        toplevelAttributeLateVariable_.$init$value = true;
     }
 }

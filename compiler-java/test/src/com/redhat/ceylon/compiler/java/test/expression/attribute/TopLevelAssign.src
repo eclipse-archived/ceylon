@@ -27,58 +27,64 @@ final class topLevelAssignB1_ {
     
     private topLevelAssignB1_() {
     }
-    private static boolean[] value;
+    private static boolean value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new boolean[]{true};
+            value = true;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = false;
+            $init$value = false;
         }
     }
     
     public static boolean get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (topLevelAssignB1_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAssignB1\' before it was set");
         }
     }
     
     public static void set_(final boolean topLevelAssignB1) {
-        value[0] = topLevelAssignB1;
+        value = topLevelAssignB1;
     }
 }
 public final class topLevelAssignB2_ {
     
     private topLevelAssignB2_() {
     }
-    private static boolean[] value;
+    private static boolean value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new boolean[]{true};
+            value = true;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = false;
+            $init$value = false;
         }
     }
     
     public static boolean get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (topLevelAssignB2_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAssignB2\' before it was set");
         }
     }
     
     public static void set_(final boolean topLevelAssignB2) {
-        value[0] = topLevelAssignB2;
+        value = topLevelAssignB2;
     }
 }
 final class topLevelAssignB3_ {

@@ -549,15 +549,18 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     final T t) {
         return t;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_[]{new .com.redhat.ceylon.compiler.java.test.metamodel.obj_()};
+            value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -566,9 +569,9 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
     public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (obj_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
         }
@@ -721,23 +724,26 @@ final class litValue_ {
     
     private litValue_() {
     }
-    private static final long[] value;
+    private static final long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{2L};
+            value = 2L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (litValue_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litValue\' before it was set");
         }
@@ -750,15 +756,18 @@ final class litVariable_ {
     
     private litVariable_() {
     }
-    private static long[] value;
+    private static long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{2L};
+            value = 2L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
@@ -766,9 +775,9 @@ final class litVariable_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (litVariable_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litVariable\' before it was set");
         }
@@ -777,6 +786,6 @@ final class litVariable_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long litVariable) {
-        value[0] = litVariable;
+        value = litVariable;
     }
 }

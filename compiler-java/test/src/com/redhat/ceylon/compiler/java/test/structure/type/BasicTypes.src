@@ -328,22 +328,25 @@ public final class globalAttrInteger_ {
     
     private globalAttrInteger_() {
     }
-    private static final long[] value;
+    private static final long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{1L};
+            value = 1L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrInteger_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrInteger\' before it was set");
         }
@@ -353,22 +356,25 @@ public final class globalAttrFloat_ {
     
     private globalAttrFloat_() {
     }
-    private static final double[] value;
+    private static final double value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new double[]{1.0};
+            value = 1.0;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0.0;
+            $init$value = false;
         }
     }
     
     public static double get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrFloat_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrFloat\' before it was set");
         }
@@ -378,22 +384,25 @@ public final class globalAttrString_ {
     
     private globalAttrString_() {
     }
-    private static final .java.lang.String[] value;
+    private static final .java.lang.String value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .java.lang.String[]{"a"};
+            value = "a";
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .java.lang.String get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrString_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrString\' before it was set");
         }
@@ -403,22 +412,25 @@ public final class globalAttrBoolean_ {
     
     private globalAttrBoolean_() {
     }
-    private static final boolean[] value;
+    private static final boolean value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new boolean[]{true};
+            value = true;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = false;
+            $init$value = false;
         }
     }
     
     public static boolean get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrBoolean_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrBoolean\' before it was set");
         }
@@ -428,22 +440,25 @@ public final class globalAttrCharacter_ {
     
     private globalAttrCharacter_() {
     }
-    private static final int[] value;
+    private static final int value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new int[]{97};
+            value = 97;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0;
+            $init$value = false;
         }
     }
     
     public static int get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrCharacter_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrCharacter\' before it was set");
         }
@@ -453,22 +468,25 @@ public final class globalAttrOptionalInteger_ {
     
     private globalAttrOptionalInteger_() {
     }
-    private static final .ceylon.language.Integer[] value;
+    private static final .ceylon.language.Integer value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .ceylon.language.Integer[]{null};
+            value = null;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .ceylon.language.Integer get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrOptionalInteger_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalInteger\' before it was set");
         }
@@ -478,22 +496,25 @@ public final class globalAttrOptionalFloat_ {
     
     private globalAttrOptionalFloat_() {
     }
-    private static final .ceylon.language.Float[] value;
+    private static final .ceylon.language.Float value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .ceylon.language.Float[]{null};
+            value = null;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .ceylon.language.Float get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrOptionalFloat_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalFloat\' before it was set");
         }
@@ -503,22 +524,25 @@ public final class globalAttrOptionalString_ {
     
     private globalAttrOptionalString_() {
     }
-    private static final .ceylon.language.String[] value;
+    private static final .ceylon.language.String value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .ceylon.language.String[]{null};
+            value = null;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .ceylon.language.String get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrOptionalString_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalString\' before it was set");
         }
@@ -528,22 +552,25 @@ public final class globalAttrOptionalBoolean_ {
     
     private globalAttrOptionalBoolean_() {
     }
-    private static final .ceylon.language.Boolean[] value;
+    private static final .ceylon.language.Boolean value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .ceylon.language.Boolean[]{null};
+            value = null;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .ceylon.language.Boolean get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrOptionalBoolean_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalBoolean\' before it was set");
         }
@@ -553,22 +580,25 @@ public final class globalAttrOptionalCharacter_ {
     
     private globalAttrOptionalCharacter_() {
     }
-    private static final .ceylon.language.Character[] value;
+    private static final .ceylon.language.Character value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .ceylon.language.Character[]{null};
+            value = null;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .ceylon.language.Character get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (globalAttrOptionalCharacter_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalCharacter\' before it was set");
         }

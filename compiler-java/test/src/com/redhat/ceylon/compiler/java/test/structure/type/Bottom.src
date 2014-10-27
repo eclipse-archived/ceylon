@@ -29,22 +29,25 @@ final class toplevelObject_ {
     
     private toplevelObject_() {
     }
-    private static final .java.lang.Object[] value;
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .java.lang.Object[]{.ceylon.language.nothing_.get_()};
+            value = .ceylon.language.nothing_.get_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelObject_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelObject\' before it was set");
         }
@@ -54,22 +57,25 @@ final class toplevelInteger_ {
     
     private toplevelInteger_() {
     }
-    private static final long[] value;
+    private static final long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue()};
+            value = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelInteger_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelInteger\' before it was set");
         }

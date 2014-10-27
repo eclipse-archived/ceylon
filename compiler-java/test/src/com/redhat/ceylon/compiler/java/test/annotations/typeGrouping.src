@@ -27,15 +27,18 @@ final class typeGroupAttribute_ {
     
     private typeGroupAttribute_() {
     }
-    private static final .java.lang.Object[] value;
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .java.lang.Object[]{.ceylon.language.nothing_.get_()};
+            value = .ceylon.language.nothing_.get_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -43,9 +46,9 @@ final class typeGroupAttribute_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupB&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD|com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupC&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD",
             erased = true)
     public static .java.lang.Object get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (typeGroupAttribute_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'typeGroupAttribute\' before it was set");
         }

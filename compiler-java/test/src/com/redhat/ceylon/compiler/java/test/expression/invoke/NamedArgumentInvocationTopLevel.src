@@ -21,29 +21,32 @@ final class namedArgumentInvocationTopLevelX_ {
     
     private namedArgumentInvocationTopLevelX_() {
     }
-    private static final long[] value;
+    private static final long value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new long[]{(
+            value = (
                 let
                 {
                     .java.lang.String arg$0$1 = "abc";
                     long arg$0$0 = 123L;
                 }
                 returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF(arg$0$0, arg$0$1);
-            )};
+            );
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = 0L;
+            $init$value = false;
         }
     }
     
     public static long get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (namedArgumentInvocationTopLevelX_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'namedArgumentInvocationTopLevelX\' before it was set");
         }
@@ -53,11 +56,12 @@ final class namedArgumentInvocationTopLevelY_ {
     
     private namedArgumentInvocationTopLevelY_() {
     }
-    private static final .java.lang.Object[] value;
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .java.lang.Object[]{(
+            value = (
                 let
                 {
                     (
@@ -71,18 +75,20 @@ final class namedArgumentInvocationTopLevelY_ {
                     );
                 }
                 returning null;
-            )};
+            );
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (namedArgumentInvocationTopLevelY_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'namedArgumentInvocationTopLevelY\' before it was set");
         }

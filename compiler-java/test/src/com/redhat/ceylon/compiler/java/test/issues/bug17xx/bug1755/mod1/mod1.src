@@ -110,15 +110,18 @@ public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.mod
     public .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_()};
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -127,9 +130,9 @@ public final class utf8_ implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::utf8")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (utf8_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'utf8\' before it was set");
         }

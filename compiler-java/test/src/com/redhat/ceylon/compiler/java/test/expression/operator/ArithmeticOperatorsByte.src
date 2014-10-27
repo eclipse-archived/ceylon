@@ -814,87 +814,96 @@ final class toplevelByte1_ {
     
     private toplevelByte1_() {
     }
-    private static byte[] value;
+    private static byte value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{(byte)0L};
+            value = (byte)0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = "0";
+            $init$value = false;
         }
     }
     
     public static byte get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelByte1_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte1\' before it was set");
         }
     }
     
     public static void set_(final byte toplevelByte1) {
-        value[0] = toplevelByte1;
+        value = toplevelByte1;
     }
 }
 final class toplevelByte2_ {
     
     private toplevelByte2_() {
     }
-    private static byte[] value;
+    private static byte value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{(byte)0L};
+            value = (byte)0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = "0";
+            $init$value = false;
         }
     }
     
     public static byte get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelByte2_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte2\' before it was set");
         }
     }
     
     public static void set_(final byte toplevelByte2) {
-        value[0] = toplevelByte2;
+        value = toplevelByte2;
     }
 }
 final class toplevelByte3_ {
     
     private toplevelByte3_() {
     }
-    private static byte[] value;
+    private static byte value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new byte[]{(byte)0L};
+            value = (byte)0L;
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            value = "0";
+            $init$value = false;
         }
     }
     
     public static byte get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (toplevelByte3_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte3\' before it was set");
         }
     }
     
     public static void set_(final byte toplevelByte3) {
-        value[0] = toplevelByte3;
+        value = toplevelByte3;
     }
 }
 final class toplevelGetterByte1_ {

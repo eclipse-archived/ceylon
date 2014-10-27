@@ -4,22 +4,27 @@ public class Bug1479<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public Bug1479(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T data) {
         this.$reified$T = $reified$T;
+        this.$init$parent = false;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    private .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T>[] parent;
+    private .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent;
+    private volatile boolean $init$parent;
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> getParent() {
-        try {
-            return parent[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (this.$init$parent) {
+            return parent;
+        } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'parent\'");
         }
     }
     
     public final void setParent(final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent) {
-        if (this.parent != null) throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
-        this.parent = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479[1];
-        this.parent[0] = parent;
+        if (!this.$init$parent) {
+            this.parent = parent;
+            this.$init$parent = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     @.java.lang.Override

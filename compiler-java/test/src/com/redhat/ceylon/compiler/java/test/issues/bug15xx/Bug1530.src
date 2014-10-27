@@ -66,22 +66,25 @@ final class bug1530_foo_ implements .com.redhat.ceylon.compiler.java.runtime.mod
     public final void t() {
         .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.get_());
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_()};
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (bug1530_foo_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1530_foo\' before it was set");
         }

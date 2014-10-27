@@ -24,15 +24,18 @@ public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private mixers_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ value;
+    private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_()};
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_();
             $initException$ = null;
+            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
+            $init$value = false;
         }
     }
     
@@ -50,9 +53,9 @@ public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.m
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug15xx::mixers")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ get_() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
+        if (mixers_.$init$value) {
+            return value;
+        } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'mixers\' before it was set");
         }
