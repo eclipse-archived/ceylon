@@ -2100,10 +2100,7 @@ public class ClassTransformer extends AbstractTransformer {
                 flags |= JT_NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType, flags);
-            if (Decl.isLate(decl)) {
-                type = make().TypeArray(type);
-            }
-
+            
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
             // If the attribute is really from a parameter then don't generate a field
@@ -2116,6 +2113,11 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     // fields should be ignored, they are accessed by the getters
                     classBuilder.field(modifiers, attrName, type, initialValue, !useField, makeAtIgnore());
+                    if (model.isLate()) {
+                        classBuilder.field(PRIVATE | Flags.VOLATILE, Naming.getInitializationFieldName(attrName), 
+                                make().Type(syms().booleanType), 
+                                make().Literal(false), false, makeAtIgnore());
+                    }
                 }        
             }
             
@@ -3824,7 +3826,7 @@ public class ClassTransformer extends AbstractTransformer {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
-                    .wrapped(this, null, model.getName(), model, true)
+                    .wrapped(this, null, objectClassBuilder, model.getName(), model, true)
                     .userAnnotations(makeAtIgnore())
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()

@@ -408,6 +408,26 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return expr;
     }
+    
+    JCExpression makeDefaultExprForType(ProducedType type) {
+        if (canUnbox(type)) {
+            if (isCeylonBoolean(type)) {
+                return makeBoolean(false);
+            } else if (isCeylonFloat(type)) {
+                return make().Literal(0.0);
+            } else if (isCeylonInteger(type)) {
+                return makeLong(0);
+            } else if (isCeylonCharacter(type)) {
+                return make().Literal(0);
+            } else if (isCeylonByte(type)) {
+                return makeByte((byte)0);
+            }
+        }
+        // The default value cannot be seen from the Ceylon code, so it's
+        // OK to assign it to null even though it may not be an 
+        // optional type
+        return makeNull();
+    }
 
     // Creates a "foo foo = new foo();"
     JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared) {

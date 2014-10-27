@@ -283,7 +283,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
+            .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
         
         final JCExpression initialValue;
