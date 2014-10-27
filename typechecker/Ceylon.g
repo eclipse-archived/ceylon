@@ -2578,10 +2578,24 @@ defaultedType returns [Type type]
       { $type=$variadicType.type; }
     ;
 
+spreadType returns [Type type]
+    @init { SpreadType spt = null; }
+    : PRODUCT_OP
+      { spt = new SpreadType($PRODUCT_OP);
+        $type=spt; }
+      (
+        sp=type
+        { spt.setType($sp.type); }
+      )?
+    ;
+
 tupleType returns [TupleType type]
     : LBRACKET
       { $type = new TupleType($LBRACKET); }
       (
+        spt=spreadType
+        { $type.addElementType($spt.type); }
+      |
         t1=defaultedType
         { $type.addElementType($t1.type); }
         (
@@ -2732,6 +2746,9 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
+            spt=spreadType
+            { bt.addArgumentType($spt.type); }
+          |
             t1=defaultedType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }

@@ -78,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -3377,6 +3378,16 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Comprehension that) {
         super.visit(that);
         that.setTypeModel(that.getInitialComprehensionClause().getTypeModel());
+    }
+    
+    @Override public void visit(Tree.SpreadType that) {
+        super.visit(that);
+        Tree.Type t = that.getType();
+        if (t!=null) {
+            checkAssignable(that.getTypeModel(), 
+                    unit.getSequentialType(unit.getType(unit.getAnythingDeclaration())), 
+                    t, "spread type must be a sequence type");
+        }
     }
 
     @Override public void visit(Tree.SpreadArgument that) {
