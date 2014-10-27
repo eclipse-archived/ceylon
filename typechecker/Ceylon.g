@@ -3744,6 +3744,14 @@ BACKTICK
     : '`'
     ;
 
+ABSTRACTED_TYPE
+    :   'abstracts'
+    ;
+
+ALIAS
+    :   'alias'
+    ;
+
 ASSEMBLY
     : 'assembly'
     ;
@@ -3752,18 +3760,10 @@ ASSERT
     : 'assert'
     ;
 
-ABSTRACTED_TYPE
-    :   'abstracts'
-    ;
-
 ASSIGN
     :   'assign'
     ;
     
-ALIAS
-    :   'alias'
-    ;
-
 BREAK
     :   'break'
     ;
@@ -3808,6 +3808,10 @@ FOR_CLAUSE
     :   'for'
     ;
 
+FUNCTION_MODIFIER
+    :   'function'
+    ;
+
 TYPE_CONSTRAINT
     :   'given'
     ;
@@ -3816,24 +3820,20 @@ IF_CLAUSE
     :   'if'
     ;
 
-SATISFIES
-    :   'satisfies'
-    ;
-
 IMPORT
     :   'import'
+    ;
+
+IN_OP
+    :   'in'
     ;
 
 INTERFACE_DEFINITION
     :   'interface'
     ;
 
-VALUE_MODIFIER
-    :   'value'
-    ;
-
-FUNCTION_MODIFIER
-    :   'function'
+IS_OP
+    :   'is'
     ;
 
 LET
@@ -3848,16 +3848,36 @@ NEW
     :   'new'
     ;
 
-PACKAGE
-    :   'package'
-    ;
-
 NONEMPTY
     :   'nonempty'
     ;
 
+OBJECT_DEFINITION
+    :   'object'
+    ;
+
+CASE_TYPES
+    :   'of'
+    ;
+
+OUT
+    :   'out'
+    ;
+
+OUTER
+    :   'outer'
+    ;
+
+PACKAGE
+    :   'package'
+    ;
+
 RETURN
     :   'return'
+    ;
+
+SATISFIES
+    :   'satisfies'
     ;
 
 SUPER
@@ -3876,28 +3896,16 @@ THIS
     :   'this'
     ;
 
-OUTER
-    :   'outer'
-    ;
-
-OBJECT_DEFINITION
-    :   'object'
-    ;
-
-CASE_TYPES
-    :   'of'
-    ;
-
-OUT
-    :   'out'
-    ;
-
 THROW
     :   'throw'
     ;
 
 TRY_CLAUSE
     :   'try'
+    ;
+
+VALUE_MODIFIER
+    :   'value'
     ;
 
 VOID_MODIFIER
@@ -4069,14 +4077,6 @@ COMPARE_OP
     :   '<=>'
     ;
     
-IN_OP
-    :   'in'
-    ;
-
-IS_OP
-    :   'is'
-    ;
-
 POWER_OP
     :    '^'
     ;
