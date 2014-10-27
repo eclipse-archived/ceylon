@@ -61,9 +61,11 @@ import com.redhat.ceylon.common.tool.Tools;
 @Summary("The top level Ceylon tool is used to execute other Ceylon tools")
 @Description(
         "If `--version` is present, print version information and exit. "+
-        "Otherwise `<tool-arguments>` should begin with the name of a ceylon tool. " +
-        "The named tool is loaded and configured with the remaining command " +
-        "line arguments and control passes to that tool.")
+        "Otherwise `<tool-arguments>` should begin with the name of a ceylon tool " +
+        "or a list of comma-separated tool names which will be invoked one after " +
+        "the other with the same remaining command line arguments. " +
+        "The named tools are loaded and configured with the remaining command " +
+        "line arguments and control passes to those tools.")
 public class CeylonTool implements Tool {
 
     private static final String ARG_LONG_VERSION = "--version";
