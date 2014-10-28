@@ -156,7 +156,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, javaClassName, ceylonClassName, Decl.isLocal(model))
                 .forDefinition(model);
-        TypeParameterList typeParameterList = def.getTypeParameterList();
+        Tree.TypeParameterList typeParameterList = def.getTypeParameterList();
 
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
@@ -173,7 +173,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.ClassDefinition){
-                transformClass((Tree.ClassDefinition)def, (Class)model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
+                transformClass((Tree.ClassDefinition)def, cls, classBuilder, paramList, generateInstantiator, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -540,9 +540,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Overloaded instantiators
             Parameter paramModel = param.getParameterModel();
             at(param);
-
-            List<JCAnnotation> annotations = expressionGen().transform(Decl.getAnnotations(def, param));
-            transformParameter(instantiator, paramModel, annotations);
+            transformParameter(instantiator, paramModel, Decl.getMemberDeclaration(def, param));
         }
         instantiator.body(make().Throw(makeNewClass(makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CLASS_NEW))));
         return instantiator;
@@ -907,7 +905,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void generateInstantiators(Class model, ClassDefinitionBuilder classBuilder, Tree.ParameterList paramList,
-            Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
+            Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, Tree.TypeParameterList typeParameterList) {
         // TODO Instantiators on companion classes
         classBuilder.constructorModifiers(PROTECTED);
         
@@ -934,7 +932,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Tree.Parameter parameterTree, List<JCAnnotation> annotations) {
+    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, 
+            Tree.Parameter parameterTree, Tree.TypedDeclaration memberTree) {
         Parameter decl = parameterTree.getParameterModel();
         if (!(decl.getModel() instanceof Value)) {
             return;
@@ -945,12 +944,12 @@ public class ClassTransformer extends AbstractTransformer {
             makeFieldForParameter(classBuilder, decl);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
             adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
-            adb.userAnnotations(annotations);
+            adb.userAnnotations(expressionGen().transform(memberTree.getAnnotationList()));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
                 AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl.getName(), decl.getModel());
                 setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
-                setter.userAnnotations(annotations);
+                setter.userAnnotations(expressionGen().transform(memberTree.getAnnotationList()));
                 classBuilder.attribute(setter);
             }
         } else if (decl.isHidden()
@@ -995,8 +994,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
 
-    private void transformParameter(ParameterizedBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
-
+    private void transformParameter(ParameterizedBuilder classBuilder, 
+            Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
@@ -1007,7 +1006,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member
             pdb.modelAnnotations(param.getModel().getAnnotations());
-            pdb.userAnnotations(annotations);
+            pdb.userAnnotations(expressionGen().transform(member.getAnnotationList()));
         }
 
         if (classBuilder instanceof ClassDefinitionBuilder
@@ -1017,13 +1016,41 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.parameter(pdb);
     }
     
-    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass def, Class model, ClassDefinitionBuilder classBuilder, 
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
-            Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
+    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass def, 
+            Class model, ClassDefinitionBuilder classBuilder, 
+            Tree.ParameterList paramList, boolean generateInstantiator, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, Tree.TypeParameterList typeParameterList) {
         // do reified type params first
-        if(typeParameterList != null)
-            classBuilder.reifiedTypeParameters(typeParameterList);
+        if(def.getTypeParameterList() != null)
+            classBuilder.reifiedTypeParameters(def.getTypeParameterList());
         
+        if (def.getParameterList() != null) {
+            transformClassOrCtorParameters(def, def.getParameterList(), 
+                    classBuilder, 
+                    generateInstantiator, instantiatorDeclCb,
+                    instantiatorImplCb);
+        }
+        satisfaction(def.getSatisfiedTypes(), model, classBuilder);
+        serialization(model, classBuilder);
+        at(def);
+        
+        // Generate the inner members list for model loading
+        addAtMembers(classBuilder, model, def);
+        addAtLocalDeclarations(classBuilder, def);
+        
+        // Make sure top types satisfy reified type
+        addReifiedTypeInterface(classBuilder, model);
+    }
+
+    private void transformClassOrCtorParameters(
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass def,
+            Tree.ParameterList paramList,
+            ClassDefinitionBuilder classBuilder,
+            boolean generateInstantiator, 
+            ClassDefinitionBuilder instantiatorDeclCb,
+            ClassDefinitionBuilder instantiatorImplCb) {
+        
+        Class cls = def.getDeclarationModel();
+        Tree.TypeParameterList typeParameterList = def.getTypeParameterList();
         for (final Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
             
@@ -1031,11 +1058,10 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter refinedParam = CodegenUtil.findParamForDecl(
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
-
-            List<JCAnnotation> annotations = expressionGen().transform(Decl.getAnnotations(def, param));
-            transformParameter(classBuilder, paramModel, annotations);
-            makeAttributeForValueParameter(classBuilder, param, annotations);
-            makeMethodForFunctionalParameter(classBuilder, def, param, annotations);
+            Tree.TypedDeclaration member = Decl.getMemberDeclaration(def, param);
+            transformParameter(classBuilder, paramModel, member);
+            makeAttributeForValueParameter(classBuilder, param, member);
+            makeMethodForFunctionalParameter(classBuilder, param, member);
             
             if (Strategy.hasDefaultParameterValueMethod(paramModel)
                     || Strategy.hasDefaultParameterOverload(paramModel)
@@ -1045,7 +1071,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     || Strategy.hasDefaultParameterOverload(refinedParam)))) {
                 ClassDefinitionBuilder cbForDevaultValues;
                 ClassDefinitionBuilder cbForDevaultValuesDecls = null;
-                switch (Strategy.defaultParameterMethodOwner(model)) {
+                switch (Strategy.defaultParameterMethodOwner(cls)) {
                 case STATIC:
                     cbForDevaultValues = classBuilder;
                     break;
@@ -1053,18 +1079,18 @@ public class ClassTransformer extends AbstractTransformer {
                     cbForDevaultValues = classBuilder.getContainingClassBuilder();
                     break;
                 case OUTER_COMPANION:
-                    cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
+                    cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(cls, true));
                     cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
                     break;
                 default:
-                    cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+                    cbForDevaultValues = classBuilder.getCompanionBuilder(cls);
                 }
                 if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
                             || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
                     if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
-                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param, typeParameterList));
+                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, cls, paramList, param, typeParameterList));
                         if (cbForDevaultValuesDecls != null) {
-                            cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param, typeParameterList));
+                            cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, cls, paramList, param, typeParameterList));
                         }
                     } else if (Strategy.hasDelegatedDpm(cls)) {
                         java.util.List<Parameter> parameters = paramList.getModel().getParameters();
@@ -1086,7 +1112,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        new DefaultedArgumentInstantiator(daoAbstract, model).makeOverload(instBuilder,
+                        new DefaultedArgumentInstantiator(daoAbstract, cls).makeOverload(instBuilder,
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 typeParameterListModel(typeParameterList));
@@ -1094,7 +1120,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        new DefaultedArgumentInstantiator(daoThis, model).makeOverload(instBuilder,
+                        new DefaultedArgumentInstantiator(daoThis, cls).makeOverload(instBuilder,
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 typeParameterListModel(typeParameterList));
@@ -1108,7 +1134,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (addOverloadedConstructor) {
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    new DefaultedArgumentConstructor(daoThis, model).makeOverload(
+                    new DefaultedArgumentConstructor(daoThis, cls).makeOverload(
                             overloadBuilder,
                             paramList.getModel(),
                             param.getParameterModel(),
@@ -1116,16 +1142,6 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
-        satisfaction(def.getSatisfiedTypes(), model, classBuilder);
-        serialization(model, classBuilder);
-        at(def);
-        
-        // Generate the inner members list for model loading
-        addAtMembers(classBuilder, model, def);
-        addAtLocalDeclarations(classBuilder, def);
-        
-        // Make sure top types satisfy reified type
-        addReifiedTypeInterface(classBuilder, model);
     }
 
     /**
@@ -1554,11 +1570,12 @@ public class ClassTransformer extends AbstractTransformer {
      * @param klass 
      * @param annotations */
     private void makeMethodForFunctionalParameter(
-            ClassDefinitionBuilder classBuilder, AnyClass klass, Tree.Parameter paramTree, List<JCAnnotation> annotations) {
+            ClassDefinitionBuilder classBuilder,  
+            Tree.Parameter paramTree, Tree.TypedDeclaration memberDecl) {
         Parameter paramModel = paramTree.getParameterModel();
 
         if (Strategy.createMethod(paramModel)) {
-            Tree.MethodDeclaration methodDecl = (Tree.MethodDeclaration)Decl.getMemberDeclaration(klass, paramTree);
+            Tree.MethodDeclaration methodDecl = (Tree.MethodDeclaration)memberDecl;
             makeFieldForParameter(classBuilder, paramModel);
             Method method = (Method)paramModel.getModel();
 
@@ -1575,7 +1592,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             JCExpression expr = callBuilder.build();
             JCStatement body;
-            if (isVoid(methodDecl) && Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
+            if (isVoid(memberDecl) && Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
                 body = make().Exec(expr);
             } else {
                 expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(method), paramModel.getType());
@@ -1617,7 +1634,7 @@ public class ClassTransformer extends AbstractTransformer {
         return type;
     }
 
-    private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Interface model, ClassDefinitionBuilder classBuilder, TypeParameterList typeParameterList) {
+    private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Interface model, ClassDefinitionBuilder classBuilder, Tree.TypeParameterList typeParameterList) {
         //  Copy all the qualifying type's type parameters into the interface
         java.util.List<TypeParameter> typeParameters = typeParametersOfAllContainers(model, false);
         for(TypeParameter tp : typeParameters){
@@ -2356,7 +2373,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void buildCompanion(final Tree.ClassOrInterface def,
             final Interface model, ClassDefinitionBuilder classBuilder,
-            TypeParameterList typeParameterList) {
+            Tree.TypeParameterList typeParameterList) {
         at(def);
         // Give the $impl companion a $this field...
         classBuilder.getCompanionBuilder(model, typeParameterList);
@@ -3580,7 +3597,7 @@ public class ClassTransformer extends AbstractTransformer {
         java.util.List<TypeParameter> tpList = null;
         if (typeParameterList != null) {
             tpList = new ArrayList<TypeParameter>();
-            for (TypeParameterDeclaration tpd : typeParameterList.getTypeParameterDeclarations()) {
+            for (Tree.TypeParameterDeclaration tpd : typeParameterList.getTypeParameterDeclarations()) {
                 tpList.add(tpd.getDeclarationModel());
             }
         }
@@ -4143,7 +4160,7 @@ public class ClassTransformer extends AbstractTransformer {
      * @param typeParameterList 
      */
     MethodDefinitionBuilder makeParamDefaultValueMethod(boolean noBody, Declaration container, 
-            Tree.ParameterList params, Tree.Parameter currentParam, TypeParameterList typeParameterList) {
+            Tree.ParameterList params, Tree.Parameter currentParam, Tree.TypeParameterList typeParameterList) {
         at(currentParam);
         Parameter parameter = currentParam.getParameterModel();
         if (!Strategy.hasDefaultParameterValueMethod(parameter)) {
