@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisf
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -441,7 +442,23 @@ public class SpecificationVisitor extends Visitor {
         endsInBreakReturnThrow = oe;
         lastContinue = olc;
         lastContinueStatement = olcs;
+        
+        if (that.getScope() instanceof Constructor) {
+            Constructor c = (Constructor) that.getScope();
+            if (declaration.getContainer()==c.getContainer()) {
+                if (isSharedDeclarationUninitialized()) {
+                    that.addError("constructor '" + c.getName()  + 
+                            "' does not definitely specify: '" + 
+                            declaration.getName() + "'", 1401);
+                }
+                if (!specified.definitely) {
+                    initedByEveryConstructor = false;
+                }
+            }
+        }
     }
+    
+    private boolean initedByEveryConstructor = true;
 
     private boolean blockEndsInBreakReturnThrow(Tree.Block that) {
         int size = that.getStatements().size();
@@ -661,17 +678,33 @@ public class SpecificationVisitor extends Visitor {
         else {
             boolean l = inLoop;
             inLoop = false;
-            boolean c = beginDisabledSpecificationScope();
+            boolean constructor = that instanceof Tree.Constructor;
+            boolean c = false;
+            if (!constructor) {
+                c = beginDisabledSpecificationScope();
+            }
             boolean d = beginDeclarationScope();
             SpecificationState as = beginSpecificationScope();
             super.visit(that);
-            endDisabledSpecificationScope(c);
+            if (!constructor) {
+                endDisabledSpecificationScope(c);
+            }
             endDeclarationScope(d);
             endSpecificationScope(as);
             inLoop = l;
         }
         endsInBreakReturnThrow = oe;
         lastContinue = olc;
+    }
+    
+    @Override
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+        if (declaration.getContainer()==that.getDeclarationModel().getContainer() &&
+                that==lastExecutableStatement && 
+                initedByEveryConstructor) {
+            specified.definitely = true;
+        }
     }
 
     @Override
@@ -884,26 +917,6 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override
-    public void visit(Tree.ClassBody that) {
-        Tree.Declaration d = getDeclaration(that);
-        if (d!=null) {
-            Tree.Statement les = getLastExecutableStatement(that);
-            declarationSection = les==null;
-            lastExecutableStatement = les;
-            super.visit(that);        
-            declarationSection = false;
-            lastExecutableStatement = null;
-            if (isSharedDeclarationUninitialized()) {
-                d.addError("must be definitely specified by class initializer: '" + 
-                        d.getDeclarationModel().getName(that.getUnit()) + "'", 1401);
-            }
-        }
-        else {
-            super.visit(that);
-        }
-    }
-
     private Tree.Declaration getDeclaration(Tree.ClassBody that) {
         for (Tree.Statement s: that.getStatements()) {
             if (s instanceof Tree.Declaration) {
@@ -914,6 +927,32 @@ public class SpecificationVisitor extends Visitor {
             }
         }
         return null;
+    }
+    
+    @Override
+    public void visit(Tree.ClassBody that) {
+        if (that.getScope()==declaration.getContainer()) {
+            Tree.Statement les = getLastExecutableStatement(that);
+            declarationSection = les==null;
+            lastExecutableStatement = les;
+            super.visit(that);        
+            declarationSection = false;
+            lastExecutableStatement = null;
+            
+            if (!declaration.isAnonymous()) {
+                Class clazz = (Class) that.getScope();
+                if (clazz.getParameterList()!=null) {
+                    if (isSharedDeclarationUninitialized()) {
+                        getDeclaration(that)
+                            .addError("must be definitely specified by class initializer: '" + 
+                                declaration.getName() + "'", 1401);
+                    }
+                }
+            }
+        }
+        else {
+            super.visit(that);
+        }
     }
     
     @Override

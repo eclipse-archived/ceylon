@@ -151,7 +151,8 @@ public class Util {
         Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (isExecutableStatement(unit, s)) {
+            if (isExecutableStatement(unit, s) || 
+                    s instanceof Tree.Constructor) {
                 return s;
             }
         }

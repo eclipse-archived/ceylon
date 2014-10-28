@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
@@ -23,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -429,8 +431,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
-            that.addError("missing parameter list in class declaration: '" + 
-                    name(that.getIdentifier()) + "' must have a parameter list", 1000);
+//            that.addError("missing parameter list in class declaration: '" + 
+//                    name(that.getIdentifier()) + "' must have a parameter list", 1000);
         }
         else {
             that.getParameterList().getModel().setFirst(true);
@@ -448,6 +450,31 @@ public class DeclarationVisitor extends Visitor {
         if (c.isFormal() && c.isFinal()) {
             that.addError("class may not be both formal and final: '" + 
                     name(that.getIdentifier()) + "'");
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Constructor that) {
+        if (!(scope instanceof Class)) {
+            that.addError("constructor declaration must occur directly in the body of a class");
+        }
+        else if (((Class) scope).getParameterList()!=null) {
+            that.addError("classes with parameters may not have constructors: class " + 
+                    ((Class) scope).getName() + " has a parameter list");
+        }
+        Constructor c = new Constructor();
+        that.setDeclarationModel(c);
+        visitDeclaration(that, c);
+        Scope o = enterScope(c);
+        super.visit(that);
+        exitScope(o);
+        if (that.getParameterList()==null) {
+            that.addError("missing parameter list in class declaration: '" + 
+                    name(that.getIdentifier()) + "' must have a parameter list", 1000);
+        }
+        else {
+            that.getParameterList().getModel().setFirst(true);
+            c.addParameterList(that.getParameterList().getModel());
         }
     }
 
@@ -1976,4 +2003,17 @@ public class DeclarationVisitor extends Visitor {
         }
     }
     
+    @Override
+    public void visit(Tree.ClassBody that) {
+        super.visit(that);
+        boolean constructor = false;
+        for (Tree.Statement st: that.getStatements()) {
+            if (st instanceof Tree.Constructor) {
+                constructor = true;
+            }
+            else if (constructor && isExecutableStatement(unit, st)) {
+                st.addError("executable statement must occur before all constructors of class");
+            }
+        }
+    }
 }

@@ -640,6 +640,19 @@ classDeclaration returns [AnyClass declaration]
       )
     ;
 
+constructor returns [Constructor declaration]
+    : NEW
+      { $declaration = new Constructor($NEW); }
+      typeNameDeclaration
+      { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        parameters
+        { $declaration.setParameterList($parameters.parameterList); }
+      )?
+      block
+      { $declaration.setBlock($block.block); }
+    ;
+
 aliasDeclaration returns [TypeAliasDeclaration declaration]
     : ALIAS
       { $declaration = new TypeAliasDeclaration($ALIAS);}
@@ -1078,6 +1091,8 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
+    | constructor
+      { $declaration=$constructor.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(CLASS_DEFINITION, input)); }
       SEMICOLON
@@ -1106,6 +1121,7 @@ declarationStart
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
+    | NEW
     | ALIAS 
     | variadicType LIDENTIFIER
     | DYNAMIC (LIDENTIFIER|UIDENTIFIER)

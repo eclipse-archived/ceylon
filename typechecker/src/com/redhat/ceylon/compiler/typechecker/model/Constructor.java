@@ -12,9 +12,9 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public class Method extends MethodOrValue implements Generic, Scope, Functional {
+public class Constructor extends MethodOrValue implements Generic, Scope, Functional {
 
-    public Method() {}
+    public Constructor() {}
     
     //private boolean formal;
 
@@ -23,19 +23,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
-    private boolean declaredVoid;
-    private Object annotationConstructor;
-    private boolean deferred;
-    private boolean anonymous;
     
-    public Object getAnnotationConstructor() {
-        return annotationConstructor;
-    }
-
-    public void setAnnotationConstructor(Object annotationInstantiation) {
-        this.annotationConstructor = annotationInstantiation;
-    }
-
     @Override
     public boolean isParameterized() {
         return !typeParameters.isEmpty();
@@ -61,12 +49,12 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 
     @Override
     public boolean isOverloaded() {
-        return overloaded;
+    	return overloaded;
     }
     
     public void setOverloaded(boolean overloaded) {
-        this.overloaded = overloaded;
-    }
+		this.overloaded = overloaded;
+	}
     
     public void setAbstraction(boolean abstraction) {
         this.abstraction = abstraction;
@@ -75,23 +63,6 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     @Override
     public boolean isAbstraction() {
         return abstraction;
-    }
-    
-    @Override
-    public boolean isDeclaredVoid() {
-        return declaredVoid;
-    }
-    
-    public void setDeclaredVoid(boolean declaredVoid) {
-        this.declaredVoid = declaredVoid;
-    }
-    
-    public boolean isDeferred() {
-        return deferred;
-    }
-    
-    public void setDeferred(boolean deferred) {
-        this.deferred = deferred;
     }
     
     @Override
@@ -117,12 +88,9 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         return true;
     }
 
-    public void setAnonymous(boolean anonymous) {
-        this.anonymous = anonymous;
-    }
-    
     @Override
-    public boolean isAnonymous() {
-        return anonymous;
+    public boolean isDeclaredVoid() {
+        return false;
     }
+
 }
