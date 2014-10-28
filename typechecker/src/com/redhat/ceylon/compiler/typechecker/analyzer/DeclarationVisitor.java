@@ -463,6 +463,10 @@ public class DeclarationVisitor extends Visitor {
                     ((Class) scope).getName() + " has a parameter list");
         }
         Constructor c = new Constructor();
+        if (scope instanceof Class) {
+            c.setExtendedType(((Class) scope).getType());
+        }
+        c.setStaticallyImportable(true);
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
         Scope o = enterScope(c);

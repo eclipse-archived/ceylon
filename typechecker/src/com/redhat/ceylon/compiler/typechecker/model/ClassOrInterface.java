@@ -59,9 +59,10 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     protected int hashCodeForCache() {
         int ret = 17;
         ret = Util.addHashForModule(ret, this);
-        if(isToplevel())
+        if (isToplevel()) {
             ret = (37 * ret) + getQualifiedNameString().hashCode();
-        else{
+        }
+        else {
             ret = (37 * ret) + getContainer().hashCode();
             ret = (37 * ret) + getName().hashCode();
         }
@@ -70,18 +71,19 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof ClassOrInterface == false)
+        if (o == null || o instanceof ClassOrInterface == false) {
             return false;
+        }
         ClassOrInterface b = (ClassOrInterface) o;
-        if(!Util.sameModule(this, b))
+        if (!Util.sameModule(this, b)) {
             return false;
-        if(isToplevel()){
-            if(!b.isToplevel())
-                return false;
+        }
+        if (isToplevel()) {
+            if (!b.isToplevel()) return false;
             return getQualifiedNameString().equals(b.getQualifiedNameString());
-        }else{
-            if(b.isToplevel())
-                return false;
+        }
+        else {
+            if (b.isToplevel()) return false;
             return getContainer().equals(b.getContainer())
                     && getName().equals(b.getName());
         }

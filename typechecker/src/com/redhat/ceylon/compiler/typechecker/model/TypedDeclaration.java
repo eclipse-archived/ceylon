@@ -175,9 +175,10 @@ public abstract class TypedDeclaration extends Declaration {
     protected int hashCodeForCache() {
         int ret = 17;
         Scope container = getContainer();
-        if(container instanceof Declaration){
+        if (container instanceof Declaration) {
             ret = (37 * ret) + ((Declaration) container).hashCodeForCache();
-        }else if(container instanceof Package || container instanceof Scope){
+        }
+        else {
             ret = (37 * ret) + container.hashCode();
         }
         String qualifier = getQualifier();
@@ -188,19 +189,24 @@ public abstract class TypedDeclaration extends Declaration {
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof TypedDeclaration == false)
+        if (o == null || o instanceof TypedDeclaration == false) {
             return false;
+        }
         TypedDeclaration b = (TypedDeclaration) o;
         Scope container = getContainer();
-        if(container instanceof Declaration){
-            if(!((Declaration) container).equalsForCache(b.getContainer()))
+        if (container instanceof Declaration) {
+            if (!((Declaration) container).equalsForCache(b.getContainer())) {
                 return false;
-        }else if(container instanceof Package || container instanceof Scope){
-            if(!container.equals(b.getContainer()))
-                return false;
+            }
         }
-        if(!Objects.equals(getQualifier(), b.getQualifier()))
+        else {
+            if (!container.equals(b.getContainer())) {
+                return false;
+            }
+        }
+        if (!Objects.equals(getQualifier(), b.getQualifier())) {
             return false;
+        }
         return getName().equals(b.getName());
     }
 

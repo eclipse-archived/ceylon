@@ -23,6 +23,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
@@ -854,6 +855,9 @@ public class TypeVisitor extends Visitor {
         }
         that.setTypeModel(pt);
         that.setDeclarationModel(dec);
+        if (dec instanceof Constructor) {
+            that.addError("constructor is not a type: " + dec.getName(unit));
+        }
     }
     
     @Override 

@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.DeclarationKind.CONSTRUCTOR;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A method. Note that a method must have
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public class Constructor extends MethodOrValue implements Generic, Scope, Functional {
+public class Constructor extends TypeDeclaration implements Generic, Scope, Functional {
 
     public Constructor() {}
     
@@ -23,6 +25,8 @@ public class Constructor extends MethodOrValue implements Generic, Scope, Functi
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
+    private List<Declaration> members = new ArrayList<Declaration>(3);
+    private List<Annotation> annotations = new ArrayList<Annotation>(4);
     
     @Override
     public boolean isParameterized() {
@@ -91,6 +95,70 @@ public class Constructor extends MethodOrValue implements Generic, Scope, Functi
     @Override
     public boolean isDeclaredVoid() {
         return false;
+    }
+
+    @Override
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+    
+    @Override
+    public List<Declaration> getMembers() {
+        return members;
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
+    @Override
+    public boolean isMember() {
+        return true;
+    }
+
+    @Override
+    public DeclarationKind getDeclarationKind() {
+        return CONSTRUCTOR;
+    }
+
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        Scope container = getContainer();
+        if (container instanceof Declaration) {
+            ret = (37 * ret) + ((Declaration) container).hashCodeForCache();
+        }
+        else {
+            ret = (37 * ret) + container.hashCode();
+        }
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        ret = (37 * ret) + getName().hashCode();
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if (o == null || o instanceof Constructor == false) {
+            return false;
+        }
+        Constructor b = (Constructor) o;
+        Scope container = getContainer();
+        if (container instanceof Declaration) {
+            if (!((Declaration) container).equalsForCache(b.getContainer())) {
+                return false;
+            }
+        }
+        else {
+            if (!container.equals(b.getContainer())) {
+                return false;
+            }
+        }
+        if (!Objects.equals(getQualifier(), b.getQualifier())) {
+            return false;
+        }
+        return getName().equals(b.getName());
     }
 
 }

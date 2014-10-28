@@ -626,7 +626,8 @@ public abstract class TypeDeclaration extends Declaration
         if (d.getContainer().equals(this)) {
             return null;
         }
-        else if (isInheritedFromSupertype(d)) {
+        else if (!(this instanceof Constructor) && 
+                isInheritedFromSupertype(d)) {
             return this;
         }
         else if (getContainer()!=null) {

@@ -28,6 +28,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
@@ -110,9 +111,10 @@ public class RefinementVisitor extends Visitor {
             boolean mayBeShared = 
                     dec instanceof MethodOrValue || 
                     dec instanceof ClassOrInterface ||
+                    dec instanceof Constructor ||
                     dec instanceof TypeAlias;
             if (!mayBeShared && dec.isShared()) {
-                that.addError("shared declaration is not a function, value, class, interface, or alias", 1200);
+                that.addError("shared declaration is not a function, value, class, interface, constructor, or alias", 1200);
             }
             
             boolean mayBeRefined =

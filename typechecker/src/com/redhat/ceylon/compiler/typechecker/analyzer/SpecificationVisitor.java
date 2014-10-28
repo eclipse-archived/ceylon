@@ -446,7 +446,8 @@ public class SpecificationVisitor extends Visitor {
         if (that.getScope() instanceof Constructor) {
             Constructor c = (Constructor) that.getScope();
             if (declaration.getContainer()==c.getContainer()) {
-                if (isSharedDeclarationUninitialized()) {
+                if (!(declaration instanceof Constructor) &&
+                        isSharedDeclarationUninitialized()) {
                     that.addError("constructor '" + c.getName()  + 
                             "' does not definitely specify: '" + 
                             declaration.getName() + "'", 1401);
@@ -699,6 +700,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
         super.visit(that);
         if (declaration.getContainer()==that.getDeclarationModel().getContainer() &&
                 that==lastExecutableStatement && 
@@ -908,15 +913,6 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override
-    public void visit(Tree.AnyClass that) {
-        if (that.getDeclarationModel()==declaration) {
-            declare();
-            specify();
-        }
-        super.visit(that);
-    }
-    
     private Tree.Declaration getDeclaration(Tree.ClassBody that) {
         for (Tree.Statement s: that.getStatements()) {
             if (s instanceof Tree.Declaration) {
@@ -967,7 +963,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.AnyInterface that) {
+    public void visit(Tree.ClassOrInterface that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();

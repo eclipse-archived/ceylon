@@ -832,6 +832,9 @@ public class Unit {
     				pt = pt.getSupertype(d.getExtendedTypeDeclaration());
     			}
     		}
+    		if (d instanceof Constructor) {
+    		    return pt.getSupertype(d.getExtendedTypeDeclaration());
+    		}
     		if (d!=null && d.isAnonymous() ) {
     			ClassOrInterface etd = d.getExtendedTypeDeclaration();
     			List<TypeDeclaration> stds = 

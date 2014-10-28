@@ -49,6 +49,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
@@ -78,7 +79,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -4368,8 +4368,14 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = that.getDeclarationModel();
         if (type!=null) {
             if (!type.isVisible(that.getScope())) {
-                that.addError("member type is not visible: " + 
-                        qualifiedDescription(that), 400);
+                if (type instanceof Constructor) {
+                    that.addError("constructor is not visible: " + 
+                            qualifiedDescription(that), 400);
+                }
+                else {
+                    that.addError("member type is not visible: " + 
+                            qualifiedDescription(that), 400);
+                }
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
@@ -4533,8 +4539,14 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                that.addError("member type is not visible: '" +
-                        name + "' of " + container, 400);
+                if (type instanceof Constructor) {
+                    that.addError("constructor is not visible: '" +
+                            name + "' of " + container, 400);
+                }
+                else {
+                    that.addError("member type is not visible: '" +
+                            name + "' of " + container, 400);
+                }
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
@@ -4921,6 +4933,25 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     return true;
+                }
+            }
+            else if (type instanceof Constructor) {
+                Scope container = ((Constructor) type).getContainer();
+                if (container instanceof Class) {
+                    Class c = (Class) container;
+                    if (c.isAbstract()) {
+                        that.addError("class cannot be instantiated: '" +
+                                type.getName(unit) + 
+                                "' is a constructor for the abstract class '" +
+                                c.getName(unit));
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+                else {
+                    return false;
                 }
             }
             else if (type instanceof TypeParameter) {
