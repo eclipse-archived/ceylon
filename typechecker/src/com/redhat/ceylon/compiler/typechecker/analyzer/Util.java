@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -671,7 +672,8 @@ public class Util {
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             ProducedReference prf = mte.getTarget();
-            return mte.getStaticMethodReference() ||
+            return mte.getStaticMethodReference() && 
+                        !prf.getDeclaration().isStaticallyImportable() ||
                     prf==null || 
                     !prf.isFunctional() || 
                     //type parameters are not really callable even though they are Functional
