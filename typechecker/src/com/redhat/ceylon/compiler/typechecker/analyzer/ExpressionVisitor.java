@@ -2829,6 +2829,12 @@ public class ExpressionVisitor extends Visitor {
     private void checkInvocationArguments(Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
+        if (pls.isEmpty() && dec instanceof Class) {
+            Declaration member = ((Class) dec).getDirectMember(dec.getName(), null, false);
+            if (member instanceof Constructor) {
+                pls = ((Constructor) member).getParameterLists();
+            }
+        }
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
                 that.addError("type has no parameter list: '" + 

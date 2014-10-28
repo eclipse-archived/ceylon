@@ -825,6 +825,15 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
             TypeDeclaration dec) {
+        if (dec instanceof Constructor) {
+            if (dec.isClassMember()) {
+                Class c = (Class) dec.getContainer();
+                if (dec.getName().equals(c.getName())) {
+                    dec = c;
+                    ot = ot.getQualifyingType();
+                }
+            }
+        }
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
         List<TypeParameter> params = dec.getTypeParameters();
         List<ProducedType> ta = getTypeArguments(tal, params, ot);
