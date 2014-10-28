@@ -287,7 +287,8 @@ public class TypeVisitor extends Visitor {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
             if (d.isToplevel() && n!=null && 
-                    i.getAlias().equals(n)) {
+                    i.getAlias().equals(n) &&
+                    !i.getDeclaration().equals(d)) {
                 if (alias==null) {
                     id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
                 }
