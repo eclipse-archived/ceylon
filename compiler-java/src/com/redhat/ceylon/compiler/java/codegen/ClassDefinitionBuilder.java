@@ -30,6 +30,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -538,14 +539,16 @@ public class ClassDefinitionBuilder
         return concreteInterfaceMemberDefs;
     }
     
-    public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl, TypeParameterList typeParameterList) {
+    public ClassDefinitionBuilder getCompanionBuilder2(
+            TypeDeclaration decl) {
+        
         ClassDefinitionBuilder companionBuilder = getCompanionBuilder(decl);
         // if the interface has no need of companion, give up
         if(companionBuilder == null)
             return null;
         // make sure we get fields and init code for reified params
-        if(typeParameterList != null) {
-            companionBuilder.reifiedTypeParameters(typeParameterList);
+        if(decl instanceof Generic) {
+            companionBuilder.reifiedTypeParameters(((Generic)decl).getTypeParameters());
         }
         ProducedType thisType = decl.getType();
         companionBuilder.field(PRIVATE | FINAL, 
@@ -554,8 +557,9 @@ public class ClassDefinitionBuilder
                 null, false, gen.makeAtIgnore());
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
         ctor.ignoreModelAnnotations();
-        if(typeParameterList != null)
-            ctor.reifiedTypeParameters(gen.classGen().typeParameterListModel(typeParameterList));
+        if(decl instanceof Generic) {
+            ctor.reifiedTypeParameters(((Generic)decl).getTypeParameters());
+        }
         ctor.modifiers(decl.isShared() ? PUBLIC : 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
         pdb.type(gen.makeJavaType(thisType), null);
@@ -568,9 +572,10 @@ public class ClassDefinitionBuilder
                                 gen.naming.makeQuotedThis())));
         ctor.body(bodyStatements.toList());
         
-        if(typeParameterList != null)
-            companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
-        
+        if(decl instanceof Generic
+                && !((Generic)decl).getTypeParameters().isEmpty()) {
+            companionBuilder.addRefineReifiedTypeParametersMethod(((Generic)decl).getTypeParameters());
+        }
         return companionBuilder;
     }
 
@@ -630,8 +635,14 @@ public class ClassDefinitionBuilder
         return forDefinition;
     }
 
-    public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
-        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getDeclarationModel());
+    public ClassDefinitionBuilder reifiedTypeParameter(Tree.TypeParameterDeclaration param) {
+        TypeParameter tp = param.getDeclarationModel();
+        return reifiedTypeParameter(tp);
+    }
+
+
+    public ClassDefinitionBuilder reifiedTypeParameter(TypeParameter tp) {
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp);
         parameter(makeReifiedParameter(descriptorName));
         defs(gen.makeReifiedTypeParameterVarDecl(param.getDeclarationModel(), isCompanion));
         init(gen.makeReifiedTypeParameterAssignment(param.getDeclarationModel()));
@@ -666,21 +677,20 @@ public class ClassDefinitionBuilder
         return this;
     }
 
-
-    public void reifiedTypeParameters(TypeParameterList typeParameterList) {
-        for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
+    public void reifiedTypeParameters(java.util.List<TypeParameter> typeParameterList) {
+        for(TypeParameter tp : typeParameterList) {
             reifiedTypeParameter(tp);
         }
     }
-
-    public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(TypeParameterList typeParameterList) {
+    
+    public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(java.util.List<TypeParameter> typeParameterList) {
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
         method.modifiers(PUBLIC);
         method.ignoreModelAnnotations();
 
         List<JCStatement> body = List.nil();
-        for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
-            String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getDeclarationModel());
+        for(TypeParameter tp : typeParameterList){
+            String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp);
             method.parameter(makeReifiedParameter(descriptorName));
             body = body.prepend(gen.makeReifiedTypeParameterAssignment(tp.getDeclarationModel()));
         }

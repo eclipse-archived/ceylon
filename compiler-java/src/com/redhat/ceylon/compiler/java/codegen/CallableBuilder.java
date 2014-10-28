@@ -1428,7 +1428,7 @@ public class CallableBuilder {
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(Decl.getDefaultArgument(p) != null){
-                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
+                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
                 this.parameterDefaultValueMethods.append(methodBuilder);
             }
         }
