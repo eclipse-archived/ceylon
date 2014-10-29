@@ -1191,6 +1191,9 @@ public class DeclarationVisitor extends Visitor {
             if (model instanceof ClassOrInterface) {
                 ((ClassOrInterface) model).setSealed(true);
             }
+            else if (model instanceof Constructor) {
+                ((Constructor) model).setSealed(true);
+            }
             else {
                 that.addError("declaration is not a class or interface, and may not be annotated sealed");
             }

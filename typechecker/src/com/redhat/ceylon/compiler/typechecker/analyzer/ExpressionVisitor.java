@@ -4982,9 +4982,16 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
 	    if (type.isSealed() && !inSameModule(type) &&
 	    		(!that.getStaticMethodReferencePrimary())) {
-	    	that.addError("invokes or references a sealed class in a different module: '" +
-	    			type.getName(unit) + "' in '" + 
-	    			type.getUnit().getPackage().getModule().getNameAsString() + "'");
+	        if (type instanceof Constructor) {
+	            that.addError("invokes or references a sealed constructor in a different module: '" +
+	                    type.getName(unit) + "' of '" + type.getExtendedTypeDeclaration().getName(unit) + 
+	                    "' in '" + type.getUnit().getPackage().getModule().getNameAsString() + "'");
+	        }
+	        else {
+	            that.addError("instantiates or references a sealed class in a different module: '" +
+	                    type.getName(unit) + "' in '" + 
+	                    type.getUnit().getPackage().getModule().getNameAsString() + "'");
+	        }
 	    	return false;
 	    }
 	    else {
