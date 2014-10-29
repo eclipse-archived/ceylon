@@ -1241,6 +1241,19 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    @Override
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+        Constructor constructor = that.getDeclarationModel();
+        if (constructor.isClassMember()) {
+            Class clazz = (Class) constructor.getContainer();
+            if (clazz.getParameterList()!=null) {
+                that.addError("class with parameters may not declare constructor: class " + 
+                        clazz.getName() + " has a parameter list");
+            }
+        }
+    }
+    
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
         inDelegatedConstructor = true;

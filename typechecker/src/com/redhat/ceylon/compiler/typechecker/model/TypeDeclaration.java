@@ -661,10 +661,10 @@ public abstract class TypeDeclaration extends Declaration
         return getType().getSupertype(new Criteria())!=null;
     }
     
-    private static class SupertypeDeclaration {
+    static class SupertypeDeclaration {
         private Declaration member;
         private boolean ambiguous;
-        private SupertypeDeclaration(Declaration declaration, 
+        SupertypeDeclaration(Declaration declaration, 
                 boolean ambiguous) {
             this.member = declaration;
             this.ambiguous = ambiguous;
@@ -680,9 +680,8 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get the supertype which defines the most-refined
      * member with the given name.
-     * @param signature 
      */
-    private SupertypeDeclaration getSupertypeDeclaration(final String name, 
+    SupertypeDeclaration getSupertypeDeclaration(final String name, 
             final List<ProducedType> signature, final boolean variadic) {
         class ExactCriteria implements ProducedType.Criteria {
             @Override
@@ -870,63 +869,39 @@ public abstract class TypeDeclaration extends Declaration
     public List<TypeDeclaration> getSupertypeDeclarations() {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        if (this instanceof UnionType) {
-            List<TypeDeclaration> ctds = getCaseTypeDeclarations();
-            List<TypeDeclaration> result =
-                    new ArrayList<TypeDeclaration>(ctds.size());
-            ProducedType type = getType();
-            for (int i=0, l=ctds.size(); i<l; i++) {
-                //actually the loop is unnecessary, we
-                //only need to consider the first case
-                TypeDeclaration ctd = ctds.get(i);
-                List<TypeDeclaration> ctsts = ctd.getSupertypeDeclarations();
-                for (int j=0; j<ctsts.size(); j++) {
-                    TypeDeclaration std = ctsts.get(j);
-                    ProducedType st = type.getSupertype(std);
-                    if (st!=null && !st.isNothing()) {
-                        if (!result.contains(std)) {
-                            result.add(std);
-                        }
-                    }
+        ClassOrInterface etd = getExtendedTypeDeclaration();
+        List<TypeDeclaration> stds = getSatisfiedTypeDeclarations();
+        List<TypeDeclaration> result;
+        if (etd!=null) {
+            List<TypeDeclaration> etsts = etd.getSupertypeDeclarations();
+            result = new ArrayList<TypeDeclaration>(etsts.size() + stds.size()*2);
+            for (int j=0; j<etsts.size(); j++) {
+                TypeDeclaration st = etsts.get(j);
+                if (!result.contains(st)) {
+                    result.add(st);
                 }
             }
-            return result;
         }
         else {
-            ClassOrInterface etd = getExtendedTypeDeclaration();
-            List<TypeDeclaration> stds = getSatisfiedTypeDeclarations();
-            List<TypeDeclaration> result;
-            if (etd!=null) {
-                List<TypeDeclaration> etsts = etd.getSupertypeDeclarations();
-                result = new ArrayList<TypeDeclaration>(etsts.size() + stds.size()*2);
-                for (int j=0; j<etsts.size(); j++) {
-                    TypeDeclaration st = etsts.get(j);
-                    if (!result.contains(st)) {
-                        result.add(st);
-                    }
-                }
-            }
-            else {
-                result = new ArrayList<TypeDeclaration>(stds.size()*2);
-            }
-            // cheaper c-for than foreach
-            for (int i=0, l=stds.size(); i<l; i++) {
-                TypeDeclaration std = stds.get(i);
-                List<TypeDeclaration> ststs = std.getSupertypeDeclarations();
-                for (int j=0; j<ststs.size(); j++) {
-                    TypeDeclaration st = ststs.get(j);
-                    if (!result.contains(st)) {
-                        result.add(st);
-                    }
-                }
-            }
-            if (this instanceof ClassOrInterface) {
-                if (!result.contains(this)) {
-                    result.add(this);
-                }
-            }
-            return result;
+            result = new ArrayList<TypeDeclaration>(stds.size()*2);
         }
+        // cheaper c-for than foreach
+        for (int i=0, l=stds.size(); i<l; i++) {
+            TypeDeclaration std = stds.get(i);
+            List<TypeDeclaration> ststs = std.getSupertypeDeclarations();
+            for (int j=0; j<ststs.size(); j++) {
+                TypeDeclaration st = ststs.get(j);
+                if (!result.contains(st)) {
+                    result.add(st);
+                }
+            }
+        }
+        if (this instanceof ClassOrInterface) {
+            if (!result.contains(this)) {
+                result.add(this);
+            }
+        }
+        return result;
     }
     
     /**

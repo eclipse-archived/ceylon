@@ -121,6 +121,11 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     public DeclarationKind getDeclarationKind() {
         return CONSTRUCTOR;
     }
+    
+    protected Declaration getMemberOrParameter(String name, 
+            List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis);
+    }
 
     @Override
     protected int hashCodeForCache() {

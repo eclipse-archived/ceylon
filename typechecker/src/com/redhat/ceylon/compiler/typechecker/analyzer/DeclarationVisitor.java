@@ -458,10 +458,6 @@ public class DeclarationVisitor extends Visitor {
         if (!(scope instanceof Class)) {
             that.addError("constructor declaration must occur directly in the body of a class");
         }
-        else if (((Class) scope).getParameterList()!=null) {
-            that.addError("classes with parameters may not have constructors: class " + 
-                    ((Class) scope).getName() + " has a parameter list");
-        }
         Constructor c = new Constructor();
         if (scope instanceof Class) {
             c.setExtendedType(((Class) scope).getType());
