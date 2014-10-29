@@ -156,8 +156,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, javaClassName, ceylonClassName, Decl.isLocal(model))
                 .forDefinition(model);
-        Tree.TypeParameterList typeParameterList = def.getTypeParameterList();
-
+        
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
             classBuilder.extending(model.getType(), null);
@@ -1009,7 +1008,9 @@ public class ClassTransformer extends AbstractTransformer {
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member
             pdb.modelAnnotations(param.getModel().getAnnotations());
-            pdb.userAnnotations(expressionGen().transform(member.getAnnotationList()));
+            if (member != null) {
+                pdb.userAnnotations(expressionGen().transform(member.getAnnotationList()));
+            }
         }
 
         if (classBuilder instanceof ClassDefinitionBuilder
@@ -1030,7 +1031,7 @@ public class ClassTransformer extends AbstractTransformer {
         // do reified type params first
         classBuilder.reifiedTypeParameters(model.getTypeParameters());
         if (def.getParameterList() != null) {
-            transformClassOrCtorParameters(def, def.getParameterList(), 
+            transformClassOrCtorParameters(def, model, def.getParameterList(), 
                     classBuilder, 
                     generateInstantiator, instantiatorDeclCb,
                     instantiatorImplCb);
@@ -1049,13 +1050,13 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformClassOrCtorParameters(
             Tree.AnyClass def,
+            Class cls,
             Tree.ParameterList paramList,
             ClassDefinitionBuilder classBuilder,
             boolean generateInstantiator, 
             ClassDefinitionBuilder instantiatorDeclCb,
             ClassDefinitionBuilder instantiatorImplCb) {
         
-        Class cls = def.getDeclarationModel();
         for (final Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
             
@@ -1063,7 +1064,7 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter refinedParam = CodegenUtil.findParamForDecl(
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
-            Tree.TypedDeclaration member = Decl.getMemberDeclaration(def, param);
+            Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
             transformParameter(classBuilder, paramModel, member);
             makeAttributeForValueParameter(classBuilder, param, member);
             makeMethodForFunctionalParameter(classBuilder, param, member);
@@ -3080,8 +3081,8 @@ public class ClassTransformer extends AbstractTransformer {
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
         // do the reified type param arguments
-        if (typeParameterList != null && gen().supportsReified(methodModel)) {
-            methodBuilder.reifiedTypeParameters(typeParameterListModel(typeParameterList));
+        if (gen().supportsReified(methodModel)) {
+            methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
         }
         
         if (methodModel.getParameterLists().size() > 1) {
@@ -3115,7 +3116,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 overloadBuilder, 
                                 parameterList.getModel(),
                                 parameter.getParameterModel(),
-                                typeParameterListModel(typeParameterList));
+                                methodModel.getTypeParameters());
                         lb.append(overloadedMethod);
                     }
                     
@@ -3142,7 +3143,7 @@ public class ClassTransformer extends AbstractTransformer {
                     canonicalBuilder, 
                     parameterList.getModel(),
                     null,
-                    typeParameterListModel(typeParameterList));
+                    methodModel.getTypeParameters());
             lb.append(canonicalMethod);
         }
         
@@ -3167,7 +3168,7 @@ public class ClassTransformer extends AbstractTransformer {
                         methodBuilder, 
                         parameterList.getModel(),
                         null,
-                        typeParameterListModel(typeParameterList));
+                        methodModel.getTypeParameters());
                 lb.append(overloadedMethod);
             } else {
                 if (body != null) {
@@ -3599,17 +3600,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
     final DaoSuper daoSuper = new DaoSuper();
-    
-    java.util.List<TypeParameter> typeParameterListModel(Tree.TypeParameterList typeParameterList) {
-        java.util.List<TypeParameter> tpList = null;
-        if (typeParameterList != null) {
-            tpList = new ArrayList<TypeParameter>();
-            for (Tree.TypeParameterDeclaration tpd : typeParameterList.getTypeParameterDeclarations()) {
-                tpList.add(tpd.getDeclarationModel());
-            }
-        }
-        return tpList;
-    }
     
     /**
      * A base class for transformations used for Ceylon declarations
