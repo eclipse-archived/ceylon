@@ -672,9 +672,9 @@ public class Util {
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             ProducedReference prf = mte.getTarget();
-            return mte.getStaticMethodReference() && 
+            return prf==null || 
+                    mte.getStaticMethodReference() && 
                         !prf.getDeclaration().isStaticallyImportable() ||
-                    prf==null || 
                     !prf.isFunctional() || 
                     //type parameters are not really callable even though they are Functional
                     prf.getDeclaration() instanceof TypeParameter;
