@@ -72,6 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
+    private boolean inDelegatedConstructor;
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
@@ -770,6 +771,9 @@ public class TypeVisitor extends Visitor {
                     ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
                 }
+                else if (that.getScope() instanceof Constructor) {
+                    that.setTypeModel(intersectionOfSupertypes(ci));
+                }
                 else {
                     that.addError("super appears in extends for non-member class");
                 }
@@ -825,15 +829,26 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
             TypeDeclaration dec) {
-        if (dec instanceof Constructor) {
-            if (dec.isClassMember()) {
-                Class c = (Class) dec.getContainer();
-                if (dec.getName().equals(c.getName())) {
-                    dec = c;
-                    ot = ot.getQualifyingType();
-                }
+        if (inDelegatedConstructor) {
+            if (!(dec instanceof Constructor)) {
+                that.addError("not a constructor: '" + dec.getName(unit) + "'");
             }
         }
+        else {
+            if (dec instanceof Constructor) {
+                if (dec.isClassMember()) {
+                    Class c = (Class) dec.getContainer();
+                    if (dec.getName().equals(c.getName())) {
+                        dec = c;
+                        ot = ot.getQualifyingType();
+                    }
+                }
+            }
+            if (dec instanceof Constructor) {
+                that.addError("constructor is not a type: '" + dec.getName(unit) + "'");
+            }
+        }
+        
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
         List<TypeParameter> params = dec.getTypeParameters();
         List<ProducedType> ta = getTypeArguments(tal, params, ot);
@@ -865,9 +880,6 @@ public class TypeVisitor extends Visitor {
         }
         that.setTypeModel(pt);
         that.setDeclarationModel(dec);
-        if (dec instanceof Constructor) {
-            that.addError("constructor is not a type: " + dec.getName(unit));
-        }
     }
     
     @Override 
@@ -1230,53 +1242,60 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override 
+    public void visit(Tree.DelegatedConstructor that) {
+        inDelegatedConstructor = true;
+        super.visit(that);
+        inDelegatedConstructor = false;
+    }
+    
+    @Override 
     public void visit(Tree.ExtendedType that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        if (td.isAlias()) {
-            return;
-        }
-        Tree.SimpleType et = that.getType();
-        if (et==null) {
-//            that.addError("malformed extended type");
-        }
-        else {
-            /*if (et instanceof Tree.QualifiedType) {
-                Tree.QualifiedType st = (Tree.QualifiedType) et;
-                ProducedType pt = st.getOuterType().getTypeModel();
-                if (pt!=null) {
-                    TypeDeclaration superclass = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), st.getIdentifier(), context);
-                    if (superclass==null) {
-                        that.addError("member type declaration not found: " + 
-                                st.getIdentifier().getText());
+        if (!td.isAlias()) {
+            Tree.SimpleType et = that.getType();
+            if (et==null) {
+//                that.addError("malformed extended type");
+            }
+            else {
+                /*if (et instanceof Tree.QualifiedType) {
+                    Tree.QualifiedType st = (Tree.QualifiedType) et;
+                    ProducedType pt = st.getOuterType().getTypeModel();
+                    if (pt!=null) {
+                        TypeDeclaration superclass = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), st.getIdentifier(), context);
+                        if (superclass==null) {
+                            that.addError("member type declaration not found: " + 
+                                    st.getIdentifier().getText());
+                        }
+                        else {
+                            visitExtendedType(st, pt, superclass);
+                        }
                     }
-                    else {
-                        visitExtendedType(st, pt, superclass);
-                    }
-                }
-            }*/
-            ProducedType type = et.getTypeModel();
-            if (type!=null) {
-                TypeDeclaration etd = et.getDeclarationModel();
-                if (etd!=null) {
-                    if (etd==td) {
-                        //TODO: handle indirect circularities!
-                        et.addError("directly extends itself: '" + td.getName() + "'");
-                    }
-                    else if (etd instanceof TypeParameter) {
-                        et.addError("directly extends a type parameter: '" + 
-                                type.getDeclaration().getName(unit) + "'");
-                    }
-                    else if (etd instanceof Interface) {
-                        et.addError("extends an interface: '" + 
-                                type.getDeclaration().getName(unit) + "'");
-                    }
-                    else if (etd instanceof TypeAlias) {
-                        et.addError("extends a type alias: '" + 
-                                type.getDeclaration().getName(unit) + "'");
-                    }
-                    else {
-                        td.setExtendedType(type);
+                }*/
+                ProducedType type = et.getTypeModel();
+                if (type!=null) {
+                    TypeDeclaration etd = et.getDeclarationModel();
+                    if (etd!=null) {
+                        if (etd==td) {
+                            //TODO: handle indirect circularities!
+                            et.addError("directly extends itself: '" + td.getName() + "'");
+                        }
+                        else if (etd instanceof TypeParameter) {
+                            et.addError("directly extends a type parameter: '" + 
+                                    type.getDeclaration().getName(unit) + "'");
+                        }
+                        else if (etd instanceof Interface) {
+                            et.addError("extends an interface: '" + 
+                                    type.getDeclaration().getName(unit) + "'");
+                        }
+                        else if (etd instanceof TypeAlias) {
+                            et.addError("extends a type alias: '" + 
+                                    type.getDeclaration().getName(unit) + "'");
+                        }
+                        else if (etd instanceof Constructor) {}
+                        else {
+                            td.setExtendedType(type);
+                        }
                     }
                 }
             }
@@ -1310,6 +1329,9 @@ public class TypeVisitor extends Visitor {
                     if (std instanceof TypeAlias) {
                         st.addError("satisfies a type alias: '" + 
                                 type.getDeclaration().getName(unit) + "'");
+                        continue;
+                    }
+                    if (std instanceof Constructor) {
                         continue;
                     }
                     if (td instanceof TypeParameter) {

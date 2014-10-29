@@ -6033,6 +6033,37 @@ public class ExpressionVisitor extends Visitor {
             checkOverloadedReference((Tree.MemberOrTypeExpression) ie.getPrimary());
         }*/
     }
+    
+    @Override 
+    public void visit(Tree.DelegatedConstructor that) {
+        visitExtendedOrAliasedType(that.getType(), 
+                that.getInvocationExpression());
+        
+        inExtendsClause = true;
+        super.visit(that);
+        inExtendsClause = false;
+        
+        TypeDeclaration constructor = (TypeDeclaration) that.getScope();
+        Scope container = constructor.getContainer();
+        if (constructor instanceof Constructor) {
+            if (container instanceof Class) {
+                Class c = (Class) container;
+                Declaration delegate = that.getType().getDeclarationModel();
+//                if (delegate instanceof Class) {
+//                    delegate = delegate.getDirectMember(delegate.getName(), null, false);
+//                }
+                if (delegate instanceof Constructor) {
+                    ClassOrInterface delegatedType = ((Constructor) delegate).getExtendedTypeDeclaration();
+                    Class superclass = c.getExtendedTypeDeclaration();
+                    if (superclass!=null && !superclass.equals(delegatedType)) {
+                        that.getType().addError("not a constructor of the immediate superclass: '" +
+                                delegate.getName(unit) + "' is not a constructor of '" + 
+                                superclass.getName(unit) + "'");
+                    }
+                }
+            }
+        }
+    }
 
     @Override 
     public void visit(Tree.ExtendedType that) {
@@ -6044,17 +6075,23 @@ public class ExpressionVisitor extends Visitor {
         inExtendsClause = false;
                 
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        if (td.isAlias()) {
-            return;
-        }
-        Tree.SimpleType et = that.getType();
-        if (et!=null) {
-            ProducedType type = et.getTypeModel();
-            if (type!=null) {
-                checkSelfTypes(et, td, type);
-                checkExtensionOfMemberType(et, td, type);
-                //checkCaseOfSupertype(et, td, type);
-                if (!td.isAlias()) {
+        if (!td.isAlias()) {
+            Tree.SimpleType et = that.getType();
+            if (et!=null) {
+                Tree.InvocationExpression ie = that.getInvocationExpression();
+                ParameterList pl = ((Class) td).getParameterList();
+                if (ie==null && pl!=null) {
+                    that.addError("missing instantiation arguments");
+                }
+                else if (ie!=null && pl==null) {
+                    that.addError("unnecessary instantiation arguments");
+                }
+                
+                ProducedType type = et.getTypeModel();
+                if (type!=null) {
+                    checkSelfTypes(et, td, type);
+                    checkExtensionOfMemberType(et, td, type);
+                    //checkCaseOfSupertype(et, td, type);
                     TypeDeclaration etd = td.getExtendedTypeDeclaration();
                     while (etd!=null && etd.isAlias()) {
                         etd = etd.getExtendedTypeDeclaration();
@@ -6070,13 +6107,13 @@ public class ExpressionVisitor extends Visitor {
                     				etd.getUnit().getPackage().getModule().getNameAsString() + "'");
                     	}
                     }
-                }
 //                if (td.isParameterized() &&
 //                        type.getDeclaration().inherits(unit.getExceptionDeclaration())) {
 //                    et.addUnsupportedError("generic exception types not yet supported");
 //                }
+                }
+                checkSupertypeVarianceAnnotations(et);
             }
-            checkSupertypeVarianceAnnotations(et);
         }
     }
 

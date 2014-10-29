@@ -649,8 +649,22 @@ constructor returns [Constructor declaration]
         parameters
         { $declaration.setParameterList($parameters.parameterList); }
       )?
+      (  
+        dc=delegatedConstructor
+        { $declaration.setDelegatedConstructor($dc.delegatedConstructor); }
+      )?
       block
       { $declaration.setBlock($block.block); }
+    ;
+
+delegatedConstructor returns [DelegatedConstructor delegatedConstructor]
+    : EXTENDS
+      { $delegatedConstructor = new DelegatedConstructor($EXTENDS); }
+      (
+        ci=classInstantiation
+        { $delegatedConstructor.setType($ci.type);
+          $delegatedConstructor.setInvocationExpression($ci.invocationExpression); }
+      )
     ;
 
 aliasDeclaration returns [TypeAliasDeclaration declaration]

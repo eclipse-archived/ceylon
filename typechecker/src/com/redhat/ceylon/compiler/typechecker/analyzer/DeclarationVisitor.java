@@ -1920,19 +1920,15 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         inExtends = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        if (td.isAlias()) {
-            return;
-        }
-        if (that.getType()==null) {
-            that.addError("missing extended type");
-        }
-        else if (that.getInvocationExpression()==null) {
-            that.addError("missing instantiation arguments");
-        }
-        else {
-            ProducedType type = that.getType().getTypeModel();
-            if (type!=null) {
-                td.setExtendedType(type);
+        if (!td.isAlias()) {
+            if (that.getType()==null) {
+                that.addError("missing extended type");
+            }
+            else {
+                ProducedType type = that.getType().getTypeModel();
+                if (type!=null) {
+                    td.setExtendedType(type);
+                }
             }
         }
     }

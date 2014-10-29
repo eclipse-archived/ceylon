@@ -7,6 +7,7 @@ import static java.util.Collections.singleton;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -50,7 +51,7 @@ public class SupertypeVisitor extends Visitor {
         if (stn!=null) {
             for (Tree.StaticType st: stn.getTypes()) {
                 ProducedType t = st.getTypeModel();
-                if (t!=null) {
+                if (t!=null && !(t.getDeclaration() instanceof Constructor)) {
                     List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton(d));
                     if (!l.isEmpty()) {
                         if (displayErrors)
@@ -69,7 +70,7 @@ public class SupertypeVisitor extends Visitor {
             Tree.StaticType et = etn.getType();
             if (et!=null) {
             	ProducedType t = et.getTypeModel();
-            	if (t!=null) {
+            	if (t!=null && !(t.getDeclaration() instanceof Constructor)) {
             		List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
             		if (!l.isEmpty()) {
             	        if (displayErrors)

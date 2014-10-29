@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -34,8 +35,9 @@ public class SelfReferenceVisitor extends Visitor {
     
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
         Declaration member = that.getDeclaration();
-        if (member!=null && !typeDeclaration.isAlias()) {
-            if ( !declarationSection && isInherited(that, member) ) {
+        if (member!=null && !typeDeclaration.isAlias() && 
+                !(member instanceof Constructor)) {
+            if (!declarationSection && isInherited(that, member)) {
                 that.addError("inherited member class may not be extended in initializer of '" +
                     		typeDeclaration.getName() + "': '" + member.getName() + 
                     		"' is inherited from '" + 
