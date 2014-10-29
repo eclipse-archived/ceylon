@@ -147,7 +147,7 @@ public class ClassDefinitionBuilder {
     }
     
     public String toString() {
-        return "CDB for " + ((modifiers & INTERFACE) != 0 ? "interface " : "class ") + name;
+        return "CDB for " + (isInterface() ? "interface " : "class ") + name;
     }
 
     ClassDefinitionBuilder getContainingClassBuilder() {
@@ -187,7 +187,7 @@ public class ClassDefinitionBuilder {
         // (e.g. initializer with defaulted params)
         
         
-        if ((modifiers & INTERFACE) != 0) {
+        if (isInterface()) {
             if (this == getTopLevelBuilder()) {
                 klasses.appendList(also.toList());
                 klasses.append(klass);
@@ -213,6 +213,11 @@ public class ClassDefinitionBuilder {
         return klasses.toList();
     }
 
+
+    private boolean isInterface() {
+        return (modifiers & INTERFACE) != 0;
+    }
+
     String getClassName() {
         return name;
     }
@@ -220,7 +225,7 @@ public class ClassDefinitionBuilder {
     private boolean hasCompanion() {
         return !isAlias
                 && concreteInterfaceMemberDefs != null
-                && (((modifiers & INTERFACE) != 0)
+                && (isInterface()
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
                     && concreteInterfaceMemberDefs.getInitBuilder().isEmptyInit()
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
@@ -231,7 +236,7 @@ public class ClassDefinitionBuilder {
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-        if ((modifiers & INTERFACE) == 0) {
+        if (!isInterface()) {
             
             for (MethodDefinitionBuilder builder : constructors) {
                 if (noAnnotations || ignoreAnnotations) {
@@ -257,7 +262,7 @@ public class ClassDefinitionBuilder {
 //                superclass = null;
 //            }
         } else {
-            if ((modifiers & INTERFACE) != 0) {
+            if (isInterface()) {
                 // The VM insists that interfaces have java.lang.Object as their superclass
                 superclass = gen.makeIdent(gen.syms().objectType);
             } else {
@@ -595,7 +600,7 @@ public class ClassDefinitionBuilder {
 
 
     public ClassDefinitionBuilder addGetTypeMethod(ProducedType type){
-        if ((modifiers & INTERFACE) != 0) {
+        if (isInterface()) {
             // interfaces don't have that one
         }else{
             MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
