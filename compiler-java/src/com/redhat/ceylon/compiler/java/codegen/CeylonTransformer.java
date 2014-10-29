@@ -465,11 +465,12 @@ public class CeylonTransformer extends AbstractTransformer {
     /** Creates a module class in the package, with the Module annotation required by the runtime. */
     public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
         at(module);
+        
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
-                .klass(this, Naming.MODULE_DESCRIPTOR_CLASS_NAME, null, false)
-                .modifiers(Flags.FINAL)
-                .constructorModifiers(Flags.PRIVATE)
+                .klass(this, Naming.MODULE_DESCRIPTOR_CLASS_NAME, null, false);
+        builder.modifiers(Flags.FINAL)
                 .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
+        builder.getInitBuilder().modifiers(Flags.PRIVATE);
         builder.annotations(expressionGen().transform(module.getAnnotationList()));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
             String quotedName;
@@ -502,8 +503,8 @@ public class CeylonTransformer extends AbstractTransformer {
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, Naming.PACKAGE_DESCRIPTOR_CLASS_NAME, null, false)
                 .modifiers(Flags.FINAL)
-                .constructorModifiers(Flags.PRIVATE)
                 .annotations(makeAtPackage(pack.getUnit().getPackage()));
+        builder.getInitBuilder().modifiers(Flags.PRIVATE);
         builder.annotations(expressionGen().transform(pack.getAnnotationList()));
         return builder.build();
     }

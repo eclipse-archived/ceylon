@@ -60,21 +60,21 @@ import com.sun.tools.javac.util.Name;
  * 
  * @author Tako Schotanus
  */
-public class ClassDefinitionBuilder 
-        implements ParameterizedBuilder<ClassDefinitionBuilder> {
+public class ClassDefinitionBuilder {
     private final AbstractTransformer gen;
     
     private final String name;
     
     private long modifiers;
-    private long constructorModifiers = -1;
+    
+    private InitializerBuilder initBuilder;
     
     private boolean isAlias = false;
     private boolean isLocal = false;
     
     private JCExpression extending;
-    private JCStatement superCall;
-
+    
+    
     /** 
      * Remembers the class which we're defining, because we need this for special
      * cases in the super constructor invocation.
@@ -87,13 +87,11 @@ public class ClassDefinitionBuilder
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
-    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
-    
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
     private final ListBuffer<JCTree> also = ListBuffer.lb();
-    private final ListBuffer<JCStatement> init = ListBuffer.lb();
+    
 
     private boolean built = false;
     
@@ -118,10 +116,10 @@ public class ClassDefinitionBuilder
         final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null, false);
         builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
+        builder.initBuilder.modifiers(PRIVATE);
         return builder
             .annotations(gen.makeAtMethod())
-            .modifiers(FINAL, shared ? PUBLIC : 0)
-            .constructorModifiers(PRIVATE);
+            .modifiers(FINAL | (shared ? PUBLIC : 0));
     }
 
     private ClassDefinitionBuilder(AbstractTransformer gen,  
@@ -129,6 +127,7 @@ public class ClassDefinitionBuilder
             String ceylonClassName,
             boolean isLocal) {
         this.gen = gen;
+        this.initBuilder = new InitializerBuilder(gen);
         this.name = javaClassName;
         this.isLocal = isLocal;
         extending = getSuperclass(null);
@@ -223,7 +222,7 @@ public class ClassDefinitionBuilder
                 && concreteInterfaceMemberDefs != null
                 && (((modifiers & INTERFACE) != 0)
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
-                    && concreteInterfaceMemberDefs.init.isEmpty()
+                    && concreteInterfaceMemberDefs.getInitBuilder().isEmptyInit()
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
@@ -233,17 +232,15 @@ public class ClassDefinitionBuilder
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if ((modifiers & INTERFACE) == 0) {
-            if (superCall != null && !isAlias) {
-                init.prepend(superCall);
-            }
-            if (!isCompanion) {
-                createConstructor(init.toList());
-            }
+            
             for (MethodDefinitionBuilder builder : constructors) {
                 if (noAnnotations || ignoreAnnotations) {
                     builder.noModelAnnotations();
                 }
                 defs.append(builder.build());
+            }
+            if (!isCompanion) {
+                defs.append(initBuilder.build());
             }
         }
         defs.appendList(this.defs);
@@ -283,29 +280,6 @@ public class ClassDefinitionBuilder
         }
         return typesList.toList();
     }
-
-    private ClassDefinitionBuilder createConstructor(List<JCStatement> body) {
-        long mods = constructorModifiers;
-        if (mods == -1) {
-            // The modifiers were never explicitly set
-            // so we try to come up with some good defaults
-            mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
-        }
-        int index = 0;
-        for (JCStatement stmt : body) {
-            if (stmt instanceof JCThrow) {
-                ListBuffer<JCStatement> filtered = ListBuffer.<JCStatement>lb();
-                filtered.addAll(body.subList(0, index+1));
-                body = filtered.toList();
-                break;
-            }
-            index++;
-        }
-        addConstructor().modifiers(mods)
-            .parameters(params.toList())
-            .body(body);
-        return this;
-    }
     
     public MethodDefinitionBuilder addConstructor() {
         MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
@@ -315,7 +289,7 @@ public class ClassDefinitionBuilder
 
     public MethodDefinitionBuilder addConstructorWithInitCode() {
         MethodDefinitionBuilder constructor = addConstructor();
-        constructor.body(init.toList());
+        constructor.body(initBuilder.build().body.stats);
         return constructor;
     }
 
@@ -323,26 +297,14 @@ public class ClassDefinitionBuilder
      * Builder methods - they transform the inner state before doing the final construction
      */
     
-    public ClassDefinitionBuilder modifiers(long... modifiers) {
-        long mods = 0;
-        for (long mod : modifiers) {
-            mods |= mod;
-        }
-        this.modifiers = mods;
+    public ClassDefinitionBuilder modifiers(long modifiers) {
+        this.modifiers = modifiers;
         if (this.concreteInterfaceMemberDefs != null) {
-            this.concreteInterfaceMemberDefs.modifiers((mods & PUBLIC) | FINAL);
+            this.concreteInterfaceMemberDefs.modifiers((modifiers & PUBLIC) | FINAL);
         }
         return this;
     }
 
-    public ClassDefinitionBuilder constructorModifiers(long... constructorModifiers) {
-        long mods = 0;
-        for (long mod : constructorModifiers) {
-            mods |= mod;
-        }
-        this.constructorModifiers = mods;
-        return this;
-    }
 
     public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
                                                 boolean covariant, boolean contravariant, ProducedType defaultValue, boolean addModelAnnotation) {
@@ -452,12 +414,6 @@ public class ClassDefinitionBuilder
         return ret;
     }
 
-    // Create a parameter for the constructor
-    public ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
-        params.append(pdb);
-        return this;
-    }
-
     /**
      * Appends the attribute built by the given builder 
      * (the attribute is built without annotations if necessary).
@@ -507,20 +463,6 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder defs(List<JCTree> defs) {
         if (defs != null) {
             this.defs.appendList(defs);
-        }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder init(JCStatement statement) {
-        if (statement != null) {
-            this.init.append(statement);
-        }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder init(List<JCStatement> init) {
-        if (init != null) {
-            this.init.appendList(init);
         }
         return this;
     }
@@ -592,13 +534,13 @@ public class ClassDefinitionBuilder
             if (initialValue != null) {
                 // The attribute's initializer gets moved to the constructor
                 // because it might be using locals of the initializer
-                init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", Naming.quoteFieldName(attrName)), initialValue)));
+                initBuilder.init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", Naming.quoteFieldName(attrName)), initialValue)));
             }
         } else {
             // Otherwise it's local to the constructor
             // Stef: pretty sure we don't want annotations on a variable defined in a constructor
             Name attrNameNm = gen.names().fromString(Naming.quoteLocalValueName(attrName));
-            init(gen.make().VarDef(gen.make().Modifiers(modifiers), attrNameNm, type, initialValue));
+            initBuilder.init(gen.make().VarDef(gen.make().Modifiers(modifiers), attrNameNm, type, initialValue));
         }
         return this;
     }
@@ -618,13 +560,6 @@ public class ClassDefinitionBuilder
         return this;
     }
 
-    /** Set the expression used to invoke {@code super()} */
-    public ClassDefinitionBuilder superCall(JCStatement superCall) {
-        this.superCall = superCall;
-        return this;
-    }
-
-
     public ClassDefinitionBuilder forDefinition(ClassOrInterface def) {
         this.forDefinition = def;
         return this;
@@ -643,9 +578,9 @@ public class ClassDefinitionBuilder
 
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameter tp) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp);
-        parameter(makeReifiedParameter(descriptorName));
-        defs(gen.makeReifiedTypeParameterVarDecl(param.getDeclarationModel(), isCompanion));
-        init(gen.makeReifiedTypeParameterAssignment(param.getDeclarationModel()));
+        initBuilder.parameter(makeReifiedParameter(descriptorName));
+        defs(gen.makeReifiedTypeParameterVarDecl(tp, isCompanion));
+        initBuilder.init(gen.makeReifiedTypeParameterAssignment(tp));
         return this;
     }
 
@@ -692,7 +627,7 @@ public class ClassDefinitionBuilder
         for(TypeParameter tp : typeParameterList){
             String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp);
             method.parameter(makeReifiedParameter(descriptorName));
-            body = body.prepend(gen.makeReifiedTypeParameterAssignment(tp.getDeclarationModel()));
+            body = body.prepend(gen.makeReifiedTypeParameterAssignment(tp));
         }
         method.body(body);
         defs(method.build());
@@ -709,7 +644,7 @@ public class ClassDefinitionBuilder
             typeParameters.add(gen.makeReifiedTypeArgument(tp));
         }
         JCExpression refine = gen.make().Apply(null, gen.makeSelect(companion, gen.naming.getRefineTypeParametersMethodName()), typeParameters.toList());
-        init(gen.make().Exec(refine));
+        initBuilder.init(gen.make().Exec(refine));
         return this;
     }
 
@@ -733,5 +668,9 @@ public class ClassDefinitionBuilder
     public void isDynamic(boolean dynamic) {
         if(dynamic)
             annotations(gen.makeAtDynamic());
+    }
+
+    public InitializerBuilder getInitBuilder() {
+        return initBuilder;
     }
 }

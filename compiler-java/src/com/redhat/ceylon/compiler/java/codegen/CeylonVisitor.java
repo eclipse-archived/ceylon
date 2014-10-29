@@ -741,7 +741,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     void append(JCTree x) {
         if (inInitializer) {
-            classBuilder.init((JCTree.JCStatement)x);
+            classBuilder.getInitBuilder().init((JCTree.JCStatement)x);
         } else {
             defs.append(x);
         }

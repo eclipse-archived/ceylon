@@ -227,9 +227,9 @@ public class AttributeDefinitionBuilder {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (javaClassName != null) {
+            classBuilder.getInitBuilder().modifiers(Flags.PRIVATE);
             classBuilder
                     .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
-                    .constructorModifiers(Flags.PRIVATE)
                     .defs(defs.toList());
             if(getterClass == null){
                 classBuilder.annotations(owner.makeAtAttribute(setterClass))
