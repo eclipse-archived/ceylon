@@ -38,6 +38,8 @@ public @interface TestModule {
     String resDirectory();
     /** Whether the test should fail if there are no tests to run */
     boolean errorIfNoTests() default true;
+    
+    String[] options() default {};
     /** The name of the modules to compile */
     String[] modules() default {};
     

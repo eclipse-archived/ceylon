@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
     resDirectory="../ceylon.language/test-resource",
     modules={"default", "jvm", "metamodel", "annotations", "resmod", "serialization"},
     dependencies={"check", "modules.imported", "modules.optional", "modules.required"},
+    options={"-suppress-warnings", "unusedDeclaration,unusedImport,compilerAnnotation,expressionTypeNothing"},
     removeAtRuntime={"modules.optional"},
     runModulesInNewJvm = { 
             @ModuleSpecifier(module = "default", runClass = "run_"), 
