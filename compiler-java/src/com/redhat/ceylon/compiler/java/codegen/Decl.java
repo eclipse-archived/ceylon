@@ -746,6 +746,11 @@ public class Decl {
         return null;
     }
     
+    /** 
+     * Returns the tree for the member of the given class corresponding 
+     * to the given parameter. For initializer parameters this involves 
+     * walking the class.  
+     */
     public static Tree.TypedDeclaration getMemberDeclaration(Tree.AnyClass def, final Tree.Parameter parameter) {
         if (parameter instanceof Tree.ParameterDeclaration) {
             return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration();

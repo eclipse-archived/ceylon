@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -84,6 +85,7 @@ public class Naming implements LocalId {
         get_,
         value,
         
+        $args$,
         $annotationSequence$,
         $array$,
         $call$,
@@ -122,6 +124,7 @@ public class Naming implements LocalId {
         $annotation$,
         $annotations$,
         $arg$,
+        $args$,
         $argthis$,
         $callable$,
         $canonical$,
@@ -674,7 +677,7 @@ public class Naming implements LocalId {
 
     private void appendTypeDeclaration(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, 
             TypeDeclarationBuilder<?> typeDeclarationBuilder, Scope scope, final boolean last) {
-        if (scope instanceof Class || scope instanceof TypeAlias) {
+        if (scope instanceof Class || scope instanceof TypeAlias || scope instanceof Constructor) {
             TypeDeclaration klass = (TypeDeclaration)scope;
             if(klass.isAnonymous() && !klass.isNamed())
                 typeDeclarationBuilder.clear();
@@ -696,7 +699,7 @@ public class Naming implements LocalId {
             Interface iface = (Interface)scope;
             typeDeclarationBuilder.append(iface.getName());
             if (Decl.isCeylon(iface)
-                && ((decl instanceof Class || decl instanceof TypeAlias) 
+                && ((decl instanceof Class || decl instanceof TypeAlias|| scope instanceof Constructor) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
                 typeDeclarationBuilder.append(IMPL_POSTFIX);
             }
@@ -925,7 +928,9 @@ public class Naming implements LocalId {
             if(decl.isAnonymous())
                 return prefixName(Prefix.$default$, param.getName());
             return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
-        } else if (decl instanceof ClassOrInterface) {
+        } else if (decl instanceof Constructor) {
+            return prefixName(Prefix.$default$, param.getName());
+        } else if (decl instanceof ClassOrInterface ) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
                 return prefixName(Prefix.$default$, param.getName());
             } else {
@@ -2289,4 +2294,5 @@ public class Naming implements LocalId {
         return prefixName(Prefix.$init$, quoteFieldName(fieldName));
     }
 }
+
 

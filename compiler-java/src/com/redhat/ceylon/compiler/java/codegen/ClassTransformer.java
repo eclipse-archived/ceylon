@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -51,6 +52,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -76,7 +78,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
@@ -87,8 +88,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -102,7 +101,6 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -941,7 +939,10 @@ public class ClassTransformer extends AbstractTransformer {
             return;
         }        
         final Value value = (Value)decl.getModel();
-        if (parameterTree instanceof Tree.ValueParameterDeclaration
+        if (decl.getDeclaration() instanceof Constructor) {
+            classBuilder.field(PUBLIC | FINAL, decl.getName(), makeJavaType(decl.getType()), null, false);
+            classBuilder.init(make().Exec(make().Assign(naming.makeQualIdent(naming.makeThis(), decl.getName()), naming.makeName(value, Naming.NA_IDENT))));
+        } else if (parameterTree instanceof Tree.ValueParameterDeclaration
                 && (value.isShared() || value.isCaptured())) {
             makeFieldForParameter(classBuilder, decl);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
@@ -4468,5 +4469,32 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformTypeAliasDeclFlags(model))
             .satisfies(model.getSatisfiedTypes())
             .build();
+    }
+
+    public List<JCTree> transform(Tree.Constructor that) {
+        ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
+        Constructor ctor = that.getDeclarationModel();
+        ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
+        paramsCdb.modifiers(STATIC);
+        transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
+        result.addAll(paramsCdb.build());
+        
+        MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
+        pdb.ignored();
+        pdb.type(naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), null);
+        ctorDb.parameter(pdb);
+        
+        List<JCStatement> stmts = statementGen().transformBlock(that.getBlock());
+        java.util.List<Parameter> parameters = ctor.getParameterLists().get(0).getParameters();
+        for (int ii = parameters.size()-1; ii>=0; ii--) {
+            Parameter p = parameters.get(ii);
+            stmts = stmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
+                    naming.makeQualifiedName(naming.makeUnquotedIdent(Unfix.$args$), p.getModel(), Naming.NA_IDENT)));
+        }
+        ctorDb.block(make().Block(0, stmts));
+        
+        result.add(ctorDb.build());
+        return result.toList();
     }
 }
