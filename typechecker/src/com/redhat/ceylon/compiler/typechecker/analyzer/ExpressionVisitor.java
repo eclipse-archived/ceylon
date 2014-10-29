@@ -6079,11 +6079,12 @@ public class ExpressionVisitor extends Visitor {
             Tree.SimpleType et = that.getType();
             if (et!=null) {
                 Tree.InvocationExpression ie = that.getInvocationExpression();
-                ParameterList pl = ((Class) td).getParameterList();
-                if (ie==null && pl!=null) {
+                Class clazz = (Class) td;
+                ParameterList pl = clazz.getParameterList();
+                if (ie==null && (pl!=null || clazz.isAnonymous())) {
                     that.addError("missing instantiation arguments");
                 }
-                else if (ie!=null && pl==null) {
+                else if (ie!=null && pl==null && !clazz.isAnonymous()) {
                     that.addError("unnecessary instantiation arguments");
                 }
                 

@@ -455,7 +455,8 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
-        if (!(scope instanceof Class)) {
+        if (!(scope instanceof Class) || 
+                ((Class) scope).isAnonymous()) {
             that.addError("constructor declaration must occur directly in the body of a class");
         }
         Constructor c = new Constructor();
