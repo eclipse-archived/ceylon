@@ -209,7 +209,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformClassDeclFlags(def))
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes(), model.getSelfType())
-            .init(childDefs);
+            .defs((List)childDefs);
         
         // aliases don't need a $getType method
         if(!model.isAlias()){
@@ -4326,7 +4326,7 @@ public class ClassTransformer extends AbstractTransformer {
             .annotations(makeAtObject())
             .constructorModifiers(PRIVATE)
             .satisfies(klass.getSatisfiedTypes())
-            .init(childDefs)
+            .defs((List)childDefs)
             .addGetTypeMethod(klass.getType());
         
         if(model != null)
