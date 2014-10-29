@@ -2985,7 +2985,7 @@ public class ExpressionVisitor extends Visitor {
                     "named argument must be assignable to parameter '" + 
                             p.getName() + "' of '" + pr.getDeclaration().getName(unit) + "'" + 
                             (pr.getQualifyingType()==null ? "" : 
-                                " in '" + pr.getQualifyingType().getProducedTypeName(unit)) + "'", 
+                                " in '" + pr.getQualifyingType().getProducedTypeName(unit) + "'"), 
                             2100);
         }
     }
