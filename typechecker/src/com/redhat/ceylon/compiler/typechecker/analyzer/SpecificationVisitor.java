@@ -446,12 +446,6 @@ public class SpecificationVisitor extends Visitor {
         if (that.getScope() instanceof Constructor) {
             Constructor c = (Constructor) that.getScope();
             if (declaration.getContainer()==c.getContainer()) {
-                if (!(declaration instanceof Constructor) &&
-                        isSharedDeclarationUninitialized()) {
-                    that.addError("constructor '" + c.getName()  + 
-                            "' does not definitely specify: '" + 
-                            declaration.getName() + "'", 1401);
-                }
                 if (!specified.definitely) {
                     initedByEveryConstructor = false;
                 }
@@ -934,15 +928,12 @@ public class SpecificationVisitor extends Visitor {
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
-            
+
             if (!declaration.isAnonymous()) {
-                Class clazz = (Class) that.getScope();
-                if (clazz.getParameterList()!=null) {
-                    if (isSharedDeclarationUninitialized()) {
-                        getDeclaration(that)
-                            .addError("must be definitely specified by class initializer: '" + 
-                                declaration.getName() + "'", 1401);
-                    }
+                if (isSharedDeclarationUninitialized()) {
+                    getDeclaration(that)
+                    .addError("must be definitely specified by class initializer: '" + 
+                            declaration.getName() + "' is shared", 1401);
                 }
             }
         }
