@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final .java.lang.String s;
+    UnaryCtor() {
+        // What does the ctor having the same name as the class mean wrt the class having/not having an initializer?
+    }
+    
+    static class UnaryCtor {
+        public final String s1;
+        UnaryCtor(String s1) {
+            this.s1 = s1;
+        }
+    }
+    
+    UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor $args$) {
+        this.s = $args$.s1;
+    }
+    
+    static class FromInteger {
+        
+        FromInteger() {
+        }
+    }
+    
+    UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $args$) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.class);
+}
+class UnaryCtor2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    UnaryCtor2() {
+        final .java.lang.String s;
+    }
+    
+    static class UnaryCtor {
+        
+        UnaryCtor() {
+        }
+    }
+    
+    UnaryCtor2(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor2.UnaryCtor $args$) {
+    }
+    
+    static class FromInteger {
+        
+        FromInteger() {
+        }
+    }
+    
+    UnaryCtor2(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor2.FromInteger $args$) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor2.class);
+}

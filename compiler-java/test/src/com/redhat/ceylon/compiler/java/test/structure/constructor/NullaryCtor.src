@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private NullaryConstructors() {
+    }
+    
+    static class NullaryConstructors {
+        
+        NullaryConstructors() {
+        }
+    }
+    
+    NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors $args$) {
+        this();
+    }
+    
+    static class Foo {
+        
+        Foo() {
+        }
+    }
+    
+    NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
+        this();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.class);
+}
