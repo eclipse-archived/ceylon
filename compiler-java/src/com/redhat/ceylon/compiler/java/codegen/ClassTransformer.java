@@ -101,6 +101,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -4503,9 +4504,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
         pdb.ignored();
-        pdb.type(make().TypeApply(
-                naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED),
-                typeParameters.toList()), null);
+        JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+        if (!typeParameters.isEmpty()) {
+            type = make().TypeApply(type,
+                typeParameters.toList());
+        }
+        pdb.type(type, null);
         ctorDb.parameter(pdb);
         
         if (that.getDelegatedConstructor() != null) {
