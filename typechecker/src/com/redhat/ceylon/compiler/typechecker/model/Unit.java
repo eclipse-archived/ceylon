@@ -1310,7 +1310,7 @@ public class Unit {
         Class c = (Class) literalType.getDeclaration();
         ParameterList parameterList = c.getParameterList();
         ProducedType parameterTuple;
-        if (c.isClassOrInterfaceMember()||c.isToplevel()) {
+        if (c.isClassOrInterfaceMember() || c.isToplevel()) {
         	parameterTuple = getParameterTypesAsTupleType(parameterList != null ? 
         			    parameterList.getParameters() : 
         			    Collections.<Parameter>emptyList(), 

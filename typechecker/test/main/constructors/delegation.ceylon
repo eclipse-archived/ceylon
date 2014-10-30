@@ -13,12 +13,20 @@ class Point {
 
 class E() extends Point(1.0, 1.0) {}
 
+class F extends Point {
+    shared new F() extends Point(1.0, 1.0) {}
+}
+
 class A extends Point {
     shared new New() extends Diagonal(0.0) {}
 }
 
 class B extends Point {
     shared new Pt(Float x) extends super.Point(x,0.0) {}
+}
+
+class C0  {
+    @error shared new C0() extends Point(1.0, 1.0) {}
 }
 
 class C1 extends A {

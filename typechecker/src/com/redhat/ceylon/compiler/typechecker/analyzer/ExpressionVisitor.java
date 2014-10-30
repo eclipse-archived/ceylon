@@ -4899,7 +4899,6 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            type = getDefaultConstructor(name, type);
             type = (TypeDeclaration) handleAbstraction(type, that);
             that.setDeclaration(type);
             if (error) {
@@ -4907,19 +4906,6 @@ public class ExpressionVisitor extends Visitor {
                     if (checkSealedReference(type, that)) {
                         checkBaseTypeAndConstructorVisibility(that, name, type);
                     }
-                }
-            }
-        }
-        return type;
-    }
-    
-    private TypeDeclaration getDefaultConstructor(String name,
-            TypeDeclaration type) {
-        if (type instanceof Class) {
-            if (((Class) type).getParameterList()==null) {
-                Declaration constructor = type.getDirectMember(name, null, false);
-                if (constructor instanceof Constructor) {
-                    return (TypeDeclaration) constructor;
                 }
             }
         }
@@ -5115,7 +5101,7 @@ public class ExpressionVisitor extends Visitor {
                 Declaration pm = unit.getPackage()
                         .getMember(name, signature, ellipsis);
                 if (pm instanceof TypeDeclaration) {
-                    type = getDefaultConstructor(name, (TypeDeclaration) pm);
+                    type = (TypeDeclaration) pm;
                 }
                 else {
                     type = null;
@@ -5141,7 +5127,6 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     type = getTypeMember(d, name, signature, ellipsis, unit);
                 }
-                type = getDefaultConstructor(name, type);
                 ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
                         signature, ellipsis);
             }
@@ -6099,11 +6084,10 @@ public class ExpressionVisitor extends Visitor {
             if (et!=null) {
                 Tree.InvocationExpression ie = that.getInvocationExpression();
                 Class clazz = (Class) td;
-                ParameterList pl = clazz.getParameterList();
-                if (ie==null && (pl!=null || clazz.isAnonymous())) {
+                if (ie==null && (!clazz.hasConstructors() || clazz.isAnonymous())) {
                     that.addError("missing instantiation arguments");
                 }
-                else if (ie!=null && pl==null && !clazz.isAnonymous()) {
+                else if (ie!=null && clazz.hasConstructors() && !clazz.isAnonymous()) {
                     that.addError("unnecessary instantiation arguments");
                 }
                 

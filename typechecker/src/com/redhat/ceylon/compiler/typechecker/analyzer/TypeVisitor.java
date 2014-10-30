@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -997,6 +998,15 @@ public class TypeVisitor extends Visitor {
             defaultSuperclass(that.getExtendedType(), cd);
         }
         super.visit(that);
+        Tree.ParameterList pl = that.getParameterList();
+        if (pl!=null && cd.hasConstructors()) {
+            pl.addError("class with parameters may not declare constructors: class " + 
+                    cd.getName() + " has a parameter list and a constructor");
+        }
+        if (pl==null && !cd.hasConstructors()) {
+            that.addError("class without parameters must declare constructors: class " + 
+                    cd.getName() + " has neither parameter list nor constructors");
+        }
     }
 
     @Override 
@@ -1238,19 +1248,6 @@ public class TypeVisitor extends Visitor {
                 dec.getInitializerParameter().isHidden()) {
             that.getBlock().addError("value is an initializer parameter and may not have a body: '" + 
                     dec.getName() + "'");
-        }
-    }
-    
-    @Override
-    public void visit(Tree.Constructor that) {
-        super.visit(that);
-        Constructor constructor = that.getDeclarationModel();
-        if (constructor.isClassMember()) {
-            Class clazz = (Class) constructor.getContainer();
-            if (clazz.getParameterList()!=null) {
-                that.addError("class with parameters may not declare constructor: class " + 
-                        clazz.getName() + " has a parameter list");
-            }
         }
     }
     

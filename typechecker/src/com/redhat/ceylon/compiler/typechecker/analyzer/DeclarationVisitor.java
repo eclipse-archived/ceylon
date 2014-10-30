@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
@@ -455,13 +456,18 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
-        if (!(scope instanceof Class) || 
-                ((Class) scope).isAnonymous()) {
-            that.addError("constructor declaration must occur directly in the body of a class");
-        }
         Constructor c = new Constructor();
         if (scope instanceof Class) {
-            c.setExtendedType(((Class) scope).getType());
+            Class clazz = (Class) scope;
+            c.setExtendedType(clazz.getType());
+            clazz.setConstructors(true);
+            if (clazz.isAnonymous()) {
+                that.addError("anonymous class may not have constructor");
+            }
+            
+        }
+        else {
+            that.addError("constructor declaration must occur directly in the body of a class");
         }
         c.setStaticallyImportable(true);
         that.setDeclarationModel(c);
@@ -476,6 +482,17 @@ public class DeclarationVisitor extends Visitor {
         else {
             that.getParameterList().getModel().setFirst(true);
             c.addParameterList(that.getParameterList().getModel());
+        }
+        if (scope instanceof Class) {
+            Class clazz = (Class) scope;
+            if (clazz.isShared() && !c.isShared() && 
+                    Objects.equals(clazz.getName(), c.getName())) {
+                that.addError("default constructor of shared class must also be shared");
+            }
+            //constructor of sealed class implicitly inherits sealed
+            if (clazz.isSealed()) {
+                c.setSealed(true);
+            }
         }
     }
 

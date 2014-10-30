@@ -7,7 +7,8 @@ import java.util.List;
 
 
 public class Class extends ClassOrInterface implements Functional {
-
+    
+    private boolean constructors;
     private boolean abstr;
     private ParameterList parameterList;
     private boolean overloaded;
@@ -18,6 +19,14 @@ public class Class extends ClassOrInterface implements Functional {
     private List<ProducedReference> unimplementedFormals = 
             Collections.<ProducedReference>emptyList();
 
+    public boolean hasConstructors() {
+        return constructors;
+    }
+    
+    public void setConstructors(boolean constructors) {
+        this.constructors = constructors;
+    }
+    
     @Override
     public boolean isAnonymous() {
         return anonymous;
@@ -37,7 +46,20 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     public ParameterList getParameterList() {
-        return parameterList;
+        if (constructors) {
+            Declaration defaultConstructor = 
+                    getDirectMember(getName(), null, false);
+            if (defaultConstructor instanceof Constructor) {
+                return ((Constructor) defaultConstructor)
+                        .getParameterLists().get(0);
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return parameterList;
+        }
     }
 
     public void setParameterList(ParameterList parameterList) {
@@ -46,6 +68,7 @@ public class Class extends ClassOrInterface implements Functional {
 
     @Override
     public List<ParameterList> getParameterLists() {
+        ParameterList parameterList = getParameterList();
         if (parameterList==null) {
             return Collections.emptyList();
         }
