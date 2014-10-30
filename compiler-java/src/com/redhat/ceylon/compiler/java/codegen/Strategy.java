@@ -166,6 +166,11 @@ class Strategy {
      * @param def
      */
     public static boolean generateMain(Tree.ClassOrInterface def) {
+        for (Tree.CompilerAnnotation c: def.getCompilerAnnotations()) {
+            if (c.getIdentifier().getText().equals("nomain")) {
+                return false;
+            }
+        }
         return def instanceof Tree.AnyClass 
                 && Decl.isToplevel(def) 
                 && !Decl.isAbstract(def)
