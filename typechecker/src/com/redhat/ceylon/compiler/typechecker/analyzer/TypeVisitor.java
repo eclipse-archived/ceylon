@@ -1596,8 +1596,9 @@ public class TypeVisitor extends Visitor {
                 ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
                 if (p instanceof Tree.QualifiedTypeExpression) {
                     Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
-                    if (!(pp instanceof Tree.BaseTypeExpression)
-                            && !(pp instanceof Tree.QualifiedTypeExpression)) {
+                    if (!(pp instanceof Tree.BaseTypeExpression) &&
+                            !(pp instanceof Tree.QualifiedTypeExpression) &&
+                            !(pp instanceof Tree.Package)) {
                         that.getPrimary().addError("non-static type expression in static member reference");
                     }
                 }
