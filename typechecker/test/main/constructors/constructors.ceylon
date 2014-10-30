@@ -2,10 +2,14 @@ class WithBothInitAndDefaultConst() {
     @error new WithInitAndDefaultConst() {}
 }
 
-class WithNeitherInitNorConst {} //TODO: should be an error
+class WithNeitherInitNorConst() {} //TODO: should be an error
 
 class WithConst {
     new Const() {}
+}
+
+class WithConstAndParams() {
+    @error new Const() {}
 }
 
 class WithDefaultConst {
@@ -43,7 +47,7 @@ class WithSharedAttributes {
     shared Integer init;
     shared variable Integer count;
     print(name);
-    new WithAttributes() {
+    new WithSharedAttributes() {
         count = 0;
         init = count;
     }
@@ -81,7 +85,7 @@ class BrokenWithSharedAttributes {
     @error shared String name;
     @error shared variable Integer count;
     @error shared Integer init;
-    new BrokenWithAttributes() {
+    new BrokenWithSharedAttributes() {
         init = 0;
     }
     new ConstWithParameter(Integer initial) {
@@ -99,7 +103,7 @@ class WithAttributesAndMisplacedStatement {
     String name = "Trompon";
     Integer init;
     variable Integer count;
-    new WithAttributes() {
+    new WithAttributesAndMisplacedStatement() {
         count = 0;
         init = count;
     }
@@ -113,6 +117,30 @@ class WithAttributesAndMisplacedStatement {
     }
     void reset() {
         @error count = init; //TODO: remove useless extra error
+    }
+}
+
+class WithAttributesAndMispacedUsage {
+    String name = "Trompon";
+    Integer init;
+    variable Integer count;
+    print(name);
+    @error print(init);
+    new WithAttributesAndMispacedUsage() {
+        @error print(count);
+        count = 0;
+        init = count;
+    }
+    new ConstWithParameter(Integer initial) {
+        @error print(init);
+        count = initial;
+        init = initial;
+    }
+    void inc() {
+        count++;
+    }
+    void reset() {
+        count = init;
     }
 }
 
