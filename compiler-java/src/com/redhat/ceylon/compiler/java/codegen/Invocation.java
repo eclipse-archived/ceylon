@@ -32,7 +32,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
@@ -1523,7 +1525,7 @@ class NamedArgumentInvocation extends Invocation {
             }
         } else if (getPrimary() instanceof Tree.BaseTypeExpression
                 || getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            ClassOrInterface declaration = (ClassOrInterface)((Tree.MemberOrTypeExpression) getPrimary()).getDeclaration();
+            TypeDeclaration declaration = (TypeDeclaration)((Tree.MemberOrTypeExpression) getPrimary()).getDeclaration();
             thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 
@@ -1578,6 +1580,19 @@ class NamedArgumentInvocation extends Invocation {
             }
             vars.prepend(gen.makeVar(callVarName, varType, result));
             result = callVarName.makeIdent();
+        }
+        if (getPrimaryDeclaration() instanceof Constructor) {
+            SyntheticName arguments = gen.naming.temp();
+            vars.append(gen.makeVar(arguments, gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED), 
+                        gen.make().NewClass(null, 
+                                null, 
+                                gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED), 
+                                ExpressionAndType.toExpressionList(argsAndTypes.values()), 
+                                null)));
+            argsAndTypes.clear();
+            ExpressionAndType value = new ExpressionAndType(arguments.makeIdent(), 
+                    gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED));
+            argsAndTypes.put(1, value);
         }
         return new TransformedInvocationPrimary(result, actualPrimExpr.selector);
     }
