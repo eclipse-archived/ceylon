@@ -12,7 +12,7 @@ class CtorGenericClass<T> {
         Foo(t);
         Foo{t=t;};
     }
-    /*shared void n() {
+    shared void n() {
         package.CtorGenericClass<String>("");
         package.CtorGenericClass<String>{t="";};
         package.CtorGenericClass<String>.CtorGenericClass("");
@@ -20,5 +20,5 @@ class CtorGenericClass<T> {
         package.CtorGenericClass<String>.Foo("");
         package.CtorGenericClass<String>.Foo{t="";};
         
-    }*/
+    }
 }

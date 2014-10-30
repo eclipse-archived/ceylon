@@ -18,11 +18,12 @@
  * MA  02110-1301, USA.
  */
 @noanno
+@nomain
 shared class NullaryConstructors {
-    new NullaryConstructors() {
+    shared new NullaryConstructors() {
         
     }
-    shared new Foo() {
+    new Foo() {
         
     }
     shared void use() {

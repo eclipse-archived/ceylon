@@ -2,22 +2,22 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    private static class NullaryConstructors {
+    public static class NullaryConstructors {
         
-        private NullaryConstructors() {
+        public NullaryConstructors() {
         }
     }
     
-    private NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors $args$) {
+    public NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors $args$) {
     }
     
-    public static class Foo {
+    private static class Foo {
         
-        public Foo() {
+        private Foo() {
         }
     }
     
-    public NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
+    private NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
     }
     
     public final void use() {

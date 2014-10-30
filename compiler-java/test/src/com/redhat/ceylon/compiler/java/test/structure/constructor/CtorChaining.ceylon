@@ -3,6 +3,7 @@ class ChainingInit() {
     
 }
 @noanno
+@nomain
 class ChainingCtor /*extends ChainingInit*/ {
     shared new ChainingCtor() /*extends ChainingInit()*/ {
         
@@ -26,6 +27,7 @@ class ChainingCtor /*extends ChainingInit*/ {
 //}
 
 @noanno
+@nomain
 class ChainingCtorCtor extends ChainingCtor {
     new ChainingCtorCtor() extends super.ChainingCtor() {
     }

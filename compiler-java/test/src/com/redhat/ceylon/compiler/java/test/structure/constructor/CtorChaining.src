@@ -24,7 +24,7 @@ class ChainingCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
     }
     
-    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.ChainingCtor<> $args$) {
+    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.ChainingCtor $args$) {
     }
     
     public static class NonDefault {
@@ -33,7 +33,7 @@ class ChainingCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
     }
     
-    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.NonDefault<> $args$) {
+    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.NonDefault $args$) {
     }
     
     @.java.lang.Override
@@ -50,7 +50,7 @@ class ChainingCtorCtor extends .com.redhat.ceylon.compiler.java.test.structure.c
         }
     }
     
-    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.ChainingCtorCtor<> $args$) {
+    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.ChainingCtorCtor $args$) {
         super(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.ChainingCtor());
     }
     
@@ -60,7 +60,7 @@ class ChainingCtorCtor extends .com.redhat.ceylon.compiler.java.test.structure.c
         }
     }
     
-    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.NonDefault<> $args$) {
+    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.NonDefault $args$) {
         super(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.NonDefault());
     }
     
