@@ -9,6 +9,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import javax.management.RuntimeErrorException;
 
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.tree.TreeCopier;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
@@ -87,6 +88,11 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
 
     public boolean isEmptyInit() {
         return init.isEmpty();
+    }
+
+    public List<JCStatement> getBodyCopy() {
+        TreeCopier copier = new TreeCopier(gen.make());
+        return copier.copy(this.init.toList());
     }
 
 

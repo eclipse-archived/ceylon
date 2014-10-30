@@ -73,7 +73,7 @@ public class ClassDefinitionBuilder {
     private boolean isLocal = false;
     
     private JCExpression extending;
-    
+    private boolean hasConstructors = false;
     
     /** 
      * Remembers the class which we're defining, because we need this for special
@@ -244,7 +244,7 @@ public class ClassDefinitionBuilder {
                 }
                 defs.append(builder.build());
             }
-            if (!isCompanion) {
+            if (!isCompanion && !hasConstructors) {
                 defs.append(initBuilder.build());
             }
         }
@@ -677,5 +677,10 @@ public class ClassDefinitionBuilder {
 
     public InitializerBuilder getInitBuilder() {
         return initBuilder;
+    }
+
+
+    public void hasConstructors(boolean hasConstructors) {
+        this.hasConstructors = hasConstructors;
     }
 }

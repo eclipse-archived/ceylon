@@ -4478,7 +4478,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> transform(Tree.Constructor that) {
+    public List<JCTree> transform(Tree.Constructor that, ClassDefinitionBuilder classBuilder) {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
@@ -4492,14 +4492,17 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.type(naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), null);
         ctorDb.parameter(pdb);
         
-        List<JCStatement> stmts = statementGen().transformBlock(that.getBlock());
+        classBuilder.hasConstructors(true);
+        List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
+        
+        List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
         java.util.List<Parameter> parameters = ctor.getParameterLists().get(0).getParameters();
         for (int ii = parameters.size()-1; ii>=0; ii--) {
             Parameter p = parameters.get(ii);
-            stmts = stmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
+            ctorStmts = ctorStmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
                     naming.makeQualifiedName(naming.makeUnquotedIdent(Unfix.$args$), p.getModel(), Naming.NA_IDENT)));
         }
-        ctorDb.block(make().Block(0, stmts));
+        ctorDb.block(make().Block(0, ctorStmts.prependList(initStmts)));
         
         result.add(ctorDb.build());
         return result.toList();

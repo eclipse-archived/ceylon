@@ -118,7 +118,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.Constructor that) {
-        classBuilder.defs(gen.classGen().transform(that));
+        classBuilder.defs(gen.classGen().transform(that, classBuilder));
     }
 
     public void visit(Tree.ClassBody that) {
