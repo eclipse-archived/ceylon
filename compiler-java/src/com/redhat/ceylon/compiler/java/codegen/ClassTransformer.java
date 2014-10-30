@@ -4484,17 +4484,28 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(Tree.Constructor that, ClassDefinitionBuilder classBuilder) {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
+        Class clz = (Class)ctor.getContainer();
         ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
         paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
+        ListBuffer<JCExpression> typeParameters = ListBuffer.lb();
+        for (TypeParameter tp : clz.getTypeParameters()) {
+            paramsCdb.typeParameter(tp);
+            typeParameters.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
+        }
         transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
         paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
         result.addAll(paramsCdb.build());
         
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
+        for (TypeParameter tp : clz.getTypeParameters()) {
+            ctorDb.reifiedTypeParameter(tp);
+        }
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
         pdb.ignored();
-        pdb.type(naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), null);
+        pdb.type(make().TypeApply(
+                naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED),
+                typeParameters.toList()), null);
         ctorDb.parameter(pdb);
         
         classBuilder.hasConstructors(true);
