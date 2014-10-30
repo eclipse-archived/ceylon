@@ -23,4 +23,15 @@ class DefaultedParameterCtor {
     }
     new Two(String s="", Integer i=0) {
     }
+    void use() {
+        One();
+        One("");
+        DefaultedParameterCtor.One();
+        DefaultedParameterCtor.One("");
+        
+        One{};
+        One{s="";};
+        DefaultedParameterCtor.One{};
+        DefaultedParameterCtor.One{s="";};
+    }
 }

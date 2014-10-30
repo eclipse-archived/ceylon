@@ -25,4 +25,19 @@ class SequencedParameterCtor {
     new NonEmpty(String+ s) {
         
     }
+    void use() {
+        SequencedParameterCtor.PossiblyEmpty();
+        SequencedParameterCtor.PossiblyEmpty("");
+        PossiblyEmpty();
+        PossiblyEmpty("");
+        SequencedParameterCtor.NonEmpty("");
+        NonEmpty("");
+        
+        SequencedParameterCtor.PossiblyEmpty{s=[];};
+        SequencedParameterCtor.PossiblyEmpty{s=[""];};
+        PossiblyEmpty{s=[];};
+        PossiblyEmpty{s=[""];};
+        SequencedParameterCtor.NonEmpty{s=[""];};
+        NonEmpty{s=[""];};
+    }
 }

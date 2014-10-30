@@ -26,4 +26,10 @@ class UnaryCtor {
     new FromInteger(Integer i) {
         s = i.string;
     }
+    void use() {
+        value o1 = UnaryCtor{s1="";};
+        value o2 = UnaryCtor.UnaryCtor{s1="";};
+        value o3 = FromInteger{i=0;};
+        value o4 = UnaryCtor.FromInteger{i=0;};
+    }
 }

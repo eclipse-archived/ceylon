@@ -37,6 +37,63 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         final .ceylon.language.Sequence<? extends .ceylon.language.String> s = $args$.s;
     }
     
+    private final void use$priv$() {
+        new SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty());
+        new SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(""))));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty());
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(""))));
+        new SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(""))));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), .ceylon.language.String.instance(""))));
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$1$0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $ceylontmp$2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty(arg$1$0);
+            }
+            returning new SequencedParameterCtor($ceylontmp$2);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$3$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $ceylontmp$4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty(arg$3$0);
+            }
+            returning new SequencedParameterCtor($ceylontmp$4);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$5$0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $ceylontmp$6 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty(arg$5$0);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor($ceylontmp$6);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $ceylontmp$8 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty(arg$7$0);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor($ceylontmp$8);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.String> arg$9$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty $ceylontmp$10 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty(arg$9$0);
+            }
+            returning new SequencedParameterCtor($ceylontmp$10);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.String> arg$11$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty $ceylontmp$12 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty(arg$11$0);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor($ceylontmp$12);
+        );
+    }
+    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.$TypeDescriptor$;
