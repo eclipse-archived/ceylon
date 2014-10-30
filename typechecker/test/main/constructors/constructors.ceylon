@@ -19,6 +19,14 @@ class WithDefaultConst {
     new WithDefaultConst() {}
 }
 
+class ExtendsWithDefaultConstBroken extends WithDefaultConst {
+    @error new ExtendsWithDefaultConstBroken() {}
+}
+
+class ExtendsWithDefaultConstOk extends WithDefaultConst {
+    new ExtendsWithDefaultConstOk() extends WithDefaultConst() {}
+}
+
 class WithConstAndDefaultConst {
     new WithConstAndDefaultConst() {}
     new Const() {}

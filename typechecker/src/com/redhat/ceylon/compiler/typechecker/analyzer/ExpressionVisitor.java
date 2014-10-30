@@ -6039,6 +6039,22 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override 
+    public void visit(Tree.Constructor that) {
+        if (that.getDelegatedConstructor()==null) {
+            Constructor c = that.getDeclarationModel();
+            if (c.isClassMember()) {
+                Class clazz = (Class) c.getContainer();
+                Class superclass = clazz.getExtendedTypeDeclaration();
+                if (!unit.getBasicDeclaration().equals(superclass)) {
+                    that.addError("constructor must explicitly delegate to some superclass constructor: '" +
+                            clazz.getName() + "' extends '" + superclass.getName() + "'");
+                }
+            }
+        }
+        super.visit(that);
+    }
+    
+    @Override 
     public void visit(Tree.DelegatedConstructor that) {
         visitExtendedOrAliasedType(that.getType(), 
                 that.getInvocationExpression());
