@@ -2829,12 +2829,6 @@ public class ExpressionVisitor extends Visitor {
     private void checkInvocationArguments(Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
-        if (pls.isEmpty() && dec instanceof Class) {
-            Declaration member = ((Class) dec).getDirectMember(dec.getName(), null, false);
-            if (member instanceof Constructor) {
-                pls = ((Constructor) member).getParameterLists();
-            }
-        }
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
                 that.addError("type has no parameter list: '" + 
@@ -4905,6 +4899,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
+            type = getDefaultConstructor(name, type);
             type = (TypeDeclaration) handleAbstraction(type, that);
             that.setDeclaration(type);
             if (error) {
@@ -4917,12 +4912,30 @@ public class ExpressionVisitor extends Visitor {
         }
         return type;
     }
-
+    
+    private TypeDeclaration getDefaultConstructor(String name,
+            TypeDeclaration type) {
+        if (type instanceof Class) {
+            if (((Class) type).getParameterList()==null) {
+                Declaration constructor = type.getDirectMember(name, null, false);
+                if (constructor instanceof Constructor) {
+                    return (TypeDeclaration) constructor;
+                }
+            }
+        }
+        return type;
+    }
+    
     private boolean checkConcreteClass(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
-            if (!(type instanceof ClassOrInterface)) {
-                that.addError("type cannot be instantiated: '" +
+            if (!(type instanceof ClassOrInterface) && 
+                    !(type instanceof Constructor)) {
+                //TODO: I assume this restriction exists to
+                //      prevent static method refs qualified
+                //      by types that involve type parameters,
+                //      but this is *not* blessed by the spec!
+                that.addError("illegal qualifying type: '" +
                         type.getName(unit) + "' is not a class or interface");
                 return false;
             }
@@ -5102,7 +5115,7 @@ public class ExpressionVisitor extends Visitor {
                 Declaration pm = unit.getPackage()
                         .getMember(name, signature, ellipsis);
                 if (pm instanceof TypeDeclaration) {
-                    type = (TypeDeclaration) pm;
+                    type = getDefaultConstructor(name, (TypeDeclaration) pm);
                 }
                 else {
                     type = null;
@@ -5128,6 +5141,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     type = getTypeMember(d, name, signature, ellipsis, unit);
                 }
+                type = getDefaultConstructor(name, type);
                 ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
                         signature, ellipsis);
             }
