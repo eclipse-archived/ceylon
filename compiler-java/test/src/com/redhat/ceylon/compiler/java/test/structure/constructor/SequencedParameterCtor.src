@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private static class PossiblyEmpty {
+        
+        PossiblyEmpty() {
+            (
+                let
+                {
+                    .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                    this($ceylontmp$s$0);
+                }
+                returning null;
+            );
+        }
+        
+        private PossiblyEmpty(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+            this.s = s;
+        }
+        public final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
+    }
+    
+    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.PossiblyEmpty $args$) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $args$.s;
+    }
+    
+    private static class NonEmpty {
+        
+        private NonEmpty(final .ceylon.language.Sequence<? extends .ceylon.language.String> s) {
+            this.s = s;
+        }
+        public final .ceylon.language.Sequence<? extends .ceylon.language.String> s;
+    }
+    
+    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.NonEmpty $args$) {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> s = $args$.s;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.class);
+}

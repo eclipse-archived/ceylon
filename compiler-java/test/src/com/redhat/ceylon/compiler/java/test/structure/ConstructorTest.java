@@ -24,12 +24,13 @@ public class ConstructorTest extends CompilerTest {
     }
     @Test
     public void testCtorSequencedParameterCtor(){
-        compareWithJavaSource("constructor/DefaultedParameterCtor");
+        compareWithJavaSource("constructor/SequencedParameterCtor");
     }
     @Test
     public void testCtorCaptureInit(){
         compareWithJavaSource("constructor/CtorCaptureInit");
     }
+    /*
     @Test
     public void testCtorClassMemberClassCtor(){
         compareWithJavaSource("constructor/ClassMemberClassCtor");
@@ -46,4 +47,5 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorInterfaceRefinedMemberClassCtor(){
         compareWithJavaSource("constructor/InterfaceRefinedMemberClassCtor");
     }
+    */
 }

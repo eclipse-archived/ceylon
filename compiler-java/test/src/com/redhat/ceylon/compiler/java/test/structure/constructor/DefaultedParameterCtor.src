@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private static class One {
+        
+        One() {
+            (
+                let
+                {
+                    .java.lang.String $ceylontmp$s$0 = $default$s();
+                    this($ceylontmp$s$0);
+                }
+                returning null;
+            );
+        }
+        
+        private One(final .java.lang.String s) {
+            this.s = s;
+        }
+        public final .java.lang.String s;
+        
+        public static .java.lang.String $default$s() {
+            return "";
+        }
+    }
+    
+    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.One $args$) {
+        final .java.lang.String s = $args$.s;
+    }
+    
+    private static class Two {
+        
+        Two() {
+            (
+                let
+                {
+                    .java.lang.String $ceylontmp$s$1 = $default$s();
+                    long $ceylontmp$i$2 = $default$i($ceylontmp$s$1);
+                    this($ceylontmp$s$1, $ceylontmp$i$2);
+                }
+                returning null;
+            );
+        }
+        
+        Two(final .java.lang.String s) {
+            (
+                let
+                {
+                    long $ceylontmp$i$3 = $default$i(s);
+                    this(s, $ceylontmp$i$3);
+                }
+                returning null;
+            );
+        }
+        
+        private Two(final .java.lang.String s, final long i) {
+            this.s = s;
+            this.i = i;
+        }
+        public final .java.lang.String s;
+        
+        public static .java.lang.String $default$s() {
+            return "";
+        }
+        public final long i;
+        
+        public static long $default$i(final .java.lang.String s) {
+            return 0L;
+        }
+    }
+    
+    private DefaultedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.Two $args$) {
+        final .java.lang.String s = $args$.s;
+        final long i = $args$.i;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.class);
+}

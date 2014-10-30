@@ -19,12 +19,50 @@
  */
 @noanno
 class CtorCaptureInit {
-    Integer n;
-    new Twice() {
-        n = 2;
-    }
-    new Thrice() {
-        n = 3;
-    }
+    //Integer n;//ctor local
+    //Integer m;//captured
+    String name = "Trompon";
+    shared String sharedName = "Trompon";
+    Integer init;
+    shared Integer sharedInit;
+    variable Integer count;
+    shared variable Integer sharedCount;
+    print(name);
+    print(sharedName);
     
+    String captured;
+    String capturedByCtor;
+    new WithAttributes() {
+        count = 0;
+        sharedCount = 0;
+        init = count;
+        sharedInit = sharedCount;
+        
+        captured = "WithAttributes";
+        capturedByCtor = "WithAttributes";
+        print(capturedByCtor);
+    }
+    new ConstWithParameter(Integer initial) {
+        count = initial;
+        sharedCount = initial;
+        init = initial;
+        sharedInit = initial;
+        
+        captured = "ConstWithParameter";
+    }
+    void inc() {
+        count++;
+    }
+    void reset() {
+        count = init;
+    }
+    shared void sharedInc() {
+        sharedCount++;
+    }
+    shared void sharedReset() {
+        sharedCount = sharedInit;
+    }
+    shared String m() {
+        return captured;
+    }
 }

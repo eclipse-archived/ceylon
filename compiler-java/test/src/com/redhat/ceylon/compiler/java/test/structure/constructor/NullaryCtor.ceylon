@@ -22,7 +22,13 @@ shared class NullaryConstructors {
     new NullaryConstructors() {
         
     }
-    new Foo() {
+    shared new Foo() {
         
+    }
+    shared void use() {
+        value o1 = NullaryConstructors();
+        value o2 = NullaryConstructors.NullaryConstructors();
+        value o3 = Foo();
+        value o4 = NullaryConstructors.Foo();
     }
 }

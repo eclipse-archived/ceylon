@@ -2,27 +2,29 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    private NullaryConstructors() {
-    }
-    
-    static class NullaryConstructors {
+    private static class NullaryConstructors {
         
-        NullaryConstructors() {
+        private NullaryConstructors() {
         }
     }
     
-    NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors $args$) {
-        this();
+    private NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors $args$) {
     }
     
-    static class Foo {
+    public static class Foo {
         
-        Foo() {
+        public Foo() {
         }
     }
     
-    NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
-        this();
+    public NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
+    }
+    
+    public final void use() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors());
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.NullaryConstructors());
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo());
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo());
     }
     
     @.java.lang.Override
