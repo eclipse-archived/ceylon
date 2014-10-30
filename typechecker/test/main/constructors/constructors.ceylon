@@ -4,9 +4,12 @@ class WithBothInitAndDefaultConst() {
 
 class WithNeitherInitNorConst() {} //TODO: should be an error
 
-class WithConst {
+class WithConst extends Basic {
     new Const() {}
 }
+
+@error class WithNoConst extends Basic() {}
+@error class WithInit() extends Basic {}
 
 class WithConstAndParams() {
     @error new Const() {}

@@ -11,6 +11,8 @@ class Point {
     }
 }
 
+class E() extends Point(1.0, 1.0) {}
+
 class A extends Point {
     shared new New() extends Diagonal(0.0) {}
 }
