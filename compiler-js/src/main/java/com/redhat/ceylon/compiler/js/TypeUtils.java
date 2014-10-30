@@ -203,12 +203,12 @@ public class TypeUtils {
             subs = d.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             gen.out("{t:'T");
-            subs = node.getUnit().getTupleElementTypes(pt);
+            subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
-            if (node.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())
-                    || node.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
+            if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())
+                    || d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
                 //Non-empty, non-tuple tail; union it with its type parameter
-                UnionType utail = new UnionType(node.getUnit());
+                UnionType utail = new UnionType(d.getUnit());
                 utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
                 subs.remove(subs.size()-1);
                 subs.add(utail.getType());
