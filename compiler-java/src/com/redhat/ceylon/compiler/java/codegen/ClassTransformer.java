@@ -2701,7 +2701,10 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
-        return transformClassDeclFlags(cdecl) & ~(ABSTRACT|FINAL);
+        return transformDeclarationSharedFlags(cdecl);
+    }
+    private int transformConstructorDeclFlags(Constructor ctor) {
+        return Decl.isShared(ctor) && !Decl.isAncestorLocal(ctor) ? PUBLIC : PRIVATE;
     }
 
     private int transformTypeAliasDeclFlags(TypeAlias decl) {
@@ -4482,11 +4485,13 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
-        paramsCdb.modifiers(STATIC);
+        paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
         transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
+        paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
         result.addAll(paramsCdb.build());
         
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
+        ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
         pdb.ignored();
         pdb.type(naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), null);
