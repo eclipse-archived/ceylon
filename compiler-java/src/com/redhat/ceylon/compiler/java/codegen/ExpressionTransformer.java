@@ -4011,6 +4011,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeErroneous(expr, "compiler bug: expression with no declaration");
         }
         
+        if (expr instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression)((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary()).getPrimary() instanceof Tree.Package){
+                primaryExpr = null;
+        }
+        
         // Try to find the original declaration, in case we have conditionals that refine the type of objects without us
         // creating a tmp variable (in which case we have a substitution for it)
         while(decl instanceof TypedDeclaration){
