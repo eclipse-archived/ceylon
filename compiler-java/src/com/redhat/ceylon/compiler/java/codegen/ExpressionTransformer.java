@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
@@ -2744,6 +2745,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression arrayTypeExpr = make().TypeArray(makeJavaType(parameterType, JT_RAW));
             result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
+        
+        if (invocation.getPrimaryDeclaration() instanceof Constructor) {
+            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, (Constructor)invocation.getPrimaryDeclaration(), DeclNameFlag.QUALIFIED);
+            JCExpression params = make().NewClass(null, null, paramClassName, ExpressionAndType.toExpressionList(result), null);
+            result = List.of(new ExpressionAndType(params, null));
+        }
+        
         return result;
     }
 
@@ -3158,6 +3166,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             }else{
+                if (classType.getDeclaration() instanceof Constructor) {
+                    classType = classType.getQualifyingType();
+                }
                 JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
                 callBuilder.instantiate(typeExpr);
             }
@@ -4115,8 +4126,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method) && !mustUseField && !mustUseParameter;
-            if (qualExpr == null && selector == null) {
+            boolean useGetter = !(decl instanceof Method || decl instanceof Constructor) && !mustUseField && !mustUseParameter;
+            if (qualExpr == null && selector == null
+                    && !(decl instanceof Constructor)) {
                 useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = naming.selector((TypedDeclaration)decl);

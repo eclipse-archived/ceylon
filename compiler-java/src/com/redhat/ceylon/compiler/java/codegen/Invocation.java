@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -208,7 +209,8 @@ abstract class Invocation {
     protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
             
-        if (Decl.isJavaStaticPrimary(getPrimary())) {
+        if (Decl.isJavaStaticPrimary(getPrimary())
+                && !(getPrimaryDeclaration() instanceof Constructor)) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
             if (methodOrClass instanceof Method) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
@@ -229,7 +231,8 @@ abstract class Invocation {
             
         JCExpression actualPrimExpr;
         if (getPrimary() instanceof Tree.QualifiedTypeExpression
-                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression) {
+                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
+                && !(getPrimaryDeclaration() instanceof Constructor)) {
             actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
             actualPrimExpr = primaryExpr;
@@ -244,6 +247,9 @@ abstract class Invocation {
                 } else { 
                     actualPrimExpr = null;
                 }
+            }
+            if (declaration instanceof Constructor) {
+                selector = null;
             }
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {

@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
@@ -4505,6 +4506,9 @@ public abstract class AbstractTransformer implements Transformation {
             if(container == null)
                 return true;
             return supportsReified(container);
+        }else if(declaration instanceof Constructor){
+            // Java constructors don't support reified type arguments
+            return Decl.isCeylon((Constructor) declaration);
         }else{
             throw BugException.unhandledDeclarationCase(declaration);
         }
@@ -4533,6 +4537,8 @@ public abstract class AbstractTransformer implements Transformation {
         Declaration declaration = producedReference.getDeclaration();
         if(declaration instanceof ClassOrInterface)
             return ((ClassOrInterface)declaration).getTypeParameters();
+        else if(declaration instanceof Constructor)
+            return ((Class)((Constructor)declaration).getContainer()).getTypeParameters();
         else
             return ((Method)declaration).getTypeParameters();
     }

@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -854,6 +855,7 @@ public class Decl {
             Declaration decl = qual.getDeclaration();
             return decl.isMember()
                     && !decl.isShared()
+                    && !(decl instanceof Constructor) 
                     && decl.getContainer() instanceof Class
                     && !Decl.equalScopeDecl(decl.getContainer(), primary.getTypeModel().getDeclaration());
         }
