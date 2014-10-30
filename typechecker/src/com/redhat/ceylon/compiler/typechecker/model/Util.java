@@ -1083,8 +1083,10 @@ public class Util {
                     if (tp.isInvariant()) {
                         if (pst==null) pst = p.getSupertype(std);
                         if (qst==null) qst = q.getSupertype(std);
-                        ProducedType psta = pst.getTypeArguments().get(tp);
-                        ProducedType qsta = qst.getTypeArguments().get(tp);
+                        ProducedType psta = pst==null ? null : 
+                            pst.getTypeArguments().get(tp);
+                        ProducedType qsta = qst==null ? null :
+                            qst.getTypeArguments().get(tp);
                         if (psta!=null && psta.isWellDefined() &&
                                 qsta!=null && psta.isWellDefined() &&
                                 //what about types with UnknownType as an arg?
