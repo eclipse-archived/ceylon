@@ -500,7 +500,7 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	ProducedType result = rt;
+    	ProducedType result = denotableType(rt);
     	Declaration declaration = ref.getOverloadedVersion();
         if (declaration instanceof Functional) {
     	    List<ParameterList> pls = 
