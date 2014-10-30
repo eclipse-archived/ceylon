@@ -33,7 +33,7 @@ function applyUnionType(ut) { //return AppliedUnionType
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType$jsint(it, sats.rt$({t:Type$meta$model}), {Intersection$AppliedIntersectionType:{t:Anything}});
+  return AppliedIntersectionType$jsint(it, sats.rt$({t:Type$meta$model}), {Union$AppliedIntersectionType:{t:Anything}});
 }
 
 function getAnnotationBitmask(t) {
