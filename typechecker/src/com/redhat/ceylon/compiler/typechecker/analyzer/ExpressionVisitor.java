@@ -6029,9 +6029,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType qt = type.getQualifyingType();
                     ProducedType ft = type.getFullType();
                     if (ete.getStaticMethodReference()) {
-                        ft = producedType(unit.getCallableDeclaration(), ft, 
-                                producedType(unit.getTupleDeclaration(), qt, qt, 
-                                        unit.getType(unit.getEmptyDeclaration())));
+                        ft = getStaticReferenceType(ft, qt);
                     }
                     pr.setTypeModel(ft);
                 }
