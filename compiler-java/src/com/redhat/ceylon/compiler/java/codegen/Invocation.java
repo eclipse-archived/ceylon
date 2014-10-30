@@ -1581,17 +1581,26 @@ class NamedArgumentInvocation extends Invocation {
             vars.prepend(gen.makeVar(callVarName, varType, result));
             result = callVarName.makeIdent();
         }
+        final Constructor ctor;
         if (getPrimaryDeclaration() instanceof Constructor) {
+            ctor = (Constructor)getPrimaryDeclaration();
+        } else  if (getPrimaryDeclaration() instanceof Class 
+                && Decl.getDefaultConstructor((Class)getPrimaryDeclaration()) != null) {
+            ctor = Decl.getDefaultConstructor((Class)getPrimaryDeclaration());
+        } else {
+            ctor = null;
+        }
+        if (ctor != null) {
             SyntheticName arguments = gen.naming.temp();
-            vars.append(gen.makeVar(arguments, gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED), 
+            vars.append(gen.makeVar(arguments, gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
                         gen.make().NewClass(null, 
                                 null, 
-                                gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED), 
+                                gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
                                 ExpressionAndType.toExpressionList(argsAndTypes.values()), 
                                 null)));
             argsAndTypes.clear();
             ExpressionAndType value = new ExpressionAndType(arguments.makeIdent(), 
-                    gen.naming.makeTypeDeclarationExpression(null, (Constructor)getPrimaryDeclaration(), DeclNameFlag.QUALIFIED));
+                    gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED));
             argsAndTypes.put(1, value);
         }
         return new TransformedInvocationPrimary(result, actualPrimExpr.selector);

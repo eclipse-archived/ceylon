@@ -2746,8 +2746,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
         
+        final Constructor ctor;
         if (invocation.getPrimaryDeclaration() instanceof Constructor) {
-            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, (Constructor)invocation.getPrimaryDeclaration(), DeclNameFlag.QUALIFIED);
+            ctor = (Constructor)invocation.getPrimaryDeclaration();
+        } else  if (invocation.getPrimaryDeclaration() instanceof Class 
+                && Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration()) != null) {
+            ctor = Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration());
+        } else {
+            ctor = null;
+        }
+        if (ctor != null) {
+            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
             JCExpression params = make().NewClass(null, null, paramClassName, ExpressionAndType.toExpressionList(result), null);
             result = List.of(new ExpressionAndType(params, null));
         }
