@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public abstract class ClassOrInterface extends TypeDeclaration {
@@ -64,7 +65,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         }
         else {
             ret = (37 * ret) + getContainer().hashCode();
-            ret = (37 * ret) + getName().hashCode();
+            ret = (37 * ret)  + Objects.hashCode(getName());
         }
         return ret;
     }
@@ -84,8 +85,8 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         }
         else {
             if (b.isToplevel()) return false;
-            return getContainer().equals(b.getContainer())
-                    && getName().equals(b.getName());
+            return getContainer().equals(b.getContainer()) && 
+                    Objects.equals(getName(), b.getName());
         }
     }
     

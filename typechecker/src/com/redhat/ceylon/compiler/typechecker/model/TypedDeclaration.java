@@ -183,7 +183,7 @@ public abstract class TypedDeclaration extends Declaration {
         }
         String qualifier = getQualifier();
         ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
-        ret = (37 * ret) + getName().hashCode();
+        ret = (37 * ret) + Objects.hashCode(getName());
         return ret;
     }
 
@@ -207,7 +207,7 @@ public abstract class TypedDeclaration extends Declaration {
         if (!Objects.equals(getQualifier(), b.getQualifier())) {
             return false;
         }
-        return getName().equals(b.getName());
+        return Objects.equals(getName(), b.getName());
     }
 
     // implemented in Value

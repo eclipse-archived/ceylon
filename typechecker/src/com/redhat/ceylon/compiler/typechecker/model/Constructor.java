@@ -139,7 +139,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
         }
         String qualifier = getQualifier();
         ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
-        ret = (37 * ret) + getName().hashCode();
+        ret = (37 * ret) + Objects.hashCode(getName());
         return ret;
     }
 
@@ -163,7 +163,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
         if (!Objects.equals(getQualifier(), b.getQualifier())) {
             return false;
         }
-        return getName().equals(b.getName());
+        return Objects.equals(getName(), b.getName());
     }
 
 }
