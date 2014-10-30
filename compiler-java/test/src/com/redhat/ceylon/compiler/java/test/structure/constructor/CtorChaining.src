@@ -1,0 +1,72 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ChainingInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ChainingInit() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingInit();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingInit.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingInit.class);
+}
+class ChainingCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public static class ChainingCtor {
+        
+        public ChainingCtor() {
+        }
+    }
+    
+    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.ChainingCtor<> $args$) {
+    }
+    
+    public static class NonDefault {
+        
+        public NonDefault() {
+        }
+    }
+    
+    public ChainingCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.NonDefault<> $args$) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.class);
+}
+class ChainingCtorCtor extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor {
+    
+    private static class ChainingCtorCtor {
+        
+        private ChainingCtorCtor() {
+        }
+    }
+    
+    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.ChainingCtorCtor<> $args$) {
+        super(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.ChainingCtor());
+    }
+    
+    private static class NonDefault {
+        
+        private NonDefault() {
+        }
+    }
+    
+    private ChainingCtorCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.NonDefault<> $args$) {
+        super(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.NonDefault());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtorCtor.class);
+}

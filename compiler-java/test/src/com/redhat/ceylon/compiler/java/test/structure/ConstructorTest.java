@@ -30,6 +30,14 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorCaptureInit(){
         compareWithJavaSource("constructor/CtorCaptureInit");
     }
+    @Test
+    public void testCtorGenericClass(){
+        compareWithJavaSource("constructor/CtorGenericClass");
+    }
+    @Test
+    public void testCtorChaining(){
+        compareWithJavaSource("constructor/CtorChaining");
+    }
     /*
     @Test
     public void testCtorClassMemberClassCtor(){
