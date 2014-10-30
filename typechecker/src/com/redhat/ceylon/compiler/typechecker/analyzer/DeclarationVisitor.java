@@ -485,9 +485,9 @@ public class DeclarationVisitor extends Visitor {
         }
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
-            if (clazz.isShared() && !c.isShared() && 
+            if (!c.isShared() && 
                     Objects.equals(clazz.getName(), c.getName())) {
-                that.addError("default constructor of shared class must also be shared");
+                that.addError("default constructor must be shared");
             }
             //constructor of sealed class implicitly inherits sealed
             if (clazz.isSealed()) {

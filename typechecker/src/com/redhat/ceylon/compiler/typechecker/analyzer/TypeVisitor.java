@@ -52,7 +52,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -830,7 +829,15 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
             TypeDeclaration dec) {
+        //TODO: the following is inelegant!
         if (inDelegatedConstructor) {
+            if (dec instanceof Class) {
+                Declaration defaultConstructor = 
+                        dec.getDirectMember(dec.getName(), null, false);
+                if (defaultConstructor instanceof Constructor) {
+                    dec = (Constructor) defaultConstructor;
+                }
+            }
             if (!(dec instanceof Constructor)) {
                 that.addError("not a constructor: '" + dec.getName(unit) + "'");
             }

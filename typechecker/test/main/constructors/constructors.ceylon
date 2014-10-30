@@ -1,11 +1,11 @@
 @error class WithBothInitAndDefaultConst() {
-    new WithBothInitAndDefaultConst() {}
+    shared new WithBothInitAndDefaultConst() {}
 }
 
 class WithNeitherInitNorConst() {} //TODO: should be an error
 
 class WithConst extends Basic {
-    new Const() {}
+    shared new Const() {}
 }
 
 @error class WithNoConst extends Basic() {}
@@ -16,19 +16,27 @@ class WithConst extends Basic {
 }
 
 class WithDefaultConst {
-    new WithDefaultConst() {}
+    shared new WithDefaultConst() {}
 }
 
 class ExtendsWithDefaultConstBroken extends WithDefaultConst {
-    @error new ExtendsWithDefaultConstBroken() {}
+    @error shared new ExtendsWithDefaultConstBroken() {}
 }
 
 class ExtendsWithDefaultConstOk extends WithDefaultConst {
-    new ExtendsWithDefaultConstOk() extends WithDefaultConst() {}
+    shared new ExtendsWithDefaultConstOk() extends WithDefaultConst() {}
+}
+
+class ExtendsWithConstBroken extends WithConst {
+    @error shared new ExtendsWithConstBroken() {}
+}
+
+class ExtendsWithConstOk extends WithConst {
+    shared new ExtendsWithConstOk() extends Const() {}
 }
 
 class WithConstAndDefaultConst {
-    new WithConstAndDefaultConst() {}
+    shared new WithConstAndDefaultConst() {}
     new Const() {}
 }
 
@@ -37,7 +45,7 @@ class WithAttributes {
     Integer init;
     variable Integer count;
     print(name);
-    new WithAttributes() {
+    shared new WithAttributes() {
         count = 0;
         init = count;
     }
@@ -58,7 +66,7 @@ class WithSharedAttributes {
     shared Integer init;
     shared variable Integer count;
     print(name);
-    new WithSharedAttributes() {
+    shared new WithSharedAttributes() {
         count = 0;
         init = count;
     }
@@ -78,7 +86,7 @@ class BrokenWithAttributes {
     String name;
     variable Integer count;
     Integer init;
-    new BrokenWithAttributes() {
+    shared new BrokenWithAttributes() {
         init = 0;
     }
     new ConstWithParameter(Integer initial) {
@@ -96,7 +104,7 @@ class BrokenWithSharedAttributes {
     @error shared String name;
     @error shared variable Integer count;
     @error shared Integer init;
-    new BrokenWithSharedAttributes() {
+    shared new BrokenWithSharedAttributes() {
         init = 0;
     }
     new ConstWithParameter(Integer initial) {
@@ -114,7 +122,7 @@ class WithAttributesAndMisplacedStatement {
     String name = "Trompon";
     Integer init;
     variable Integer count;
-    new WithAttributesAndMisplacedStatement() {
+    shared new WithAttributesAndMisplacedStatement() {
         count = 0;
         init = count;
     }
@@ -137,7 +145,7 @@ class WithAttributesAndMispacedUsage {
     variable Integer count;
     print(name);
     @error print(init);
-    new WithAttributesAndMispacedUsage() {
+    shared new WithAttributesAndMispacedUsage() {
         @error print(count);
         count = 0;
         init = count;
