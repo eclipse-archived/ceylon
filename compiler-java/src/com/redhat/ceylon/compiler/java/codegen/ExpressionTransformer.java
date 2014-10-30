@@ -3316,64 +3316,69 @@ public class ExpressionTransformer extends AbstractTransformer {
             classBuilder.getInitBuilder().superCall(this.makeThrowUnresolvedCompilationError(error));
             return;
         }
-        if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            Tree.InvocationExpression invocation = extendedType.getInvocationExpression();
-            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
-            if(paramLists.isEmpty()){
-                classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
-                return;
+        if (extendedType.getInvocationExpression() != null 
+                && extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
+            transformSuper(extendedType, extendedType.getInvocationExpression(), classBuilder);
+        }
+    }
+
+    void transformSuper(Node extendedType,
+            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
+        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+        if(paramLists.isEmpty()){
+            classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
+            return;
+        }
+        SuperInvocation builder = new SuperInvocation(this,
+                classBuilder.getForDefinition(),
+                invocation,
+                paramLists.get(0));
+        
+        CallBuilder callBuilder = CallBuilder.instance(this);
+        boolean prevFnCall = withinInvocation(true);
+        try {
+            if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
+                transformTypeArguments(callBuilder, 
+                        (Tree.StaticMemberOrTypeExpression)invocation.getPrimary());
             }
-            SuperInvocation builder = new SuperInvocation(this,
-                    classBuilder.getForDefinition(),
-                    invocation,
-                    paramLists.get(0));
-            
-            CallBuilder callBuilder = CallBuilder.instance(this);
-            boolean prevFnCall = withinInvocation(true);
-            try {
-                if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
-                    transformTypeArguments(callBuilder, 
-                            (Tree.StaticMemberOrTypeExpression)invocation.getPrimary());
-                }
-                at(builder.getNode());
-                JCExpression expr = null;
-                if (Strategy.generateInstantiator(builder.getPrimaryDeclaration())
-                        && builder.getPrimaryDeclaration().getContainer() instanceof Interface) {
-                    // If the subclass is inner to an interface then it will be 
-                    // generated inner to the companion and we need to qualify the 
-                    // super(), *unless* the subclass is nested within the same 
-                    // interface as it's superclass.
-                    Scope outer = builder.getSub().getContainer();
-                    while (!(outer instanceof Package)) {
-                        if (outer == builder.getPrimaryDeclaration().getContainer()) {
-                            expr = naming.makeSuper();
-                            break;
-                        }
-                        outer = outer.getContainer();
+            at(builder.getNode());
+            JCExpression expr = null;
+            if (Strategy.generateInstantiator(builder.getPrimaryDeclaration())
+                    && builder.getPrimaryDeclaration().getContainer() instanceof Interface) {
+                // If the subclass is inner to an interface then it will be 
+                // generated inner to the companion and we need to qualify the 
+                // super(), *unless* the subclass is nested within the same 
+                // interface as it's superclass.
+                Scope outer = builder.getSub().getContainer();
+                while (!(outer instanceof Package)) {
+                    if (outer == builder.getPrimaryDeclaration().getContainer()) {
+                        expr = naming.makeSuper();
+                        break;
                     }
-                    if (expr == null) {                    
-                        Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
-                        JCExpression superQual;
-                        if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
-                            superQual = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), iface);
-                        } else {
-                            superQual = naming.makeCompanionFieldName(iface);
-                        }
-                        expr = naming.makeQualifiedSuper(superQual);
-                    }
-                } else {
-                    expr = naming.makeSuper();
+                    outer = outer.getContainer();
                 }
-                final List<JCExpression> superArguments = transformSuperInvocationArguments(
-                        extendedType, classBuilder, builder, callBuilder);
-                JCExpression superExpr = callBuilder.invoke(expr)    
-                    .arguments(superArguments)
-                    .build();
-                classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
-            } finally {
-                withinInvocation(prevFnCall);
+                if (expr == null) {                    
+                    Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
+                    JCExpression superQual;
+                    if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
+                        superQual = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), iface);
+                    } else {
+                        superQual = naming.makeCompanionFieldName(iface);
+                    }
+                    expr = naming.makeQualifiedSuper(superQual);
+                }
+            } else {
+                expr = naming.makeSuper();
             }
+            final List<JCExpression> superArguments = transformSuperInvocationArguments(
+                    classBuilder, builder, callBuilder);
+            JCExpression superExpr = callBuilder.invoke(expr)
+                .arguments(superArguments)
+                .build();
+            classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
+        } finally {
+            withinInvocation(prevFnCall);
         }
     }
 
@@ -3388,7 +3393,6 @@ public class ExpressionTransformer extends AbstractTransformer {
      * {@code this} is not on the operand stack. 
      */
     private List<JCExpression> transformSuperInvocationArguments(
-            Tree.ExtendedType extendedType,
             ClassDefinitionBuilder classBuilder, SuperInvocation invocation, CallBuilder callBuilder) {
         // We could create a TransformedPrimary(expr, "super") here if needed
         List<ExpressionAndType> superArgumentsAndTypes = transformArgumentList(invocation, null, callBuilder);

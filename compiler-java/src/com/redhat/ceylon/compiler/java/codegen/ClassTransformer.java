@@ -4508,6 +4508,11 @@ public class ClassTransformer extends AbstractTransformer {
                 typeParameters.toList()), null);
         ctorDb.parameter(pdb);
         
+        if (that.getDelegatedConstructor() != null) {
+            Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
+            expressionGen().transformSuper(that.getDelegatedConstructor(),
+                    chainedCtorInvocation, classBuilder);
+        }
         classBuilder.hasConstructors(true);
         List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
         

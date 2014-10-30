@@ -91,8 +91,12 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     }
 
     public List<JCStatement> getBodyCopy() {
-        TreeCopier copier = new TreeCopier(gen.make());
-        return copier.copy(this.init.toList());
+        TreeCopier<Object> copier = new TreeCopier<Object>(gen.make());
+        List<JCStatement> body = this.init.toList();
+        if (superCall != null) {
+            body = body.prepend(superCall);
+        }
+        return copier.copy(body);
     }
 
 
