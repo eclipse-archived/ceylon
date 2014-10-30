@@ -891,6 +891,7 @@ public class Decl {
         return scope;
     }
     
+
     /**
      * Returns true if the given model is a toplevel object expression type.
      */
@@ -908,5 +909,17 @@ public class Decl {
         return model instanceof Class
                 && model.isAnonymous()
                 && !model.isNamed();
+    }
+
+    public static Constructor getDefaultConstructor(Class c) {
+        Declaration member = c.getDirectMember(c.getName(), null, false);
+        if (member instanceof Constructor) {
+            return (Constructor)member;
+        }
+        return null;
+    }
+    
+    public static boolean isDefaultConstructor(Constructor ctor) {
+        return ctor.getName().equals(((Declaration)ctor.getScope()).getName());
     }
 }
