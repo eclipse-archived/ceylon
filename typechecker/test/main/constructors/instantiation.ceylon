@@ -37,5 +37,5 @@ void test() {
     @error Counter.WithInitial();
     @error Counter.WithInitial("");
     @type:"Callable<Counter,Empty>" value counterFun1 = Counter;
-    @type:"Callable<Counter,Tuple<Integer,Integer,Empty>" value counterFun2 = Counter.WithInitial;
+    @type:"Callable<Counter,Tuple<Integer,Integer,Empty>>" value counterFun2 = Counter.WithInitial;
 }
