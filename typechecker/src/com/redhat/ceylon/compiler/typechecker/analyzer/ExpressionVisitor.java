@@ -6649,6 +6649,7 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.TypeLiteral that) {
         if (that instanceof Tree.InterfaceLiteral||
             that instanceof Tree.ClassLiteral||
+            that instanceof Tree.NewLiteral||
             that instanceof Tree.AliasLiteral||
             that instanceof Tree.TypeParameterLiteral) {
             declarationLiteral = true;
@@ -6710,6 +6711,15 @@ public class ExpressionVisitor extends Visitor {
                 }
                 that.setTypeModel(unit.getClassDeclarationType());
             }
+            else if (that instanceof Tree.NewLiteral) {
+                if (!(d instanceof Constructor)) {
+                    if (d != null) {
+                        errorNode.addError("referenced declaration is not a constructor" +
+                                getDeclarationReferenceSuggestion(d));
+                    }
+                }
+                that.setTypeModel(unit.getConstructorDeclarationType());
+            }
             else if (that instanceof Tree.InterfaceLiteral) {
                 if (!(d instanceof Interface)) {
                     if (d!=null) {
@@ -6737,7 +6747,15 @@ public class ExpressionVisitor extends Visitor {
                 that.setWantsDeclaration(false);
                 t = t.resolveAliases();
                 //checkNonlocalType(that.getType(), t.getDeclaration());
-                if (d instanceof Class) {
+                if (d instanceof Constructor) {
+                    if (((Constructor) d).isAbstraction()) {
+                        errorNode.addError("constructor is overloaded");
+                    }
+                    else {
+                        that.setTypeModel(unit.getConstructorMetatype(t));
+                    }
+                }
+                else if (d instanceof Class) {
 //                    checkNonlocal(that, t.getDeclaration());
                     if (((Class) d).isAbstraction()) {
                         errorNode.addError("class constructor is overloaded");
@@ -6872,6 +6890,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (result instanceof Class) {
             return name + " is a class";
+        }
+        else if (result instanceof Constructor) {
+            return name + " is a constructor";
         }
         else if (result instanceof Interface) {
             return name + " is an interface";

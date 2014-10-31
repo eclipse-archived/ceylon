@@ -1295,7 +1295,33 @@ public class Unit {
             return null;
         }
         else {
-            if (pr.getQualifyingType() != null) {
+            if (pr.getQualifyingType() != null && 
+                    !pr.getDeclaration().isStaticallyImportable()) {
+                return producedType(getLanguageModuleModelTypeDeclaration("Method"),
+                        pr.getQualifyingType(), returnType, parameterTuple);
+            }
+            else {
+                return producedType(getLanguageModuleModelTypeDeclaration("Function"),
+                        returnType, parameterTuple);
+            }
+        }
+    }
+    
+    public ProducedType getConstructorMetatype(ProducedType pr) {
+        Functional f = (Functional) pr.getDeclaration();
+        if (f.getParameterLists().isEmpty()) {
+            return null;
+        }
+        ParameterList fpl = f.getParameterLists().get(0);
+        ProducedType parameterTuple = 
+                getParameterTypesAsTupleType(fpl.getParameters(), pr);
+        ProducedType returnType = getCallableReturnType(pr.getFullType());
+        if (returnType == null) {
+            return null;
+        }
+        else {
+            if (pr.getQualifyingType() != null && 
+                    !pr.getDeclaration().isStaticallyImportable()) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
                         pr.getQualifyingType(), returnType, parameterTuple);
             }
@@ -1402,6 +1428,10 @@ public class Unit {
     
     public ProducedType getClassDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration"));
+    }
+    
+    public ProducedType getConstructorDeclarationType() {
+        return getType(getLanguageModuleDeclarationTypeDeclaration("ConstructorDeclaration"));
     }
     
     public ProducedType getInterfaceDeclarationType() {

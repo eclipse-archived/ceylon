@@ -279,6 +279,11 @@ class Foo<S>() {
     }
 }
 
+class Bar {
+    shared new Bar() {}
+    shared new Baz(String string) {}
+}
+
 void meta() {
     @type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
     value fd1 = `singletonList<String>`;
@@ -336,6 +341,13 @@ void meta() {
     @error value tparam = `given Map.Item`;
     @error see (`given Sequence.Element`);
     @error see (`value Map.key`);
+    
+    @type:"ConstructorDeclaration" value cd9 = `new Bar`;
+    @type:"ConstructorDeclaration" value cd10 = `new Bar.Baz`;
+    @error value cd11 = `class Bar.Baz`;
+    @error value cd12 = `interface Bar.Baz`;
+    @type:"Function<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.Baz`;
+    @error value cd14 = `new Foo`;
 }
 
 void testPackagesModules() {

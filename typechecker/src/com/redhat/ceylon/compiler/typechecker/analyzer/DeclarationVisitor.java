@@ -1529,6 +1529,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.MetaLiteral that) {
         declarationReference = that instanceof Tree.ClassLiteral || 
                 that instanceof Tree.InterfaceLiteral ||
+                that instanceof Tree.NewLiteral ||
                 that instanceof Tree.AliasLiteral ||
                 that instanceof Tree.TypeParameterLiteral ||
                 that instanceof Tree.ValueLiteral ||

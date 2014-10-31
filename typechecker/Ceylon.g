@@ -3426,6 +3426,7 @@ metaLiteral returns [MetaLiteral meta]
             ModuleLiteral m=null; 
             ClassLiteral c=null;
             InterfaceLiteral i=null;
+            NewLiteral n=null;
             AliasLiteral a=null;
             TypeParameterLiteral tp=null;
             ValueLiteral v=null;
@@ -3468,6 +3469,16 @@ metaLiteral returns [MetaLiteral meta]
           bme.setIdentifier($ot.identifier);
           bme.setTypeArguments(new InferredTypeArguments(null));
           c.setObjectExpression(bme); }
+      )?
+    |
+      NEW
+      { n = new NewLiteral($d1);
+        n.setEndToken($NEW); 
+        $meta=n; }
+      (
+        nt=type
+        { n.setType($nt.type); 
+          n.setEndToken(null); }
       )?
     |
       INTERFACE_DEFINITION

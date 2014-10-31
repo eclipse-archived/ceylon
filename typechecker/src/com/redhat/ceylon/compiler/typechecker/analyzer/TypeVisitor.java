@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NewLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -73,6 +74,7 @@ public class TypeVisitor extends Visitor {
     
     private Unit unit;
     private boolean inDelegatedConstructor;
+    private boolean inNewLiteral;
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
@@ -798,7 +800,10 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.QualifiedType that) {
+        boolean onl = inNewLiteral;
+        inNewLiteral = false;
         super.visit(that);
+        inNewLiteral = onl;
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             if (that.getMetamodel() && 
@@ -826,34 +831,43 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
+    
+    @Override
+    public void visit(Tree.TypeLiteral that) {
+        inNewLiteral = true;
+        super.visit(that);
+        inNewLiteral = false;
+    }
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
             TypeDeclaration dec) {
         //TODO: the following is inelegant!
-        if (inDelegatedConstructor) {
-            if (dec instanceof Class) {
-                Declaration defaultConstructor = 
-                        dec.getDirectMember(dec.getName(), null, false);
-                if (defaultConstructor instanceof Constructor) {
-                    dec = (Constructor) defaultConstructor;
-                }
-            }
-            if (!(dec instanceof Constructor)) {
-                that.addError("not a constructor: '" + dec.getName(unit) + "'");
-            }
-        }
-        else {
-            if (dec instanceof Constructor) {
-                if (dec.isClassMember()) {
-                    Class c = (Class) dec.getContainer();
-                    if (dec.getName().equals(c.getName())) {
-                        dec = c;
-                        ot = ot.getQualifyingType();
+        if (!inNewLiteral) {
+            if (inDelegatedConstructor) {
+                if (dec instanceof Class) {
+                    Declaration defaultConstructor = 
+                            dec.getDirectMember(dec.getName(), null, false);
+                    if (defaultConstructor instanceof Constructor) {
+                        dec = (Constructor) defaultConstructor;
                     }
                 }
+                if (!(dec instanceof Constructor)) {
+                    that.addError("not a constructor: '" + dec.getName(unit) + "'");
+                }
             }
-            if (dec instanceof Constructor) {
-                that.addError("constructor is not a type: '" + dec.getName(unit) + "'");
+            else {
+                if (dec instanceof Constructor) {
+                    if (dec.isClassMember()) {
+                        Class c = (Class) dec.getContainer();
+                        if (dec.getName().equals(c.getName())) {
+                            dec = c;
+                            ot = ot.getQualifyingType();
+                        }
+                    }
+                }
+                if (dec instanceof Constructor) {
+                    that.addError("constructor is not a type: '" + dec.getName(unit) + "'");
+                }
             }
         }
         
