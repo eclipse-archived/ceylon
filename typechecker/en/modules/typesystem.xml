@@ -721,11 +721,16 @@
                 </listitem>
                 <listitem>
                     <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    for any type <literal>X</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
-                    where <literal>Y,Z</literal> is a list of types of any length.</para>
+                    where <literal>Y,Z</literal> is a list of types of any length, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X(*Y)</literal> means <literal>Callable&lt;X,Y&gt;</literal>
+                    for any type <literal>X</literal>, and any subtype <literal>Y</literal> of
+                    <literal>Sequential&lt;Anything&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
