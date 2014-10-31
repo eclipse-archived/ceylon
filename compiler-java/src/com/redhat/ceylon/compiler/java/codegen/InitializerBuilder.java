@@ -98,6 +98,10 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         }
         return copier.copy(body);
     }
+    
+    public List<ParameterDefinitionBuilder> getParameterList() {
+        return params.toList();
+    }
 
 
 

@@ -1590,7 +1590,7 @@ class NamedArgumentInvocation extends Invocation {
         } else {
             ctor = null;
         }
-        if (ctor != null) {
+        if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
             SyntheticName arguments = gen.naming.temp();
             vars.append(gen.makeVar(arguments, gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
                         gen.make().NewClass(null, 

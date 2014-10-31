@@ -1034,6 +1034,11 @@ public class ClassTransformer extends AbstractTransformer {
         // do reified type params first
         classBuilder.reifiedTypeParameters(model.getTypeParameters());
         if (def.getParameterList() != null) {
+            for (Tree.Parameter param : def.getParameterList().getParameters()) {
+                Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
+                makeAttributeForValueParameter(classBuilder, param, member);
+                makeMethodForFunctionalParameter(classBuilder, param, member);
+            }
             transformClassOrCtorParameters(def, model, def.getParameterList(), 
                     classBuilder, 
                     generateInstantiator, instantiatorDeclCb,
@@ -1069,8 +1074,6 @@ public class ClassTransformer extends AbstractTransformer {
             at(param);
             Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
             transformParameter(classBuilder.getInitBuilder(), paramModel, member);
-            makeAttributeForValueParameter(classBuilder, param, member);
-            makeMethodForFunctionalParameter(classBuilder, param, member);
             
             if (Strategy.hasDefaultParameterValueMethod(paramModel)
                     || Strategy.hasDefaultParameterOverload(paramModel)
@@ -4486,31 +4489,49 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         Class clz = (Class)ctor.getContainer();
-        ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
-        paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
-        ListBuffer<JCExpression> typeParameters = ListBuffer.lb();
-        for (TypeParameter tp : clz.getTypeParameters()) {
-            paramsCdb.typeParameter(tp);
-            typeParameters.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
-        }
-        transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
-        paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
-        result.addAll(paramsCdb.build());
         
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
+        
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
-        for (TypeParameter tp : clz.getTypeParameters()) {
-            ctorDb.reifiedTypeParameter(tp);
+        
+        if (Decl.isDefaultConstructor(ctor)) {
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), classBuilder, false, null, null);
+            // Note: We don't need to explicitly add the reified type parameters to the ctor
+            // in this case because they're already in the initbuilders list of parameters.
+            for (ParameterDefinitionBuilder p : classBuilder.getInitBuilder().getParameterList()) {
+                ctorDb.parameter(p);
+            }
+        } else {
+            for (TypeParameter tp : clz.getTypeParameters()) {
+                ctorDb.reifiedTypeParameter(tp);
+            }
+            ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
+            paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
+            for (TypeParameter tp : clz.getTypeParameters()) {
+                paramsCdb.typeParameter(tp);
+            }
+            for (Tree.Parameter param : that.getParameterList().getParameters()) {
+                makeAttributeForValueParameter(paramsCdb, param, null);
+                makeMethodForFunctionalParameter(paramsCdb, param, null);
+            }
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
+            paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
+            result.addAll(paramsCdb.build());
+        
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
+            pdb.ignored();
+            JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+            if (!clz.getTypeParameters().isEmpty()) {
+                ListBuffer<JCExpression> typeParameters = ListBuffer.lb();
+                for (TypeParameter tp : clz.getTypeParameters()) {
+                    typeParameters.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
+                }
+                type = make().TypeApply(type,
+                        typeParameters.toList());
+            }
+            pdb.type(type, null);
+            ctorDb.parameter(pdb);
         }
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
-        pdb.ignored();
-        JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
-        if (!typeParameters.isEmpty()) {
-            type = make().TypeApply(type,
-                typeParameters.toList());
-        }
-        pdb.type(type, null);
-        ctorDb.parameter(pdb);
         
         if (that.getDelegatedConstructor() != null) {
             Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
@@ -4521,11 +4542,13 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
         
         List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
-        java.util.List<Parameter> parameters = ctor.getParameterLists().get(0).getParameters();
-        for (int ii = parameters.size()-1; ii>=0; ii--) {
-            Parameter p = parameters.get(ii);
-            ctorStmts = ctorStmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
-                    naming.makeQualifiedName(naming.makeUnquotedIdent(Unfix.$args$), p.getModel(), Naming.NA_IDENT)));
+        if (!Decl.isDefaultConstructor(ctor)) {
+            java.util.List<Parameter> parameters = ctor.getParameterLists().get(0).getParameters();
+            for (int ii = parameters.size()-1; ii>=0; ii--) {
+                Parameter p = parameters.get(ii);
+                ctorStmts = ctorStmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
+                        naming.makeQualifiedName(naming.makeUnquotedIdent(Unfix.$args$), p.getModel(), Naming.NA_IDENT)));
+            }
         }
         ctorDb.block(make().Block(0, ctorStmts.prependList(initStmts)));
         

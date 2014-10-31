@@ -2755,7 +2755,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             ctor = null;
         }
-        if (ctor != null) {
+        if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
             JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
             JCExpression params = make().NewClass(null, null, paramClassName, ExpressionAndType.toExpressionList(result), null);
             result = List.of(new ExpressionAndType(params, null));
