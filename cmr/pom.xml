@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.redhat.ceylon.cmr</groupId>
     <artifactId>cmr-build</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Ceylon Module Repository Build</name>
     <url>http://www.ceylon-lang.org</url>
@@ -26,7 +26,7 @@
     </modules>
 
     <properties>
-        <version.ceylon.common>1.1.0</version.ceylon.common>
+        <version.ceylon.common>1.1.1</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.jboss.modules>1.3.3.Final</version.jboss.modules>
         <version.sardine.webdav>5.1</version.sardine.webdav>
