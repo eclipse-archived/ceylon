@@ -526,7 +526,9 @@ public final class Array<Element>
             return null;
         }
         java.lang.Class<?> componentType = array.getClass().getComponentType();
-        return new Array<T>(TypeDescriptor.klass(componentType), array);
+        TypeDescriptor optionalType = TypeDescriptor.union(Null.$TypeDescriptor$,
+                TypeDescriptor.klass(componentType));
+        return new Array<T>(optionalType, array);
     }
     
     private static final TypeDescriptor CHAR_TYPE = 
