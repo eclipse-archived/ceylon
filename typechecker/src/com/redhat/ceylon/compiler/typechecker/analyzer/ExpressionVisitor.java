@@ -4678,7 +4678,7 @@ public class ExpressionVisitor extends Visitor {
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(that.getScope());
-                if (ci!=null && d.inherits(ci)) {
+                if (ci!=null && d.inherits(ci) && !(d instanceof NothingType)) {
                     Declaration direct = 
                             ci.getDirectMember(name, signature, ellipsis);
                     if (direct instanceof TypedDeclaration) {
@@ -5073,7 +5073,7 @@ public class ExpressionVisitor extends Visitor {
                 container = "type '" + d.getName(unit) + "'";
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(that.getScope());
-                if (ci!=null && d.inherits(ci)) {
+                if (ci!=null && d.inherits(ci) && !(d instanceof NothingType)) {
                     Declaration direct = 
                             ci.getDirectMember(name, signature, ellipsis);
                     if (direct instanceof TypeDeclaration) {
