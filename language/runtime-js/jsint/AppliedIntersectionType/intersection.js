@@ -1,5 +1,5 @@
 function(t,$mpt){
-  if (this.subtypeOf(t))return this;
+  if (t.supertypeOf(this))return this;
   var _t={t:'i',l:[]};
   for (var i=0;i<this.tipo.l.length;i++)_t.l.push(this.tipo.l[i]);
   _t.l.push($mpt.Other$intersection);
