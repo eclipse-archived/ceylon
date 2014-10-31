@@ -85,6 +85,12 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
+    public boolean inherits(TypeDeclaration dec) {
+        ProducedType st = getType().getSupertype(dec);
+        return st!=null && !st.isNothing();
+    }
+    
+    @Override
     public boolean equals(Object object) {
         throw new UnsupportedOperationException("union types don't have well-defined equality");
     }    
