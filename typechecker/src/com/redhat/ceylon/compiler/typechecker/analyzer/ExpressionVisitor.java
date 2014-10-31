@@ -555,7 +555,9 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
-                        se.addError("iterated expression is definitely empty");
+                        se.addError("iterated expression is definitely empty: '" +
+                                et.getProducedTypeName(unit) + 
+                                "' is a subtype of 'Empty'");
                     }
                 }
             }
@@ -5590,7 +5592,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                        that.addError("narrows to Nothing type: '" + 
+                        that.addError("narrows to bottom type 'Nothing': '" + 
                                 pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
                                 st.getProducedTypeName(unit) + "'");
                     }
