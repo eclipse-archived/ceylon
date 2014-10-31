@@ -922,4 +922,8 @@ public class Decl {
     public static boolean isDefaultConstructor(Constructor ctor) {
         return ctor.getName().equals(((Declaration)ctor.getScope()).getName());
     }
+    
+    public static Class getConstructedClass(Constructor c) {
+        return (Class)c.getContainer();
+    }
 }

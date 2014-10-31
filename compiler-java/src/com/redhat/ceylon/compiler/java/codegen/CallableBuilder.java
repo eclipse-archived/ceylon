@@ -28,11 +28,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -246,38 +248,45 @@ public class CallableBuilder {
             CeylonTransformer gen,
             Tree.QualifiedMemberOrTypeExpression qmte,
             ProducedType typeModel, 
-            final Functional methodOrClass, 
+            final Functional methodClassOrCtor, 
             ProducedReference producedReference) {
-        final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
-        final ProducedType type = gen.getReturnTypeOfCallable(typeModel);
+        final ParameterList parameterList = methodClassOrCtor.getParameterLists().get(0);
+        final ProducedType type = methodClassOrCtor instanceof Constructor ? typeModel : gen.getReturnTypeOfCallable(typeModel);
         CallableBuilder inner = new CallableBuilder(gen, type, parameterList);
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
-        inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodOrClass);
+        inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodClassOrCtor);
         CallBuilder callBuilder = CallBuilder.instance(gen);
         ProducedType qualifyingType = qmte.getTarget().getQualifyingType();
         ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);
         JCExpression target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
         target = gen.expressionGen().applyErasureAndBoxing(target, producedReference.getQualifyingType(), true, BoxingStrategy.BOXED, qualifyingType);
-        if (methodOrClass instanceof Method) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodOrClass, Naming.NA_MEMBER));
-            if (!((TypedDeclaration)methodOrClass).isShared()) {
+        if (methodClassOrCtor instanceof Method) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
+            if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
                 accessType = Decl.getPrivateAccessType(qmte);
             }
-        } else if (methodOrClass instanceof Method
-                && ((Method)methodOrClass).isParameter()) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodOrClass, Naming.NA_MEMBER));
-        } else if (methodOrClass instanceof Class) {
-            if (Strategy.generateInstantiator((Class)methodOrClass)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, (Class)methodOrClass));
+        } else if (methodClassOrCtor instanceof Method
+                && ((Method)methodClassOrCtor).isParameter()) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
+        } else if (methodClassOrCtor instanceof Class) {
+            if (Strategy.generateInstantiator((Class)methodClassOrCtor)) {
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, (Class)methodClassOrCtor));
             } else {
                 callBuilder.instantiate(new ExpressionAndType(target, null), 
-                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
-                if (!((Class)methodOrClass).isShared()) {
+                        gen.makeJavaType(((Class)methodClassOrCtor).getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
+                if (!((Class)methodClassOrCtor).isShared()) {
                     accessType = Decl.getPrivateAccessType(qmte);
                 }
             }
+        } else if (methodClassOrCtor instanceof Constructor) {
+            Constructor ctor = (Constructor)methodClassOrCtor;
+            callBuilder.instantiate( 
+                    gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
+            if (!ctor.isShared()) {
+                accessType = Decl.getPrivateAccessType(qmte);
+            }
         } else {
-            throw BugException.unhandledDeclarationCase((Declaration)methodOrClass, qmte);
+            throw BugException.unhandledDeclarationCase((Declaration)methodClassOrCtor, qmte);
         }
         ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
         
@@ -286,48 +295,66 @@ public class CallableBuilder {
             callBuilder.argument(reifiedArgument.expression);
         }
         
-        for (Parameter parameter : parameterList.getParameters()) {
-            JCExpression parameterExpr = gen.naming.makeQuotedIdent(parameter.getName());
-            int flags = 0;
-            ProducedType parameterType = parameter.getType();
-            // this works on the parameter type as declared
-            if(!parameterType.isRaw())
-                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
-            if(gen.hasConstrainedTypeParameters(parameter))
-                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
-            if(gen.hasDependentCovariantTypeParameters(parameterType))
-                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
-            // this gives me the parameter as typed in this invocation
-            ProducedTypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
-            // this gives me the parameter as typed that the method expects
-            ProducedType targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
-            // make sure it's compatible
-            parameterExpr = gen.expressionGen().applyErasureAndBoxing(parameterExpr, typedParameter.getType(), 
-                    CodegenUtil.hasTypeErased(parameter.getModel()),
-                    !CodegenUtil.isUnBoxed(parameter.getModel()), 
-                    CodegenUtil.getBoxingStrategy(parameter.getModel()), 
-                    targetParamType, flags);
-            callBuilder.argument(parameterExpr);
+        if (methodClassOrCtor instanceof Constructor
+                && !Decl.isDefaultConstructor((Constructor)methodClassOrCtor)) {
+            // invoke the param class ctor
+            Constructor ctor = (Constructor)methodClassOrCtor;
+            ListBuffer<JCExpression> args = ListBuffer.<JCTree.JCExpression>lb();
+            for (Parameter parameter : parameterList.getParameters()) {
+                args.add(gen.naming.makeQuotedIdent(parameter.getName()));
+            }
+            JCExpression paramClassName = gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+            JCExpression paramClassInst = gen.make().NewClass(null, null, paramClassName, args.toList(), null);
+            callBuilder.argument(paramClassInst);
+        } else {
+            for (Parameter parameter : parameterList.getParameters()) {
+                JCExpression parameterExpr = gen.naming.makeQuotedIdent(parameter.getName());
+                int flags = 0;
+                ProducedType parameterType = parameter.getType();
+                // this works on the parameter type as declared
+                if(!parameterType.isRaw())
+                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
+                if(gen.hasConstrainedTypeParameters(parameter))
+                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+                if(gen.hasDependentCovariantTypeParameters(parameterType))
+                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
+                // this gives me the parameter as typed in this invocation
+                ProducedTypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
+                // this gives me the parameter as typed that the method expects
+                ProducedType targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
+                // make sure it's compatible
+                parameterExpr = gen.expressionGen().applyErasureAndBoxing(parameterExpr, typedParameter.getType(), 
+                        CodegenUtil.hasTypeErased(parameter.getModel()),
+                        !CodegenUtil.isUnBoxed(parameter.getModel()), 
+                        CodegenUtil.getBoxingStrategy(parameter.getModel()), 
+                        targetParamType, flags);
+                callBuilder.argument(parameterExpr);
+            }
         }
         JCExpression innerInvocation = callBuilder.build();
         // Need to worry about boxing for Method and FunctionalParameter 
-        if (methodOrClass instanceof TypedDeclaration) {
+        if (methodClassOrCtor instanceof TypedDeclaration) {
             // use the method return type since the function is actually applied
             ProducedType returnType = gen.getReturnTypeOfCallable(type);
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
                     returnType,
                     // make sure we use the type erased info as it has not been passed to the expression since the
                     // expression is a Callable
-                    CodegenUtil.hasTypeErased((TypedDeclaration)methodOrClass),
-                    !CodegenUtil.isUnBoxed((TypedDeclaration)methodOrClass), 
+                    CodegenUtil.hasTypeErased((TypedDeclaration)methodClassOrCtor),
+                    !CodegenUtil.isUnBoxed((TypedDeclaration)methodClassOrCtor), 
                     BoxingStrategy.BOXED, returnType, 0);
-        } else if (Strategy.isInstantiatorUntyped((Class)methodOrClass)) {
+        } else if (methodClassOrCtor instanceof Class 
+                && Strategy.isInstantiatorUntyped((Class)methodClassOrCtor)) {
             // $new method declared to return Object, so needs typecast
             innerInvocation = gen.make().TypeCast(gen.makeJavaType(
-                    ((Class)methodOrClass).getType()), innerInvocation);
+                    ((Class)methodClassOrCtor).getType()), innerInvocation);
         }
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         inner.useDefaultTransformation(innerBody);
+        
+        if (methodClassOrCtor instanceof Constructor) {
+            return inner;
+        }
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
