@@ -2843,6 +2843,9 @@ public class StatementTransformer extends AbstractTransformer {
                 }
                 boolean isDestroyable = typeFact().getDestroyableDeclaration().getType().isSupertypeOf(resExpr.getTypeModel());
                 ProducedType resVarType = resExpr.getTypeModel();
+                ProducedType resVarExpectedType = isDestroyable 
+                        ? typeFact().getDestroyableDeclaration().getType()
+                        : typeFact().getObtainableDeclaration().getType();
                 
                 // CloseableType $var = resource-expression
                 JCExpression expr = expressionGen().transformExpression(resExpr);
@@ -2853,7 +2856,8 @@ public class StatementTransformer extends AbstractTransformer {
                 // $var.open() /// ((Closeable)$var).open()
                 
                 if (!isDestroyable) {
-                    JCMethodInvocation openCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "obtain"), List.<JCExpression>nil());
+                    JCExpression resVar0 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
+                    JCMethodInvocation openCall = make().Apply(null, makeQualIdent(resVar0, "obtain"), List.<JCExpression>nil());
                     stats = stats.append(make().Exec(openCall));
                 }
                 
@@ -2876,7 +2880,8 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
-                JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg));
+                JCExpression resVar1 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
+                JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resVar1, isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg));
                 JCBlock closeTryBlock = make().Block(0, List.<JCStatement>of(make().Exec(closeCall)));
                 
                 // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
@@ -2890,7 +2895,8 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg2 = makeUnquotedIdent(innerExTmpVarName);
-                JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg2));
+                JCExpression resVar2 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
+                JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(resVar2, isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg2));
                 
                 // if ($tmpex != null) { ... } else { ... }
                 JCBinary closeCatchCond = make().Binary(JCTree.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
