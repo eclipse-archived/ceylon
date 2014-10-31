@@ -111,7 +111,7 @@ public final class ObjectArray<T> implements ReifiedType {
     public final int length = 0;
     
     /**
-     * A view of this array as a Ceylon <code>Array&lt;T&gt;</code>.
+     * A view of this array as a Ceylon <code>Array&lt;T?&gt;</code>.
      */
     @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
     public ceylon.language.Array<T> getArray(){
