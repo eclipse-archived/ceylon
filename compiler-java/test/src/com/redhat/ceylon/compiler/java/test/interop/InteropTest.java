@@ -449,7 +449,7 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
                 new CompilerError(27, "package private constructor is not visible: 'JavaSealed'"),
-                new CompilerError(29, "invokes or references a sealed class in a different module: 'Runtime' in 'java.base'"),
+                new CompilerError(29, "instantiates or references a sealed class in a different module: 'Runtime' in 'java.base'"),
                 new CompilerError(30, "type constructor is not visible: 'JavaSealed'"));
     }
     

@@ -685,7 +685,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1392() {
         assertErrors("bug13xx/Bug1392",
                 new CompilerError(25, "protected constructor is not visible: 'LogManager'"),
-                new CompilerError(26, "invokes or references a sealed class in a different module: 'Class' in 'java.base'")
+                new CompilerError(26, "instantiates or references a sealed class in a different module: 'Class' in 'java.base'")
         );
     }
 
@@ -712,7 +712,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1405() {
         assertErrors("bug14xx/Bug1405",
-                new CompilerError(24, "invokes or references a sealed class in a different module: 'State' in 'java.base'")
+                new CompilerError(24, "instantiates or references a sealed class in a different module: 'State' in 'java.base'")
         );
     }
 
