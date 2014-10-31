@@ -555,7 +555,9 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
-                        se.addError("iterated expression is definitely empty");
+                        se.addError("iterated expression is definitely empty: '" +
+                                et.getProducedTypeName(unit) + 
+                                "' is a subtype of 'Empty'");
                     }
                 }
             }
