@@ -5549,7 +5549,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                        that.addError("narrows to Nothing type: '" + 
+                        that.addError("narrows to bottom type 'Nothing': '" + 
                                 pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
                                 st.getProducedTypeName(unit) + "'");
                     }
