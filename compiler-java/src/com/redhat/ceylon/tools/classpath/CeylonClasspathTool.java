@@ -8,6 +8,7 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
@@ -80,6 +81,12 @@ public class CeylonClasspathTool extends RepoUsingTool {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
             return;
+        if((JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))){
+            // let's not check the version and assume it's provided
+            // treat it as a missing optional for the purpose of classpath
+            loadedModules.put(key, null);
+            return;
+        }
         RepositoryManager repositoryManager = getRepositoryManager();
         ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
