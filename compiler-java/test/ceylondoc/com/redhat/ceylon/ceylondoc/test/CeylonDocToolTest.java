@@ -61,6 +61,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -548,8 +549,8 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        makeCarFromClassFiles(dir, fileNames, "ceylon.net", "1.1.0");
-        makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", "1.1.0");
+        makeCarFromClassFiles(dir, fileNames, "ceylon.net", Versions.CEYLON_VERSION_NUMBER);
+        makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER);
     }
 
     private void makeCarFromClassFiles(File dir, String[] fileNames, String module, String version) throws IOException {
