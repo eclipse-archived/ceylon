@@ -29,6 +29,6 @@
 
     <dependencies>
         <module name="ceylon.modules.spi"/>
-        <module name="ceylon.language" slot="1.0.0"/>
+        <module name="ceylon.language" slot="1.1.1"/>
     </dependencies>
 </module>
