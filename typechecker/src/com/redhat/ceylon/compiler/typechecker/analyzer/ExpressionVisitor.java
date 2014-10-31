@@ -4905,14 +4905,14 @@ public class ExpressionVisitor extends Visitor {
     private boolean checkConcreteClass(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
-            if (!(type instanceof ClassOrInterface)) {
-                that.addError("type cannot be instantiated: '" +
-                        type.getName(unit) + "' is not a class or interface");
-                return false;
-            }
-            else {
+//            if (!(type instanceof ClassOrInterface)) {
+//                that.addError("type cannot be instantiated: '" +
+//                        type.getName(unit) + "' is not a class or interface");
+//                return false;
+//            }
+//            else {
                 return true;
-            }
+//            }
         }
         else {
             if (type instanceof Class) {
