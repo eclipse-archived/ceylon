@@ -833,4 +833,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
         assertErrors("bug18xx/Bug1857",
                 new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß'"));
     }
+
+    @Test
+    public void testBug1887() {
+        compareWithJavaSource("bug18xx/Bug1887");
+    }
 }
