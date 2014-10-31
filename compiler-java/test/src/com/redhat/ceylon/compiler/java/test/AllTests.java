@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.OptimizationTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.statement.TryCatchTest;
+import com.redhat.ceylon.compiler.java.test.structure.ConstructorTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest3;
@@ -78,6 +79,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     CeylonDocToolTest.class,
     
     NamingTest.class,
+    ConstructorTest.class,
     AnnotationsTest.class,
     InteropTest.class,
     ComprehensionTest.class,
