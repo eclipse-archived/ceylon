@@ -13,10 +13,12 @@ public class ConstructorTest extends CompilerTest {
     @Test
     public void testCtorNullaryCtor(){
         compareWithJavaSource("constructor/NullaryCtor");
+        compareWithJavaSource("constructor/NullaryCtorUse");
     }
     @Test
     public void testCtorUnaryCtor(){
         compareWithJavaSource("constructor/UnaryCtor");
+        compareWithJavaSource("constructor/UnaryCtorUse");
     }
     @Test
     public void testCtorDefaultedParameterCtor(){

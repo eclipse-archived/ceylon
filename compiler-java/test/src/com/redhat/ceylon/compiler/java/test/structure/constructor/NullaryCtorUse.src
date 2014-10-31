@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class useNullaryConstructors_ {
+    
+    private useNullaryConstructors_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void useNullaryConstructors() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o2 = new NullaryConstructors();
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.useNullaryConstructors_.useNullaryConstructors();
+    }
+}

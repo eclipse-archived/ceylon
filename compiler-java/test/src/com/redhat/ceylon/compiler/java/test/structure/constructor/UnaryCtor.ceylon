@@ -17,13 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@noanno
 class UnaryCtor {
     shared String s;
     shared new UnaryCtor(String s1) {
         s = s1;
     }
     new FromInteger(Integer i) {
+        s = i.string;
+    }
+    shared new SharedFromInteger(Integer i) {
         s = i.string;
     }
     void use() {
