@@ -72,3 +72,11 @@ shared void callables() {
   if (exists g=f) { resolve(g); }
   else { fail("WTF g doesn\'t exist"); }
 }
+
+@test
+shared void staticRefs() {
+    String(String(String, String))(String)({String*}) fold2 
+            = Iterable<String>.fold<String>;
+    check(fold2({"x","y","z"})("")((x,y)=>x+y)=="xyz", 
+        "static ref to fold()");
+}
