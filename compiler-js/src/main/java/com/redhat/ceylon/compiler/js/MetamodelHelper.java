@@ -147,7 +147,7 @@ public class MetamodelHelper {
         } else if (that instanceof Tree.TypeParameterLiteral) {
             gen.out("/*TODO: applied type parameter*/");
         } else {
-            gen.out(gen.getClAlias(), "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type$typeLiteral:");
+            gen.out(gen.getClAlias(), "typeLiteral$meta({Type$typeLiteral:");
             TypeUtils.typeNameOrList(that, ltype, gen, false);
             gen.out("})");
         }
