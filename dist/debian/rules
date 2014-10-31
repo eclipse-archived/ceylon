@@ -7,7 +7,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-VERSION=1.1.0
+VERSION=1.1.1
 
 DEB_PATH=debian/ceylon-$(VERSION)
 INSTALL_PATH=/usr/share/ceylon/$(VERSION)

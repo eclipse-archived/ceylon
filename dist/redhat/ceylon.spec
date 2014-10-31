@@ -6,7 +6,7 @@
 
 %define major_version 1
 %define minor_version 1
-%define micro_version 0
+%define micro_version 1
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}.%{micro_version}
 
 # The name of the source zip file (without .zip)

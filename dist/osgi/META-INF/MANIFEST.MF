@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ceylon Distribution Bundle
 Bundle-SymbolicName: com.redhat.ceylon.dist
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.1.qualifier
 Eclipse-BundleShape: dir
 Bundle-Vendor: RedHat
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
@@ -14,16 +14,16 @@ Export-Package: com.redhat.ceylon.launcher,
 Bundle-ActivationPolicy: lazy;exclude:="*"
 Import-Package: org.osgi.framework;version="1.6",
  org.osgi.framework.wiring;version="1.0"
-Require-Bundle: ceylon.language;bundle-version="1.1.0",
- ceylon.runtime;bundle-version="1.1.0",
+Require-Bundle: ceylon.language;bundle-version="1.1.1",
+ ceylon.runtime;bundle-version="1.1.1",
  com.github.rjeschke.txtmark;bundle-version="0.11",
  com.github.lookfirst.sardine;bundle-version="5.1",
- com.redhat.ceylon.common;bundle-version="1.1.0",
- com.redhat.ceylon.compiler.java;bundle-version="1.1.0",
- com.redhat.ceylon.compiler.js;bundle-version="1.1.0",
+ com.redhat.ceylon.common;bundle-version="1.1.1",
+ com.redhat.ceylon.compiler.java;bundle-version="1.1.1",
+ com.redhat.ceylon.compiler.js;bundle-version="1.1.1",
  com.redhat.ceylon.maven-support;bundle-version="2.0",
- com.redhat.ceylon.module-resolver;bundle-version="1.1.0",
- com.redhat.ceylon.typechecker;bundle-version="1.1.0",
+ com.redhat.ceylon.module-resolver;bundle-version="1.1.1",
+ com.redhat.ceylon.typechecker;bundle-version="1.1.1",
  net.minidev.json-smart;bundle-version="1.1.1",
  org.antlr.antlr;bundle-version="2.7.7",
  org.antlr.runtime;bundle-version="3.4",
