@@ -148,6 +148,11 @@ class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.Type that) {
+        HasErrorException error = expressionVisitor.getFirstErrorMessage(that);
+        if (error != null && isError(that, error.getErrorMessage())) {
+            newplan(new Drop(error.getNode(), error.getErrorMessage()));
+            return;
+        }
         // type inference is used but the type of 
         // the inferred expression is unknown due to other errors
         if (that.getTypeModel().containsUnknowns()) {
