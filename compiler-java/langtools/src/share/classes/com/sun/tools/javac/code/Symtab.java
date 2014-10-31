@@ -229,6 +229,8 @@ public class Symtab {
     public final Type ceylonAtMethodType;
     public final Type ceylonAtFunctionalParameterType;
     public final Type ceylonAtObjectType;
+    public final Type ceylonAtConstructorType;
+    public final Type ceylonAtParameterListType;
     public final Type ceylonAtClassType;
     public final Type ceylonAtSatisfiedTypes;
     public final Type ceylonAtCaseTypes;
@@ -634,6 +636,8 @@ public class Symtab {
         ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.java.metadata.Method");
         ceylonAtFunctionalParameterType = enterClass("com.redhat.ceylon.compiler.java.metadata.FunctionalParameter");
         ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.java.metadata.Object");
+        ceylonAtConstructorType = enterClass("com.redhat.ceylon.compiler.java.metadata.Constructor");
+        ceylonAtParameterListType = enterClass("com.redhat.ceylon.compiler.java.metadata.ParameterList");
         ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.java.metadata.Class");
         ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes");
         ceylonAtCaseTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.CaseTypes");

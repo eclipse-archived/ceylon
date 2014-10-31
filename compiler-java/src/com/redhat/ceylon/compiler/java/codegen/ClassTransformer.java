@@ -4492,6 +4492,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
         
+        ctorDb.modelAnnotations(makeAtConstructor());
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         
         if (Decl.isDefaultConstructor(ctor)) {
@@ -4506,7 +4507,10 @@ public class ClassTransformer extends AbstractTransformer {
                 ctorDb.reifiedTypeParameter(tp);
             }
             ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
+            //paramsCdb.annotations(List.<JCAnnotation>nil());
+            //paramsCdb.modelAnnotations(Collections.<Annotation>emptyList());
             paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
+            paramsCdb.annotations(makeAtParameterList());
             for (TypeParameter tp : clz.getTypeParameters()) {
                 paramsCdb.typeParameter(tp);
             }
