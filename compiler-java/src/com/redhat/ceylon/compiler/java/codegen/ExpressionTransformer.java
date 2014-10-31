@@ -3667,8 +3667,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression spread = letStmts.isEmpty() ? result : make().LetExpr(letStmts.toList(), result);
             
             // Do we *statically* know the result must be a Sequence 
-            final boolean primaryIsSequence = expr.getPrimary().getTypeModel().isSubtypeOf(
-                    typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType());
+            final boolean primaryIsSequence = typeFact().isNonemptyIterableType(expr.getPrimary().getTypeModel());
             ProducedType returnElementType = expr.getTarget().getType();
             if(primaryIsSequence){
                 int flags = EXPR_DOWN_CAST;
