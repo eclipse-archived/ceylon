@@ -42,7 +42,7 @@ class CtorCaptureInit {
         capturedByCtor = "WithAttributes";
         print(capturedByCtor);
     }
-    new ConstWithParameter(Integer initial) {
+    shared new CtorCaptureInit(Integer initial) {
         count = initial;
         sharedCount = initial;
         init = initial;

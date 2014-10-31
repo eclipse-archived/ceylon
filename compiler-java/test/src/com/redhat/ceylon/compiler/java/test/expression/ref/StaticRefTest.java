@@ -78,5 +78,12 @@ public class StaticRefTest extends CompilerTest {
     public void testRefBug1569() {
         compareWithJavaSource("Bug1569");
     }
+    
+    @Test
+    public void testRefConstructorRef() {
+        compareWithJavaSource("ConstructorRef");
+        //compile("MemberClassRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.constructorRef");
+    }
 
 }

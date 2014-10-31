@@ -7,16 +7,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return s;
     }
     
-    private static class UnaryCtor {
-        
-        private UnaryCtor(final .java.lang.String s1) {
-            this.s1 = s1;
-        }
-        public final .java.lang.String s1;
-    }
-    
-    private UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor $args$) {
-        final .java.lang.String s1 = $args$.s1;
+    public UnaryCtor(final .java.lang.String s1) {
         s = s1;
     }
     
@@ -38,33 +29,31 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             let
             {
                 .java.lang.String arg$0$0 = "";
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor $ceylontmp$1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor(arg$0$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$0$0);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o2 = (
             let
             {
-                .java.lang.String arg$2$0 = "";
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.UnaryCtor(arg$2$0);
+                .java.lang.String arg$1$0 = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$1$0);
+        );
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
+            let
+            {
+                long arg$2$0 = 0L;
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger(arg$2$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$3);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
             let
             {
                 long arg$4$0 = 0L;
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $ceylontmp$5 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger(arg$4$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$5);
-        );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
-            let
-            {
-                long arg$6$0 = 0L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $ceylontmp$7 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger(arg$6$0);
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$7);
         );
     }
     

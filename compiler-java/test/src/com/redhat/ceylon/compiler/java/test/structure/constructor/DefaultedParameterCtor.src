@@ -59,11 +59,11 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
             this.i = i;
         }
         public final .java.lang.String s;
+        public final long i;
         
         public static .java.lang.String $default$s() {
             return "";
         }
-        public final long i;
         
         public static long $default$i(final .java.lang.String s) {
             return 0L;

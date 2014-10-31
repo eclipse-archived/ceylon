@@ -20,7 +20,7 @@
 @noanno
 class UnaryCtor {
     shared String s;
-    new UnaryCtor(String s1) {
+    shared new UnaryCtor(String s1) {
         s = s1;
     }
     new FromInteger(Integer i) {

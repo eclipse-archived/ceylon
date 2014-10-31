@@ -3,17 +3,8 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    private static class CtorGenericClass<T> {
-        
-        private CtorGenericClass(final T t) {
-            this.t = t;
-        }
-        public final T t;
-    }
-    
-    private CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass<T> $args$) {
+    public CtorGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
-        final T t = $args$.t;
     }
     
     private static class Foo<T> {
@@ -30,58 +21,55 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public final void m(final T t) {
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>($reified$T, new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(t));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>($reified$T, t);
         (
             let
             {
                 T arg$0$0 = t;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = $reified$T;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass $ceylontmp$1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(arg$0$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>(arg$0$reified$0, $ceylontmp$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>(arg$0$reified$0, arg$0$0);
         );
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>($reified$T, new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(t));
         (
             let
             {
-                T arg$2$0 = t;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reified$T;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(arg$2$0);
+                T arg$1$0 = t;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = $reified$T;
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $ceylontmp$2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(arg$1$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>(arg$2$reified$0, $ceylontmp$3);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<T>(arg$1$reified$0, $ceylontmp$2);
         );
     }
     
     public final void n() {
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(.ceylon.language.String.instance("")));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""));
+        (
+            let
+            {
+                .ceylon.language.String arg$3$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<.ceylon.language.String>(arg$3$reified$0, arg$3$0);
+        );
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""));
         (
             let
             {
                 .ceylon.language.String arg$4$0 = .ceylon.language.String.instance("");
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.String.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass $ceylontmp$5 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(arg$4$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass<.ceylon.language.String>(arg$4$reified$0, $ceylontmp$5);
-        );
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(.ceylon.language.String.instance("")));
-        (
-            let
-            {
-                .ceylon.language.String arg$6$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$0 = .ceylon.language.String.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass $ceylontmp$7 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.CtorGenericClass(arg$6$0);
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(arg$6$reified$0, $ceylontmp$7);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(arg$4$reified$0, arg$4$0);
         );
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(.ceylon.language.String.instance("")));
         (
             let
             {
-                .ceylon.language.String arg$8$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$0 = .ceylon.language.String.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $ceylontmp$9 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(arg$8$0);
+                .ceylon.language.String arg$5$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo $ceylontmp$6 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass.Foo(arg$5$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(arg$8$reified$0, $ceylontmp$9);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorGenericClass(arg$5$reified$0, $ceylontmp$6);
         );
     }
     

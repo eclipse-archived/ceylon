@@ -1,6 +1,6 @@
 @noanno
 class CtorGenericClass<T> {
-    new CtorGenericClass(T t) {
+    shared new CtorGenericClass(T t) {
         
     }
     new Foo(T t) {
