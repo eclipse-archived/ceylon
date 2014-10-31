@@ -31,7 +31,6 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 
-import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Constants;
 
 public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
