@@ -755,8 +755,7 @@ public class ExpressionVisitor extends Visitor {
                         else {
                             desc = "function";
                         }
-                        that.getBaseMemberExpression()
-                            .addError(desc + " already specified: '" + 
+                        me.addError(desc + " already specified: '" + 
                                     d.getName(unit) + "'");
                     }
                     else if (!mv.isVariable() && !mv.isLate()) {
@@ -768,12 +767,12 @@ public class ExpressionVisitor extends Visitor {
                             desc = "function";
                         }
                         if (mv.isToplevel()) {
-                            that.addError("toplevel " + desc + 
+                            me.addError("toplevel " + desc + 
                                     " may not be specified: '" + 
                                     d.getName(unit) + "'", 803);
                         }
                         else if (!mv.isDefinedInScope(that.getScope())) {
-                            that.addError(desc + " may not be specified here: '" + 
+                            me.addError(desc + " may not be specified here: '" + 
                                     d.getName(unit) + "'", 803);
                         }
                     }
@@ -781,11 +780,11 @@ public class ExpressionVisitor extends Visitor {
                 if (hasParams && d instanceof Method && 
                         ((Method) d).isDeclaredVoid() && 
                         !isSatementExpression(sie.getExpression())) {
-                    that.addError("function is declared void so specified expression must be a statement: '" + 
+                    sie.addError("function is declared void so specified expression must be a statement: '" + 
                             d.getName(unit) + "' is declared 'void'");
                 }
                 if (d instanceof Value && 
-                        that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
+                        sie instanceof Tree.LazySpecifierExpression) {
                     ((Value) d).setTransient(true);
                 }
                 
@@ -806,12 +805,12 @@ public class ExpressionVisitor extends Visitor {
             }
             if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
                 if (!(sie instanceof Tree.LazySpecifierExpression)) {
-                    that.addError("functions with parameters must be specified using =>");
+                    sie.addError("functions with parameters must be specified using =>");
                 }
             }
             else {
                 if (sie instanceof Tree.LazySpecifierExpression && d instanceof Method) {
-                    that.addError("functions without parameters must be specified using =");
+                    sie.addError("functions without parameters must be specified using =");
                 }
             }
         }
@@ -4121,28 +4120,32 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkAssignability(Tree.Term that, Node node) {
-        if (isEffectivelyBaseMemberExpression(that)) {
-            //already handled by SpecificationVisitor.checkVariable()!
-        }
-        else if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.QualifiedMemberOrTypeExpression qmte = 
-                    (Tree.QualifiedMemberOrTypeExpression) that;
-            Declaration dec = qmte.getDeclaration();
-            if (dec!=null) {
+        if (that instanceof Tree.QualifiedMemberOrTypeExpression ||
+            that instanceof Tree.BaseMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression smte =
+                    (Tree.StaticMemberOrTypeExpression) that;
+            Declaration dec = smte.getDeclaration();
+            if (dec!=null && 
+                    (!isEffectivelyBaseMemberExpression(smte) ||
+                     !unit.equals(dec.getUnit()))) { //Note: other cases handled in SpecificationVisitor
                 if (dec instanceof Value) {
                     Value value = (Value) dec;
                     if (!value.isVariable() && !value.isLate()) {
-                        that.addError("member value is not a variable: '" + 
+                        that.addError("value is not a variable: '" + 
                                 dec.getName(unit) + "'", 800);
                     }
                 }
                 else {
-                    that.addError("member is not a value and may not be assigned: '" + 
+                    that.addError("not a variable value: '" + 
                             dec.getName(unit) + "'");
                 }
             }
-            if (qmte.getMemberOperator() instanceof Tree.MemberOp) {
-                that.addUnsupportedError("assignment to expression involving ?. and *. not supported");
+            if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
+                Tree.QualifiedMemberOrTypeExpression qmte = 
+                        (Tree.QualifiedMemberOrTypeExpression) that;
+                if (!(qmte.getMemberOperator() instanceof Tree.MemberOp)) {
+                    that.addUnsupportedError("assignment to expression involving ?. or *. not supported");
+                }
             }
         }
         else {
