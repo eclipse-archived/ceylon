@@ -361,7 +361,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private void checkVariable(Tree.Term term, Node node) {
-        if (isEffectivelyBaseMemberExpression(term)) {
+        if (isEffectivelyBaseMemberExpression(term)) {  //Note: other cases handled in ExpressionVisitor
             Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
             Declaration member = mte.getDeclaration();
@@ -372,13 +372,19 @@ public class SpecificationVisitor extends Visitor {
 	        				member.getName() + "'");
             	}
             	else if (!isVariable() && !isLate()) {
-                    if (node instanceof Tree.AssignOp && member instanceof Value) {
-                        node.addError("value is not a variable and may not be assigned here: '" +
-                                member.getName() + "'", 803);
+                    if (member instanceof Value) {
+                        if (node instanceof Tree.AssignOp) {
+                            node.addError("value is not a variable and may not be assigned here: '" +
+                                    member.getName() + "'", 803);
+                        }
+                        else {
+                            node.addError("value is not a variable: '" +
+                                    member.getName() + "'", 800);
+                        }
                     }
                     else {
                         term.addError("not a variable value: '" +
-                                member.getName() + "'", 800);
+                                member.getName() + "'");
                     }
                 }
             }
