@@ -537,7 +537,7 @@ public class SpecificationVisitor extends Visitor {
 	        	if ((declaration.isFormal() || declaration.isDefault()) && 
 	        	        !isForwardReferenceable()) {
 	        	    //TODO: is this error correct?! look at the condition above
-	        		that.addError("member is formal and may not be specified: '" +
+	        	    bme.addError("member is formal and may not be specified: '" +
 	        				member.getName() + "' is declared formal");
 	        	}
 	        	if (that.getRefinement()) {
@@ -554,16 +554,16 @@ public class SpecificationVisitor extends Visitor {
             	    	// kind of specifier, all =>, or all =
             	    	// TODO: sometimes this error appears only because 
             	    	//       of a later line which illegally reassigns
-	            		that.addError("value must be specified using => lazy specifier: '" +
+	            		se.addError("value must be specified using => lazy specifier: '" +
 	            		        member.getName() + "'");
             	    }
             	    if (lazy) {
             	        if (value.isVariable()) {
-            	            that.addError("variable value may not be specified using => lazy specifier: '" +
+            	            se.addError("variable value may not be specified using => lazy specifier: '" +
             	                    member.getName() + "'");
             	        }
             	        else if (value.isLate()) {
-            	            that.addError("late reference may not be specified using => lazy specifier: '" +
+            	            se.addError("late reference may not be specified using => lazy specifier: '" +
             	                    member.getName() + "'");
             	        }
             	    }
@@ -578,19 +578,19 @@ public class SpecificationVisitor extends Visitor {
 //                            member.getName() + "'");
 	            }
 	            else if (!declared && constant) {
-                    that.addError(shortdesc() + 
+                    bme.addError(shortdesc() + 
                             " is not yet declared: '" + 
                             member.getName() + "'");
 	            }
 	            else if (inLoop && constant && 
 	                    !(endsInBreakReturnThrow && lastContinue==null)) {
 	            	if (specified.definitely) {
-	            		that.addError(longdesc() + 
+	            		bme.addError(longdesc() + 
 	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is not definitely unspecified in loop: '" + 
 	            				member.getName() + "'", 803);
 	            	}
@@ -599,22 +599,22 @@ public class SpecificationVisitor extends Visitor {
                         !that.getRefinement()) {
                     Declaration dec = getContainingDeclarationOfScope(that.getScope());
                     if (dec!=null && dec.equals(member)) {
-                        that.addError("cannot specify " + shortdesc() + 
+                        bme.addError("cannot specify " + shortdesc() + 
                                 " from within its own body: '" + member.getName() + "'");
                     }
                     else {
-                        that.addError("cannot specify " + shortdesc() + 
+                        bme.addError("cannot specify " + shortdesc() + 
                                 " declared in outer scope: '" + member.getName() + "'", 803);
                     }
                 }
 	            else if (specified.possibly && constant) {
 	            	if (specified.definitely) {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is not definitely unspecified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
