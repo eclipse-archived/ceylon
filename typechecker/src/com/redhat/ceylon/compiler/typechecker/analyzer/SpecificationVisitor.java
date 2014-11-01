@@ -322,7 +322,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
-        if (Util.isEffectivelyBaseMemberExpression(lt)) {
+        if (isEffectivelyBaseMemberExpression(lt)) {
             Tree.StaticMemberOrTypeExpression m = 
                     (Tree.StaticMemberOrTypeExpression) lt;
 //            Declaration member = getTypedDeclaration(m.getScope(), 
@@ -368,17 +368,17 @@ public class SpecificationVisitor extends Visitor {
             if (member==declaration) {
             	if ((declaration.isFormal() || declaration.isDefault()) && 
             	        !isForwardReferenceable()) {
-	        		node.addError("member is formal or default and may not be assigned here: '" +
+            	    term.addError("member is formal or default and may not be assigned here: '" +
 	        				member.getName() + "'");
             	}
             	else if (!isVariable() && !isLate()) {
                     if (member instanceof Value) {
                         if (node instanceof Tree.AssignOp) {
-                            node.addError("value is not a variable and may not be assigned here: '" +
+                            term.addError("value is not a variable and may not be assigned here: '" +
                                     member.getName() + "'", 803);
                         }
                         else {
-                            node.addError("value is not a variable: '" +
+                            term.addError("value is not a variable: '" +
                                     member.getName() + "'", 800);
                         }
                     }
