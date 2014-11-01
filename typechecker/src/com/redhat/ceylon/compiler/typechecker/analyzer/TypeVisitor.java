@@ -52,7 +52,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NewLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -74,7 +73,7 @@ public class TypeVisitor extends Visitor {
     
     private Unit unit;
     private boolean inDelegatedConstructor;
-    private boolean inNewLiteral;
+    private boolean inTypeLiteral;
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
@@ -800,10 +799,10 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.QualifiedType that) {
-        boolean onl = inNewLiteral;
-        inNewLiteral = false;
+        boolean onl = inTypeLiteral;
+        inTypeLiteral = false;
         super.visit(that);
-        inNewLiteral = onl;
+        inTypeLiteral = onl;
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             if (that.getMetamodel() && 
@@ -834,15 +833,15 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral that) {
-        inNewLiteral = true;
+        inTypeLiteral = true;
         super.visit(that);
-        inNewLiteral = false;
+        inTypeLiteral = false;
     }
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, 
             TypeDeclaration dec) {
         //TODO: the following is inelegant!
-        if (!inNewLiteral) {
+        if (!inTypeLiteral) {
             if (inDelegatedConstructor) {
                 if (dec instanceof Class) {
                     Declaration defaultConstructor = 
