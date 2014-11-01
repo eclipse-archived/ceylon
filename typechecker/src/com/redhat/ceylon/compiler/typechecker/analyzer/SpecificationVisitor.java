@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
 
@@ -187,7 +188,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (Util.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
     }
@@ -195,14 +196,9 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (Util.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
-    }
-
-    private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || 
-                that instanceof Tree.Outer;
     }
 
     private void visitReference(Tree.Primary that) {
@@ -326,7 +322,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
-        if (isEffectivelyBaseMemberExpression(lt)) {
+        if (Util.isEffectivelyBaseMemberExpression(lt)) {
             Tree.StaticMemberOrTypeExpression m = 
                     (Tree.StaticMemberOrTypeExpression) lt;
 //            Declaration member = getTypedDeclaration(m.getScope(), 
@@ -365,27 +361,23 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private void checkVariable(Tree.Term term, Node node) {
-        //TODO: sometimes we get a dupe error b/w here and
-        //      ExpressionVisitor.checkAssignable()
         if (isEffectivelyBaseMemberExpression(term)) {
-            Tree.StaticMemberOrTypeExpression m = 
+            Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
-//            Declaration member = getTypedDeclaration(m.getScope(), 
-//                    name(m.getIdentifier()), null, false, m.getUnit());
-            Declaration member = m.getDeclaration();
+            Declaration member = mte.getDeclaration();
             if (member==declaration) {
             	if ((declaration.isFormal() || declaration.isDefault()) && 
             	        !isForwardReferenceable()) {
-	        		node.addError("member is formal and may not be assigned: '" +
-	        				member.getName() + "' is declared formal");
+	        		node.addError("member is formal or default and may not be assigned here: '" +
+	        				member.getName() + "'");
             	}
             	else if (!isVariable() && !isLate()) {
-                    if (node instanceof Tree.AssignOp) {
-                        node.addError("cannot assign non-variable value here: '" +
-                                        member.getName() + "' is not a variable", 803);
+                    if (node instanceof Tree.AssignOp && member instanceof Value) {
+                        node.addError("value is not a variable and may not be assigned here: '" +
+                                member.getName() + "'", 803);
                     }
                     else {
-                        term.addError("not a variable: '" +
+                        term.addError("not a variable value: '" +
                                 member.getName() + "'", 800);
                     }
                 }
@@ -393,12 +385,6 @@ public class SpecificationVisitor extends Visitor {
         }
     }
 
-    private boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
-        return term instanceof Tree.BaseMemberExpression ||
-                term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
-    }
-    
     private Tree.Continue lastContinue;
     private Tree.Statement lastContinueStatement;
     

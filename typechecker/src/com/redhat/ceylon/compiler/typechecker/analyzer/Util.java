@@ -888,4 +888,15 @@ public class Util {
             return et;
         }
     }
+
+    static boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || 
+                that instanceof Tree.Outer;
+    }
+
+    static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
+        return term instanceof Tree.BaseMemberExpression ||
+                term instanceof Tree.QualifiedMemberExpression &&
+                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
+    }
 }
