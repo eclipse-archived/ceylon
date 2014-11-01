@@ -4141,7 +4141,7 @@ public class ExpressionVisitor extends Visitor {
                             dec.getName(unit) + "'");
                 }
             }
-            if (qmte.getMemberOperator() instanceof Tree.MemberOp) {
+            if (!(qmte.getMemberOperator() instanceof Tree.MemberOp)) {
                 that.addUnsupportedError("assignment to expression involving ?. and *. not supported");
             }
         }
