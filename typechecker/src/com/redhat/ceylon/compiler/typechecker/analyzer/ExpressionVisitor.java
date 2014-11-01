@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -2000,6 +2001,88 @@ public class ExpressionVisitor extends Visitor {
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(paramType, 
                                 (Tree.FunctionArgument) term);
+                    }
+                }
+            }
+            else if (term instanceof Tree.BaseMemberOrTypeExpression) {
+                //TODO: handle QualifiedMemberOrTypeExpression!
+                inferFunctionRefTypeArgs(pr, param, 
+                        (Tree.BaseMemberOrTypeExpression) term);
+            }
+        }
+    }
+
+    private void inferFunctionRefTypeArgs(ProducedReference pr,
+            Parameter param, Tree.BaseMemberOrTypeExpression smte) {
+        TypeArguments typeArguments = smte.getTypeArguments();
+        if (typeArguments instanceof Tree.InferredTypeArguments) {
+            Declaration dec = 
+                    smte.getScope().getMemberOrParameter(unit, 
+                            name(smte.getIdentifier()), null, false);
+            Declaration pdec = param.getModel();
+            if (dec instanceof Functional && 
+                    pdec instanceof Functional) {
+                Functional fun = (Functional) dec;
+                Functional pfun = (Functional) pdec;
+                if (!fun.getTypeParameters().isEmpty()) {
+                    List<ParameterList> pls = fun.getParameterLists();
+                    List<ParameterList> ppls = pfun.getParameterLists();
+                    if (!pls.isEmpty() && !ppls.isEmpty()) {
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>();
+                        List<Parameter> pl = pls.get(0).getParameters();
+                        List<Parameter> ppl = ppls.get(0).getParameters();
+                        for (TypeParameter tp: fun.getTypeParameters()) {
+                            ProducedType inferred = 
+                                    unit.getNothingDeclaration().getType();
+                            for (int i=0; i<pl.size() && i<ppl.size(); i++) {
+                                Parameter p = pl.get(i);
+                                Parameter pp = ppl.get(i);
+                                //TODO: try to figure out their FullTypes
+                                ProducedType type = 
+                                        pr.getTypedParameter(param)
+                                        .getTypedParameter(pp)
+                                        .getType();
+                                ProducedType template = p.getModel().getType();
+                                ProducedType arg = 
+                                        //TODO: is this even vaguely correct?!
+                                        inferTypeArg(tp, template, type, 
+                                                false, false, 
+                                                new ArrayList<TypeParameter>());
+                                if (arg!=null &&
+                                        !arg.containsTypeParameters()) {
+                                    inferred = unionType(arg, inferred, unit);
+                                }
+                            }
+                            //TODO: intersect with the something inferred 
+                            //      from the return types?
+                            inferredTypes.add(inferred);
+                        }
+                        /*int i=0;
+                        for (TypeParameter tp: fun.getTypeParameters()) {
+                            ProducedType inferred = inferredTypes.get(i++);
+                            for (ProducedType st: tp.getSatisfiedTypes()) {
+                                //sts = sts.substitute(self);
+                                ProducedType sts = 
+                                        st.getProducedType(null, dec, inferredTypes);
+                                if (!inferred.isSubtypeOf(sts)) {
+                                    smte.addError("inferred type for type parameter '" + 
+                                            tp.getName() + "' of '" + dec.getName(unit) + 
+                                            "' does not satisfy an upper bound type constraint: '" +
+                                            inferred.getProducedTypeName(unit) + 
+                                            "' is not assignable to '" + 
+                                            sts.getProducedTypeName(unit) + "'");
+                                }
+                            }
+                            if (!argumentSatisfiesEnumeratedConstraint(null, dec, inferredTypes, inferred, tp)) {
+                                smte.addError("inferred type for type parameter '" + 
+                                        tp.getName() + "' of '" + dec.getName(unit) + 
+                                        "' does not satisfy an enumerated type constraint: '" +
+                                        inferred.getProducedTypeName(unit) + 
+                                        "' is not one of the enumerated cases of '" + tp.getName() + "'");
+                            }
+                        }*/
+                        typeArguments.setTypeModels(inferredTypes);
                     }
                 }
             }
@@ -4583,7 +4666,7 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
                 //otherwise infer type arguments later
             }
-            else  {
+            else {
                 typeArgumentsImplicit(that);
             }
         }
@@ -4749,7 +4832,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
+    private void typeArgumentsImplicit(Tree.StaticMemberOrTypeExpression that) {
         Generic dec = (Generic) that.getDeclaration();
         StringBuilder params = new StringBuilder();
         for (TypeParameter tp: dec.getTypeParameters()) {
@@ -5137,7 +5220,8 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
-            TypeDeclaration td = (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            TypeDeclaration td = (TypeDeclaration) 
+                    ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
             return td==null ? new UnknownType(unit) : td;
         }
         else {
@@ -5146,7 +5230,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
-        return !dec.isParameterized() || tal instanceof Tree.TypeArgumentList;
+        return !dec.isParameterized() || 
+                tal instanceof Tree.TypeArgumentList || 
+                tal.getTypeModels()!=null;
     }
     
     @Override public void visit(Tree.SimpleType that) {
@@ -5848,7 +5934,7 @@ public class ExpressionVisitor extends Visitor {
                                         parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
                                                 + "' to type parameter '" + param.getName()
                                                 + "' of declaration '" + dec.getName(unit)
-                                                + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                + "' is not assignable to upper bound '" + sts.getProducedTypeName(unit)
                                                 + "' of '" + param.getName() + "'");
                                     }
                                     else {
@@ -5856,7 +5942,7 @@ public class ExpressionVisitor extends Visitor {
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
                                                         + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                        + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                        + "' is not assignable to upper bound '" + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
                                     }
                                 }
@@ -5872,14 +5958,14 @@ public class ExpressionVisitor extends Visitor {
                                 parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
                                         + "' to type parameter '" + param.getName()
                                         + "' of declaration '" + dec.getName(unit)
-                                        + "' not one of the enumerated cases of '" + param.getName() + "'");
+                                        + "' is not one of the enumerated cases of '" + param.getName() + "'");
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
                                         .get(i).addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                + "' not one of the enumerated cases of '" + param.getName() + "'");
+                                                + "' is not one of the enumerated cases of '" + param.getName() + "'");
                             }
                         }
                         return false;

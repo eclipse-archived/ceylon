@@ -85,7 +85,8 @@ public class Util {
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        if (tal instanceof Tree.TypeArgumentList) {
+        if (tal instanceof Tree.TypeArgumentList || 
+                tal instanceof Tree.InferredTypeArguments && tal.getTypeModels()!=null) {
             List<ProducedType> typeArguments = 
                     new ArrayList<ProducedType>(typeParameters.size());
             Map<TypeParameter, ProducedType> typeArgMap = 
@@ -93,16 +94,32 @@ public class Util {
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
-            List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
-            for (int i=0; i<types.size(); i++) {
-                ProducedType t = types.get(i).getTypeModel();
-                if (t==null) {
-                    typeArguments.add(null);
+            if (tal instanceof Tree.TypeArgumentList) {
+                List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
+                for (int i=0; i<types.size(); i++) {
+                    ProducedType t = types.get(i).getTypeModel();
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
+                    }
                 }
-                else {
-                    typeArguments.add(t);
-                    if (i<typeParameters.size()) {
-                        typeArgMap.put(typeParameters.get(i), t);
+            }
+            else {
+                for (int i=0; i<tal.getTypeModels().size(); i++) {
+                    ProducedType t = tal.getTypeModels().get(i);
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
                     }
                 }
             }
