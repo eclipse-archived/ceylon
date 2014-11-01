@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDecla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
@@ -4118,28 +4119,30 @@ public class ExpressionVisitor extends Visitor {
         }
         that.setTypeModel(unit.getType(unit.getBooleanDeclaration()));
     }
-    
+
     private void checkAssignability(Tree.Term that, Node node) {
-        if (that instanceof Tree.BaseMemberExpression ||
-                that instanceof Tree.QualifiedMemberExpression) {
-            ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
-            if (pr!=null) {
-                Declaration dec = pr.getDeclaration();
-                if (!(dec instanceof Value)) {
-                    that.addError("member cannot be assigned: '" 
-                            + dec.getName(unit) + "'");
+        if (isEffectivelyBaseMemberExpression(that)) {
+            //already handled by SpecificationVisitor.checkVariable()!
+        }
+        else if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qmte = 
+                    (Tree.QualifiedMemberOrTypeExpression) that;
+            Declaration dec = qmte.getDeclaration();
+            if (dec!=null) {
+                if (dec instanceof Value) {
+                    Value value = (Value) dec;
+                    if (!value.isVariable() && !value.isLate()) {
+                        that.addError("member value is not a variable: '" + 
+                                dec.getName(unit) + "'", 800);
+                    }
                 }
-                else if (!((MethodOrValue) dec).isVariable() &&
-                         !((MethodOrValue) dec).isLate()) {
-                    that.addError("value is not variable: '" 
-                            + dec.getName(unit) + "'", 800);
+                else {
+                    that.addError("member is not a value and may not be assigned: '" + 
+                            dec.getName(unit) + "'");
                 }
             }
-            if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
-            	if (!(((Tree.QualifiedMemberOrTypeExpression) that).getMemberOperator() instanceof Tree.MemberOp)) {
-            		that.addUnsupportedError("assignment to expression involving ?. and *. not supported");
-            	}
-            	
+            if (qmte.getMemberOperator() instanceof Tree.MemberOp) {
+                that.addUnsupportedError("assignment to expression involving ?. and *. not supported");
             }
         }
         else {
