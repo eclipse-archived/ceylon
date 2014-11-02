@@ -2026,44 +2026,44 @@ public class ExpressionVisitor extends Visitor {
         if (dec instanceof Functional &&
                 typeArguments instanceof Tree.InferredTypeArguments) {
             Functional fun = (Functional) dec;
-            ProducedTypedReference pr = smte.getTargetParameter();
+            ProducedReference arg = getProducedReference(smte);
+            ProducedTypedReference param = smte.getTargetParameter();
             ProducedType paramType = smte.getParameterType();
-            if (pr!=null) {
-                Declaration pdec = pr.getDeclaration();
+            if (param!=null) {
+                Declaration pdec = param.getDeclaration();
                 if (pdec instanceof Functional) {
                     Functional pfun = (Functional) pdec;
                     if (!fun.getTypeParameters().isEmpty()) {
-                        List<ParameterList> pls = fun.getParameterLists();
+                        List<ParameterList> apls = fun.getParameterLists();
                         List<ParameterList> ppls = pfun.getParameterLists();
-                        if (!pls.isEmpty() && !ppls.isEmpty()) {
+                        if (!apls.isEmpty() && !ppls.isEmpty()) {
                             List<ProducedType> inferredTypes = 
                                     new ArrayList<ProducedType>();
-                            List<Parameter> pl = pls.get(0).getParameters();
+                            List<Parameter> apl = apls.get(0).getParameters();
                             List<Parameter> ppl = ppls.get(0).getParameters();
                             for (TypeParameter tp: fun.getTypeParameters()) {
-                                ProducedType inferred = 
+                                ProducedType inferredType = 
                                         unit.getNothingDeclaration().getType();
-                                for (int i=0; i<pl.size() && i<ppl.size(); i++) {
-                                    Parameter p = pl.get(i);
+                                for (int i=0; i<apl.size() && i<ppl.size(); i++) {
+                                    Parameter ap = apl.get(i);
                                     Parameter pp = ppl.get(i);
-                                    //TODO: try to figure out their FullTypes
                                     ProducedType type = 
-                                            pr.getTypedParameter(pp)
-                                            .getType();
-                                    ProducedType template = p.getModel().getType();
-                                    ProducedType arg = 
+                                            param.getTypedParameter(pp).getFullType();
+                                    ProducedType template = 
+                                            arg.getTypedParameter(ap).getFullType();
+                                    ProducedType it = 
                                             //TODO: is this even vaguely correct?!
                                             inferTypeArg(tp, template, type, 
                                                     false, false, 
                                                     new ArrayList<TypeParameter>());
-                                    if (arg!=null &&
-                                            !arg.containsTypeParameters()) {
-                                        inferred = unionType(arg, inferred, unit);
+                                    if (it!=null &&
+                                            !it.containsTypeParameters()) {
+                                        inferredType = unionType(it, inferredType, unit);
                                     }
                                 }
                                 //TODO: intersect with the something inferred 
                                 //      from the return types?
-                                inferredTypes.add(inferred);
+                                inferredTypes.add(inferredType);
                             }
                             typeArguments.setTypeModels(inferredTypes);
                         }
@@ -2072,28 +2072,18 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (paramType!=null) {
                 if (unit.isCallableType(paramType)) {
-                    ProducedType qt;
-                    if (smte instanceof Tree.QualifiedTypeExpression) {
-                        qt = ((Tree.QualifiedTypeExpression) smte).getPrimary().getTypeModel();
-                    }
-                    else {
-                        qt = null;
-                    }
-                    ProducedType template = 
-                            dec.getProducedReference(qt,
-                                    Collections.<ProducedType>emptyList())
-                            .getFullType();
+                    ProducedType template = arg.getFullType();
                     List<ProducedType> inferredTypes = 
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: fun.getTypeParameters()) {
-                        ProducedType arg = 
+                        ProducedType it = 
                                 //TODO: is this even vaguely correct?!
                                 inferTypeArg(tp, template, paramType,
                                         false, false, 
                                         new ArrayList<TypeParameter>());
-                        if (arg!=null &&
-                                !arg.containsTypeParameters()) {
-                            inferredTypes.add(arg);
+                        if (it!=null &&
+                                !it.containsTypeParameters()) {
+                            inferredTypes.add(it);
                         }
                         else {
                             inferredTypes.add(unit.getNothingDeclaration().getType());
@@ -2103,6 +2093,22 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private ProducedReference getProducedReference(
+            Tree.StaticMemberOrTypeExpression smte) {
+        //TODO: this might not be right for static refs
+        ProducedType qt;
+        if (smte instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qte = 
+                    (Tree.QualifiedMemberOrTypeExpression) smte;
+            qt = qte.getPrimary().getTypeModel();
+        }
+        else {
+            qt = null;
+        }
+        return smte.getDeclaration().getProducedReference(qt,
+                        Collections.<ProducedType>emptyList());
     }
 
     private void inferParameterTypesFromCallableType(ProducedType paramType,
