@@ -2061,24 +2061,33 @@ public class ExpressionVisitor extends Visitor {
                                         inferredType = unionType(it, inferredType, unit);
                                     }
                                 }
-                                //TODO: intersect with the something inferred 
-                                //      from the return types?
                                 inferredTypes.add(inferredType);
                             }
                             typeArguments.setTypeModels(inferredTypes);
                         }
                     }
+                    return; //Note: EARLY EXIT!
+                }
+                else {
+                    paramType = param.getFullType();
                 }
             }
-            else if (paramType!=null) {
+            if (paramType!=null) {
+                if (unit.isSequentialType(paramType)) {
+                    paramType = unit.getSequentialElementType(paramType);
+                }
                 if (unit.isCallableType(paramType)) {
-                    ProducedType template = arg.getFullType();
+                    ProducedType template = 
+                            unit.getCallableTuple(arg.getFullType());
+                    ProducedType type = 
+                            unit.getCallableTuple(paramType);
                     List<ProducedType> inferredTypes = 
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: fun.getTypeParameters()) {
                         ProducedType it = 
                                 //TODO: is this even vaguely correct?!
-                                inferTypeArg(tp, template, paramType,
+                                inferTypeArg(tp, 
+                                        template, type,
                                         false, false, 
                                         new ArrayList<TypeParameter>());
                         if (it!=null &&
