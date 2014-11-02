@@ -589,15 +589,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             the realization of the referenced function or class.</para>
             
             <para>If a callable reference expression refers to a generic declaration, 
-            either:</para>
+            it must either:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>it must be immediately followed by an argument list, 
-                    allowing the compiler to infer the type arguments, or</para>
+                    <para>have an explicit type argument list,</para>
                 </listitem>
                 <listitem>
-                    <para>it must have an explicit type argument list.</para>
+                    <para>be immediately followed by an argument list, allowing the 
+                    compiler to infer the type arguments, as defined in
+                    <xref linkend="typeargumentinference"/>, or</para>
+                </listitem>
+                <listitem>
+                    <para>occur as a listed argument, as defined in
+                    <xref linkend="listedarguments"/> in a positional argument 
+                    list, or as a specified argument, anonymous argument, or
+                    listed argument, as defined in <xref linkend="namedarguments"/>,
+                    in a named argument list, and its type arguments must be
+                    inferable as defined below.</para>
                 </listitem>
             </itemizedlist>
             
@@ -620,6 +629,27 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             like <literal>person.@name</literal>, to allow attributes to be passed by 
             reference. This would also allow static references like
             <literal>Person.@name</literal>.</para></comment>
+            
+            <para>If a callable reference <literal>f</literal> with no explicit type 
+            argument list occurs as the argument to a callable parameter <literal>p</literal>
+            of a function or class in a direct invocation expression, as defined below in 
+            <xref linkend="directinvocations"/>, then the type arguments of <literal>f</literal> 
+            are inferred according to the rules defined in <xref linkend="typeargumentinference"/> 
+            as if the types of the parameters of <literal>p</literal> were the types of 
+            listed arguments of <literal>f</literal> in a positional argument list, unless 
+            the invoked function or class is generic, and the invocation expression does 
+            not itself specify explicit type arguments, in which case any parameter whose 
+            type involves a type argument of the invoked function or class is ignored.</para>
+            
+            <para>If a callable reference <literal>f</literal> with no explicit type 
+            argument list occurs as the argument to a value parameter <literal>p</literal>
+            of type <literal>Callable&lt;Return,Args&gt;</literal> in a direct or indirect 
+            invocation expression, then the type arguments of <literal>f</literal> are 
+            inferred according to the rules defined in <xref linkend="typeargumentinference"/> 
+            as if <literal>Args</literal> were the type of a positional argument list, unless 
+            the invocation is a direct invocation expression, and the invoked function or 
+            class is generic, and <literal>Args</literal> involves type parameters of the
+            invoked function or class.</para>
             
         </section>
         
@@ -651,6 +681,32 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A static expression must reference a statically typed declaration with no missing 
             types, even within a <literal>dynamic</literal> block.</para>
+            
+            <para>If the qualifying type in a static expression refers to a generic declaration, then 
+            either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it must have an explicit type argument list, or</para>
+                </listitem>
+                <listitem>
+                    <para>the static expression must occur as a listed argument, as defined in
+                    <xref linkend="listedarguments"/> in a positional argument list, or as a 
+                    specified argument, anonymous argument, or listed argument, as defined in 
+                    <xref linkend="namedarguments"/>, in a named argument list, and its type 
+                    arguments must be inferable as defined below.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a static expression <literal>T.m</literal> for a generic type <literal>T</literal> 
+            with no explicit type argument list occurs as the argument to a parameter <literal>p</literal>
+            of type <literal>Callable&lt;Return,Arg&gt;</literal> in a direct or indirect invocation 
+            expression, then the type arguments of <literal>T</literal> are inferred according to the 
+            rules defined in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> 
+            were the type of a positional argument list, and <literal>[T]</literal> were the type of 
+            a parameter list, unless the invocation is a direct invocation expression, and the invoked 
+            function or class is generic, and <literal>Arg</literal> involves type parameters of the
+            invoked function or class.</para>
             
         </section>
         
