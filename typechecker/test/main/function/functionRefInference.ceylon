@@ -1,4 +1,8 @@
 void functionRefInference() {
+    T[] accept<T>(T(Integer,Integer)* funs) => [for (fun in funs) fun(1, 0) ];
+    @type:"Sequential<Integer>" accept(plus, times);
+    @type:"Sequential<Integer>" accept((x,y)=>x+y, (x,y)=>x*y);
+    
     @type:"Iterable<Tuple<Integer,Integer,Empty>,Nothing>" value r1 
             = [1, 2, 3].map([].withTrailing);
     @type:"Integer" value product1 = [1, 2, 3].reduce(times);
