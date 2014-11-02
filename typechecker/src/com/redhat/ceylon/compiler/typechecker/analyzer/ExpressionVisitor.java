@@ -2030,11 +2030,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void inferFunctionRefTypeArgs(Tree.StaticMemberOrTypeExpression smte) {
+    private List<ProducedType> inferFunctionRefTypeArgs(
+            Tree.StaticMemberOrTypeExpression smte) {
         TypeArguments typeArguments = smte.getTypeArguments();
         Declaration dec = smte.getDeclaration();
         if (typeArguments instanceof Tree.InferredTypeArguments && 
-                dec instanceof Generic) {
+                dec instanceof Generic &&
+                !((Generic) dec).getTypeParameters().isEmpty()) {
             ProducedTypedReference param = smte.getTargetParameter();
             ProducedType paramType = smte.getParameterType();
             if (paramType==null && param!=null) {
@@ -2042,45 +2044,44 @@ public class ExpressionVisitor extends Visitor {
             }
             ProducedReference arg = getProducedReference(smte);
             if (!smte.getStaticMethodReferencePrimary() && 
-                    dec instanceof Functional) {
+                    dec instanceof Functional && 
+                    param!=null) {
                 Functional fun = (Functional) dec;
                 List<ParameterList> apls = fun.getParameterLists();
-                if (param!=null) {
-                    Declaration pdec = param.getDeclaration();
-                    if (pdec instanceof Functional) {
-                        Functional pfun = (Functional) pdec;
-                        if (!fun.getTypeParameters().isEmpty()) {
-                            List<ParameterList> ppls = pfun.getParameterLists();
-                            if (!apls.isEmpty() && !ppls.isEmpty()) {
-                                List<ProducedType> inferredTypes = 
-                                        new ArrayList<ProducedType>();
-                                List<Parameter> apl = apls.get(0).getParameters();
-                                List<Parameter> ppl = ppls.get(0).getParameters();
-                                for (TypeParameter tp: fun.getTypeParameters()) {
-                                    List<ProducedType> list = 
-                                            new ArrayList<ProducedType>();
-                                    for (int i=0; i<apl.size() && i<ppl.size(); i++) {
-                                        Parameter ap = apl.get(i);
-                                        Parameter pp = ppl.get(i);
-                                        ProducedType type = 
-                                                param.getTypedParameter(pp).getFullType();
-                                        ProducedType template = 
-                                                arg.getTypedParameter(ap).getFullType();
-                                        ProducedType it = 
-                                                inferTypeArg(tp, template, type, 
-                                                        true, false, 
-                                                        new ArrayList<TypeParameter>());
-                                        if (it!=null &&
-                                                !it.containsTypeParameters()) {
-                                            addToUnionOrIntersection(tp, list, it);
-                                        }
-                                    }
-                                    inferredTypes.add(formUnionOrIntersection(tp, list));
+                Declaration pdec = param.getDeclaration();
+                if (pdec instanceof Functional) {
+                    Functional pfun = (Functional) pdec;
+                    List<ParameterList> ppls = pfun.getParameterLists();
+                    if (apls.isEmpty() || ppls.isEmpty()) {
+                        return null; //TODO: to give a nicer error
+                    }
+                    else {
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>();
+                        List<Parameter> apl = apls.get(0).getParameters();
+                        List<Parameter> ppl = ppls.get(0).getParameters();
+                        for (TypeParameter tp: fun.getTypeParameters()) {
+                            List<ProducedType> list = 
+                                    new ArrayList<ProducedType>();
+                            for (int i=0; i<apl.size() && i<ppl.size(); i++) {
+                                Parameter ap = apl.get(i);
+                                Parameter pp = ppl.get(i);
+                                ProducedType type = 
+                                        param.getTypedParameter(pp).getFullType();
+                                ProducedType template = 
+                                        arg.getTypedParameter(ap).getFullType();
+                                ProducedType it = 
+                                        inferTypeArg(tp, template, type, 
+                                                true, false, 
+                                                new ArrayList<TypeParameter>());
+                                if (it!=null &&
+                                        !it.containsTypeParameters()) {
+                                    addToUnionOrIntersection(tp, list, it);
                                 }
-                                typeArguments.setTypeModels(inferredTypes);
                             }
+                            inferredTypes.add(formUnionOrIntersection(tp, list));
                         }
-                        return; //Note: EARLY EXIT!
+                        return inferredTypes;
                     }
                 }
             }
@@ -2089,11 +2090,15 @@ public class ExpressionVisitor extends Visitor {
                     paramType = unit.getSequentialElementType(paramType);
                 }
                 if (unit.isCallableType(paramType)) {
-                    ProducedType template = smte.getStaticMethodReferencePrimary() ?
-                            producedType(unit.getTupleDeclaration(), 
-                                    arg.getType(), arg.getType(), 
-                                    unit.getEmptyDeclaration().getType()) :
-                            unit.getCallableTuple(arg.getFullType());
+                    ProducedType template;
+                    if (smte.getStaticMethodReferencePrimary()) {
+                        template = producedType(unit.getTupleDeclaration(), 
+                                arg.getType(), arg.getType(), 
+                                unit.getEmptyDeclaration().getType());
+                    }
+                    else {
+                        template = unit.getCallableTuple(arg.getFullType());
+                    }
                     ProducedType type = 
                             unit.getCallableTuple(paramType);
                     List<ProducedType> inferredTypes = 
@@ -2111,9 +2116,18 @@ public class ExpressionVisitor extends Visitor {
                             inferredTypes.add(unit.getNothingDeclaration().getType());
                         }
                     }
-                    typeArguments.setTypeModels(inferredTypes);
+                    return inferredTypes;
+                }
+                else {
+                    return null;
                 }
             }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
         }
     }
 
@@ -4709,13 +4723,18 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, notDirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
-            inferFunctionRefTypeArgs(that);
             Tree.TypeArguments tal = that.getTypeArguments();
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
-                List<ProducedType> ta = getTypeArguments(tal, 
+                typeArgs = getTypeArguments(tal, 
                         getTypeParameters(member), null);
-                tal.setTypeModels(ta);
-                visitBaseMemberExpression(that, member, ta, tal);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
+                visitBaseMemberExpression(that, member, typeArgs, tal);
                 //otherwise infer type arguments later
             }
             else {
@@ -4760,20 +4779,25 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveQualifiedMemberExpression(that, notDirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
-            inferFunctionRefTypeArgs(that);
             Tree.TypeArguments tal = that.getTypeArguments();
+            ProducedType pt = 
+                    that.getPrimary().getTypeModel()
+                    .resolveAliases(); //TODO: probably not necessary
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
-                ProducedType pt = 
-                        that.getPrimary().getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
-                List<ProducedType> ta = getTypeArguments(tal,
+                typeArgs = getTypeArguments(tal, 
                         getTypeParameters(member), pt);
-                tal.setTypeModels(ta);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
                 if (that.getPrimary() instanceof Tree.Package) {
-                    visitBaseMemberExpression(that, member, ta, tal);
+                    visitBaseMemberExpression(that, member, typeArgs, tal);
                 }
                 else {
-                    visitQualifiedMemberExpression(that, pt, member, ta, tal);
+                    visitQualifiedMemberExpression(that, pt, member, typeArgs, tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -5005,13 +5029,18 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveBaseTypeExpression(that, notDirectlyInvoked);
         if (type!=null && notDirectlyInvoked) {
-            inferFunctionRefTypeArgs(that);
             Tree.TypeArguments tal = that.getTypeArguments();
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                List<ProducedType> ta = getTypeArguments(tal, 
+                typeArgs = getTypeArguments(tal, 
                         type.getTypeParameters(), null);
-                tal.setTypeModels(ta);
-                visitBaseTypeExpression(that, type, ta, tal);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
+                visitBaseTypeExpression(that, type, typeArgs, tal);
                 //otherwise infer type arguments later
             }
             else {
@@ -5159,20 +5188,25 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveQualifiedTypeExpression(that, notDirectlyInvoked);
         if (type!=null && notDirectlyInvoked) {
-            inferFunctionRefTypeArgs(that);
             Tree.TypeArguments tal = that.getTypeArguments();
+            ProducedType pt = 
+                    that.getPrimary().getTypeModel()
+                    .resolveAliases(); //TODO: probably not necessary
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                ProducedType pt = 
-                        that.getPrimary().getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
-                List<ProducedType> ta = getTypeArguments(tal,
+                typeArgs = getTypeArguments(tal, 
                         type.getTypeParameters(), pt);
-                tal.setTypeModels(ta);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
                 if (that.getPrimary() instanceof Tree.Package) {
-                    visitBaseTypeExpression(that, type, ta, tal);
+                    visitBaseTypeExpression(that, type, typeArgs, tal);
                 }
                 else {
-                    visitQualifiedTypeExpression(that, pt, type, ta, tal);
+                    visitQualifiedTypeExpression(that, pt, type, typeArgs, tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -5286,8 +5320,7 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
         return !dec.isParameterized() || 
-                tal instanceof Tree.TypeArgumentList || 
-                tal.getTypeModels()!=null;
+                tal instanceof Tree.TypeArgumentList;
     }
     
     @Override public void visit(Tree.SimpleType that) {

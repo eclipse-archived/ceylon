@@ -85,8 +85,7 @@ public class Util {
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        if (tal instanceof Tree.TypeArgumentList || 
-                tal instanceof Tree.InferredTypeArguments && tal.getTypeModels()!=null) {
+        if (tal instanceof Tree.TypeArgumentList) {
             List<ProducedType> typeArguments = 
                     new ArrayList<ProducedType>(typeParameters.size());
             Map<TypeParameter, ProducedType> typeArgMap = 
