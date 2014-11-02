@@ -2042,8 +2042,8 @@ public class ExpressionVisitor extends Visitor {
                             List<Parameter> apl = apls.get(0).getParameters();
                             List<Parameter> ppl = ppls.get(0).getParameters();
                             for (TypeParameter tp: fun.getTypeParameters()) {
-                                ProducedType inferredType = 
-                                        unit.getNothingDeclaration().getType();
+                                List<ProducedType> list = 
+                                        new ArrayList<ProducedType>();
                                 for (int i=0; i<apl.size() && i<ppl.size(); i++) {
                                     Parameter ap = apl.get(i);
                                     Parameter pp = ppl.get(i);
@@ -2052,16 +2052,15 @@ public class ExpressionVisitor extends Visitor {
                                     ProducedType template = 
                                             arg.getTypedParameter(ap).getFullType();
                                     ProducedType it = 
-                                            //TODO: is this even vaguely correct?!
                                             inferTypeArg(tp, template, type, 
-                                                    false, false, 
+                                                    true, false, 
                                                     new ArrayList<TypeParameter>());
                                     if (it!=null &&
                                             !it.containsTypeParameters()) {
-                                        inferredType = unionType(it, inferredType, unit);
+                                        addToUnionOrIntersection(tp, list, it);
                                     }
                                 }
-                                inferredTypes.add(inferredType);
+                                inferredTypes.add(formUnionOrIntersection(tp, list));
                             }
                             typeArguments.setTypeModels(inferredTypes);
                         }
@@ -2085,10 +2084,8 @@ public class ExpressionVisitor extends Visitor {
                             new ArrayList<ProducedType>();
                     for (TypeParameter tp: fun.getTypeParameters()) {
                         ProducedType it = 
-                                //TODO: is this even vaguely correct?!
-                                inferTypeArg(tp, 
-                                        template, type,
-                                        false, false, 
+                                inferTypeArg(tp, template, type,
+                                        true, false, 
                                         new ArrayList<TypeParameter>());
                         if (it!=null &&
                                 !it.containsTypeParameters()) {
