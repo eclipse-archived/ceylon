@@ -6,6 +6,7 @@ void functionRefInference() {
     U whatever<U>(U fun({String*} it)) => fun({""});
     @type:"Integer" whatever(Iterable.size);
     
+    @type:"Iterable<Integer,Nothing>" {"asdfasdf", [1, 2, 3], 1..10}.map(Iterable.size);
     @type:"Iterable<Tuple<Integer,Integer,Empty>,Nothing>" value r1 
             = [1, 2, 3].map([].withTrailing);
     @type:"Integer" value product1 = [1, 2, 3].reduce(times);
