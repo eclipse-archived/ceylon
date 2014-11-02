@@ -647,7 +647,8 @@
 ^(abstract STATIC_MEMBER_OR_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION
     IDENTIFIER
     TYPE_ARGUMENTS?
-    ProducedTypedReference targetParameter;)
+    ProducedTypedReference targetParameter;
+    ProducedType parameterType;)
 
 ^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)
 

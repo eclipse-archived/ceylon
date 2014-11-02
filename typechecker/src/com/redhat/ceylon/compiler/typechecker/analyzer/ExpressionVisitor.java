@@ -1871,6 +1871,11 @@ public class ExpressionVisitor extends Visitor {
                             inferParameterTypesFromCallableType(paramType, 
                                     (Tree.FunctionArgument) term);
                         }
+                        else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                            Tree.StaticMemberOrTypeExpression smte = 
+                                    (Tree.StaticMemberOrTypeExpression) term;
+                            smte.setParameterType(paramType);
+                        }
                     }
                 }
             }
@@ -2017,71 +2022,81 @@ public class ExpressionVisitor extends Visitor {
     
     private void inferFunctionRefTypeArgs(Tree.StaticMemberOrTypeExpression smte) {
         TypeArguments typeArguments = smte.getTypeArguments();
-        ProducedTypedReference pr = smte.getTargetParameter();
-        if (typeArguments instanceof Tree.InferredTypeArguments && pr!=null) {
-            Declaration dec = smte.getDeclaration();
-            Declaration pdec = pr.getDeclaration();
-            if (dec instanceof Functional && 
-                    pdec instanceof Functional) {
-                Functional fun = (Functional) dec;
-                Functional pfun = (Functional) pdec;
-                if (!fun.getTypeParameters().isEmpty()) {
-                    List<ParameterList> pls = fun.getParameterLists();
-                    List<ParameterList> ppls = pfun.getParameterLists();
-                    if (!pls.isEmpty() && !ppls.isEmpty()) {
-                        List<ProducedType> inferredTypes = 
-                                new ArrayList<ProducedType>();
-                        List<Parameter> pl = pls.get(0).getParameters();
-                        List<Parameter> ppl = ppls.get(0).getParameters();
-                        for (TypeParameter tp: fun.getTypeParameters()) {
-                            ProducedType inferred = 
-                                    unit.getNothingDeclaration().getType();
-                            for (int i=0; i<pl.size() && i<ppl.size(); i++) {
-                                Parameter p = pl.get(i);
-                                Parameter pp = ppl.get(i);
-                                //TODO: try to figure out their FullTypes
-                                ProducedType type = 
-                                        pr.getTypedParameter(pp)
-                                        .getType();
-                                ProducedType template = p.getModel().getType();
-                                ProducedType arg = 
-                                        //TODO: is this even vaguely correct?!
-                                        inferTypeArg(tp, template, type, 
-                                                false, false, 
-                                                new ArrayList<TypeParameter>());
-                                if (arg!=null &&
-                                        !arg.containsTypeParameters()) {
-                                    inferred = unionType(arg, inferred, unit);
+        Declaration dec = smte.getDeclaration();
+        if (dec instanceof Functional &&
+                typeArguments instanceof Tree.InferredTypeArguments) {
+            Functional fun = (Functional) dec;
+            ProducedTypedReference pr = smte.getTargetParameter();
+            ProducedType paramType = smte.getParameterType();
+            if (pr!=null) {
+                Declaration pdec = pr.getDeclaration();
+                if (pdec instanceof Functional) {
+                    Functional pfun = (Functional) pdec;
+                    if (!fun.getTypeParameters().isEmpty()) {
+                        List<ParameterList> pls = fun.getParameterLists();
+                        List<ParameterList> ppls = pfun.getParameterLists();
+                        if (!pls.isEmpty() && !ppls.isEmpty()) {
+                            List<ProducedType> inferredTypes = 
+                                    new ArrayList<ProducedType>();
+                            List<Parameter> pl = pls.get(0).getParameters();
+                            List<Parameter> ppl = ppls.get(0).getParameters();
+                            for (TypeParameter tp: fun.getTypeParameters()) {
+                                ProducedType inferred = 
+                                        unit.getNothingDeclaration().getType();
+                                for (int i=0; i<pl.size() && i<ppl.size(); i++) {
+                                    Parameter p = pl.get(i);
+                                    Parameter pp = ppl.get(i);
+                                    //TODO: try to figure out their FullTypes
+                                    ProducedType type = 
+                                            pr.getTypedParameter(pp)
+                                            .getType();
+                                    ProducedType template = p.getModel().getType();
+                                    ProducedType arg = 
+                                            //TODO: is this even vaguely correct?!
+                                            inferTypeArg(tp, template, type, 
+                                                    false, false, 
+                                                    new ArrayList<TypeParameter>());
+                                    if (arg!=null &&
+                                            !arg.containsTypeParameters()) {
+                                        inferred = unionType(arg, inferred, unit);
+                                    }
                                 }
+                                //TODO: intersect with the something inferred 
+                                //      from the return types?
+                                inferredTypes.add(inferred);
                             }
-                            //TODO: intersect with the something inferred 
-                            //      from the return types?
-                            inferredTypes.add(inferred);
+                            typeArguments.setTypeModels(inferredTypes);
                         }
-                        /*int i=0;
-                        for (TypeParameter tp: fun.getTypeParameters()) {
-                            ProducedType inferred = inferredTypes.get(i++);
-                            for (ProducedType st: tp.getSatisfiedTypes()) {
-                                //sts = sts.substitute(self);
-                                ProducedType sts = 
-                                        st.getProducedType(null, dec, inferredTypes);
-                                if (!inferred.isSubtypeOf(sts)) {
-                                    smte.addError("inferred type for type parameter '" + 
-                                            tp.getName() + "' of '" + dec.getName(unit) + 
-                                            "' does not satisfy an upper bound type constraint: '" +
-                                            inferred.getProducedTypeName(unit) + 
-                                            "' is not assignable to '" + 
-                                            sts.getProducedTypeName(unit) + "'");
-                                }
-                            }
-                            if (!argumentSatisfiesEnumeratedConstraint(null, dec, inferredTypes, inferred, tp)) {
-                                smte.addError("inferred type for type parameter '" + 
-                                        tp.getName() + "' of '" + dec.getName(unit) + 
-                                        "' does not satisfy an enumerated type constraint: '" +
-                                        inferred.getProducedTypeName(unit) + 
-                                        "' is not one of the enumerated cases of '" + tp.getName() + "'");
-                            }
-                        }*/
+                    }
+                }
+            }
+            else if (paramType!=null) {
+                if (unit.isCallableType(paramType)) {
+                    ProducedType qt;
+                    if (smte instanceof Tree.QualifiedTypeExpression) {
+                        qt = ((Tree.QualifiedTypeExpression) smte).getPrimary().getTypeModel();
+                    }
+                    else {
+                        qt = null;
+                    }
+                    ProducedType template = 
+                            dec.getProducedReference(qt, Collections.emptyList())
+                            .getFullType();
+                    List<ProducedType> inferredTypes = 
+                            new ArrayList<ProducedType>();
+                    for (TypeParameter tp: fun.getTypeParameters()) {
+                        ProducedType arg = 
+                                //TODO: is this even vaguely correct?!
+                                inferTypeArg(tp, template, paramType,
+                                        false, false, 
+                                        new ArrayList<TypeParameter>());
+                        if (arg!=null &&
+                                !arg.containsTypeParameters()) {
+                            inferredTypes.add(arg);
+                        }
+                        else {
+                            inferredTypes.add(unit.getNothingDeclaration().getType());
+                        }
                         typeArguments.setTypeModels(inferredTypes);
                     }
                 }
