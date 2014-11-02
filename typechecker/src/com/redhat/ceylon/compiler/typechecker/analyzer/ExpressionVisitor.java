@@ -2080,7 +2080,8 @@ public class ExpressionVisitor extends Visitor {
                         qt = null;
                     }
                     ProducedType template = 
-                            dec.getProducedReference(qt, Collections.emptyList())
+                            dec.getProducedReference(qt,
+                                    Collections.<ProducedType>emptyList())
                             .getFullType();
                     List<ProducedType> inferredTypes = 
                             new ArrayList<ProducedType>();
