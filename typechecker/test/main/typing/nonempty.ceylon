@@ -9,4 +9,6 @@ void testNonempty() {
     assert(nonempty @error result3 = str1);
     String str2 = "xyz";
     assert(nonempty @error [Character+] result4 = str2);
+    Integer|Float? num = null;
+    assert (exists @error Integer int = num);
 }

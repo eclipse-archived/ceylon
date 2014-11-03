@@ -80,6 +80,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1871,6 +1872,11 @@ public class ExpressionVisitor extends Visitor {
                             inferParameterTypesFromCallableType(paramType, 
                                     (Tree.FunctionArgument) term);
                         }
+                        else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                            Tree.StaticMemberOrTypeExpression smte = 
+                                    (Tree.StaticMemberOrTypeExpression) term;
+                            smte.setParameterType(paramType);
+                        }
                     }
                 }
             }
@@ -1896,6 +1902,7 @@ public class ExpressionVisitor extends Visitor {
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
+                    la.setParameter(param);
                     inferParameterTypes(pr, param, 
                             la.getExpression(), 
                             param.isSequenced());
@@ -1922,15 +1929,16 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; i<args.size(); i++) {
                 Tree.NamedArgument arg = args.get(i);
                 if (arg instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifiedArgument la = 
+                    Tree.SpecifiedArgument sa = 
                             (Tree.SpecifiedArgument) arg;
                     Parameter param = 
                             getMatchingParameter(pl, arg, 
                                     foundParameters);
                     if (param!=null) {
                         foundParameters.add(param);
+                        sa.setParameter(param);
                         Tree.SpecifierExpression se = 
-                                la.getSpecifierExpression();
+                                sa.getSpecifierExpression();
                         if (se!=null) {
                             inferParameterTypes(pr, param, 
                                     se.getExpression(), false);
@@ -1948,6 +1956,7 @@ public class ExpressionVisitor extends Visitor {
                         if (pa instanceof Tree.ListedArgument) {
                             Tree.ListedArgument la = 
                                     (Tree.ListedArgument) pa;
+                            la.setParameter(param);
                             inferParameterTypes(pr, param, 
                                     la.getExpression(), true);
                         }
@@ -1985,6 +1994,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter param, Tree.Expression e, boolean variadic) {
         if (e!=null) {
             Tree.Term term = unwrapExpressionUntilTerm(e.getTerm());
+            ProducedTypedReference tpr = pr.getTypedParameter(param);
             if (term instanceof Tree.FunctionArgument) {
                 if (param.getModel() instanceof Functional) {
                     //NOTE: this branch is basically redundant
@@ -1993,8 +2003,7 @@ public class ExpressionVisitor extends Visitor {
                             param, (Tree.FunctionArgument) term);
                 }
                 else { 
-                    ProducedType paramType = 
-                            pr.getTypedParameter(param).getFullType();
+                    ProducedType paramType = tpr.getFullType();
                     if (variadic) {
                         paramType = unit.getIteratedType(paramType);
                     }
@@ -2004,6 +2013,145 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression stme = 
+                        (Tree.StaticMemberOrTypeExpression) term;
+                if (stme instanceof Tree.QualifiedMemberOrTypeExpression &&
+                        stme.getStaticMethodReference()) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) stme;
+                    Tree.StaticMemberOrTypeExpression ote = 
+                            (Tree.StaticMemberOrTypeExpression) qmte.getPrimary();
+                    ote.setTargetParameter(tpr);
+                }
+                else {
+                    stme.setTargetParameter(tpr);
+                }
+            }
+        }
+    }
+    
+    private List<ProducedType> inferFunctionRefTypeArgs(
+            Tree.StaticMemberOrTypeExpression smte) {
+        TypeArguments typeArguments = smte.getTypeArguments();
+        Declaration dec = smte.getDeclaration();
+        if (typeArguments instanceof Tree.InferredTypeArguments && 
+                dec instanceof Generic &&
+                !((Generic) dec).getTypeParameters().isEmpty()) {
+            ProducedTypedReference param = smte.getTargetParameter();
+            ProducedType paramType = smte.getParameterType();
+            if (paramType==null && param!=null) {
+                paramType = param.getFullType();
+            }
+            ProducedReference arg = getProducedReference(smte);
+            if (!smte.getStaticMethodReferencePrimary() && 
+                    dec instanceof Functional && 
+                    param!=null) {
+                Functional fun = (Functional) dec;
+                List<ParameterList> apls = fun.getParameterLists();
+                Declaration pdec = param.getDeclaration();
+                if (pdec instanceof Functional) {
+                    Functional pfun = (Functional) pdec;
+                    List<ParameterList> ppls = pfun.getParameterLists();
+                    if (apls.isEmpty() || ppls.isEmpty()) {
+                        return null; //TODO: to give a nicer error
+                    }
+                    else {
+                        List<ProducedType> inferredTypes = 
+                                new ArrayList<ProducedType>();
+                        List<Parameter> apl = apls.get(0).getParameters();
+                        List<Parameter> ppl = ppls.get(0).getParameters();
+                        for (TypeParameter tp: fun.getTypeParameters()) {
+                            List<ProducedType> list = 
+                                    new ArrayList<ProducedType>();
+                            for (int i=0; i<apl.size() && i<ppl.size(); i++) {
+                                Parameter ap = apl.get(i);
+                                Parameter pp = ppl.get(i);
+                                ProducedType type = 
+                                        param.getTypedParameter(pp).getFullType();
+                                ProducedType template = 
+                                        arg.getTypedParameter(ap).getFullType();
+                                ProducedType it = 
+                                        inferTypeArg(tp, template, type, 
+                                                true, false, 
+                                                new ArrayList<TypeParameter>());
+                                if (it!=null &&
+                                        !it.containsTypeParameters()) {
+                                    addToUnionOrIntersection(tp, list, it);
+                                }
+                            }
+                            inferredTypes.add(formUnionOrIntersection(tp, list));
+                        }
+                        return inferredTypes;
+                    }
+                }
+            }
+            if (paramType!=null) {
+                if (unit.isSequentialType(paramType)) {
+                    paramType = unit.getSequentialElementType(paramType);
+                }
+                if (unit.isCallableType(paramType)) {
+                    ProducedType template;
+                    if (smte.getStaticMethodReferencePrimary()) {
+                        template = producedType(unit.getTupleDeclaration(), 
+                                arg.getType(), arg.getType(), 
+                                unit.getEmptyDeclaration().getType());
+                    }
+                    else {
+                        template = unit.getCallableTuple(arg.getFullType());
+                    }
+                    ProducedType type = 
+                            unit.getCallableTuple(paramType);
+                    List<ProducedType> inferredTypes = 
+                            new ArrayList<ProducedType>();
+                    for (TypeParameter tp: ((Generic) dec).getTypeParameters()) {
+                        ProducedType it = 
+                                inferTypeArg(tp, template, type,
+                                        true, false, 
+                                        new ArrayList<TypeParameter>());
+                        if (it!=null &&
+                                !it.containsTypeParameters()) {
+                            inferredTypes.add(it);
+                        }
+                        else {
+                            inferredTypes.add(unit.getNothingDeclaration().getType());
+                        }
+                    }
+                    return inferredTypes;
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+
+    private ProducedReference getProducedReference(
+            Tree.StaticMemberOrTypeExpression smte) {
+        //TODO: this might not be right for static refs
+        ProducedType qt;
+        if (smte instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression qte = 
+                    (Tree.QualifiedMemberOrTypeExpression) smte;
+            qt = qte.getPrimary().getTypeModel();
+        }
+        else {
+            qt = null;
+        }
+        Declaration dec = smte.getDeclaration();
+        if (smte.getStaticMethodReferencePrimary()) {
+            //TODO: why this special case, exactly?
+            return ((TypeDeclaration) dec).getType();
+        }
+        else {
+            return dec.getProducedReference(qt,
+                    Collections.<ProducedType>emptyList());
         }
     }
 
@@ -3412,14 +3560,14 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     @Override public void visit(Tree.ListedArgument that) {
         super.visit(that);
         if (that.getExpression()!=null) {
             that.setTypeModel(that.getExpression().getTypeModel());
         }
     }
-
+    
     private boolean involvesUnknownTypes(Tree.ElementOrRange eor) {
         if (eor instanceof Tree.Element) {
             return isTypeUnknown(((Tree.Element) eor).getExpression().getTypeModel());
@@ -4589,14 +4737,20 @@ public class ExpressionVisitor extends Visitor {
                 resolveBaseMemberExpression(that, notDirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
-                List<ProducedType> ta = getTypeArguments(tal, 
+                typeArgs = getTypeArguments(tal, 
                         getTypeParameters(member), null);
-                tal.setTypeModels(ta);
-                visitBaseMemberExpression(that, member, ta, tal);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
+                visitBaseMemberExpression(that, member, typeArgs, tal);
                 //otherwise infer type arguments later
             }
-            else  {
+            else {
                 typeArgumentsImplicit(that);
             }
         }
@@ -4639,18 +4793,24 @@ public class ExpressionVisitor extends Visitor {
                 resolveQualifiedMemberExpression(that, notDirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
+            ProducedType pt = 
+                    that.getPrimary().getTypeModel()
+                    .resolveAliases(); //TODO: probably not necessary
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(member, tal)) {
-                ProducedType pt = 
-                        that.getPrimary().getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
-                List<ProducedType> ta = getTypeArguments(tal,
+                typeArgs = getTypeArguments(tal, 
                         getTypeParameters(member), pt);
-                tal.setTypeModels(ta);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
                 if (that.getPrimary() instanceof Tree.Package) {
-                    visitBaseMemberExpression(that, member, ta, tal);
+                    visitBaseMemberExpression(that, member, typeArgs, tal);
                 }
                 else {
-                    visitQualifiedMemberExpression(that, pt, member, ta, tal);
+                    visitQualifiedMemberExpression(that, pt, member, typeArgs, tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -4762,7 +4922,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
+    private void typeArgumentsImplicit(Tree.StaticMemberOrTypeExpression that) {
         Generic dec = (Generic) that.getDeclaration();
         StringBuilder params = new StringBuilder();
         for (TypeParameter tp: dec.getTypeParameters()) {
@@ -4883,11 +5043,17 @@ public class ExpressionVisitor extends Visitor {
                 resolveBaseTypeExpression(that, notDirectlyInvoked);
         if (type!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                List<ProducedType> ta = getTypeArguments(tal, 
+                typeArgs = getTypeArguments(tal, 
                         type.getTypeParameters(), null);
-                tal.setTypeModels(ta);
-                visitBaseTypeExpression(that, type, ta, tal);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
+                visitBaseTypeExpression(that, type, typeArgs, tal);
                 //otherwise infer type arguments later
             }
             else {
@@ -5055,18 +5221,24 @@ public class ExpressionVisitor extends Visitor {
                 resolveQualifiedTypeExpression(that, notDirectlyInvoked);
         if (type!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
+            ProducedType pt = 
+                    that.getPrimary().getTypeModel()
+                    .resolveAliases(); //TODO: probably not necessary
+            List<ProducedType> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                ProducedType pt = 
-                        that.getPrimary().getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
-                List<ProducedType> ta = getTypeArguments(tal,
+                typeArgs = getTypeArguments(tal, 
                         type.getTypeParameters(), pt);
-                tal.setTypeModels(ta);
+            }
+            else {
+                typeArgs = inferFunctionRefTypeArgs(that);
+            }
+            if (typeArgs!=null) {
+                tal.setTypeModels(typeArgs);
                 if (that.getPrimary() instanceof Tree.Package) {
-                    visitBaseTypeExpression(that, type, ta, tal);
+                    visitBaseTypeExpression(that, type, typeArgs, tal);
                 }
                 else {
-                    visitQualifiedTypeExpression(that, pt, type, ta, tal);
+                    visitQualifiedTypeExpression(that, pt, type, typeArgs, tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -5169,7 +5341,8 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
-            TypeDeclaration td = (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            TypeDeclaration td = (TypeDeclaration) 
+                    ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
             return td==null ? new UnknownType(unit) : td;
         }
         else {
@@ -5178,7 +5351,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
-        return !dec.isParameterized() || tal instanceof Tree.TypeArgumentList;
+        return !dec.isParameterized() || 
+                tal instanceof Tree.TypeArgumentList;
     }
     
     @Override public void visit(Tree.SimpleType that) {
@@ -5880,7 +6054,7 @@ public class ExpressionVisitor extends Visitor {
                                         parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
                                                 + "' to type parameter '" + param.getName()
                                                 + "' of declaration '" + dec.getName(unit)
-                                                + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                + "' is not assignable to upper bound '" + sts.getProducedTypeName(unit)
                                                 + "' of '" + param.getName() + "'");
                                     }
                                     else {
@@ -5888,7 +6062,7 @@ public class ExpressionVisitor extends Visitor {
                                                 .get(i).addError("type parameter '" + param.getName() 
                                                         + "' of declaration '" + dec.getName(unit)
                                                         + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                        + "' not assignable to upper bound '" + sts.getProducedTypeName(unit)
+                                                        + "' is not assignable to upper bound '" + sts.getProducedTypeName(unit)
                                                         + "' of '" + param.getName() + "'", 2102);
                                     }
                                 }
@@ -5904,14 +6078,14 @@ public class ExpressionVisitor extends Visitor {
                                 parent.addError("inferred type argument '" + argType.getProducedTypeName(unit)
                                         + "' to type parameter '" + param.getName()
                                         + "' of declaration '" + dec.getName(unit)
-                                        + "' not one of the enumerated cases of '" + param.getName() + "'");
+                                        + "' is not one of the enumerated cases of '" + param.getName() + "'");
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
                                         .get(i).addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' has argument '" + argType.getProducedTypeName(unit) 
-                                                + "' not one of the enumerated cases of '" + param.getName() + "'");
+                                                + "' is not one of the enumerated cases of '" + param.getName() + "'");
                             }
                         }
                         return false;
