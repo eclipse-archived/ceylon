@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -23,7 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 //TODO make an interface?
 public class TypeChecker {
 
-    public static final String LANGUAGE_MODULE_VERSION = "1.1.0";
+    public static final String LANGUAGE_MODULE_VERSION = Versions.CEYLON_VERSION_NUMBER;
 
     private final boolean verbose;
     private final boolean statistics;

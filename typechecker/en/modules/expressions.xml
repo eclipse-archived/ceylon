@@ -2274,7 +2274,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
-            <entry><literal>lhs.item(index)</literal></entry>
+            <entry><literal>lhs.get(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Y?</literal></entry>
