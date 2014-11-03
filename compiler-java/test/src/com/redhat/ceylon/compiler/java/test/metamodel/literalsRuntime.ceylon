@@ -74,5 +74,8 @@ void literalsRuntime2<T>(){
 
     assert(`function obj.method`.name == "method");
     assert(`obj.method<Integer>`.declaration == `function obj.method`);
+    
+    assert("LitClassWithConstructors" == `new LitClassWithConstructors.LitClassWithConstructors`.name);
+    assert(`class LitClassWithConstructors` == `new LitClassWithConstructors.LitClassWithConstructors`.container);
 }
 

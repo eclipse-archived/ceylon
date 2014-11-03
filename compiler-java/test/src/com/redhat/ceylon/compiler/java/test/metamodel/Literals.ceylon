@@ -46,7 +46,14 @@ class LitParameterisedClass<T>(T t){
     shared T parameterisedMethod<T>(T s) => s;
     shared class Member<X>(X x){}
 }
-
+class LitClassWithConstructors {
+    shared new LitClassWithConstructors(Integer i) {}
+    shared new Other(Integer i) {}
+}
+class LitParameterisedClassWithConstructors<T> {
+    shared new LitParameterisedClassWithConstructors(T t) {}
+    shared new Other(T t) {}
+}
 interface LitInterface{
     shared interface Member{}
 }
@@ -77,6 +84,16 @@ void literals<T>(){
 
     ClassDeclaration parameterisedMemberClassDecl = `class LitParameterisedClass.Member`;
     MemberClass<LitParameterisedClass<Integer>,LitParameterisedClass<Integer>.Member<String>,[String]> parameterisedMemberClassType = `LitParameterisedClass<Integer>.Member<String>`;
+    
+    // constructors
+    Constructor<LitClassWithConstructors, [Integer]> ctor = `LitClassWithConstructors.LitClassWithConstructors`;
+    ConstructorDeclaration ctorDecl = `new LitClassWithConstructors.LitClassWithConstructors`;
+    Constructor<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.Other`; 
+    ConstructorDeclaration ctorOtherDecl = `new LitClassWithConstructors.Other`;
+    //TODO Constructor<LitParameterisedClassWithConstructors, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>.LitParameterisedClassWithConstructors`;
+    ConstructorDeclaration ctorDecl2 = `new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors`;
+    //TODO Constructor<LitParameterisedClassWithConstructors, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.Other`;
+    ConstructorDeclaration ctorDeclOther2 = `new LitParameterisedClassWithConstructors.Other`;
     
     // Interfaces
     
