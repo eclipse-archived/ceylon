@@ -4442,23 +4442,28 @@ public abstract class AbstractTransformer implements Transformation {
 
     public List<JCExpression> makeReifiedTypeArguments(
             java.util.List<ProducedType> typeArguments) {
-        return makeReifiedTypeArguments(typeArguments, false);
+        // same as makeReifiedTypeArgumentsResolved(typeArguments, false) but resolve each element
+        List<JCExpression> ret = List.nil();
+        for(int i=typeArguments.size()-1;i>=0;i--){
+            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i).resolveAliases(), false));
+        }
+        return ret;
     }
     
-    private List<JCExpression> makeReifiedTypeArguments(
+    private List<JCExpression> makeReifiedTypeArgumentsResolved(
             java.util.List<ProducedType> typeArguments, boolean qualified) {
         List<JCExpression> ret = List.nil();
         for(int i=typeArguments.size()-1;i>=0;i--){
-            ret = ret.prepend(makeReifiedTypeArgument(typeArguments.get(i), qualified));
+            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i), qualified));
         }
         return ret;
     }
 
     public JCExpression makeReifiedTypeArgument(ProducedType pt) {
-        return makeReifiedTypeArgument(pt.resolveAliases(), false);
+        return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false);
     }
     
-    private JCExpression makeReifiedTypeArgument(ProducedType pt, boolean qualified) {
+    private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof ClassOrInterface){
             // see if we have an alias for it
@@ -4467,7 +4472,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
             }
             // no alias, must build it
-            List<JCExpression> typeTestArguments = makeReifiedTypeArguments(pt.getTypeArgumentList(), qualified);
+            List<JCExpression> typeTestArguments = makeReifiedTypeArgumentsResolved(pt.getTypeArgumentList(), qualified);
             JCExpression thisType = makeUnerasedClassLiteral(declaration);
             // do we have variance overrides?
             Map<TypeParameter, SiteVariance> varianceOverrides = pt.getVarianceOverrides();
@@ -4506,12 +4511,12 @@ public abstract class AbstractTransformer implements Transformation {
                 // it may be contained in a function or value, and we want its type
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration)
-                    containerType = makeTypedDeclarationTypeDescriptor((TypedDeclaration) enclosingDeclaration);
+                    containerType = makeTypedDeclarationTypeDescriptorResolved((TypedDeclaration) enclosingDeclaration);
                 else if(enclosingDeclaration instanceof TypeDeclaration)
                     qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
             }
             if(qualifyingType != null){
-                containerType = makeReifiedTypeArgument(qualifyingType, true);
+                containerType = makeReifiedTypeArgumentResolved(qualifyingType, true);
             }
             if(containerType == null){
                 return classDescriptor;
@@ -4559,12 +4564,12 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private JCExpression makeTypedDeclarationTypeDescriptor(TypedDeclaration declaration) {
+    private JCExpression makeTypedDeclarationTypeDescriptorResolved(TypedDeclaration declaration) {
         // figure out the method name
         String methodName = declaration.getPrefixedName();
         List<JCExpression> arguments;
         if(declaration instanceof Method)
-            arguments = makeReifiedTypeArguments(getTypeArguments((Method)declaration), true);
+            arguments = makeReifiedTypeArgumentsResolved(getTypeArguments((Method)declaration), true);
         else
             arguments = List.nil();
         if(declaration.isToplevel()){
@@ -4585,10 +4590,10 @@ public abstract class AbstractTransformer implements Transformation {
         Declaration enclosingDeclaration = getDeclarationContainer(declaration);
         JCExpression containerType = null;
         if(enclosingDeclaration instanceof TypedDeclaration)
-            containerType = makeTypedDeclarationTypeDescriptor((TypedDeclaration) enclosingDeclaration);
+            containerType = makeTypedDeclarationTypeDescriptorResolved((TypedDeclaration) enclosingDeclaration);
         else if(enclosingDeclaration instanceof TypeDeclaration){
             ProducedType qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
-            containerType = makeReifiedTypeArgument(qualifyingType, true);
+            containerType = makeReifiedTypeArgumentResolved(qualifyingType, true);
         }
         if(containerType == null){
             return typedDeclarationDescriptor;
