@@ -258,6 +258,7 @@ public class LazyPackage extends Package {
         ctor.setAnnotationConstructor(ai);
         List<AnnotationArgument> annotationArgs = new ArrayList<AnnotationArgument>();
         for (Declaration member : iface.getMembers()) {
+            boolean isValue = member.getName().equals("value");
             if (member instanceof JavaMethod) {
                 JavaMethod m = (JavaMethod)member;
                 
@@ -277,7 +278,10 @@ public class LazyPackage extends Package {
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
-                    classpl.getParameters().add(klassParam);
+                    if(isValue)
+                        classpl.getParameters().add(0, klassParam);
+                    else
+                        classpl.getParameters().add(klassParam);
                     argument.setParameter(klassParam);
                     klass.addMember(value);
                 }
@@ -295,13 +299,19 @@ public class LazyPackage extends Package {
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
-                    ctorpl.getParameters().add(ctorParam);
+                    if(isValue)
+                        ctorpl.getParameters().add(0, ctorParam);
+                    else
+                        ctorpl.getParameters().add(ctorParam);
                     term.setSourceParameter(ctorParam);
                     ctor.addMember(value);
                     
                     AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
                     acp.setParameter(ctorParam);
-                    ai.getConstructorParameters().add(acp);
+                    if(isValue)
+                        ai.getConstructorParameters().add(0, acp);
+                    else
+                        ai.getConstructorParameters().add(acp);
                 }
                 annotationArgs.add(argument);
             }
