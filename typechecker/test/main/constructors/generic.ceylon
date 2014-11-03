@@ -26,3 +26,12 @@ void testCtorGenericClass() {
     String(String)(CtorGenericClass<String>) fun 
             = CtorGenericClass<String>.fun;
 }
+
+class Foo<T> {
+    shared new Bar() {}
+}
+
+void check() {
+    value bar1 = `Foo<String>.Bar`;
+    value bar2 = `new Foo.Bar`;
+}
