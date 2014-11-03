@@ -1702,8 +1702,7 @@ public final class String
     }
     
     @Ignore
-    @SuppressWarnings("rawtypes")
-    public static <Other> Iterable 
+    public static <Other> Iterable<? extends java.lang.Object, ? extends java.lang.Object> 
     interpose(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, Other other) {
         return instance(value).interpose($reifiedOther, other);    
@@ -1711,7 +1710,7 @@ public final class String
     
     @Ignore
     @SuppressWarnings("rawtypes")
-    public static <Other> Iterable 
+    public static <Other> Iterable
     interpose(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, Other other, long step) {
         return instance(value).interpose($reifiedOther, other, step);    
@@ -1719,7 +1718,7 @@ public final class String
     
     @Ignore
     @SuppressWarnings("rawtypes")
-    public static <Other, OtherAbsent> Iterable 
+    public static <Other, OtherAbsent> Iterable
     product(@Ignore TypeDescriptor $reified$Other,
             @Ignore TypeDescriptor $reified$OtherAbsent,
             java.lang.String value, 

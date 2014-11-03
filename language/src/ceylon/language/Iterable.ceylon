@@ -1237,7 +1237,10 @@ shared interface Iterable<out Element, out Absent=Null>
      evaluates to the string `\"h e l l o\"`."
     throws (`class AssertionError`, "if `step<1`")
     see (`function interleave`)
-    shared default {Element|Other*} interpose<Other>(Other element,
+    shared default Iterable<Element|Other,Absent> interpose<Other>(
+        "The value to interpose between blocks of elements 
+         of this stream."
+        Other element,
         "The step size that determines how often the given
          [[element]] occurs in the resulting stream. The 
          `element` occurs after each block of size `step` of 
