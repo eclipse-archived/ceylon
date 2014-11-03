@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Type;
@@ -3106,11 +3107,33 @@ public class StatementTransformer extends AbstractTransformer {
         return result;
     }
     
+    private ProducedType switchExpressionType(Tree.SwitchStatement stmt) {
+        Switched sw = stmt.getSwitchClause().getSwitched();
+        if (sw.getExpression() != null) {
+            return sw.getExpression().getTypeModel();
+        } else if (sw.getVariable() != null) {
+            return sw.getVariable().getType().getTypeModel();
+        }
+        throw new BugException("Switch should have expression or variable");
+    }
+    
     abstract class SwitchTransformation {
         public SwitchTransformation() {
         }
+        protected boolean hasVariable(Tree.SwitchStatement stmt) {
+            return stmt.getSwitchClause().getSwitched().getVariable() != null;
+        }
+        protected Expression getSwitchExpression(Tree.SwitchStatement stmt) {
+            Switched sw = stmt.getSwitchClause().getSwitched();
+            if (sw.getExpression() != null) {
+                return sw.getExpression();
+            } else if (sw.getVariable() != null) {
+                return sw.getVariable().getSpecifierExpression().getExpression();
+            }
+            throw new BugException("Switch should have expression or variable");
+        }
         protected ProducedType getSwitchExpressionType(Tree.SwitchStatement stmt) {
-            return stmt.getSwitchClause().getExpression().getTypeModel();
+            return switchExpressionType(stmt);
         }
         protected ProducedType getDefiniteSwitchExpressionType(Tree.SwitchStatement stmt) {
             return typeFact().getDefiniteType(getSwitchExpressionType(stmt));
@@ -3151,10 +3174,21 @@ public class StatementTransformer extends AbstractTransformer {
         }
         public JCStatement transformSwitch(Tree.SwitchStatement stmt) {
             JCExpression switchExpr = expressionGen().transformExpression(
-                    stmt.getSwitchClause().getExpression(), 
+                    getSwitchExpression(stmt), 
                     BoxingStrategy.UNBOXED, 
                     getSwitchExpressionType(stmt));
-            return transformSwitch(stmt, switchExpr);
+
+            JCVariableDecl selector;
+            JCIdent ident;
+            if (hasVariable(stmt)) {
+                String name = stmt.getSwitchClause().getSwitched().getVariable().getIdentifier().getText();
+                selector = makeVar(name, makeJavaType(getSwitchExpressionType(stmt)), switchExpr);
+                ident = naming.makeQuotedIdent(name);
+                JCStatement sw = transformSwitch(stmt, ident);
+                return at(stmt).Block(0, List.of(selector, sw));
+            } else {
+                return transformSwitch(stmt, switchExpr);
+            }
         }
         JCStatement transformSwitch(Tree.SwitchStatement stmt,
                 JCExpression switchExpr) {
@@ -3229,12 +3263,21 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCStatement transformSwitch(SwitchStatement stmt) {
-            JCExpression selectorExpr = expressionGen().transformExpression(stmt.getSwitchClause().getExpression(), BoxingStrategy.BOXED, getSwitchExpressionType(stmt));
-            Naming.SyntheticName selectorAlias = naming.alias("sel");
-            JCVariableDecl selector = makeVar(selectorAlias, makeJavaType(getSwitchExpressionType(stmt)), selectorExpr);
+            JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(stmt), BoxingStrategy.BOXED, getSwitchExpressionType(stmt));
+            JCVariableDecl selector;
+            JCIdent ident;
+            if (hasVariable(stmt)) {
+                String name = stmt.getSwitchClause().getSwitched().getVariable().getIdentifier().getText();
+                selector = makeVar(name, makeJavaType(getSwitchExpressionType(stmt)), selectorExpr);
+                ident = naming.makeQuotedIdent(name);
+            } else {
+                Naming.SyntheticName selectorAlias = naming.alias("sel");
+                selector = makeVar(selectorAlias, makeJavaType(getSwitchExpressionType(stmt)), selectorExpr);
+                ident = selectorAlias.makeIdent();
+            }
             // Make a switch out of the non-null cases
             JCStatement switch_ = new Switch().transformSwitch(stmt, 
-                    expressionGen().applyErasureAndBoxing(selectorAlias.makeIdent(), 
+                    expressionGen().applyErasureAndBoxing(ident, 
                             getDefiniteSwitchExpressionType(stmt),
                             true,
                             BoxingStrategy.UNBOXED,
@@ -3244,7 +3287,7 @@ public class StatementTransformer extends AbstractTransformer {
             for (Tree.CaseClause caseClause : getCaseClauses(stmt)) {
                 Tree.Term term = getSingletonNullCase(caseClause);
                 if (term != null) {
-                    ifElse  = make().If(make().Binary(JCTree.EQ, selectorAlias.makeIdent(), makeNull()),
+                    ifElse  = make().If(make().Binary(JCTree.EQ, ident, makeNull()),
                             transform(caseClause.getBlock()), 
                             make().Block(0, List.<JCStatement>of(switch_)));
                     break;
@@ -3313,7 +3356,7 @@ public class StatementTransformer extends AbstractTransformer {
                     selectorType = make().Type(syms().objectType);
                 }
             }
-            JCExpression selectorExpr = expressionGen().transformExpression(stmt.getSwitchClause().getExpression(), bs, getSwitchExpressionType(stmt));
+            JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(stmt), bs, getSwitchExpressionType(stmt));
             Naming.SyntheticName selectorAlias = naming.alias("sel");
             
             JCVariableDecl selector = makeVar(selectorAlias, selectorType, selectorExpr);
@@ -3351,7 +3394,7 @@ public class StatementTransformer extends AbstractTransformer {
      */
     JCStatement transform(Tree.SwitchStatement stmt) {
         SwitchTransformation transformation = null;
-        ProducedType exprType = stmt.getSwitchClause().getExpression().getTypeModel();
+        ProducedType exprType = switchExpressionType(stmt);
         // Are we switching with just String literal or Character literal match cases? 
         if (isJavaSwitchableType(exprType)) {
             boolean canUseSwitch = true;
