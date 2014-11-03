@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
@@ -5193,27 +5194,46 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-        super.visit(that);
-//        Declaration d = that.getDeclaration();
-//        if (!d.isStaticallyImportable()) {
-            Tree.Term p = that.getPrimary();
-            while (p instanceof Tree.Expression &&
-                    p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
-                p = ((Tree.Expression) p).getTerm();
-            }
-            if (p instanceof Tree.MemberOrTypeExpression) {
-                Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
-                if (!(that.getStaticMethodReference()) && 
-                        pd instanceof Functional) {
-                    //this is a direct function ref
-                    //its not a type, it can't have members
-                    that.addError("direct function references do not have members");
-                }
-            }
-//        }
-    }
-    
+   @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+       super.visit(that);
+       Tree.Term p = that.getPrimary();
+       //TODO: what the hell is this for:
+       while (p instanceof Tree.Expression &&
+               p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
+           p = ((Tree.Expression) p).getTerm();
+       }
+       if (p instanceof Tree.MemberOrTypeExpression) {
+           Tree.MemberOrTypeExpression mte = 
+                   (Tree.MemberOrTypeExpression) p;
+           Declaration pd = mte.getDeclaration();
+           if (p instanceof Tree.BaseTypeExpression || 
+               p instanceof Tree.QualifiedTypeExpression) {
+               if (p instanceof Tree.QualifiedTypeExpression) {
+                   Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
+                   if (pd instanceof Class && ((Class) pd).hasConstructors()) { //TODO: this hack depends on Java classes never having constructors!
+                       if ((pp instanceof Tree.BaseTypeExpression) ||
+                               (pp instanceof Tree.QualifiedTypeExpression)) {
+                           that.getPrimary().addError("static type expression qualifies constructor reference");
+                       }
+                   }
+                   else { 
+                       if (!(pp instanceof Tree.BaseTypeExpression) &&
+                               !(pp instanceof Tree.QualifiedTypeExpression) &&
+                               !(pp instanceof Tree.Package)) {
+                           that.getPrimary().addError("non-static type expression qualifies static member reference");
+                       }
+                   }
+               }
+           }
+           if (!(that.getStaticMethodReference()) && 
+                   pd instanceof Functional) {
+               //this is a direct function ref
+               //its not a type, it can't have members
+               that.addError("direct function references do not have members");
+           }
+       }
+   }
+
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
         boolean notDirectlyInvoked = !that.getDirectlyInvoked();

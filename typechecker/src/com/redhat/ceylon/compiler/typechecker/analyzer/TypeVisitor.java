@@ -1610,18 +1610,12 @@ public class TypeVisitor extends Visitor {
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         Tree.Primary p = that.getPrimary();
         if (p instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) p;
             if (p instanceof Tree.BaseTypeExpression || 
                 p instanceof Tree.QualifiedTypeExpression) {
                 that.setStaticMethodReference(true);
-                ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
-                if (p instanceof Tree.QualifiedTypeExpression) {
-                    Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
-                    if (!(pp instanceof Tree.BaseTypeExpression) &&
-                            !(pp instanceof Tree.QualifiedTypeExpression) &&
-                            !(pp instanceof Tree.Package)) {
-                        that.getPrimary().addError("non-static type expression in static member reference");
-                    }
-                }
+                mte.setStaticMethodReferencePrimary(true);
             }
         }
         if (p instanceof Tree.Package) {
