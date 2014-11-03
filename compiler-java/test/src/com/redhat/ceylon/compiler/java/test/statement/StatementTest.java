@@ -505,6 +505,11 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("swtch/SwitchValues");
     }
     
+    @Test
+    public void testSwitchInlineVar(){
+        compareWithJavaSource("swtch/SwitchInlineVar");
+    }
+    
     
     @Test
     public void testReturnAnonFunction(){

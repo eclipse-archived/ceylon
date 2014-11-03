@@ -1,0 +1,109 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+class SwitchInlineVar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    SwitchInlineVar() {
+    }
+    
+    public final .java.lang.String m1() {
+        final .java.lang.String name;
+        {
+            .java.lang.Object sel$0 = m1helper$priv$();
+            if (sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String b$2 = ((.ceylon.language.String)sel$0).toString();
+                name = "String: " + b$2;
+            } else if (sel$0 instanceof .java.lang.Exception) {
+                final .java.lang.Exception b$1 = (.java.lang.Exception)sel$0;
+                name = "Exception: " + .com.redhat.ceylon.compiler.java.Util.throwableMessage(b$1);
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+        return name;
+    }
+    
+    private final .java.lang.Object m1helper$priv$() {
+        return .ceylon.language.String.instance("");
+    }
+    
+    public final .java.lang.String m2() {
+        final .java.lang.String name;
+        {
+            .java.lang.String b = m2helper$priv$();
+            switch_1: switch (b) {
+            case "aap": 
+                {
+                    name = "Monkey: " + b;
+                }
+                break switch_1;
+            
+            case "noot": 
+                {
+                    name = "Nut: " + b;
+                }
+                break switch_1;
+            
+            default: 
+                {
+                    name = b;
+                }
+            
+            }
+        }
+        return name;
+    }
+    
+    private final .java.lang.String m2helper$priv$() {
+        return "";
+    }
+    
+    public final .java.lang.String m3() {
+        final .java.lang.String name;
+        {
+            .ceylon.language.String b = m3helper$priv$();
+            if (b == null) {
+                name = "NULL";
+            } else {
+                switch_2: switch (b.toString()) {
+                case "aap": 
+                    {
+                        name = .ceylon.language.String.instance("Monkey: ").plus((
+                            let
+                            {
+                                .ceylon.language.String $ceylontmp$3 = b;
+                            }
+                            returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.String.instance("?");
+                        )).toString();
+                    }
+                    break switch_2;
+                
+                default: 
+                    {
+                        name = (
+                            let
+                            {
+                                .ceylon.language.String $ceylontmp$4 = b;
+                            }
+                            returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("?");
+                        ).toString();
+                    }
+                
+                }
+            }
+        }
+        return name;
+    }
+    
+    private final .ceylon.language.String m3helper$priv$() {
+        return .ceylon.language.String.instance("");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchInlineVar();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchInlineVar.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchInlineVar.class);
+}
