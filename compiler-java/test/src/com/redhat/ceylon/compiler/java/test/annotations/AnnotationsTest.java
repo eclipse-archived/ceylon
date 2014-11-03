@@ -56,6 +56,10 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("attribute");
     }
     @Test
+    public void testConstructor(){
+        compareWithJavaSource("Constructor");
+    }
+    @Test
     public void testMemberClass(){
         compareWithJavaSource("MemberKlass");
     }
