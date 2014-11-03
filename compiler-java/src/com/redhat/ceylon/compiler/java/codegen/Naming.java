@@ -915,6 +915,8 @@ public class Naming implements LocalId {
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
+            if(decl.isAnonymous())
+                return prefixName(Prefix.$default$, param.getName());
             return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof ClassOrInterface) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
