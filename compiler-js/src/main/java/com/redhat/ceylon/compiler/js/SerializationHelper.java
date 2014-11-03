@@ -83,22 +83,22 @@ public class SerializationHelper {
         //Call super.deser$$ if possible
         boolean create = true;
         com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        if (d.isMember()) {
+            gen.out("//TODO getOuterInstance");
+            gen.endLine();
+        }
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.out(ni, "=");
                 if (gen.qualify(that, et)) {
                     gen.out(".");
                 }
-                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$(", dc, ");");
+                gen.out(gen.getNames().name(et), ".$$.prototype.deser$$(", dc, ");");
                 gen.endLine();
                 create = false;
             }
         }
         //Otherwise create a new instance
-        if (d.isMember()) {
-            gen.out("//TODO getOuterInstance");
-            gen.endLine();
-        }
         if (create) {
             gen.out(ni, "=new ");
             if (d.isMember()) {
