@@ -88,6 +88,7 @@ import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -1336,7 +1337,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.TypeLiteral expr) {
         at(expr);
         if(!expr.getWantsDeclaration()){
-            return makeTypeLiteralCall(expr.getType().getTypeModel(), true, expr.getTypeModel());
+            if (expr.getDeclaration() instanceof Constructor) {
+                JCExpression classLiteral = makeTypeLiteralCall(expr.getType().getTypeModel().getQualifyingType(), false, expr.getTypeModel());
+                JCTypeCast typeCast = make().TypeCast(makeJavaType(((TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("ClassModel")).getType(), JT_RAW), classLiteral);
+                return make().Apply(null, 
+                        naming.makeQualIdent(typeCast, "getDeclaredConstructor"),
+                        List.<JCExpression>of(
+                                makeNull(),
+                                make().Literal(expr.getDeclaration().getName())));
+            } else {
+                return makeTypeLiteralCall(expr.getType().getTypeModel(), true, expr.getTypeModel());
+            }
         }else if(expr.getDeclaration() instanceof TypeParameter){
             // we must get it from its container
             TypeParameter declaration = (TypeParameter)expr.getDeclaration();
@@ -1353,6 +1364,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return make().TypeCast(type, metamodelCall);
             }
             return metamodelCall;
+        }else if (expr.getDeclaration() instanceof Constructor) {
+            JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass((Constructor)expr.getDeclaration()));
+            metamodelCall = make().TypeCast(
+                    makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
+            return make().Apply(null, 
+                    naming.makeQualIdent(metamodelCall, "getDeclaredConstructorDeclaration"), 
+                    List.<JCExpression>of(make().Literal(expr.getDeclaration().getName())));
         }else{
             return makeErroneous(expr, "compiler bug: " + expr.getDeclaration() + " is an unsupported declaration type");
         }
