@@ -4493,6 +4493,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
         
         ctorDb.modelAnnotations(makeAtConstructor());
+        ctorDb.userAnnotations(expressionGen().transform(that.getAnnotationList()));
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         
         if (Decl.isDefaultConstructor(ctor)) {
