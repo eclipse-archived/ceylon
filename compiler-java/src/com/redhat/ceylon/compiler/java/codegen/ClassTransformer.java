@@ -1368,6 +1368,15 @@ public class ClassTransformer extends AbstractTransformer {
                 final ProducedType serializedValueType;
                 JCExpression serializedValue;
                 //if (Decl.isValueTypeDecl(simplifyType(value.getType()))) {
+                
+                if (value.isLate()) {
+                    stmts.add(make().If(
+                            make().Unary(JCTree.NOT, 
+                                    naming.makeUnquotedIdent(naming.getInitializationFieldName(value.getName()))), 
+                            makeThrowAssertionException(make().Literal("instance cannot be serialized: " + member.getQualifiedNameString() + " has not been initialized")), 
+                            null));
+                }
+                
                 serializedValueType = value.getType();
                 if (value.isToplevel() || value.isLate()) {
                     serializedValue = make().Apply(null, naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_MEMBER), List.<JCExpression>nil());

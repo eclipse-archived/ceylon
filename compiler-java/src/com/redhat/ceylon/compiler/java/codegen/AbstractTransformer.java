@@ -4812,4 +4812,12 @@ public abstract class AbstractTransformer implements Transformation {
         at(error.getNode());
         return makeThrowUnresolvedCompilationError(errorMessage != null ? errorMessage : "compiler bug: error with unknown message");
     }
+    
+    JCThrow makeThrowAssertionException(JCExpression messageExpr) {
+        JCExpression exception = make().NewClass(null, null,
+                makeIdent(syms().ceylonAssertionErrorType),
+                List.<JCExpression>of(messageExpr),
+                null);
+        return make().Throw(exception);
+    }
 }
