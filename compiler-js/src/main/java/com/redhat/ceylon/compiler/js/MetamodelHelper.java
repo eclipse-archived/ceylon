@@ -77,6 +77,7 @@ public class MetamodelHelper {
         if (Objects.equals(that.getUnit().getPackage().getModule(), d.getUnit().getPackage().getModule())) {
             gen.out("lmp$(ex$,'");
         } else {
+            //TODO use $ for language module as well
             gen.out("fmp$('", m.getNameAsString(), "','", m.getVersion(), "','");
         }
         gen.out("ceylon.language".equals(pkgname) ? "$" : pkgname, "'),");
