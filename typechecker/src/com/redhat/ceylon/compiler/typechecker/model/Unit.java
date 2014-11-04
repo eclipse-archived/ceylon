@@ -1373,11 +1373,11 @@ public class Unit {
             ProducedType qt = pr.getQualifyingType();
             if (qt!=null && !qt.getDeclaration().isToplevel()) {
                 ProducedType qqt = qt.getQualifyingType();
-                return producedType(getLanguageModuleModelTypeDeclaration("Method"),
+                return producedType(getLanguageModuleModelTypeDeclaration("MemberClassConstructor"),
                         qqt, returnType, parameterTuple);
             }
             else {
-                return producedType(getLanguageModuleModelTypeDeclaration("Function"),
+                return producedType(getLanguageModuleModelTypeDeclaration("Constructor"),
                         returnType, parameterTuple);
             }
         }
