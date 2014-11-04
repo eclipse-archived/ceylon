@@ -234,6 +234,9 @@ public final class Tuple<Element, First extends Element,
         if (getSize()==1) {
             return (Rest) empty_.get_();
         }
+        else if (this.array.length == 1) {
+            return (Rest)rest;
+        }
         else {
             TypeDescriptor typeArg = ((TypeDescriptor.Class)
             		((TypeDescriptor.Class)$getType$()).getTypeArguments()[2])
