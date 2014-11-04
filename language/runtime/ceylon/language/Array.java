@@ -1575,7 +1575,10 @@ public final class Array<Element>
     public Array($Serialization$ ignored, TypeDescriptor $reifiedElement) {
         super(ignored, $reifiedElement);
         this.$reifiedElement = $reifiedElement;
+        this.elementType = elementType($reifiedElement);
         this.array = null;
+        this.size = 0;
+        
     }
     
     @Ignore
@@ -1609,7 +1612,7 @@ public final class Array<Element>
             
             ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
             Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
-            
+            Util.setter(MethodHandles.lookup(), "size").invokeExact(this, Util.toInt(size.value));
             Util.setter(MethodHandles.lookup(), "array").invokeExact(this, createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null));
             
             for (int ii = 0; ii < size.value; ii++) {
