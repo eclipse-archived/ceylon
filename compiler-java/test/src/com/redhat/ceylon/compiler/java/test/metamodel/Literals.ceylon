@@ -90,9 +90,9 @@ void literals<T>(){
     ConstructorDeclaration ctorDecl = `new LitClassWithConstructors.LitClassWithConstructors`;
     Constructor<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.Other`; 
     ConstructorDeclaration ctorOtherDecl = `new LitClassWithConstructors.Other`;
-    //TODO Constructor<LitParameterisedClassWithConstructors, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>.LitParameterisedClassWithConstructors`;
+    Constructor<LitParameterisedClassWithConstructors<String>, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>.LitParameterisedClassWithConstructors`;
     ConstructorDeclaration ctorDecl2 = `new LitParameterisedClassWithConstructors.LitParameterisedClassWithConstructors`;
-    //TODO Constructor<LitParameterisedClassWithConstructors, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.Other`;
+    Constructor<LitParameterisedClassWithConstructors<String>, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.Other`;
     ConstructorDeclaration ctorDeclOther2 = `new LitParameterisedClassWithConstructors.Other`;
     
     // Interfaces

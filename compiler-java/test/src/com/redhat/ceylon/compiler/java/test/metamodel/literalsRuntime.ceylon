@@ -77,5 +77,8 @@ void literalsRuntime2<T>(){
     
     assert("LitClassWithConstructors" == `new LitClassWithConstructors.LitClassWithConstructors`.name);
     assert(`class LitClassWithConstructors` == `new LitClassWithConstructors.LitClassWithConstructors`.container);
+    
+    assert(`new LitClassWithConstructors.LitClassWithConstructors` == `LitClassWithConstructors.LitClassWithConstructors`.declaration);
+    assert("LitClassWithConstructors" == `LitClassWithConstructors.LitClassWithConstructors`.declaration.name);
 }
 
