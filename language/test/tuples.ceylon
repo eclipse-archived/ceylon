@@ -129,4 +129,5 @@ shared void tuples() {
     check(["a", *concatenate(["b"])].append(["c"]) == ["a", "b", "c"], "Tuple.append with sequential rest");
     check(["b", *concatenate(["c"])].withLeading("a") == ["a", "b", "c"], "Tuple.withLeading with sequential rest");
     check(["a", *concatenate(["b"])].withTrailing("c") == ["a", "b", "c"], "Tuple.withTrailing with sequential rest");
+    value bug584 = [42, *(1..3)].rest;
 }
