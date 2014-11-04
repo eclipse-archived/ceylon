@@ -599,10 +599,10 @@ public class Unit {
         }*/
     }
     
-    public ProducedType getPossiblyNoneType(ProducedType pt) {
+    public ProducedType getPossiblyEmptyType(ProducedType pt) {
         return pt==null ? null :
-            unionType(pt, producedType(getSequentialDeclaration(),
-                    getType(getAnythingDeclaration())), this);
+            producedType(getSequentialDeclaration(),
+                    getSequentialElementType(pt));
     }
     
     public ProducedType getOptionalType(ProducedType pt) {

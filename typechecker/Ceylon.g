@@ -2578,10 +2578,24 @@ defaultedType returns [Type type]
       { $type=$variadicType.type; }
     ;
 
+spreadType returns [Type type]
+    @init { SpreadType spt = null; }
+    : PRODUCT_OP
+      { spt = new SpreadType($PRODUCT_OP);
+        $type=spt; }
+      (
+        sp=type
+        { spt.setType($sp.type); }
+      )?
+    ;
+
 tupleType returns [TupleType type]
     : LBRACKET
       { $type = new TupleType($LBRACKET); }
       (
+        spt=spreadType
+        { $type.addElementType($spt.type); }
+      |
         t1=defaultedType
         { $type.addElementType($t1.type); }
         (
@@ -2732,6 +2746,9 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
+            spt=spreadType
+            { bt.addArgumentType($spt.type); }
+          |
             t1=defaultedType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
@@ -3744,6 +3761,14 @@ BACKTICK
     : '`'
     ;
 
+ABSTRACTED_TYPE
+    :   'abstracts'
+    ;
+
+ALIAS
+    :   'alias'
+    ;
+
 ASSEMBLY
     : 'assembly'
     ;
@@ -3752,18 +3777,10 @@ ASSERT
     : 'assert'
     ;
 
-ABSTRACTED_TYPE
-    :   'abstracts'
-    ;
-
 ASSIGN
     :   'assign'
     ;
     
-ALIAS
-    :   'alias'
-    ;
-
 BREAK
     :   'break'
     ;
@@ -3808,6 +3825,10 @@ FOR_CLAUSE
     :   'for'
     ;
 
+FUNCTION_MODIFIER
+    :   'function'
+    ;
+
 TYPE_CONSTRAINT
     :   'given'
     ;
@@ -3816,24 +3837,20 @@ IF_CLAUSE
     :   'if'
     ;
 
-SATISFIES
-    :   'satisfies'
-    ;
-
 IMPORT
     :   'import'
+    ;
+
+IN_OP
+    :   'in'
     ;
 
 INTERFACE_DEFINITION
     :   'interface'
     ;
 
-VALUE_MODIFIER
-    :   'value'
-    ;
-
-FUNCTION_MODIFIER
-    :   'function'
+IS_OP
+    :   'is'
     ;
 
 LET
@@ -3848,16 +3865,36 @@ NEW
     :   'new'
     ;
 
-PACKAGE
-    :   'package'
-    ;
-
 NONEMPTY
     :   'nonempty'
     ;
 
+OBJECT_DEFINITION
+    :   'object'
+    ;
+
+CASE_TYPES
+    :   'of'
+    ;
+
+OUT
+    :   'out'
+    ;
+
+OUTER
+    :   'outer'
+    ;
+
+PACKAGE
+    :   'package'
+    ;
+
 RETURN
     :   'return'
+    ;
+
+SATISFIES
+    :   'satisfies'
     ;
 
 SUPER
@@ -3876,28 +3913,16 @@ THIS
     :   'this'
     ;
 
-OUTER
-    :   'outer'
-    ;
-
-OBJECT_DEFINITION
-    :   'object'
-    ;
-
-CASE_TYPES
-    :   'of'
-    ;
-
-OUT
-    :   'out'
-    ;
-
 THROW
     :   'throw'
     ;
 
 TRY_CLAUSE
     :   'try'
+    ;
+
+VALUE_MODIFIER
+    :   'value'
     ;
 
 VOID_MODIFIER
@@ -4069,14 +4094,6 @@ COMPARE_OP
     :   '<=>'
     ;
     
-IN_OP
-    :   'in'
-    ;
-
-IS_OP
-    :   'is'
-    ;
-
 POWER_OP
     :    '^'
     ;
