@@ -12,7 +12,7 @@
  "
 shared sealed
 interface SerializationContext
-        satisfies {SerializableReference<Object?>*} /*& Category<Object>*/ {
+        satisfies {SerializableReference<Anything>*} /*& Category<Object>*/ {
     // XXX Category<Object> but ought to be Category<Object?>, surely?
     "Create a reference to the given [[instance]], assigning it 
      the given [[identifer|id]]."
@@ -25,7 +25,7 @@ interface SerializationContext
     "An iterator over each of the objects which have 
      been [[registered|reference]] with this context."
     shared actual formal
-    Iterator<SerializableReference<Object?>> iterator();
+    Iterator<SerializableReference<Anything>> iterator();
     
     /*"Whether the given instance has been registered with this context"
     shared actual formal

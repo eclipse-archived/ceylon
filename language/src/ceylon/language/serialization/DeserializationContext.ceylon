@@ -19,7 +19,7 @@ import ceylon.language.meta.model {
  "
 shared sealed
 interface DeserializationContext
-        satisfies {Reference<Object?>*} {
+        satisfies {Reference<Anything>*} {
     
     "Obtain a reference to the instance of toplevel [[Class]] with 
      the given [[identifer|id]]."
