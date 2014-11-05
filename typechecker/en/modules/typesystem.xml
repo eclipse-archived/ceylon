@@ -193,7 +193,7 @@
                 and</para>
             </listitem>
             <listitem>
-                <para>packages have their own dedicated namespace.</para>
+                <para>packages and modules have their own dedicated namespace.</para>
             </listitem>
         </itemizedlist>
         
@@ -206,8 +206,8 @@
         uppercase letter may be forced into the namespace of methods and attributes
         by prefixing the identifier <literal>\i</literal>. A keyword may be used as 
         an identifier by prefixing the keyword with either <literal>\i</literal> or 
-        <literal>\I</literal>. This allows interoperation with languages like Java 
-        which do not enforce these naming conventions.</para>
+        <literal>\I</literal>. This allows interoperation with other languages like 
+        Java and JavaScript which do not enforce these naming conventions.</para>
         
     </section>
       
@@ -267,8 +267,8 @@
         or <emphasis>toplevel value</emphasis>.</para>
         
         <para>A value schema, function schema, or parameter list with a missing type or types 
-        may be defined. A value schema, function schema, or parameter list with a missing type 
-        is called <emphasis>partially typed</emphasis>.</para>
+        may be defined. Any such schema, or parameter list with a missing type is called 
+        <emphasis>partially typed</emphasis>.</para>
         
         <para>Two signatures are considered identical if they have exactly the same types, at
         exactly the same positions, and missing types at exactly the same positions.</para> 
@@ -292,7 +292,12 @@
                     <para>two member classes with the same name.</para>
                 </listitem>
             </itemizedlist>
-        
+            
+            <comment><para>Note: the Ceylon compiler itself is able to represent type schemas 
+            with overloaded members and reason about overloading, and does so when compiling 
+            code that calls native Java types. However, this behavior is outside the scope of 
+            this specification.</para></comment>
+            
         </section>
         
         <section id="subtyping">
@@ -331,7 +336,7 @@
             <!--comment><para>Note: intersections and <literal>Nothing</literal> don't satisfy the last of 
             these rules.</para></comment-->
             
-            <para>Every interface type is a subtype of the class <literal>Object</literal> 
+            <para>Also, every interface type is a subtype of the class <literal>Object</literal> 
             defined in <literal>ceylon.language</literal>.</para>
             
             <para>If <literal>X</literal> is a subtype of <literal>Y</literal>, then:</para>
@@ -373,6 +378,9 @@
             of the types may be formed. A union type is a supertype of both of the given types 
             <literal>X</literal> and <literal>Y</literal>, and an instance of either type is an 
             instance of the union type.</para>
+            
+            <comment><para>Note: the type expression <literal>X|Y</literal> is pronounced
+            &#8220;x or y&#8221;.</para></comment>
             
             <para>The union type constructor <literal>|</literal> is associative, so the union 
             of three types, <literal>X</literal>, <literal>Y</literal>, and <literal>Z</literal>, 
@@ -469,6 +477,9 @@
             subtype of both of the given types <literal>X</literal> and <literal>Y</literal>, 
             and any object which is an instance of both types is an instance of the intersection 
             type.</para>
+            
+            <comment><para>Note: the type expression <literal>X&amp;Y</literal> is pronounced
+            &#8220;x and y&#8221;.</para></comment>
             
             <para>The intersection type constructor <literal>&amp;</literal> is associative, 
             so the intersection of three types, <literal>X</literal>, <literal>Y</literal>, 
@@ -707,12 +718,11 @@
             <synopsis>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</synopsis>   
             <synopsis>AtomicType: QualifiedType | EmptyType | TupleType | IterableType</synopsis>
             
-            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
-            <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
+            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis> 
+            and <emphasis>sequence types</emphasis>.</para>
                     
             <synopsis>OptionalType: PrimaryType "?"</synopsis>
             <synopsis>SequenceType: PrimaryType "[" "]"</synopsis>
-            <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -723,6 +733,18 @@
                     <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
                     for any type <literal>X</literal>,</para>
                 </listitem>
+           </itemizedlist>
+           
+           <comment><para>Note: the type expression <literal>X?</literal> is pronounced
+           as &#8220;maybe x&#8221;, and <literal>X[]</literal> as 
+           &#8220;sequence of x&#8221;.</para></comment>
+           
+           <para>Next, there are type abbreviations for <emphasis>callable types</emphasis>
+           which represent the types of a functions.</para>
+           
+           <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
+            
+           <itemizedlist>
                 <listitem>
                     <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
                     where <literal>Y,Z</literal> is a list of types of any length, and</para>
@@ -746,11 +768,6 @@
             <synopsis>IterableType: "{" UnionType ("*"|"+") "}"</synopsis>
             
             <itemizedlist>
-                <!--listitem>
-                    <para><literal>{}</literal> means 
-                    <literal>Iterable&lt;Nothing,Null&gt;</literal>,</para>
-                    //causes ambiguity with syntax for annotation named args
-                </listitem-->
                 <listitem>
                     <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
                     for any type <literal>X</literal>, and</para>
@@ -760,6 +777,10 @@
                     for any type <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>Note: the type expression <literal>{X*}</literal> is pronounced
+            as &#8220;stream of x&#8221;, and <literal>{X+}</literal> as 
+            &#8220;nonempty stream of x&#8221;.</para></comment>
             
             <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
             <emphasis>tuple types</emphasis> may be written using brackets.</para>
