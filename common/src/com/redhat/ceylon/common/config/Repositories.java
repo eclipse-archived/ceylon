@@ -247,8 +247,37 @@ public class Repositories {
         return null;
     }
     
-    private Repository getRepositoryByType(String repoType) {
+    public Repository[] getRepositoriesByTypeWithDefaults(String repoType) {
+        if (repoType.equals(REPO_TYPE_SYSTEM)) {
+            return new Repository[] { getSystemRepository() };
+        } else if (repoType.equals(REPO_TYPE_OUTPUT)) {
+            return new Repository[] { getOutputRepository() };
+        } else if (repoType.equals(REPO_TYPE_CACHE)) {
+            return new Repository[] { getCacheRepository() };
+        }  else if (repoType.equals(REPO_TYPE_LOCAL_LOOKUP)) {
+            return getLocalLookupRepositories();
+        }  else if (repoType.equals(REPO_TYPE_GLOBAL_LOOKUP)) {
+            return getGlobalLookupRepositories();
+        }  else if (repoType.equals(REPO_TYPE_REMOTE_LOOKUP)) {
+            return getRemoteLookupRepositories();
+        }  else if (repoType.equals(REPO_TYPE_OTHER_LOOKUP)) {
+            return getOtherLookupRepositories();
+        } else {
+            return getRepositoriesByType(repoType);
+        }
+    }
+    
+    public Repository getRepositoryByType(String repoType) {
         Repository[] repos = getRepositoriesByType(repoType);
+        if (repos != null) {
+            return repos[0];
+        } else {
+            return null;
+        }
+    }
+    
+    public Repository getRepositoryByTypeWithDefaults(String repoType) {
+        Repository[] repos = getRepositoriesByTypeWithDefaults(repoType);
         if (repos != null) {
             return repos[0];
         } else {
