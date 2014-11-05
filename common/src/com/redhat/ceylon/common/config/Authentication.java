@@ -151,20 +151,17 @@ public class Authentication {
                     throw new RuntimeException(msg("missing", store.getFilename(), passwordKeystore));
                 }
                 String protection = store.getProtection();
-                switch (protection) {
-                case "both":
-                case "store":
+                if (protection.equals("both") || protection.equals("store")) {
                     PromptedPassword storePassword = new PromptedPassword(
                             msg("keystore.password.prompt", store.getFilename(), passwordKeystore));
                     storePass = storePassword.getPassword();
-                    break;
-                case "entry":
+                } else if (protection.equals("entry")) {
                     PromptedPassword entryPassword = new PromptedPassword(
                             msg("entry.password.prompt", store.getFilename(), passwordKeystore));
                     entryPass = entryPassword.getPassword();
-                case "none":
-                    break;
-                default:
+                } else if (protection.equals("none")) {
+                    // Nothing to do here
+                } else {
                     throw new RuntimeException(msg("unknown.protection", store.getFilename(), passwordKeystore, protection));
                 }
                 if ("both".equals(protection)) {

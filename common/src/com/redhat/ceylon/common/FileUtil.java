@@ -103,7 +103,7 @@ public class FileUtil {
      */
     public static List<File> applyCwd(File cwd, List<File> files) {
         if (files != null) {
-            List<File> result = new ArrayList<>(files.size());
+            List<File> result = new ArrayList<File>(files.size());
             for (File f : files) {
                 result.add(applyCwd(cwd, f));
             }
@@ -125,7 +125,7 @@ public class FileUtil {
      */
     public static Iterable<File> applyCwd(File cwd, Iterable<File> files) {
         if (files != null) {
-            List<File> result = new ArrayList<>();
+            List<File> result = new ArrayList<File>();
             for (File f : files) {
                 result.add(applyCwd(cwd, f));
             }
