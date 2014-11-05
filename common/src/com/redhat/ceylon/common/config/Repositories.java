@@ -24,24 +24,23 @@ import com.redhat.ceylon.common.FileUtil;
  *   other  - Predefined remote repositories (like Herd)
  *   
  * The "system" section by default contains a reference to the system global repository,
- * which normally is something like "%CEYLONHOME%/repo". Do not override.
+ * which by default is +SYSTEM (see below). Do not override.
  * 
  * The "cache" section is where modules downloaded from remote repositories are kept so they
- * don't have to be downloaded each time. By default this points to "%USER_HOME%/.ceylon/cache".
+ * don't have to be downloaded each time. By default this is +CACHE (see below).
  * 
- *  The "output" section is where newly compiled modules are stored. By default this is "./modules".
+ * The "output" section is where newly compiled modules are stored. By default this is "./modules".
  *  
- *  The "lookup" section is for modules local to the project and other user-defined
- *  repositories. By default this is "./modules".
+ * The "lookup" section is for modules local to the project and other user-defined
+ * repositories. By default this is +LOCAL (see below).
  *  
- *  The "global" section is meant for pre-defined, essential, non-remote repositories.
- *  By default this is "%USER_HOME%/.ceylon/repo". It's normally not advisable to override this.
+ * The "global" section is meant for predefined, essential, non-remote repositories.
+ * By default this is +USER (see below). It's normally not advisable to override this.
  *  
- *  The "remote" section is meant for user-defined remote repositories. By default this is empty.
+ * The "remote" section is meant for user-defined remote repositories. By default this is empty.
  * 
- *  The "other" section is meant for pre-defined, essential, remote repositories. By default
- *  this is points to the official Ceylon Herd repository. It's normally not advisable to
- *  override this.
+ * The "other" section is meant for predefined, essential, remote repositories. By default
+ * this is +REMOTE (see below). It's normally not advisable to override this.
  *  
  * The [repositories] section in a configuration file can be used to override the default
  * values for those entries thereby changing or extending the lookup order. Take a look at
@@ -55,7 +54,7 @@ import com.redhat.ceylon.common.FileUtil;
  *   lookup=/usr/local/ceylon/even-more-modules
  *   remote=http://ceylon.example.com # An external site with Ceylon modules
  *
- * First of all, the values for ouput and cache (as well as system, but you should normally
+ * First of all, the values for output and cache (as well as system, but you should normally
  * never try overriding it) can only be specified once, while the others (lookup, global and
  * remote) can be specified multiple times, Ceylon will try them one by one in the order you
  * specify in this list.
@@ -66,8 +65,40 @@ import com.redhat.ceylon.common.FileUtil;
  * global, which will always be tried before remote.
  * 
  * The remote entry doesn't have any default value, so it can be easily used without having to
- * worry about pre-existing values. It's specifically meant to add extra (normally remote)
- * respositories that will be tried after all other options have been exhausted.
+ * worry about preexisting values. It's specifically meant to add extra (normally remote)
+ * repositories that will be tried after all other options have been exhausted.
+ * 
+ * It's also possible to define single repositories in their own named sections. Either so
+ * you can easily refer to them by name or because you need to specify credentials in case
+ * of repositories that need authentication. For example:
+ * 
+ *   [repository "Test"]
+ *   url=http://modules.ceylon-lang.org/repo/1
+ *   user=john
+ *   password=secret
+ *   
+ * You can then refer to that from with the [repositories] section like this (see the + sign):
+ * 
+ *   [repositories]
+ *   output=+Test
+ *   
+ * Or from the command line:
+ * 
+ *   ceylon compile --out +Test com.example.helloworld
+ *   
+ * There are several predefined repositories like this that have default values but that can
+ * be overridden by explicitly redefining them in the configuration file. These repositories are:
+ * 
+ *   SYSTEM - Which normally is something like "%CEYLONHOME%/repo". Do not override.
+ *   
+ *   LOCAL -  By default this is "./modules".
+ *   
+ *   CACHE -  By default this points to "%USER_HOME%/.ceylon/cache".
+ *   
+ *   USER -   By default this is "%USER_HOME%/.ceylon/repo". It's normally not advisable to override this.
+ *   
+ *   REMOTE - By default this is points to the official Ceylon Herd repository. It's normally not advisable
+ *            to override this.
  * 
  * @author Tako Schotanus (tako@ceylon-lang.org)
  */
