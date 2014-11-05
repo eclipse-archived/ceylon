@@ -7,16 +7,19 @@ shared void testResources() {
     value res2 = mod.resourceByPath("/resource.txt");
     check(res1 exists, "resource by relative path");
     check(res2 exists, "resource by full path");
-    assert(exists r1=res1, exists r2=res2);
-    check("/" in r1.uri, "resource uri 1");
-    check(r1.uri.startsWith("classpath:/"), "resource uri 2");
-    check(!"\\" in r1.uri, "resource uri 3");
-    check(r1.name=="resource.txt", "resource name 1");
-    check(r1.name==r2.name, "resource name 2");
-    check(r1.size==15, "resource size 1");
-    check(r2.size==r1.size, "resource size 2");
-    value txt = r1.textContent();
-    check(txt=="A resource test", "resource content");
+    if (exists r1=res1, exists r2=res2) {
+        check("/" in r1.uri, "resource uri 1");
+        check(r1.uri.startsWith("classpath:/"), "resource uri 2");
+        check(!"\\" in r1.uri, "resource uri 3");
+        check(r1.name=="resource.txt", "resource name 1");
+        check(r1.name==r2.name, "resource name 2");
+        check(r1.size==15, "resource size 1");
+        check(r2.size==r1.size, "resource size 2");
+        value txt = r1.textContent();
+        check(txt=="A resource test", "resource content");
+    } else {
+        fail("resource.txt or /resource.txt not found");
+    }
     //Now for something inside a CAR
     if (runtime.name=="jvm") {
         if (exists carr = mod.resourceByPath("/META-INF/mapping.txt")) {
