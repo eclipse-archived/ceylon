@@ -2062,10 +2062,11 @@ interface NumberLiteral
                 </listitem-->
                 <listitem>
                     <para>A type argument to a type parameter <literal>T</literal> with an 
-                    enumerated type bound must be a subtype of one of the enumerated types
-                    of <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
-                    with an enumerated type bound where every enumerated type of 
-                    <literal>A</literal> is also an enumerated type of <literal>T</literal>.</para>
+                    enumerated bound must be a subtype of one of the enumerated types of the
+                    bound on <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
+                    with an enumerated bound where every enumerated type of the bound on
+                    <literal>A</literal> is a subtype of one of the enumerated types of the 
+                    bound on <literal>T</literal>.</para>
                 </listitem>
                 <!--
                 <listitem>
