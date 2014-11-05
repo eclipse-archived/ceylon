@@ -5791,7 +5791,7 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.ElseClause that) {
         Tree.Variable var = that.getVariable();
         if (var!=null) var.visit(this);
-        if (switchStatement!=null) {
+        if (switchStatement!=null && var!=null) {
             Tree.Expression switchExpression = 
                     switchStatement.getSwitchClause().getExpression();
             Tree.SwitchCaseList switchCaseList = 
