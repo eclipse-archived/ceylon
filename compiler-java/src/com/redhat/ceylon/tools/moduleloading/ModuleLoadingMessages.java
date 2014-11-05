@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.tools.classpath;
+package com.redhat.ceylon.tools.moduleloading;
 
 import java.util.ResourceBundle;
 
 
-class CeylonClasspathMessages extends com.redhat.ceylon.common.Messages {
+public class ModuleLoadingMessages extends com.redhat.ceylon.common.Messages {
 
-    public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(CeylonClasspathMessages.class.getPackage().getName() + ".resources.messages");
+    public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ModuleLoadingMessages.class.getPackage().getName() + ".resources.messages");
 
     public static String msg(String msgKey, Object... msgArgs) {
         return msg(RESOURCE_BUNDLE, msgKey, msgArgs);
