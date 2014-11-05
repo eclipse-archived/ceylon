@@ -6,9 +6,17 @@ import ceylon.language.meta.model.ClassModel;
 import ceylon.language.serialization.Deconstructor;
 import ceylon.language.serialization.SerializableReference;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+@Ceylon(major=7, minor=1)
+@com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters(@TypeParameter("Instance"))
+@SatisfiedTypes({"ceylon.language.serialization::SerializableReference<Instance>"})
 class SerializableReferenceImpl<Instance> 
 implements SerializableReference<Instance>, ReifiedType {
     private final TypeDescriptor reified$Instance;

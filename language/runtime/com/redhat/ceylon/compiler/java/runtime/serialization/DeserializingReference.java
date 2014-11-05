@@ -18,12 +18,21 @@ import ceylon.language.serialization.RealizableReference;
 import ceylon.language.serialization.Reference;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+@Ceylon(major=7, minor=1)
+@com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters(@TypeParameter("Instance"))
+@SatisfiedTypes({"ceylon.language.serialization::DeserializableReference<Instance>",
+        "ceylon.language.serialization::RealizableReference<Instance>"})
 public class DeserializingReference<Instance> 
     implements DeserializableReference<Instance>, RealizableReference<Instance>, $InstanceLeaker$<Instance>, ReifiedType {
     

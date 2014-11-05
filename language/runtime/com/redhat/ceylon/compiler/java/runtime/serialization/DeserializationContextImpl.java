@@ -8,11 +8,8 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
-import ceylon.language.meta.model.ClassModel;
-import ceylon.language.serialization.DeserializableReference;
 import ceylon.language.serialization.DeserializationContext;
 import ceylon.language.serialization.Reference;
-import ceylon.language.serialization.RealizableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
