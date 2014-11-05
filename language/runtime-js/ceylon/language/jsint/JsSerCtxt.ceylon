@@ -9,7 +9,7 @@ native class JsSerCtxt() satisfies SerializationContext {
     refs=dynamic [\ithis];
   }
   shared actual native SerializableReference<Instance> reference<Instance>(Object id, Instance instance);
-  shared actual native Iterator<SerializableReference<Object?>> iterator();
+  shared actual native Iterator<SerializableReference<Anything>> iterator();
 
   shared actual native Boolean contains(Object instance) {
     dynamic {

@@ -7,5 +7,5 @@ function(){
       return dc$.refs[idx-1];
     }
     return getFinished();
-  },{Element$Iterator:{t:Reference$serialization,a:{t:'u',l:[{t:$_Object},{t:Null}]}}});
+  },{Element$Iterator:{t:Reference$serialization,a:{t:Anything}}});
 }
