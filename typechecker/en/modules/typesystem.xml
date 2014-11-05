@@ -57,7 +57,8 @@
         <listitem>
             <para>An <emphasis>applied type</emphasis>, defined in 
             <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
-            generic type parameters of a parameterized type.</para>
+            generic type parameters of a parameterized type declaration, and is called an
+            <emphasis>instantiation</emphasis> of the parameterized type declaration.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
@@ -977,8 +978,8 @@ Float|Integer num = one;</programlisting></comment>
             the types they alias. Thus, circular type alias definitions, as in the 
             following example, are illegal:</para>
             
-            <programlisting><![CDATA[alias X => List<Y>;
-alias Y => List<X>;]]></programlisting>
+            <programlisting><![CDATA[alias X => List<Y>;  //error: circular type alias definition
+alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <para>Replacement of type aliases with the types they alias occurs at 
             compile time, so type aliases are not reified types, as specified in 
@@ -1094,6 +1095,7 @@ alias Y => List<X>;]]></programlisting>
             <para>The type arguments may <emphasis>not</emphasis> be inferred from the 
             initializer arguments.</para>
             
+            <programlisting>extends Singleton&lt;String&gt;("")</programlisting>
             <programlisting>extends Person(name, org)</programlisting>
             
             <para>A member class annotated <literal>actual</literal> may use the qualifier 
@@ -1145,9 +1147,9 @@ alias Y => List<X>;]]></programlisting>
             satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
             must specify type arguments.</para>
             
-            <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
+            <programlisting>satisfies Correspondence&lt;Integer,Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
             
-            <para>A <literal>satisfies</literal> clause may not contain two types produced from 
+            <para>A <literal>satisfies</literal> clause may not contain two instantiations of 
             the same type declaration.</para>
             
         </section>
@@ -1241,7 +1243,7 @@ alias Y => List<X>;]]></programlisting>
             <para>Note: however, a type is <emphasis>not</emphasis> considered automatically 
             assignable to the union of its cases, or to its self type. Instead, the type
             must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, 
-            or to its self type, using either the <literal>of</literal> operator or the
+            nor to its self type, using either the <literal>of</literal> operator or the
             <literal>switch</literal> construct. This narrowing type conversion can be
             statically checked&mdash;if <literal>X</literal> covers <literal>Y</literal>
             then <literal>Y of X</literal> is guaranteed to succeed at runtime.
@@ -1333,7 +1335,7 @@ Item item = comp of Item;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>two types produced from the same type declaration, or</para>
+                    <para>two instantiations of the same type declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>two value references to a single toplevel anonymous class.</para>
@@ -1409,10 +1411,10 @@ interface Function<out Type>
         satisfies Expression<Type> { ... }
 
 interface StringLiteral
-        satisfies Expression<String> { ... }
+        satisfies Expression<String> { ... } //error String is not exactly Nothing
 
 interface NumberLiteral
-        satisfies Expression<Integer|Float> { ... }]]></programlisting>
+        satisfies Expression<Integer|Float> { ... } //error Integer|Float is not exactly Nothing]]></programlisting>
             
             <comment><para>Note: these rules could be relaxed to allow the definition of
             generic enumerated types where the list of cases of an instantiation of a 
@@ -1512,7 +1514,7 @@ interface NumberLiteral
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Function, class, and interface schemas may be parameterized by one or more 
+        <para>A function, class, or interface schema may be parameterized by one or more 
         generic type parameters. A parameterized type schema defines a type constructor, 
         a function that produces a type given a tuple of compatible type arguments. A 
         parameterized class or function schema defines a function that produces the 
@@ -1558,9 +1560,9 @@ interface NumberLiteral
         the body of the <literal>Entry</literal> class. The following identifier names 
         usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>,
         <literal>This</literal>, <literal>Value</literal>, <literal>Key</literal>, 
-        <literal>Item</literal>, <literal>Argument</literal>, <literal>Args</literal> and 
-        <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
-        and classes.</para></comment>
+        <literal>Item</literal>, <literal>Absent</literal>, <literal>Argument</literal>, 
+        <literal>Args</literal> and <literal>Result</literal>. Avoid, where reasonable, using 
+        these names for interfaces and classes.</para></comment>
         
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
@@ -1568,11 +1570,11 @@ interface NumberLiteral
             <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
             over a constrained set of types.</para>
             
-            <synopsis>TypeParameter: Variance? TypeName ("=" Type)</synopsis>
+            <synopsis>TypeParameter: Variance TypeName ("=" Type)</synopsis>
             
             <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
             
-            <synopsis>Variance: "out" | "in"</synopsis>
+            <synopsis>Variance: ("out" | "in")?</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -1894,16 +1896,14 @@ interface NumberLiteral
             <comment><para>Note: in Ceylon 1.0, a type parameter with multiple upper bounds may 
             not have an upper bound which is another type parameter.</para></comment>
             
-            <programlisting><![CDATA[given Value satisfies Ordinal & Comparable<Value>]]></programlisting>
-            
-            <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
+            <programlisting><![CDATA[given Value satisfies Ordinal<Value> & Comparable<Value>]]></programlisting>
             
             <programlisting><![CDATA[given Argument of String | Integer | Float]]></programlisting>
             
             <para>A type parameter is a subtype of its upper bounds.</para>
             
             <programlisting><![CDATA[class Holder<Value>(shared Value value) 
-        extends Object
+        extends Object()
         given Value satisfies Object {
     shared actual Boolean equals(Object that) {
         if (is Holder<Value> that) {
@@ -1997,7 +1997,8 @@ interface NumberLiteral
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
         parameterized function schema. In the case of a type schema, this new schema is
-        the schema of an applied type.</para>
+        the schema of an applied type, and is called an instantiation of the parameterized 
+        type schema.</para>
         
         <para>A type argument list is a list of types.</para>
         
@@ -2008,7 +2009,7 @@ interface NumberLiteral
         
         <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>&lt;String, Person?&gt;</programlisting>
-        <programlisting>&lt;String[], [{Object*}]&gt;</programlisting>
+        <programlisting>&lt;String[](Integer), [{Object*}]&gt;</programlisting>
         
         <para>Type arguments are assigned to type parameters according to the positions
         they occur in the list.</para>

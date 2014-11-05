@@ -1134,7 +1134,7 @@ TypeConstraints?
             <programlisting>class Graph() {
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     class Node() {
-        nodes.add(this);    //compiler error (this reference in initializer)
+        nodes.add(this);    //error: self reference in initializer
     }
 }</programlisting>
             
@@ -1142,7 +1142,7 @@ TypeConstraints?
     class Node() {}
     Node createNode() {
         Node node = Node();
-        nodes.add(node);    //compiler error (forward reference in initializer)
+        nodes.add(node);    //error: forward reference in initializer
         return node;
     }
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();

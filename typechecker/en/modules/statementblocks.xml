@@ -602,7 +602,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>This code is not legal, since the body of a function is an ordinary block:</para>
         
             <programlisting>Float->Float xy() {
-    Float x => y;  //compiler error: y is not referenceable
+    Float x => y;  //error: y is not referenceable
     Float y => x;
     return x->y;
 }</programlisting>
@@ -611,7 +611,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             section of the class body:</para>
         
             <programlisting>class Point() {
-    Float x => y;  //compiler error: y is not referenceable
+    Float x => y;  //error: y is not referenceable
     Float y => x;
     Float->Float xy = x->y;
 }</programlisting>
@@ -663,7 +663,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>The following code is not legal:</para>
             
             <programlisting>interface Point {
-    value x => y;  //compiler error: type of y is not inferrable
+    value x => y;  //error: type of y is not inferrable
     value y => x;
 }</programlisting>
             
