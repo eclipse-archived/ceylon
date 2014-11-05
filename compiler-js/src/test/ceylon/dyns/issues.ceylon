@@ -142,4 +142,69 @@ shared void issues() {
         check(i431.size == 10, "#431");
         check(!i431 is [Anything*], "#431 is not [Anything*]");
     }
+    //#439.1
+    try {
+        dynamic {
+            \iFoo.Bar();
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: Foo");
+    }
+    //#439.2
+    try {
+        dynamic {
+            foo.bar += 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar -= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar *= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar /= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar %= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    /*try {
+        dynamic {
+            foo.bar |= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar &= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }
+    try {
+        dynamic {
+            foo.bar ~= 1;
+        }
+    } catch (Exception e) {
+        check(e.message == "Undefined or null reference: foo");
+    }*/
 }

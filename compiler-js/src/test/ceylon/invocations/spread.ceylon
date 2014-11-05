@@ -70,4 +70,10 @@ void testSpread() {
   check(ints.spread(test367_2)({1,2,3}).sequence()=={6,6,6}, "Issue 367 #3");
   check(ints.spread(test367_3)(3,3).sequence()=={6,6,6}, "Issue 367 #4");
   check(ints.spread(test367_4)(3,3).sequence()=={6,6,6}, "Issue 367 #5");
+  //#436
+  value i436=[[1],[2]]*.map<Integer>;
+  value r436=i436(42.plus);
+  check(r436.size == 2, "Spread callable #436.1");
+  check(r436.first.size == 1, "Spread callable #436.2");
+  check(r436*.sequence()==[[43],[44]], "Spread callable #436.3");
 }

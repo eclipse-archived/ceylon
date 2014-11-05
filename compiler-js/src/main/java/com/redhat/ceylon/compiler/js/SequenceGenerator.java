@@ -145,7 +145,14 @@ public class SequenceGenerator {
         //Return the array of values or a Callable with the arguments
         gen.out("return ", gen.getClAlias());
         if (isMethod) {
-            gen.out("JsCallableList(", tmplist, ");");
+            gen.out("JsCallableList(", tmplist);
+            if (that.getTypeArguments() != null && !that.getTypeArguments().getTypeModels().isEmpty()) {
+                gen.out(",");
+                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
+                        ((Method)that.getDeclaration()).getTypeParameters(),
+                        that.getTypeArguments().getTypeModels()), gen, true, null);
+            }
+            gen.out(");");
         } else {
             gen.out("sequence(", tmplist, ",{Element$sequence:");
             TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);

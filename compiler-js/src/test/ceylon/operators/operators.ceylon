@@ -505,6 +505,11 @@ void testSegments() {
         testChar=i;
     }
     check(testChar=='b', "for(segment) 4");
+    //#434
+    {Anything*} i434a = [[null]]*.first;
+    {Anything*} i434b = [[null]]*.get(0);
+    check(!i434a.first exists, "#434.1");
+    check(!i434b.first exists, "#434.2");
 }
 
 void compareStringNumber() {

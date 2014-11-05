@@ -1854,7 +1854,11 @@ public class GenerateJsVisitor extends Visitor
             generateCallable(that, names.name(that.getDeclaration()));
         } else {
             super.visit(that);
-            out(".", names.name(that.getDeclaration()));
+            if (isInDynamicBlock() && that.getDeclaration() == null) {
+                out(".", that.getIdentifier().getText());
+            } else {
+                out(".", names.name(that.getDeclaration()));
+            }
         }
     }
 
@@ -2461,13 +2465,14 @@ public class GenerateJsVisitor extends Visitor
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
             if (isNative(lhsQME)) {
                 // ($1.foo = Box($1.foo).operator($2))
-                out("(");
+                final String tmp = names.createTempVariable();
+                final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?
+                        lhsQME.getIdentifier().getText() : lhsQME.getDeclaration().getName();
+                out("(", tmp, "=");
                 lhsQME.getPrimary().visit(this);
-                out(".", lhsQME.getDeclaration().getName());
-                out("=");
+                out(",", tmp, ".", dec, "=");
                 int boxType = boxStart(lhsQME);
-                lhsQME.getPrimary().visit(this);
-                out(".", lhsQME.getDeclaration().getName());
+                out(tmp, ".", dec);
                 if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
                 out(".", functionName, "(");
