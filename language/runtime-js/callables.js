@@ -51,12 +51,17 @@ JsCallable.$crtmm$=function(){return{ sts:[{t:Callable,a:{Return$Callable:'Retur
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 //This is used for spread method references
-function JsCallableList(value) {
+function JsCallableList(value,$mpt) {
     return function() {
+        var a=arguments;
+        if ($mpt) {
+          a=[].slice.call(arguments,0);
+          a.push($mpt);
+        }
         var rval = Array(value.length);
         for (var i = 0; i < value.length; i++) {
             var c = value[i];
-            rval[i] = c.f.apply(c.o, arguments);
+            rval[i] = c.f.apply(c.o, a);
         }
         return value.length===0?getEmpty():sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
     };
