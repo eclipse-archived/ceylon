@@ -77,10 +77,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -97,12 +93,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
-    private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
     private boolean isCondition;
     private boolean dynamic;
     private boolean inExtendsClause = false;
 
+    private Tree.SwitchStatement switchStatement;
+    
     private Unit unit;
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -1352,7 +1349,7 @@ public class ExpressionVisitor extends Visitor {
                             Tree.PositionalArgumentList pal = 
                                     ie.getPositionalArgumentList();
                             if (pal!=null) {
-                                List<PositionalArgument> pas = 
+                                List<Tree.PositionalArgument> pas = 
                                         pal.getPositionalArguments();
                                 if (cps!=pas.size()) {
                                     pal.addUnsupportedError("wrong number of arguments for aliased class: " + 
@@ -2032,7 +2029,7 @@ public class ExpressionVisitor extends Visitor {
     
     private List<ProducedType> inferFunctionRefTypeArgs(
             Tree.StaticMemberOrTypeExpression smte) {
-        TypeArguments typeArguments = smte.getTypeArguments();
+        Tree.TypeArguments typeArguments = smte.getTypeArguments();
         Declaration dec = smte.getDeclaration();
         if (typeArguments instanceof Tree.InferredTypeArguments && 
                 dec instanceof Generic &&
@@ -5343,7 +5340,7 @@ public class ExpressionVisitor extends Visitor {
                     for (int i = 0; i<args.size(); i++) {
                         Tree.Type t = args.get(i);
                         if (t instanceof Tree.StaticType) {
-                            TypeVariance variance = 
+                            Tree.TypeVariance variance = 
                                     ((Tree.StaticType) t).getTypeVariance();
                             if (variance!=null) {
                                 TypeParameter p = params.get(i);
@@ -5668,12 +5665,16 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    if (switchExpression!=null) {
-                        ProducedType st = switchExpression.getTypeModel();
-                        if (!isTypeUnknown(st)) {
-                            if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
-                                checkAssignable(t, st, e, 
-                                        "case must be assignable to switch expression type");
+                    if (switchStatement!=null) {
+                        Tree.Expression switchExpression = 
+                                switchStatement.getSwitchClause().getExpression();
+                        if (switchExpression!=null) {
+                            ProducedType st = switchExpression.getTypeModel();
+                            if (!isTypeUnknown(st)) {
+                                if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
+                                    checkAssignable(t, st, e, 
+                                            "case must be assignable to switch expression type");
+                                }
                             }
                         }
                     }
@@ -5718,29 +5719,33 @@ public class ExpressionVisitor extends Visitor {
             t.visit(this);
         }
         Tree.Variable v = that.getVariable();
-        if (switchExpression!=null) {
-            ProducedType st = switchExpression.getTypeModel();
-            if (v!=null) {
-                if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
-                    v.visit(this);
-                }
-                initOriginalDeclaration(v);
-            }
-            if (t!=null) {
-                ProducedType pt = t.getTypeModel();
-                ProducedType it = intersectionType(pt, st, unit);
-                if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
-                    if (it.isExactly(unit.getNothingDeclaration().getType())) {
-                        that.addError("narrows to bottom type 'Nothing': '" + 
-                                pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
-                                st.getProducedTypeName(unit) + "'");
-                    }
-                    /*checkAssignable(ct, switchType, cc.getCaseItem(), 
-                        "case type must be a case of the switch type");*/
-                }
+        if (switchStatement!=null) {
+            Tree.Expression switchExpression =
+                    switchStatement.getSwitchClause().getExpression();
+            if (switchExpression!=null) {
+                ProducedType st = switchExpression.getTypeModel();
                 if (v!=null) {
-                    v.getType().setTypeModel(it);
-                    v.getDeclarationModel().setType(it);
+                    if (dynamic || !isTypeUnknown(st)) { //eliminate dupe errors
+                        v.visit(this);
+                    }
+                    initOriginalDeclaration(v);
+                }
+                if (t!=null) {
+                    ProducedType pt = t.getTypeModel();
+                    ProducedType it = intersectionType(pt, st, unit);
+                    if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
+                        if (it.isExactly(unit.getNothingDeclaration().getType())) {
+                            that.addError("narrows to bottom type 'Nothing': '" + 
+                                    pt.getProducedTypeName(unit) + "' has empty intersection with '" + 
+                                    st.getProducedTypeName(unit) + "'");
+                        }
+                        /*checkAssignable(ct, switchType, cc.getCaseItem(), 
+                        "case type must be a case of the switch type");*/
+                    }
+                    if (v!=null) {
+                        v.getType().setTypeModel(it);
+                        v.getDeclarationModel().setType(it);
+                    }
                 }
             }
         }
@@ -5748,17 +5753,67 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
-        Tree.Expression ose = switchExpression;
-        switchExpression = that.getSwitchClause().getExpression();
+        Tree.SwitchStatement ose = switchStatement;
+        switchStatement = that;
+        Tree.SwitchClause switchClause = 
+                that.getSwitchClause();
+        Tree.Expression switchExpression = 
+                switchClause.getExpression();
+        Tree.SwitchCaseList switchCaseList = 
+                that.getSwitchCaseList();
         super.visit(that);
-        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
-        if (switchCaseList!=null && switchExpression!=null) {
+        if (switchCaseList!=null && 
+                switchExpression!=null) {
             checkCases(switchCaseList);
-            if (switchCaseList.getElseClause()==null) {
-                checkCasesExhaustive(switchCaseList, that.getSwitchClause());
+            Tree.ElseClause elseClause = 
+                    switchCaseList.getElseClause();
+            ProducedType st = 
+                    switchExpression.getTypeModel();
+            if (!isTypeUnknown(st) && elseClause==null) {
+                ProducedType caseUnionType = 
+                        caseUnionType(switchCaseList);
+                if (caseUnionType!=null) {
+                    //if the union of the case types covers 
+                    //the switch expression type then the 
+                    //switch is exhaustive
+                    if (!caseUnionType.covers(st)) {
+                        switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
+                                caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
+                                st.getProducedTypeName(unit) + "'");
+                    }
+                }
             }
         }
-        switchExpression = ose;
+        switchStatement = ose;
+    }
+    
+    @Override
+    public void visit(Tree.ElseClause that) {
+        Tree.Variable var = that.getVariable();
+        if (var!=null) var.visit(this);
+        if (switchStatement!=null) {
+            Tree.Expression switchExpression = 
+                    switchStatement.getSwitchClause().getExpression();
+            Tree.SwitchCaseList switchCaseList = 
+                    switchStatement.getSwitchCaseList();
+            if (switchExpression!=null && 
+                    switchCaseList!=null) {
+                ProducedType st = 
+                        switchExpression.getTypeModel();
+                if (!isTypeUnknown(st)) {
+                    ProducedType caseUnionType = 
+                            caseUnionType(switchCaseList);
+                    if (caseUnionType!=null) {
+                        ProducedType complementType = 
+                                st.minus(caseUnionType);
+                        var.getType().setTypeModel(complementType);
+                        var.getDeclarationModel().setType(complementType);
+                    }
+                }
+            }
+        }
+        Tree.Block block = that.getBlock();
+        if (block!=null) block.visit(this);
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
@@ -5774,48 +5829,41 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (hasIsCase) {
-            Tree.Term st = switchExpression.getTerm();
-            if (st instanceof Tree.BaseMemberExpression) {
-                checkReferenceIsNonVariable((Tree.BaseMemberExpression) st, true);
-            }
-            else if (st!=null) {
-                st.addError("switch expression must be a value reference in switch with type cases", 3102);
+            if (switchStatement!=null) {
+                Tree.Expression switchExpression =
+                        switchStatement.getSwitchClause().getExpression();
+                if (switchExpression!=null) {
+                    Tree.Term st = switchExpression.getTerm();
+                    if (st instanceof Tree.BaseMemberExpression) {
+                        checkReferenceIsNonVariable((Tree.BaseMemberExpression) st, true);
+                    }
+                    else if (st!=null) {
+                        st.addError("switch expression must be a value reference in switch with type cases", 3102);
+                    }
+                }
             }
         }   
     }
-    
-    private void checkCasesExhaustive(Tree.SwitchCaseList switchCaseList,
-            Tree.SwitchClause switchClause) {
-        ProducedType st = switchExpression.getTypeModel();
-        if (!isTypeUnknown(st)) {
-            //form the union of all the case types
-            List<Tree.CaseClause> caseClauses = switchCaseList.getCaseClauses();
-            List<ProducedType> list = new ArrayList<ProducedType>(caseClauses.size());
-            for (Tree.CaseClause cc: caseClauses) {
-                ProducedType ct = getTypeIgnoringLiterals(cc);
-                if (isTypeUnknown(ct)) {
-                    return; //Note: early exit!
-                }
-                else {
-                    addToUnion(list, ct);
-                }
+
+    private ProducedType caseUnionType(Tree.SwitchCaseList switchCaseList) {
+        //form the union of all the case types
+        List<Tree.CaseClause> caseClauses = 
+                switchCaseList.getCaseClauses();
+        List<ProducedType> list = new ArrayList<ProducedType>(caseClauses.size());
+        for (Tree.CaseClause cc: caseClauses) {
+            ProducedType ct = getTypeIgnoringLiterals(cc);
+            if (isTypeUnknown(ct)) {
+                return null; //Note: early exit!
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            //if the union of the case types covers 
-            //the switch expression type then the 
-            //switch is exhaustive
-            if (!ut.getType().covers(st)) {
-                switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
-                                ut.getType().getProducedTypeName(unit) + "' does not cover '" + 
-                                st.getProducedTypeName(unit) + "'");
+            else {
+                addToUnion(list, ct);
             }
         }
-        /*else if (dynamic) {
-            that.addError("else clause must appear: static type not known");
-        }*/
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(list);
+        return ut.getType();
     }
-    
+
     private void checkCasesDisjoint(Tree.CaseClause cc, Tree.CaseClause occ) {
         Tree.CaseItem cci = cc.getCaseItem();
         Tree.CaseItem occi = occ.getCaseItem();
@@ -6232,7 +6280,8 @@ public class ExpressionVisitor extends Visitor {
         if (tal!=null) {
             for (Tree.Type t: tal.getTypes()) {
                 if (t instanceof Tree.StaticType) {
-                    TypeVariance variance = ((Tree.StaticType) t).getTypeVariance();
+                    Tree.TypeVariance variance = 
+                            ((Tree.StaticType) t).getTypeVariance();
                     if (variance!=null) {
                         variance.addError("supertype expression may not specify variance");
                     }
@@ -6698,7 +6747,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Package p;
         if (that.getImportPath()==null) {
-            that.setImportPath(new ImportPath(null));
+            that.setImportPath(new Tree.ImportPath(null));
             p = unit.getPackage();
         }
         else {
@@ -6713,7 +6762,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Module m;
         if (that.getImportPath()==null) {
-            that.setImportPath(new ImportPath(null));
+            that.setImportPath(new Tree.ImportPath(null));
             m = unit.getPackage().getModule();
         }
         else {

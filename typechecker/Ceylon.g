@@ -3077,8 +3077,23 @@ switchCaseElse returns [SwitchStatement statement]
               v.setSpecifierExpression(se);
               ic.setVariable(v);
             }
-          } 
-        } 
+          }
+          ElseClause ec = $cases.switchCaseList.getElseClause();
+          if (ec!=null) {
+            Variable ev = new Variable(null);
+            ev.setType(new SyntheticVariable(null));
+            ev.setIdentifier(id);
+            SpecifierExpression ese = new SpecifierExpression(null);
+            Expression ee = new Expression(null);
+            BaseMemberExpression ebme = new BaseMemberExpression(null);
+            ebme.setIdentifier(id);
+            ebme.setTypeArguments( new InferredTypeArguments(null) );
+            ee.setTerm(ebme);
+            ese.setExpression(ee);
+            ev.setSpecifierExpression(ese);
+            ec.setVariable(ev);
+          }
+        }
       }
     ;
 
