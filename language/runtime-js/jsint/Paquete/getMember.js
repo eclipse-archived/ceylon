@@ -7,17 +7,17 @@ function getMember(name$3,$$$mptypes){
       return mt==='s'?OpenSetter(OpenValue$jsint(this, m)):OpenValue$jsint(this, m);
     } else if (mt==='m'&&extendsType($$$mptypes.Kind$getMember,{t:FunctionOrValueDeclaration$meta$declaration})){
       return OpenFunction(this, m);
-    } else if (mt==='c'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
+    } else if (mt==='c'&&(extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})||extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration}))){
       return OpenClass$jsint(this, m);
     } else if (mt==='i'&&extendsType($$$mptypes.Kind$getMember,{t:ClassOrInterfaceDeclaration$meta$declaration})){
       return OpenInterface$jsint(this, m);
     } else if (mt==='als'&&extendsType($$$mptypes.Kind$getMember,{t:AliasDeclaration$meta$declaration})){
       return OpenAlias$jsint(_findTypeFromModel(this,m));
     } else if (mt==='o') {
-      if (extendsType($$$mptypes.Kind$getMember,{t:ValueDeclaration$meta$declaration})) {
-        return OpenValue$jsint(this, m);
-      } else if (extendsType($$$mptypes.Kind$getMember,{t:ClassDeclaration$meta$declaration})) {
+      if (extendsType($$$mptypes.Kind$getMember,{t:ClassDeclaration$meta$declaration})) {
         return OpenClass$jsint(this, m);
+      } else if (extendsType($$$mptypes.Kind$getMember,{t:NestableDeclaration$meta$declaration})) {
+        return OpenValue$jsint(this, m);
       }
     }
     console.log("WTF do I do with this " + name$3 + " metatype " + mt + " Kind " + $$$mptypes.Kind$getMember);
