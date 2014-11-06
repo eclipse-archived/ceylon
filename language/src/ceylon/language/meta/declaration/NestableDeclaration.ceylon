@@ -2,6 +2,7 @@
  
  Functions, values, classes, interfaces and aliases are such declarations."
 shared sealed interface NestableDeclaration of FunctionOrValueDeclaration |
+                                        ConstructorDeclaration |
                                         ClassOrInterfaceDeclaration |
                                         SetterDeclaration |
                                         AliasDeclaration
