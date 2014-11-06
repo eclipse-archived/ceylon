@@ -12,6 +12,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return s;
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Constructor
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -50,6 +51,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         public final long i;
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Constructor
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $args$) {
