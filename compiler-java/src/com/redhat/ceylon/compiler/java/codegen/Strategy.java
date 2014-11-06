@@ -271,6 +271,7 @@ class Strategy {
                 (model instanceof Class 
                     && model.isMember()
                     && model.isShared()
+                    && !((Class)model).hasConstructors()
                     && !model.isAnonymous()
                     && !((Class)model).isAbstract()
                     && Decl.isCeylon((Class)model));

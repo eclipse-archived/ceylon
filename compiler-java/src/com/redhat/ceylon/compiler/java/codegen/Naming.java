@@ -733,9 +733,13 @@ public class Naming implements LocalId {
             // nothing? that's just weird
         }
         if (!last) {
-            if (decl instanceof Interface 
-                    && Decl.isCeylon((Interface)decl)
+            if (decl instanceof Interface
+                    && Decl.isCeylon((TypeDeclaration)decl)
                     && !flags.contains(DeclNameFlag.COMPANION)) {
+                typeDeclarationBuilder.append('$');
+            } else if (decl instanceof Constructor
+                    && !((Class)decl.getContainer()).isToplevel()
+                    && decl.getContainer().equals(scope)) {
                 typeDeclarationBuilder.append('$');
             } else {
                 if (flags.contains(DeclNameFlag.QUALIFIED)) {

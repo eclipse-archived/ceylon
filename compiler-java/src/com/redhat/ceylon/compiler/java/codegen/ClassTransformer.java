@@ -4507,10 +4507,13 @@ public class ClassTransformer extends AbstractTransformer {
             for (TypeParameter tp : clz.getTypeParameters()) {
                 ctorDb.reifiedTypeParameter(tp);
             }
-            ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, ctor.getName(), null, true);
-            //paramsCdb.annotations(List.<JCAnnotation>nil());
-            //paramsCdb.modelAnnotations(Collections.<Annotation>emptyList());
-            paramsCdb.modifiers(STATIC | transformConstructorDeclFlags(ctor));
+            ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, 
+                    naming.makeTypeDeclarationName(ctor), null, true);
+            int classMods = transformConstructorDeclFlags(ctor);
+            if (clz.isToplevel()) {
+                classMods |= STATIC;
+            }
+            paramsCdb.modifiers(classMods);
             paramsCdb.annotations(makeAtParameterList());
             for (TypeParameter tp : clz.getTypeParameters()) {
                 paramsCdb.typeParameter(tp);
@@ -4521,7 +4524,13 @@ public class ClassTransformer extends AbstractTransformer {
             }
             transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
             paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
-            result.addAll(paramsCdb.build());
+            if (clz.isToplevel()) {
+                result.addAll(paramsCdb.build());
+            } else if (clz.isClassMember()){
+                classBuilder.getContainingClassBuilder().defs(paramsCdb.build());
+            } else if (clz.isInterfaceMember()){
+                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(paramsCdb.build());
+            }
         
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
             pdb.ignored();
