@@ -60,7 +60,7 @@ public class SerializationHelper {
         while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(node, et);
-                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$(", dc, ");");
+                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$.call(this,", dc, ");");
                 et = null;
                 gen.endLine();
             }
@@ -126,7 +126,7 @@ public class SerializationHelper {
             if (et.isSerializable()) {
                 gen.out(ni, "=");
                 gen.qualify(that, et);
-                gen.out(gen.getNames().name(et), ".$$.prototype.deser$$(", dc, ");");
+                gen.out(gen.getNames().name(et), ".$$.prototype.deser$$.call(this,", dc, ");");
                 gen.endLine();
                 create = false;
             }
