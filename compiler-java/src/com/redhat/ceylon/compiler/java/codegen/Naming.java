@@ -699,7 +699,7 @@ public class Naming implements LocalId {
             Interface iface = (Interface)scope;
             typeDeclarationBuilder.append(iface.getName());
             if (Decl.isCeylon(iface)
-                && ((decl instanceof Class || decl instanceof TypeAlias|| scope instanceof Constructor) 
+                && ((decl instanceof Class || decl instanceof Constructor || decl instanceof TypeAlias|| scope instanceof Constructor) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
                 typeDeclarationBuilder.append(IMPL_POSTFIX);
             }
