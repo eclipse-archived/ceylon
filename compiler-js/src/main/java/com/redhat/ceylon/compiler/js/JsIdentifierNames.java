@@ -47,7 +47,7 @@ public class JsIdentifierNames {
                 "synchronized", "throws", "transient", "true", "typeof", "var", "volatile",
                 "with", "abstract"));
         //Types
-        reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "Function"));
+        reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number"));
         //JS Object
         reservedWords.addAll(Arrays.asList("hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable"));
         //JS Function
