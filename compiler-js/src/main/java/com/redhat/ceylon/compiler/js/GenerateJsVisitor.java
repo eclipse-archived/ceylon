@@ -673,9 +673,9 @@ public class GenerateJsVisitor extends Visitor
     void addToPrototype(Node node, ClassOrInterface d, List<Tree.Statement> statements) {
         final boolean isSerial = d instanceof com.redhat.ceylon.compiler.typechecker.model.Class
                 && ((com.redhat.ceylon.compiler.typechecker.model.Class)d).isSerializable();
-        boolean enter = opts.isOptimize() || isSerial;
+        boolean enter = opts.isOptimize();
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
-        if (opts.isOptimize()) {
+        if (enter) {
             enter = !statements.isEmpty();
             if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
                 com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
@@ -687,13 +687,13 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        if (enter) {
+        if (enter || isSerial) {
             final List<? extends Statement> prevStatements = currentStatements;
             currentStatements = statements;
             
             out("(function(", names.self(d), ")");
             beginBlock();
-            if (opts.isOptimize()) {
+            if (enter) {
                 for (Statement s: statements) {
                     addToPrototype(d, s, plist);
                 }
