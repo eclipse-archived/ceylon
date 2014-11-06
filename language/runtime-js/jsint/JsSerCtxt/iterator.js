@@ -1,8 +1,8 @@
 function(){
-  var idx=0;
+  var idx=1;
   var sc$=this;
   return for$iter(function(){
-    if (sc$.refs.length<idx) {
+    if (idx<sc$.refs.length) {
       idx++;
       return sc$.refs[idx-1];
     }
