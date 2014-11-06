@@ -8,6 +8,15 @@ class Outer() {
     }
 }
 
+abstract class Container() {
+    @error shared formal class Inner1 {
+        shared new New() {}
+    }
+    @error shared default class Inner2 {
+        shared new New() {}
+    }
+}
+
 void createOuterInner() {
     Outer.Inner inner1 = Outer().Inner.New();
     Outer.Inner.Deeper deeper1 = Outer().Inner().Deeper.New();

@@ -163,3 +163,8 @@ class WithAttributesAndMispacedUsage {
     }
 }
 
+class Alias1() => WithDefaultConst();
+class Alias2() => WithConst.Const();
+@error class BrokenAlias1() => WithConst();
+@error class BrokenAlias2() => WithConst;
+@error class AliasWithNoParams => WithNeitherInitNorConst();

@@ -358,9 +358,11 @@ public class PhasedUnit {
             //System.out.println("Validate self references for " + fileName);
             //System.out.println("Validate specification for " + fileName);
             for (Declaration d: unit.getDeclarations()) {
-                compilationUnit.visit(new SpecificationVisitor(d));
-                if (d instanceof TypeDeclaration) {
-                    compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
+                if (d.getName()!=null) {
+                    compilationUnit.visit(new SpecificationVisitor(d));
+                    if (d instanceof TypeDeclaration) {
+                        compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
+                    }
                 }
             }
             flowAnalyzed = true;

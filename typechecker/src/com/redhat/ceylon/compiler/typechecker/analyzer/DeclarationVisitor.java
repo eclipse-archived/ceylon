@@ -409,12 +409,18 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
-        if (!unit.getPackage().getQualifiedNameString().equals("ceylon.language") ||
-                !"Anything".equalsIgnoreCase(name(that.getIdentifier()))) {
+        String pname = unit.getPackage().getQualifiedNameString();
+        if (!"ceylon.language".equals(pname) ||
+            !"Anything".equalsIgnoreCase(name(that.getIdentifier()))) {
             defaultExtendedToBasic(c);
         }
         that.setDeclarationModel(c);
         super.visit(that);
+        if (that.getParameterList()==null &&
+                c.isClassOrInterfaceMember() && 
+                (c.isFormal() || c.isDefault() || c.isActual())) {
+            that.addError("member class declared formal, default, or actual must have a parameter list");
+        }
     }
     
     @Override
@@ -422,6 +428,9 @@ public class DeclarationVisitor extends Visitor {
         Class c = new ClassAlias();
         that.setDeclarationModel(c);
         super.visit(that);
+        if (that.getParameterList()==null) {
+            that.addError("class alias must have a parameter list");
+        }
     }
     
     @Override
