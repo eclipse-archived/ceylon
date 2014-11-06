@@ -90,9 +90,11 @@ public class ConfigFinder {
         } catch (IOException e) {
             // Just ignore any errors
         }
+        CeylonConfig local = loadConfigFromProperties();
+        merge(config, local);
         return config;
     }
-    
+
     /**
      * Returns the configuration using the default lookup strategy which is:
      * going from the localDir folder up the file system hierarchy any
@@ -285,6 +287,24 @@ public class ConfigFinder {
      */
     public CeylonConfig loadConfigFromStream(InputStream stream, File currentDir) throws IOException {
         return transformer.transform(null, (new ConfigParser(stream, currentDir)).parse(currentDir != null));
+    }
+    
+    /**
+     * Returns a configuration initialized with the values encountered
+     * in the System properties. Values with the name "ceylon.config.xxxx"
+     * are turned into CeylonConfig options of the name "xxxx".
+     * @return CeylonConfig object containing the configuration values
+     * encountered in the System properties
+     */
+    public CeylonConfig loadConfigFromProperties() {
+        CeylonConfig cfg = new CeylonConfig();
+        for (String key : System.getProperties().stringPropertyNames()) {
+            if (key.startsWith("ceylon.config.")) {
+                String nm = key.substring(14);
+                cfg.setOption(nm, System.getProperty(key));
+            }
+        }
+        return cfg;
     }
     
     private CeylonConfig merge(CeylonConfig pool, CeylonConfig config) {
