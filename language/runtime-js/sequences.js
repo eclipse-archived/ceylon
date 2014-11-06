@@ -1,6 +1,7 @@
 var arrprot$=Array.prototype;
 arrprot$.ser$$=function(d){
-  d=d(AppliedClass($_Array,{Type$AppliedClass:$_Array,Arguments$AppliedClass:{t:'T',l:[{t:this.$$targs$$.Element$Iterable}]}}));
+  d=d(AppliedClass($_Array,{Type$AppliedClass:$_Array,Arguments$AppliedClass:
+    {t:'T',l:[{t:Iterable,a:{Element$Iterable:this.$$targs$$.Element$Iterable}}]}}));
   d.putTypeArgument(OpenTypeParam$jsint($_Array,'Element$Array'),typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Element$Iterable}));
   d.putValue(OpenValue$jsint(lmp$(ex$,'$'),this.$prop$getSize),this.length,{Instance$putValue:{t:Integer}});
   for (var i=0; i < this.length; i++) {
