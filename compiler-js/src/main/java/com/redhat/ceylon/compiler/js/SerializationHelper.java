@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
@@ -18,13 +19,47 @@ public class SerializationHelper {
         final String dc = gen.getNames().createTempVariable();
         gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
         gen.beginBlock();
+        //Get the deconstructor
+        final String classOrMemberClass = d.isMember() ? "MemberClass" : "Class";
+        gen.out(dc, "=", dc, "(");
+        if (JsCompiler.isCompilingLanguageModule()) {
+            gen.out("Applied", classOrMemberClass);
+        } else {
+            gen.out(gen.getClAlias(), "$init$Applied", classOrMemberClass, "$meta$model()");
+        }
+        gen.out("(", gen.getNames().name(d), ",{Type$Applied", classOrMemberClass, ":{t:",
+                gen.getNames().name(d));
+        if (!d.getTypeParameters().isEmpty()) {
+            gen.out(",a:this.$$targs$$");
+        }
+        gen.out("},Arguments$Applied", classOrMemberClass, ":{t:");
+        if (d.getParameterList().getParameters().isEmpty()) {
+            gen.out(gen.getClAlias(), "Empty");
+        } else {
+            gen.out("'T',l:[");
+            boolean firstParam=true;
+            for (Parameter param : d.getParameterList().getParameters()) {
+                if (firstParam)firstParam=false;else gen.out(",");
+                TypeUtils.typeNameOrList(node, param.getType(), gen, false);
+            }
+            gen.out("]");
+        }
+        gen.out("}");
+        if (d.isMember()) {
+            TypeDeclaration parentd = Util.getContainingClassOrInterface(d);
+            gen.out(",Container$MemberClass:{t:", gen.getNames().name(parentd));
+            if (!parentd.getTypeParameters().isEmpty()) {
+                gen.out(",a:this.outer$.$$targs$$");
+            }
+            gen.out("}");
+        }
+        gen.out("}));");
+        gen.endLine();
         //Call super.ser$$ if possible
         com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
         while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
-                if (gen.qualify(node, et)) {
-                    gen.out(".");
-                }
+                gen.qualify(node, et);
                 gen.out(gen.getNames().name(et), ".$$.prototype.ser$$(", dc, ");");
                 et = null;
                 gen.endLine();
@@ -49,7 +84,7 @@ public class SerializationHelper {
         List<Value> vals = serializableValues(d);
         if (vals.size() > 1) {
             final String pkvar = gen.getNames().createTempVariable();
-            gen.out("var ", pkvar, "=lmp$(ex$,'", pkgname, "');");
+            gen.out("var ", pkvar, "=", gen.getClAlias(), "lmp$(ex$,'", pkgname, "');");
             gen.endLine();
             pkgname = pkvar;
         } else {
@@ -90,9 +125,7 @@ public class SerializationHelper {
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.out(ni, "=");
-                if (gen.qualify(that, et)) {
-                    gen.out(".");
-                }
+                gen.qualify(that, et);
                 gen.out(gen.getNames().name(et), ".$$.prototype.deser$$(", dc, ");");
                 gen.endLine();
                 create = false;
@@ -125,7 +158,7 @@ public class SerializationHelper {
         List<Value> vals = serializableValues(d);
         if (vals.size() > 1) {
             final String pkvar = gen.getNames().createTempVariable();
-            gen.out("var ", pkvar, "=lmp$(ex$,'", pkgname, "');");
+            gen.out("var ", pkvar, "=", gen.getClAlias(), "lmp$(ex$,'", pkgname, "');");
             gen.endLine();
             pkgname = pkvar;
         } else {
