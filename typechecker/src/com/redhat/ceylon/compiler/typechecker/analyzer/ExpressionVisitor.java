@@ -98,6 +98,7 @@ public class ExpressionVisitor extends Visitor {
     private boolean dynamic;
     private boolean inExtendsClause = false;
 
+    private Tree.IfStatement ifStatement;
     private Tree.SwitchStatement switchStatement;
     
     private Unit unit;
@@ -5753,7 +5754,9 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
-        Tree.SwitchStatement ose = switchStatement;
+        Tree.SwitchStatement oss = switchStatement;
+        Tree.IfStatement ois = ifStatement;
+        ifStatement = null;
         switchStatement = that;
         Tree.SwitchClause switchClause = 
                 that.getSwitchClause();
@@ -5784,30 +5787,72 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-        switchStatement = ose;
+        switchStatement = oss;
+        ifStatement = ois;
+    }
+    
+    @Override
+    public void visit(Tree.IfStatement that) {
+        Tree.IfStatement ois = ifStatement;
+        Tree.SwitchStatement oss = switchStatement;
+        ifStatement = that;
+        switchStatement = null;
+        super.visit(that);
+        ifStatement = ois;
+        switchStatement = oss;
     }
     
     @Override
     public void visit(Tree.ElseClause that) {
         Tree.Variable var = that.getVariable();
-        if (var!=null) var.visit(this);
-        if (switchStatement!=null && var!=null) {
-            Tree.Expression switchExpression = 
-                    switchStatement.getSwitchClause().getExpression();
-            Tree.SwitchCaseList switchCaseList = 
-                    switchStatement.getSwitchCaseList();
-            if (switchExpression!=null && 
-                    switchCaseList!=null) {
-                ProducedType st = 
-                        switchExpression.getTypeModel();
-                if (!isTypeUnknown(st)) {
-                    ProducedType caseUnionType = 
-                            caseUnionType(switchCaseList);
-                    if (caseUnionType!=null) {
-                        ProducedType complementType = 
-                                st.minus(caseUnionType);
-                        var.getType().setTypeModel(complementType);
-                        var.getDeclarationModel().setType(complementType);
+        if (var!=null) {
+            var.visit(this);
+            if (switchStatement!=null) {
+                Tree.Expression switchExpression = 
+                        switchStatement.getSwitchClause().getExpression();
+                Tree.SwitchCaseList switchCaseList = 
+                        switchStatement.getSwitchCaseList();
+                if (switchExpression!=null && 
+                        switchCaseList!=null) {
+                    ProducedType st = 
+                            switchExpression.getTypeModel();
+                    if (!isTypeUnknown(st)) {
+                        ProducedType caseUnionType = 
+                                caseUnionType(switchCaseList);
+                        if (caseUnionType!=null) {
+                            ProducedType complementType = 
+                                    st.minus(caseUnionType);
+                            var.getType().setTypeModel(complementType);
+                            var.getDeclarationModel().setType(complementType);
+                        }
+                    }
+                }
+            }
+            if (ifStatement!=null) {
+                Tree.ConditionList conditionList = 
+                        ifStatement.getIfClause().getConditionList();
+                if (conditionList!=null) {
+                    Tree.Condition c = 
+                            conditionList.getConditions().get(0);
+                    Tree.Variable variable = null;
+                    if (c instanceof Tree.ExistsOrNonemptyCondition) {
+                        variable = ((Tree.ExistsOrNonemptyCondition) c).getVariable();
+                    }
+                    else if (c instanceof Tree.IsCondition) {
+                        variable = ((Tree.IsCondition) c).getVariable();
+                    }
+                    if (variable!=null) {
+                        ProducedType vt = variable.getType().getTypeModel();
+                        Tree.SpecifierExpression sie = variable.getSpecifierExpression();
+                        if (sie!=null && !isTypeUnknown(vt)) {
+                            Tree.Expression e = sie.getExpression();
+                            if (e!=null) {
+                                ProducedType et = e.getTypeModel();
+                                ProducedType complementType = et.minus(vt);
+                                var.getType().setTypeModel(complementType);
+                                var.getDeclarationModel().setType(complementType);
+                            }
+                        }
                     }
                 }
             }

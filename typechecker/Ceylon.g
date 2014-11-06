@@ -3020,7 +3020,40 @@ ifElse returns [IfStatement statement]
       { $statement.setIfClause($ifBlock.clause); }
       ( 
         elseBlock
-        { $statement.setElseClause($elseBlock.clause); }
+        { ElseClause ec = $elseBlock.clause;
+          $statement.setElseClause(ec);
+          ConditionList cl = $ifBlock.clause.getConditionList();
+          if (cl!=null) {
+            List<Condition> conditions = cl.getConditions();
+            if (conditions.size()==1) {
+              Condition c = conditions.get(0);
+              Identifier id = null;
+              Type t = null;
+              if (c instanceof ExistsOrNonemptyCondition) {
+                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
+                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+              }
+              else if (c instanceof IsCondition) {
+                t = ((IsCondition)c).getVariable().getType();
+                id = ((IsCondition)c).getVariable().getIdentifier();
+              }
+              if (id!=null && t instanceof SyntheticVariable) { 
+                Variable ev = new Variable(null);
+                ev.setType(new SyntheticVariable(null));
+                ev.setIdentifier(id);
+                SpecifierExpression ese = new SpecifierExpression(null);
+                Expression ee = new Expression(null);
+                BaseMemberExpression ebme = new BaseMemberExpression(null);
+                ebme.setIdentifier(id);
+                ebme.setTypeArguments( new InferredTypeArguments(null) );
+                ee.setTerm(ebme);
+                ese.setExpression(ee);
+                ev.setSpecifierExpression(ese);
+                ec.setVariable(ev);
+              }
+            }
+          }
+        }
       )?
     ;
 
