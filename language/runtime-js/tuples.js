@@ -95,6 +95,9 @@ function tpl$(elems,types,spread){
   atr$(that,'last',function(){
     return elems[elems.size-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
+  atr$(that,'string',function(){
+    return '['+commaList(elems)+']';
+  },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
   that.nativeArray=function() { return elems; }
   return that;
 }
