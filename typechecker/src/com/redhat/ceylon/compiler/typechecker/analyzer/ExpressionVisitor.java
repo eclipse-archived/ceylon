@@ -386,13 +386,14 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (se.getExpression()!=null) {
                 se.visit(this);
+                boolean not = that.getNot();
                 if (that instanceof Tree.ExistsCondition) {
-                    inferDefiniteType(v, se);
-                    checkOptionalType(v, se);
+                    inferDefiniteType(v, se, not);
+                    checkOptionalType(v, se, not);
                 }
                 else if (that instanceof Tree.NonemptyCondition) {
-                    inferNonemptyType(v, se);
-                    checkEmptyOptionalType(v, se);
+                    inferNonemptyType(v, se, not);
+                    checkEmptyOptionalType(v, se, not);
                 }
                 t = se.getExpression().getTypeModel();
                 n = v;
@@ -1022,15 +1023,23 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkOptionalType(Tree.Variable var, 
-            Tree.SpecifierExpression se) {
+            Tree.SpecifierExpression se, boolean not) {
         if (var.getType()!=null && 
                 !(var.getType() instanceof Tree.LocalModifier)) {
             ProducedType vt = var.getType().getTypeModel();
             if (!isTypeUnknown(vt)) {
-                checkAssignable(vt, 
-                        unit.getType(unit.getObjectDeclaration()), 
-                        var.getType(), 
-                        "specified type may not be optional");
+                if (not) {
+                    checkAssignable(vt, 
+                            unit.getType(unit.getNullDeclaration()), 
+                            var.getType(), 
+                            "specified type must be a null type");
+                }
+                else {
+                    checkAssignable(vt, 
+                            unit.getType(unit.getObjectDeclaration()), 
+                            var.getType(), 
+                            "specified type may not be optional");
+                }
             }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
@@ -1046,15 +1055,23 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkEmptyOptionalType(Tree.Variable var, 
-            Tree.SpecifierExpression se) {
+            Tree.SpecifierExpression se, boolean not) {
         if (var.getType()!=null && 
                 !(var.getType() instanceof Tree.LocalModifier)) {
             ProducedType vt = var.getType().getTypeModel();
             if (!isTypeUnknown(vt)) {
-                checkAssignable(vt, 
-                        unit.getSequenceType(unit.getType(unit.getAnythingDeclaration())), 
-                        var.getType(),
-                        "specified type must be a nonempty sequence type");
+                if (not) {
+                    checkAssignable(vt, 
+                            unit.getType(unit.getNullDeclaration()), 
+                            var.getType(), 
+                            "specified type must be an empty type");
+                }
+                else {
+                    checkAssignable(vt, 
+                            unit.getSequenceType(unit.getType(unit.getAnythingDeclaration())), 
+                            var.getType(),
+                            "specified type must be a nonempty sequence type");
+                }
             }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
@@ -1452,22 +1469,34 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void inferDefiniteType(Tree.Variable that, 
-            Tree.SpecifierExpression se) {
+            Tree.SpecifierExpression se, boolean not) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) that.getType();
-            if (se!=null) {
+            if (not) {
+                ProducedType nullType = 
+                        unit.getType(unit.getNullDeclaration());
+                local.setTypeModel(nullType);
+                that.getDeclarationModel().setType(nullType);
+            }
+            else if (se!=null) {
                 setTypeFromOptionalType(local, se, that);
             }
         }
     }
 
     private void inferNonemptyType(Tree.Variable that, 
-            Tree.SpecifierExpression se) {
+            Tree.SpecifierExpression se, boolean not) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) that.getType();
-            if (se!=null) {
+            if (not) {
+                ProducedType emptyType= 
+                        unit.getType(unit.getEmptyDeclaration());
+                local.setTypeModel(emptyType);
+                that.getDeclarationModel().setType(emptyType);
+            }
+            else if (se!=null) {
                 setTypeFromEmptyType(local, se, that);
             }
         }
@@ -5843,7 +5872,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (variable!=null) {
                         ProducedType vt = variable.getType().getTypeModel();
-                        Tree.SpecifierExpression sie = variable.getSpecifierExpression();
+                        Tree.SpecifierExpression sie = 
+                                variable.getSpecifierExpression();
                         if (sie!=null && !isTypeUnknown(vt)) {
                             Tree.Expression e = sie.getExpression();
                             if (e!=null) {

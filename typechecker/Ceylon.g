@@ -2916,8 +2916,14 @@ booleanCondition returns [BooleanCondition condition]
     ;
     
 existsCondition returns [ExistsCondition condition]
-    : EXISTS 
-      { $condition = new ExistsCondition($EXISTS); }
+    : (
+        NOT_OP
+        { $condition = new ExistsCondition($NOT_OP);
+          $condition.setNot(true); }
+      )?
+      EXISTS 
+      { if ($condition==null)
+            $condition = new ExistsCondition($EXISTS); }
     ( (compilerAnnotations (declarationStart|specificationStart)) =>
         specifiedVariable 
         { $condition.setVariable($specifiedVariable.variable); }
@@ -2930,8 +2936,14 @@ existsCondition returns [ExistsCondition condition]
     ;
     
 nonemptyCondition returns [NonemptyCondition condition]
-    : NONEMPTY 
-      { $condition = new NonemptyCondition($NONEMPTY); }
+    : (
+        NOT_OP
+        { $condition = new NonemptyCondition($NOT_OP);
+          $condition.setNot(true); }
+      )?
+      NONEMPTY 
+      { if ($condition==null)
+            $condition = new NonemptyCondition($NONEMPTY); }
     ( (compilerAnnotations (declarationStart|specificationStart)) =>
       specifiedVariable 
       { $condition.setVariable($specifiedVariable.variable); }
