@@ -40,16 +40,17 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorChaining(){
         compareWithJavaSource("constructor/CtorChaining");
     }
-    /*
+    
     @Test
     public void testCtorClassMemberClassCtor(){
         compareWithJavaSource("constructor/ClassMemberClassCtor");
     }
+    
     @Test
     public void testCtorInterfaceMemberClassCtor(){
         compareWithJavaSource("constructor/InterfaceMemberClassCtor");
     }
-    @Test
+    /*@Test
     public void testCtorClassRefinedMemberClassCtor(){
         compareWithJavaSource("constructor/ClassRefinedMemberClassCtor");
     }

@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ClassMemberClassCtor() {
+    }
+    
+    private class Member$Other {
+        
+        private Member$Other(final long i) {
+            this.i = i;
+        }
+        public final long i;
+    }
+    
+    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Member(final long i) {
+        }
+        
+        private Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $args$) {
+            final long i = $args$.i;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member.class));
+        }
+    }
+    
+    private class SharedMember$Other {
+        
+        private SharedMember$Other(final long i) {
+            this.i = i;
+        }
+        public final long i;
+    }
+    
+    public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public SharedMember(final long i) {
+        }
+        
+        private SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $args$) {
+            final long i = $args$.i;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.class);
+}

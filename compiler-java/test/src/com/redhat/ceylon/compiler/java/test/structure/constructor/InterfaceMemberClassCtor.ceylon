@@ -20,8 +20,15 @@
 @noanno
 interface InterfaceMemberClassCtor {
     class Member {
-        new Member(Integer i) {
-            
+        shared new Member(Integer i) {
+        }
+        new Other(Integer i) {
+        }
+    }
+    shared class SharedMember {
+        shared new SharedMember(Integer i) {
+        }
+        new Other(Integer i) {
         }
     }
 }
