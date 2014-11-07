@@ -1256,9 +1256,10 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
         Scope scope = model.getContainer();
-        if(scope == null || scope instanceof Package)
+        boolean inlineObjectInToplevelAttr = Decl.isTopLevelObjectExpressionType(model);
+        if(scope == null || (scope instanceof Package && !inlineObjectInToplevelAttr))
             return;
-        if(scope instanceof ClassOrInterface){
+        if(scope instanceof ClassOrInterface && !inlineObjectInToplevelAttr){
             ClassOrInterface container = (ClassOrInterface) scope;
             List<JCAnnotation> atContainer = makeAtContainer(container.getType());
             classBuilder.annotations(atContainer);
