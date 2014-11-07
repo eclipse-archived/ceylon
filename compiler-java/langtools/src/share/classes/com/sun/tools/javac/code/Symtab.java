@@ -212,6 +212,8 @@ public class Symtab {
     public  Type ceylonGetterDoubleType;
     public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
+    public  Type ceylonDeconstructedType;
+    public  Type ceylonDeconstructorType;
     
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtDynamicType;
@@ -276,8 +278,7 @@ public class Symtab {
     public final Type ceylonSerializationType;
     public final Type ceylonInstanceLeakerType;
     public final Type ceylonSerializableType;
-    public final Type ceylonDeconstructedType;
-    public final Type ceylonDeconstructorType;
+    
 
     /** The symbol representing the length field of an array.
      */
@@ -683,9 +684,7 @@ public class Symtab {
         ceylonSerializationType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$");
         ceylonInstanceLeakerType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$");
         ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
-        ceylonDeconstructorType = enterClass("ceylon.language.serialization.Deconstructor");
-        ceylonDeconstructedType = enterClass("ceylon.language.serialization.Deconstructed");
-
+        
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
@@ -938,5 +937,8 @@ public class Symtab {
         ceylonGetterDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.GetterDouble");
         ceylonGetterByteType = enterClass("com.redhat.ceylon.compiler.java.language.GetterByte");
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
+        
+        ceylonDeconstructorType = enterClass("ceylon.language.serialization.Deconstructor");
+        ceylonDeconstructedType = enterClass("ceylon.language.serialization.Deconstructed");
     }
 }
