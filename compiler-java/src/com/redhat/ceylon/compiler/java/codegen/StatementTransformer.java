@@ -173,14 +173,6 @@ public class StatementTransformer extends AbstractTransformer {
         }
         return result;
     }
-
-    private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
-        JCExpression exception = make().NewClass(null, null,
-                makeIdent(syms().ceylonAssertionErrorType),
-                List.<JCExpression>of(messageExpr),
-                null);
-        return make().Throw(exception);
-    }
     
     /**
      * Helper for constructing {@code throw AssertionException()} statements

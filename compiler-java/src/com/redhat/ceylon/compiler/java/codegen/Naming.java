@@ -104,7 +104,12 @@ public class Naming implements LocalId {
         $refine$,
         $sb$,
         $spreadVarargs$,
-        $TypeDescriptor$
+        $TypeDescriptor$,
+        
+        $serialize$,
+        $deserialize$,
+        deconstructor,
+        deconstructed
     }
     
     /**

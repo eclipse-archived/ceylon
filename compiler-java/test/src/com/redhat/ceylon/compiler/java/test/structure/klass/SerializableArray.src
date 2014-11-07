@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public SerializableClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.array = null;
+    }
+    
+    SerializableClass(final .ceylon.language.Array<.ceylon.language.Integer> array) {
+        this.array = array;
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.$TypeDescriptor$));
+        deconstructor.<.ceylon.language.Array<.ceylon.language.Integer>>putValue(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Integer.$TypeDescriptor$), ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "array"), this.array);
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "array").invokeExact(this, (.ceylon.language.Array<.ceylon.language.Integer>)(
+            let
+            {
+                .java.lang.Object valueOrRef$0 = deconstructed.<.ceylon.language.Array<.ceylon.language.Integer>>getValue(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Integer.$TypeDescriptor$), ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "array"));
+            }
+            returning valueOrRef$0 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Array<.ceylon.language.Integer>>)valueOrRef$0).$leakInstance$() : (.ceylon.language.Array<.ceylon.language.Integer>)valueOrRef$0;
+        ));
+    }
+    private final .ceylon.language.Array<.ceylon.language.Integer> array;
+    
+    public final .ceylon.language.Array<.ceylon.language.Integer> getArray() {
+        return array;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class);
+}

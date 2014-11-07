@@ -95,12 +95,13 @@ public class LinkRenderer {
             
             if (declaration instanceof ClassOrInterface || declaration instanceof NothingType) {
                 TypeDeclaration type = (TypeDeclaration) declaration;
-                String typeUrl = getUrl(type, null);
-                if (typeUrl != null) {
-                    result = buildLinkElement(typeUrl, getLinkText(type), 
-                            "Go to " + type.getQualifiedNameString());
-
-                } else {
+                if (isLinkable(type)) {
+                    String typeUrl = getUrl(type, null);
+                    if (typeUrl != null) {
+                        result = buildLinkElement(typeUrl, getLinkText(type), "Go to " + type.getQualifiedNameString());
+                    }
+                }
+                if( result == null ) {
                     result = buildSpanElementWithNameAndTooltip(declaration);
                 }
             } else if (declaration instanceof TypeParameter) {
@@ -302,31 +303,34 @@ public class LinkRenderer {
         String declName = decl.getName();
         Scope declContainer = decl.getContainer();
         
-        String url = getUrl(declContainer, decl);
-        if( url != null ) {
-            return buildLinkElement(url, getLinkText(decl), "Go to " + decl.getQualifiedNameString());
-        } else {
-            String result = declName;
-            if (withinText) {
-                result = "<code>" + result + "</code>";
+        if( isLinkable(decl) ) {
+            String url = getUrl(declContainer, decl);
+            if( url != null ) {
+                return buildLinkElement(url, getLinkText(decl), "Go to " + decl.getQualifiedNameString());
             }
-            if (customText != null) {
-                result = customText + " (" + result + ")";
-            }
-            return result;
         }
+        
+        String result = declName;
+        if (withinText) {
+            result = "<code>" + result + "</code>";
+        }
+        if (customText != null) {
+            result = customText + " (" + result + ")";
+        }
+        return result;
     }
     
     private String processTypeAlias(TypeAlias alias) {
         String aliasName = alias.getName();
         Scope aliasContainer = alias.getContainer();
-
-        String url = getUrl(aliasContainer, alias);
-        if (url != null) {
-            return buildLinkElement(url, aliasName, "Go to " + alias.getQualifiedNameString());
-        } else {
-            return buildSpanElementWithNameAndTooltip(alias);
+        
+        if (isLinkable(alias)) {
+            String url = getUrl(aliasContainer, alias);
+            if (url != null) {
+                return buildLinkElement(url, aliasName, "Go to " + alias.getQualifiedNameString());
+            }
         }
+        return buildSpanElementWithNameAndTooltip(alias);
     }
 
     private String processWikiLink(final String docLinkText) {
@@ -404,6 +408,36 @@ public class LinkRenderer {
         } else {
             return getUnresolvableLink(declLink);
         }
+    }
+
+    private boolean isLinkable(Declaration decl) {
+        if( decl == null ) {
+            return false;
+        }
+        if( decl.isParameter() ) {
+            return true;
+        }
+        if( !ceylonDocTool.isIncludeNonShared() ) {
+            if( !decl.isShared() ) {
+                return false;
+            }
+            
+            Scope c = decl.getContainer();
+            while(c != null) {
+                boolean isShared = true;
+                if( c instanceof Declaration ) {
+                    isShared = ((Declaration) c).isShared();
+                }
+                if( c instanceof Package ) {
+                    isShared = ((Package) c).isShared();
+                }
+                if( !isShared ) {
+                    return false;
+                }
+                c = c.getContainer();
+            }
+        }
+        return true;
     }
 
     private boolean isValueWithTypeObject(Declaration decl) {

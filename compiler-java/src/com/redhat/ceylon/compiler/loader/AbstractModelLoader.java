@@ -131,6 +131,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_LANGUAGE = "ceylon.language";
     public static final String CEYLON_LANGUAGE_MODEL = "ceylon.language.meta.model";
     public static final String CEYLON_LANGUAGE_MODEL_DECLARATION = "ceylon.language.meta.declaration";
+    public static final String CEYLON_LANGUAGE_SERIALIZATION = "ceylon.language.serialization";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     

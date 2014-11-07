@@ -220,6 +220,7 @@ shared class StubClass(
      1. StubClassWithGenericTypeParams with custom name = [[custom with type params|StubClassWithGenericTypeParams]]
      1. module = [[module com.redhat.ceylon.ceylondoc.test.modules.single]]
      1. package = [[package com.redhat.ceylon.ceylondoc.test.modules.single]]
+     1. PrivateClass = [[PrivateClass]]
      
      Wiki-style links with full qualified name:
      

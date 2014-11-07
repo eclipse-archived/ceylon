@@ -1,0 +1,135 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface SerializableInterface<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl();
+    
+    public abstract T formalMethod();
+    
+    public T defaultMethod();
+}
+final class SerializableInterface$impl<T> {
+    
+    SerializableInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public T defaultMethod() {
+        return $this.formalMethod();
+    }
+}
+interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<S> {
+}
+class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer> {
+    
+    public SerializableInterfaceSatisfier(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+    }
+    
+    SerializableInterfaceSatisfier() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer defaultMethod() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$));
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer formalMethod() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.class);
+}
+class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U> {
+    
+    public SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this.$reified$U = $reified$U;
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U>($reified$U, this);
+        this.u = null;
+    }
+    
+    SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final U u) {
+        this.$reified$U = $reified$U;
+        this.u = u;
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U>($reified$U, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final U u;
+    
+    private final U getU$priv$() {
+        return u;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public U defaultMethod() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
+    }
+    
+    @.java.lang.Override
+    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
+        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U)));
+        deconstructor.putTypeArgument(((.ceylon.language.meta.declaration.GenericDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).getTypeParameterDeclaration("U"), .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel($reified$U));
+        deconstructor.<U>putValue($reified$U, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u"), this.u);
+    }
+    
+    @.java.lang.Override
+    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "u").invokeExact(this, (U)(
+            let
+            {
+                .java.lang.Object valueOrRef$0 = deconstructed.<U>getValue($reified$U, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u"));
+            }
+            returning valueOrRef$0 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<U>)valueOrRef$0).$leakInstance$() : (U)valueOrRef$0;
+        ));
+    }
+    
+    @.java.lang.Override
+    public final U formalMethod() {
+        return getU$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U);
+    }
+}

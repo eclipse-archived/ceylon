@@ -18,4 +18,8 @@
     <typedef name="ceylon-import-jar" classname="com.redhat.ceylon.ant.CeylonImportJarAntTask"/>
     <typedef name="ceylon-copy" classname="com.redhat.ceylon.ant.CeylonCopyAntTask"/>
     <typedef name="ceylon-plugin" classname="com.redhat.ceylon.ant.CeylonPluginAntTask"/>
+    
+    <typedef name="ceylon-config" classname="com.redhat.ceylon.ant.CeylonConfigAntTask"/>
+    <typedef name="ceylon-config-value" classname="com.redhat.ceylon.ant.CeylonConfigValueAntTask"/>
+    <typedef name="ceylon-config-repository" classname="com.redhat.ceylon.ant.CeylonConfigRepositoryAntTask"/>
 </antlib>
