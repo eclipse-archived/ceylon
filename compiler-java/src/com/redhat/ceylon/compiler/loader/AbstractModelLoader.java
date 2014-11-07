@@ -770,10 +770,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ClassOrInterface containerDecl = (ClassOrInterface) enclosingClassDeclaration;
                 // now find the method's declaration 
                 // FIXME: find the proper overload if any
-                if(method.isConstructor()){
+                String name = method.getName();
+                if(method.isConstructor() || name.startsWith(Naming.Prefix.$default$.toString())){
                     methodDecl = (LocalDeclarationContainer) containerDecl;
                 }else{
-                    String name = method.getName();
                     // this is only for error messages
                     String type;
                     // lots of special cases
@@ -801,6 +801,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         name = name.substring(0, name.length()-11);
                     }
                     name = Util.strip(name, true, method.isPublic() || method.isProtected() || method.isDefaultAccess());
+                    if(name.indexOf('$') > 0){
+                        // may be a default parameter expression? get the method name which is first
+                        name = name.substring(0, name.indexOf('$'));
+                    }
 
                     methodDecl = (LocalDeclarationContainer) containerDecl.getDirectMember(name, null, false);
 

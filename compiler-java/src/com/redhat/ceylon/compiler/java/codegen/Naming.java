@@ -144,7 +144,7 @@ public class Naming implements LocalId {
      * 
      * Should start and end with a {@code $} and contain no {@code $}
      */
-    enum Prefix implements Affix {
+    public enum Prefix implements Affix {
         $next$,
         $arg$,
         $ceylontmp$,
