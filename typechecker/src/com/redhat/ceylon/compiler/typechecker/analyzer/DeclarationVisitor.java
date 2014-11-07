@@ -643,6 +643,7 @@ public class DeclarationVisitor extends Visitor {
         }*/
         Class c = new Class();
         c.setName("anonymous#"+fid++);
+        c.setNamed(false);
         defaultExtendedToBasic(c);
         c.setAnonymous(true);
         that.setAnonymousClass(c);

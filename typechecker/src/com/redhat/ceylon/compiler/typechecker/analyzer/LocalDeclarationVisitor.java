@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
