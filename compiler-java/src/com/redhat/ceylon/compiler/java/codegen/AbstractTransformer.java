@@ -4625,7 +4625,10 @@ public abstract class AbstractTransformer implements Transformation {
         return !decl.isAlias() 
                 && decl.getTypeParameters().isEmpty()
                 && supportsReified(decl)
-                && Decl.isToplevel(decl);
+                && Decl.isToplevel(decl)
+                // those are not allowed because we can't have statics in them (for a reason I can't understand but
+                // is not worth wasting time on)
+                && !Decl.isTopLevelObjectExpressionType(decl);
     }
     
     boolean isSequencedAnnotation(Class klass) {
