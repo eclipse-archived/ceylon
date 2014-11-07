@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -227,7 +228,8 @@ public class Unit {
             Unit that = (Unit) obj;
             return that==this ||
                     that.getPackage().equals(getPackage()) && 
-                    that.getFullPath().equals(getFullPath());
+                    Objects.equals(getFilename(), that.getFilename()) &&
+                    Objects.equals(that.getFullPath(), getFullPath());
         }
         else {
             return false;
