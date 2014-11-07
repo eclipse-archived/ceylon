@@ -646,7 +646,7 @@ public class Naming implements LocalId {
         } while (!(s instanceof Package));
         Collections.reverse(l);
         
-        if (flags.contains(DeclNameFlag.QUALIFIED)) {
+        if (flags.contains(DeclNameFlag.QUALIFIED) && (!decl.isAnonymous() || decl.isNamed())) {
             final List<String> packageName;
             if(!AbstractTransformer.isJavaArray(decl))
                 packageName = ((Package) s).getName();
@@ -671,6 +671,8 @@ public class Naming implements LocalId {
             TypeDeclarationBuilder<?> typeDeclarationBuilder, Scope scope, final boolean last) {
         if (scope instanceof Class || scope instanceof TypeAlias) {
             TypeDeclaration klass = (TypeDeclaration)scope;
+            if(klass.isAnonymous() && !klass.isNamed())
+                typeDeclarationBuilder.clear();
             typeDeclarationBuilder.append(klass.getName());
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
