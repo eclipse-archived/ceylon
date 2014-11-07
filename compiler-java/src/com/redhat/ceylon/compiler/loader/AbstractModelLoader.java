@@ -647,7 +647,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 setInterfaceCompanionClass(d, null, pkg);
             }
             DeclarationVisitor.setVisibleScope(d);
-        }else if(classMirror.isLocalClass()){
+        }else if(classMirror.isLocalClass() && !classMirror.isInnerClass()){
             // set its container to the package for now, but don't add it to the package as a member because it's not
             Scope localContainer = getLocalContainer(pkg, classMirror, d);
             if(localContainer != null){
@@ -1027,14 +1027,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Declaration objectClassDecl = makeLazyClass(classMirror, null, null);
                 typeDeclarationsByName.put(key, objectClassDecl);
                 decls.add(objectClassDecl);
-                // then we make a value for it
-                Declaration objectDecl = makeToplevelAttribute(classMirror);
-                valueDeclarationsByName.put(key, objectDecl);
-                decls.add(objectDecl);
-                // which one did we want?
-                decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+                // then we make a value for it, if it's not an inline object expr
+                if(objectClassDecl.isNamed()){
+                    Declaration objectDecl = makeToplevelAttribute(classMirror);
+                    valueDeclarationsByName.put(key, objectDecl);
+                    decls.add(objectDecl);
+                    // which one did we want?
+                    decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+                    setDeclarationVisibility(objectDecl, classMirror, classMirror, true);
+                }else{
+                    decl = objectClassDecl;
+                }
                 setDeclarationVisibility(objectClassDecl, classMirror, classMirror, true);
-                setDeclarationVisibility(objectDecl, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
@@ -1285,7 +1289,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, constructor);
-        klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
+        AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
+        if(objectAnnotation != null){
+            klass.setAnonymous(true);
+            // isFalse will only consider non-null arguments, and we default to true if null
+            if(BooleanUtil.isFalse((Boolean) objectAnnotation.getValue("named")))
+                klass.setNamed(false);
+        }
         klass.setAnnotation(classMirror.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
         if(klass.isCeylon())
             klass.setAbstract(classMirror.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null
