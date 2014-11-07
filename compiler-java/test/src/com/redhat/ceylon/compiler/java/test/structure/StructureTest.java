@@ -267,6 +267,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/ObjectInStatement");
     }
     @Test
+    public void testKlsInlineObject(){
+        compareWithJavaSource("klass/InlineObject");
+        run("com.redhat.ceylon.compiler.java.test.structure.klass.testInlineObjects");
+    }
+    @Test
     public void testKlsInitializerObjectInStatement(){
         compareWithJavaSource("klass/InitializerObjectInStatement");
     }
