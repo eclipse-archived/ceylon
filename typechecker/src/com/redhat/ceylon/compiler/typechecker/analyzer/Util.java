@@ -93,16 +93,32 @@ public class Util {
             if (qt!=null) {
                 typeArgMap.putAll(qt.getTypeArguments());
             }
-            List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
-            for (int i=0; i<types.size(); i++) {
-                ProducedType t = types.get(i).getTypeModel();
-                if (t==null) {
-                    typeArguments.add(null);
+            if (tal instanceof Tree.TypeArgumentList) {
+                List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
+                for (int i=0; i<types.size(); i++) {
+                    ProducedType t = types.get(i).getTypeModel();
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
+                    }
                 }
-                else {
-                    typeArguments.add(t);
-                    if (i<typeParameters.size()) {
-                        typeArgMap.put(typeParameters.get(i), t);
+            }
+            else {
+                for (int i=0; i<tal.getTypeModels().size(); i++) {
+                    ProducedType t = tal.getTypeModels().get(i);
+                    if (t==null) {
+                        typeArguments.add(null);
+                    }
+                    else {
+                        typeArguments.add(t);
+                        if (i<typeParameters.size()) {
+                            typeArgMap.put(typeParameters.get(i), t);
+                        }
                     }
                 }
             }
@@ -887,5 +903,16 @@ public class Util {
         else {
             return et;
         }
+    }
+
+    static boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || 
+                that instanceof Tree.Outer;
+    }
+
+    static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
+        return term instanceof Tree.BaseMemberExpression ||
+                term instanceof Tree.QualifiedMemberExpression &&
+                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
     }
 }

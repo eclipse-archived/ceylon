@@ -15,6 +15,7 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean anonymous;
     private boolean named = true;
     private boolean fin;
+    private boolean serializable;
     private List<Declaration> overloads;
     private List<ProducedReference> unimplementedFormals = 
             Collections.<ProducedReference>emptyList();
@@ -141,4 +142,14 @@ public class Class extends ClassOrInterface implements Functional {
             List<ProducedReference> unimplementedFormals) {
         this.unimplementedFormals = unimplementedFormals;
     }
+
+    public boolean isSerializable() {
+        return serializable;
+    }
+
+    public void setSerializable(boolean serializable) {
+        this.serializable = serializable;
+    }
+    
+
 }

@@ -57,7 +57,8 @@
         <listitem>
             <para>An <emphasis>applied type</emphasis>, defined in 
             <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
-            generic type parameters of a parameterized type.</para>
+            generic type parameters of a parameterized type declaration, and is called an
+            <emphasis>instantiation</emphasis> of the parameterized type declaration.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
@@ -193,7 +194,7 @@
                 and</para>
             </listitem>
             <listitem>
-                <para>packages have their own dedicated namespace.</para>
+                <para>packages and modules have their own dedicated namespace.</para>
             </listitem>
         </itemizedlist>
         
@@ -206,8 +207,8 @@
         uppercase letter may be forced into the namespace of methods and attributes
         by prefixing the identifier <literal>\i</literal>. A keyword may be used as 
         an identifier by prefixing the keyword with either <literal>\i</literal> or 
-        <literal>\I</literal>. This allows interoperation with languages like Java 
-        which do not enforce these naming conventions.</para>
+        <literal>\I</literal>. This allows interoperation with other languages like 
+        Java and JavaScript which do not enforce these naming conventions.</para>
         
     </section>
       
@@ -267,8 +268,8 @@
         or <emphasis>toplevel value</emphasis>.</para>
         
         <para>A value schema, function schema, or parameter list with a missing type or types 
-        may be defined. A value schema, function schema, or parameter list with a missing type 
-        is called <emphasis>partially typed</emphasis>.</para>
+        may be defined. Any such schema, or parameter list with a missing type is called 
+        <emphasis>partially typed</emphasis>.</para>
         
         <para>Two signatures are considered identical if they have exactly the same types, at
         exactly the same positions, and missing types at exactly the same positions.</para> 
@@ -292,7 +293,12 @@
                     <para>two member classes with the same name.</para>
                 </listitem>
             </itemizedlist>
-        
+            
+            <comment><para>Note: the Ceylon compiler itself is able to represent type schemas 
+            with overloaded members and reason about overloading, and does so when compiling 
+            code that calls native Java types. However, this behavior is outside the scope of 
+            this specification.</para></comment>
+            
         </section>
         
         <section id="subtyping">
@@ -331,7 +337,7 @@
             <!--comment><para>Note: intersections and <literal>Nothing</literal> don't satisfy the last of 
             these rules.</para></comment-->
             
-            <para>Every interface type is a subtype of the class <literal>Object</literal> 
+            <para>Also, every interface type is a subtype of the class <literal>Object</literal> 
             defined in <literal>ceylon.language</literal>.</para>
             
             <para>If <literal>X</literal> is a subtype of <literal>Y</literal>, then:</para>
@@ -373,6 +379,9 @@
             of the types may be formed. A union type is a supertype of both of the given types 
             <literal>X</literal> and <literal>Y</literal>, and an instance of either type is an 
             instance of the union type.</para>
+            
+            <comment><para>Note: the type expression <literal>X|Y</literal> is pronounced
+            &#8220;x or y&#8221;.</para></comment>
             
             <para>The union type constructor <literal>|</literal> is associative, so the union 
             of three types, <literal>X</literal>, <literal>Y</literal>, and <literal>Z</literal>, 
@@ -469,6 +478,9 @@
             subtype of both of the given types <literal>X</literal> and <literal>Y</literal>, 
             and any object which is an instance of both types is an instance of the intersection 
             type.</para>
+            
+            <comment><para>Note: the type expression <literal>X&amp;Y</literal> is pronounced
+            &#8220;x and y&#8221;.</para></comment>
             
             <para>The intersection type constructor <literal>&amp;</literal> is associative, 
             so the intersection of three types, <literal>X</literal>, <literal>Y</literal>, 
@@ -707,12 +719,11 @@
             <synopsis>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</synopsis>   
             <synopsis>AtomicType: QualifiedType | EmptyType | TupleType | IterableType</synopsis>
             
-            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
-            <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
+            <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis> 
+            and <emphasis>sequence types</emphasis>.</para>
                     
             <synopsis>OptionalType: PrimaryType "?"</synopsis>
             <synopsis>SequenceType: PrimaryType "[" "]"</synopsis>
-            <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -721,11 +732,28 @@
                 </listitem>
                 <listitem>
                     <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
-                    for any type <literal>X</literal>, and</para>
+                    for any type <literal>X</literal>,</para>
                 </listitem>
+           </itemizedlist>
+           
+           <comment><para>Note: the type expression <literal>X?</literal> is pronounced
+           as &#8220;maybe x&#8221;, and <literal>X[]</literal> as 
+           &#8220;sequence of x&#8221;.</para></comment>
+           
+           <para>Next, there are type abbreviations for <emphasis>callable types</emphasis>
+           which represent the types of a functions.</para>
+           
+           <synopsis>CallableType: PrimaryType "(" TypeList? ")"</synopsis>
+            
+           <itemizedlist>
                 <listitem>
                     <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
-                    where <literal>Y,Z</literal> is a list of types of any length.</para>
+                    where <literal>Y,Z</literal> is a list of types of any length, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X(*Y)</literal> means <literal>Callable&lt;X,Y&gt;</literal>
+                    for any type <literal>X</literal>, and any subtype <literal>Y</literal> of
+                    <literal>Sequential&lt;Anything&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -741,11 +769,6 @@
             <synopsis>IterableType: "{" UnionType ("*"|"+") "}"</synopsis>
             
             <itemizedlist>
-                <!--listitem>
-                    <para><literal>{}</literal> means 
-                    <literal>Iterable&lt;Nothing,Null&gt;</literal>,</para>
-                    //causes ambiguity with syntax for annotation named args
-                </listitem-->
                 <listitem>
                     <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
                     for any type <literal>X</literal>, and</para>
@@ -755,6 +778,10 @@
                     for any type <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>Note: the type expression <literal>{X*}</literal> is pronounced
+            as &#8220;stream of x&#8221;, and <literal>{X+}</literal> as 
+            &#8220;nonempty stream of x&#8221;.</para></comment>
             
             <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
             <emphasis>tuple types</emphasis> may be written using brackets.</para>
@@ -951,8 +978,8 @@ Float|Integer num = one;</programlisting></comment>
             the types they alias. Thus, circular type alias definitions, as in the 
             following example, are illegal:</para>
             
-            <programlisting><![CDATA[alias X => List<Y>;
-alias Y => List<X>;]]></programlisting>
+            <programlisting><![CDATA[alias X => List<Y>;  //error: circular type alias definition
+alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <para>Replacement of type aliases with the types they alias occurs at 
             compile time, so type aliases are not reified types, as specified in 
@@ -1068,6 +1095,7 @@ alias Y => List<X>;]]></programlisting>
             <para>The type arguments may <emphasis>not</emphasis> be inferred from the 
             initializer arguments.</para>
             
+            <programlisting>extends Singleton&lt;String&gt;("")</programlisting>
             <programlisting>extends Person(name, org)</programlisting>
             
             <para>A member class annotated <literal>actual</literal> may use the qualifier 
@@ -1119,9 +1147,9 @@ alias Y => List<X>;]]></programlisting>
             satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
             must specify type arguments.</para>
             
-            <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
+            <programlisting>satisfies Correspondence&lt;Integer,Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
             
-            <para>A <literal>satisfies</literal> clause may not contain two types produced from 
+            <para>A <literal>satisfies</literal> clause may not contain two instantiations of 
             the same type declaration.</para>
             
         </section>
@@ -1215,7 +1243,7 @@ alias Y => List<X>;]]></programlisting>
             <para>Note: however, a type is <emphasis>not</emphasis> considered automatically 
             assignable to the union of its cases, or to its self type. Instead, the type
             must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, 
-            or to its self type, using either the <literal>of</literal> operator or the
+            nor to its self type, using either the <literal>of</literal> operator or the
             <literal>switch</literal> construct. This narrowing type conversion can be
             statically checked&mdash;if <literal>X</literal> covers <literal>Y</literal>
             then <literal>Y of X</literal> is guaranteed to succeed at runtime.
@@ -1307,7 +1335,7 @@ Item item = comp of Item;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>two types produced from the same type declaration, or</para>
+                    <para>two instantiations of the same type declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>two value references to a single toplevel anonymous class.</para>
@@ -1383,10 +1411,10 @@ interface Function<out Type>
         satisfies Expression<Type> { ... }
 
 interface StringLiteral
-        satisfies Expression<String> { ... }
+        satisfies Expression<String> { ... } //error String is not exactly Nothing
 
 interface NumberLiteral
-        satisfies Expression<Integer|Float> { ... }]]></programlisting>
+        satisfies Expression<Integer|Float> { ... } //error Integer|Float is not exactly Nothing]]></programlisting>
             
             <comment><para>Note: these rules could be relaxed to allow the definition of
             generic enumerated types where the list of cases of an instantiation of a 
@@ -1486,7 +1514,7 @@ interface NumberLiteral
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Function, class, and interface schemas may be parameterized by one or more 
+        <para>A function, class, or interface schema may be parameterized by one or more 
         generic type parameters. A parameterized type schema defines a type constructor, 
         a function that produces a type given a tuple of compatible type arguments. A 
         parameterized class or function schema defines a function that produces the 
@@ -1532,9 +1560,9 @@ interface NumberLiteral
         the body of the <literal>Entry</literal> class. The following identifier names 
         usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>,
         <literal>This</literal>, <literal>Value</literal>, <literal>Key</literal>, 
-        <literal>Item</literal>, <literal>Argument</literal>, <literal>Args</literal> and 
-        <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
-        and classes.</para></comment>
+        <literal>Item</literal>, <literal>Absent</literal>, <literal>Argument</literal>, 
+        <literal>Args</literal> and <literal>Result</literal>. Avoid, where reasonable, using 
+        these names for interfaces and classes.</para></comment>
         
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
@@ -1542,11 +1570,11 @@ interface NumberLiteral
             <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
             over a constrained set of types.</para>
             
-            <synopsis>TypeParameter: Variance? TypeName ("=" Type)</synopsis>
+            <synopsis>TypeParameter: Variance TypeName ("=" Type)</synopsis>
             
             <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
             
-            <synopsis>Variance: "out" | "in"</synopsis>
+            <synopsis>Variance: ("out" | "in")?</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -1868,16 +1896,14 @@ interface NumberLiteral
             <comment><para>Note: in Ceylon 1.0, a type parameter with multiple upper bounds may 
             not have an upper bound which is another type parameter.</para></comment>
             
-            <programlisting><![CDATA[given Value satisfies Ordinal & Comparable<Value>]]></programlisting>
-            
-            <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
+            <programlisting><![CDATA[given Value satisfies Ordinal<Value> & Comparable<Value>]]></programlisting>
             
             <programlisting><![CDATA[given Argument of String | Integer | Float]]></programlisting>
             
             <para>A type parameter is a subtype of its upper bounds.</para>
             
             <programlisting><![CDATA[class Holder<Value>(shared Value value) 
-        extends Object
+        extends Object()
         given Value satisfies Object {
     shared actual Boolean equals(Object that) {
         if (is Holder<Value> that) {
@@ -1971,7 +1997,8 @@ interface NumberLiteral
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
         parameterized function schema. In the case of a type schema, this new schema is
-        the schema of an applied type.</para>
+        the schema of an applied type, and is called an instantiation of the parameterized 
+        type schema.</para>
         
         <para>A type argument list is a list of types.</para>
         
@@ -1982,7 +2009,7 @@ interface NumberLiteral
         
         <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>&lt;String, Person?&gt;</programlisting>
-        <programlisting>&lt;String[], [{Object*}]&gt;</programlisting>
+        <programlisting>&lt;String[](Integer), [{Object*}]&gt;</programlisting>
         
         <para>Type arguments are assigned to type parameters according to the positions
         they occur in the list.</para>
@@ -2035,10 +2062,11 @@ interface NumberLiteral
                 </listitem-->
                 <listitem>
                     <para>A type argument to a type parameter <literal>T</literal> with an 
-                    enumerated type bound must be a subtype of one of the enumerated types
-                    of <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
-                    with an enumerated type bound where every enumerated type of 
-                    <literal>A</literal> is also an enumerated type of <literal>T</literal>.</para>
+                    enumerated bound must be a subtype of one of the enumerated types of the
+                    bound on <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
+                    with an enumerated bound where every enumerated type of the bound on
+                    <literal>A</literal> is a subtype of one of the enumerated types of the 
+                    bound on <literal>T</literal>.</para>
                 </listitem>
                 <!--
                 <listitem>

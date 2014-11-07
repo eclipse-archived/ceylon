@@ -390,3 +390,11 @@ T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
     (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
     return t;
 }
+
+void abbreviations<T>() given T satisfies Anything[] {
+    @type:"Callable<String,T>" String(*T) f1;
+    @type:"Callable<String,Tuple<T,T,Empty>>" String(T) f2;
+    @type:"Callable<String,Tuple<String,String,Empty>>" String(String) f3;
+    @error String(*String) f4;
+    @type:"Callable<String,Tuple<String,String,Empty>>" String(*[String]) f5;
+}

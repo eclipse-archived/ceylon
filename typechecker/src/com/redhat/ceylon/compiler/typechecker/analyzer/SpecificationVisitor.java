@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingDeclarationOfScope;
 
@@ -187,7 +188,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (Util.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
     }
@@ -195,14 +196,9 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
+        if (Util.isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
-    }
-
-    private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || 
-                that instanceof Tree.Outer;
     }
 
     private void visitReference(Tree.Primary that) {
@@ -377,40 +373,36 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private void checkVariable(Tree.Term term, Node node) {
-        //TODO: sometimes we get a dupe error b/w here and
-        //      ExpressionVisitor.checkAssignable()
-        if (isEffectivelyBaseMemberExpression(term)) {
-            Tree.StaticMemberOrTypeExpression m = 
+        if (isEffectivelyBaseMemberExpression(term)) {  //Note: other cases handled in ExpressionVisitor
+            Tree.StaticMemberOrTypeExpression mte = 
                     (Tree.StaticMemberOrTypeExpression) term;
-//            Declaration member = getTypedDeclaration(m.getScope(), 
-//                    name(m.getIdentifier()), null, false, m.getUnit());
-            Declaration member = m.getDeclaration();
+            Declaration member = mte.getDeclaration();
             if (member==declaration) {
             	if ((declaration.isFormal() || declaration.isDefault()) && 
             	        !isForwardReferenceable()) {
-	        		node.addError("member is formal and may not be assigned: '" +
-	        				member.getName() + "' is declared formal");
+            	    term.addError("member is formal or default and may not be assigned here: '" +
+	        				member.getName() + "'");
             	}
             	else if (!isVariable() && !isLate()) {
-                    if (node instanceof Tree.AssignOp) {
-                        node.addError("cannot assign non-variable value here: '" +
-                                        member.getName() + "' is not a variable", 803);
+                    if (member instanceof Value) {
+                        if (node instanceof Tree.AssignOp) {
+                            term.addError("value is not a variable and may not be assigned here: '" +
+                                    member.getName() + "'", 803);
+                        }
+                        else {
+                            term.addError("value is not a variable: '" +
+                                    member.getName() + "'", 800);
+                        }
                     }
                     else {
-                        term.addError("not a variable: '" +
-                                member.getName() + "'", 800);
+                        term.addError("not a variable value: '" +
+                                member.getName() + "'");
                     }
                 }
             }
         }
     }
 
-    private boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
-        return term instanceof Tree.BaseMemberExpression ||
-                term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression) term).getPrimary());
-    }
-    
     private Tree.Continue lastContinue;
     private Tree.Statement lastContinueStatement;
     
@@ -557,7 +549,7 @@ public class SpecificationVisitor extends Visitor {
 	        	if ((declaration.isFormal() || declaration.isDefault()) && 
 	        	        !isForwardReferenceable()) {
 	        	    //TODO: is this error correct?! look at the condition above
-	        		that.addError("member is formal and may not be specified: '" +
+	        	    bme.addError("member is formal and may not be specified: '" +
 	        				member.getName() + "' is declared formal");
 	        	}
 	        	if (that.getRefinement()) {
@@ -574,16 +566,16 @@ public class SpecificationVisitor extends Visitor {
             	    	// kind of specifier, all =>, or all =
             	    	// TODO: sometimes this error appears only because 
             	    	//       of a later line which illegally reassigns
-	            		that.addError("value must be specified using => lazy specifier: '" +
+	            		se.addError("value must be specified using => lazy specifier: '" +
 	            		        member.getName() + "'");
             	    }
             	    if (lazy) {
             	        if (value.isVariable()) {
-            	            that.addError("variable value may not be specified using => lazy specifier: '" +
+            	            se.addError("variable value may not be specified using => lazy specifier: '" +
             	                    member.getName() + "'");
             	        }
             	        else if (value.isLate()) {
-            	            that.addError("late reference may not be specified using => lazy specifier: '" +
+            	            se.addError("late reference may not be specified using => lazy specifier: '" +
             	                    member.getName() + "'");
             	        }
             	    }
@@ -598,19 +590,19 @@ public class SpecificationVisitor extends Visitor {
 //                            member.getName() + "'");
 	            }
 	            else if (!declared && constant) {
-                    that.addError(shortdesc() + 
+                    bme.addError(shortdesc() + 
                             " is not yet declared: '" + 
                             member.getName() + "'");
 	            }
 	            else if (inLoop && constant && 
 	                    !(endsInBreakReturnThrow && lastContinue==null)) {
 	            	if (specified.definitely) {
-	            		that.addError(longdesc() + 
+	            		bme.addError(longdesc() + 
 	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is not definitely unspecified in loop: '" + 
 	            				member.getName() + "'", 803);
 	            	}
@@ -619,22 +611,22 @@ public class SpecificationVisitor extends Visitor {
                         !that.getRefinement()) {
                     Declaration dec = getContainingDeclarationOfScope(that.getScope());
                     if (dec!=null && dec.equals(member)) {
-                        that.addError("cannot specify " + shortdesc() + 
+                        bme.addError("cannot specify " + shortdesc() + 
                                 " from within its own body: '" + member.getName() + "'");
                     }
                     else {
-                        that.addError("cannot specify " + shortdesc() + 
+                        bme.addError("cannot specify " + shortdesc() + 
                                 " declared in outer scope: '" + member.getName() + "'", 803);
                     }
                 }
 	            else if (specified.possibly && constant) {
 	            	if (specified.definitely) {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is aready definitely specified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
 	            	else {
-	            		that.addError(longdesc() + 
+	            	    bme.addError(longdesc() + 
 	            		        " is not definitely unspecified: '" + 
 	            				member.getName() + "'", 803);
 	            	}
