@@ -276,7 +276,7 @@ public class Unit {
     }
 
     /**
-     * Search for a declaration in {@code ceylon.language.model} 
+     * Search for a declaration in {@code ceylon.language.meta.model} 
      */
     public Declaration getLanguageModuleModelDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
@@ -294,13 +294,31 @@ public class Unit {
     }
     
     /**
-     * Search for a declaration in {@code ceylon.language.model.declaration} 
+     * Search for a declaration in {@code ceylon.language.meta.declaration} 
      */
     public Declaration getLanguageModuleDeclarationDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             Package languageScope = 
                     languageModule.getPackage("ceylon.language.meta.declaration");
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Search for a declaration in {@code ceylon.language.serialization} 
+     */
+    public Declaration getLanguageModuleSerializationDeclaration(String name) {
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = 
+                    languageModule.getPackage("ceylon.language.serialization");
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -1258,6 +1276,7 @@ public class Unit {
         put("deprecated");
         put("annotation");
         put("optional");
+        put("serializable");
     }
     public Map<String, String> getModifiers() {
         return modifiers;
