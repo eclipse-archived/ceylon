@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -70,6 +71,13 @@ public class HasTypeVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectArgument that){
         Value model = that.getDeclarationModel();
+        if(model != null)
+            throw new HasTypeException();
+    }
+
+    @Override
+    public void visit(Tree.ObjectExpression that){
+        Class model = that.getAnonymousClass();
         if(model != null)
             throw new HasTypeException();
     }

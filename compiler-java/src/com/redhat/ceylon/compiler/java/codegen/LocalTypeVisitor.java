@@ -68,7 +68,7 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
     }
 
     private void collect(Node that, Declaration model) {
-        if(model != null && !model.isMember()){
+        if(model != null && (!model.isMember() || Decl.isTopLevelObjectExpressionType(model))){
             String name = model.getName();
             Set<String> locals = this.locals;
             // FIXME: better name processing
@@ -265,5 +265,12 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
         Value model = that.getDeclarationModel();
         if(model != null)
             collect(that, model.getTypeDeclaration());
+    }
+
+    @Override
+    public void visit(Tree.ObjectExpression that){
+        Class model = that.getAnonymousClass();
+        if(model != null)
+            collect(that, model);
     }
 }
