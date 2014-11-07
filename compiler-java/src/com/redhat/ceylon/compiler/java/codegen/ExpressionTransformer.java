@@ -70,10 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -5687,6 +5684,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
         return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
+    }
+
+    public JCTree transform(Tree.ObjectExpression expr) {
+        at(expr);
+        List<JCTree> klass = classGen().transformObjectExpression(expr);
+        at(expr);
+        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(expr.getAnonymousClass().getName()+"_"), List.<JCTree.JCExpression>nil(), null);
+        return make().LetExpr((List)klass, newCall);
     }
 
 }

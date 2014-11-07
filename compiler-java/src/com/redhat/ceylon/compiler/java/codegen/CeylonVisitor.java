@@ -369,6 +369,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      * Expression - Invocations
      */
 
+    public void visit(Tree.ObjectExpression expr) {
+        append(gen.expressionGen().transform(expr));
+    }
+
     public void visit(Tree.InvocationExpression expr) {
         append(gen.expressionGen().transform(expr));
     }

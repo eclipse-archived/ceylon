@@ -108,7 +108,6 @@ public class ClassDefinitionBuilder
         return builder;
     }
     
-
     public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName, boolean isLocal) {
         return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName, isLocal);
     }
