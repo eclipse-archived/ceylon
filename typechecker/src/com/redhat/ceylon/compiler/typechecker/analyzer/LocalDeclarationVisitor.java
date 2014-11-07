@@ -69,10 +69,17 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         visitLocalDeclarationModel(that.getAnonymousClass());
     }
 
+    public static boolean isTopLevelObjectExpressionType(Declaration model) {
+        return model instanceof Class
+                && model.isAnonymous()
+                && model.getContainer() instanceof Package
+                && !model.isNamed();
+    }
+    
     private void visitLocalDeclarationModel(Declaration model) {
-        if (model!=null 
-                && !model.isToplevel()
-                && !model.isMember()
+        if (model!=null
+                && (isTopLevelObjectExpressionType(model)
+                        || (!model.isToplevel() && !model.isMember())) 
                 && !(model instanceof Method && model.isParameter())
                 && localNames!=null){
             Integer counter = localNames.get(model.getName());
