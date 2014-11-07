@@ -60,7 +60,7 @@ public class TryCatchGenerator {
                 gen.endLine(true);
             }
         }
-        gen.encloseBlockInFunction(that.getTryClause().getBlock());
+        gen.encloseBlockInFunction(that.getTryClause().getBlock(), true);
         if (resources != null) {
             //Destroy/release resources
             Collections.reverse(resourceVars);
@@ -123,7 +123,7 @@ public class TryCatchGenerator {
 
         if (that.getFinallyClause() != null) {
             gen.out("finally");
-            gen.encloseBlockInFunction(that.getFinallyClause().getBlock());
+            gen.encloseBlockInFunction(that.getFinallyClause().getBlock(), true);
         }
     }
 

@@ -45,7 +45,6 @@ public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
     private final Stack<Continuation> continues = new Stack<>();
-    private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<>();
     private final Set<Declaration> generatedAttributes = new HashSet<>();
@@ -1501,6 +1500,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.StringTemplate that) {
+        //TODO optimize to avoid generating initial "" and final .plus("")
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
         for (int i = 0; i < literals.size(); i++) {
@@ -3053,7 +3053,7 @@ public class GenerateJsVisitor extends Visitor
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
         out(") ");
-        encloseBlockInFunction(cc.getBlock());
+        encloseBlockInFunction(cc.getBlock(), true);
     }
 
     @Override
@@ -3103,20 +3103,39 @@ public class GenerateJsVisitor extends Visitor
         FunctionHelper.methodArgument(that, this);
     }
 
+    /** Determines whether the specified block should be enclosed in a function. */
+    public boolean shouldEncloseBlock(Block block) {
+        // just check if the block contains a captured declaration
+        for (Tree.Statement statement : block.getStatements()) {
+            if (statement instanceof Tree.Declaration) {
+                if (((Tree.Declaration) statement).getDeclarationModel().isCaptured()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /** Encloses the block in a function, IF NEEDED. */
-    void encloseBlockInFunction(final Tree.Block block) {
-        final boolean wrap=encloser.encloseBlock(block);
+    void encloseBlockInFunction(final Tree.Block block, final boolean markBlock) {
+        final boolean wrap=shouldEncloseBlock(block);
         if (wrap) {
-            beginBlock();
+            if (markBlock)beginBlock();
             Continuation c = new Continuation(block.getScope(), names);
             continues.push(c);
             out("var ", c.getContinueName(), "=false"); endLine(true);
             out("var ", c.getBreakName(), "=false"); endLine(true);
             out("var ", c.getReturnName(), "=(function()");
+            if (!markBlock)beginBlock();
         }
-        block.visit(this);
+        if (markBlock) {
+            block.visit(this);
+        } else {
+            visitStatements(block.getStatements());
+        }
         if (wrap) {
             Continuation c = continues.pop();
+            if (!markBlock)endBlock();
             out("());if(", c.getReturnName(), "!==undefined){return ", c.getReturnName(), ";}");
             if (c.isContinued()) {
                 out("else if(", c.getContinueName(),"===true){continue;}");
@@ -3124,7 +3143,7 @@ public class GenerateJsVisitor extends Visitor
             if (c.isBreaked()) {
                 out("else if(", c.getBreakName(),"===true){break;}");
             }
-            endBlockNewLine();
+            if (markBlock)endBlockNewLine();
         }
     }
 

@@ -68,7 +68,7 @@ public class ConditionGenerator {
         final List<VarHolder> vars = gatherVariables(conditions);
         specialConditions(vars, conditions, keyword);
         if (block != null) {
-            gen.encloseBlockInFunction(block);
+            gen.encloseBlockInFunction(block, true);
         }
     }
 
@@ -144,7 +144,7 @@ public class ConditionGenerator {
 
         if (that.getElseClause() != null) {
             gen.out("else ");
-            gen.encloseBlockInFunction(that.getElseClause().getBlock());
+            gen.encloseBlockInFunction(that.getElseClause().getBlock(), true);
         }
     }
 

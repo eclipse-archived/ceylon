@@ -28,13 +28,13 @@ public class ForGenerator {
         boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
         final String itemVar = generateForLoop(foriter, hasElse);
 
-        gen.visitStatements(that.getForClause().getBlock().getStatements());
+        gen.encloseBlockInFunction(that.getForClause().getBlock(), false);
         //If there's an else block, check for normal termination
         gen.endBlock();
         if (hasElse) {
             gen.endLine();
             gen.out("if(", gen.getClAlias(), "getFinished()", "===", itemVar, ")");
-            gen.encloseBlockInFunction(that.getElseClause().getBlock());
+            gen.encloseBlockInFunction(that.getElseClause().getBlock(), true);
         }
     }
 
