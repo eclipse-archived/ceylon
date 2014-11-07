@@ -225,8 +225,9 @@ public class Unit {
     public boolean equals(Object obj) {
         if (obj instanceof Unit) {
             Unit that = (Unit) obj;
-            return that.getPackage().equals(getPackage())
-                    && that.getFullPath().equals(getFullPath());
+            return that==this ||
+                    that.getPackage().equals(getPackage()) && 
+                    that.getFullPath().equals(getFullPath());
         }
         else {
             return false;
