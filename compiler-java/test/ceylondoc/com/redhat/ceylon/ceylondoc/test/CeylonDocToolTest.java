@@ -239,7 +239,7 @@ public class CeylonDocToolTest {
         assertDefaultedParametres(destDir);
         assertAnythingReturnType(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
-        assertWikiStyleLinkSyntax(destDir);
+        assertWikiStyleLinkSyntax(destDir, includeNonShared);
         assertConstants(destDir);
         assertLinksToRefinedDeclaration(destDir);
         assertGenericTypeParams(destDir);
@@ -906,7 +906,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<pre data-language=\"ceylon\">shared actual default Integer hash \\{"));
     }
     
-    private void assertWikiStyleLinkSyntax(File destDir) throws Exception {
+    private void assertWikiStyleLinkSyntax(File destDir, boolean includeNonShared) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClass = <code><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a></code>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -982,6 +982,14 @@ public class CeylonDocToolTest {
                 Pattern.compile("parameter methodWithParametersDocumentation.a = <a class='link' href='StubClass.type.html#methodWithParametersDocumentation-a' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithParametersDocumentation.a'><code><span class='identifier'>a</span></code></a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("parameter stubTopLevelMethod.numbers = <a class='link' href='index.html#stubTopLevelMethod-numbers' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod.numbers'><code><span class='identifier'>numbers</span></code></a>"));
+        
+        if (includeNonShared) {
+            assertMatchInFile(destDir, "StubClass.type.html",
+                    Pattern.compile("PrivateClass = <code><a class='link' href='PrivateClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::PrivateClass'><span class='type-identifier'>PrivateClass</span></a></code>"));
+        } else {
+            assertMatchInFile(destDir, "StubClass.type.html",
+                    Pattern.compile("PrivateClass = <code><span title='com.redhat.ceylon.ceylondoc.test.modules.single::PrivateClass'><span class='type-identifier'>PrivateClass</span></span></code>"));
+        }
     }
     
     private void assertConstants(File destDir) throws Exception {
