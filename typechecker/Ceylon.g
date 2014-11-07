@@ -3052,16 +3052,16 @@ ifElse returns [IfStatement statement]
               if (id!=null && t instanceof SyntheticVariable) { 
                 Variable ev = new Variable(null);
                 ev.setType(new SyntheticVariable(null));
-                ev.setIdentifier(id);
                 SpecifierExpression ese = new SpecifierExpression(null);
                 Expression ee = new Expression(null);
                 BaseMemberExpression ebme = new BaseMemberExpression(null);
-                ebme.setIdentifier(id);
                 ebme.setTypeArguments( new InferredTypeArguments(null) );
                 ee.setTerm(ebme);
                 ese.setExpression(ee);
                 ev.setSpecifierExpression(ese);
                 ec.setVariable(ev);
+                ev.setIdentifier(id);
+                ebme.setIdentifier(id);
               }
             }
           }
@@ -3111,32 +3111,32 @@ switchCaseElse returns [SwitchStatement statement]
               IsCase ic = (IsCase) item;
               Variable v = new Variable(null);
               v.setType(new SyntheticVariable(null));
-              v.setIdentifier(id);
               SpecifierExpression se = new SpecifierExpression(null);
               Expression e = new Expression(null);
               BaseMemberExpression bme = new BaseMemberExpression(null);
-              bme.setIdentifier(id);
               bme.setTypeArguments( new InferredTypeArguments(null) );
               e.setTerm(bme);
               se.setExpression(e);
               v.setSpecifierExpression(se);
               ic.setVariable(v);
+              bme.setIdentifier(id);
+              v.setIdentifier(id);
             }
           }
           ElseClause ec = $cases.switchCaseList.getElseClause();
           if (ec!=null) {
             Variable ev = new Variable(null);
             ev.setType(new SyntheticVariable(null));
-            ev.setIdentifier(id);
             SpecifierExpression ese = new SpecifierExpression(null);
             Expression ee = new Expression(null);
             BaseMemberExpression ebme = new BaseMemberExpression(null);
-            ebme.setIdentifier(id);
             ebme.setTypeArguments( new InferredTypeArguments(null) );
             ee.setTerm(ebme);
             ese.setExpression(ee);
             ev.setSpecifierExpression(ese);
             ec.setVariable(ev);
+            ebme.setIdentifier(id);
+            ev.setIdentifier(id);
           }
         }
       }
