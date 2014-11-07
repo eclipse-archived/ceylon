@@ -388,7 +388,10 @@ public abstract class TypeDescriptor {
         @Override
         public String toString() {
             StringBuilder b = new StringBuilder();
-            b.append(name);
+            if(klass != null)
+                b.append(klass.getName());
+            else
+                b.append(name);
             // add type arguments
             super.toString(b);
             return b.toString();
