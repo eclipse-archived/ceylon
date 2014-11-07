@@ -3767,9 +3767,20 @@ public class ClassTransformer extends AbstractTransformer {
             if (error != null) {
                 methodBuilder.body(this.makeThrowUnresolvedCompilationError(error));
             } else {
-                JCExpression expr = expressionGen().transform(currentParam);
-                JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
-                methodBuilder.block(body);
+                java.util.List<TypeParameter> copiedTypeParameters = null;
+                if(container instanceof Functional) {
+                    copiedTypeParameters = ((Functional) container).getTypeParameters();
+                    if(copiedTypeParameters != null)
+                        addTypeParameterSubstitution(copiedTypeParameters);
+                }
+                try{
+                    JCExpression expr = expressionGen().transform(currentParam);
+                    JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
+                    methodBuilder.block(body);
+                }finally{
+                    if(copiedTypeParameters != null)
+                        popTypeParameterSubstitution();
+                }
             }
         }
 
