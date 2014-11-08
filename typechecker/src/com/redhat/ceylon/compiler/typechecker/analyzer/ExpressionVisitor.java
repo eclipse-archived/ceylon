@@ -2633,7 +2633,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType inferTypeArg(TypeParameter tp, 
-            ProducedType paramType,ProducedType argType, 
+            ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited) {
         return inferTypeArg(tp, tp, paramType, argType, 
@@ -2642,7 +2642,7 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType inferTypeArg(TypeParameter tp,
             TypeParameter tp0,
-            ProducedType paramType,ProducedType argType, 
+            ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited) {
         if (paramType!=null && argType!=null) {
@@ -2719,7 +2719,8 @@ public class ExpressionVisitor extends Visitor {
                     for (ProducedType act: argType.getDeclaration().getCaseTypes()) {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
-                        if (act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
+                        if (!act.containsDeclaration(tp) && //in a recursive generic function, T can get assigned to T
+                                act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);
                             apt = apt.shallowMinus(act);
                         }
@@ -2824,7 +2825,7 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
     }
-
+    
     private void inferTypeArg(TypeParameter tp, 
             ProducedType paramType, ProducedType supertype, 
             boolean covariant, boolean contravariant,
