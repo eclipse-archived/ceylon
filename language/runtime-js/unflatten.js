@@ -1,4 +1,5 @@
 function unflatten(ff, $$$mptypes) {
+  if (ff.$flattened$)return ff.$flattened$;
   if (getrtmm$$(ff) && ff.$crtmm$.ps) {
     var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
@@ -27,6 +28,7 @@ function unflatten(ff, $$$mptypes) {
       return ff.apply(ru, a);
     }
   }
+  ru.$unflattened$=ff;
   ru.$$targs$$={Return$Callable:$$$mptypes.Return$unflatten,Arguments$Callable:{t:'T',l:[$$$mptypes.Args$unflatten]}};
   return ru;
 }

@@ -1,4 +1,5 @@
 function flatten(tf, $$$mptypes) {
+  if (tf.$unflattened$)return tf.$unflattened$;
   function rf() {
     var argc = arguments.length;
     var last = argc>0 ? arguments[argc-1] : undefined;
@@ -17,9 +18,9 @@ function flatten(tf, $$$mptypes) {
     for (var i=0;i<argc;i++) {
       t.push(arguments[i]);
     }
-    t=tpl$(t);
-    return tf(t, t.$$targs$$);
+    return tf(tpl$(t));
   };
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
+  rf.$flattened$=tf;
   return rf;
 }
