@@ -38,6 +38,19 @@ Integer test367_3(Integer a)(Integer b, Integer c) {
 }
 Integer test367_4(Integer a)(Integer b, Integer c) => b+c;
 
+shared X(*Args) i450_1<X,Y,Args>(X(Y) x, Y(*Args) y) 
+        given Args satisfies Anything[]
+               => flatten((Args args) => x(unflatten(y)(args)));
+shared X(*Args) i450_2<X,Y,Args>(X(Y) x, Y(*Args) y) 
+        given Args satisfies Anything[]
+               => flatten((Args args) => x(y(*args)));
+
+void test450({String?*}(String?(String?))({String?*}) map) {
+    function str(String? s) => "@" + (s else "null");
+    check(map({null})(str).size == 1, "issue 450.1");
+    check(map({null, "a", null})(str).size == 3, "issue 450.2");
+}
+
 void testSpread() {
   value ints = [8,9,10];
   check(spread1(1,2,3)==6, "spread [1]");
@@ -76,4 +89,9 @@ void testSpread() {
   check(r436.size == 2, "Spread callable #436.1");
   check(r436.first.size == 1, "Spread callable #436.2");
   check(r436*.sequence()==[[43],[44]], "Spread callable #436.3");
+  //Issue 450
+  test450(({String?*} strings) =>
+        i450_1(({String?*} it)=>it.sequence(), strings.map<String?>));
+  test450(({String?*} strings) =>
+        i450_2(({String?*} it)=>it.sequence(), strings.map<String?>));
 }
