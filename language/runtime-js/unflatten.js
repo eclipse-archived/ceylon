@@ -1,6 +1,7 @@
 function unflatten(ff, $$$mptypes) {
   if (ff.$flattened$)return ff.$flattened$;
-  if (getrtmm$$(ff) && ff.$crtmm$.ps) {
+  var mm=getrtmm$$(ff);
+  if (mm && mm.ps) {
     var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
       var pmeta = ff.$crtmm$.ps;
@@ -16,6 +17,10 @@ function unflatten(ff, $$$mptypes) {
       }
       if ($mptypes && ff.$crtmm$.tp)a.push($mptypes);
       return ff.apply(ru, a);
+    }
+    ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]}}]};
+    for (var i=0;i<mm.ps.length;i++){
+      ru.$crtmm$.ps[0].$t.l.push(mm.ps[i].$t);
     }
   } else {
     var ru=function ru(seq) {
