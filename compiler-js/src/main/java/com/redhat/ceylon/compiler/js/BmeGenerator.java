@@ -88,12 +88,10 @@ public class BmeGenerator {
     static void printGenericMethodReference(final GenerateJsVisitor gen,
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Method refs with type arguments must be passed as a special function
-        final String tmpargs = gen.getNames().createTempVariable();
-        gen.out("function(){var ", tmpargs, "=[].slice.call(arguments,0);",
-                tmpargs, ".push(");
+        gen.out(gen.getClAlias(), "JsCallable(", who, ",", member, ",");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true,
                 expr.getTypeModel().getVarianceOverrides());
-        gen.out(");return ", member, ".apply(", who==null?"null":who, ",", tmpargs, ");}");
+        gen.out(")");
     }
 
     /**
