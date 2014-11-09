@@ -601,8 +601,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
-    shared default Callable<Iterable<Result,Absent>,Args> 
-    spread<Result,Args>(Callable<Result,Args> method(Element element))
+    shared default Iterable<Result,Absent>(*Args) 
+    spread<Result,Args>(Result(*Args) method(Element element))
             given Args satisfies Anything[]
             //=> flatten((Args args) => map(shuffle(method)(*args)));
             => flatten((Args args) 
