@@ -253,6 +253,10 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfConditionListNonemptyIsBool(){
         compareWithJavaSource("conditional/MethodIfConditionListNonemptyIsBool");
     }
+    @Test
+    public void testConMethodIfExpression(){
+        compareWithJavaSource("conditional/IfExpression");
+    }
 
     //
     // for
