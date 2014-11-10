@@ -710,4 +710,6 @@ class Trompon() {
     print(name);
     print(this.name);
     string=>name;
+    shared String getName();
+    this.getName() => name.uppercased;
 }
