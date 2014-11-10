@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -53,7 +54,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
@@ -250,9 +253,13 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     abstract class CondList {
-        protected final Tree.Block thenPart;
+        protected final Node thenPart;
         protected final java.util.List<Tree.Condition> conditions;
         public CondList(java.util.List<Tree.Condition> conditions, Tree.Block thenPart) {
+            this.conditions = conditions;
+            this.thenPart = thenPart;
+        }
+        public CondList(java.util.List<Tree.Condition> conditions, Tree.Expression thenPart) {
             this.conditions = conditions;
             this.thenPart = thenPart;
         }
@@ -278,14 +285,28 @@ public class StatementTransformer extends AbstractTransformer {
     
     abstract class BlockCondList extends CondList {
 
+        /* Name of the variable in which to store the result of the blocks if thenPart is a Tree.Expression */
+        protected final String tmpVar;
+        /* The outer expression that we are evaluating, to get boxing/erasure info from */
+        protected final Tree.Term outerExpression;
+        
         public BlockCondList(java.util.List<Tree.Condition> conditions,
                 Tree.Block thenPart) {
             super(conditions, thenPart);
+            tmpVar = null;
+            outerExpression = null;
         }
-        
+
+        public BlockCondList(java.util.List<Tree.Condition> conditions,
+                Tree.Expression thenPart, String tmpVar, Tree.Term outerExpression) {
+            super(conditions, thenPart);
+            this.tmpVar = tmpVar;
+            this.outerExpression = outerExpression;
+        }
+
         @Override
         protected final List<JCStatement> transformInnermost(Tree.Condition condition) {
-            Cond transformedCond = transformCondition(condition, thenPart);
+            Cond transformedCond = transformCondition(condition);
             // Note: The innermost test happens outside the substitution scope
             JCExpression test = transformedCond.makeTest();
             java.util.List<Tree.Condition> rest = Collections.<Tree.Condition>emptyList();
@@ -317,7 +338,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
-            Cond intermediate = transformCondition(condition, null);
+            Cond intermediate = transformCondition(condition);
             JCExpression test = intermediate.makeTest();
             Substitution subs = getSubstitution(intermediate);
             List<JCStatement> stmts = transformList(rest);
@@ -342,11 +363,17 @@ public class StatementTransformer extends AbstractTransformer {
         final SyntheticName ifVar = naming.temp("if");
         private LinkedHashMap<Cond, CName> unassignedResultVars = new LinkedHashMap<Cond, CName>();
         private JCBlock thenBlock;
-        private Tree.Block elsePart;
+        private Node elsePart;
         
         public IfCondList(java.util.List<Tree.Condition> conditions, Tree.Block thenPart,
                 Tree.Block elsePart) {
             super(conditions, thenPart);
+            this.elsePart = elsePart;
+        }     
+
+        public IfCondList(java.util.List<Tree.Condition> conditions, Tree.Expression thenPart,
+                Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
+            super(conditions, thenPart, tmpVar, outerExpression);
             this.elsePart = elsePart;
         }     
 
@@ -365,18 +392,35 @@ public class StatementTransformer extends AbstractTransformer {
             return null;
         }
 
+        private boolean isThenDefinitelyReturns(){
+            return isDefinitelyReturns(thenPart);
+        }
+
+        private boolean isElseDefinitelyReturns(){
+            return isDefinitelyReturns(elsePart);
+        }
+
+        private boolean isDefinitelyReturns(Node thenPart){
+            if(thenPart instanceof Tree.Block)
+                return ((Tree.Block)thenPart).getDefinitelyReturns();
+            else if(thenPart instanceof Tree.Expression)
+                return false; // I guess?
+            else
+                return false;
+        }
+
         @Override
         protected List<JCStatement> transformInnermostThen(Cond transformedCond) {
             List<JCStatement> stmts;
             if (definitelyNotSatisfied(conditions)
-                    && !thenPart.getDefinitelyReturns()
-                    && (elsePart != null && elsePart.getDefinitelyReturns())) {
+                    && !isThenDefinitelyReturns()
+                    && (elsePart != null && isElseDefinitelyReturns())) {
                 stmts = List.<JCStatement>of(makeFlowAppeaser(conditions.get(0)));
             } else if (isDeferred()) {
                 stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
-                thenBlock = makeThenBlock(transformedCond, thenPart, null);
+                thenBlock = makeThenBlock(transformedCond, thenPart, null, tmpVar, outerExpression);
             } else {
-                stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();
+                stmts = makeThenBlock(transformedCond, thenPart, null, tmpVar, outerExpression).getStatements();
             }
             return stmts;
         }
@@ -385,7 +429,16 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCStatement transformInnermostElse(Cond transformedCond, java.util.List<Tree.Condition> rest) {
             JCBlock elseBlock = null;
             if (!isDeferred()) {
-                elseBlock = transform(this.elsePart);
+                if(this.elsePart instanceof Tree.Block)
+                    elseBlock = transform((Tree.Block)this.elsePart);
+                else if(this.elsePart instanceof Tree.Expression){
+                    at(this.elsePart);
+                    elseBlock = at(this.elsePart).Block(0, evaluateAndAssign(tmpVar, (Tree.Expression)this.elsePart, outerExpression));
+                }else if(this.elsePart == null){
+                    elseBlock = null;
+                }else{
+                    elseBlock = make().Block(0, List.<JCStatement>of(make().Exec(makeErroneous(thenPart, "Only block or expression allowed"))));
+                }
             }
             return elseBlock;
         }
@@ -439,8 +492,8 @@ public class StatementTransformer extends AbstractTransformer {
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
             if (definitelySatisfied(conditions)
-                    && thenPart.getDefinitelyReturns() 
-                    && (elsePart == null || !elsePart.getDefinitelyReturns())) {
+                    && isThenDefinitelyReturns() 
+                    && (elsePart == null || !isElseDefinitelyReturns())) {
                 stmts = stmts.append(makeFlowAppeaser(conditions.get(0)));
             }
             ListBuffer<JCStatement> result = ListBuffer.lb();
@@ -450,7 +503,17 @@ public class StatementTransformer extends AbstractTransformer {
             result.appendList(varDecls);
             result.appendList(stmts);
             if (isDeferred()) {
-                result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+                JCBlock elseBlock;
+                if(elsePart instanceof Tree.Block)
+                    elseBlock = StatementTransformer.this.transform((Tree.Block)elsePart);
+                else if(elsePart instanceof Tree.Expression)
+                    elseBlock = at(elsePart).Block(0, evaluateAndAssign(tmpVar, (Tree.Expression)elsePart, outerExpression));
+                else if(elsePart == null)
+                    elseBlock = null;
+                else
+                    elseBlock = at(elsePart).Block(0, List.<JCStatement>of(make().Exec(makeErroneous(thenPart, "Only block or expression allowed"))));
+                    
+                result.append(make().If(ifVar.makeIdent(), thenBlock, elseBlock));
             }
             return result.toList();   
         }
@@ -498,11 +561,34 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
         java.util.List<Tree.Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
+        return transformIf(conditions, thenPart, elsePart);
+    }
+
+    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Block thenPart, Tree.Block elsePart) {
         return new IfCondList(conditions, thenPart, elsePart).getResult();
     }
 
-    private JCBlock makeThenBlock(Cond cond, Tree.Block thenPart, Substitution subs) {
-        List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
+    List<JCStatement> transformIf(java.util.List<Condition> conditions, Tree.Expression thenPart, Tree.Expression elsePart, String tmpVar, Tree.Term outerExpression) {
+        return new IfCondList(conditions, thenPart, elsePart, tmpVar, outerExpression).getResult();
+    }
+
+    private List<JCStatement> evaluateAndAssign(String tmpVar, Tree.Expression expr, Tree.Term outerExpression){
+        at(expr);
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(outerExpression);
+        return List.<JCStatement>of(make().Exec(make().Assign(makeUnquotedIdent(tmpVar), expressionGen().transformExpression(expr, boxingStrategy, outerExpression.getTypeModel()))));
+    }
+    
+    private JCBlock makeThenBlock(Cond cond, Node thenPart, Substitution subs, String tmpVar, Tree.Term outerExpression) {
+        List<JCStatement> blockStmts;
+        if(thenPart instanceof Tree.Block)
+            blockStmts = statementGen().transformBlock((Tree.Block)thenPart);
+        else if(thenPart instanceof Tree.Expression){
+            blockStmts = evaluateAndAssign(tmpVar, (Tree.Expression)thenPart, outerExpression);
+        }else if(thenPart == null){
+            blockStmts = List.<JCStatement>nil();
+        }else{
+            blockStmts = List.<JCStatement>of(make().Exec(makeErroneous(thenPart, "Only block or expression allowed")));
+        }
         if (subs != null) {
             // The variable holding the result for the code inside the code block
             blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), names().fromString(subs.substituted), 
@@ -538,7 +624,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         protected List<JCStatement> transformInnermostThen(Cond transformedCond) {
-            return makeThenBlock(transformedCond, thenPart, null).getStatements();   
+            return makeThenBlock(transformedCond, thenPart, null, null /* while is not an expression yet */, null).getStatements();   
         }
 
         @Override
@@ -628,7 +714,7 @@ public class StatementTransformer extends AbstractTransformer {
         private LinkedHashMap<Cond, CName> unassignedResultVars = new LinkedHashMap<Cond, CName>();
         
         public AssertCondList(Tree.Assertion ass) {
-            super(ass.getConditionList().getConditions(), null);
+            super(ass.getConditionList().getConditions(), (Tree.Block)null);
             this.ass = ass;
         }
         
@@ -1124,7 +1210,7 @@ public class StatementTransformer extends AbstractTransformer {
 
     }
     
-    Cond transformCondition(Tree.Condition cond, Tree.Block thenPart) {
+    Cond transformCondition(Tree.Condition cond) {
         if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition is = (Tree.IsCondition)cond;
             return new IsCond(is);
@@ -3571,5 +3657,4 @@ public class StatementTransformer extends AbstractTransformer {
     public Name getLabel(Tree.ForClause loop) {
         return getLabel(loop.getControlBlock());
     }
-    
 }

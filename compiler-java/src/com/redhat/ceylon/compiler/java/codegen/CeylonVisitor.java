@@ -438,6 +438,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(op));
     }
 
+    public void visit(Tree.IfExpression op) {
+        append(gen.expressionGen().transform(op));
+    }
+
     public void visit(Tree.IsOp op) {
         append(gen.expressionGen().transform(op));
     }
