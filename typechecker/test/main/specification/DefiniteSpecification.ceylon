@@ -703,3 +703,11 @@ void moreDefiniteSpec() {
     @error print(Count(12).count=1);
 
 }
+
+class Trompon() {
+    shared String name;
+    this.name = "Tompon";
+    print(name);
+    print(this.name);
+    string=>name;
+}
