@@ -31,7 +31,6 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
     shared native actual Boolean toplevel;
     shared native actual String qualifiedName;
     shared native actual Boolean equals(Object other);
-    shared native actual Integer hash;
     shared native actual Boolean shared;
     shared native actual Boolean formal;
     shared native actual Boolean default;
@@ -57,11 +56,12 @@ shared native class OpenClass(pkg, meta) satisfies ClassDeclaration {
         given Annotation satisfies AnnotationType;
     shared native actual TypeParameter[] typeParameterDeclarations;
     shared native actual TypeParameter? getTypeParameterDeclaration(String name);
-    shared actual String string => "class ``qualifiedName``";
     shared native actual Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType;
     shared native actual Kind[] declaredMemberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 
     shared native actual ValueDeclaration? objectValue;
+    shared actual String string=>"class ``qualifiedName``";
+    shared actual Integer hash =>string.hash;
 }

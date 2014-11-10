@@ -13,6 +13,6 @@ shared native class OpenTypeParam(container, _fname) satisfies TypeParameter {
     shared native actual Boolean equals(Object other);
     shared native actual String qualifiedName;
     name=_fname[0:(_fname.firstOccurrence('$') else _fname.size)];
-    string="given " + qualifiedName;
-    hash=string.hash;
+    shared actual String string=>"given " + qualifiedName;
+    shared actual Integer hash =>string.hash;
 }

@@ -35,7 +35,8 @@ shared native class OpenValue(pkg,meta) satisfies ValueDeclaration {
   shared native actual Package|NestableDeclaration container;
   shared native actual String qualifiedName;
   shared native actual Boolean equals(Object other);
-  shared actual String string => "value ``qualifiedName``";
+  shared actual String string=>"value ``qualifiedName``";
+  shared actual Integer hash =>string.hash;
   shared actual Module containingModule => containingPackage.container;
   shared actual Package containingPackage => pkg;
 }

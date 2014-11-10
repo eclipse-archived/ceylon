@@ -55,7 +55,8 @@ shared native class OpenInterface(shared Package pkg, shared Object meta) satisf
   shared actual native Boolean equals(Object other);
 
   shared actual Boolean isAlias => false;
-  shared actual String string => "interface ``qualifiedName``";
+  shared actual String string=>"interface ``qualifiedName``";
+  shared actual Integer hash =>string.hash;
   shared actual Package containingPackage => pkg;
   shared actual Module containingModule => pkg.container;
 }

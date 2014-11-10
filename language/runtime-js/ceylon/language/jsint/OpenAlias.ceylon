@@ -19,10 +19,11 @@ shared native class OpenAlias(shared Object _alias) satisfies AliasDeclaration {
   shared actual native TypeParameter[] typeParameterDeclarations;
   shared actual native TypeParameter? getTypeParameterDeclaration(String name);
   shared actual native Boolean equals(Object other);
-  shared actual String string => "alias ``qualifiedName``";
   shared actual native String name;
   shared actual native Boolean shared;
   shared actual native Boolean actual;
   shared actual native Boolean formal;
   shared actual native Boolean default;
+  shared actual String string => "alias ``qualifiedName``";
+  shared actual Integer hash => string.hash;
 }
