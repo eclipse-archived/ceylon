@@ -721,101 +721,107 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+
+        Tree.SpecifierExpression rhs = that.getSpecifierExpression();
+        Tree.Term lhs = that.getBaseMemberExpression();
+
         boolean hasParams = false;
-        Tree.Term me = that.getBaseMemberExpression();
+        Tree.Term me = lhs;
         while (me instanceof Tree.ParameterizedExpression) {
             hasParams = true;
             me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
+        if (!(me instanceof Tree.StaticMemberOrTypeExpression)) {
+            me.addError("illegal specification statement: only a function or value may be specified");
+            return;
+        }
+        
         assign(me);
-        Tree.SpecifierExpression sie = that.getSpecifierExpression();
-        if (me instanceof Tree.BaseMemberExpression) {
-            Declaration d = that.getDeclaration();
-            if (d instanceof TypedDeclaration) {
-                if (that.getRefinement()) {
-                    // interpret this specification as a 
-                    // refinement of an inherited member
+        
+        Declaration d = that.getDeclaration();
+        if (d instanceof TypedDeclaration) {
+            if (that.getRefinement()) {
+                // interpret this specification as a 
+                // refinement of an inherited member
+                if (d instanceof Value) {
+                    refineValue(that);
+                }
+                else if (d instanceof Method) {
+                    refineMethod(that);
+                }
+                Tree.StaticMemberOrTypeExpression smte = 
+                        (Tree.StaticMemberOrTypeExpression) me;
+                smte.setDeclaration(d);
+            }
+            else if (d instanceof MethodOrValue) {
+                MethodOrValue mv = (MethodOrValue) d;
+                if (mv.isShortcutRefinement()) {
+                    String desc;
                     if (d instanceof Value) {
-                        refineValue(that);
+                        desc = "value";
                     }
-                    else if (d instanceof Method) {
-                        refineMethod(that);
+                    else {
+                        desc = "function";
                     }
-                    Tree.BaseMemberExpression bme = 
-                            (Tree.BaseMemberExpression) me;
-                    bme.setDeclaration(that.getDeclaration());
+                    me.addError(desc + " already specified: '" + 
+                                d.getName(unit) + "'");
                 }
-                else if (d instanceof MethodOrValue) {
-                    MethodOrValue mv = (MethodOrValue) d;
-                    if (mv.isShortcutRefinement()) {
-                        String desc;
-                        if (d instanceof Value) {
-                            desc = "value";
-                        }
-                        else {
-                            desc = "function";
-                        }
-                        me.addError(desc + " already specified: '" + 
-                                    d.getName(unit) + "'");
+                else if (!mv.isVariable() && !mv.isLate()) {
+                    String desc;
+                    if (d instanceof Value) {
+                        desc = "value is neither variable nor late and";
                     }
-                    else if (!mv.isVariable() && !mv.isLate()) {
-                        String desc;
-                        if (d instanceof Value) {
-                            desc = "value is neither variable nor late and";
-                        }
-                        else {
-                            desc = "function";
-                        }
-                        if (mv.isToplevel()) {
-                            me.addError("toplevel " + desc + 
-                                    " may not be specified: '" + 
-                                    d.getName(unit) + "'", 803);
-                        }
-                        else if (!mv.isDefinedInScope(that.getScope())) {
-                            me.addError(desc + " may not be specified here: '" + 
-                                    d.getName(unit) + "'", 803);
-                        }
+                    else {
+                        desc = "function";
                     }
-                }
-                if (hasParams && d instanceof Method && 
-                        ((Method) d).isDeclaredVoid() && 
-                        !isSatementExpression(sie.getExpression())) {
-                    sie.addError("function is declared void so specified expression must be a statement: '" + 
-                            d.getName(unit) + "' is declared 'void'");
-                }
-                if (d instanceof Value && 
-                        sie instanceof Tree.LazySpecifierExpression) {
-                    ((Value) d).setTransient(true);
-                }
-                
-                ProducedType t = that.getBaseMemberExpression().getTypeModel();
-                if (that.getBaseMemberExpression()==me && d instanceof Method) {
-                    //if the declaration of the method has
-                    //defaulted parameters, we should ignore
-                    //that when determining if the RHS is
-                    //an acceptable implementation of the
-                    //method
-                    //TODO: this is a pretty nasty way to
-                    //      handle the problem
-                    t = eraseDefaultedParameters(t);
-                }
-                if (!isTypeUnknown(t)) {
-                    checkType(t, d.getName(unit), sie, 2100);
+                    if (mv.isToplevel()) {
+                        me.addError("toplevel " + desc + 
+                                " may not be specified: '" + 
+                                d.getName(unit) + "'", 803);
+                    }
+                    else if (!mv.isDefinedInScope(that.getScope())) {
+                        me.addError(desc + " may not be specified here: '" + 
+                                d.getName(unit) + "'", 803);
+                    }
                 }
             }
-            if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
-                if (!(sie instanceof Tree.LazySpecifierExpression)) {
-                    sie.addError("functions with parameters must be specified using =>");
-                }
+            
+            if (hasParams && d instanceof Method && 
+                    ((Method) d).isDeclaredVoid() && 
+                    !isSatementExpression(rhs.getExpression())) {
+                rhs.addError("function is declared void so specified expression must be a statement: '" + 
+                        d.getName(unit) + "' is declared 'void'");
             }
-            else {
-                if (sie instanceof Tree.LazySpecifierExpression && d instanceof Method) {
-                    sie.addError("functions without parameters must be specified using =");
-                }
+            if (d instanceof Value && 
+                    rhs instanceof Tree.LazySpecifierExpression) {
+                ((Value) d).setTransient(true);
+            }
+            
+            ProducedType t = lhs.getTypeModel();
+            if (lhs==me && d instanceof Method) {
+                //if the declaration of the method has
+                //defaulted parameters, we should ignore
+                //that when determining if the RHS is
+                //an acceptable implementation of the
+                //method
+                //TODO: this is a pretty nasty way to
+                //      handle the problem
+                t = eraseDefaultedParameters(t);
+            }
+            if (!isTypeUnknown(t)) {
+                checkType(t, d.getName(unit), rhs, 2100);
+            }
+        }
+        
+        if (lhs instanceof Tree.ParameterizedExpression) {
+            if (!(rhs instanceof Tree.LazySpecifierExpression)) {
+                rhs.addError("functions with parameters must be specified using =>");
             }
         }
         else {
-            me.addError("illegal specification statement: only a function or value may be specified");
+            if (rhs instanceof Tree.LazySpecifierExpression && d instanceof Method) {
+                rhs.addError("functions without parameters must be specified using =");
+            }
         }
     }
     
