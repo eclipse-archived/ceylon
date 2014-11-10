@@ -173,6 +173,14 @@ class Super {
     shared new New() {}
 }
 
+class Broken extends Super {
+    @error shared new Broken() extends Super() {}
+}
+
+class MoreBroken extends Super {
+    @error new Broken() extends Basic() {}
+}
+
 class Sub1 extends Super {
     new New() extends Super.New() {}
 }
@@ -185,3 +193,11 @@ class Sub2() extends Super.New() {}
 
 class Alias() => Super.New();
 
+class Sub3() extends Alias() {}
+class Sub4 extends Alias {
+    shared new Sub4() extends Alias() {}
+}
+
+class Silly extends Basic {
+    shared new Silly() extends Basic() {}
+}

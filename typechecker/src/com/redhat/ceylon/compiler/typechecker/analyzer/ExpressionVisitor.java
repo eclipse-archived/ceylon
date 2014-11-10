@@ -79,7 +79,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
@@ -6262,17 +6261,24 @@ public class ExpressionVisitor extends Visitor {
         if (constructor instanceof Constructor) {
             if (container instanceof Class) {
                 Class c = (Class) container;
-                Declaration delegate = that.getType().getDeclarationModel();
-//                if (delegate instanceof Class) {
-//                    delegate = delegate.getDirectMember(delegate.getName(), null, false);
-//                }
-                if (delegate instanceof Constructor) {
-                    ClassOrInterface delegatedType = ((Constructor) delegate).getExtendedTypeDeclaration();
-                    Class superclass = c.getExtendedTypeDeclaration();
-                    if (superclass!=null && !superclass.equals(delegatedType)) {
-                        that.getType().addError("not a constructor of the immediate superclass: '" +
-                                delegate.getName(unit) + "' is not a constructor of '" + 
-                                superclass.getName(unit) + "'");
+                Class superclass = c.getExtendedTypeDeclaration();
+                if (superclass!=null) {
+                    Declaration delegate = that.getType().getDeclarationModel();
+                    if (delegate instanceof Constructor) {
+                        ClassOrInterface delegatedType = 
+                                ((Constructor) delegate).getExtendedTypeDeclaration();
+                        if (!superclass.equals(delegatedType)) {
+                            that.getType().addError("not a constructor of the immediate superclass: '" +
+                                    delegate.getName(unit) + "' is not a constructor of '" + 
+                                    superclass.getName(unit) + "'");
+                        }
+                    }
+                    else if (delegate instanceof Class) {
+                        if (!superclass.equals(delegate)) {
+                            that.getType().addError("does not instantiate the immediate superclass: '" +
+                                    delegate.getName(unit) + "' is not '" + 
+                                    superclass.getName(unit) + "'");
+                        }
                     }
                 }
             }
@@ -7080,11 +7086,11 @@ public class ExpressionVisitor extends Visitor {
         else if (result instanceof Value) {
             return name + " is a value";
         }
-        else if (result instanceof Class) {
-            return name + " is a class";
-        }
         else if (result instanceof Constructor) {
             return name + " is a constructor";
+        }
+        else if (result instanceof Class) {
+            return name + " is a class";
         }
         else if (result instanceof Interface) {
             return name + " is an interface";

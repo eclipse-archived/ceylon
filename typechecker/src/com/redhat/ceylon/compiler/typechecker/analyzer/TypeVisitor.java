@@ -856,16 +856,22 @@ public class TypeVisitor extends Visitor {
                 //constructor is OK
             }
             else if (inDelegatedConstructor) {
-                if (dec instanceof Class) {
-                    Declaration defaultConstructor = 
-                            dec.getDirectMember(dec.getName(), null, false);
-                    if (defaultConstructor instanceof Constructor) {
-                        dec = (Constructor) defaultConstructor;
-                    }
-                }
-                if (!(dec instanceof Constructor)) {
-                    that.addError("not a constructor: '" + dec.getName(unit) + "'");
-                }
+                //well, the same here, I guess!
+//                if (dec instanceof Class) {
+//                    if (((Class) dec).hasConstructors()) {
+//                        Declaration defaultConstructor = 
+//                                dec.getDirectMember(dec.getName(), null, false);
+//                        if (defaultConstructor instanceof Constructor) {
+//                            dec = (Constructor) defaultConstructor;
+//                        }
+//                        else {
+//                            that.addError("class has no default constructor: '" + dec.getName(unit) + "'");
+//                        }
+//                    }
+//                }
+//                else if (!(dec instanceof Constructor)) {
+//                    that.addError("not a constructor or class: '" + dec.getName(unit) + "'");
+//                }
             }
             else {
                 if (dec instanceof Constructor) {
@@ -1141,6 +1147,7 @@ public class TypeVisitor extends Visitor {
                     else*/
                     TypeDeclaration dec = type.getDeclaration();
                     if (dec instanceof Constructor) {
+                        type = type.getExtendedType();
                         dec = dec.getExtendedTypeDeclaration();
                     }
                     if (dec instanceof Class) {
@@ -1331,6 +1338,10 @@ public class TypeVisitor extends Visitor {
                 if (type!=null) {
                     TypeDeclaration etd = et.getDeclarationModel();
                     if (etd!=null) {
+                        if (etd instanceof Constructor) {
+                            type = type.getExtendedType();
+                            etd = etd.getExtendedTypeDeclaration();
+                        }
                         if (etd==td) {
                             //TODO: handle indirect circularities!
                             et.addError("directly extends itself: '" + td.getName() + "'");
@@ -1347,7 +1358,6 @@ public class TypeVisitor extends Visitor {
                             et.addError("extends a type alias: '" + 
                                     type.getDeclaration().getName(unit) + "'");
                         }
-                        else if (etd instanceof Constructor) {}
                         else {
                             td.setExtendedType(type);
                         }

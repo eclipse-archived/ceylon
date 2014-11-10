@@ -99,13 +99,19 @@ public abstract class TypeDeclaration extends Declaration
 
     public ClassOrInterface getExtendedTypeDeclaration() {
         ProducedType et = getExtendedType();
-		if (et==null || 
-        		!(et.getDeclaration() instanceof ClassOrInterface)) {
-            return null;
-        }
-        else {
-            return (ClassOrInterface) et.getDeclaration();
-        }
+		if (et==null) {
+		    return null;
+		}
+		else {
+		    TypeDeclaration td = et.getDeclaration();
+		    if (td instanceof ClassOrInterface) {
+		        return (ClassOrInterface) et.getDeclaration();
+
+		    }
+		    else {
+		        return null;
+		    }
+		}
     }
 
     public ProducedType getExtendedType() {
