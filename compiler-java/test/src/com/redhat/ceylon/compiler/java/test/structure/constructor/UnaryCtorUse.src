@@ -21,7 +21,7 @@ final class unaryCtorUse_ {
             {
                 .java.lang.String arg$1$0 = "";
             }
-            returning new UnaryCtor(arg$1$0);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(arg$1$0);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o3 = (
             let
@@ -29,7 +29,7 @@ final class unaryCtorUse_ {
                 long arg$2$0 = 0L;
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(arg$2$0);
             }
-            returning new UnaryCtor($ceylontmp$3);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$3);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
             let
@@ -37,12 +37,12 @@ final class unaryCtorUse_ {
                 long arg$4$0 = 0L;
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $ceylontmp$5 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(arg$4$0);
             }
-            returning new UnaryCtor($ceylontmp$5);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$5);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o11 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor("");
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o12 = new UnaryCtor("");
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o13 = new UnaryCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(0L));
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o14 = new UnaryCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(0L));
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o12 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor("");
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o13 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(0L));
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o14 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger(0L));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

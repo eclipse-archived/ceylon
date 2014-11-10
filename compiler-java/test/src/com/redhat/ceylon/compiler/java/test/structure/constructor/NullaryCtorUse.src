@@ -12,8 +12,8 @@ public final class useNullaryConstructors_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void useNullaryConstructors() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o2 = new NullaryConstructors();
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar());
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar());
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
