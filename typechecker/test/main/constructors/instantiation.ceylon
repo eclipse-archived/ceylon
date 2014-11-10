@@ -39,3 +39,17 @@ void test() {
     @type:"Callable<Counter,Empty>" value counterFun1 = Counter;
     @type:"Callable<Counter,Tuple<Integer,Integer,Empty>>" value counterFun2 = Counter.WithInitial;
 }
+
+Float cos(Float t) => t;
+Float sin(Float t) => t;
+
+class Point2D {
+    Float x; Float y;
+    shared new Cartesian(Float x, Float y) {
+        this.x = x; this.y = y;
+    }
+    shared new Polar(Float r, Float t) {
+        x = r * cos(t);
+        y = r * sin(t);
+    }
+}

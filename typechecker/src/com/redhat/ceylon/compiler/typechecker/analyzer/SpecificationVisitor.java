@@ -540,8 +540,9 @@ public class SpecificationVisitor extends Visitor {
         	m = ((Tree.ParameterizedExpression) m).getPrimary();
         	parameterized = true;
         }
-        if (m instanceof Tree.BaseMemberExpression) {
-            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
+        if (m instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression bme = 
+                    (Tree.StaticMemberOrTypeExpression) m;
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
