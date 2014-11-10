@@ -24,7 +24,9 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -290,7 +292,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
-        classBuilder.extending(forDefinition != null ? forDefinition.getType() : null, extendedType.getType().getTypeModel());
+        ProducedType thisType;
+        ProducedType extended;
+        thisType = forDefinition != null ? forDefinition.getType() : null;
+        extended = extendedType.getType().getTypeModel();
+        if (extended.getDeclaration() instanceof Constructor) {
+            extended = extended.getQualifyingType();
+        }
+        classBuilder.extending(thisType, extended);
         gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
     }
 

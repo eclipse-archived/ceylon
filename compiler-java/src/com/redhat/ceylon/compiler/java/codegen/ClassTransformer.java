@@ -4547,13 +4547,37 @@ public class ClassTransformer extends AbstractTransformer {
             ctorDb.parameter(pdb);
         }
         
-        if (that.getDelegatedConstructor() != null) {
+        /*if (that.getDelegatedConstructor() != null) {
             Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
-            expressionGen().transformSuper(that.getDelegatedConstructor(),
+            JCExpression superExpr = expressionGen().transformSuper(that.getDelegatedConstructor(),
                     chainedCtorInvocation, classBuilder);
-        }
+            at(that.getDelegatedConstructor());
+            ListBuffer<JCStatement> parameters = ListBuffer.<JCStatement>lb();
+            for (Parameter p : ctor.getParameterLists().get(0).getParameters()) {
+                parameters.add(makeVar(p.getName(), 
+                        makeJavaType(p.getType()), 
+                        naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.$args$), p.getName())));
+            }
+            superExpr = make().LetExpr(parameters.toList(), make().Exec(superExpr));
+            classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
+        }*/
         classBuilder.hasConstructors(true);
         List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
+        
+        if (that.getDelegatedConstructor() != null) {
+            Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
+            JCExpression superExpr = expressionGen().transformSuper(that.getDelegatedConstructor(),
+                    chainedCtorInvocation, classBuilder);
+            at(that.getDelegatedConstructor());
+            ListBuffer<JCStatement> parameters = ListBuffer.<JCStatement>lb();
+            for (Parameter p : ctor.getParameterLists().get(0).getParameters()) {
+                parameters.add(makeVar(p.getName(), 
+                        makeJavaType(p.getType()), 
+                        naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.$args$), p.getName())));
+            }
+            superExpr = make().LetExpr(parameters.toList(), make().Exec(superExpr));
+            initStmts = initStmts.prepend(make().Exec(superExpr));
+        }
         
         List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
         if (!Decl.isDefaultConstructor(ctor)) {

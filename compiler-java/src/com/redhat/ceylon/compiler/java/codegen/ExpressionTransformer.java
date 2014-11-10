@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
@@ -2658,6 +2659,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
+        Naming.SyntheticName prefix = naming.synthetic(Unfix.$args$);
+        
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
             ProducedType parameterType = invocation.getParameterType(argIndex);
@@ -2764,17 +2767,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
         
-        final Constructor ctor;
+        final Constructor superConstructor;
         if (invocation.getPrimaryDeclaration() instanceof Constructor) {
-            ctor = (Constructor)invocation.getPrimaryDeclaration();
+            superConstructor = (Constructor)invocation.getPrimaryDeclaration();
         } else  if (invocation.getPrimaryDeclaration() instanceof Class 
                 && Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration()) != null) {
-            ctor = Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration());
+            superConstructor = Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration());
         } else {
-            ctor = null;
+            superConstructor = null;
         }
-        if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
-            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+        if (superConstructor != null && !Decl.isDefaultConstructor(superConstructor)) {
+            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, superConstructor, DeclNameFlag.QUALIFIED);
             JCExpression params = make().NewClass(null, null, paramClassName, ExpressionAndType.toExpressionList(result), null);
             result = List.of(new ExpressionAndType(params, null));
         }
@@ -3354,17 +3357,29 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (extendedType.getInvocationExpression() != null 
                 && extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            transformSuper(extendedType, extendedType.getInvocationExpression(), classBuilder);
+            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)extendedType.getInvocationExpression().getPrimary()).getDeclaration();
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            if(paramLists.isEmpty()){
+                classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
+            } else {
+                boolean prevFnCall = withinInvocation(true);
+                try {
+                    JCExpression superExpr = transformSuper(extendedType, extendedType.getInvocationExpression(), classBuilder);
+                    classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
+                } finally {
+                    withinInvocation(prevFnCall);
+                }
+            }
         }
     }
 
-    void transformSuper(Node extendedType,
+    JCExpression transformSuper(Node extendedType,
             Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
         if(paramLists.isEmpty()){
             classBuilder.getInitBuilder().superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
-            return;
+            return null;
         }
         SuperInvocation builder = new SuperInvocation(this,
                 classBuilder.getForDefinition(),
@@ -3412,7 +3427,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression superExpr = callBuilder.invoke(expr)
                 .arguments(superArguments)
                 .build();
-            classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
+            return superExpr;
+            //classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
         } finally {
             withinInvocation(prevFnCall);
         }
