@@ -40,28 +40,21 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
     that.namedApply.$crtmm$=AppliedClass.$$.prototype.namedApply.$crtmm$;
   }
   that.$targs=classTargs;
-  atr$(that,'satisfiedTypes',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+  atr$(that,'satisfiedTypes',function(){return coisattype$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-  atr$(that,'container',function(){
-    return coicont$(that);
+  atr$(that,'container',function(){ return coicont$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that);},undefined,$_Object({}).$prop$getString.$crtmm$);
   atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
-  atr$(that,'typeArguments',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
+  atr$(that,'typeArguments',function(){return coitarg$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
-  atr$(that,'extendedType',function(){
-    return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+  atr$(that,'extendedType',function(){return coiexttype$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-  atr$(that,'declaration',function(){
-    return coimoddcl$(that);
+  atr$(that,'declaration',function(){return coimoddcl$(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-  atr$(that,'parameterTypes',function(){
-    return clsparamtypes(that);
+  atr$(that,'parameterTypes',function(){return clsparamtypes(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-  atr$(that,'caseValues',function(){
-    return coicase$(that);
+  atr$(that,'caseValues',function(){return coicase$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
@@ -82,7 +75,7 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.getInterfaces=ClassOrInterface$meta$model.$$.prototype.getInterfaces;
   that.getDeclaredInterfaces=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces;
   that.equals=function(o) {
-    return is$(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
+    return is$(o,{t:AppliedClass}) && o.tipo===that.tipo && that.typeArguments.equals(o.typeArguments);
   };
   that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
   that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
@@ -90,9 +83,9 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
   that.union=function(t,$mpt){return coiut$(that,t,$mpt.Other$union);}
   that.intersection=function(t,$mpt){return coiit$(that,t,$mpt.Other$intersection);}
-  Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
-                   Type$Class:that.$$targs$$.Type$AppliedClass},that);
   set_type_args(that,$$targs$$,AppliedClass);
+  Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
+                   Type$Class:that.$$targs$$.Type$AppliedClass},that);
   that.tipo=tipo;
   return that;
 }
