@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -72,7 +73,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -552,5 +552,25 @@ public abstract class BoxingVisitor extends Visitor {
         if (!that.getWantsDeclaration()) {
             CodegenUtil.markRaw(that);
         }
+    }
+    
+    @Override
+    public void visit(Tree.IfExpression that){
+        super.visit(that);
+        if(that.getIfClause() == null
+                || that.getElseClause() == null)
+            return;
+        Tree.Expression ifExpr = that.getIfClause().getExpression();
+        Tree.Expression elseExpr = that.getElseClause().getExpression();
+        if(ifExpr == null || elseExpr == null)
+            return;
+        if(CodegenUtil.isUnBoxed(ifExpr) && CodegenUtil.isUnBoxed(elseExpr))
+            CodegenUtil.markUnBoxed(that);
+        if(CodegenUtil.isRaw(ifExpr) || CodegenUtil.isRaw(elseExpr))
+            CodegenUtil.markRaw(that);
+        if(CodegenUtil.hasTypeErased(ifExpr) || CodegenUtil.hasTypeErased(elseExpr))
+            CodegenUtil.markTypeErased(that);
+        if(CodegenUtil.hasUntrustedType(ifExpr) || CodegenUtil.hasUntrustedType(elseExpr))
+            CodegenUtil.markUntrustedType(that);
     }
 }
