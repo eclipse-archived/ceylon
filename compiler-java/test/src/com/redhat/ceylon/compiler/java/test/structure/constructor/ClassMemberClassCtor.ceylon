@@ -22,13 +22,55 @@ class ClassMemberClassCtor() {
     class Member {
         shared new Member(Integer i) {
         }
-        new Other(Integer i) {
+        shared new Other(Integer i) {
         }
     }
     shared class SharedMember {
         shared new SharedMember(Integer i) {
         }
-        new Other(Integer i) {
+        shared new Other(Integer i) {
         }
     }
+    void use(ClassMemberClassCtor other) {
+        value i = 0;
+        Member(i);
+        Member{i=1;};
+        Member.Member(i);
+        Member.Member{i=1;};
+        Member.Other(i);
+        Member.Other{i=1;};
+        SharedMember(i);
+        SharedMember{i=1;};
+        SharedMember.SharedMember(i);
+        SharedMember.SharedMember{i=1;};
+        SharedMember.Other(i);
+        SharedMember.Other{i=1;};
+        
+        this.Member(i);
+        this.Member{i=1;};
+        this.Member.Member(i);
+        this.Member.Member{i=1;};
+        this.Member.Other(i);
+        this.Member.Other{i=1;};
+        this.SharedMember(i);
+        this.SharedMember{i=1;};
+        this.SharedMember.SharedMember(i);
+        this.SharedMember.SharedMember{i=1;};
+        this.SharedMember.Other(i);
+        this.SharedMember.Other{i=1;};
+        
+        other.Member(i);
+        other.Member{i=1;};
+        other.Member.Member(i);
+        other.Member.Member{i=1;};
+        other.Member.Other(i);
+        other.Member.Other{i=1;};
+        other.SharedMember(i);
+        other.SharedMember{i=1;};
+        other.SharedMember.SharedMember(i);
+        other.SharedMember.SharedMember{i=1;};
+        other.SharedMember.Other(i);
+        other.SharedMember.Other{i=1;};
+    }
 }
+
