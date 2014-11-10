@@ -282,7 +282,6 @@ function coiexttype$(coi){
 function coisattype$(coi){
   var ints = coi.tipo.$crtmm$.sts;
   if (ints && ints.length) {
-    var rv = [];
     function resolveTypeArguments(root,type) {
       if (type.a) {
         var t2 = {t:type.t, a:{}};
@@ -298,6 +297,7 @@ function coisattype$(coi){
       }
       return type;
     }
+    var rv = [];
     for (var i=0; i < ints.length; i++) {
       var ifc = resolveTypeArguments(coi,ints[i]);
       var mm=getrtmm$$(ifc.t);

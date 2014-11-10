@@ -1,3 +1,4 @@
+//Create a proper Tuple from a simplified tuple type description
 function retpl$(t) { //receives {t:'T',l:[...]}
   if (t.t!=='T')return t;
   var e;
@@ -78,6 +79,7 @@ function tupleize$params(ps,aux) {
   }
   return tupa;
 }
+//Generate the qualified name of a type
 function qname$(mm) {
   if (mm.t) {
     mm=mm.t;
@@ -94,6 +96,7 @@ function qname$(mm) {
   }
   return qn;
 }
+//Resolve a type argument by looking into the metamodel
 function resolve$typearg(ta,mm) {
   var r=mm.tp?mm.tp[ta]:undefined;
   while (!r && mm.$cont) {
