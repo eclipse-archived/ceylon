@@ -270,13 +270,18 @@ function coiexttype$(coi){
   var sc = coi.tipo.$crtmm$['super'];
   if (sc === undefined)return null;
   var mm = getrtmm$$(sc.t);
+  var _t={t:sc.t};
+  if (sc.a) {
+    _t.a={};
+    for (var a in sc.a)_t.a[a]=coi.$$targs$$.Type$ClassOrInterface.a[a];
+  }
   var ac;
   if (mm.$cont) {
-    ac=AppliedMemberClass(sc.t, {Type$MemberClass:sc,Arguments$MemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$MemberClass:mm.$cont});
+    ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:mm.$cont});
   } else {
-    ac=AppliedClass(sc.t, {Type$Class:sc,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    ac=AppliedClass(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
-  if (sc.a)ac.$targs=sc.a;
+  if (_t.a)ac.$targs=_t.a;
   return ac;
 }
 function coisattype$(coi){
