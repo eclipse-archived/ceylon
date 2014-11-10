@@ -2931,17 +2931,20 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitIndirectInvocation(Tree.InvocationExpression that) {
         
-        if (that.getNamedArgumentList()!=null) {
-            that.addError("named arguments not supported for indirect invocations");
-        }
-        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if (pal==null) {
-            return;
-        }
-        
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         if (!isTypeUnknown(pt)) {
+            
+            if (that.getNamedArgumentList()!=null) {
+                that.addError("named arguments not supported for indirect invocations");
+                return;
+            }
+            
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            if (pal==null) {
+                return;
+            }
+            
             if (checkCallable(pt, p, "invoked expression must be callable")) {
                 List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
                         .getTypeArgumentList();
