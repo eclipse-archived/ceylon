@@ -74,6 +74,7 @@ public class TypeVisitor extends Visitor {
     private Unit unit;
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
+    private boolean inExtendsOrClassAlias;
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
@@ -800,9 +801,16 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedType that) {
         boolean onl = inTypeLiteral;
+        boolean oiea = inExtendsOrClassAlias;
+        boolean oidc = inDelegatedConstructor;
         inTypeLiteral = false;
+        inExtendsOrClassAlias = false;
+        inDelegatedConstructor = false;
         super.visit(that);
+        inExtendsOrClassAlias = oiea;
+        inDelegatedConstructor = oidc;
         inTypeLiteral = onl;
+        
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             if (that.getMetamodel() && 
@@ -842,7 +850,12 @@ public class TypeVisitor extends Visitor {
             TypeDeclaration dec) {
         //TODO: the following is inelegant!
         if (!inTypeLiteral) {
-            if (inDelegatedConstructor) {
+            if (inExtendsOrClassAlias) {
+                //for an extends clause or aliased class, 
+                //either a class with parameters or a 
+                //constructor is OK
+            }
+            else if (inDelegatedConstructor) {
                 if (dec instanceof Class) {
                     Declaration defaultConstructor = 
                             dec.getDirectMember(dec.getName(), null, false);
@@ -1125,18 +1138,21 @@ public class TypeVisitor extends Visitor {
                         et.addError("aliased type involves type aliases: " +
                                 type.getProducedTypeName());
                     }
-                    else*/ if (type.getDeclaration() instanceof Class) {
+                    else*/
+                    TypeDeclaration dec = type.getDeclaration();
+                    if (dec instanceof Constructor) {
+                        dec = dec.getExtendedTypeDeclaration();
+                    }
+                    if (dec instanceof Class) {
                         that.getDeclarationModel().setExtendedType(type);
-                    } 
+                    }
                     else {
-                        ct.addError("not a class: '" + 
-                                type.getDeclaration().getName(unit) + "'");
+                        ct.addError("not a class: '" + dec.getName(unit) + "'");
                     }
                     TypeDeclaration etd = ct.getDeclarationModel();
                     if (etd==td) {
                         //TODO: handle indirect circularities!
                         ct.addError("directly aliases itself: '" + td.getName() + "'");
-                        return;
                     }
                 }
             }
@@ -1279,8 +1295,17 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override 
-    public void visit(Tree.ExtendedType that) {
+    public void visit(Tree.ClassSpecifier that) {
+        inExtendsOrClassAlias = true;
         super.visit(that);
+        inExtendsOrClassAlias = false;
+    }
+    
+    @Override 
+    public void visit(Tree.ExtendedType that) {
+        inExtendsOrClassAlias = that.getInvocationExpression()!=null;
+        super.visit(that);
+        inExtendsOrClassAlias = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();

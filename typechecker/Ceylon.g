@@ -779,6 +779,19 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
           ete.setExtendedType($type); 
           p = ete; }
+        (
+          MEMBER_OP
+          t3=typeNameWithArguments
+          { QualifiedType qt=new QualifiedType(null);
+          qt.setOuterType($type);
+          qt.setIdentifier($t3.identifier);
+          if ($t3.typeArgumentList!=null)
+              qt.setTypeArgumentList($t3.typeArgumentList);
+          $type=qt;
+          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
+          ete.setExtendedType($type); 
+          p = ete; }
+        )?
       | SUPER MEMBER_OP 
         t2=typeNameWithArguments 
         { QualifiedType qt=new QualifiedType(null);

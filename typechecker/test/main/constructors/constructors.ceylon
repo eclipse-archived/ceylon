@@ -168,3 +168,20 @@ class Alias2() => WithConst.Const();
 @error class BrokenAlias1() => WithConst();
 @error class BrokenAlias2() => WithConst;
 @error class AliasWithNoParams => WithNeitherInitNorConst();
+
+class Super {
+    shared new New() {}
+}
+
+class Sub1 extends Super {
+    new New() extends Super.New() {}
+}
+class BrokenSub1 extends Super {
+    @error new New() extends Super.New {}
+}
+
+class Sub2() extends Super.New() {}
+@error class BrokenSub2() extends Super.New {}
+
+class Alias() => Super.New();
+
