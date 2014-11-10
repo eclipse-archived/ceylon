@@ -706,7 +706,7 @@ void moreDefiniteSpec() {
 
 class Trompon() {
     shared String name;
-    this.name = "Tompon";
+    this.name = "Trompon";
     print(name);
     print(this.name);
     string=>name;
