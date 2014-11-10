@@ -842,8 +842,16 @@ public class Decl {
     public static boolean isJavaStaticPrimary(Tree.Term term) {
         return term instanceof Tree.QualifiedMemberOrTypeExpression
                 && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration() != null
-                && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration().isStaticallyImportable();
+                && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration().isStaticallyImportable()
+                && !(((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration() instanceof Constructor);
     }
+    
+    public static boolean isConstructorPrimary(Tree.Term term) {
+        return (term instanceof Tree.MemberOrTypeExpression
+                && ((Tree.MemberOrTypeExpression)term).getDeclaration() != null
+                && ((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Constructor); 
+    }
+    
     
     /**
      * Is the member private and not visible from the primary (i.e. is an 

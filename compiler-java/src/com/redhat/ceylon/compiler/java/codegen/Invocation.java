@@ -211,8 +211,7 @@ abstract class Invocation {
     protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
             
-        if (Decl.isJavaStaticPrimary(getPrimary())
-                && !(getPrimaryDeclaration() instanceof Constructor)) {
+        if (Decl.isJavaStaticPrimary(getPrimary())) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
             if (methodOrClass instanceof Method) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
