@@ -182,7 +182,8 @@ public class SerializationHelper {
         }
         for (Value v : vals) {
             final TypeDeclaration vd = v.getType().getDeclaration();
-            gen.out(ni, ".", gen.getNames().name(v), "_=", dc, ".getValue(", gen.getClAlias(),
+            gen.out(ni, ".", v.isParameter() ? gen.getNames().name(v)+"_" : gen.getNames().privateName(v),
+                    "=", dc, ".getValue(", gen.getClAlias(),
                     "OpenValue$jsint(", pkgname, ",", gen.getNames().name(d),".$$.prototype.$prop$",
                     gen.getNames().getter(v),")", ",{Instance$getValue:");
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
