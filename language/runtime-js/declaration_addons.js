@@ -229,12 +229,13 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types,$mptypes){
   var _t = {t:this.tipo};
+  if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
   var _m = getrtmm$$(this.tipo);
   validate$typeparams(_t,_m.tp,types);
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this);
-  var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$Interface:$mptypes.Type$apply}):
-    AppliedClass(_t.t, {Type$Class:$mptypes.Type$apply,Arguments$Class:$mptypes.Arguments$apply});
+  var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$AppliedInterface:_t}):
+    AppliedClass(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
@@ -243,6 +244,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   var mm=getrtmm$$(this.tipo);
   if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   var _t = {t:this.tipo};
+  if ($mptypes.Type$memberApply.a)_t.a=$mptypes.Type$memberApply.a;
   validate$typeparams(_t,mm.tp,types);
   if (!extendsType(_t, $mptypes.Type$memberApply))
     throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this);
