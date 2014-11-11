@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -86,7 +87,10 @@ class Strategy {
         }
         if (decl instanceof MethodOrValue
                 && ((MethodOrValue)decl).isParameter()) {
-            decl = (Declaration) ((MethodOrValue)decl).getContainer();
+            decl = (Declaration) decl.getContainer();
+        } 
+        if (decl instanceof Constructor) {
+            decl = (Declaration) decl.getContainer();
         }
         
         if ((decl instanceof Method || decl instanceof Class) 
@@ -112,7 +116,10 @@ class Strategy {
     public static boolean defaultParameterMethodStatic(Element decl) {
         if (decl instanceof MethodOrValue
                 && ((MethodOrValue)decl).isParameter()) {
-            decl = (Element) ((MethodOrValue)decl).getContainer();
+            decl = (Element) decl.getContainer();
+        }
+        if (decl instanceof Constructor) {
+            decl = (Class)decl.getContainer();
         }
         // Only top-level methods have static default value methods
         return ((decl instanceof Method && !((Method)decl).isParameter())

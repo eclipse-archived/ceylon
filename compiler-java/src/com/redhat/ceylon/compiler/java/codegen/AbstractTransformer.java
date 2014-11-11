@@ -2802,15 +2802,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
     
-    List<JCAnnotation> makeAtConstructor() {
-        return makeModelAnnotation(syms().ceylonAtConstructorType);
-    }
-    
-    List<JCAnnotation> makeAtParameterList() {
-        return makeModelAnnotation(syms().ceylonAtParameterListType);
-    }
-
-    List<JCAnnotation> makeAtClass(ProducedType thisType, ProducedType extendedType) {
+    List<JCAnnotation> makeAtClass(ProducedType thisType, ProducedType extendedType, boolean hasConstructors) {
         List<JCExpression> attributes = List.nil();
         JCExpression extendsValue = null;
         if (extendedType == null) {
@@ -2840,6 +2832,10 @@ public abstract class AbstractTransformer implements Transformation {
         if (!isIdentifiable) {
             JCExpression identifiableAttribute = make().Assign(naming.makeUnquotedIdent("identifiable"), makeBoolean(false));
             attributes = attributes.prepend(identifiableAttribute);
+        }
+        if (hasConstructors) {
+            JCExpression constructorsAttribute = make().Assign(naming.makeUnquotedIdent("constructors"), makeBoolean(true));
+            attributes = attributes.prepend(constructorsAttribute);
         }
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
     }

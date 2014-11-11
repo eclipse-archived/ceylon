@@ -85,7 +85,7 @@ public class Naming implements LocalId {
         get_,
         value,
         
-        $args$,
+        $name$,
         $annotationSequence$,
         $array$,
         $call$,
@@ -933,7 +933,7 @@ public class Naming implements LocalId {
                 return prefixName(Prefix.$default$, param.getName());
             return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof Constructor) {
-            return prefixName(Prefix.$default$, param.getName());
+            return compoundName(decl.getName(), param.getName());
         } else if (decl instanceof ClassOrInterface ) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
                 return prefixName(Prefix.$default$, param.getName());
@@ -2296,6 +2296,14 @@ public class Naming implements LocalId {
 
     public static String getInitializationFieldName(String fieldName) {
         return prefixName(Prefix.$init$, quoteFieldName(fieldName));
+    }
+    
+    public JCExpression makeNamedConstructorName(Constructor constructor) {
+        return makeQualIdent(makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED), "CONSTRUCTOR");
+    }
+    
+    public JCExpression makeNamedConstructorType(Constructor constructor) {
+        return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
     }
 }
 

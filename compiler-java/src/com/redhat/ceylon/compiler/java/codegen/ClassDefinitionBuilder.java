@@ -72,7 +72,6 @@ public class ClassDefinitionBuilder {
     private boolean isAlias = false;
     private boolean isLocal = false;
     
-    private JCExpression extending;
     private boolean hasConstructors = false;
     
     /** 
@@ -100,6 +99,10 @@ public class ClassDefinitionBuilder {
     private boolean isBroken = false;
 
     private ClassDefinitionBuilder containingClassBuilder;
+
+    private ProducedType extendingType;
+
+    private ProducedType thisType;
 
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
         ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
@@ -130,7 +133,6 @@ public class ClassDefinitionBuilder {
         this.initBuilder = new InitializerBuilder(gen);
         this.name = javaClassName;
         this.isLocal = isLocal;
-        extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
         
         if (ceylonClassName != null){
@@ -173,11 +175,12 @@ public class ClassDefinitionBuilder {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
         
+        
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, getAnnotations()),
                 gen.names().fromString(name),
                 typeParams.toList(),
-                extending,
+                getSuperclass(this.extendingType),
                 satisfies.toList(),
                 defs.toList());
         ListBuffer<JCTree> klasses = ListBuffer.<JCTree>lb();
@@ -343,10 +346,11 @@ public class ClassDefinitionBuilder {
         return typeParameter(param.getDeclarationModel());
     }
 
-    public ClassDefinitionBuilder extending(ProducedType thisType, ProducedType extendingType) {
+    public ClassDefinitionBuilder extending(ProducedType thisType, ProducedType extendingType, boolean hasConstructors) {
         if (!isAlias) {
-            this.extending = getSuperclass(extendingType);
-            annotations(gen.makeAtClass(thisType, extendingType));
+            this.thisType = thisType;
+            this.extendingType = extendingType;
+            this.hasConstructors = hasConstructors;
         }
         return this;
     }
@@ -412,6 +416,9 @@ public class ClassDefinitionBuilder {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
             ret = ret.prependList(this.annotations.toList());
+            if (hasConstructors || extendingType != null) {
+                ret = ret.prependList(gen.makeAtClass(thisType, extendingType, hasConstructors));
+            }
         }
         if (isBroken) {
             ret = ret.prependList(gen.makeAtCompileTimeError());

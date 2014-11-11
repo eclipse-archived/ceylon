@@ -299,13 +299,10 @@ public class CallableBuilder {
                 && !Decl.isDefaultConstructor((Constructor)methodClassOrCtor)) {
             // invoke the param class ctor
             Constructor ctor = (Constructor)methodClassOrCtor;
-            ListBuffer<JCExpression> args = ListBuffer.<JCTree.JCExpression>lb();
+            callBuilder.argument(gen.naming.makeNamedConstructorName(ctor));
             for (Parameter parameter : parameterList.getParameters()) {
-                args.add(gen.naming.makeQuotedIdent(parameter.getName()));
+                callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
             }
-            JCExpression paramClassName = gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
-            JCExpression paramClassInst = gen.make().NewClass(null, null, paramClassName, args.toList(), null);
-            callBuilder.argument(paramClassInst);
         } else {
             for (Parameter parameter : parameterList.getParameters()) {
                 JCExpression parameterExpr = gen.naming.makeQuotedIdent(parameter.getName());

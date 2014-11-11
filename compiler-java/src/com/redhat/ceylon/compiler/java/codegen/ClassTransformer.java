@@ -158,7 +158,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
-            classBuilder.extending(model.getType(), null);
+            classBuilder.extending(model.getType(), null, false);
         }
         
         if (def instanceof Tree.AnyClass) {
@@ -1039,8 +1039,9 @@ public class ClassTransformer extends AbstractTransformer {
                 makeAttributeForValueParameter(classBuilder, param, member);
                 makeMethodForFunctionalParameter(classBuilder, param, member);
             }
-            transformClassOrCtorParameters(def, model, def.getParameterList(), 
-                    classBuilder, 
+            transformClassOrCtorParameters(def, model, null, def.getParameterList(), 
+                    classBuilder,
+                    classBuilder.getInitBuilder(), 
                     generateInstantiator, instantiatorDeclCb,
                     instantiatorImplCb);
         }
@@ -1059,12 +1060,18 @@ public class ClassTransformer extends AbstractTransformer {
     private void transformClassOrCtorParameters(
             Tree.AnyClass def,
             Class cls,
+            Constructor constructor,
             Tree.ParameterList paramList,
             ClassDefinitionBuilder classBuilder,
+            ParameterizedBuilder constructorBuilder,
             boolean generateInstantiator, 
             ClassDefinitionBuilder instantiatorDeclCb,
             ClassDefinitionBuilder instantiatorImplCb) {
         
+        if (constructor != null
+                && !Decl.isDefaultConstructor(constructor)) {
+            constructorBuilder.parameter(makeConstructorNameParameter(constructor));
+        }
         for (final Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
             
@@ -1073,7 +1080,7 @@ public class ClassTransformer extends AbstractTransformer {
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
             Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
-            transformParameter(classBuilder.getInitBuilder(), paramModel, member);
+            transformParameter(constructorBuilder, paramModel, member);
             
             if (Strategy.hasDefaultParameterValueMethod(paramModel)
                     || Strategy.hasDefaultParameterOverload(paramModel)
@@ -1100,9 +1107,9 @@ public class ClassTransformer extends AbstractTransformer {
                 if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
                             || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
                     if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
-                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, cls, paramList, param));
+                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, constructor != null ? constructor : cls, paramList, param));
                         if (cbForDevaultValuesDecls != null) {
-                            cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, cls, paramList, param));
+                            cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
                         }
                     } else if (Strategy.hasDelegatedDpm(cls)) {
                         java.util.List<Parameter> parameters = paramList.getModel().getParameters();
@@ -1146,7 +1153,13 @@ public class ClassTransformer extends AbstractTransformer {
                 if (addOverloadedConstructor) {
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    new DefaultedArgumentConstructor(daoThis, cls).makeOverload(
+                    DefaultedArgumentConstructor dac;
+                    if (constructor != null) {
+                        dac = new DefaultedArgumentConstructor(daoThis, constructor);
+                    } else {
+                        dac = new DefaultedArgumentConstructor(daoThis, cls);
+                    }
+                    dac.makeOverload(
                             overloadBuilder,
                             paramList.getModel(),
                             param.getParameterModel(),
@@ -1154,6 +1167,15 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
+    }
+    
+    private ParameterDefinitionBuilder makeConstructorNameParameter(Constructor ctor) {
+        Class clz = (Class)ctor.getContainer();
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, Naming.Unfix.$name$.toString());
+        pdb.ignored();
+        JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
+        pdb.type(type, null);
+        return pdb;
     }
 
     /**
@@ -3505,8 +3527,10 @@ public class ClassTransformer extends AbstractTransformer {
                 ParameterList parameterList,
                 Parameter currentParameter,
                 java.util.List<TypeParameter> typeParameterList) {
-            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-            overloaded.appendImplicitArguments(typeParameterList, overloadBuilder, args);
+            ListBuffer<JCExpression> delegateArgs = ListBuffer.<JCExpression>lb();
+            overloaded.appendImplicitArgumentsDelegate(typeParameterList, overloadBuilder, delegateArgs);
+            ListBuffer<JCExpression> dpmArgs = ListBuffer.<JCExpression>lb();
+            overloaded.appendImplicitArgumentsDpm(typeParameterList, overloadBuilder, dpmArgs);
             
             ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
             
@@ -3528,7 +3552,7 @@ public class ClassTransformer extends AbstractTransformer {
                         at(null);
                         defaultArgument = make().Apply(makeTypeArguments(overloaded), 
                                 defaultValueMethodName, 
-                                ListBuffer.<JCExpression>lb().appendList(args).toList());
+                                ListBuffer.<JCExpression>lb().appendList(dpmArgs).toList());
                     } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
                         defaultArgument = makeEmptyAsSequential(true);
                     } else {
@@ -3539,15 +3563,20 @@ public class ClassTransformer extends AbstractTransformer {
                     vars.append(makeVar(varName, 
                             makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
                             defaultArgument));
-                    args.add(varName.makeIdent());
+                    delegateArgs.add(varName.makeIdent());
+                    dpmArgs.add(varName.makeIdent());
                 } else {
-                    args.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
+                    delegateArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
+                    dpmArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
                 }
             }
-            makeBody(overloaded, overloadBuilder, args, vars);
+            makeBody(overloaded, overloadBuilder, delegateArgs, vars);
         }
         
-        protected final void makeBody(DefaultedArgumentOverload overloaded, MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
+        protected final void makeBody(DefaultedArgumentOverload overloaded, 
+                MethodDefinitionBuilder overloadBuilder, 
+                ListBuffer<JCExpression> args, 
+                ListBuffer<JCStatement> vars) {
             JCExpression invocation = overloaded.makeInvocation(args);
             Declaration model = overloaded.getModel();// TODO Yuk
             if (!isVoid(model)
@@ -3651,14 +3680,16 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        protected final void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder) {
             if(typeParameterList != null){
                 overloadBuilder.reifiedTypeParameters(typeParameterList);
             }
         }
         
-        protected abstract void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
+        protected abstract void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args);
+        protected abstract void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args);
         
         protected ProducedType parameterType(Parameter parameterModel) {
@@ -3778,7 +3809,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
             if(typeParameterList != null){
                 // we pass the reified type parameters along
@@ -3786,6 +3817,11 @@ public class ClassTransformer extends AbstractTransformer {
                     args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                 }
             }
+        }
+        @Override
+        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            appendImplicitArgumentsDelegate(typeParameterList, overloadBuilder, args);
         }
 
         @Override
@@ -3988,10 +4024,26 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentConstructor extends DefaultedArgumentClass {
 
+        private final Constructor constructor;
+
         DefaultedArgumentConstructor(DaoBody daoBody, Class klass) {
             super(daoBody, klass);
+            this.constructor = null;
+        }
+        
+        DefaultedArgumentConstructor(DaoBody daoBody, Constructor constructor) {
+            super(daoBody, (Class)constructor.getContainer());
+            this.constructor = constructor;
         }
 
+        protected final void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder) {
+            super.appendImplicitParameters(typeParameterList, overloadBuilder);
+            if (constructor != null) {
+                overloadBuilder.parameter(makeConstructorNameParameter(constructor));
+            }
+        }
+        
         @Override
         protected long getModifiers() {
             return transformConstructorDeclFlags(klass) & (PUBLIC | PRIVATE | PROTECTED);
@@ -4013,13 +4065,22 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
             if(typeParameterList != null){
                 // we pass the reified type parameters along
                 for(TypeParameter tp : typeParameterList){
                     args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                 }
+            }
+        }
+        
+        @Override
+        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            appendImplicitArgumentsDpm(typeParameterList, overloadBuilder, args);
+            if (constructor != null) {
+                args.append(naming.makeUnquotedIdent(Unfix.$name$));
             }
         }
     }
@@ -4083,7 +4144,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
             ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             type = type.resolveAliases();
@@ -4091,6 +4152,12 @@ public class ClassTransformer extends AbstractTransformer {
             for(ProducedType pt : type.getTypeArgumentList()){
                 args.append(makeReifiedTypeArgument(pt));
             }
+        }
+        
+        @Override
+        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            appendImplicitArgumentsDelegate(typeParameterList, overloadBuilder, args);
         }
 
         @Override
@@ -4209,6 +4276,7 @@ public class ClassTransformer extends AbstractTransformer {
             // static default parameter methods should be consistently public so that if non-shared class Top and
             // shared class Bottom which extends Top both have the same default param name, we don't get an error
             // if the Bottom class tries to "hide" a static public method with a private one
+            modifiers &= ~PRIVATE;
             modifiers |= STATIC | PUBLIC;
         }
         methodBuilder.modifiers(modifiers);
@@ -4492,38 +4560,34 @@ public class ClassTransformer extends AbstractTransformer {
         
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
         
-        ctorDb.modelAnnotations(makeAtConstructor());
         ctorDb.userAnnotations(expressionGen().transform(that.getAnnotationList()));
+        ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         ctorDb.modifiers(transformConstructorDeclFlags(ctor));
         
         if (Decl.isDefaultConstructor(ctor)) {
-            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), classBuilder, false, null, null);
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that.getParameterList(), 
+                    classBuilder, classBuilder.getInitBuilder(), false, null, null);
             // Note: We don't need to explicitly add the reified type parameters to the ctor
             // in this case because they're already in the initbuilders list of parameters.
             for (ParameterDefinitionBuilder p : classBuilder.getInitBuilder().getParameterList()) {
                 ctorDb.parameter(p);
             }
         } else {
-            for (TypeParameter tp : clz.getTypeParameters()) {
-                ctorDb.reifiedTypeParameter(tp);
-            }
             ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, 
                     naming.makeTypeDeclarationName(ctor), null, true);
-            int classMods = transformConstructorDeclFlags(ctor);
+            int classMods = FINAL | transformConstructorDeclFlags(ctor);
             if (clz.isToplevel()) {
                 classMods |= STATIC;
             }
+            paramsCdb.defs(
+                    make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
+                    names().fromString("CONSTRUCTOR"),
+                    naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
+                    makeNull()));
             paramsCdb.modifiers(classMods);
-            paramsCdb.annotations(makeAtParameterList());
-            for (TypeParameter tp : clz.getTypeParameters()) {
-                paramsCdb.typeParameter(tp);
-            }
-            for (Tree.Parameter param : that.getParameterList().getParameters()) {
-                makeAttributeForValueParameter(paramsCdb, param, null);
-                makeMethodForFunctionalParameter(paramsCdb, param, null);
-            }
-            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), that.getParameterList(), paramsCdb, false, null, null);
-            paramsCdb.getInitBuilder().modifiers(transformConstructorDeclFlags(ctor));
+            paramsCdb.annotations(makeAtIgnore());
+            paramsCdb.getInitBuilder().modifiers(PRIVATE);
+
             if (clz.isToplevel()) {
                 result.addAll(paramsCdb.build());
             } else if (clz.isClassMember()){
@@ -4531,38 +4595,15 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (clz.isInterfaceMember()){
                 classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(paramsCdb.build());
             }
-        
-            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Naming.Unfix.$args$.toString());
-            pdb.ignored();
-            JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED);
-            if (!clz.getTypeParameters().isEmpty()) {
-                ListBuffer<JCExpression> typeParameters = ListBuffer.lb();
-                for (TypeParameter tp : clz.getTypeParameters()) {
-                    typeParameters.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
-                }
-                type = make().TypeApply(type,
-                        typeParameters.toList());
+            
+            for (TypeParameter tp : clz.getTypeParameters()) {
+                ctorDb.reifiedTypeParameter(tp);
             }
-            pdb.type(type, null);
-            ctorDb.parameter(pdb);
+            
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that.getParameterList(), 
+                    classBuilder, ctorDb, false, null, null);
+            
         }
-        
-        /*if (that.getDelegatedConstructor() != null) {
-            Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
-            JCExpression superExpr = expressionGen().transformSuper(that.getDelegatedConstructor(),
-                    chainedCtorInvocation, classBuilder);
-            at(that.getDelegatedConstructor());
-            ListBuffer<JCStatement> parameters = ListBuffer.<JCStatement>lb();
-            for (Parameter p : ctor.getParameterLists().get(0).getParameters()) {
-                parameters.add(makeVar(p.getName(), 
-                        makeJavaType(p.getType()), 
-                        naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.$args$), p.getName())));
-            }
-            superExpr = make().LetExpr(parameters.toList(), make().Exec(superExpr));
-            classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
-        }*/
-        classBuilder.hasConstructors(true);
-        List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
         
         if (that.getDelegatedConstructor() != null) {
             Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
@@ -4570,27 +4611,56 @@ public class ClassTransformer extends AbstractTransformer {
                     chainedCtorInvocation, classBuilder);
             at(that.getDelegatedConstructor());
             ListBuffer<JCStatement> parameters = ListBuffer.<JCStatement>lb();
-            for (Parameter p : ctor.getParameterLists().get(0).getParameters()) {
-                parameters.add(makeVar(p.getName(), 
-                        makeJavaType(p.getType()), 
-                        naming.makeQualIdent(naming.makeUnquotedIdent(Unfix.$args$), p.getName())));
-            }
             superExpr = make().LetExpr(parameters.toList(), make().Exec(superExpr));
-            initStmts = initStmts.prepend(make().Exec(superExpr));
+            classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
         }
+        classBuilder.hasConstructors(true);
+        List<JCStatement> initStmts = classBuilder.getInitBuilder().getBodyCopy();
         
         List<JCStatement> ctorStmts = statementGen().transformBlock(that.getBlock());
-        if (!Decl.isDefaultConstructor(ctor)) {
-            java.util.List<Parameter> parameters = ctor.getParameterLists().get(0).getParameters();
-            for (int ii = parameters.size()-1; ii>=0; ii--) {
-                Parameter p = parameters.get(ii);
-                ctorStmts = ctorStmts.prepend(makeVar(FINAL, p.getName(), makeJavaType(p.getType(), 0), 
-                        naming.makeQualifiedName(naming.makeUnquotedIdent(Unfix.$args$), p.getModel(), Naming.NA_IDENT)));
-            }
-        }
         ctorDb.block(make().Block(0, ctorStmts.prependList(initStmts)));
         
         result.add(ctorDb.build());
         return result.toList();
+    }
+}
+
+class Foo {
+    private static final class Bar {
+        private Bar() {}
+    }
+    private static final Bar Bar = null;
+    Foo(Bar b) {}
+    
+    private static final class Gee {
+        private Gee() {}
+    }
+    static final Gee Gee = null;
+    Foo(Gee g) {}
+    static void use() {
+        new Foo(Foo.Bar);
+        new Foo(Foo.Gee);
+    }
+}
+
+class Outer {
+    private static final class Foo$Bar {
+        private Foo$Bar() {}
+    }
+    private static final Foo$Bar Foo$Bar = null;
+    private static final class Foo$Gee {
+        private Foo$Gee() {}
+    }
+    private static final Foo$Gee Foo$Gee = null;
+    class Foo {
+        
+        Foo(Foo$Bar b) {}
+        
+        Foo(Foo$Gee g) {}
+        
+    }
+    static void use(Outer i) {
+        i.new Foo(Foo$Bar);
+        i.new Foo(Foo$Gee);
     }
 }

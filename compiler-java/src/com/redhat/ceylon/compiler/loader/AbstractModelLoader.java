@@ -141,8 +141,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
     public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
-    private static final String CEYLON_CONSTRUCTOR_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Constructor";
-    private static final String CEYLON_PARAMETERLIST_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterList";
+    //private static final String CEYLON_CONSTRUCTOR_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Constructor";
+    //private static final String CEYLON_PARAMETERLIST_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterList";
     public static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Name";
     private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Sequenced";
     private static final String CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.FunctionalParameter";
@@ -1053,39 +1053,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     setDeclarationVisibility(decl, classMirror, classMirror, true);
                 }else{
                     final List<MethodMirror> constructors = getClassConstructors(classMirror);
-                    // interop overloaded ctors, 
-                    // initializer ctor
-                    // default ctor +/- named ctors
-                    // 
                     if (!constructors.isEmpty()) {
-                        List<MethodMirror> initCtors = null;
-                        MethodMirror defaultCtor = null;
-                        List<MethodMirror> namedCtors = null;
-                        for (MethodMirror ctor : constructors) {
-                            if (ctor.getAnnotation(CEYLON_CONSTRUCTOR_ANNOTATION) != null) {
-                                if (isDefaultNamedCtor(classMirror, ctor)) {
-                                    if (defaultCtor == null) {
-                                        defaultCtor = ctor;
-                                    } else {
-                                        logError("multiple default constructors in class " + classMirror.getQualifiedName());
-                                    }
-                                } else {
-                                    if (namedCtors == null) {
-                                        namedCtors = new LinkedList<MethodMirror>();
-                                    }
-                                    namedCtors.add(ctor);
-                                }
-                            } else {
-                                if (initCtors == null) {
-                                    initCtors = new LinkedList<MethodMirror>();
-                                }
-                                initCtors.add(ctor);
-                            }
-                        }
-                        
-                        if ((initCtors == null || initCtors.size() <= 1) 
-                                && (defaultCtor == null && namedCtors == null || namedCtors.isEmpty())) {
-                            // single constructor from initializer
+                        Boolean hasConstructors = hasConstructors(classMirror);
+                        if (constructors.size() > 1
+                                && hasConstructors == null ) {
+                            decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                        } else if (hasConstructors != null && !hasConstructors){
+                            // single constructor
                             MethodMirror constructor = constructors.get(0);
                             // if the class and constructor have different visibility, we pretend there's an overload of one
                             // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
@@ -1097,18 +1071,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             }else{
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             }
-                        } else if (initCtors == null || initCtors.isEmpty() 
-                                && (defaultCtor != null || (namedCtors != null && namedCtors.isEmpty()))) {
-                            // default ctor +/- named ctors
-                            MethodMirror constructor = defaultCtor;
-                            if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
-                                decl = makeLazyClass(classMirror, null, constructor);
-                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
-                            }else{
-                                decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                            }
                         } else {
-                            decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                            // hasConstructors == true, the constructors are loaded by class completion
+                            decl = makeLazyClass(classMirror, null, null);
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
@@ -1155,32 +1120,41 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return decl;
     }
     
-    private boolean isDefaultNamedCtor(ClassMirror classMirror,
-            MethodMirror ctor) {
-        if (ctor.getAnnotation(CEYLON_CONSTRUCTOR_ANNOTATION) != null) {
-            return classMirror.getName().equals(getCtorName(classMirror, ctor));
+    /** Returns:
+     * <ul>
+     * <li>true if the class has named constructors ({@code @Class(...constructors=true)}).</li>
+     * <li>false if the class has an initializer constructor.</li>
+     * <li>null if the class lacks {@code @Class} (i.e. is not a Ceylon class).</li>
+     * </ul>
+     * @param classMirror
+     * @return
+     */
+    private Boolean hasConstructors(ClassMirror classMirror) {
+        AnnotationMirror a = classMirror.getAnnotation(CEYLON_CLASS_ANNOTATION);
+        Boolean hasConstructors;
+        if (a != null) {
+            hasConstructors = (Boolean)a.getValue("constructors");
+            if (hasConstructors == null) {
+                hasConstructors = false;
+            }
         } else {
-            return false;
+            hasConstructors = null;
         }
+        return hasConstructors;
     }
     
-    private String getCtorName(ClassMirror classMirror,
+    private boolean isDefaultNamedCtor(ClassMirror classMirror,
             MethodMirror ctor) {
-        if (ctor.getAnnotation(CEYLON_CONSTRUCTOR_ANNOTATION) != null) {
-            if (ctor.getParameters().isEmpty()) {
-                return classMirror.getName();// TODO quoting
-            } else {
-                VariableMirror lastParam = ctor.getParameters().get(0);
-                if (lastParam.getType().getDeclaredClass() != null
-                        && lastParam.getType().getDeclaredClass().isStatic()) {
-                    return lastParam.getType().getDeclaredClass().getName();// TODO quoting
-                }
-                return classMirror.getName();// TODO quoting
-            }
+        return classMirror.getName().equals(getCtorName(ctor));
+    }
+    
+    private String getCtorName(MethodMirror ctor) {
+        AnnotationMirror nameAnno = ctor.getAnnotation(CEYLON_NAME_ANNOTATION);
+        if (nameAnno != null) {
+            return (String)nameAnno.getValue();
         } else {
             return null;
         }
-        
     }
     
     private void setSealedFromConstructorMods(Declaration decl,
@@ -2115,8 +2089,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
             setParameters((Class)klass, constructor, isCeylon, klass);
         
-        for (MethodMirror ctor : getClassConstructors(classMirror)) {
-            if (ctor.getAnnotation(CEYLON_CONSTRUCTOR_ANNOTATION) != null) {
+        Boolean hasConstructors = hasConstructors(classMirror);
+        if (hasConstructors != null && hasConstructors) {
+            ((Class)klass).setConstructors(true);
+            for (MethodMirror ctor : getClassConstructors(classMirror)) {
                 addConstructor((Class)klass, classMirror, ctor);
             }
         }
@@ -2204,31 +2180,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
-        klass.setConstructors(true);
         Constructor constructor = new Constructor();
-        if (isDefaultNamedCtor(classMirror, ctor)) {
-            constructor.setName(klass.getName());
-        } else {
-            constructor.setName(getCtorName(classMirror, ctor));
-        }
+        constructor.setName(getCtorName(ctor));
         constructor.setStaticallyImportable(true);
         constructor.setContainer(klass);
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
         setAnnotations(constructor, ctor);
-        if (isDefaultNamedCtor(classMirror, ctor)) {
-            setParameters(constructor, ctor, true, klass);
-        } else {
-            ClassMirror paramListClass = ctor.getParameters().get(ctor.getParameters().size()-1).getType().getDeclaredClass();
-            for (MethodMirror plcCtor : paramListClass.getDirectMethods()) {
-                if (plcCtor.isConstructor()
-                        && plcCtor.getAnnotation(CEYLON_IGNORE_ANNOTATION) == null) {
-                    setParameters(constructor, plcCtor, true, klass);
-                    break;
-                }
-            }
-        }
+        setParameters(constructor, ctor, true, klass);
         klass.addMember(constructor);
     }
     
@@ -2395,8 +2355,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
             // We skip members marked with @Ignore
             if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            if(innerClass.getAnnotation(CEYLON_PARAMETERLIST_ANNOTATION) != null)
                 continue;
             // We skip anonymous inner classes
             if(innerClass.isAnonymous())

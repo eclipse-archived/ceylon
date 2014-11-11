@@ -2659,7 +2659,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
-        Naming.SyntheticName prefix = naming.synthetic(Unfix.$args$);
         
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
@@ -2777,9 +2776,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             superConstructor = null;
         }
         if (superConstructor != null && !Decl.isDefaultConstructor(superConstructor)) {
-            JCExpression paramClassName = naming.makeTypeDeclarationExpression(null, superConstructor, DeclNameFlag.QUALIFIED);
-            JCExpression params = make().NewClass(null, null, paramClassName, ExpressionAndType.toExpressionList(result), null);
-            result = List.of(new ExpressionAndType(params, null));
+            result = result.prepend(
+                    new ExpressionAndType(naming.makeNamedConstructorName(superConstructor),
+                            naming.makeNamedConstructorType(superConstructor)));
         }
         
         return result;

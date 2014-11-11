@@ -1590,17 +1590,9 @@ class NamedArgumentInvocation extends Invocation {
             ctor = null;
         }
         if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
-            SyntheticName arguments = gen.naming.temp();
-            vars.append(gen.makeVar(arguments, gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
-                        gen.make().NewClass(null, 
-                                null, 
-                                gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
-                                ExpressionAndType.toExpressionList(argsAndTypes.values()), 
-                                null)));
-            argsAndTypes.clear();
-            ExpressionAndType value = new ExpressionAndType(arguments.makeIdent(), 
-                    gen.naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED));
-            argsAndTypes.put(1, value);
+            argsAndTypes.put(-1, 
+                    new ExpressionAndType(gen.naming.makeNamedConstructorName(ctor),
+                            gen.naming.makeNamedConstructorType(ctor)));
         }
         return new TransformedInvocationPrimary(result, actualPrimExpr.selector);
     }

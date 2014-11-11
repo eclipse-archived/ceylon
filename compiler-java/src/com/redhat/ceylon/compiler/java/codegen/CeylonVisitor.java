@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -299,7 +300,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (extended.getDeclaration() instanceof Constructor) {
             extended = extended.getQualifyingType();
         }
-        classBuilder.extending(thisType, extended);
+        classBuilder.extending(thisType, extended, ((Class)thisType.getDeclaration()).hasConstructors());
         gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
     }
 
