@@ -13,8 +13,7 @@ function $_Array(elems,$$targs$$) {
     return e;
 }
 $_Array.deser$$=function(a){
-  var targ={t:a.getTypeArgument(OpenTypeParam$jsint($_Array,'Element$Array')).tipo};
-  if (targ.t==='i'||targ.t==='u'||targ.t==='T')targ=targ.t;
+  var targ=ser$et$(a.getTypeArgument(OpenTypeParam$jsint($_Array,'Element$Array')));
   var tam=a.getValue(OpenValue$jsint(lmp$(ex$,'$'),$_Array.$$.prototype.$prop$getSize),{Instance$getValue:{t:Integer}});
   var b = new Array(tam);
   for (var i=0; i < tam; i++) {

@@ -40,6 +40,7 @@ function validate$typeparams(t,tparms,types) {
   if (tparms) {
     if (types===undefined||types.size<1)
       throw TypeApplicationException$meta$model("Missing type arguments");
+    if (!types.$_get)types=types.sequence();
     var i=0;
     t.a={};
     for (var tp in tparms) {

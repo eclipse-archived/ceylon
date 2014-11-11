@@ -229,11 +229,11 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types,$mptypes){
   var _t = {t:this.tipo};
-  if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
   var _m = getrtmm$$(this.tipo);
   validate$typeparams(_t,_m.tp,types);
   if (!extendsType(_t, $mptypes.Type$apply))
-    throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this);
+    throw IncompatibleTypeException$meta$model("ClassOrInterface<"+this.name+"> is not compatible with expected type: ClassOrInterface<" + qname$($mptypes.Type$apply)+">. Try passing the type argument explicitly with: apply<" + this.name+">");
+  if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
   var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$AppliedInterface:_t}):
     AppliedClass(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
@@ -247,7 +247,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   if ($mptypes.Type$memberApply.a)_t.a=$mptypes.Type$memberApply.a;
   validate$typeparams(_t,mm.tp,types);
   if (!extendsType(_t, $mptypes.Type$memberApply))
-    throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this);
+    throw IncompatibleTypeException$meta$model("Type argument for 'Type' must be a supertype of " + this.string);
   var rv=this.meta.mt==='i'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
     :AppliedMemberClass(_t.t, {Container$MemberClass:$mptypes.Container$memberApply, Type$MemberClass:_t, Arguments$MemberClass:$mptypes.Arguments$memberApply});
   if (_t.a)rv.$targs=_t.a;
