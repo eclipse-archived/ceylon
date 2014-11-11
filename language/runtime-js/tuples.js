@@ -46,7 +46,7 @@ function tpl$(elems,types,spread){
   that.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
   that.withLeading=function(a,b){
     var e2 = elems.slice(0); e2.unshift(a);
-    var t2 = _t.l.slice(0); t2.unshift(b.Other$withLeading);
+    var t2 = types.l.slice(0); t2.unshift(b.Other$withLeading);
     return tpl$(e2,{t:'T',l:t2});
   }
   that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
@@ -74,7 +74,7 @@ function tpl$(elems,types,spread){
   that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
   that.withTrailing=function(a,b){
     var e2=elems.slice(0);e2.push(a);
-    var t2=_t.l.slice(0);t2.push(b.Other$withTrailing);
+    var t2=types.l.slice(0);t2.push(b.Other$withTrailing);
     return tpl$(e2,{t:'T',l:t2});
   }
   that.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
@@ -88,7 +88,7 @@ function tpl$(elems,types,spread){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.size===1?getEmpty():tpl$(elems.slice(1),{t:'T',l:_t.l.slice(1)});
+    return elems.size===1?getEmpty():tpl$(elems.slice(1),{t:'T',l:types.l.slice(1)});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.size;
