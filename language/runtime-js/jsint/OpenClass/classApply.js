@@ -5,5 +5,5 @@ function(targs,$mptypes) {
     //TODO generate targs
   }
   validate$params(mm.ps,$mptypes.Arguments$classApply,"Wrong number of Arguments for classApply");
-  return this.$_apply(targs,$mptypes);
+  return this.$_apply(targs,{Type$apply:$mptypes.Type$classApply});
 }
