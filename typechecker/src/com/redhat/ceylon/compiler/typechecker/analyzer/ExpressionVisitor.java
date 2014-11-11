@@ -626,7 +626,7 @@ public class ExpressionVisitor extends Visitor {
         		}
         	}
         	if (!isTypeUnknown(t)) {
-        		checkType(t, dec.getName(), sie, 2100);
+        		checkType(t, dec, sie, 2100);
         	}
         }
     	Setter setter = dec.getSetter();
@@ -809,7 +809,7 @@ public class ExpressionVisitor extends Visitor {
                 t = eraseDefaultedParameters(t);
             }
             if (!isTypeUnknown(t)) {
-                checkType(t, d.getName(unit), rhs, 2100);
+                checkType(t, d, rhs, 2100);
             }
         }
         
@@ -877,29 +877,38 @@ public class ExpressionVisitor extends Visitor {
     private void refineValue(Tree.SpecifierStatement that) {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
-        ClassOrInterface ci = (ClassOrInterface) value.getContainer();
-        ProducedReference refinedProducedReference = 
-                getRefinedMember(refinedValue, ci);
-        value.setType(refinedProducedReference.getType());
+        ClassOrInterface ci = 
+                (ClassOrInterface) value.getContainer();
+        Declaration root = refinedValue.getRefinedDeclaration();
+        List<Declaration> interveningRefinements = 
+                getInterveningRefinements(value.getName(), 
+                        null, root, ci, 
+                        (TypeDeclaration) root.getContainer());
+        accountForIntermediateRefinements(that, 
+                refinedValue, value, ci, 
+                interveningRefinements);
     }
 
     private void refineMethod(Tree.SpecifierStatement that) {
         Method refinedMethod = (Method) that.getRefined();
         Method method = (Method) that.getDeclaration();
-        ClassOrInterface ci = (ClassOrInterface) method.getContainer();
+        ClassOrInterface ci = 
+                (ClassOrInterface) method.getContainer();
         Declaration root = refinedMethod.getRefinedDeclaration();
         method.setRefinedDeclaration(root);
-        if (getInterveningRefinements(method.getName(), 
-                getSignature(method), root, 
-                ci, (TypeDeclaration) root.getContainer())
-                .isEmpty()) {
+        List<Declaration> interveningRefinements = 
+                getInterveningRefinements(method.getName(), 
+                        getSignature(method), root, ci, 
+                        (TypeDeclaration) root.getContainer());
+        if (interveningRefinements.isEmpty()) {
             that.getBaseMemberExpression()
                 .addError("shortcut refinement does not exactly refine any overloaded inherited member");
         }
         else {
             ProducedReference refinedProducedReference = 
-                    getRefinedMember(refinedMethod, ci);
-            method.setType(refinedProducedReference.getType());
+                    accountForIntermediateRefinements(that, 
+                            refinedMethod, method, ci, 
+                            interveningRefinements);
             List<Tree.ParameterList> parameterLists;
             Tree.Term me = that.getBaseMemberExpression();
             if (me instanceof Tree.ParameterizedExpression) {
@@ -960,6 +969,40 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private ProducedReference accountForIntermediateRefinements(
+            Tree.SpecifierStatement that, 
+            MethodOrValue refinedMethodOrValue, MethodOrValue methodOrValue,
+            ClassOrInterface ci, List<Declaration> interveningRefinements) {
+        Tree.SpecifierExpression rhs = that.getSpecifierExpression();
+        ProducedReference refinedProducedReference = 
+                getRefinedMember(refinedMethodOrValue, ci);
+        List<ProducedType> refinedTypes = 
+                new ArrayList<ProducedType>();
+        ProducedType type = refinedProducedReference.getType();
+        addToIntersection(refinedTypes, type, unit);
+        for (Declaration refinement: interveningRefinements) {
+            if (refinement instanceof MethodOrValue && 
+                    !refinement.equals(refinedMethodOrValue)) {
+                MethodOrValue rmv = (MethodOrValue) refinement;
+                ProducedType t = getRefinedMember(rmv, ci).getType();
+                if (rhs!=null && !isTypeUnknown(t)) {
+                    checkType(t, refinement, rhs, 2100);
+                }
+                addToIntersection(refinedTypes, t, unit);
+                if (!refinement.isDefault() && !refinement.isFormal()) {
+                    that.getBaseMemberExpression()
+                        .addError("shortcut refinement refines non-formal, non-default member: '" +
+                                refinement.getName() + "' of '" +
+                                ((Declaration) refinement.getContainer()).getName(unit));
+                }
+            }
+        }        
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(refinedTypes);
+        methodOrValue.setType(it.canonicalize().getType());
+        return refinedProducedReference;
+    }
     
     @Override public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
@@ -1007,14 +1050,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkType(ProducedType declaredType, String name,
+    private void checkType(ProducedType declaredType, Declaration dec,
             Tree.SpecifierOrInitializerExpression sie, int code) {
         if (sie!=null && sie.getExpression()!=null) {
             ProducedType t = sie.getExpression().getTypeModel();
             if (!isTypeUnknown(t)) {
+                String name = "'" + dec.getName(unit) + "'";
+                if (dec.isClassOrInterfaceMember()) {
+                    name += " of '" + ((Declaration) dec.getContainer()).getName(unit) + "'";
+                }
                 checkAssignable(t, declaredType, sie, 
-                        "specified expression must be assignable to declared type of '" + 
-                                name + "'",
+                        "specified expression must be assignable to declared type of " + 
+                                name,
                         code);
             }
         }
@@ -1133,7 +1180,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = type.getTypeModel();
                 if (!isTypeUnknown(t)) {
                     checkType(t, 
-                            that.getDeclarationModel().getName(), 
+                            that.getDeclarationModel(), 
                             se, 2100);
                 }
             }
