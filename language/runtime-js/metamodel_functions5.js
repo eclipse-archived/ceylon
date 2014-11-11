@@ -47,3 +47,11 @@ function restype$(root,t) {
   }
   return r;
 }
+//Extract type for serialization (and whatever else needs it)
+function ser$et$(t) {
+  if (t.tipo.t)return t.tipo;
+  var r={t:t.tipo};
+  if (t.$targs)r.a=t.$targs;
+  return r;
+}
+ex$.ser$et$=ser$et$;
