@@ -29,6 +29,8 @@ public class SerializationHelper {
                 gen.out(gen.getNames().name(et), ".$$.prototype.ser$$.call(this,", dc, ");");
                 et = null;
                 gen.endLine();
+            } else {
+                et = et.getExtendedTypeDeclaration();
             }
         }
         //Get the deconstructor for this class
@@ -130,48 +132,39 @@ public class SerializationHelper {
             gen.out("//TODO getOuterInstance");
             gen.endLine();
         }
+        if (!d.isAbstract()) {
+            gen.out("if(", ni, "===undefined)", ni, "=new ", gen.getNames().name(d), ";");
+            gen.endLine();
+        }
         //Call super.deser$$ if possible
         boolean create = true;
         com.redhat.ceylon.compiler.typechecker.model.Class et = d.getExtendedTypeDeclaration();
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
-                gen.out(ni, "=");
                 gen.qualify(that, et);
-                gen.out(gen.getNames().name(et), ".$$.prototype.deser$$.call(this,", dc, ");");
+                gen.out(gen.getNames().name(et), ".deser$$.call(this,", dc, ",", ni, ");");
                 gen.endLine();
                 create = false;
+            } else {
+                et = et.getExtendedTypeDeclaration();
             }
         }
-        //Otherwise create a new instance
-        if (create) {
-            gen.out(ni, "=new ");
-            if (d.isMember()) {
-                gen.out("/*outerInstance.*/");
-            }
-            gen.out(typename, ".$$;");
-            gen.endLine();
-            if (!d.getTypeParameters().isEmpty()) {
-                gen.out(ni, ".$$targs$$={");
-            }
+        if (!d.getTypeParameters().isEmpty()) {
+            gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
         }
         boolean first=true;
         for (TypeParameter tp : d.getTypeParameters()) {
-            if (!create) {
-                gen.out(ni, ".$$targs$$.");
-            } else if (first) {
+            if (first) {
                 first=false;
             } else {
                 gen.out(",");
             }
-            gen.out(tp.getName(), "$", d.getName(), create?":":"=", gen.getClAlias(), "ser$et$(", dc, ".getTypeArgument(",
+            gen.out(tp.getName(), "$", d.getName(), ":", gen.getClAlias(), "ser$et$(", dc, ".getTypeArgument(",
                     gen.getClAlias(), "OpenTypeParam$jsint(", typename, ",'",
                     tp.getName(), "$", d.getName(), "')))");
-            if (!create) {
-                gen.endLine(true);
-            }
         }
-        if (create && !first) {
-            gen.out("};");
+        if (!first) {
+            gen.out("});");
             gen.endLine();
         }
         String pkgname = d.getUnit().getPackage().getNameAsString();
