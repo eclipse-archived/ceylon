@@ -266,18 +266,30 @@ function coitarg$(coi){
   }
   throw new Error("ClassOrInterface.typeArguments: missing metamodel!");
 }
-function coiexttype$(coi){
-  var sc = coi.tipo.$crtmm$['super'];
-  if (sc === undefined)return null;
-  var mm = getrtmm$$(sc.t);
-  var _t={t:sc.t};
-  if (sc.a) {
-    _t.a={};
-    for (var a in sc.a)_t.a[a]=coi.$$targs$$.Type$ClassOrInterface.a[a];
+function coirestarg$(root,type) {
+  if (type.a) {
+    var t2 = {t:type.t, a:{}};
+    for (var targ in type.a) {
+      t2.a[targ]=typeof(type.a[targ])==='string' ?
+        t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
+        : t2.a[targ]=type.a[targ];
+      if (t2.a[targ] && t2.a[targ].a) {
+        t2.a[targ]=resolveTypeArguments(root,t2.a[targ]);
+      }
+    }
+    type=t2;
   }
+  return type;
+}
+function coiexttype$(coi){
+  var mm = getrtmm$$(coi.tipo);
+  var sc = mm['super'];
+  if (sc === undefined)return null;
+  var scmm = getrtmm$$(sc.t);
+  var _t=coirestarg$(coi,sc);
   var ac;
-  if (mm.$cont) {
-    ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:mm.$cont});
+  if (scmm.$cont) {
+    ac=AppliedMemberClass(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
   } else {
     ac=AppliedClass(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
@@ -287,24 +299,9 @@ function coiexttype$(coi){
 function coisattype$(coi){
   var ints = coi.tipo.$crtmm$.sts;
   if (ints && ints.length) {
-    function resolveTypeArguments(root,type) {
-      if (type.a) {
-        var t2 = {t:type.t, a:{}};
-        for (var targ in type.a) {
-          t2.a[targ]=typeof(type.a[targ])==='string' ?
-            t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
-            : t2.a[targ]=type.a[targ];
-          if (t2.a[targ] && t2.a[targ].a) {
-            t2.a[targ]=resolveTypeArguments(root,t2.a[targ]);
-          }
-        }
-        type=t2;
-      }
-      return type;
-    }
     var rv = [];
     for (var i=0; i < ints.length; i++) {
-      var ifc = resolveTypeArguments(coi,ints[i]);
+      var ifc = coirestarg$(coi,ints[i]);
       var mm=getrtmm$$(ifc.t);
       if (mm.$cont) {
         rv.push(AppliedMemberInterface(ifc.t, {Type$MemberInterface:ifc}));
