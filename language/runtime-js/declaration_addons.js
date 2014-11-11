@@ -10,6 +10,16 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
     var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
     var _d = raiz[propname];
+    if (_d===undefined) {
+      //Browse all non-shared attributes looking for original name
+      for (nsats in raiz) if (nsats.substring(0,10)==='$prop$get$') {
+        var atmm=getrtmm$$(raiz[nsats]);
+        if (atmm.d && atmm.d[atmm.d.length-1].substring(0,name$20.length+1)===name$20+'$') {
+          _d=raiz[nsats];
+          break;
+        }
+      }
+    }
     if (_d){
       if (noInherit) {
         var mm=getrtmm$$(_d);
