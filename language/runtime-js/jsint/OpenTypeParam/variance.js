@@ -1,4 +1,4 @@
-var tp=getrtmm$$(this.container).tp[this._fname];
+var tp=getrtmm$$(this.container.tipo).tp[this._fname];
 if (tp) {
   if (tp.dv==='out')return getCovariant$meta$declaration();
   if (tp.dv=== 'in')return getContravariant$meta$declaration();
