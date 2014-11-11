@@ -112,7 +112,7 @@ public class SerializationHelper {
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out("this.$$targs$$.", vd.getName(), "$", d.getName());
             } else {
-                TypeUtils.metamodelTypeNameOrList(d.getUnit().getPackage(), v.getType(), gen);
+                TypeUtils.typeNameOrList(node, v.getType(), gen, false);
             }
             gen.out("});");
             gen.endLine();
