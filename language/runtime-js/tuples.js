@@ -1,8 +1,8 @@
 //internal
 function tpl$(elems,types,spread){
   if (spread!==undefined) {
-    var iter=spread.iterator();
-    for (var e=iter.next();e!==getFinished();e=iter.next()) {
+    var e;
+    for (var iter=spread.iterator();(e=iter.next())!==getFinished();) {
       elems.push(e);
     }
     types=undefined;
