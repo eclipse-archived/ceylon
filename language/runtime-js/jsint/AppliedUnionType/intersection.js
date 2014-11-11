@@ -1,4 +1,4 @@
 function(t,$mpt){
-  return AppliedIntersectionType$jsint(this.tipo,[this,t].rt$({t:'i',l:[this.$$targs$$.Target$Type,t.$$targs$$.Target$Type]}),
-    {Union$AppliedIntersectionType:{t:'i',l:[this.$$targs$$.Target$Type,t.$$targs$$.Target$Type]}});
+  var it={t:'i',l:[this.tipo,t.$$targs$$.Target$Type]};
+  return AppliedIntersectionType$jsint(it,[this,t].rt$(it,1),{Union$AppliedIntersectionType:it});
 }
