@@ -274,7 +274,7 @@ function coirestarg$(root,type) {
         t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
         : t2.a[targ]=type.a[targ];
       if (t2.a[targ] && t2.a[targ].a) {
-        t2.a[targ]=resolveTypeArguments(root,t2.a[targ]);
+        t2.a[targ]=coirestarg$(root,t2.a[targ]);
       }
     }
     type=t2;
