@@ -25,11 +25,15 @@ function tpl$(elems,types,spread){
   var that=new Tuple.$$;
   that.$$targs$$=types;
   $_Object(that);
-  var _t={t:'u',l:types.l};
+  var _t=types.l.length===1?types.l[0]:{t:'u',l:types.l};
   Sequence({Element$Sequence:_t},that);
-  elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
+  elems.$$targs$$={Element$Tuple:_t,First$Tuple:types.l[0],Element$Iterable:_t,
+    Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
     Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
   set_type_args(that,elems.$$targs$$,Tuple);
+  that.$$targs$$.Element$Tuple=_t;
+  that.$$targs$$.First$Tuple=types.l[0];
+  that.$$targs$$.Rest$Tuple=types.l.length===1?{t:Empty}:{t:Sequence,a:_t};
   that.first_=elems[0];
   that.getFromFirst=function(i){
     var e=elems[i]
