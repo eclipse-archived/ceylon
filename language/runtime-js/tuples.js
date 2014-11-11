@@ -5,6 +5,7 @@ function tpl$(elems,types,spread){
     for (var e=iter.next();e!==getFinished();e=iter.next()) {
       elems.push(e);
     }
+    types=undefined;
   }
   if (elems.size===0)return getEmpty();
   if (types===undefined || types.t!=='T') {
@@ -13,9 +14,11 @@ function tpl$(elems,types,spread){
       if (elems[i]===null) {
         types.push({t:Null});
       } else if (elems[i].getT$all && elems[i].getT$name) {
-        types.push({t:elems[i].getT$all()[elems[i].getT$name()]});
+        var _et={t:elems[i].getT$all()[elems[i].getT$name()]};
+        if (elems[i].$$targs$$)_et.a=elems[i].$$targs$$;
+        types.push(_et);
       } else {
-        console.log("WTF do I use for the type of " + elems[i]);
+        console.log("Tuple: WTF do I use for the type of " + elems[i]);
         types.push({t:Anything});
       }
     }
