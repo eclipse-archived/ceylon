@@ -133,7 +133,7 @@ public class SerializationHelper {
             gen.endLine();
         }
         if (!d.isAbstract()) {
-            gen.out("if(", ni, "===undefined)", ni, "=new ", gen.getNames().name(d), ";");
+            gen.out("if(", ni, "===undefined)", ni, "=new ", gen.getNames().name(d), ".$$;");
             gen.endLine();
         }
         //Call super.deser$$ if possible
