@@ -2,8 +2,9 @@ import ceylon.language.meta.declaration {
   TypeParameter, OpenType, Variance, NestableDeclaration
 }
 
-shared native class OpenTypeParam(container, _fname) satisfies TypeParameter {
-    shared actual NestableDeclaration container;
+shared native class OpenTypeParam(cntnr, _fname) satisfies TypeParameter {
+    shared Object cntnr;
+    shared actual native NestableDeclaration container;
     shared String _fname;
     shared native actual Boolean defaulted;
     shared native actual OpenType? defaultTypeArgument;
