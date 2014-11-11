@@ -13,9 +13,9 @@ function typeLiteral$meta($$targs$$) {
         return OpenSetter(OpenValue$jsint(_mod.findPackage(mm.d[0]), t));
       }
       throw new Error("'Type' argument should be an open or closed type");
-    } else if (t === 'u' || t === 'i') {
-      return t === 'u' ? applyUnionType($$targs$$.Type$typeLiteral) : applyIntersectionType($$targs$$.Type$typeLiteral);
-    } else if (t === 'T') {
+    } else if (t==='u' || t==='i') {
+      return (t==='u'?applyUnionType:applyIntersectionType)($$targs$$.Type$typeLiteral);
+    } else if (t==='T') {
       //TODO arguments
       var _tt=retpl$($$targs$$.Type$typeLiteral);
       return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
