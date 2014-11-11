@@ -124,7 +124,7 @@ public class SerializationHelper {
     static void addDeserializer(final Node that, final com.redhat.ceylon.compiler.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
         final String dc = gen.getNames().createTempVariable();
-        final String ni = gen.getNames().createTempVariable();
+        final String ni = gen.getNames().self(d);
         final String typename = gen.getNames().name(d);
         gen.out(typename, ".deser$$=function(", dc, ",", ni, ")");
         gen.beginBlock();
@@ -189,7 +189,7 @@ public class SerializationHelper {
             if (vd instanceof TypeParameter && vd.getContainer() == d) {
                 gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
             } else {
-                TypeUtils.metamodelTypeNameOrList(d.getUnit().getPackage(), v.getType(), gen);
+                TypeUtils.typeNameOrList(that, v.getType(), gen, false);
             }
             gen.out("});");
             gen.endLine();
