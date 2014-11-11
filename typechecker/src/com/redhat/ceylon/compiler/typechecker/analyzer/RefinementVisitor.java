@@ -145,6 +145,9 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkMember(Tree.Declaration that, Declaration dec) {
+        if (dec instanceof Constructor) {
+            return;
+        }
         if (dec instanceof Setter) {
             Value getter = ((Setter) dec).getGetter();
             dec.setRefinedDeclaration(getter.getRefinedDeclaration());
