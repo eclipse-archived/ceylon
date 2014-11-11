@@ -48,7 +48,7 @@ function validate$typeparams(t,tparms,types) {
       if (_type===undefined)
         throw TypeApplicationException$meta$model("Missing type argument for " + tp);
       var _tp = tparms[tp];
-      var _ta = _type.tipo;
+      var _ta = _type===getNothingType$meta$model()?{t:Nothing}:_type.tipo;
       t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
       if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
