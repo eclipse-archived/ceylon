@@ -1485,6 +1485,10 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
+                    <para><literal>X</literal> is a subtype of <literal>Empty</literal>, and 
+                    <literal>Y</literal> is a subtype of <literal>Iterable&lt;Anything,Nothing&gt;</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>X</literal> is an invariant subtype of <literal>Sequence&lt;A&gt;</literal>, 
                     <literal>Y</literal> is an invariant subtype of <literal>Sequence&lt;B&gt;</literal>,
                     and <literal>A</literal> and <literal>B</literal> are disjoint,</para>
@@ -1503,9 +1507,10 @@ interface NumberLiteral
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note: the soundness of these rules is guaranteed by the implementations of the
-            <literal>sealed</literal> types <literal>Sequence</literal>, <literal>Sequential</literal>, and
-            <literal>Tuple</literal> in the module <literal>ceylon.language</literal>.</para></comment>
+            <comment><para>Note: the soundness of these rules is guaranteed by the 
+            implementations of the <literal>sealed</literal> types <literal>Sequence</literal>, 
+            <literal>Sequential</literal>, and <literal>Tuple</literal> in the module 
+            <literal>ceylon.language</literal>.</para></comment>
             
         </section>
         
