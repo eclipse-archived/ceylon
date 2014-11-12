@@ -3513,7 +3513,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression tmpVarExpr = at(isCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
         JCExpression toTypeExpr;
-        if (!willEraseToObject(varType)) {
+        if (isCeylonBasicType(varType)) {
             toTypeExpr = makeJavaType(varType);
             tmpVarExpr = unboxType(tmpVarExpr, varType);
         } else {
