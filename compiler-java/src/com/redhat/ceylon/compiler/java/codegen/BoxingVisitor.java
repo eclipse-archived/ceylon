@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -70,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -572,5 +572,46 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markTypeErased(that);
         if(CodegenUtil.hasUntrustedType(ifExpr) || CodegenUtil.hasUntrustedType(elseExpr))
             CodegenUtil.markUntrustedType(that);
+    }
+
+    @Override
+    public void visit(Tree.SwitchExpression that){
+        super.visit(that);
+        SwitchCaseList caseList = that.getSwitchCaseList();
+        if(caseList == null || caseList.getCaseClauses() == null)
+            return;
+        boolean unboxed = true;
+        for(Tree.CaseClause caseClause : caseList.getCaseClauses()){
+            Expression expr = caseClause.getExpression();
+            if(expr == null)
+                return;
+            // a single boxed one makes the whole switch boxed
+            if(!CodegenUtil.isUnBoxed(expr))
+                unboxed = false;
+            // for the rest a single raw/erased/untrusted marks the switch as so
+            if(CodegenUtil.isRaw(expr))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(expr))
+                CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(expr))
+                CodegenUtil.markUntrustedType(that);
+        }
+        if(caseList.getElseClause() != null){
+            Expression expr = caseList.getElseClause().getExpression();
+            if(expr == null)
+                return;
+            // a single boxed one makes the whole switch boxed
+            if(!CodegenUtil.isUnBoxed(expr))
+                unboxed = false;
+            // for the rest a single raw/erased/untrusted marks the switch as so
+            if(CodegenUtil.isRaw(expr))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(expr))
+                CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(expr))
+                CodegenUtil.markUntrustedType(that);
+        }
+        if(unboxed)
+            CodegenUtil.markUnBoxed(that);
     }
 }
