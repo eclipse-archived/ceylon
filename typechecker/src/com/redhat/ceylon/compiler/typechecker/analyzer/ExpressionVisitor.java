@@ -1081,26 +1081,24 @@ public class ExpressionVisitor extends Visitor {
                 !(var.getType() instanceof Tree.LocalModifier)) {
             ProducedType vt = var.getType().getTypeModel();
             if (!isTypeUnknown(vt)) {
-                if (not) {
-                    checkAssignable(vt, 
-                            unit.getType(unit.getNullDeclaration()), 
-                            var.getType(), 
-                            "specified type must be a null type");
-                }
-                else {
-                    checkAssignable(vt, 
-                            unit.getType(unit.getObjectDeclaration()), 
-                            var.getType(), 
-                            "specified type may not be optional");
-                }
+                ProducedType nt = not ?
+                        unit.getType(unit.getNullDeclaration()) :
+                        unit.getType(unit.getObjectDeclaration());
+                String message = not ?
+                        "specified type must be the null type" :
+                        "specified type may not be optional";
+                checkAssignable(vt, nt, var.getType(), message);
             }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
                 if (set!=null) {
                     if (!isTypeUnknown(vt) && !isTypeUnknown(set)) {
-                        checkAssignable(unit.getDefiniteType(set), vt, se, 
-                                "specified expression must be assignable to declared type");
+                        ProducedType net = not ?
+                                unit.getType(unit.getNullDeclaration()) :
+                                unit.getDefiniteType(set);
+                        checkAssignable(net, vt, se, 
+                                "specified expression must be assignable to declared type after narrowing");
                     }
                 }
             }
@@ -1113,24 +1111,23 @@ public class ExpressionVisitor extends Visitor {
                 !(var.getType() instanceof Tree.LocalModifier)) {
             ProducedType vt = var.getType().getTypeModel();
             if (!isTypeUnknown(vt)) {
-                if (not) {
-                    checkAssignable(vt, 
-                            unit.getType(unit.getNullDeclaration()), 
-                            var.getType(), 
-                            "specified type must be an empty type");
-                }
-                else {
-                    checkAssignable(vt, 
-                            unit.getSequenceType(unit.getType(unit.getAnythingDeclaration())), 
-                            var.getType(),
-                            "specified type must be a nonempty sequence type");
-                }
+                ProducedType nt = not ?
+                        unit.getType(unit.getEmptyDeclaration()) :
+                        unit.getSequenceType(unit.getType(unit.getAnythingDeclaration()));
+                String message = not ?
+                        "specified type must be the empty sequence type" :
+                        "specified type must be a nonempty sequence type";
+                checkAssignable(vt, nt, var.getType(), message);
             }
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
                 if (!isTypeUnknown(vt) && !isTypeUnknown(set)) {
-                    checkType(unit.getOptionalType(unit.getPossiblyEmptyType(vt)), se);
+                    ProducedType net = not ?
+                            unit.getType(unit.getEmptyDeclaration()) :
+                            unit.getNonemptyDefiniteType(set);
+                    checkAssignable(net, vt, se, 
+                            "specified expression must be assignable to declared type after narrowing");
                 }
             }
         }

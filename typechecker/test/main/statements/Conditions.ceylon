@@ -134,3 +134,25 @@ void narrowingInElse(String? stringOrNull, String[] seq) {
     }
 
 }
+
+void negatedConditions(Integer? maybe, Integer[] maybeEmpty) {
+    if (!exists Null m = maybe) {
+        @type:"Null" value n = m;
+    }
+    if (!exists @error Anything m = maybe) {}
+
+    if (!nonempty [] m = maybeEmpty) {
+        @type:"Empty" value n = m;
+    }
+    if (!nonempty @error Integer[] m = maybeEmpty) {}
+
+    if (exists Object m = maybe) {
+        @type:"Object" value n = m;
+    }
+    if (exists @error Anything m = maybe) {}
+    
+    if (nonempty [Anything+] m = maybeEmpty) {
+        @type:"Sequence<Anything>" value n = m;
+    }
+    if (nonempty @error Integer[] m = maybeEmpty) {}
+}
