@@ -121,5 +121,16 @@ void narrowingInElse(String? stringOrNull, String[] seq) {
         @type:"Sequence<String>" value s = seq;
     }
     
-}
+    Boolean|Integer|String a = "1";
+    if (is String a) {
+        a.compare("");
+    }
+    else if (is Integer a){
+        a.largerThan(nothing);
+    }
+    else {
+        assert (a);
+        @type:"Boolean" value b = a;
+    }
 
+}

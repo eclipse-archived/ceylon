@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
@@ -848,6 +849,18 @@ public class Unit {
     public ProducedType denotableType(ProducedType pt) {
     	if (pt!=null) {
     		TypeDeclaration d = pt.getDeclaration();
+    		if (d instanceof UnionType) {
+    		    List<ProducedType> cts = 
+                        d.getCaseTypes();
+                List<ProducedType> list = 
+                        new ArrayList<ProducedType>(cts.size()+1);
+                for (ProducedType ct: cts) {
+                    addToUnion(list, denotableType(ct));
+                }
+                UnionType ut = new UnionType(this);
+                ut.setCaseTypes(list);
+                return ut.getType();
+    		}
     		if (d instanceof Functional) {
     			if (((Functional) d).isOverloaded()) {
     				pt = pt.getSupertype(d.getExtendedTypeDeclaration());

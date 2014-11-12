@@ -5907,7 +5907,7 @@ public class ExpressionVisitor extends Visitor {
                                 caseUnionType(switchCaseList);
                         if (caseUnionType!=null) {
                             ProducedType complementType = 
-                                    st.minus(caseUnionType);
+                                    unit.denotableType(st.minus(caseUnionType));
                             var.getType().setTypeModel(complementType);
                             var.getDeclarationModel().setType(complementType);
                         }
