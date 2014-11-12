@@ -2444,31 +2444,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private String getJavaAttributeName(String getterName) {
         if (getterName.startsWith("get") || getterName.startsWith("set")) {
-            return getJavaBeanName(getterName.substring(3));
+            return CodegenUtil.getJavaBeanName(getterName.substring(3));
         } else if (getterName.startsWith("is")) {
             // Starts with "is"
-            return getJavaBeanName(getterName.substring(2));
+            return CodegenUtil.getJavaBeanName(getterName.substring(2));
         } else {
             throw new RuntimeException("Illegal java getter/setter name");
         }
-    }
-
-    private String getJavaBeanName(String name) {
-        // See https://github.com/ceylon/ceylon-compiler/issues/340
-        // make it lowercase until the first non-uppercase
-        char[] newName = name.toCharArray();
-        for(int i=0;i<newName.length;i++){
-            char c = newName[i];
-            if(Character.isLowerCase(c)){
-                // if we had more than one upper-case, we leave the last uppercase: getURLDecoder -> urlDecoder
-                if(i > 1){
-                    newName[i-1] = Character.toUpperCase(newName[i-1]);
-                }
-                break;
-            }
-            newName[i] = Character.toLowerCase(c);
-        }
-        return new String(newName);
     }
 
     private void addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon) {
