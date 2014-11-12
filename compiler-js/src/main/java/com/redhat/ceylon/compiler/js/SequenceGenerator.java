@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -143,18 +144,37 @@ public class SequenceGenerator {
         gen.endBlockNewLine();
         //Gather arguments to pass to the callable
         //Return the array of values or a Callable with the arguments
-        gen.out("return ", gen.getClAlias());
+        gen.out("return ");
         if (isMethod) {
-            gen.out("JsCallableList(", tmplist);
+            Method m = (Method)that.getDeclaration();
+            ArrayList<String> tmpvars = null;
+            if (m.getParameterLists().size() > 1) {
+                tmpvars = new ArrayList<>(m.getParameterLists().size());
+                for (int i=0;i<m.getParameterLists().size()-1;i++) {
+                    tmpvars.add(gen.getNames().createTempVariable());
+                    gen.out(gen.getClAlias(), "mplclist$(", tmplist, ",");
+                }
+            }
+            gen.out(gen.getClAlias(), "JsCallableList(", tmplist);
             if (that.getTypeArguments() != null && !that.getTypeArguments().getTypeModels().isEmpty()) {
                 gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         ((Method)that.getDeclaration()).getTypeParameters(),
                         that.getTypeArguments().getTypeModels()), gen, true, null);
             }
-            gen.out(");");
+            gen.out(")");
+            if (m.getParameterLists().size() > 1) {
+                for (int i=tmpvars.size()-1;i>=0;i--) {
+                    gen.out(",");
+                    TypeUtils.encodeParameterListForRuntime(that, m.getParameterLists().get(i+1), gen);
+                    gen.out(",");
+                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, true, null);
+                    gen.out(")");
+                }
+            }
+            gen.out(";");
         } else {
-            gen.out("sequence(", tmplist, ",{Element$sequence:");
+            gen.out(gen.getClAlias(), "sequence(", tmplist, ",{Element$sequence:");
             TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
             gen.out(",Absent$sequence:{t:", gen.getClAlias(), "Null}})||",
                     gen.getClAlias(), "getEmpty();");
