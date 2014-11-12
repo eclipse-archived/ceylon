@@ -222,6 +222,12 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testConMethodIfNarrowedElse(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfNarrowedElse");
+    }
+    
+    @Test
     public void testConMethodIfConditionListBoolBool(){
         compareWithJavaSource("conditional/MethodIfConditionListBoolBool");
     }

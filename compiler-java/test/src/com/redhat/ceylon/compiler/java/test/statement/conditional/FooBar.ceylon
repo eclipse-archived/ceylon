@@ -48,3 +48,14 @@ class Bar() satisfies Common & BarInterface {
         return false;
     }
 }
+interface BazInterface {
+    shared formal Object baz();
+}
+class Baz() satisfies Common & BazInterface {
+    shared actual Object common() {
+        return false;
+    }
+    shared actual Object baz() {
+        return false;
+    }
+}
