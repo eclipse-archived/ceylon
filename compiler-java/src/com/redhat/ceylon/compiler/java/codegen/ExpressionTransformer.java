@@ -73,6 +73,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -5725,6 +5726,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         JCExpression vartype = makeJavaType(op.getTypeModel());
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
+    }
+
+    public JCTree transform(Tree.SwitchExpression op) {
+        String tmpVar = naming.newTemp("ifResult");
+        JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
+        at(op);
+        JCExpression vartype = makeJavaType(op.getTypeModel());
+        return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
+                              List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
 
 }
