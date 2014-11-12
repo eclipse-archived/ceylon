@@ -4557,7 +4557,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         Class clz = (Class)ctor.getContainer();
-        
+        at(that);
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
         
         ctorDb.userAnnotations(expressionGen().transform(that.getAnnotationList()));
@@ -4573,27 +4573,37 @@ public class ClassTransformer extends AbstractTransformer {
                 ctorDb.parameter(p);
             }
         } else {
-            ClassDefinitionBuilder paramsCdb = ClassDefinitionBuilder.klass(this, 
+            ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                     naming.makeTypeDeclarationName(ctor), null, true);
-            int classMods = FINAL | transformConstructorDeclFlags(ctor);
-            if (clz.isToplevel()) {
-                classMods |= STATIC;
+            int classMods = transformConstructorDeclFlags(ctor);
+            JCVariableDecl constructorNameConst;
+            if (clz.isToplevel() || clz.isMember()) {
+                classMods |= FINAL | STATIC;
+                constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
+                        names().fromString(naming.makeTypeDeclarationName(ctor)),
+                        naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
+                        makeNull());
+            } else {
+                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+                constructorNameConst = null;
             }
-            paramsCdb.defs(
-                    make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
-                    names().fromString("CONSTRUCTOR"),
-                    naming.makeTypeDeclarationExpression(null, ctor, DeclNameFlag.QUALIFIED), 
-                    makeNull()));
-            paramsCdb.modifiers(classMods);
-            paramsCdb.annotations(makeAtIgnore());
-            paramsCdb.getInitBuilder().modifiers(PRIVATE);
+            constructorNameClass.modifiers(classMods);
+            constructorNameClass.annotations(makeAtIgnore());
+            constructorNameClass.getInitBuilder().modifiers(PRIVATE);
 
+            
+            
             if (clz.isToplevel()) {
-                result.addAll(paramsCdb.build());
+                result.addAll(constructorNameClass.build());
+                classBuilder.defs(constructorNameConst);
             } else if (clz.isClassMember()){
-                classBuilder.getContainingClassBuilder().defs(paramsCdb.build());
+                classBuilder.getContainingClassBuilder().defs(constructorNameClass.build());
+                classBuilder.getContainingClassBuilder().defs(constructorNameConst);
             } else if (clz.isInterfaceMember()){
-                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(paramsCdb.build());
+                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameClass.build());
+                classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameConst);
+            } else {
+                result.addAll(constructorNameClass.build());
             }
             
             for (TypeParameter tp : clz.getTypeParameters()) {
@@ -4609,9 +4619,6 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.InvocationExpression chainedCtorInvocation = that.getDelegatedConstructor().getInvocationExpression();
             JCExpression superExpr = expressionGen().transformSuper(that.getDelegatedConstructor(),
                     chainedCtorInvocation, classBuilder);
-            at(that.getDelegatedConstructor());
-            ListBuffer<JCStatement> parameters = ListBuffer.<JCStatement>lb();
-            superExpr = make().LetExpr(parameters.toList(), make().Exec(superExpr));
             classBuilder.getInitBuilder().superCall(make().Exec(superExpr));
         }
         classBuilder.hasConstructors(true);
@@ -4625,42 +4632,3 @@ public class ClassTransformer extends AbstractTransformer {
     }
 }
 
-class Foo {
-    private static final class Bar {
-        private Bar() {}
-    }
-    private static final Bar Bar = null;
-    Foo(Bar b) {}
-    
-    private static final class Gee {
-        private Gee() {}
-    }
-    static final Gee Gee = null;
-    Foo(Gee g) {}
-    static void use() {
-        new Foo(Foo.Bar);
-        new Foo(Foo.Gee);
-    }
-}
-
-class Outer {
-    private static final class Foo$Bar {
-        private Foo$Bar() {}
-    }
-    private static final Foo$Bar Foo$Bar = null;
-    private static final class Foo$Gee {
-        private Foo$Gee() {}
-    }
-    private static final Foo$Gee Foo$Gee = null;
-    class Foo {
-        
-        Foo(Foo$Bar b) {}
-        
-        Foo(Foo$Gee g) {}
-        
-    }
-    static void use(Outer i) {
-        i.new Foo(Foo$Bar);
-        i.new Foo(Foo$Gee);
-    }
-}

@@ -59,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -738,7 +739,7 @@ public class Naming implements LocalId {
                     && !flags.contains(DeclNameFlag.COMPANION)) {
                 typeDeclarationBuilder.append('$');
             } else if (decl instanceof Constructor
-                    && !((Class)decl.getContainer()).isToplevel()
+                    && ((Class)decl.getContainer()).isMember()
                     && decl.getContainer().equals(scope)) {
                 typeDeclarationBuilder.append('$');
             } else {
@@ -2299,7 +2300,15 @@ public class Naming implements LocalId {
     }
     
     public JCExpression makeNamedConstructorName(Constructor constructor) {
-        return makeQualIdent(makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED), "CONSTRUCTOR");
+        Class cls = (Class)constructor.getContainer();
+        if (cls.isToplevel() || cls.isMember()) {
+            return makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED);
+        } else {
+            return maker.TypeCast(
+                    makeTypeDeclarationExpression(null, constructor, DeclNameFlag.QUALIFIED),
+                    //makeTypeDeclarationExpression(makeTypeDeclarationExpression(null, cls, DeclNameFlag.QUALIFIED), constructor, DeclNameFlag.QUALIFIED),
+                    make().Literal(TypeTags.BOT, null));
+        }
     }
     
     public JCExpression makeNamedConstructorType(Constructor constructor) {

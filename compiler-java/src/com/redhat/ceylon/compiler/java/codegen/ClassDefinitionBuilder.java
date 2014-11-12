@@ -416,9 +416,9 @@ public class ClassDefinitionBuilder {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
             ret = ret.prependList(this.annotations.toList());
-            if (hasConstructors || extendingType != null) {
+            //if (hasConstructors || extendingType != null) {
                 ret = ret.prependList(gen.makeAtClass(thisType, extendingType, hasConstructors));
-            }
+            //}
         }
         if (isBroken) {
             ret = ret.prependList(gen.makeAtCompileTimeError());

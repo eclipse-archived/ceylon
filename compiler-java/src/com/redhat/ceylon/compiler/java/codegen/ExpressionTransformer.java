@@ -3408,7 +3408,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                     outer = outer.getContainer();
                 }
-                if (expr == null) {                    
+                if (expr == null) {
                     Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
                     JCExpression superQual;
                     if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
@@ -4412,6 +4412,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression addInterfaceImplAccessorIfRequired(JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr, Declaration decl) {
         // Partial fix for https://github.com/ceylon/ceylon-compiler/issues/1023
         // For interfaces we sometimes need to access either the interface instance or its $impl class
+        if (decl instanceof Constructor) {
+            decl = (Class)Decl.container(decl);
+        }
         Scope declContainer = Decl.container(decl);
         if(qualExpr != null
                 // this is only for interface containers
