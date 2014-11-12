@@ -906,8 +906,6 @@ public class Util {
         }
     }
 
-    private static int depth;
-    
     /**
      * The meet of two classes unrelated by inheritance,
      * or of Null with an interface type is empty. The meet
@@ -915,11 +913,6 @@ public class Util {
      * assignable is empty.
      */
     private static boolean emptyMeet(ProducedType p, ProducedType q, Unit unit) {
-        try {
-            depth++;
-            if (depth>10) {
-                throw new RuntimeException();
-            }
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
@@ -1072,10 +1065,6 @@ public class Util {
             }
         }
         return false;
-        }
-        finally {
-            depth--;
-        }
     }
 
     /**
