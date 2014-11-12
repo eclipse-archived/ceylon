@@ -51,6 +51,12 @@ void test450({String?*}(String?(String?))({String?*}) map) {
     check(map({null, "a", null})(str).size == 3, "issue 450.2");
 }
 
+class Spread433(Integer x) {
+  shared Integer simple(Integer a) => a+x*2;
+  shared Integer pl2(Integer a)(String b) => a+x+b.size;
+  shared Integer pl3(Integer a)(String b)(Integer c) => a+b.size+c+x;
+}
+
 void testSpread() {
   value ints = [8,9,10];
   check(spread1(1,2,3)==6, "spread [1]");
@@ -94,4 +100,14 @@ void testSpread() {
         i450_1(({String?*} it)=>it.sequence(), strings.map<String?>));
   test450(({String?*} strings) =>
         i450_2(({String?*} it)=>it.sequence(), strings.map<String?>));
+  //Issue 433
+  value l433=[Spread433(1),Spread433(2)];
+  check(l433*.simple(2)==[4,6], "#433 simple spread");
+  value mpl1=l433*.pl2(1);
+  check(mpl1("Two")==[5,6], "#433 spread of 2 param lists");
+  check(mpl1("Two")==l433*.pl2(1)("Hey"), "#433 2 param lists");
+  value mpl3=l433*.pl3(1);
+  value mpl4=mpl3("Three");
+  check(mpl4(5)==[12,13], "#433 spread of 3 param lists");
+  check(mpl4(5)==l433*.pl3(1)("Seven")(5), "#433 3 param lists");
 }
