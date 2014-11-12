@@ -2002,11 +2002,11 @@ public class GenerateJsVisitor extends Visitor
     private void specifierStatement(final TypeDeclaration outer,
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
-        final Term term = specStmt.getBaseMemberExpression();
-        final BaseMemberExpression bme = term instanceof BaseMemberExpression ? (BaseMemberExpression)term : null;
+        final Tree.Term term = specStmt.getBaseMemberExpression();
+        final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression ? (Tree.StaticMemberOrTypeExpression)term : null;
         if (dynblock > 0 && Util.isTypeUnknown(term.getTypeModel())) {
-            if (bme != null && bme.getDeclaration() == null) {
-                out(bme.getIdentifier().getText());
+            if (smte != null && smte.getDeclaration() == null) {
+                out(smte.getIdentifier().getText());
             } else {
                 term.visit(this);
             }
@@ -2018,8 +2018,8 @@ public class GenerateJsVisitor extends Visitor
             out(";");
             return;
         }
-        if (bme != null) {
-            Declaration bmeDecl = bme.getDeclaration();
+        if (smte != null) {
+            Declaration bmeDecl = smte.getDeclaration();
             if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
                 final boolean property = defineAsProperty(bmeDecl);
@@ -2054,14 +2054,14 @@ public class GenerateJsVisitor extends Visitor
                 if (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual()) {
                     out("delete ", names.self(outer), ".", names.name(bmeDecl));
                     endLine(true);
-                }                
+                }
             }
             else if (bmeDecl instanceof MethodOrValue) {
                 // "attr = expr;" in an initializer or method
                 final MethodOrValue moval = (MethodOrValue)bmeDecl;
                 if (moval.isVariable()) {
                     // simple assignment to a variable attribute
-                    BmeGenerator.generateMemberAccess(bme, new GenerateCallback() {
+                    BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
                             if (dynblock > 0 && !Util.isTypeUnknown(moval.getType())
@@ -2087,7 +2087,7 @@ public class GenerateJsVisitor extends Visitor
                             }
                             boxUnboxEnd(boxType);
                         }
-                    }, null, this);
+                    }, qualifiedPath(smte, moval), this);
                     out(";");
                 } else if (moval.isMember()) {
                     if (moval instanceof Method) {
