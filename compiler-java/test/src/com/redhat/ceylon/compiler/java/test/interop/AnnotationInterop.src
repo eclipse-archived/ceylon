@@ -53,6 +53,8 @@ package com.redhat.ceylon.compiler.java.test.interop;
                 threadStates = {
                         .java.lang.Thread.State.RUNNABLE,
                         .java.lang.Thread.State.BLOCKED})})
+@.com.redhat.ceylon.compiler.java.test.interop.JAVAAnnotationAcronym
+@.com.redhat.ceylon.compiler.java.test.interop.javaAnnotationLowercase
 class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationInterop() {
