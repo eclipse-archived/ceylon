@@ -906,6 +906,8 @@ public class Util {
         }
     }
 
+    private static int depth;
+    
     /**
      * The meet of two classes unrelated by inheritance,
      * or of Null with an interface type is empty. The meet
@@ -913,6 +915,11 @@ public class Util {
      * assignable is empty.
      */
     private static boolean emptyMeet(ProducedType p, ProducedType q, Unit unit) {
+        try {
+            depth++;
+            if (depth>10) {
+                throw new RuntimeException();
+            }
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
@@ -952,6 +959,17 @@ public class Util {
             }
             return true;
         }
+        else if (qd.getCaseTypes()!=null) {
+            boolean all = true;
+            for (ProducedType t: qd.getCaseTypes()) {
+                if (t.getDeclaration().isSelfType() || 
+                        !emptyMeet(p,t,unit)) {
+                    all = false; 
+                    break;
+                }
+            }
+            if (all) return true;
+        }
         if (pd instanceof UnionType) {
             for (ProducedType t: pd.getCaseTypes()) {
                 if (!emptyMeet(q,t,unit)) {
@@ -959,6 +977,17 @@ public class Util {
                 }
             }
             return true;
+        }
+        else if (pd.getCaseTypes()!=null) {
+            boolean all = true;
+            for (ProducedType t: pd.getCaseTypes()) {
+                if (t.getDeclaration().isSelfType() || 
+                        !emptyMeet(q,t,unit)) {
+                    all = false; 
+                    break;
+                }
+            }
+            if (all) return true;
         }
         if (pd instanceof Class && qd instanceof Class ||
             pd instanceof Interface && qd instanceof Class &&
@@ -994,14 +1023,14 @@ public class Util {
                 return true;
             }
         }
-        Interface ed = unit.getEmptyDeclaration();
-        Interface id = unit.getIterableDeclaration();
-        if (pd.inherits(ed) && qd.inherits(id) &&
-                unit.isNonemptyIterableType(q) ||
-            pd.inherits(id) && qd.inherits(ed) &&
-                unit.isNonemptyIterableType(p)) {
-            return true;
-        }
+//        Interface ed = unit.getEmptyDeclaration();
+//        Interface id = unit.getIterableDeclaration();
+//        if (pd.inherits(ed) && qd.inherits(id) &&
+//                unit.isNonemptyIterableType(q) ||
+//            pd.inherits(id) && qd.inherits(ed) &&
+//                unit.isNonemptyIterableType(p)) {
+//            return true;
+//        }
         Interface nst = unit.getSequenceDeclaration();
         if (pd.inherits(nst) && qd.inherits(nst)) {
             ProducedType pet = unit.getSequentialElementType(p);
@@ -1043,6 +1072,10 @@ public class Util {
             }
         }
         return false;
+        }
+        finally {
+            depth--;
+        }
     }
 
     /**
@@ -1091,8 +1124,10 @@ public class Util {
                     if (tp.isInvariant()) {
                         if (pst==null) pst = p.getSupertype(std);
                         if (qst==null) qst = q.getSupertype(std);
-                        ProducedType psta = pst.getTypeArguments().get(tp);
-                        ProducedType qsta = qst.getTypeArguments().get(tp);
+                        ProducedType psta = pst==null ? 
+                                null : pst.getTypeArguments().get(tp);
+                        ProducedType qsta = qst==null ? 
+                                null : qst.getTypeArguments().get(tp);
                         if (psta!=null && psta.isWellDefined() &&
                                 qsta!=null && psta.isWellDefined() &&
                                 //what about types with UnknownType as an arg?
