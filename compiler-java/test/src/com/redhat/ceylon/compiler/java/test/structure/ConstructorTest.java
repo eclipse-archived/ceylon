@@ -43,7 +43,6 @@ public class ConstructorTest extends CompilerTest {
     
     @Test
     public void testCtorClassMemberClassCtor(){
-        // This need default parameters to be a good test
         compareWithJavaSource("constructor/ClassMemberClassCtor");
     }
     

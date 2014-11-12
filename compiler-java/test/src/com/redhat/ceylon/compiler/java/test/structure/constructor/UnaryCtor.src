@@ -1,10 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Class(
-        constructors = true,
-        identifiable = false,
-        basic = false,
-        extendsType = "")
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
