@@ -273,18 +273,27 @@ class Strategy {
     }
     
     static boolean generateInstantiator(Declaration model) {
-        return (Decl.isRefinableMemberClass(model) 
-                    && !((Class)model).isAbstract()) 
-                || 
-                // If shared, generate an instantiator so that BC is 
-                // preserved should the member class later become refinable
-                (model instanceof Class 
-                    && model.isMember()
-                    && model.isShared()
-                    && !((Class)model).hasConstructors()
-                    && !model.isAnonymous()
-                    && !((Class)model).isAbstract()
-                    && Decl.isCeylon((Class)model));
+        if (model instanceof Class) {
+            Class cls = (Class)model;
+            return !cls.isAbstract()
+                    && !cls.hasConstructors()
+                    && (Decl.isRefinableMemberClass(cls) 
+                        || 
+                        // If shared, generate an instantiator so that BC is 
+                        // preserved should the member class later become refinable
+                        (Decl.isCeylon(cls)
+                                && model.isMember()
+                                && cls.isShared()
+                                && !cls.isAnonymous()));
+        } else if (model instanceof Constructor) {
+            Constructor ctor = (Constructor)model;
+            Class cls = Decl.getConstructedClass(ctor);
+            return cls.isInterfaceMember()
+                    && cls.isShared()
+                    && ctor.isShared();
+        } else {
+            return false;
+        }
     }
     
     /**

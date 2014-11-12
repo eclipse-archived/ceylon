@@ -1623,6 +1623,10 @@ public abstract class AbstractTransformer implements Transformation {
                 || type.getDeclaration() instanceof UnknownType)
             return make().Erroneous();
         
+        if (type.getDeclaration() instanceof Constructor) {
+            type = type.getQualifyingType();
+        }
+        
         // resolve aliases
         if((flags & JT_CLASS_LITERAL) == 0)
             type = type.resolveAliases();

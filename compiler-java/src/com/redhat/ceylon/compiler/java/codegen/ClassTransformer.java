@@ -168,7 +168,8 @@ public class ClassTransformer extends AbstractTransformer {
             // Member classes need a instantiator method
             boolean generateInstantiator = Strategy.generateInstantiator(cls);
             if(generateInstantiator){
-                generateInstantiators(cls, classBuilder, paramList, cls, instantiatorDeclCb, instantiatorImplCb);
+                classBuilder.getInitBuilder().modifiers(PROTECTED);
+                generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb);
             }
             classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.ClassDefinition){
@@ -903,31 +904,28 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void generateInstantiators(Class model, 
-            ClassDefinitionBuilder classBuilder, 
-            Tree.ParameterList paramList,
-            Class cls, ClassDefinitionBuilder instantiatorDeclCb, 
+    private void generateInstantiators(ClassDefinitionBuilder classBuilder, 
+            Class cls, Constructor ctor, ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb) {
         // TODO Instantiators on companion classes
-        classBuilder.getInitBuilder().modifiers(PROTECTED);
         
         if (Decl.withinInterface(cls)) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, model);
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor);
             overloaded.makeOverload(
                     instBuilder,
-                    paramList.getModel(),
+                    cls.getParameterList(),
                     null,
                     cls.getTypeParameters());
             instantiatorDeclCb.method(instBuilder);
         }
         if (!Decl.withinInterface(cls)
-                || !model.isFormal()) {
+                || !cls.isFormal()) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? daoThis : daoAbstract, model);
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? daoThis : daoAbstract, cls, ctor);
             overloaded.makeOverload(
                     instBuilder,
-                    paramList.getModel(),
+                    cls.getParameterList(),
                     null,
                     cls.getTypeParameters());
             instantiatorImplCb.method(instBuilder);
@@ -1090,7 +1088,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     || Strategy.hasDefaultParameterOverload(refinedParam)))) {
                 ClassDefinitionBuilder cbForDevaultValues;
                 ClassDefinitionBuilder cbForDevaultValuesDecls = null;
-                switch (Strategy.defaultParameterMethodOwner(cls)) {
+                switch (Strategy.defaultParameterMethodOwner(constructor != null ? constructor : cls)) {
                 case STATIC:
                     cbForDevaultValues = classBuilder;
                     break;
@@ -1108,7 +1106,8 @@ public class ClassTransformer extends AbstractTransformer {
                             || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
                     if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
                         cbForDevaultValues.method(makeParamDefaultValueMethod(false, constructor != null ? constructor : cls, paramList, param));
-                        if (cbForDevaultValuesDecls != null) {
+                        if (cbForDevaultValuesDecls != null 
+                                && constructor == null || Strategy.generateInstantiator(constructor)) {
                             cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
                         }
                     } else if (Strategy.hasDelegatedDpm(cls)) {
@@ -1131,7 +1130,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        new DefaultedArgumentInstantiator(daoAbstract, cls).makeOverload(instBuilder,
+                        new DefaultedArgumentInstantiator(daoAbstract, cls, constructor).makeOverload(instBuilder,
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 cls.getTypeParameters());
@@ -1139,7 +1138,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        new DefaultedArgumentInstantiator(daoThis, cls).makeOverload(instBuilder,
+                        new DefaultedArgumentInstantiator(daoThis, cls, constructor).makeOverload(instBuilder,
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 cls.getTypeParameters());
@@ -1843,15 +1842,27 @@ public class ClassTransformer extends AbstractTransformer {
         // For each super interface
         for (Declaration member : iface.getMembers()) {
             
-            if (member instanceof Class
-                    && Strategy.generateInstantiator(member)
+            if (member instanceof Class) {
+                Class klass = (Class)member;
+                if (Strategy.generateInstantiator(member)
                     && !model.isAbstract() && !model.isFormal()
                     && model.getDirectMember(member.getName(), null, false) == null) {
-                // instantiator method implementation
-                Class klass = (Class)member;
-                generateInstantiatorDelegate(classBuilder, satisfiedType,
-                        iface, klass, model.getType());
-            } 
+                    // instantiator method implementation
+                    generateInstantiatorDelegate(classBuilder, satisfiedType,
+                            iface, klass, null, model.getType());
+                } 
+                if (klass.hasConstructors()) {
+                    for (Declaration m : klass.getMembers()) {
+                        if (m instanceof Constructor
+                                && Strategy.generateInstantiator(m)) {
+                            Constructor ctor = (Constructor)m;
+                            generateInstantiatorDelegate(classBuilder, satisfiedType,
+                                    iface, klass, ctor, model.getType());
+                        }
+                    }
+                    
+                }
+            }
             
             // type aliases are on the $impl class
             if(member instanceof TypeAlias)
@@ -2025,10 +2036,10 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
-            Interface iface, Class klass, ProducedType currentType) {
-        ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
+            Interface iface, Class klass, Constructor ctor, ProducedType currentType) {
+        ProducedType typeMember = ctor != null ? ctor.getType() : satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
-        java.util.List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
+        java.util.List<Parameter> parameters = (ctor != null ? ctor.getParameterLists() : klass.getParameterLists()).get(0).getParameters();
         
         String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
         for (Parameter param : parameters) {
@@ -2044,7 +2055,7 @@ public class ClassTransformer extends AbstractTransformer {
                         typeParameters, 
                         producedTypeParameterBounds(typeMember, klass),
                         typedParameter.getType(),
-                        Naming.getDefaultedParamMethodName(klass, param), 
+                        Naming.getDefaultedParamMethodName(ctor != null ? ctor : klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
                         param.getModel().getTypeErased(),
                         null);
@@ -2120,6 +2131,7 @@ public class ClassTransformer extends AbstractTransformer {
                 concreteWrapper.typeParameter(tp, iterator.next());
             }
         }
+        
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();
         ProducedType returnType = null;
@@ -2157,6 +2169,11 @@ public class ClassTransformer extends AbstractTransformer {
             for(TypeParameter tp : typeParameters){
                 arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
             }
+        }
+        if (typedMember.getDeclaration() instanceof Constructor
+                && !Decl.isDefaultConstructor((Constructor)typedMember.getDeclaration())) {
+            concreteWrapper.parameter(makeConstructorNameParameter((Constructor)typedMember.getDeclaration()));
+            arguments.add(naming.makeUnquotedIdent(Unfix.$name$));
         }
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
@@ -3435,19 +3452,14 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private boolean isVoid(Tree.Declaration def) {
-        if (def instanceof Tree.AnyMethod) {
-            return gen().isAnything(((Tree.AnyMethod)def).getType().getTypeModel());
-        } else if (def instanceof Tree.AnyClass) {
-            // Consider classes void since ctors don't require a return statement
-            return true;
-        }
-        throw BugException.unhandledNodeCase(def);
+        return isVoid(def.getDeclarationModel());
     }
     
     private boolean isVoid(Declaration def) {
         if (def instanceof Method) {
             return gen().isAnything(((Method)def).getType());
-        } else if (def instanceof Class) {
+        } else if (def instanceof Class
+                || def instanceof Constructor) {
             // Consider classes void since ctors don't require a return statement
             return true;
         }
@@ -3976,17 +3988,52 @@ public class ClassTransformer extends AbstractTransformer {
     abstract class DefaultedArgumentClass extends DefaultedArgumentOverload {
         
         protected final Class klass;
+        protected final Constructor constructor;
         
         protected Naming.SyntheticName companionInstanceName = null;
 
-        DefaultedArgumentClass(DaoBody daoBody, Class klass) {
+        DefaultedArgumentClass(DaoBody daoBody, Class klass, Constructor constructor) {
             super(daoBody);
             this.klass = klass;
+            this.constructor = constructor;
         }
         
         @Override
-        protected final Class getModel() {
-            return klass;
+        protected final Declaration getModel() {
+            return constructor != null ? constructor : klass;
+        }
+        
+        @Override
+        protected void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder) {
+            super.appendImplicitParameters(typeParameterList, overloadBuilder);
+            if (constructor != null
+                    && !Decl.isDefaultConstructor(constructor)) {
+                overloadBuilder.parameter(makeConstructorNameParameter(constructor));
+            }
+        }
+        
+
+        @Override
+        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            appendImplicitArgumentsDpm(typeParameterList, overloadBuilder, args);
+            if (constructor != null
+                    && !Decl.isDefaultConstructor(constructor)) {
+                args.append(naming.makeUnquotedIdent(Unfix.$name$));
+            }
+        }
+        
+
+        @Override
+        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            if(typeParameterList != null){
+                // we pass the reified type parameters along
+                for(TypeParameter tp : typeParameterList){
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
+                }
+            }
         }
         
         @Override
@@ -4024,25 +4071,12 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentConstructor extends DefaultedArgumentClass {
 
-        private final Constructor constructor;
-
         DefaultedArgumentConstructor(DaoBody daoBody, Class klass) {
-            super(daoBody, klass);
-            this.constructor = null;
+            super(daoBody, klass, null);
         }
         
         DefaultedArgumentConstructor(DaoBody daoBody, Constructor constructor) {
-            super(daoBody, (Class)constructor.getContainer());
-            this.constructor = constructor;
-        }
-
-        protected final void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
-                MethodDefinitionBuilder overloadBuilder) {
-            super.appendImplicitParameters(typeParameterList, overloadBuilder);
-            if (constructor != null
-                    && !Decl.isDefaultConstructor(constructor)) {
-                overloadBuilder.parameter(makeConstructorNameParameter(constructor));
-            }
+            super(daoBody, (Class)constructor.getContainer(), constructor);
         }
         
         @Override
@@ -4065,26 +4099,6 @@ public class ClassTransformer extends AbstractTransformer {
             // Constructor has type parameters
         }
         
-        @Override
-        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
-                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
-            if(typeParameterList != null){
-                // we pass the reified type parameters along
-                for(TypeParameter tp : typeParameterList){
-                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
-                }
-            }
-        }
-        
-        @Override
-        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
-                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
-            appendImplicitArgumentsDpm(typeParameterList, overloadBuilder, args);
-            if (constructor != null
-                    && !Decl.isDefaultConstructor(constructor)) {
-                args.append(naming.makeUnquotedIdent(Unfix.$name$));
-            }
-        }
     }
     
     /**
@@ -4093,8 +4107,8 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentInstantiator extends DefaultedArgumentClass {
 
-        DefaultedArgumentInstantiator(DaoBody daoBody, Class klass) {
-            super(daoBody, klass);
+        DefaultedArgumentInstantiator(DaoBody daoBody, Class klass, Constructor ctor) {
+            super(daoBody, klass, ctor);
         }
 
         @Override
@@ -4154,12 +4168,10 @@ public class ClassTransformer extends AbstractTransformer {
             for(ProducedType pt : type.getTypeArgumentList()){
                 args.append(makeReifiedTypeArgument(pt));
             }
-        }
-        
-        @Override
-        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
-                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
-            appendImplicitArgumentsDelegate(typeParameterList, overloadBuilder, args);
+            if (constructor != null
+                    && !Decl.isDefaultConstructor(constructor)) {
+                args.append(naming.makeUnquotedIdent(Unfix.$name$));
+            }
         }
 
         @Override
@@ -4182,9 +4194,6 @@ public class ClassTransformer extends AbstractTransformer {
      * of the outer class so that they can be captured.
      */
     private java.util.List<TypeParameter> typeParametersForInstantiator(final Class model) {
-        if (!Strategy.generateInstantiator(model)) {
-            throw new BugException();
-        }
         java.util.List<TypeParameter> filtered = new ArrayList<TypeParameter>();
         java.util.List<TypeParameter> tps = model.getTypeParameters();
         if (tps != null) {
@@ -4559,8 +4568,18 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
         Constructor ctor = that.getDeclarationModel();
         Class clz = (Class)ctor.getContainer();
+        
         at(that);
         MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
+        
+        ClassDefinitionBuilder decl = null;
+        ClassDefinitionBuilder impl = null;
+        boolean generateInstantiator = Strategy.generateInstantiator(ctor);
+        if (generateInstantiator) {
+            decl = classBuilder.getContainingClassBuilder();
+            impl = classBuilder.getContainingClassBuilder().getCompanionBuilder((Interface)clz.getContainer());
+            generateInstantiators(classBuilder, clz, ctor, decl, impl);
+        }
         
         ctorDb.userAnnotations(expressionGen().transform(that.getAnnotationList()));
         ctorDb.modelAnnotations(makeAtName(ctor.getName()));
@@ -4568,7 +4587,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Decl.isDefaultConstructor(ctor)) {
             transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that.getParameterList(), 
-                    classBuilder, classBuilder.getInitBuilder(), false, null, null);
+                    classBuilder, classBuilder.getInitBuilder(), generateInstantiator, decl, impl);
             // Note: We don't need to explicitly add the reified type parameters to the ctor
             // in this case because they're already in the initbuilders list of parameters.
             for (ParameterDefinitionBuilder p : classBuilder.getInitBuilder().getParameterList()) {
@@ -4613,7 +4632,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that.getParameterList(), 
-                    classBuilder, ctorDb, false, null, null);
+                    classBuilder, ctorDb, generateInstantiator, decl, impl);
             
         }
         
@@ -4632,5 +4651,5 @@ public class ClassTransformer extends AbstractTransformer {
         result.add(ctorDb.build());
         return result.toList();
     }
-}
 
+}

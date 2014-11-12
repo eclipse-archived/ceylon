@@ -4420,7 +4420,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // this is only for interface containers
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
-                && !decl.isShared()){
+                && (!decl.isShared() || (decl instanceof Class && ((Class)decl).hasConstructors()))){
             Interface declaration = (Interface) declContainer;
             // access the interface $impl instance
             qualExpr = naming.makeCompanionAccessorCall(qualExpr, declaration);

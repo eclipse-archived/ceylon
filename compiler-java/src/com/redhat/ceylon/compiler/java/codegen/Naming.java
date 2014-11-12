@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -954,8 +955,10 @@ public class Naming implements LocalId {
         }
     }
     
-    String getInstantiatorMethodName(Class model) {
-        return suffixName(Suffix.$new$, model.getName());
+    String getInstantiatorMethodName(Functional classOrCtor) {
+        // In the case of a constructor we use a constructor name parameter to tell the diff
+        // the instantiator method still has the same name as the class.
+        return suffixName(Suffix.$new$, classOrCtor.getName());
     }
     
     String getAliasInstantiatorMethodName(Class model) {
