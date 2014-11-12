@@ -625,7 +625,7 @@ public class ExpressionVisitor extends Visitor {
         		}
         	}
         	if (!isTypeUnknown(t)) {
-        		checkType(t, dec.getName(), sie, 2100);
+        		checkType(t, dec, sie, 2100);
         	}
         }
     	Setter setter = dec.getSetter();
@@ -720,101 +720,107 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+
+        Tree.SpecifierExpression rhs = that.getSpecifierExpression();
+        Tree.Term lhs = that.getBaseMemberExpression();
+
         boolean hasParams = false;
-        Tree.Term me = that.getBaseMemberExpression();
+        Tree.Term me = lhs;
         while (me instanceof Tree.ParameterizedExpression) {
             hasParams = true;
             me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
+        if (!(me instanceof Tree.StaticMemberOrTypeExpression)) {
+            me.addError("illegal specification statement: only a function or value may be specified");
+            return;
+        }
+        
         assign(me);
-        Tree.SpecifierExpression sie = that.getSpecifierExpression();
-        if (me instanceof Tree.BaseMemberExpression) {
-            Declaration d = that.getDeclaration();
-            if (d instanceof TypedDeclaration) {
-                if (that.getRefinement()) {
-                    // interpret this specification as a 
-                    // refinement of an inherited member
+        
+        Declaration d = that.getDeclaration();
+        if (d instanceof TypedDeclaration) {
+            if (that.getRefinement()) {
+                // interpret this specification as a 
+                // refinement of an inherited member
+                if (d instanceof Value) {
+                    refineValue(that);
+                }
+                else if (d instanceof Method) {
+                    refineMethod(that);
+                }
+                Tree.StaticMemberOrTypeExpression smte = 
+                        (Tree.StaticMemberOrTypeExpression) me;
+                smte.setDeclaration(d);
+            }
+            else if (d instanceof MethodOrValue) {
+                MethodOrValue mv = (MethodOrValue) d;
+                if (mv.isShortcutRefinement()) {
+                    String desc;
                     if (d instanceof Value) {
-                        refineValue(that);
+                        desc = "value";
                     }
-                    else if (d instanceof Method) {
-                        refineMethod(that);
+                    else {
+                        desc = "function";
                     }
-                    Tree.BaseMemberExpression bme = 
-                            (Tree.BaseMemberExpression) me;
-                    bme.setDeclaration(that.getDeclaration());
+                    me.addError(desc + " already specified: '" + 
+                                d.getName(unit) + "'");
                 }
-                else if (d instanceof MethodOrValue) {
-                    MethodOrValue mv = (MethodOrValue) d;
-                    if (mv.isShortcutRefinement()) {
-                        String desc;
-                        if (d instanceof Value) {
-                            desc = "value";
-                        }
-                        else {
-                            desc = "function";
-                        }
-                        me.addError(desc + " already specified: '" + 
-                                    d.getName(unit) + "'");
+                else if (!mv.isVariable() && !mv.isLate()) {
+                    String desc;
+                    if (d instanceof Value) {
+                        desc = "value is neither variable nor late and";
                     }
-                    else if (!mv.isVariable() && !mv.isLate()) {
-                        String desc;
-                        if (d instanceof Value) {
-                            desc = "value is neither variable nor late and";
-                        }
-                        else {
-                            desc = "function";
-                        }
-                        if (mv.isToplevel()) {
-                            me.addError("toplevel " + desc + 
-                                    " may not be specified: '" + 
-                                    d.getName(unit) + "'", 803);
-                        }
-                        else if (!mv.isDefinedInScope(that.getScope())) {
-                            me.addError(desc + " may not be specified here: '" + 
-                                    d.getName(unit) + "'", 803);
-                        }
+                    else {
+                        desc = "function";
                     }
-                }
-                if (hasParams && d instanceof Method && 
-                        ((Method) d).isDeclaredVoid() && 
-                        !isSatementExpression(sie.getExpression())) {
-                    sie.addError("function is declared void so specified expression must be a statement: '" + 
-                            d.getName(unit) + "' is declared 'void'");
-                }
-                if (d instanceof Value && 
-                        sie instanceof Tree.LazySpecifierExpression) {
-                    ((Value) d).setTransient(true);
-                }
-                
-                ProducedType t = that.getBaseMemberExpression().getTypeModel();
-                if (that.getBaseMemberExpression()==me && d instanceof Method) {
-                    //if the declaration of the method has
-                    //defaulted parameters, we should ignore
-                    //that when determining if the RHS is
-                    //an acceptable implementation of the
-                    //method
-                    //TODO: this is a pretty nasty way to
-                    //      handle the problem
-                    t = eraseDefaultedParameters(t);
-                }
-                if (!isTypeUnknown(t)) {
-                    checkType(t, d.getName(unit), sie, 2100);
+                    if (mv.isToplevel()) {
+                        me.addError("toplevel " + desc + 
+                                " may not be specified: '" + 
+                                d.getName(unit) + "'", 803);
+                    }
+                    else if (!mv.isDefinedInScope(that.getScope())) {
+                        me.addError(desc + " may not be specified here: '" + 
+                                d.getName(unit) + "'", 803);
+                    }
                 }
             }
-            if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
-                if (!(sie instanceof Tree.LazySpecifierExpression)) {
-                    sie.addError("functions with parameters must be specified using =>");
-                }
+            
+            if (hasParams && d instanceof Method && 
+                    ((Method) d).isDeclaredVoid() && 
+                    !isSatementExpression(rhs.getExpression())) {
+                rhs.addError("function is declared void so specified expression must be a statement: '" + 
+                        d.getName(unit) + "' is declared 'void'");
             }
-            else {
-                if (sie instanceof Tree.LazySpecifierExpression && d instanceof Method) {
-                    sie.addError("functions without parameters must be specified using =");
-                }
+            if (d instanceof Value && 
+                    rhs instanceof Tree.LazySpecifierExpression) {
+                ((Value) d).setTransient(true);
+            }
+            
+            ProducedType t = lhs.getTypeModel();
+            if (lhs==me && d instanceof Method) {
+                //if the declaration of the method has
+                //defaulted parameters, we should ignore
+                //that when determining if the RHS is
+                //an acceptable implementation of the
+                //method
+                //TODO: this is a pretty nasty way to
+                //      handle the problem
+                t = eraseDefaultedParameters(t);
+            }
+            if (!isTypeUnknown(t)) {
+                checkType(t, d, rhs, 2100);
+            }
+        }
+        
+        if (lhs instanceof Tree.ParameterizedExpression) {
+            if (!(rhs instanceof Tree.LazySpecifierExpression)) {
+                rhs.addError("functions with parameters must be specified using =>");
             }
         }
         else {
-            me.addError("illegal specification statement: only a function or value may be specified");
+            if (rhs instanceof Tree.LazySpecifierExpression && d instanceof Method) {
+                rhs.addError("functions without parameters must be specified using =");
+            }
         }
     }
     
@@ -870,29 +876,38 @@ public class ExpressionVisitor extends Visitor {
     private void refineValue(Tree.SpecifierStatement that) {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
-        ClassOrInterface ci = (ClassOrInterface) value.getContainer();
-        ProducedReference refinedProducedReference = 
-                getRefinedMember(refinedValue, ci);
-        value.setType(refinedProducedReference.getType());
+        ClassOrInterface ci = 
+                (ClassOrInterface) value.getContainer();
+        Declaration root = refinedValue.getRefinedDeclaration();
+        List<Declaration> interveningRefinements = 
+                getInterveningRefinements(value.getName(), 
+                        null, root, ci, 
+                        (TypeDeclaration) root.getContainer());
+        accountForIntermediateRefinements(that, 
+                refinedValue, value, ci, 
+                interveningRefinements);
     }
 
     private void refineMethod(Tree.SpecifierStatement that) {
         Method refinedMethod = (Method) that.getRefined();
         Method method = (Method) that.getDeclaration();
-        ClassOrInterface ci = (ClassOrInterface) method.getContainer();
+        ClassOrInterface ci = 
+                (ClassOrInterface) method.getContainer();
         Declaration root = refinedMethod.getRefinedDeclaration();
         method.setRefinedDeclaration(root);
-        if (getInterveningRefinements(method.getName(), 
-                getSignature(method), root, 
-                ci, (TypeDeclaration) root.getContainer())
-                .isEmpty()) {
+        List<Declaration> interveningRefinements = 
+                getInterveningRefinements(method.getName(), 
+                        getSignature(method), root, ci, 
+                        (TypeDeclaration) root.getContainer());
+        if (interveningRefinements.isEmpty()) {
             that.getBaseMemberExpression()
                 .addError("shortcut refinement does not exactly refine any overloaded inherited member");
         }
         else {
             ProducedReference refinedProducedReference = 
-                    getRefinedMember(refinedMethod, ci);
-            method.setType(refinedProducedReference.getType());
+                    accountForIntermediateRefinements(that, 
+                            refinedMethod, method, ci, 
+                            interveningRefinements);
             List<Tree.ParameterList> parameterLists;
             Tree.Term me = that.getBaseMemberExpression();
             if (me instanceof Tree.ParameterizedExpression) {
@@ -953,6 +968,40 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private ProducedReference accountForIntermediateRefinements(
+            Tree.SpecifierStatement that, 
+            MethodOrValue refinedMethodOrValue, MethodOrValue methodOrValue,
+            ClassOrInterface ci, List<Declaration> interveningRefinements) {
+        Tree.SpecifierExpression rhs = that.getSpecifierExpression();
+        ProducedReference refinedProducedReference = 
+                getRefinedMember(refinedMethodOrValue, ci);
+        List<ProducedType> refinedTypes = 
+                new ArrayList<ProducedType>();
+        ProducedType type = refinedProducedReference.getType();
+        addToIntersection(refinedTypes, type, unit);
+        for (Declaration refinement: interveningRefinements) {
+            if (refinement instanceof MethodOrValue && 
+                    !refinement.equals(refinedMethodOrValue)) {
+                MethodOrValue rmv = (MethodOrValue) refinement;
+                ProducedType t = getRefinedMember(rmv, ci).getType();
+                if (rhs!=null && !isTypeUnknown(t)) {
+                    checkType(t, refinement, rhs, 2100);
+                }
+                addToIntersection(refinedTypes, t, unit);
+                if (!refinement.isDefault() && !refinement.isFormal()) {
+                    that.getBaseMemberExpression()
+                        .addError("shortcut refinement refines non-formal, non-default member: '" +
+                                refinement.getName() + "' of '" +
+                                ((Declaration) refinement.getContainer()).getName(unit));
+                }
+            }
+        }        
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(refinedTypes);
+        methodOrValue.setType(it.canonicalize().getType());
+        return refinedProducedReference;
+    }
     
     @Override public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
@@ -1000,14 +1049,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkType(ProducedType declaredType, String name,
+    private void checkType(ProducedType declaredType, Declaration dec,
             Tree.SpecifierOrInitializerExpression sie, int code) {
         if (sie!=null && sie.getExpression()!=null) {
             ProducedType t = sie.getExpression().getTypeModel();
             if (!isTypeUnknown(t)) {
+                String name = "'" + dec.getName(unit) + "'";
+                if (dec.isClassOrInterfaceMember()) {
+                    name += " of '" + ((Declaration) dec.getContainer()).getName(unit) + "'";
+                }
                 checkAssignable(t, declaredType, sie, 
-                        "specified expression must be assignable to declared type of '" + 
-                                name + "'",
+                        "specified expression must be assignable to declared type of " + 
+                                name,
                         code);
             }
         }
@@ -1142,7 +1195,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = type.getTypeModel();
                 if (!isTypeUnknown(t)) {
                     checkType(t, 
-                            that.getDeclarationModel().getName(), 
+                            that.getDeclarationModel(), 
                             se, 2100);
                 }
             }
@@ -2660,7 +2713,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType inferTypeArg(TypeParameter tp, 
-            ProducedType paramType,ProducedType argType, 
+            ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited) {
         return inferTypeArg(tp, tp, paramType, argType, 
@@ -2669,7 +2722,7 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType inferTypeArg(TypeParameter tp,
             TypeParameter tp0,
-            ProducedType paramType,ProducedType argType, 
+            ProducedType paramType, ProducedType argType, 
             boolean covariant, boolean contravariant,
             List<TypeParameter> visited) {
         if (paramType!=null && argType!=null) {
@@ -2746,7 +2799,8 @@ public class ExpressionVisitor extends Visitor {
                     for (ProducedType act: argType.getDeclaration().getCaseTypes()) {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
-                        if (act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
+                        if (!act.containsDeclaration(tp) && //in a recursive generic function, T can get assigned to T
+                                act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
                             pt = pt.shallowMinus(act);
                             apt = apt.shallowMinus(act);
                         }
@@ -2851,7 +2905,7 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
     }
-
+    
     private void inferTypeArg(TypeParameter tp, 
             ProducedType paramType, ProducedType supertype, 
             boolean covariant, boolean contravariant,
@@ -2957,17 +3011,20 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitIndirectInvocation(Tree.InvocationExpression that) {
         
-        if (that.getNamedArgumentList()!=null) {
-            that.addError("named arguments not supported for indirect invocations");
-        }
-        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if (pal==null) {
-            return;
-        }
-        
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         if (!isTypeUnknown(pt)) {
+            
+            if (that.getNamedArgumentList()!=null) {
+                that.addError("named arguments not supported for indirect invocations");
+                return;
+            }
+            
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            if (pal==null) {
+                return;
+            }
+            
             if (checkCallable(pt, p, "invoked expression must be callable")) {
                 List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
                         .getTypeArgumentList();

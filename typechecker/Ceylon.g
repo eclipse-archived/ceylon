@@ -1165,8 +1165,12 @@ expressionOrSpecificationStatement returns [Statement statement]
             es.setExpression($expression.expression);
         if ($expression.expression.getTerm() instanceof AssignOp) {
             AssignOp a = (AssignOp) $expression.expression.getTerm();
-            if (a.getLeftTerm() instanceof BaseMemberExpression ||
-                a.getLeftTerm() instanceof ParameterizedExpression) {
+            Term lt = a.getLeftTerm();
+            if (lt instanceof BaseMemberExpression ||
+                lt instanceof ParameterizedExpression ||
+                lt instanceof QualifiedMemberExpression &&
+                    ((QualifiedMemberExpression) lt).getPrimary() instanceof This &&
+                    ((QualifiedMemberExpression) lt).getMemberOperator() instanceof MemberOp) {
                 Expression e = new Expression(null);
                 e.setTerm(a.getRightTerm());
                 SpecifierExpression se = new SpecifierExpression(null);
