@@ -19,8 +19,6 @@
  */
 @noanno
 class CtorCaptureInit {
-    //Integer n;//ctor local
-    //Integer m;//captured
     String name = "Trompon";
     shared String sharedName = "Trompon";
     Integer init;
@@ -32,6 +30,8 @@ class CtorCaptureInit {
     
     String captured;
     String capturedByCtor;
+    variable Integer local = 0;
+    local+=2; 
     new WithAttributes() {
         count = 0;
         sharedCount = 0;

@@ -5,21 +5,19 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
     ClassMemberClassCtor() {
     }
     
-    public class Member$Other {
+    public static final class Member$Other {
         
-        public Member$Other(final long i) {
-            this.i = i;
+        private Member$Other() {
         }
-        public final long i;
     }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other Member$Other = null;
     
     class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         public Member(final long i) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $args$) {
-            final long i = $args$.i;
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $name$, final long i) {
         }
         
         @.java.lang.Override
@@ -28,21 +26,19 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    public class SharedMember$Other {
+    public static final class SharedMember$Other {
         
-        public SharedMember$Other(final long i) {
-            this.i = i;
+        private SharedMember$Other() {
         }
-        public final long i;
     }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other SharedMember$Other = null;
     
     public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         public SharedMember(final long i) {
         }
         
-        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $args$) {
-            final long i = $args$.i;
+        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i) {
         }
         
         @.java.lang.Override
@@ -69,14 +65,21 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(arg$1$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(i));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, i);
         (
             let
             {
                 long arg$2$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(arg$2$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member($ceylontmp$3);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, arg$2$0);
+        );
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(i);
+        (
+            let
+            {
+                long arg$3$0 = 1L;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(arg$3$0);
         );
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(i);
         (
@@ -86,126 +89,88 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(arg$4$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(i);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, i);
         (
             let
             {
                 long arg$5$0 = 1L;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(arg$5$0);
-        );
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(i));
-        (
-            let
-            {
-                long arg$6$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $ceylontmp$7 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(arg$6$0);
-            }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember($ceylontmp$7);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, arg$5$0);
         );
         this.new Member(i);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$8$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$6$callable$ = this;
+                long arg$6$0 = 1L;
+            }
+            returning arg$6$callable$.new Member(arg$6$0);
+        );
+        this.new Member(i);
+        (
+            let
+            {
+                long arg$7$0 = 1L;
+            }
+            returning this.new Member(arg$7$0);
+        );
+        this.new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, i);
+        (
+            let
+            {
                 long arg$8$0 = 1L;
             }
-            returning arg$8$callable$.new Member(arg$8$0);
+            returning this.new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, arg$8$0);
         );
-        this.new Member(i);
+        this.new SharedMember(i);
         (
             let
             {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$9$callable$ = this;
                 long arg$9$0 = 1L;
             }
-            returning this.new Member(arg$9$0);
+            returning arg$9$callable$.new SharedMember(arg$9$0);
         );
-        this.new Member(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(i));
+        this.new SharedMember(i);
         (
             let
             {
                 long arg$10$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $ceylontmp$11 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(arg$10$0);
             }
-            returning this.new Member($ceylontmp$11);
+            returning this.new SharedMember(arg$10$0);
         );
-        this.new SharedMember(i);
+        this.new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, i);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$12$callable$ = this;
+                long arg$11$0 = 1L;
+            }
+            returning this.new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, arg$11$0);
+        );
+        other.new Member(i);
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$12$callable$ = other;
                 long arg$12$0 = 1L;
             }
-            returning arg$12$callable$.new SharedMember(arg$12$0);
+            returning arg$12$callable$.new Member(arg$12$0);
         );
-        this.new SharedMember(i);
+        other.new Member(i);
         (
             let
             {
                 long arg$13$0 = 1L;
             }
-            returning this.new SharedMember(arg$13$0);
+            returning other.new Member(arg$13$0);
         );
-        this.new SharedMember(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(i));
+        other.new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, i);
         (
             let
             {
                 long arg$14$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $ceylontmp$15 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(arg$14$0);
             }
-            returning this.new SharedMember($ceylontmp$15);
-        );
-        other.new Member(i);
-        (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$16$callable$ = other;
-                long arg$16$0 = 1L;
-            }
-            returning arg$16$callable$.new Member(arg$16$0);
-        );
-        other.new Member(i);
-        (
-            let
-            {
-                long arg$17$0 = 1L;
-            }
-            returning other.new Member(arg$17$0);
-        );
-        other.new Member(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(i));
-        (
-            let
-            {
-                long arg$18$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other $ceylontmp$19 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other(arg$18$0);
-            }
-            returning other.new Member($ceylontmp$19);
-        );
-        other.new SharedMember(i);
-        (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$20$callable$ = other;
-                long arg$20$0 = 1L;
-            }
-            returning arg$20$callable$.new SharedMember(arg$20$0);
-        );
-        other.new SharedMember(i);
-        (
-            let
-            {
-                long arg$21$0 = 1L;
-            }
-            returning other.new SharedMember(arg$21$0);
-        );
-        other.new SharedMember(new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(i));
-        (
-            let
-            {
-                long arg$22$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $ceylontmp$23 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other(arg$22$0);
-            }
-            returning other.new SharedMember($ceylontmp$23);
+            returning other.new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$Other, arg$14$0);
         );
     }
     
@@ -219,4 +184,43 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class useClassMemberClassCtor_ {
+    
+    private useClassMemberClassCtor_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void useClassMemberClassCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::ClassMemberClassCtor")
+    final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor other) {
+        final long i = 0L;
+        other.new SharedMember(i);
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$15$callable$ = other;
+                long arg$15$0 = 1L;
+            }
+            returning arg$15$callable$.new SharedMember(arg$15$0);
+        );
+        other.new SharedMember(i);
+        (
+            let
+            {
+                long arg$16$0 = 1L;
+            }
+            returning other.new SharedMember(arg$16$0);
+        );
+        other.new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, i);
+        (
+            let
+            {
+                long arg$17$0 = 1L;
+            }
+            returning other.new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other, arg$17$0);
+        );
+    }
 }

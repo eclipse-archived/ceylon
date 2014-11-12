@@ -65,12 +65,15 @@ class ClassMemberClassCtor() {
         other.Member.Member{i=1;};
         other.Member.Other(i);
         other.Member.Other{i=1;};
-        other.SharedMember(i);
-        other.SharedMember{i=1;};
-        other.SharedMember.SharedMember(i);
-        other.SharedMember.SharedMember{i=1;};
-        other.SharedMember.Other(i);
-        other.SharedMember.Other{i=1;};
     }
+}
+void useClassMemberClassCtor(ClassMemberClassCtor other) {
+    value i = 0;
+    other.SharedMember(i);
+    other.SharedMember{i=1;};
+    other.SharedMember.SharedMember(i);
+    other.SharedMember.SharedMember{i=1;};
+    other.SharedMember.Other(i);
+    other.SharedMember.Other{i=1;};
 }
 

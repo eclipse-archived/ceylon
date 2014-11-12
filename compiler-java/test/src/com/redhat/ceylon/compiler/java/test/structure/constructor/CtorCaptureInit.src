@@ -39,14 +39,15 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.String getCaptured$priv$() {
         return captured;
     }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.WithAttributes WithAttributes = null;
     
-    private static class WithAttributes {
+    private static final class WithAttributes {
         
         private WithAttributes() {
         }
     }
     
-    private CtorCaptureInit(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.WithAttributes $args$) {
+    private CtorCaptureInit(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.WithAttributes $name$) {
         final .java.lang.String name = "Trompon";
         this.sharedName = "Trompon";
         .ceylon.language.print_.print(.ceylon.language.String.instance(name));

@@ -43,11 +43,13 @@ public class ConstructorTest extends CompilerTest {
     
     @Test
     public void testCtorClassMemberClassCtor(){
+        // This need default parameters to be a good test
         compareWithJavaSource("constructor/ClassMemberClassCtor");
     }
     
     @Test
     public void testCtorInterfaceMemberClassCtor(){
+        // This need default parameters to be a good test
         compareWithJavaSource("constructor/InterfaceMemberClassCtor");
     }
     /*@Test
@@ -59,4 +61,9 @@ public class ConstructorTest extends CompilerTest {
         compareWithJavaSource("constructor/InterfaceRefinedMemberClassCtor");
     }
     */
+    
+    @Test
+    public void testCtorLocalClassCtor(){
+        compareWithJavaSource("constructor/LocalClassCtor");
+    }
 }

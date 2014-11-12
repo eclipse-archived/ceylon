@@ -22,13 +22,41 @@ interface InterfaceMemberClassCtor {
     class Member {
         shared new Member(Integer i) {
         }
-        new Other(Integer i) {
+        shared new Other(Integer i) {
         }
     }
     shared class SharedMember {
         shared new SharedMember(Integer i) {
         }
-        new Other(Integer i) {
+        shared new Other(Integer i) {
         }
     }
+    void use(InterfaceMemberClassCtor other) {
+        /*Member(0);
+        Member.Member(0);
+        Member.Other(0);*/
+        SharedMember(0);
+        SharedMember.SharedMember(0);
+        /*SharedMember.Other(0);
+         
+        this.Member(0);
+        this.Member.Member(0);
+        this.Member.Other(0);*/
+        this.SharedMember(0);
+        /*this.SharedMember.SharedMember(0);
+        this.SharedMember.Other(0);
+        
+        other.Member(0);
+        other.Member.Member(0);
+        other.Member.Other(0);
+        other.SharedMember(0);
+        other.SharedMember.SharedMember(0);
+        other.SharedMember.Other(0);*/
+    }
+}/*
+void useInterfaceMemberClassCtor(InterfaceMemberClassCtor other) {
+    other.SharedMember(0);
+    other.SharedMember.SharedMember(0);
+    other.SharedMember.Other(0);
 }
+*/

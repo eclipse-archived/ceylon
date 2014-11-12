@@ -1,5 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        constructors = true,
+        identifiable = false,
+        basic = false,
+        extendsType = "")
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -13,49 +18,47 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("UnaryCtor")
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s1) {
         s = s1;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger FromInteger = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-    @.com.redhat.ceylon.compiler.java.metadata.ParameterList
-    private static class FromInteger {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final class FromInteger {
         
-        private FromInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-        final long i) {
-            this.i = i;
+        private FromInteger() {
         }
-        public final long i;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("FromInteger")
     private UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $args$) {
-        final long i = $args$.i;
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
         s = .ceylon.language.Integer.toString(i);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger SharedFromInteger = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-    @.com.redhat.ceylon.compiler.java.metadata.ParameterList
-    public static class SharedFromInteger {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class SharedFromInteger {
         
-        public SharedFromInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-        final long i) {
-            this.i = i;
+        private SharedFromInteger() {
         }
-        public final long i;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("SharedFromInteger")
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $args$) {
-        final long i = $args$.i;
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.SharedFromInteger $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
         s = .ceylon.language.Integer.toString(i);
     }
     
@@ -79,17 +82,15 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             let
             {
                 long arg$2$0 = 0L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger(arg$2$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$3);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$2$0);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o4 = (
             let
             {
-                long arg$4$0 = 0L;
-                .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger $ceylontmp$5 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger(arg$4$0);
+                long arg$3$0 = 0L;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor($ceylontmp$5);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.FromInteger, arg$3$0);
         );
     }
     

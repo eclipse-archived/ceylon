@@ -1,37 +1,41 @@
 @noanno
-class ChainingInit() {
+class ChainingInit<T>(Integer i) {
     
 }
 @noanno
-@nomain
-class ChainingCtor extends ChainingInit {
-    shared new ChainingCtor() extends ChainingInit() {
+class ChainingCtor<T> extends ChainingInit<T> {
+    shared new ChainingCtor(Integer i) extends ChainingInit<T>(i) {
         
     }
-    shared new NonDefault() extends ChainingInit() {
+    shared new NonDefault(Integer i) extends ChainingInit<T>(i) {
         
     }
 }
-
 @noanno
-class ChainingCtorInit1() extends ChainingCtor() {
+class ChainingCtorCtor2<T> extends ChainingCtor<T> {
+    shared new ChainingCtorCtor2(Integer i) extends ChainingCtor<T>.ChainingCtor(i) {
+    }
+    new NonDefault(Integer i) extends ChainingCtor<T>.NonDefault(i) {
+    }
+    
+}
+@noanno
+class ChainingCtorInit1<T>(Integer i) extends ChainingCtor<T>(i) {
 
 }
-//@noanno
-//class ChainingCtorInit2() extends ChainingCtor.ChainingCtor() {
-//    
-//}
-//@noanno
-//class ChainingCtorInit3() extends ChainingCtor.NonDefault() {
-//    
-//}
-
 @noanno
-@nomain
-class ChainingCtorCtor extends ChainingCtor {
-    shared new ChainingCtorCtor() extends super.ChainingCtor() {
+class ChainingCtorInit2<T>(Integer i) extends ChainingCtor<T>.ChainingCtor(i) {
+    
+}
+@noanno
+class ChainingCtorInit3<T>(Integer i) extends ChainingCtor<T>.NonDefault(i) {
+    
+}
+@noanno
+class ChainingCtorCtor<T> extends ChainingCtor<T> {
+    shared new ChainingCtorCtor(Integer i) extends super.ChainingCtor(i) {
     }
-    new NonDefault() extends super.NonDefault() {
+    new NonDefault(Integer i) extends super.NonDefault(i) {
     }
     
 }

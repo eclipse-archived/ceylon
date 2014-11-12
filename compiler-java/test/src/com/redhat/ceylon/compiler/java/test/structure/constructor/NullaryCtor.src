@@ -1,40 +1,49 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        constructors = true,
+        identifiable = false,
+        basic = false,
+        extendsType = "")
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("NullaryConstructors")
     public NullaryConstructors() {
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo Foo = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-    @.com.redhat.ceylon.compiler.java.metadata.ParameterList
-    private static class Foo {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final class Foo {
         
         private Foo() {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
     private NullaryConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $args$) {
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo $name$) {
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar Bar = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-    @.com.redhat.ceylon.compiler.java.metadata.ParameterList
-    public static class Bar {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class Bar {
         
-        public Bar() {
+        private Bar() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Bar")
     public NullaryConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar $args$) {
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Bar $name$) {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -43,8 +52,8 @@ public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.run
     public final void use() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo());
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo());
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo);
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.Foo);
     }
     
     @.java.lang.Override
