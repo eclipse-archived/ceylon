@@ -1662,7 +1662,10 @@ else {
                     
             <synopsis>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</synopsis>
             
-            <synopsis>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</synopsis>
+            <synopsis>ExistsOrNonemptyCondition: "!"? ("exists" | "nonempty") (Variable Specifier | MemberName)</synopsis>
+            
+            <para>A <emphasis>negated condition</emphasis> is one which starts with 
+            <literal>!</literal>.</para>
             
             <comment><para>TODO: are we going to allow <literal>is Type this</literal> and 
             <literal>is Type outer</literal> to narrow the type of a self reference?</para></comment>
@@ -1676,22 +1679,21 @@ else {
                     <literal>Nothing</literal>, except</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of a <emphasis>negated assignability condition</emphasis> with 
-                    <literal>!is</literal>, a type whose intersection with the specified type is not 
-                    exactly <literal>Nothing</literal>, and which is not a supertype of the specified
-                    type, or</para>
+                    <para>in the case of a negated assignability condition, a type whose intersection 
+                    with the specified type is not exactly <literal>Nothing</literal>, and which is 
+                    not a supertype of the specified type, or</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of an exists condition, a type whose intersection with 
-                    <literal>Null</literal> is not exactly <literal>Nothing</literal> and whose 
-                    intersection with <literal>Object</literal> is not exactly <literal>Nothing</literal>, 
-                    or</para>
+                    <para>in the case of an existence condition or negated existence condition, a type 
+                    whose intersection with <literal>Null</literal> is not exactly 
+                    <literal>Nothing</literal> and whose intersection with <literal>Object</literal> 
+                    is not exactly <literal>Nothing</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of a nonemptiness condition, a subtype of <literal>Anything[]?</literal> 
-                    whose intersection with <literal>[]</literal> is not exactly <literal>Nothing</literal>, 
-                    and whose intersection with <literal>[Nothing+]</literal> is not exactly 
-                    <literal>Nothing</literal>.</para>
+                    <para>in the case of a nonemptiness condition or a negated nonemptiness condition, 
+                    a subtype of <literal>Anything[]?</literal> whose intersection with <literal>[]</literal> 
+                    is not exactly <literal>Nothing</literal>, and whose intersection with 
+                    <literal>[Nothing+]</literal> is not exactly <literal>Nothing</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1709,25 +1711,34 @@ else {
                     and</para>
                 </listitem>
                 <listitem>
+                    <para><literal>!exists x</literal> is equivalent to <literal>is Null x</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
                     where <literal>x</literal> is an expression whose type has the principal 
-                    instantiation <literal>E[]?</literal>.</para>
+                    instantiation <literal>E[]?</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>!nonempty x</literal> is equivalent to <literal>is [] x</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>For an <literal>is</literal> assignability condition:</para>
+            <para>For an <literal>is</literal> assignability condition with a conditional expression 
+            of type <literal>T</literal> and specified type <literal>X</literal>:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by the 
-                    compiler as having type <literal>T&amp;X</literal> where the conditional expression 
-                    is of type <literal>T</literal> and <literal>X</literal> is the specified type, 
-                    inside the block that immediately follows the condition, unless</para>
+                    <para>if the condition contains a value reference, the value will be treated by 
+                    the compiler as having type <literal>T&amp;X</literal> inside the block that 
+                    immediately follows the condition, and as having type <literal>T~X</literal> 
+                    inside the following <literal>else</literal> block if any, unless</para>
                 </listitem>
                 <listitem>
-                    <para>it is a <emphasis>negated assignability condition</emphasis> with 
-                    <literal>!is</literal>, in which case the value will be treated by the compiler as 
-                    having type <literal>T~X</literal>.</para>
+                    <para>it is a <literal>!is</literal> negated assignability condition, in which 
+                    case the value will be treated by the compiler as having type <literal>T~X</literal> 
+                    inside the block that immediately follows the condition, and as having type 
+                    <literal>T&amp;X</literal> inside the following <literal>else</literal> block 
+                    if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1746,9 +1757,9 @@ else {
                     in the intersection,</para>
                 </listitem>
                 <listitem>
-                    <para>if <literal>T</literal> is a union type, then <literal>T~X</literal> is the
-                    union of all <literal>U~X</literal> for every type <literal>U</literal> in the
-                    union,</para>
+                    <para>if <literal>T</literal> is a union type, then <literal>T~X</literal> is 
+                    the union of all <literal>U~X</literal> for every type <literal>U</literal> in 
+                    the union,</para>
                 </listitem>
                 <listitem>
                     <para>if <literal>T</literal> is an enumerated type or an instantiation of a 
@@ -1770,8 +1781,8 @@ if (is Usable tx) { ... }</programlisting>
             
             <programlisting>if (is Transaction&amp;Usable tx = tx) { ... }</programlisting>
             
-            <para>Where the <literal>tx</literal> declared by the condition hides the outer declaration
-            of <literal>tx</literal> inside the block that follows.</para>
+            <para>Where the <literal>tx</literal> declared by the condition hides the outer 
+            declaration of <literal>tx</literal> inside the block that follows.</para>
             
             <para>For an <literal>exists</literal> existence condition:</para>
             
@@ -1783,10 +1794,27 @@ if (is Usable tx) { ... }</programlisting>
                     <literal>Object</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by 
-                    the compiler as having type <literal>T&amp;Object</literal> inside the block that 
-                    immediately follows the condition, where the conditional expression is of type 
-                    <literal>T</literal>.</para>
+                    <para>if the condition contains a value reference, the value will be treated 
+                    by the compiler as having type <literal>T&amp;Object</literal> inside the block 
+                    that immediately follows the condition, where the conditional expression is of 
+                    type <literal>T</literal>, and as having the type <literal>Null</literal> inside 
+                    the following <literal>else</literal> block if any.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For a <literal>!exists</literal> negated existence condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition declares a variable, the declared type of the variable, 
+                    if any, must be <literal>Null</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated 
+                    by the compiler as having type <literal>Null</literal> inside the block that 
+                    immediately follows the condition, and as having the type 
+                    <literal>T&amp;Object</literal> inside the following <literal>else</literal> 
+                    block if any, where the conditional expression is of type <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1794,18 +1822,36 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable 
-                    must be a supertype of <literal>T&amp;[E+]</literal>, where the specifier 
-                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
-                    principal instantiation <literal>E[]?</literal>, and must be a subtype of
-                    <literal>[Anything+]</literal>, or</para>
+                    <para>if the condition declares a variable, the declared type of the variable,
+                    if any, must be a supertype of <literal>T&amp;[E+]</literal>, where the 
+                    specifier expression is of type <literal>T</literal> and <literal>T</literal> 
+                    has the principal instantiation <literal>E[]?</literal>, and must be a subtype 
+                    of <literal>[Anything+]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated by 
                     the compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
                     immediately follows the condition, where the conditional expression is of type 
-                    <literal>T</literal> and <literal>T</literal> has the principal instantiation
-                    <literal>E[]?</literal>.</para>
+                    <literal>T</literal> and <literal>T</literal> has the principal instantiation 
+                    <literal>E[]?</literal>, and as having the type <literal>[]</literal> inside 
+                    the following <literal>else</literal> block if any.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For a <literal>!nonempty</literal> negated nonemptiness condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition declares a variable, the declared type of the variable, 
+                    if any, must be <literal>[]</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated by 
+                    the compiler as having type <literal>[]</literal> inside the block that 
+                    immediately follows the condition, and as having the type <literal>T&amp;[E+]</literal>
+                    inside the following <literal>else</literal> block if any, where the conditional 
+                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
+                    principal instantiation <literal>E[]?</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1821,19 +1867,18 @@ if (is Usable tx) { ... }</programlisting>
             declaration of <literal>name</literal> inside the block that follows.</para>
         
             <para>As a special exception to the above, if a condition occurs in a <literal>dynamic</literal> 
-            block, and conditional expression has no type, and the condition contains a value reference, 
+            block, and the conditional expression has no type, and the condition contains a value reference, 
             then:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>the value will be treated by the compiler as having type <literal>X</literal> 
+                    <para>if the condition is an assignability condition, and the condition is not
+                    negated, the value will be treated by the compiler as having type <literal>X</literal> 
                     where <literal>X</literal> is the specified type, inside the block that immediately 
-                    follows the condition, unless</para>
+                    follows the condition, or, otherwise</para>
                 </listitem>
                 <listitem>
-                    <para>it is a negated assignability condition <literal>!is</literal>, an existence 
-                    condition <literal>exists</literal>, or a nonempty condition <literal>nonempty</literal>, 
-                    in which case the value will be treated by the compiler as having no type.</para>
+                    <para>the value will be treated by the compiler as having no type.</para>
                 </listitem>
             </itemizedlist>
             
