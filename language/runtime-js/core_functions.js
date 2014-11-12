@@ -442,8 +442,7 @@ function ut$(a,b){
         return a;
       }
     } else {
-      var na=[];
-      na.push.apply(na,a.l);
+      var na=a.l.slice(0);
       na.push(b);
       return {t:'u',l:na};
     }
@@ -456,8 +455,7 @@ function ut$(a,b){
         return b;
       }
     } else {
-      var na=[];
-      na.push.apply(na,b.l);
+      var na=b.l.slice(0);
       na.push(a);
       return {t:'u',l:na};
     }
@@ -483,8 +481,7 @@ function it$(a,b){
         return a;
       }
     } else {
-      var na=[];
-      na.push.apply(na,a.l);
+      var na=a.l.slice(0);
       na.push(b);
       return {t:'i',l:na};
     }
@@ -497,8 +494,7 @@ function it$(a,b){
         return b;
       }
     } else {
-      var na=[];
-      na.push.apply(na,b.l);
+      var na=b.l.slice(0);
       na.push(a);
       return {t:'i',l:na};
     }
