@@ -142,7 +142,7 @@ public class SerializationHelper {
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(that, et);
-                gen.out(gen.getNames().name(et), ".deser$$.call(this,", dc, ",", ni, ");");
+                gen.out(gen.getNames().name(et), ".deser$$(", dc, ",", ni, ");");
                 gen.endLine();
                 create = false;
             } else {
@@ -194,7 +194,9 @@ public class SerializationHelper {
             gen.out("});");
             gen.endLine();
         }
-        gen.out("return ", ni, ";");
+        if (!d.isAbstract()) {
+            gen.out("return ", ni, ";");
+        }
         gen.endBlockNewLine();
     }
 
