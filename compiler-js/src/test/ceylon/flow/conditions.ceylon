@@ -1,5 +1,33 @@
 import check {...}
 
+shared void testNarrowElse(String|Integer x) {
+  if (is Integer x) {
+    check(x > 0, "#448.1");
+  } else {
+    check(x.uppercased=="HEY", "#448.2");
+  }
+  if (!is Integer x) {
+    check(x.reversed=="yeh", "#448.3");
+  } else {
+    check(x%2==0, "#448.4");
+  }
+}
+shared void testNotExists(String? x) {
+  if (!exists x) {
+    String? pn=x;
+    check((pn else 1) == 1, "#448.5");
+  } else {
+    check(x.size == 3, "#448.6");
+  }
+}
+shared void testNotNonempty([Integer*] x) {
+  if (!nonempty x) {
+    check(x.size==0, "#448.7");
+  } else {
+    check(x.size==3, "#448.8");
+  }
+}
+
 shared void testConditions() {
     Boolean a = true;
     Boolean b = false;
@@ -69,4 +97,11 @@ shared void testConditions() {
     if (exists c, nonempty seq2, exists zz5=c[0]) {
         check(zz5=='X',"exists,nonempty,boolean");
     } else { fail("exists,nonempty,boolean"); }
+    //448
+    testNarrowElse("hey");
+    testNarrowElse(2);
+    testNotExists(null);
+    testNotExists("hey");
+    testNotNonempty([]);
+    testNotNonempty([1,2,3]);
 }
