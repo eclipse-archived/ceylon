@@ -4039,7 +4039,8 @@ public class ClassTransformer extends AbstractTransformer {
         protected final void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder) {
             super.appendImplicitParameters(typeParameterList, overloadBuilder);
-            if (constructor != null) {
+            if (constructor != null
+                    && !Decl.isDefaultConstructor(constructor)) {
                 overloadBuilder.parameter(makeConstructorNameParameter(constructor));
             }
         }
@@ -4079,7 +4080,8 @@ public class ClassTransformer extends AbstractTransformer {
         protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
             appendImplicitArgumentsDpm(typeParameterList, overloadBuilder, args);
-            if (constructor != null) {
+            if (constructor != null
+                    && !Decl.isDefaultConstructor(constructor)) {
                 args.append(naming.makeUnquotedIdent(Unfix.$name$));
             }
         }

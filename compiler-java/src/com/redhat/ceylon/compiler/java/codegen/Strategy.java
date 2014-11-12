@@ -138,6 +138,9 @@ class Strategy {
                 && ((MethodOrValue)elem).isParameter()) {
             elem = (Element) ((MethodOrValue)elem).getContainer();
         }
+        if (elem instanceof Constructor) {
+            elem = (Class)elem.getContainer();
+        }
         // Only inner classes have their default value methods on their outer
         return (elem instanceof Class) 
                 && !((Class)elem).isToplevel()

@@ -934,7 +934,12 @@ public class Naming implements LocalId {
                 return prefixName(Prefix.$default$, param.getName());
             return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof Constructor) {
-            return compoundName(decl.getName(), param.getName());
+            Constructor constructor = (Constructor)decl;
+            if (Decl.isDefaultConstructor(constructor)) {
+                return compoundName(decl.getName(), param.getName());
+            } else {
+                return compoundName(Decl.getConstructedClass(constructor).getName(), decl.getName(), param.getName());
+            }
         } else if (decl instanceof ClassOrInterface ) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
                 return prefixName(Prefix.$default$, param.getName());
