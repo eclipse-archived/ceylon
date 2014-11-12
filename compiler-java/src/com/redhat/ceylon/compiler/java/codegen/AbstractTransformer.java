@@ -2803,20 +2803,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     List<JCAnnotation> makeAtClass(ProducedType thisType, ProducedType extendedType, boolean hasConstructors) {
-        List<JCExpression> attributes = List.nil();
-        JCExpression extendsValue = null;
-        if (extendedType == null) {
-            extendsValue = make().Literal("");
-        } else if (!extendedType.isExactly(typeFact.getBasicDeclaration().getType())){
-            extendsValue = make().Literal(serialiseTypeSignature(extendedType));
-        }
-        if (extendsValue != null) {
-            JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), extendsValue);
-            attributes = attributes.prepend(extendsAttribute);
-        }
+        
         boolean isBasic = true;
         boolean isIdentifiable = true;
-        if(extendedType == null){
+        boolean isAnything = extendedType == null 
+                && thisType != null 
+                && thisType.isExactly(typeFact().getAnythingDeclaration().getType());
+        if(isAnything){
             // special for Anything
             isBasic = isIdentifiable = false;
         }else if(thisType != null){
@@ -2825,6 +2818,20 @@ public abstract class AbstractTransformer implements Transformation {
             if(!isBasic)
                 isIdentifiable = thisType.getSupertype(typeFact.getIdentifiableDeclaration()) != null;
         }
+        
+        String extendedTypeSig = null;
+        if (isAnything) {
+            extendedTypeSig = "";
+        } else if (extendedType != null && !extendedType.isExactly(typeFact.getBasicDeclaration().getType())){
+            extendedTypeSig = serialiseTypeSignature(extendedType);
+        }
+        
+        List<JCExpression> attributes = List.nil();
+        if (extendedTypeSig != null) {
+            JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), make().Literal(extendedTypeSig));
+            attributes = attributes.prepend(extendsAttribute);
+        }
+        
         if (!isBasic) {
             JCExpression basicAttribute = make().Assign(naming.makeUnquotedIdent("basic"), makeBoolean(false));
             attributes = attributes.prepend(basicAttribute);
