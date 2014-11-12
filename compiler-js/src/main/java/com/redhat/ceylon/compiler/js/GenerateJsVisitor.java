@@ -863,6 +863,9 @@ public class GenerateJsVisitor extends Visitor
         }
         out(targs.isEmpty()?"()":"($$targs$$)");
         beginBlock();
+        if (c.isMember()) {
+            initSelf(that);
+        }
         instantiateSelf(c);
         referenceOuter(c);
         
