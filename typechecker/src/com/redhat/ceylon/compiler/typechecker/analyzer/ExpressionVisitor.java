@@ -324,7 +324,7 @@ public class ExpressionVisitor extends Visitor {
                 knownType = unit.getType(unit.getAnythingDeclaration()); //or should we use unknown?
             }
             
-            ProducedType it = narrow(that, type, knownType);
+            ProducedType it = narrow(type, knownType, that.getNot());
             //check for disjointness
             if (it.getDeclaration() instanceof NothingType) {
                 if (that.getNot()) {
@@ -341,24 +341,24 @@ public class ExpressionVisitor extends Visitor {
             //do this *after* checking for disjointness!
             knownType=unit.denotableType(knownType);
             //now recompute the narrowed type!
-            it = narrow(that, type, knownType);
+            it = narrow(type, knownType, that.getNot());
             
             v.getType().setTypeModel(it);
             v.getDeclarationModel().setType(it);
         }
     }
     
-	private ProducedType narrow(Tree.IsCondition that, ProducedType type,
-            ProducedType knownType) {
+	private ProducedType narrow(ProducedType type,
+            ProducedType knownType, boolean not) {
 	    ProducedType it;
-	    if (that.getNot()) {
+	    if (not) {
 	        //a !is condition, narrow to complement
 	        it = unit.denotableType(knownType.minus(type));
 	    }
 	    else {
 	        //narrow to the intersection of the outer type 
 	        //and the type specified in the condition
-	        it = intersectionType(type, knownType, that.getUnit());
+	        it = intersectionType(type, knownType, unit);
 	    }
 	    return it;
     }
@@ -5920,26 +5920,26 @@ public class ExpressionVisitor extends Visitor {
                 if (conditionList!=null) {
                     Tree.Condition c = 
                             conditionList.getConditions().get(0);
-                    Tree.Variable variable = null;
-                    if (c instanceof Tree.ExistsOrNonemptyCondition) {
-                        variable = ((Tree.ExistsOrNonemptyCondition) c).getVariable();
+                    Tree.SpecifierExpression se = 
+                            var.getSpecifierExpression();
+                    if (c instanceof Tree.ExistsCondition) {
+                        Tree.ExistsCondition ec = 
+                                (Tree.ExistsCondition) c;
+                        inferDefiniteType(var, se, !ec.getNot());
+                    }
+                    else if (c instanceof Tree.NonemptyCondition) {
+                        Tree.NonemptyCondition ec = 
+                                (Tree.NonemptyCondition) c;
+                        inferNonemptyType(var, se, !ec.getNot());
                     }
                     else if (c instanceof Tree.IsCondition) {
-                        variable = ((Tree.IsCondition) c).getVariable();
-                    }
-                    if (variable!=null) {
-                        ProducedType vt = variable.getType().getTypeModel();
-                        Tree.SpecifierExpression sie = 
-                                variable.getSpecifierExpression();
-                        if (sie!=null && !isTypeUnknown(vt)) {
-                            Tree.Expression e = sie.getExpression();
-                            if (e!=null) {
-                                ProducedType et = e.getTypeModel();
-                                ProducedType complementType = et.minus(vt);
-                                var.getType().setTypeModel(complementType);
-                                var.getDeclarationModel().setType(complementType);
-                            }
-                        }
+                        Tree.IsCondition ic = (Tree.IsCondition) c;
+                        ProducedType t = 
+                                narrow(ic.getType().getTypeModel(), 
+                                        se.getExpression().getTypeModel(),
+                                        !ic.getNot());
+                        var.getType().setTypeModel(t);
+                        var.getDeclarationModel().setType(t);
                     }
                 }
             }
