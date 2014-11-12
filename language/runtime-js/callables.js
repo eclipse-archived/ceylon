@@ -84,7 +84,16 @@ function JsCallableList(value,$mpt) {
     };
 }
 JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
-
+function mplclist$(orig,clist,params,targs) {
+  return $JsCallable(function() {
+    var a=clist.apply(0,arguments);
+    if (!is$(a,{t:Sequential}))return mplclist$(orig,a,params,targs);
+    var b=Array(orig.length);
+    for (var i=0;i<b.length;i++)b[i]={o:orig[i].o,f:a.$_get(i)};
+    return JsCallableList(b);
+  },params,targs);
+}
+ex$.mplclist$=mplclist$;
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;
 ex$.$JsCallable=$JsCallable;
