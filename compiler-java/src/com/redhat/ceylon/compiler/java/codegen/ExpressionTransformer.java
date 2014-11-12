@@ -41,7 +41,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
-import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.IfCondList;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
@@ -71,9 +71,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -4854,49 +4852,49 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             @Override
             protected List<JCStatement> transformInnermost(Tree.Condition condition) {
-                Cond transformedCond = statementGen().transformCondition(condition);
+                Cond transformedCond = getConditionTransformer(condition);
                 // The innermost condition's test should be transformed before
                 // variable substitution
                 
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond);
-                return transformCommon(transformedCond,
+                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
+                return transformCommon(transformedCond.getVarTrans(),
                         test,
                         insideCheck,
                         resultVarName);
             }
             
             protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
-                Cond transformedCond = statementGen().transformCondition(condition);
+                Cond transformedCond = getConditionTransformer(condition);
                 JCExpression test = transformedCond.makeTest();
-                SyntheticName resultVarName = addVarSubs(transformedCond);
-                return transformCommon(transformedCond, test, transformList(rest), resultVarName);
+                SyntheticName resultVarName = addVarSubs(transformedCond.getVarTrans());
+                return transformCommon(transformedCond.getVarTrans(), test, transformList(rest), resultVarName);
             }
 
-            private SyntheticName addVarSubs(Cond transformedCond) {
-                if (transformedCond.hasResultDecl()) {
-                    Tree.Variable var = transformedCond.getVariable();
-                    SyntheticName resultVarName = naming.alias(transformedCond.getVariableName().getName());
+            private SyntheticName addVarSubs(VarTrans vartrans) {
+                if (vartrans.hasResultDecl()) {
+                    Tree.Variable var = vartrans.getVariable();
+                    SyntheticName resultVarName = naming.alias(vartrans.getVariableName().getName());
                     fieldSubst.add(naming.addVariableSubst(var.getDeclarationModel(), resultVarName.getName()));
                     return resultVarName;
                 }
                 return null;
             }
             
-            protected List<JCStatement> transformCommon(Cond transformedCond, 
+            protected List<JCStatement> transformCommon(VarTrans vartrans, 
                     JCExpression test, List<JCStatement> stmts,
                     SyntheticName resultVarName) {
                 
-                JCStatement decl = transformedCond.makeTestVarDecl(0, true);
+                JCStatement decl = vartrans.makeTestVarDecl(0, true);
                 if (decl != null) {
                     varDecls.append(decl);
                 }
-                if (transformedCond.hasResultDecl()) {
+                if (vartrans.hasResultDecl()) {
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 
-                            resultVarName.asName(), transformedCond.makeTypeExpr(), null));
+                            resultVarName.asName(), vartrans.makeTypeExpr(), null));
                     valueCaptures.add(make().VarDef(make().Modifiers(Flags.FINAL),
-                            resultVarName.asName(), transformedCond.makeTypeExpr(), resultVarName.makeIdentWithThis()));
-                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), transformedCond.makeResultExpr())));
+                            resultVarName.asName(), vartrans.makeTypeExpr(), resultVarName.makeIdentWithThis()));
+                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), vartrans.makeResultExpr())));
                 }
                 stmts = List.<JCStatement>of(make().If(
                         test, 
