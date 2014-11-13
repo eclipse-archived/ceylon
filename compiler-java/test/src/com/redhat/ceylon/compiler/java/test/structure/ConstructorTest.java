@@ -52,6 +52,11 @@ public class ConstructorTest extends CompilerTest {
     }
     
     @Test
+    public void testCtorClassMemberCtorAlias() {
+        compareWithJavaSource("constructor/ClassMemberCtorAlias");
+    }
+    
+    @Test
     public void testCtorInterfaceMemberClassCtor(){
         // This need default parameters to be a good test
         compareWithJavaSource("constructor/InterfaceMemberClassCtor");

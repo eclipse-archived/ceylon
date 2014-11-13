@@ -1,0 +1,88 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ClassMemberCtorAlias() {
+    }
+    
+    public static final class Member$Other {
+        
+        private Member$Other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other Member$Other = null;
+    
+    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Member(final long i) {
+        }
+        
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other $name$, final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member.class));
+        }
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member AliasMember$aliased$(final long j) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    final class AliasMember {
+        
+        private AliasMember() {
+        }
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member AliasOther$aliased$(final long j) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    final class AliasOther {
+        
+        private AliasOther() {
+        }
+    }
+    
+    private final void use$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member(0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other, 0L);
+    }
+    
+    class AliasMemberSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member {
+        
+        AliasMemberSub(final long k) {
+            super(k);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.AliasMemberSub.class));
+        }
+    }
+    
+    class AliasOtherSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member {
+        
+        AliasOtherSub(final long k) {
+            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other, k);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.AliasOtherSub.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.class);
+}
