@@ -31,7 +31,7 @@ public class TypeGenerator {
     private static final ErrorVisitor errVisitor = new ErrorVisitor();
 
     /** Generates a function to initialize the specified type. */
-    static void initializeType(final Tree.StatementOrArgument type, final GenerateJsVisitor gen) {
+    static void initializeType(final Node type, final GenerateJsVisitor gen) {
         Tree.ExtendedType extendedType = null;
         Tree.SatisfiedTypes satisfiedTypes = null;
         final ClassOrInterface decl;
@@ -51,6 +51,12 @@ public class TypeGenerator {
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
             decl = (ClassOrInterface)objectDef.getDeclarationModel().getTypeDeclaration();
+            stmts = objectDef.getClassBody().getStatements();
+        } else if (type instanceof Tree.ObjectExpression) {
+            Tree.ObjectExpression objectDef = (Tree.ObjectExpression) type;
+            extendedType = objectDef.getExtendedType();
+            satisfiedTypes = objectDef.getSatisfiedTypes();
+            decl = (ClassOrInterface)objectDef.getAnonymousClass();
             stmts = objectDef.getClassBody().getStatements();
         } else {
             stmts = null;
@@ -357,7 +363,7 @@ public class TypeGenerator {
         }
     }
 
-    static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
+    static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Node that,
             final List<Declaration> superDecs, final GenerateJsVisitor gen) {
         if (satisfiedTypes!=null) {
             HashSet<String> myTypeArgs = new HashSet<>();
@@ -467,11 +473,12 @@ public class TypeGenerator {
         }
     }
 
-    static void defineObject(final Tree.StatementOrArgument that, final Value d, final Tree.SatisfiedTypes sats,
+    static void defineObject(final Node that, final Value d, final Tree.SatisfiedTypes sats,
             final Tree.ExtendedType superType, final Tree.ClassBody body, final Tree.AnnotationList annots,
             final GenerateJsVisitor gen) {
-        boolean addToPrototype = gen.opts.isOptimize() && d.isClassOrInterfaceMember();
-        final Class c = (Class) d.getTypeDeclaration();
+        boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
+        final Class c = (Class)(that instanceof Tree.ObjectExpression ?
+                ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration());
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(c));
         Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
@@ -511,7 +518,7 @@ public class TypeGenerator {
 
         TypeGenerator.initializeType(that, gen);
 
-        if (!addToPrototype) {
+        if (d != null && !addToPrototype) {
             gen.out("var ", gen.getNames().name(d));
             //If it's a property, create the object here
             if (gen.defineAsProperty(d)) {
@@ -524,7 +531,20 @@ public class TypeGenerator {
             gen.endLine(true);
         }
 
-        if (!gen.defineAsProperty(d)) {
+        if (d != null && gen.defineAsProperty(d)) {
+            gen.out(gen.getClAlias(), "atr$(");
+            gen.outerSelf(d);
+            gen.out(",'", gen.getNames().name(d), "',function(){return ");
+            if (addToPrototype) {
+                gen.out("this.", gen.getNames().privateName(d));
+            } else {
+                gen.out(gen.getNames().name(d));
+            }
+            gen.out(";},undefined,");
+            TypeUtils.encodeForRuntime(d, annots, gen);
+            gen.out(")");
+            gen.endLine(true);
+        } else if (d != null) {
             final String objvar = (addToPrototype ? "this.":"")+gen.getNames().name(d);
             gen.out(GenerateJsVisitor.function, gen.getNames().getter(d), "()");
             gen.beginBlock();
@@ -588,20 +608,8 @@ public class TypeGenerator {
                         gen.getNames().getter(d));
                 gen.endLine(true);
             }
-        }
-        else {
-            gen.out(gen.getClAlias(), "atr$(");
-            gen.outerSelf(d);
-            gen.out(",'", gen.getNames().name(d), "',function(){return ");
-            if (addToPrototype) {
-                gen.out("this.", gen.getNames().privateName(d));
-            } else {
-                gen.out(gen.getNames().name(d));
-            }
-            gen.out(";},undefined,");
-            TypeUtils.encodeForRuntime(d, annots, gen);
-            gen.out(")");
-            gen.endLine(true);
+        } else if (that instanceof Tree.ObjectExpression) {
+            gen.out("return  ", gen.getNames().name(c), "();");
         }
     }
     static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {
