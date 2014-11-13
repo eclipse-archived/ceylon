@@ -180,7 +180,9 @@ public final class keywordInForLoop2_ {
                         return 1L;
                     }
                     break loop_9;
-                } else break loop_9;
+                } else {
+                    break loop_9;
+                }
             }
             doforelse$23 = false;
             break loop_8;

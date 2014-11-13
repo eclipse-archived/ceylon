@@ -12,8 +12,12 @@ class MethodWhileConditionListIsBool implements .com.redhat.ceylon.compiler.java
                 final .java.lang.String x$1 = ((.ceylon.language.String)x$0).toString();
                 if (.ceylon.language.String.getUppercased(x$1).equals("S")) {
                     .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1)));
-                } else break loop_0;
-            } else break loop_0;
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -24,8 +28,12 @@ class MethodWhileConditionListIsBool implements .com.redhat.ceylon.compiler.java
                 final .java.lang.String z$3 = ((.ceylon.language.String)z$2).toString();
                 if (.ceylon.language.String.getUppercased(z$3).equals("S")) {
                     .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$3)));
-                } else break loop_1;
-            } else break loop_1;
+                } else {
+                    break loop_1;
+                }
+            } else {
+                break loop_1;
+            }
         }
     }
     

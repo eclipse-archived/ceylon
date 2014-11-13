@@ -6,15 +6,21 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         .java.lang.Object captured0$1 = null;
         if ((captured0$1 = o) instanceof .ceylon.language.String) {
             captured0$2 = ((.ceylon.language.String)captured0$1).toString();
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o"));
+        }
         .ceylon.language.Character captured1$4 = null;
         if ((captured1$4 = .ceylon.language.String.getFirst(captured0$2)) != null) {
             captured1$5 = captured1$4.intValue();
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists captured1 = captured0.first"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists captured1 = captured0.first"));
+        }
         .ceylon.language.Sequential<? extends .ceylon.language.Character> captured2$7 = null;
         if ((captured2$7 = s) instanceof .ceylon.language.Sequence) {
             captured2$8 = (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)captured2$7;
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty captured2 = s"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty captured2 = s"));
+        }
         .java.lang.String $ceylontmp$assert$9 = null;
         .java.lang.Object captured10$10 = null;
         if ((captured10$10 = o) instanceof .ceylon.language.String) {

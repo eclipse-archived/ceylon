@@ -11,7 +11,9 @@ class MethodWhileIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime
             .java.lang.Object nothing$0;
             if ((nothing$0 = nothing) == null || nothing$0 instanceof .ceylon.language.Character) {
                 final .ceylon.language.Character nothing$1 = (.ceylon.language.Character)nothing$0;
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     

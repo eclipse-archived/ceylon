@@ -10,7 +10,9 @@ class MethodWhileIsNotObject implements .com.redhat.ceylon.compiler.java.runtime
             if (!(x != null)) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
                 .ceylon.language.print_.print(x);
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -21,7 +23,9 @@ class MethodWhileIsNotObject implements .com.redhat.ceylon.compiler.java.runtime
                 final .java.lang.Object x$2 = x$1;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
                 .ceylon.language.print_.print(x$2);
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     

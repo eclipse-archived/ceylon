@@ -9,7 +9,9 @@ class MethodWhileIsUnion implements .com.redhat.ceylon.compiler.java.runtime.mod
         loop_0: while (true) {
             if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x).common();
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -19,7 +21,9 @@ class MethodWhileIsUnion implements .com.redhat.ceylon.compiler.java.runtime.mod
             if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
                 final .java.lang.Object x$2 = x$1;
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x$2).common();
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     

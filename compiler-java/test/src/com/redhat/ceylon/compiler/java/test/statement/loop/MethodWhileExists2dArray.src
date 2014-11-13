@@ -12,7 +12,9 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             if ((r$0 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.ceylon.language.Integer> r$1 = r$0;
                 r$1.set(0L, .ceylon.language.Integer.instance(100L));
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -23,7 +25,9 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             if ((r$2 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.ceylon.language.String> r$3 = r$2;
                 r$3.set(0L, .ceylon.language.String.instance(""));
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     
@@ -34,7 +38,9 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             if ((r$4 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.java.lang.Object> r$5 = r$4;
                 r$5.set(0L, null);
-            } else break loop_2;
+            } else {
+                break loop_2;
+            }
         }
     }
     
@@ -45,7 +51,9 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             if ((r$6 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.java.lang.Object> r$7 = r$6;
                 r$7.set(0L, obj);
-            } else break loop_3;
+            } else {
+                break loop_3;
+            }
         }
     }
     
@@ -56,7 +64,9 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             if ((r$8 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array r$9 = r$8;
                 ((.ceylon.language.Array)r$9).set(0L, obj);
-            } else break loop_4;
+            } else {
+                break loop_4;
+            }
         }
     }
     

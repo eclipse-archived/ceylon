@@ -10,7 +10,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         loop_0: while (true) {
             if (cont) {
                 cont = false;
-            } else break loop_0;
+            } else {
+                break loop_0;
+            }
         }
     }
     
@@ -21,7 +23,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             if ((c$0 = cont) != null) {
                 final boolean c$1 = c$0.booleanValue();
                 cont = null;
-            } else break loop_1;
+            } else {
+                break loop_1;
+            }
         }
     }
     
@@ -32,7 +36,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             if ((s$2 = seq) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$2;
                 seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
-            } else break loop_2;
+            } else {
+                break loop_2;
+            }
         }
     }
     
@@ -43,7 +49,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             if ((i$4 = $int) instanceof .ceylon.language.Integer) {
                 final long i$5 = ((.ceylon.language.Integer)i$4).longValue();
                 $int = .ceylon.language.String.instance("");
-            } else break loop_3;
+            } else {
+                break loop_3;
+            }
         }
     }
     

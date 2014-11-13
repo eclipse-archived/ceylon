@@ -31,7 +31,9 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
             .java.lang.Object result$3 = null;
             if (.com.redhat.ceylon.compiler.java.Util.isReified(result$3 = .ceylon.language.Integer.instance(result), $reified$Element)) {
                 result$4 = result$3;
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            }
             return (Element)result$4;
         }
         if (x instanceof .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .com.redhat.ceylon.compiler.java.Util.isReified(x, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
@@ -40,7 +42,9 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
             .java.lang.Object result$8 = null;
             if (.com.redhat.ceylon.compiler.java.Util.isReified(result$8 = .ceylon.language.Integer.instance(result), $reified$Element)) {
                 result$9 = result$8;
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            }
             return (Element)result$9;
         }
         return (Element).ceylon.language.nothing_.get_();

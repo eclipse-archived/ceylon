@@ -14,8 +14,12 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y1$2 = y) instanceof .ceylon.language.Integer) {
                     final long y1$3 = ((.ceylon.language.Integer)y1$2).longValue();
                     return x1$1 == y1$3;
-                } else break loop_0;
-            } else break loop_0;
+                } else {
+                    break loop_0;
+                }
+            } else {
+                break loop_0;
+            }
         }
         return false;
     }
@@ -29,8 +33,12 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y$6 = y) instanceof .ceylon.language.Integer) {
                     final long y$7 = ((.ceylon.language.Integer)y$6).longValue();
                     return x$5 == y$7;
-                } else break loop_1;
-            } else break loop_1;
+                } else {
+                    break loop_1;
+                }
+            } else {
+                break loop_1;
+            }
         }
         return false;
     }
@@ -44,8 +52,12 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y1$10 = y) instanceof .ceylon.language.Integer) {
                     final long y1$11 = ((.ceylon.language.Integer)y1$10).longValue();
                     return x1$9 == y1$11;
-                } else break loop_2;
-            } else break loop_2;
+                } else {
+                    break loop_2;
+                }
+            } else {
+                break loop_2;
+            }
         }
         return false;
     }
