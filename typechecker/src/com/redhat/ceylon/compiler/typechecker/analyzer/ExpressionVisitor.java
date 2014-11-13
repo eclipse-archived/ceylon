@@ -5580,11 +5580,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.Super that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+        ClassOrInterface ci = 
+                getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                    ClassOrInterface oci = 
+                            (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
                 }
             }
@@ -5601,11 +5603,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.This that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+        ClassOrInterface ci = 
+                getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
+                    ClassOrInterface s = 
+                            (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(s.getType());
                 }
             }
