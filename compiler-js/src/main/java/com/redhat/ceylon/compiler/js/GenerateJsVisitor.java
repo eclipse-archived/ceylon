@@ -843,6 +843,18 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
+    public void visit(final Tree.ObjectExpression that) {
+        out("function(){");
+        try {
+            TypeGenerator.defineObject(that, null, that.getSatisfiedTypes(),
+                    that.getExtendedType(), that.getClassBody(), null, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        out("}()");
+    }
+
+    @Override
     public void visit(final Tree.MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
