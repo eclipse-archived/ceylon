@@ -3,6 +3,18 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 interface InterfaceMemberClassCtor {
     
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i);
+    
+    public abstract long SharedMember$i();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$, final long i);
+    
+    public abstract long SharedMember$Other$i();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.class);
 }
 final class InterfaceMemberClassCtor$impl {
@@ -12,6 +24,10 @@ final class InterfaceMemberClassCtor$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor $this;
     
+    public final long Member$i() {
+        return 0L;
+    }
+    
     public static final class Member$Other {
         
         private Member$Other() {
@@ -19,7 +35,33 @@ final class InterfaceMemberClassCtor$impl {
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other Member$Other = null;
     
+    public final long Member$Other$i() {
+        return 1L;
+    }
+    
     class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        Member() {
+            (
+                let
+                {
+                    long $ceylontmp$i$0 = Member$i();
+                    this($ceylontmp$i$0);
+                }
+                returning null;
+            );
+        }
+        
+        Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other $name$) {
+            (
+                let
+                {
+                    long $ceylontmp$i$1 = Member$Other$i();
+                    this($name$, $ceylontmp$i$1);
+                }
+                returning null;
+            );
+        }
         
         public Member(final long i) {
         }
@@ -33,12 +75,48 @@ final class InterfaceMemberClassCtor$impl {
         }
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i) {
+        return new SharedMember(i);
+    }
+    
+    public final long SharedMember$i() {
+        return 2L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = SharedMember$i();
+            }
+            returning new SharedMember($ceylontmp$i$2);
+        );
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$, final long i) {
+        return new SharedMember($name$, i);
+    }
+    
     public static final class SharedMember$Other {
         
         private SharedMember$Other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other SharedMember$Other = null;
+    
+    public final long SharedMember$Other$i() {
+        return 3L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$) {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = SharedMember$Other$i();
+            }
+            returning new SharedMember($name$, $ceylontmp$i$3);
+        );
+    }
     
     public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -54,9 +132,108 @@ final class InterfaceMemberClassCtor$impl {
         }
     }
     
-    private void use$priv$() {
+    private void use$priv$(final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(0L);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(0L);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor"})
+class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor {
+    
+    InterfaceMemberClassCtorImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$ = new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl(this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final long SharedMember$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$i();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$(i);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final long SharedMember$Other$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$Other$i();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$) {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other $name$, final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$, i);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class useInterfaceMemberClassCtor_ {
+    
+    private useInterfaceMemberClassCtor_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void useInterfaceMemberClassCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor")
+    final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
     }
 }
