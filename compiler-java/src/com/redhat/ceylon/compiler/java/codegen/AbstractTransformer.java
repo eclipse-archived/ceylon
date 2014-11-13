@@ -2442,7 +2442,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     boolean isVariadicCallable(ProducedType callableType) {
         ProducedType tuple = typeFact().getCallableTuple(callableType);
-        return typeFact().isTupleLengthUnbounded(tuple);
+        return typeFact().isTupleOfVariadicCallable(tuple);
     }
 
     public int getMinimumParameterCountForCallable(ProducedType callableType) {
