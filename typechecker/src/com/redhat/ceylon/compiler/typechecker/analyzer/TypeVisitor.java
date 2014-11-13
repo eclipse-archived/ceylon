@@ -769,12 +769,12 @@ public class TypeVisitor extends Visitor {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
-                if (ci.isClassOrInterfaceMember()) {
+                if (that.getScope() instanceof Constructor) {
+                    that.setTypeModel(intersectionOfSupertypes(ci));
+                }
+                else if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
-                }
-                else if (that.getScope() instanceof Constructor) {
-                    that.setTypeModel(intersectionOfSupertypes(ci));
                 }
                 else {
                     that.addError("super appears in extends for non-member class");

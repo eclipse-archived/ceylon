@@ -28,3 +28,17 @@ void createOuterInner() {
     @error Outer.Inner.Deeper deeper6 = Outer().Inner.New.Deeper.New();
     //value it = `new Outer.Inner.New`;
 }
+
+class ClassMemberCtorChaining() {
+    shared class Member {
+        shared new Other(Integer i) {}
+    }
+}
+class ClassMemberCtorChainingSub() 
+        extends ClassMemberCtorChaining() {
+    shared class Sub 
+            extends ClassMemberCtorChaining.Member {
+        shared new Other(Integer i) 
+                extends super.Other(i) {}
+    }
+}
