@@ -155,10 +155,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Class(
-        identifiable = false,
-        basic = false,
-        extendsType = "ceylon.language::Object")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -166,6 +162,10 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {"ceylon.language::Object"},
         caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        identifiable = false,
+        basic = false,
+        extendsType = "ceylon.language::Object")
 public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
     
     public Bug708Map(@.com.redhat.ceylon.compiler.java.metadata.Ignore

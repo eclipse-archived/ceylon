@@ -6,8 +6,8 @@ interface Intersect {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.statement.trycatch::Intersect"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
 class ExceptionIntersection extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect {
     
     ExceptionIntersection() {
@@ -51,8 +51,8 @@ class ExceptionSub extends .ceylon.language.Exception {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.statement.trycatch::ExceptionSub")
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.statement.trycatch::Intersect"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.statement.trycatch::ExceptionSub")
 class ExceptionSubIntersection extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub implements .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect {
     
     ExceptionSubIntersection() {
@@ -74,12 +74,12 @@ class ExceptionSubIntersection extends .com.redhat.ceylon.compiler.java.test.sta
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSubIntersection.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
 class ExceptionGeneric<T> extends .ceylon.language.Exception {
     
     ExceptionGeneric(@.com.redhat.ceylon.compiler.java.metadata.Ignore
