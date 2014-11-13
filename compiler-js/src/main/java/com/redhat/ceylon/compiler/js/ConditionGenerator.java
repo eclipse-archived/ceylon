@@ -142,7 +142,7 @@ public class ConditionGenerator {
         final Tree.IfClause ifClause = that.getIfClause();
         final Tree.Block ifBlock = ifClause.getBlock();
         final Tree.ElseClause anoserque = that.getElseClause();
-        List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
+        final List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
 
         if (anoserque != null) {
             gen.out("else");
@@ -153,6 +153,24 @@ public class ConditionGenerator {
         }
     }
 
+    void generateIfExpression(Tree.IfExpression that) {
+        //TODO optimize to a simple ternary statement when there are no special conditions
+        gen.out("function(){");
+        final List<VarHolder> vars = gatherVariables(that.getIfClause().getConditionList());
+        specialConditions(vars, that.getIfClause().getConditionList(), "if");
+        gen.out("return ");
+        that.getIfClause().getExpression().visit(gen);
+        gen.out(";else return ");
+        if (that.getElseClause() == null) {
+            gen.out("null;");
+        } else {
+            that.getElseClause().getExpression().visit(gen);
+        }
+        gen.out("}()");
+        for (VarHolder v : vars) {
+            directAccess.remove(v.var.getDeclarationModel());
+        }
+    }
     /** Generates JS code for a WhileStatement. */
     void generateWhile(Tree.WhileStatement that) {
         Tree.WhileClause whileClause = that.getWhileClause();

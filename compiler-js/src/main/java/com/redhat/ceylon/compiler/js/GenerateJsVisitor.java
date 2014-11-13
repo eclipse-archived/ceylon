@@ -2747,6 +2747,9 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(final Tree.IfStatement that) {
        conds.generateIf(that);
    }
+   @Override public void visit(final Tree.IfExpression that) {
+       conds.generateIfExpression(that);
+   }
 
    @Override public void visit(final Tree.WhileStatement that) {
        conds.generateWhile(that);
