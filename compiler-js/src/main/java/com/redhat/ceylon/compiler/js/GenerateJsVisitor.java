@@ -2906,6 +2906,13 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         conds.generateSwitch(that);
+        if (opts.isComment() && !opts.isMinify()) {
+            out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+            endLine();
+        }
+    }
+    @Override public void visit(final Tree.SwitchExpression that) {
+        conds.generateSwitchExpression(that);
     }
 
     /** Generates the code for an anonymous function defined inside an argument list. */

@@ -153,6 +153,7 @@ public class ConditionGenerator {
         }
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
+            gen.getNames().forceName(v.var.getDeclarationModel(), null);
         }
     }
 
@@ -172,6 +173,7 @@ public class ConditionGenerator {
         gen.out("}()");
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
+            gen.getNames().forceName(v.var.getDeclarationModel(), null);
         }
     }
     /** Generates JS code for a WhileStatement. */
@@ -181,6 +183,7 @@ public class ConditionGenerator {
                 whileClause.getBlock(), "while");
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
+            gen.getNames().forceName(v.var.getDeclarationModel(), null);
         }
     }
 
@@ -198,7 +201,7 @@ public class ConditionGenerator {
             caseClause(cc, expvar, expr.getTerm());
             first = false;
         }
-        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause(); 
+        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause();
         if (anoserque == null) {
             if (gen.isInDynamicBlock() && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
@@ -207,10 +210,31 @@ public class ConditionGenerator {
             gen.out("else");
             anoserque.getBlock().visit(gen);
         }
-        if (gen.opts.isComment() && !gen.opts.isMinify()) {
-            gen.out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
-            gen.endLine();
+    }
+
+    void generateSwitchExpression(Tree.SwitchExpression that) {
+        final String expvar = names.createTempVariable();
+        final Expression expr = that.getSwitchClause().getExpression();
+        gen.out("function(", expvar, "){");
+        //For each case, do an if
+        boolean first = true;
+        for (Tree.CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
+            if (!first) gen.out("else ");
+            caseClause(cc, expvar, expr.getTerm());
+            first = false;
         }
+        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause();
+        if (anoserque == null) {
+            if (gen.isInDynamicBlock() && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
+                gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
+            }
+        } else {
+            gen.out("else return ");
+            anoserque.getExpression().visit(gen);
+        }
+        gen.out("}(");
+        expr.visit(gen);
+        gen.out(")");
     }
 
     /** Generates code for a case clause, as part of a switch statement. Each case
@@ -221,7 +245,7 @@ public class ConditionGenerator {
         Tree.Variable caseVar = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            gen.generateIsOfType(switchTerm, expvar, isCaseItem.getType(), null, false);
+            gen.generateIsOfType(item, expvar, isCaseItem.getType(), null, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());
@@ -256,10 +280,18 @@ public class ConditionGenerator {
         } else {
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
         }
-        gen.out(") ");
-        gen.encloseBlockInFunction(cc.getBlock(), true);
+        gen.out(")");
+        if (cc.getBlock() == null) {
+            gen.out("return ");
+            cc.getExpression().visit(gen);
+            gen.out(";");
+        } else {
+            gen.out(" ");
+            gen.encloseBlockInFunction(cc.getBlock(), true);
+        }
         if (caseVar != null) {
             directAccess.remove(caseVar.getDeclarationModel());
+            gen.getNames().forceName(caseVar.getDeclarationModel(), null);
         }
     }
 
