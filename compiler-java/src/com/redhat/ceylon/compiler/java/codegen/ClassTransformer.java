@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -177,7 +178,7 @@ public class ClassTransformer extends AbstractTransformer {
             }else{
                 // class alias
                 classBuilder.getInitBuilder().modifiers(PRIVATE);
-                transformClassAlias((Tree.AnyClass)def, classBuilder);
+                transformClassAlias((Tree.ClassDeclaration)def, classBuilder);
             }
             
             addMissingUnrefinedMembers(def, cls, classBuilder);
@@ -189,7 +190,7 @@ public class ClassTransformer extends AbstractTransformer {
                 transformInterface(def, (Interface)model, classBuilder);
             }else{
                 // interface alias
-                classBuilder.annotations(makeAtAlias(model.getExtendedType()));
+                classBuilder.annotations(makeAtAlias(model.getExtendedType(), null));
                 classBuilder.isAlias(true);
             }
             classBuilder.isDynamic(model.isDynamic());
@@ -485,11 +486,15 @@ public class ClassTransformer extends AbstractTransformer {
 
     
 
-    private void transformClassAlias(final Tree.AnyClass def,
+    private void transformClassAlias(final Tree.ClassDeclaration def,
             ClassDefinitionBuilder classBuilder) {
-        Class model = def.getDeclarationModel();
+        ClassAlias model = (ClassAlias)def.getDeclarationModel();
         ProducedType aliasedClass = model.getExtendedType();
-        classBuilder.annotations(makeAtAlias(aliasedClass));
+        TypeDeclaration classOrCtor = def.getClassSpecifier().getType().getDeclarationModel();
+        while (classOrCtor instanceof ClassAlias) {
+            classOrCtor = ((ClassAlias)classOrCtor).getConstructor();
+        }
+        classBuilder.annotations(makeAtAlias(aliasedClass, classOrCtor instanceof Constructor ? (Constructor)classOrCtor : null));
         classBuilder.isAlias(true);
         MethodDefinitionBuilder instantiator = transformClassAliasInstantiator(
                 def, model, aliasedClass);

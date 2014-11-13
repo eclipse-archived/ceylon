@@ -327,6 +327,26 @@ abstract class Invocation {
         return false;
     }
 
+    public Constructor getConstructor() {
+        Declaration primaryDeclaration = getPrimaryDeclaration();
+        return getConstructorFromPrimary(primaryDeclaration);
+    }
+
+    protected Constructor getConstructorFromPrimary(
+            Declaration primaryDeclaration) {
+        if (primaryDeclaration instanceof Constructor) {
+            return (Constructor)primaryDeclaration;
+        } else if (primaryDeclaration instanceof ClassAlias
+                && ((ClassAlias)primaryDeclaration).getConstructor() instanceof Constructor) {;
+            return (Constructor)((ClassAlias)primaryDeclaration).getConstructor();
+        } else if (primaryDeclaration instanceof Class
+                && Decl.getDefaultConstructor((Class)primaryDeclaration) != null) {
+            return Decl.getDefaultConstructor((Class)primaryDeclaration);
+        } else {
+            return null;
+        }
+    }
+    
 }
 
 abstract class SimpleInvocation extends Invocation {
@@ -850,6 +870,12 @@ class SuperInvocation extends PositionalInvocation {
         return sub;
     }
 
+    @Override
+    public Constructor getConstructor() {
+        // For the constructor we need the possibly-aliased primary declaration
+        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)getPrimary()).getDeclaration();
+        return getConstructorFromPrimary(primaryDeclaration);
+    }
 
 }
 
@@ -1580,15 +1606,7 @@ class NamedArgumentInvocation extends Invocation {
             vars.prepend(gen.makeVar(callVarName, varType, result));
             result = callVarName.makeIdent();
         }
-        final Constructor ctor;
-        if (getPrimaryDeclaration() instanceof Constructor) {
-            ctor = (Constructor)getPrimaryDeclaration();
-        } else  if (getPrimaryDeclaration() instanceof Class 
-                && Decl.getDefaultConstructor((Class)getPrimaryDeclaration()) != null) {
-            ctor = Decl.getDefaultConstructor((Class)getPrimaryDeclaration());
-        } else {
-            ctor = null;
-        }
+        final Constructor ctor = getConstructor();
         if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
             argsAndTypes.put(-1, 
                     new ExpressionAndType(gen.naming.makeNamedConstructorName(ctor),

@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -2766,15 +2767,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
         
-        final Constructor superConstructor;
-        if (invocation.getPrimaryDeclaration() instanceof Constructor) {
-            superConstructor = (Constructor)invocation.getPrimaryDeclaration();
-        } else  if (invocation.getPrimaryDeclaration() instanceof Class 
-                && Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration()) != null) {
-            superConstructor = Decl.getDefaultConstructor((Class)invocation.getPrimaryDeclaration());
-        } else {
-            superConstructor = null;
-        }
+        final Constructor superConstructor = invocation.getConstructor();
         if (superConstructor != null && !Decl.isDefaultConstructor(superConstructor)) {
             result = result.prepend(
                     new ExpressionAndType(naming.makeNamedConstructorName(superConstructor),

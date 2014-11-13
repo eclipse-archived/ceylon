@@ -2701,9 +2701,18 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    List<JCAnnotation> makeAtAlias(ProducedType type) {
+    List<JCAnnotation> makeAtAlias(ProducedType type, Constructor constructor) {
+        
+        List<JCExpression> attributes = List.<JCExpression>nil();
+        
+        if (constructor != null
+                && !Decl.isDefaultConstructor(constructor)) {
+            attributes = attributes.prepend(make().Assign(naming.makeUnquotedIdent("constructor"), make().Literal(constructor.getName())));
+        }
+        
         String name = serialiseTypeSignature(type);
-        return makeModelAnnotation(syms().ceylonAtAliasType, List.<JCExpression>of(make().Literal(name)));
+        attributes = attributes.prepend(make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
+        return makeModelAnnotation(syms().ceylonAtAliasType, attributes);
     }
 
     List<JCAnnotation> makeAtTypeAlias(ProducedType type) {

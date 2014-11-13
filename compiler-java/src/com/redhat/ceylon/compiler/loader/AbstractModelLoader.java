@@ -1946,6 +1946,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
             completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
 
+            String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
+            if (constructorName != null 
+                    && !constructorName.isEmpty()) {
+                Declaration constructor = alias.getExtendedTypeDeclaration().getMember(constructorName, null, false);
+                if (constructor instanceof TypeDeclaration) {
+                    alias.setConstructor((TypeDeclaration)constructor);
+                } else {
+                    logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedTypeDeclaration().getQualifiedNameString());
+                }
+            }
+            
             // Find the instantiator method
             MethodMirror instantiator = null;
             ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
