@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.ceylon.language.SharedAnnotation$annotation$

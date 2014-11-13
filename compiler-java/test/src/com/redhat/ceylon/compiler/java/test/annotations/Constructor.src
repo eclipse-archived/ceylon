@@ -53,12 +53,13 @@ final class constructorAnnotation_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Constructor")
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
@@ -66,29 +67,28 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             arguments = {"ctor param doc"})})
     final .java.lang.String s) {
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.Constructor.Other Other = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-    @.com.redhat.ceylon.compiler.java.metadata.ParameterList
-    public static class Other {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class Other {
         
-        public Other(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
-                value = "doc",
-                arguments = {"ctor param doc"})})
-        final .java.lang.String s) {
-            this.s = s;
+        private Other() {
         }
-        public final .java.lang.String s;
     }
     
     @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Constructor
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.annotations.Constructor.Other $args$) {
-        final .java.lang.String s = $args$.s;
+    .com.redhat.ceylon.compiler.java.test.annotations.Constructor.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
+            value = "doc",
+            arguments = {"ctor param doc"})})
+    final .java.lang.String s) {
     }
     
     @.java.lang.Override
