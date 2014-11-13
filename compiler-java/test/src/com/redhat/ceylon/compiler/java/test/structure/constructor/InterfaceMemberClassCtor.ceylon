@@ -20,30 +20,30 @@
 @noanno
 interface InterfaceMemberClassCtor {
     class Member {
-        shared new Member(Integer i) {
+        shared new Member(Integer i=0) {
         }
-        shared new Other(Integer i) {
+        shared new Other(Integer i=1) {
         }
     }
     shared class SharedMember {
-        shared new SharedMember(Integer i) {
+        shared new SharedMember(Integer i=2) {
         }
-        shared new Other(Integer i) {
+        shared new Other(Integer i=3) {
         }
     }
     void use(InterfaceMemberClassCtor other) {
-        /*Member(0);
+        Member(0);
         Member.Member(0);
-        Member.Other(0);*/
+        Member.Other(0);
         SharedMember(0);
         SharedMember.SharedMember(0);
-        /*SharedMember.Other(0);
+        SharedMember.Other(0);
          
         this.Member(0);
         this.Member.Member(0);
-        this.Member.Other(0);*/
+        this.Member.Other(0);
         this.SharedMember(0);
-        /*this.SharedMember.SharedMember(0);
+        this.SharedMember.SharedMember(0);
         this.SharedMember.Other(0);
         
         other.Member(0);
@@ -51,12 +51,15 @@ interface InterfaceMemberClassCtor {
         other.Member.Other(0);
         other.SharedMember(0);
         other.SharedMember.SharedMember(0);
-        other.SharedMember.Other(0);*/
+        other.SharedMember.Other(0);
     }
-}/*
+}
+class InterfaceMemberClassCtorImpl() satisfies InterfaceMemberClassCtor {
+    
+}
+
 void useInterfaceMemberClassCtor(InterfaceMemberClassCtor other) {
     other.SharedMember(0);
     other.SharedMember.SharedMember(0);
     other.SharedMember.Other(0);
 }
-*/
