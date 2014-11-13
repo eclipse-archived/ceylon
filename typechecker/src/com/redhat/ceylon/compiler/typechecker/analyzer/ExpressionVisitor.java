@@ -979,17 +979,25 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMember(refinedMethodOrValue, ci);
         List<ProducedType> refinedTypes = 
                 new ArrayList<ProducedType>();
-        ProducedType type = refinedProducedReference.getType();
+        ProducedType type = 
+                getRequiredSpecifiedType(that, 
+                        refinedProducedReference);
         addToIntersection(refinedTypes, type, unit);
         for (Declaration refinement: interveningRefinements) {
             if (refinement instanceof MethodOrValue && 
                     !refinement.equals(refinedMethodOrValue)) {
                 MethodOrValue rmv = (MethodOrValue) refinement;
-                ProducedType t = getRefinedMember(rmv, ci).getType();
-                if (rhs!=null && !isTypeUnknown(t)) {
-                    checkType(t, refinement, rhs, 2100);
+                ProducedReference refinedMember = 
+                        getRefinedMember(rmv, ci);
+                ProducedType t = 
+                        getRequiredSpecifiedType(that, 
+                                refinedMember);
+                if (!isTypeUnknown(t)) {
+                    addToIntersection(refinedTypes, t, unit);
+                    if (rhs!=null) {
+                        checkType(t, refinement, rhs, 2100);
+                    }
                 }
-                addToIntersection(refinedTypes, t, unit);
                 if (!refinement.isDefault() && !refinement.isFormal()) {
                     that.getBaseMemberExpression()
                         .addError("shortcut refinement refines non-formal, non-default member: '" +
@@ -1002,6 +1010,23 @@ public class ExpressionVisitor extends Visitor {
         it.setSatisfiedTypes(refinedTypes);
         methodOrValue.setType(it.canonicalize().getType());
         return refinedProducedReference;
+    }
+
+    private ProducedType getRequiredSpecifiedType(Tree.SpecifierStatement that,
+            ProducedReference refinedMember) {
+        ProducedType t = refinedMember.getFullType();
+        Tree.Term term = that.getBaseMemberExpression();
+        if (term instanceof Tree.ParameterizedExpression) {
+            Tree.ParameterizedExpression pe = 
+                    (Tree.ParameterizedExpression) term;
+            for (int i=0; 
+                    !isTypeUnknown(t) && 
+                    i<pe.getParameterLists().size(); 
+                    i++) {
+                t = unit.getCallableReturnType(t);
+            }
+        }
+        return t;
     }
     
     @Override public void visit(Tree.TypeParameterDeclaration that) {
