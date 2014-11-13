@@ -1023,7 +1023,7 @@ public class Unit {
         return false;
     }
     
-    private Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
+    protected Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
         TypeDeclaration declaration = args.getDeclaration();
         if (declaration instanceof UnionType){
