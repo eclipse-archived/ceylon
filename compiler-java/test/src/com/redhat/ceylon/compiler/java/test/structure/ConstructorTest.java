@@ -47,10 +47,21 @@ public class ConstructorTest extends CompilerTest {
     }
     
     @Test
+    public void testCtorClassMemberCtorChaining() {
+        compareWithJavaSource("constructor/ClassMemberCtorChaining");
+    }
+    
+    @Test
     public void testCtorInterfaceMemberClassCtor(){
         // This need default parameters to be a good test
         compareWithJavaSource("constructor/InterfaceMemberClassCtor");
     }
+    
+    @Test
+    public void testCtorInterfaceMemberCtorChaining() {
+        compareWithJavaSource("constructor/InterfaceMemberCtorChaining");
+    }
+    
     /*@Test
     public void testCtorClassRefinedMemberClassCtor(){
         compareWithJavaSource("constructor/ClassRefinedMemberClassCtor");
