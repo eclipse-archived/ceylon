@@ -76,4 +76,10 @@ public class ConstructorTest extends CompilerTest {
     public void testCtorLocalClassCtor(){
         compareWithJavaSource("constructor/LocalClassCtor");
     }
+    
+    @Test
+    public void testCtorClassAliasCtor(){
+        compareWithJavaSource("constructor/ClassAliasCtor");
+        compareWithJavaSource("constructor/ClassAliasCtorUse");
+    }
 }
