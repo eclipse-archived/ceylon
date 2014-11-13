@@ -683,20 +683,38 @@ public class Util {
     }
     
     public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
-        Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
+        return isIndirectInvocation(that.getPrimary());
+    }
+
+    private static boolean isIndirectInvocation(Tree.Primary primary) {
+        Tree.Term p = unwrapExpressionUntilTerm(primary);
         if (p instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
-            ProducedReference prf = mte.getTarget();
-            return prf==null || 
-                    mte.getStaticMethodReference() && 
-                        !prf.getDeclaration().isStaticallyImportable() ||
-                    !prf.isFunctional() || 
-                    //type parameters are not really callable even though they are Functional
-                    prf.getDeclaration() instanceof TypeParameter;
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) p;
+            return isIndirectInvocation(mte);
         }
         else {
            return true;
         }
+    }
+
+    private static boolean isIndirectInvocation(Tree.MemberOrTypeExpression mte) {
+        ProducedReference prf = mte.getTarget();
+        if (prf==null || 
+                mte.getStaticMethodReference() && 
+                    !prf.getDeclaration().isStaticallyImportable() ||
+                !prf.isFunctional() || 
+                //type parameters are not really callable even though they are Functional
+                prf.getDeclaration() instanceof TypeParameter) {
+            return true;
+        }
+        else if (mte.getStaticMethodReference() && 
+                mte instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.Primary primary = 
+                    ((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary();
+            return isIndirectInvocation(primary);
+        }
+        return false;
     }
     
     public static boolean isInstantiationExpression(Tree.Expression e) {

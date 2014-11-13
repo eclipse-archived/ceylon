@@ -5067,13 +5067,33 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType accountForStaticReferenceType(Tree.QualifiedMemberOrTypeExpression that, 
             Declaration member, ProducedType type) {
         if (that.getStaticMethodReference()) {
-            Tree.MemberOrTypeExpression qmte = 
+            Tree.MemberOrTypeExpression p = 
                     (Tree.MemberOrTypeExpression) that.getPrimary();
+            if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
+                    !(member instanceof Constructor)) {
+                Tree.QualifiedMemberOrTypeExpression qmte =
+                        (Tree.QualifiedMemberOrTypeExpression) p;
+                Tree.Primary pp = qmte.getPrimary();
+                if (!(pp instanceof Tree.BaseTypeExpression) &&
+                    !(pp instanceof Tree.QualifiedTypeExpression) &&
+                    !(pp instanceof Tree.Package)) {
+                    pp.addError("non-static type expression qualifies static member reference");   
+                }
+            }
             if (member.isStaticallyImportable()) {
-                return type;
+                if (p.getStaticMethodReference()) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) p;
+                    Tree.MemberOrTypeExpression pp = 
+                            (Tree.MemberOrTypeExpression) qmte.getPrimary();
+                    return accountForStaticReferenceType(qmte, pp.getDeclaration(), type);
+                }
+                else {
+                    return type;
+                }
             }
             else {
-                ProducedReference target = qmte.getTarget();
+                ProducedReference target = p.getTarget();
                 if (target==null) {
                     return new UnknownType(unit).getType();
                 }
@@ -5288,29 +5308,10 @@ public class ExpressionVisitor extends Visitor {
            Tree.MemberOrTypeExpression mte = 
                    (Tree.MemberOrTypeExpression) p;
            Declaration pd = mte.getDeclaration();
-           if (p instanceof Tree.BaseTypeExpression || 
-               p instanceof Tree.QualifiedTypeExpression) {
-               if (p instanceof Tree.QualifiedTypeExpression) {
-                   Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
-                   if (pd instanceof Class && ((Class) pd).hasConstructors()) { //TODO: this hack depends on Java classes never having constructors!
-                       if ((pp instanceof Tree.BaseTypeExpression) ||
-                               (pp instanceof Tree.QualifiedTypeExpression)) {
-                           that.getPrimary().addError("static type expression qualifies constructor reference");
-                       }
-                   }
-                   else { 
-                       if (!(pp instanceof Tree.BaseTypeExpression) &&
-                               !(pp instanceof Tree.QualifiedTypeExpression) &&
-                               !(pp instanceof Tree.Package)) {
-                           that.getPrimary().addError("non-static type expression qualifies static member reference");
-                       }
-                   }
-               }
-           }
            if (!(that.getStaticMethodReference()) && 
                    pd instanceof Functional) {
                //this is a direct function ref
-               //its not a type, it can't have members
+               //it's not a type, it can't have members
                that.addError("direct function references do not have members");
            }
        }
