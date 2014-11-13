@@ -88,7 +88,13 @@ class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpIntersectEmpty(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .ceylon.language.Callable<? extends R> callable, final A args) {
-        return callable.$callvariadic$((.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args);
+        return (
+            let
+            {
+                .ceylon.language.Sequential tuple$6 = (.ceylon.language.Sequential)args;
+            }
+            returning callable.$call$();
+        );
     }
     
     public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpUnionEmpty(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .java.lang.Object callable, final .java.lang.Object args) {
