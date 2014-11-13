@@ -220,7 +220,11 @@ public class JsIdentifierNames {
     }
 
     public void forceName(Declaration decl, String name) {
-        uniqueVarNames.put(decl, name);
+        if (name == null) {
+            uniqueVarNames.remove(decl);
+        } else {
+            uniqueVarNames.put(decl, name);
+        }
     }
 
     private Map<Module, Long> moduleUIDs = new HashMap<Module, Long>();
