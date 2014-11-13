@@ -72,7 +72,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -112,8 +111,13 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getDeclaration() == null)
             return;
         if(that.getMemberOperator() instanceof Tree.SafeMemberOp){
-            if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
+            TypedDeclaration decl = (TypedDeclaration) that.getDeclaration();
+            if(CodegenUtil.isRaw(decl))
+                CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased(decl))
                 CodegenUtil.markTypeErased(that);
+            if(CodegenUtil.hasUntrustedType(decl) || hasTypeParameterWithConstraintsOutsideScope(decl.getType(), that.getScope()))
+                CodegenUtil.markUntrustedType(that);
             // we must be boxed, since safe member op "?." returns an optional type
             return;
         }
