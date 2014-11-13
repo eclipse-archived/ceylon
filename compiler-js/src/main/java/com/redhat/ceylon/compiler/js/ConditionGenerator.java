@@ -63,13 +63,14 @@ public class ConditionGenerator {
     }
 
     /** Handles the "is", "exists" and "nonempty" conditions */
-    void specialConditionsAndBlock(Tree.ConditionList conditions,
+    List<VarHolder> specialConditionsAndBlock(Tree.ConditionList conditions,
             Tree.Block block, String keyword) {
         final List<VarHolder> vars = gatherVariables(conditions);
         specialConditions(vars, conditions, keyword);
         if (block != null) {
             gen.encloseBlockInFunction(block, true);
         }
+        return vars;
     }
 
     /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
@@ -138,20 +139,28 @@ public class ConditionGenerator {
 
     /** Generates JS code for an "if" statement. */
     void generateIf(Tree.IfStatement that) {
-        Tree.IfClause ifClause = that.getIfClause();
-        Tree.Block ifBlock = ifClause.getBlock();
-        specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
+        final Tree.IfClause ifClause = that.getIfClause();
+        final Tree.Block ifBlock = ifClause.getBlock();
+        final Tree.ElseClause anoserque = that.getElseClause();
+        List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
 
-        if (that.getElseClause() != null) {
-            gen.out("else ");
-            gen.encloseBlockInFunction(that.getElseClause().getBlock(), true);
+        if (anoserque != null) {
+            gen.out("else");
+            gen.encloseBlockInFunction(anoserque.getBlock(), true);
+        }
+        for (VarHolder v : vars) {
+            directAccess.remove(v.var.getDeclarationModel());
         }
     }
 
     /** Generates JS code for a WhileStatement. */
     void generateWhile(Tree.WhileStatement that) {
         Tree.WhileClause whileClause = that.getWhileClause();
-        specialConditionsAndBlock(whileClause.getConditionList(), whileClause.getBlock(), "while");
+        List<VarHolder> vars = specialConditionsAndBlock(whileClause.getConditionList(),
+                whileClause.getBlock(), "while");
+        for (VarHolder v : vars) {
+            directAccess.remove(v.var.getDeclarationModel());
+        }
     }
 
     /** Holder for a special condition's variable, its right-hand side term,

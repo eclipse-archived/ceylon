@@ -3018,10 +3018,11 @@ public class GenerateJsVisitor extends Visitor
     private void caseClause(final Tree.CaseClause cc, String expvar, final Tree.Term switchTerm) {
         out("if(");
         final CaseItem item = cc.getCaseItem();
+        Variable caseVar = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             generateIsOfType(switchTerm, expvar, isCaseItem.getType(), null, false);
-            Variable caseVar = isCaseItem.getVariable();
+            caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());
                 names.forceName(caseVar.getDeclarationModel(), expvar);
@@ -3057,6 +3058,9 @@ public class GenerateJsVisitor extends Visitor
         }
         out(") ");
         encloseBlockInFunction(cc.getBlock(), true);
+        if (caseVar != null) {
+            directAccess.remove(caseVar.getDeclarationModel());
+        }
     }
 
     @Override
@@ -3078,13 +3082,14 @@ public class GenerateJsVisitor extends Visitor
             caseClause(cc, expvar, expr.getTerm());
             first = false;
         }
-        if (that.getSwitchCaseList().getElseClause() == null) {
+        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause(); 
+        if (anoserque == null) {
             if (dynblock > 0 && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
                 out("else throw ", getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
-            out("else ");
-            that.getSwitchCaseList().getElseClause().visit(this);
+            out("else");
+            anoserque.getBlock().visit(this);
         }
         if (opts.isComment() && !opts.isMinify()) {
             out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
