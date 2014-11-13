@@ -135,14 +135,14 @@ public class FunctionHelper {
         gen.referenceOuter(c);
         Tree.ExtendedType xt = that.getExtendedType();
         final Tree.ClassBody body = that.getClassBody();
-        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
         
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
             new GenerateJsVisitor.SuperVisitor(superDecs).visit(that.getClassBody());
         }
         TypeGenerator.callSuperclass(xt, c, that, superDecs, gen);
-        TypeGenerator.callInterfaces(sts, c, that, superDecs, gen);
+        TypeGenerator.callInterfaces(sts == null ? null : sts.getTypes(), c, that, superDecs, gen);
         
         body.visit(gen);
         gen.out("return ", gen.getNames().self(c), ";");

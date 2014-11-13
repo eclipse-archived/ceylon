@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class TypeGenerator {
     private static final ErrorVisitor errVisitor = new ErrorVisitor();
 
     /** Generates a function to initialize the specified type. */
-    static void initializeType(final Tree.Declaration type, final GenerateJsVisitor gen) {
+    static void initializeType(final Tree.StatementOrArgument type, final GenerateJsVisitor gen) {
         Tree.ExtendedType extendedType = null;
         Tree.SatisfiedTypes satisfiedTypes = null;
         final ClassOrInterface decl;
@@ -169,7 +170,8 @@ public class TypeGenerator {
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, gen);
+        callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
+                d, that, superDecs, gen);
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
                     ",$$targs$$,", gen.getNames().name(d), ")");
@@ -281,7 +283,8 @@ public class TypeGenerator {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(that.getExtendedType(), d, that, superDecs, gen);
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, gen);
+        callInterfaces(that.getSatisfiedTypes() == null ? null : that.getSatisfiedTypes().getTypes(),
+                d, that, superDecs, gen);
 
         if (!gen.opts.isOptimize()) {
             //Fix #231 for lexical scope
@@ -354,14 +357,14 @@ public class TypeGenerator {
         }
     }
 
-    static void callInterfaces(final Tree.SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
+    static void callInterfaces(final List<Tree.StaticType> satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
             final List<Declaration> superDecs, final GenerateJsVisitor gen) {
         if (satisfiedTypes!=null) {
             HashSet<String> myTypeArgs = new HashSet<>();
             for (TypeParameter tp : d.getTypeParameters()) {
                 myTypeArgs.add(tp.getName());
             }
-            for (Tree.StaticType st: satisfiedTypes.getTypes()) {
+            for (Tree.StaticType st: satisfiedTypes) {
                 TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
                 gen.qualify(that, typeDecl);
                 gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
@@ -462,6 +465,151 @@ public class TypeGenerator {
             }
             return 0;
         }
+    }
+
+    static void defineObject(final Tree.StatementOrArgument that, final Value d, final Tree.SatisfiedTypes sats,
+            final Tree.ExtendedType superType, final Tree.ClassBody body, final Tree.AnnotationList annots,
+            final GenerateJsVisitor gen) {
+        boolean addToPrototype = gen.opts.isOptimize() && d.isClassOrInterfaceMember();
+        final Class c = (Class) d.getTypeDeclaration();
+
+        gen.out(GenerateJsVisitor.function, gen.getNames().name(c));
+        Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
+        if (sats != null) {
+            for (StaticType st : sats.getTypes()) {
+                Map<TypeParameter, ProducedType> stargs = st.getTypeModel().getTypeArguments();
+                if (stargs != null && !stargs.isEmpty()) {
+                    targs.putAll(stargs);
+                }
+            }
+        }
+        gen.out(targs.isEmpty()?"()":"($$targs$$)");
+        gen.beginBlock();
+        if (c.isMember()) {
+            gen.initSelf(that);
+        }
+        gen.instantiateSelf(c);
+        gen.referenceOuter(c);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!gen.opts.isOptimize()) {
+            new SuperVisitor(superDecs).visit(body);
+        }
+        if (!targs.isEmpty()) {
+            gen.out(gen.getNames().self(c), ".$$targs$$=$$targs$$");
+            gen.endLine(true);
+        }
+        TypeGenerator.callSuperclass(superType, c, that, superDecs, gen);
+        TypeGenerator.callInterfaces(sats == null ? null : sats.getTypes(), c, that, superDecs, gen);
+        
+        body.visit(gen);
+        gen.out("return ", gen.getNames().self(c), ";");
+        gen.endBlock();
+        gen.out(";", gen.getNames().name(c), ".$crtmm$=");
+        TypeUtils.encodeForRuntime(that, c, gen);
+        gen.endLine(true);
+
+        TypeGenerator.initializeType(that, gen);
+
+        if (!addToPrototype) {
+            gen.out("var ", gen.getNames().name(d));
+            //If it's a property, create the object here
+            if (gen.defineAsProperty(d)) {
+                gen.out("=", gen.getNames().name(c), "(");
+                if (!targs.isEmpty()) {
+                    TypeUtils.printTypeArguments(that, targs, gen, false, null);
+                }
+                gen.out(")");
+            }
+            gen.endLine(true);
+        }
+
+        if (!gen.defineAsProperty(d)) {
+            final String objvar = (addToPrototype ? "this.":"")+gen.getNames().name(d);
+            gen.out(GenerateJsVisitor.function, gen.getNames().getter(d), "()");
+            gen.beginBlock();
+            //Create the object lazily
+            final String oname = gen.getNames().objectName(c);
+            gen.out("if(", objvar, "===", gen.getClAlias(), "INIT$)");
+            gen.generateThrow(gen.getClAlias()+"InitializationError",
+                    "Cyclic initialization trying to read the value of '" +
+                    d.getName() + "' before it was set", that);
+            gen.endLine(true);
+            gen.out("if(", objvar, "===undefined){", objvar, "=", gen.getClAlias(), "INIT$;",
+                    objvar, "=$init$", oname);
+            if (!oname.endsWith("()")) {
+                gen.out("()");
+            }
+            gen.out("(");
+            if (!targs.isEmpty()) {
+                TypeUtils.printTypeArguments(that, targs, gen, false, null);
+            }
+            gen.out(");", objvar, ".$crtmm$=", gen.getNames().getter(d), ".$crtmm$;}");
+            gen.endLine();
+            gen.out("return ", objvar, ";");
+            gen.endBlockNewLine();            
+            
+            if (addToPrototype || d.isShared()) {
+                gen.outerSelf(d);
+                gen.out(".", gen.getNames().getter(d), "=", gen.getNames().getter(d));
+                gen.endLine(true);
+            }
+            if (!d.isToplevel()) {
+                if(gen.outerSelf(d))gen.out(".");
+            }
+            gen.out(gen.getNames().getter(d), ".$crtmm$=");
+            TypeUtils.encodeForRuntime(d, annots, gen);
+            gen.endLine(true);
+            if (!d.isToplevel()) {
+                if (gen.outerSelf(d)) {
+                    gen.out(".");
+                }
+            }
+            gen.out("$prop$", gen.getNames().getter(d), "={get:");
+            if (!d.isToplevel()) {
+                if (gen.outerSelf(d)) {
+                    gen.out(".");
+                }
+            }
+            gen.out(gen.getNames().getter(d), ",$crtmm$:");
+            if (!d.isToplevel()) {
+                if (gen.outerSelf(d)) {
+                    gen.out(".");
+                }
+            }
+            gen.out(gen.getNames().getter(d), ".$crtmm$}");
+            gen.endLine(true);
+            //make available with the class name as well, for metamodel access
+            gen.out(gen.getNames().getter(c), "=", gen.getNames().getter(d), ";$prop$",
+                    gen.getNames().getter(c), "=", gen.getNames().getter(d));
+            gen.endLine(true);
+            if (d.isToplevel()) {
+                gen.out("ex$.$prop$", gen.getNames().getter(d), "=$prop$",
+                        gen.getNames().getter(d));
+                gen.endLine(true);
+            }
+        }
+        else {
+            gen.out(gen.getClAlias(), "atr$(");
+            gen.outerSelf(d);
+            gen.out(",'", gen.getNames().name(d), "',function(){return ");
+            if (addToPrototype) {
+                gen.out("this.", gen.getNames().privateName(d));
+            } else {
+                gen.out(gen.getNames().name(d));
+            }
+            gen.out(";},undefined,");
+            TypeUtils.encodeForRuntime(d, annots, gen);
+            gen.out(")");
+            gen.endLine(true);
+        }
+    }
+    static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        gen.comment(that);
+        defineObject(that, that.getDeclarationModel(), that.getSatisfiedTypes(), that.getExtendedType(),
+                that.getClassBody(), that.getAnnotationList(), gen);
     }
 
 }

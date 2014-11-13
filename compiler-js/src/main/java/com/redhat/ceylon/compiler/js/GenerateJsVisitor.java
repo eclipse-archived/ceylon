@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -816,7 +815,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addObjectToPrototype(ClassOrInterface type, final Tree.ObjectDefinition objDef) {
-        objectDefinition(objDef);
+        TypeGenerator.objectDefinition(objDef, this);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
         out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
@@ -829,7 +828,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.ObjectDefinition that) {
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
-            objectDefinition(that);
+            TypeGenerator.objectDefinition(that, this);
         } else {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(that))return;
@@ -839,136 +838,6 @@ public class GenerateJsVisitor extends Visitor
             out(".", names.privateName(d), "=");
             outerSelf(d);
             out(".", names.name(c), "()");
-            endLine(true);
-        }
-    }
-
-    private void objectDefinition(final Tree.ObjectDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        comment(that);
-        final Value d = that.getDeclarationModel();
-        boolean addToPrototype = opts.isOptimize() && d.isClassOrInterfaceMember();
-        final Class c = (Class) d.getTypeDeclaration();
-
-        out(function, names.name(c));
-        Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
-        if (that.getSatisfiedTypes() != null) {
-            for (StaticType st : that.getSatisfiedTypes().getTypes()) {
-                Map<TypeParameter, ProducedType> stargs = st.getTypeModel().getTypeArguments();
-                if (stargs != null && !stargs.isEmpty()) {
-                    targs.putAll(stargs);
-                }
-            }
-        }
-        out(targs.isEmpty()?"()":"($$targs$$)");
-        beginBlock();
-        if (c.isMember()) {
-            initSelf(that);
-        }
-        instantiateSelf(c);
-        referenceOuter(c);
-        
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!opts.isOptimize()) {
-            new SuperVisitor(superDecs).visit(that.getClassBody());
-        }
-        if (!targs.isEmpty()) {
-            out(names.self(c), ".$$targs$$=$$targs$$"); endLine(true);
-        }
-        TypeGenerator.callSuperclass(that.getExtendedType(), c, that, superDecs, this);
-        TypeGenerator.callInterfaces(that.getSatisfiedTypes(), c, that, superDecs, this);
-        
-        that.getClassBody().visit(this);
-        out("return ", names.self(c), ";");
-        indentLevel--;
-        endLine();
-        out("};", names.name(c), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(that, c, this);
-        endLine(true);
-
-        TypeGenerator.initializeType(that, this);
-
-        if (!addToPrototype) {
-            out("var ", names.name(d));
-            //If it's a property, create the object here
-            if (defineAsProperty(d)) {
-                out("=", names.name(c), "(");
-                if (!targs.isEmpty()) {
-                    TypeUtils.printTypeArguments(that, targs, this, false, null);
-                }
-                out(")");
-            }
-            endLine(true);
-        }
-
-        if (!defineAsProperty(d)) {
-            final String objvar = (addToPrototype ? "this.":"")+names.name(d);
-            out(function, names.getter(d), "()");
-            beginBlock();
-            //Create the object lazily
-            final String oname = names.objectName(c);
-            out("if(", objvar, "===", getClAlias(), "INIT$)");
-            generateThrow(getClAlias()+"InitializationError",
-                    "Cyclic initialization trying to read the value of '" +
-                    d.getName() + "' before it was set", that);
-            endLine(true);
-            out("if(", objvar, "===undefined){", objvar, "=", getClAlias(), "INIT$;",
-                    objvar, "=$init$", oname);
-            if (!oname.endsWith("()"))out("()");
-            out("(");
-            if (!targs.isEmpty()) {
-                TypeUtils.printTypeArguments(that, targs, this, false, null);
-            }
-            out(");", objvar, ".$crtmm$=", names.getter(d), ".$crtmm$;}");
-            endLine();
-            out("return ", objvar, ";");
-            endBlockNewLine();            
-            
-            if (addToPrototype || d.isShared()) {
-                outerSelf(d);
-                out(".", names.getter(d), "=", names.getter(d));
-                endLine(true);
-            }
-            if (!d.isToplevel()) {
-                if(outerSelf(d))out(".");
-            }
-            out(names.getter(d), ".$crtmm$=");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            endLine(true);
-            if (!d.isToplevel()) {
-                if (outerSelf(d))out(".");
-            }
-            out("$prop$", names.getter(d), "={get:");
-            if (!d.isToplevel()) {
-                if (outerSelf(d))out(".");
-            }
-            out(names.getter(d), ",$crtmm$:");
-            if (!d.isToplevel()) {
-                if (outerSelf(d))out(".");
-            }
-            out(names.getter(d), ".$crtmm$}");
-            endLine(true);
-            //make available with the class name as well, for metamodel access
-            out(names.getter(c), "=", names.getter(d), ";$prop$", names.getter(c), "=", names.getter(d));
-            endLine(true);
-            if (d.isToplevel()) {
-                out("ex$.$prop$", names.getter(d), "=$prop$", names.getter(d));
-                endLine(true);
-            }
-        }
-        else {
-            out(getClAlias(), "atr$(");
-            outerSelf(d);
-            out(",'", names.name(d), "',function(){return ");
-            if (addToPrototype) {
-                out("this.", names.privateName(d));
-            } else {
-                out(names.name(d));
-            }
-            out(";},undefined,");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            out(")");
             endLine(true);
         }
     }
