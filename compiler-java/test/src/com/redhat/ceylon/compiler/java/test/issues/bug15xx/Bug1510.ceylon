@@ -33,9 +33,9 @@ class Bug1510Pair(Bug1510A a, Bug1510B b){}
 @noanno
 void bug1510(){
     value data = {
-        for(v1 in `class Bug1510A`.caseTypes)
+        for(Anything v1 in `Bug1510A`.caseValues)
             if(is Bug1510A v1) // Notice this is interleaved between for-loops
-                for(v2 in `class Bug1510B`.caseTypes)
+                for(Anything v2 in `Bug1510B`.caseValues)
                     if(is Bug1510B v2)
                         Bug1510Pair(v1, v2)
     };
