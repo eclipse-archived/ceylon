@@ -101,6 +101,9 @@ public class ConditionGenerator {
 
     void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
+            if (((ExistsOrNonemptyCondition) condition).getNot()) {
+                gen.out("!");
+            }
             if (condition instanceof NonemptyCondition) {
                 gen.out(gen.getClAlias(), "ne$(");
                 specialConditionRHS(variableRHS, varName);
@@ -143,10 +146,22 @@ public class ConditionGenerator {
         final Tree.Block ifBlock = ifClause.getBlock();
         final Tree.ElseClause anoserque = that.getElseClause();
         List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
-
         if (anoserque != null) {
+            final Tree.Variable elsevar = anoserque.getVariable();
+            if (elsevar != null) {
+                for (VarHolder vh : vars) {
+                    if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
+                        gen.getNames().forceName(elsevar.getDeclarationModel(), vh.name);
+                        directAccess.add(elsevar.getDeclarationModel());
+                        break;
+                    }
+                }
+            }
             gen.out("else");
             gen.encloseBlockInFunction(anoserque.getBlock(), true);
+            if (elsevar != null) {
+                directAccess.remove(anoserque.getVariable().getDeclarationModel());
+            }
         }
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());

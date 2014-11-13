@@ -3089,7 +3089,15 @@ public class GenerateJsVisitor extends Visitor
             }
         } else {
             out("else");
+            final Variable elsevar = anoserque.getVariable();
+            if (elsevar != null) {
+                directAccess.add(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), expvar);
+            }
             anoserque.getBlock().visit(this);
+            if (elsevar != null) {
+                directAccess.remove(elsevar.getDeclarationModel());
+            }
         }
         if (opts.isComment() && !opts.isMinify()) {
             out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
