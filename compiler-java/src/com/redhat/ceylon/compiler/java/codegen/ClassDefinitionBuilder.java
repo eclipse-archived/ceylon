@@ -415,10 +415,10 @@ public class ClassDefinitionBuilder {
         }else if (ignoreAnnotations) {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
-            ret = ret.prependList(this.annotations.toList());
             if (hasConstructors || thisType != null) {
                 ret = ret.prependList(gen.makeAtClass(thisType, extendingType, hasConstructors));
             }
+            ret = ret.prependList(this.annotations.toList());
         }
         if (isBroken) {
             ret = ret.prependList(gen.makeAtCompileTimeError());
