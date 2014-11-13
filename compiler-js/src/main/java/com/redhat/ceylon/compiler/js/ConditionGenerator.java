@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 
 /** This component is used by the main JS visitor to generate code for conditions.
  * 
@@ -101,7 +104,7 @@ public class ConditionGenerator {
 
     void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
-            if (condition instanceof NonemptyCondition) {
+            if (condition instanceof Tree.NonemptyCondition) {
                 gen.out(gen.getClAlias(), "ne$(");
                 specialConditionRHS(variableRHS, varName);
                 gen.out(")");
@@ -178,6 +181,85 @@ public class ConditionGenerator {
                 whileClause.getBlock(), "while");
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
+        }
+    }
+
+    void generateSwitch(Tree.SwitchStatement that) {
+        //Put the expression in a tmp var
+        final String expvar = names.createTempVariable();
+        gen.out("var ", expvar, "=");
+        final Expression expr = that.getSwitchClause().getExpression();
+        expr.visit(gen);
+        gen.endLine(true);
+        //For each case, do an if
+        boolean first = true;
+        for (Tree.CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
+            if (!first) gen.out("else ");
+            caseClause(cc, expvar, expr.getTerm());
+            first = false;
+        }
+        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause(); 
+        if (anoserque == null) {
+            if (gen.isInDynamicBlock() && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
+                gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
+            }
+        } else {
+            gen.out("else");
+            anoserque.getBlock().visit(gen);
+        }
+        if (gen.opts.isComment() && !gen.opts.isMinify()) {
+            gen.out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+            gen.endLine();
+        }
+    }
+
+    /** Generates code for a case clause, as part of a switch statement. Each case
+     * is rendered as an if. */
+    private void caseClause(final Tree.CaseClause cc, String expvar, final Tree.Term switchTerm) {
+        gen.out("if(");
+        final Tree.CaseItem item = cc.getCaseItem();
+        Tree.Variable caseVar = null;
+        if (item instanceof IsCase) {
+            IsCase isCaseItem = (IsCase) item;
+            gen.generateIsOfType(switchTerm, expvar, isCaseItem.getType(), null, false);
+            caseVar = isCaseItem.getVariable();
+            if (caseVar != null) {
+                directAccess.add(caseVar.getDeclarationModel());
+                names.forceName(caseVar.getDeclarationModel(), expvar);
+            }
+        } else if (item instanceof Tree.SatisfiesCase) {
+            item.addError("case(satisfies) not yet supported");
+            gen.out("true");
+        } else if (item instanceof MatchCase) {
+            boolean first = true;
+            for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
+                if (!first) gen.out(" || ");
+                if (exp.getTerm() instanceof Tree.StringLiteral || exp.getTerm() instanceof Tree.NaturalLiteral
+                        || switchTerm.getTypeModel().isUnknown()) {
+                    gen.out(expvar, "===");
+                    if (!gen.isNaturalLiteral(exp.getTerm())) {
+                        exp.visit(gen);
+                    }
+                } else if (exp.getTerm() instanceof Tree.Literal) {
+                    if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
+                        gen.out(expvar,"!==null&&");
+                    }
+                    gen.out(expvar, ".equals(");
+                    exp.visit(gen);
+                    gen.out(")");
+                } else {
+                    gen.out(expvar, "===");
+                    exp.visit(gen);
+                }
+                first = false;
+            }
+        } else {
+            cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
+        }
+        gen.out(") ");
+        gen.encloseBlockInFunction(cc.getBlock(), true);
+        if (caseVar != null) {
+            directAccess.remove(caseVar.getDeclarationModel());
         }
     }
 

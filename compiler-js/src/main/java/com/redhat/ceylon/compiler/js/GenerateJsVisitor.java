@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
@@ -2745,9 +2744,11 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(final Tree.IfStatement that) {
+       if (errVisitor.hasErrors(that))return;
        conds.generateIf(that);
    }
    @Override public void visit(final Tree.IfExpression that) {
+       if (errVisitor.hasErrors(that))return;
        conds.generateIfExpression(that);
    }
 
@@ -2897,88 +2898,14 @@ public class GenerateJsVisitor extends Visitor
         visitIndex(that);
     }
 
-    /** Generates code for a case clause, as part of a switch statement. Each case
-     * is rendered as an if. */
-    private void caseClause(final Tree.CaseClause cc, String expvar, final Tree.Term switchTerm) {
-        out("if(");
-        final CaseItem item = cc.getCaseItem();
-        Variable caseVar = null;
-        if (item instanceof IsCase) {
-            IsCase isCaseItem = (IsCase) item;
-            generateIsOfType(switchTerm, expvar, isCaseItem.getType(), null, false);
-            caseVar = isCaseItem.getVariable();
-            if (caseVar != null) {
-                directAccess.add(caseVar.getDeclarationModel());
-                names.forceName(caseVar.getDeclarationModel(), expvar);
-            }
-        } else if (item instanceof SatisfiesCase) {
-            item.addError("case(satisfies) not yet supported");
-            out("true");
-        } else if (item instanceof MatchCase) {
-            boolean first = true;
-            for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
-                if (!first) out(" || ");
-                if (exp.getTerm() instanceof Tree.StringLiteral || exp.getTerm() instanceof Tree.NaturalLiteral
-                        || switchTerm.getTypeModel().isUnknown()) {
-                    out(expvar, "===");
-                    if (!isNaturalLiteral(exp.getTerm())) {
-                        exp.visit(this);
-                    }
-                } else if (exp.getTerm() instanceof Tree.Literal) {
-                    if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
-                        out(expvar,"!==null&&");
-                    }
-                    out(expvar, ".equals(");
-                    exp.visit(this);
-                    out(")");
-                } else {
-                    out(expvar, "===");
-                    exp.visit(this);
-                }
-                first = false;
-            }
-        } else {
-            cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented");
-        }
-        out(") ");
-        encloseBlockInFunction(cc.getBlock(), true);
-        if (caseVar != null) {
-            directAccess.remove(caseVar.getDeclarationModel());
-        }
-    }
-
     @Override
     public void visit(final Tree.SwitchStatement that) {
+        if (errVisitor.hasErrors(that))return;
         if (opts.isComment() && !opts.isMinify()) {
             out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             endLine();
         }
-        //Put the expression in a tmp var
-        final String expvar = names.createTempVariable();
-        out("var ", expvar, "=");
-        final Expression expr = that.getSwitchClause().getExpression();
-        expr.visit(this);
-        endLine(true);
-        //For each case, do an if
-        boolean first = true;
-        for (CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
-            if (!first) out("else ");
-            caseClause(cc, expvar, expr.getTerm());
-            first = false;
-        }
-        final Tree.ElseClause anoserque = that.getSwitchCaseList().getElseClause(); 
-        if (anoserque == null) {
-            if (dynblock > 0 && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
-                out("else throw ", getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
-            }
-        } else {
-            out("else");
-            anoserque.getBlock().visit(this);
-        }
-        if (opts.isComment() && !opts.isMinify()) {
-            out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
-            endLine();
-        }
+        conds.generateSwitch(that);
     }
 
     /** Generates the code for an anonymous function defined inside an argument list. */
