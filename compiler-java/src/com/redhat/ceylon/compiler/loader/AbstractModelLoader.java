@@ -1055,25 +1055,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     final List<MethodMirror> constructors = getClassConstructors(classMirror);
                     if (!constructors.isEmpty()) {
                         Boolean hasConstructors = hasConstructors(classMirror);
-                        if (constructors.size() > 1
-                                && hasConstructors == null ) {
-                            decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                        } else if (hasConstructors != null && !hasConstructors){
-                            // single constructor
-                            MethodMirror constructor = constructors.get(0);
-                            // if the class and constructor have different visibility, we pretend there's an overload of one
-                            // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
-                            // where the constructor is protected because we want to use an accessor, in this case the class
-                            // visibility is to be used
-                            if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
-                                decl = makeLazyClass(classMirror, null, constructor);
-                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
-                            }else{
+                        if (constructors.size() > 1) {
+                            if (hasConstructors == null || !hasConstructors) {
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                            } else {
+                                decl = makeLazyClass(classMirror, null, null);
+                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
                             }
                         } else {
-                            // hasConstructors == true, the constructors are loaded by class completion
-                            decl = makeLazyClass(classMirror, null, null);
+                            if (hasConstructors == null || !hasConstructors) {
+                                // single constructor
+                                MethodMirror constructor = constructors.get(0);
+                                // if the class and constructor have different visibility, we pretend there's an overload of one
+                                // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
+                                // where the constructor is protected because we want to use an accessor, in this case the class
+                                // visibility is to be used
+                                if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
+                                    decl = makeLazyClass(classMirror, null, constructor);
+                                    setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                                }else{
+                                    decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                                }
+                            } else {
+                                decl = makeLazyClass(classMirror, null, null);
+                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                            }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
