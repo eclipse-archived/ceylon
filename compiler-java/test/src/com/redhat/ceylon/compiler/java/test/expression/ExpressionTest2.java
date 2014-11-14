@@ -547,4 +547,9 @@ public class ExpressionTest2 extends CompilerTest {
     public void testInvSpreadArgumentsNoOpt(){
         compareWithJavaSourceNoOpt("invoke/SpreadArguments");
     }
+    
+    @Test
+    public void testLetExpression(){
+        compareWithJavaSource("let/Let");
+    }
 }
