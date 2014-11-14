@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
@@ -72,6 +73,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -5735,6 +5737,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression vartype = makeJavaType(op.getTypeModel());
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
+    }
+
+    public JCTree transform(LetExpression op) {
+        ListBuffer<JCVariableDecl> defs = new ListBuffer<JCVariableDecl>();
+        for(Tree.Variable var : op.getLetClause().getVariables()){
+            JCExpression type = makeJavaType(var.getType().getTypeModel());
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+            JCExpression init = transformExpression(var.getSpecifierExpression().getExpression(), boxingStrategy, var.getType().getTypeModel());
+            at(var);
+            JCVariableDecl def = make().VarDef(make().Modifiers(0), naming.makeQuotedName(var.getIdentifier().getText()), type, init);
+            defs.add(def);
+        }
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(op.getLetClause().getExpression());
+        JCExpression expr = transformExpression(op.getLetClause().getExpression(), boxingStrategy, op.getTypeModel());
+        at(op);
+        return make().LetExpr(defs.toList(), List.<JCStatement>nil(), expr);
     }
 
 }

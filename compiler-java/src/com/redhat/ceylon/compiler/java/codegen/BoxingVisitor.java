@@ -619,4 +619,13 @@ public abstract class BoxingVisitor extends Visitor {
         if(unboxed)
             CodegenUtil.markUnBoxed(that);
     }
+    
+    @Override
+    public void visit(Tree.LetExpression that) {
+        super.visit(that);
+        if(that.getLetClause() == null
+                || that.getLetClause().getExpression() == null)
+            return;
+        propagateFromTerm(that, that.getLetClause().getExpression());
+    }
 }
