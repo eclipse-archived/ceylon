@@ -269,21 +269,27 @@ public class CallableBuilder {
                 && ((Method)methodClassOrCtor).isParameter()) {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
         } else if (methodClassOrCtor instanceof Class) {
-            if (Strategy.generateInstantiator((Class)methodClassOrCtor)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, (Class)methodClassOrCtor));
+            Class cls = (Class)methodClassOrCtor;
+            if (Strategy.generateInstantiator(cls)) {
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
             } else {
                 callBuilder.instantiate(new ExpressionAndType(target, null), 
-                        gen.makeJavaType(((Class)methodClassOrCtor).getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
-                if (!((Class)methodClassOrCtor).isShared()) {
+                        gen.makeJavaType(cls.getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
+                if (!cls.isShared()) {
                     accessType = Decl.getPrivateAccessType(qmte);
                 }
             }
         } else if (methodClassOrCtor instanceof Constructor) {
             Constructor ctor = (Constructor)methodClassOrCtor;
-            callBuilder.instantiate( 
-                    gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
-            if (!ctor.isShared()) {
-                accessType = Decl.getPrivateAccessType(qmte);
+            Class cls = Decl.getConstructedClass(ctor);
+            if (Strategy.generateInstantiator(ctor)) {
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance$), cls));
+            } else {
+                callBuilder.instantiate( 
+                        gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
+                if (!ctor.isShared()) {
+                    accessType = Decl.getPrivateAccessType(qmte);
+                }
             }
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)methodClassOrCtor, qmte);
@@ -349,7 +355,8 @@ public class CallableBuilder {
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         inner.useDefaultTransformation(innerBody);
         
-        if (methodClassOrCtor instanceof Constructor) {
+        if (methodClassOrCtor instanceof Constructor
+                && !Decl.getConstructedClass(((Constructor)methodClassOrCtor)).isMember()) {
             return inner;
         }
         
