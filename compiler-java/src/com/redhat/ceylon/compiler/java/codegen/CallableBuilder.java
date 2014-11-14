@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -253,20 +254,23 @@ public class CallableBuilder {
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
         inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodOrClass);
         CallBuilder callBuilder = CallBuilder.instance(gen);
+        ProducedType qualifyingType = qmte.getTarget().getQualifyingType();
         ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);
+        JCExpression target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
+        target = gen.expressionGen().applyErasureAndBoxing(target, producedReference.getQualifyingType(), true, BoxingStrategy.BOXED, qualifyingType);
         if (methodOrClass instanceof Method) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodOrClass, Naming.NA_MEMBER));
             if (!((TypedDeclaration)methodOrClass).isShared()) {
                 accessType = Decl.getPrivateAccessType(qmte);
             }
         } else if (methodOrClass instanceof Method
                 && ((Method)methodOrClass).isParameter()) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Class) {
             if (Strategy.generateInstantiator((Class)methodOrClass)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Class)methodOrClass));
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, (Class)methodOrClass));
             } else {
-                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(Unfix.$instance$), null), 
+                callBuilder.instantiate(new ExpressionAndType(target, null), 
                         gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
                 if (!((Class)methodOrClass).isShared()) {
                     accessType = Decl.getPrivateAccessType(qmte);
@@ -283,7 +287,27 @@ public class CallableBuilder {
         }
         
         for (Parameter parameter : parameterList.getParameters()) {
-            callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
+            JCExpression parameterExpr = gen.naming.makeQuotedIdent(parameter.getName());
+            int flags = 0;
+            ProducedType parameterType = parameter.getType();
+            // this works on the parameter type as declared
+            if(!parameterType.isRaw())
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
+            if(gen.hasConstrainedTypeParameters(parameterType))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+            if(gen.hasDependentCovariantTypeParameters(parameterType))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
+            // this gives me the parameter as typed in this invocation
+            ProducedTypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
+            // this gives me the parameter as typed that the method expects
+            ProducedType targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
+            // make sure it's compatible
+            parameterExpr = gen.expressionGen().applyErasureAndBoxing(parameterExpr, typedParameter.getType(), 
+                    CodegenUtil.hasTypeErased(parameter.getModel()),
+                    !CodegenUtil.isUnBoxed(parameter.getModel()), 
+                    CodegenUtil.getBoxingStrategy(parameter.getModel()), 
+                    targetParamType, flags);
+            callBuilder.argument(parameterExpr);
         }
         JCExpression innerInvocation = callBuilder.build();
         // Need to worry about boxing for Method and FunctionalParameter 
@@ -394,14 +418,17 @@ public class CallableBuilder {
             ProducedType typeModel,
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
+        ProducedType qualifyingType = qmte.getTarget().getQualifyingType();
+        JCExpression target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
+        target = gen.expressionGen().applyErasureAndBoxing(target, qmte.getPrimary().getTypeModel(), true, BoxingStrategy.BOXED, qualifyingType);
         if (gen.expressionGen().isThrowableMessage(qmte)) {
             callBuilder.invoke(gen.utilInvocation().throwableMessage());
-            callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
+            callBuilder.argument(target);
         } else if (gen.expressionGen().isThrowableSuppressed(qmte)) {
             callBuilder.invoke(gen.utilInvocation().suppressedExceptions());
-            callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
+            callBuilder.argument(target);
         } else {
-            JCExpression memberName = gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER);
+            JCExpression memberName = gen.naming.makeQualifiedName(target, value, Naming.NA_GETTER | Naming.NA_MEMBER);
             if(value instanceof FieldValue){
                 callBuilder.fieldRead(memberName);
             }else{
