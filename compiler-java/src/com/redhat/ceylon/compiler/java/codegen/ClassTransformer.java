@@ -168,7 +168,8 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls = ((Tree.AnyClass)def).getDeclarationModel();
             // Member classes need a instantiator method
             boolean generateInstantiator = Strategy.generateInstantiator(cls);
-            if(generateInstantiator){
+            if(generateInstantiator
+                    && !cls.hasConstructors()){
                 classBuilder.getInitBuilder().modifiers(PROTECTED);
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb);
             }
@@ -1852,6 +1853,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (member instanceof Class) {
                 Class klass = (Class)member;
                 if (Strategy.generateInstantiator(member)
+                        && !klass.hasConstructors()
                     && !model.isAbstract() && !model.isFormal()
                     && model.getDirectMember(member.getName(), null, false) == null) {
                     // instantiator method implementation
@@ -4583,8 +4585,13 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder impl = null;
         boolean generateInstantiator = Strategy.generateInstantiator(ctor);
         if (generateInstantiator) {
-            decl = classBuilder.getContainingClassBuilder();
-            impl = classBuilder.getContainingClassBuilder().getCompanionBuilder((Interface)clz.getContainer());
+            if (clz.getContainer() instanceof Interface) {
+                decl = classBuilder.getContainingClassBuilder();
+                impl = classBuilder.getContainingClassBuilder().getCompanionBuilder((Interface)clz.getContainer());
+            } else {
+                decl = classBuilder.getContainingClassBuilder();
+                impl = classBuilder.getContainingClassBuilder();
+            }
             generateInstantiators(classBuilder, clz, ctor, decl, impl);
         }
         

@@ -276,7 +276,6 @@ class Strategy {
         if (model instanceof Class) {
             Class cls = (Class)model;
             return !cls.isAbstract()
-                    && !cls.hasConstructors()
                     && (Decl.isRefinableMemberClass(cls) 
                         || 
                         // If shared, generate an instantiator so that BC is 

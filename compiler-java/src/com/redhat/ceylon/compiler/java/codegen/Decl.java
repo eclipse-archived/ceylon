@@ -847,9 +847,11 @@ public class Decl {
     }
     
     public static boolean isConstructorPrimary(Tree.Term term) {
-        return (term instanceof Tree.MemberOrTypeExpression
+        return term instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)term).getDeclaration() != null
-                && ((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Constructor); 
+                && (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Constructor
+                        || (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Class
+                                && ((Class)((Tree.MemberOrTypeExpression)term).getDeclaration()).hasConstructors()));
     }
     
     
@@ -931,7 +933,13 @@ public class Decl {
         return ctor.getName().equals(((Declaration)ctor.getScope()).getName());
     }
     
-    public static Class getConstructedClass(Constructor c) {
-        return (Class)c.getContainer();
+    public static Class getConstructedClass(Declaration classOrCtor) {
+        if (classOrCtor instanceof Constructor) {
+            return (Class)classOrCtor.getContainer();
+        } else if (classOrCtor instanceof Class) {
+            return (Class)classOrCtor;
+        } else {
+            return null;
+        }
     }
 }

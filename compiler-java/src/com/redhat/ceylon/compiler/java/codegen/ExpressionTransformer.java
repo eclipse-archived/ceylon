@@ -3107,49 +3107,53 @@ public class ExpressionTransformer extends AbstractTransformer {
         invocation.location(callBuilder);
         if (Decl.isJavaStaticPrimary(invocation.getPrimary())) {
             callBuilder.instantiate(transformedPrimary.expr);
-        } else if (Decl.isConstructorPrimary(invocation.getPrimary())) {
-            if (Decl.getConstructedClass((Constructor)invocation.getPrimaryDeclaration()).isMember()
-                    && invocation.getPrimary() instanceof Tree.QualifiedTypeExpression
-                    && !(((Tree.QualifiedTypeExpression)invocation.getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression)) {
-                callBuilder.instantiate(new ExpressionAndType(transformedPrimary.expr, null),
-                        makeJavaType(invocation.getReturnType(), JT_CLASS_NEW | JT_NON_QUALIFIED));
-            } else {
-                callBuilder.instantiate(transformedPrimary.expr);
-            }
         } else if (!Strategy.generateInstantiator(declaration)) {
-            JCExpression qualifier;
-            JCExpression qualifierType;
-            if (declaration.getContainer() instanceof Interface) {
-                // When doing qualified invocation through an interface we need
-                // to get the companion.
-                Interface qualifyingInterface = (Interface)declaration.getContainer();
-                qualifier = transformedPrimary.expr;
-                qualifierType = makeJavaType(qualifyingInterface.getType(), JT_COMPANION);
-            } else {
-                qualifier = transformedPrimary.expr;
-                if (declaration.getContainer() instanceof TypeDeclaration) {
-                    qualifierType = makeJavaType(((TypeDeclaration)declaration.getContainer()).getType());
+            if (Decl.isConstructorPrimary(invocation.getPrimary())) {
+                if (Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isMember()
+                        /*&& invocation.getPrimary() instanceof Tree.QualifiedTypeExpression
+                        && !(((Tree.QualifiedTypeExpression)invocation.getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression)*/) {
+                    callBuilder.instantiate(new ExpressionAndType(transformedPrimary.expr, null),
+                            makeJavaType(invocation.getReturnType(), JT_CLASS_NEW | (transformedPrimary.expr ==  null ? 0 : JT_NON_QUALIFIED)));
                 } else {
-                    qualifierType = null;
+                    callBuilder.instantiate(
+                            makeJavaType(invocation.getReturnType(), JT_CLASS_NEW)/*transformedPrimary.expr*/);
                 }
+            } else { 
+                JCExpression qualifier;
+                JCExpression qualifierType;
+                if (declaration.getContainer() instanceof Interface) {
+                    // When doing qualified invocation through an interface we need
+                    // to get the companion.
+                    Interface qualifyingInterface = (Interface)declaration.getContainer();
+                    qualifier = transformedPrimary.expr;
+                    qualifierType = makeJavaType(qualifyingInterface.getType(), JT_COMPANION);
+                } else {
+                    qualifier = transformedPrimary.expr;
+                    if (declaration.getContainer() instanceof TypeDeclaration) {
+                        qualifierType = makeJavaType(((TypeDeclaration)declaration.getContainer()).getType());
+                    } else {
+                        qualifierType = null;
+                    }
+                }
+                ProducedType classType = (ProducedType)qte.getTarget();
+                JCExpression type;
+                // special case for package-qualified things that are not really qualified
+                if(qualifier == null){
+                    type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
+                }else{
+                    // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+                    // is qualified relative to it
+                    type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
+                }
+                callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
             }
-            ProducedType classType = (ProducedType)qte.getTarget();
-            JCExpression type;
-            // special case for package-qualified things that are not really qualified
-            if(qualifier == null){
-                type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
-            }else{
-                // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
-                // is qualified relative to it
-                type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
-            }
-            callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
         } else {
+            // instantiator
             callBuilder.typeArguments(List.<JCExpression>nil());
             for (ProducedType tm : qte.getTypeArguments().getTypeModels()) {
                 callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
             }
-            callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
+            callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(declaration)));
         }
         JCExpression result = callBuilder.build();
         if (Strategy.isInstantiatorUntyped(declaration)) {
@@ -4233,6 +4237,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && decl.isStaticallyImportable()
+                    && !(decl instanceof Constructor)
                     // make sure we only do this for things contained in a type, as otherwise
                     // it breaks for qualified calls to static methods in interfaces in Java 8
                     // it only breaks for interfaces because they are statically importable
@@ -4422,7 +4427,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // this is only for interface containers
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
-                && (!decl.isShared() || (decl instanceof Class && ((Class)decl).hasConstructors()))){
+                && !decl.isShared()){
             Interface declaration = (Interface) declContainer;
             // access the interface $impl instance
             qualExpr = naming.makeCompanionAccessorCall(qualExpr, declaration);

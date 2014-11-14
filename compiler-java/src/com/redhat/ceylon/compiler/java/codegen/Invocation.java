@@ -253,6 +253,14 @@ abstract class Invocation {
                 selector = null;
             }
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
+            Tree.QualifiedTypeExpression type = (Tree.QualifiedTypeExpression)getPrimary();
+            Declaration declaration = type.getDeclaration();
+            if (declaration instanceof Constructor 
+                    && Strategy.generateInstantiator(declaration)) {
+                if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
+                    actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                }
+            }
         } else {
             if (isIndirect()) {
                 if (getPrimaryDeclaration() != null
