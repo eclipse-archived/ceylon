@@ -14,9 +14,19 @@ void inlineExpressions(Integer? arg, Boolean bool) {
             satisfies Category<String> {
         contains(String that) => !that.empty;
     };
-    
-    print(if (exists arg) then arg else 0.0);
+
     print(switch (bool) case (true) "bar" case (false) "foo");
+    
+    @type:"String|Float" value a1 = 
+            if (exists arg) then arg.string else 0.0;
+    @type:"String" value s1 
+            = switch (arg) case (is Null) "null" case (is Integer) arg.string;
+    
+    @type:"String|Float" value a2 = 
+            if (exists a=arg) then a.string else 0.0;
+    @type:"String" value s2 
+            = switch (a=arg) case (is Null) "null" case (is Integer) a.string;
+    
     print(object satisfies Category<String> {
         contains(String that) => !that.empty;
     });

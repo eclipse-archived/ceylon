@@ -2001,9 +2001,16 @@ switchExpression returns [SwitchExpression term]
       caseExpressions
       { $term.setSwitchCaseList($caseExpressions.switchCaseList);
         //TODO: huge copy/paste job from switchCaseElse 
-        Expression ex = $switchHeader.clause.getExpression();
+        Identifier id = null;
+        Expression ex = $switchHeader.clause.getSwitched().getExpression();
         if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
-          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+        }
+        TypedDeclaration var = $switchHeader.clause.getSwitched().getVariable();
+        if (var!=null) {
+          id = var.getIdentifier();
+        }
+        if (id!=null) {
           for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
@@ -2022,7 +2029,7 @@ switchExpression returns [SwitchExpression term]
               ic.setVariable(v);
             }
           } 
-        }
+        } 
       }
     ;
 

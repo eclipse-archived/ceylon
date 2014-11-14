@@ -203,7 +203,24 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SwitchExpression that) {
         Tree.Expression ose = switchExpression;
-        switchExpression = that.getSwitchClause().getExpression();
+        Tree.Variable osv = switchVariable;
+        Tree.Switched switched = that.getSwitchClause().getSwitched();
+        Tree.Expression e = switched.getExpression();
+        Tree.Variable v = switched.getVariable();
+        if (e!=null) {
+            switchExpression = e;
+        }
+        else if (v!=null) {
+            switchVariable = v;
+            Tree.SpecifierExpression se = v.getSpecifierExpression();
+            if (se == null) {
+                v.addError("missing switched expression");
+            }
+            else {
+                switchExpression = se.getExpression();
+            }
+        }
+        
         super.visit(that);
 
         Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
@@ -230,7 +247,9 @@ public class ExpressionVisitor extends Visitor {
             ut.setCaseTypes(list);
             that.setTypeModel(ut.getType());
         }
-        switchExpression = ose;        
+        
+        switchExpression = ose;
+        switchVariable = osv;
     }
     
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
@@ -5951,7 +5970,9 @@ public class ExpressionVisitor extends Visitor {
                 switchExpression = se.getExpression();
             }
         }
+        
         super.visit(that);
+        
         Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
         if (switchCaseList!=null && switchExpression!=null) {
             checkCases(switchCaseList);
@@ -5959,6 +5980,7 @@ public class ExpressionVisitor extends Visitor {
                 checkCasesExhaustive(switchCaseList, that.getSwitchClause());
             }
         }
+        
         switchExpression = ose;
         switchVariable = osv;
     }
