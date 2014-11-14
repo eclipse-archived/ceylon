@@ -1039,30 +1039,34 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMember(refinedMethodOrValue, ci);
         List<ProducedType> refinedTypes = 
                 new ArrayList<ProducedType>();
-        ProducedType type = 
-                getRequiredSpecifiedType(that, 
-                        refinedProducedReference);
-        addToIntersection(refinedTypes, type, unit);
+//        ProducedType type = 
+//                getRequiredSpecifiedType(that, 
+//                        refinedProducedReference);
+        addToIntersection(refinedTypes, 
+                refinedProducedReference.getType(), 
+                unit);
         for (Declaration refinement: interveningRefinements) {
             if (refinement instanceof MethodOrValue && 
                     !refinement.equals(refinedMethodOrValue)) {
                 MethodOrValue rmv = (MethodOrValue) refinement;
                 ProducedReference refinedMember = 
                         getRefinedMember(rmv, ci);
-                ProducedType t = 
+                addToIntersection(refinedTypes, 
+                        refinedMember.getType(), 
+                        unit);
+                ProducedType requiredType = 
                         getRequiredSpecifiedType(that, 
                                 refinedMember);
-                if (!isTypeUnknown(t)) {
-                    addToIntersection(refinedTypes, t, unit);
-                    if (rhs!=null) {
-                        checkType(t, refinement, rhs, 2100);
-                    }
+                if (!isTypeUnknown(requiredType) && rhs!=null) {
+                    checkType(requiredType, refinement, rhs, 2100);
                 }
                 if (!refinement.isDefault() && !refinement.isFormal()) {
+                    Declaration container = 
+                            (Declaration) refinement.getContainer();
                     that.getBaseMemberExpression()
                         .addError("shortcut refinement refines non-formal, non-default member: '" +
                                 refinement.getName() + "' of '" +
-                                ((Declaration) refinement.getContainer()).getName(unit));
+                                container.getName(unit));
                 }
             }
         }        

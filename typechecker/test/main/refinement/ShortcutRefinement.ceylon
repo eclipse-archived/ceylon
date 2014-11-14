@@ -243,10 +243,12 @@ abstract class WithInnerSubClass3() {
 
 class Bug1(String s) {
     equals = s.equals;
+    string=equals("Y") then "Yay!" else "Nay...";
 }
 
 class Bug2(String s) {
     equals(Object that) => s.equals(that);
+    string=equals("Y") then "Yay!" else "Nay...";
 }
 
 class Bug3(String s) {
