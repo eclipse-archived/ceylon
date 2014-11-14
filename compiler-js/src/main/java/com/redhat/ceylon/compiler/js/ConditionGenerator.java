@@ -158,23 +158,36 @@ public class ConditionGenerator {
     }
 
     void generateIfExpression(Tree.IfExpression that) {
-        //TODO optimize to a simple ternary statement when there are no special conditions
         gen.out("function(){");
         final List<VarHolder> vars = gatherVariables(that.getIfClause().getConditionList());
-        specialConditions(vars, that.getIfClause().getConditionList(), "if");
-        gen.out("return ");
-        that.getIfClause().getExpression().visit(gen);
-        gen.out(";else return ");
-        if (that.getElseClause() == null) {
-            gen.out("null;");
+        if (vars.isEmpty()) {
+            //TODO optimize to a simple ternary statement when there are no special conditions
+            gen.out("return");
+            specialConditions(vars, that.getIfClause().getConditionList(), "");
+            gen.out("?");
+            that.getIfClause().getExpression().visit(gen);
+            gen.out(":");
+            if (that.getElseClause() == null) {
+                gen.out("null;");
+            } else {
+                that.getElseClause().getExpression().visit(gen);
+            }
         } else {
-            that.getElseClause().getExpression().visit(gen);
+            specialConditions(vars, that.getIfClause().getConditionList(), "if");
+            gen.out("return ");
+            that.getIfClause().getExpression().visit(gen);
+            gen.out(";else return ");
+            if (that.getElseClause() == null) {
+                gen.out("null;");
+            } else {
+                that.getElseClause().getExpression().visit(gen);
+            }
+            for (VarHolder v : vars) {
+                directAccess.remove(v.var.getDeclarationModel());
+                gen.getNames().forceName(v.var.getDeclarationModel(), null);
+            }
         }
         gen.out("}()");
-        for (VarHolder v : vars) {
-            directAccess.remove(v.var.getDeclarationModel());
-            gen.getNames().forceName(v.var.getDeclarationModel(), null);
-        }
     }
     /** Generates JS code for a WhileStatement. */
     void generateWhile(Tree.WhileStatement that) {
