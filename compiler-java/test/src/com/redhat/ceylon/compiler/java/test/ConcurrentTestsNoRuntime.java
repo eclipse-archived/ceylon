@@ -47,6 +47,8 @@ import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
 import com.redhat.ceylon.compiler.java.test.model.ValueTypeTest;
 import com.redhat.ceylon.compiler.java.test.quoting.QuotingTest;
 import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
+import com.redhat.ceylon.compiler.java.test.reporting.ReportingTest;
+import com.redhat.ceylon.compiler.java.test.statement.OptimizationTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.statement.TryCatchTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
@@ -83,6 +85,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     PackageIssuesTest.class,
     RecoveryTest.class,
     StatementTest.class,
+    OptimizationTest.class,
     TryCatchTest.class,
     TypeParserTest.class,
     QuotingTest.class,
@@ -91,9 +94,12 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     ComprehensionTest.class,
     StaticRefTest.class,
     CompilerToolsTests.class,
+    // FIXME Disabled: it does not run currently in parallel
+    // TopLevelToolTest.class,
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTest.class,
+    ReportingTest.class
 })
 public class ConcurrentTestsNoRuntime {
 }
