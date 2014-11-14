@@ -8,3 +8,10 @@ void test<T>() given T satisfies Null {
     String[]&Iterable<String,T> val7 = ["Hrll"];
     @error value val8 = val7 of [String+];
 }
+
+void disjointness({String+} strings) {
+    @error switch (strings)
+    case (is []) {}
+    else {}
+    @error {String+} sss = [];
+}

@@ -320,6 +320,18 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectExpression that) {
+        boolean c = beginDisabledSpecificationScope();
+        boolean oicoaf = inAnonFunctionOrComprehension;
+        inAnonFunctionOrComprehension = declared&&inExtends;
+        SpecificationState ss = beginSpecificationScope();
+        super.visit(that);
+        endSpecificationScope(ss);
+        inAnonFunctionOrComprehension = oicoaf;
+        endDisabledSpecificationScope(c);
+    }
+    
+    @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
         if (isEffectivelyBaseMemberExpression(lt)) {
@@ -528,8 +540,9 @@ public class SpecificationVisitor extends Visitor {
         	m = ((Tree.ParameterizedExpression) m).getPrimary();
         	parameterized = true;
         }
-        if (m instanceof Tree.BaseMemberExpression) {
-            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
+        if (m instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression bme = 
+                    (Tree.StaticMemberOrTypeExpression) m;
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
