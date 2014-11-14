@@ -56,8 +56,26 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(final long i) {
+        return new SharedMember(i);
+    }
+    
     public final long SharedMember$i() {
         return 3L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = SharedMember$i();
+            }
+            returning new SharedMember($ceylontmp$i$2);
+        );
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$, final long i) {
+        return new SharedMember($name$, i);
     }
     
     public static final class SharedMember$Other {
@@ -71,29 +89,17 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         return 4L;
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$) {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = SharedMember$Other$i();
+            }
+            returning new SharedMember($name$, $ceylontmp$i$3);
+        );
+    }
+    
     public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-        
-        public SharedMember() {
-            (
-                let
-                {
-                    long $ceylontmp$i$2 = SharedMember$i();
-                    this($ceylontmp$i$2);
-                }
-                returning null;
-            );
-        }
-        
-        public SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$Other $name$) {
-            (
-                let
-                {
-                    long $ceylontmp$i$3 = SharedMember$Other$i();
-                    this($name$, $ceylontmp$i$3);
-                }
-                returning null;
-            );
-        }
         
         public SharedMember(final long i) {
         }
