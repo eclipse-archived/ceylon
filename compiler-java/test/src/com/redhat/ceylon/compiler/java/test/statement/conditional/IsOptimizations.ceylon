@@ -92,7 +92,7 @@ class IsOpt() {
     
     void testComplement<T>(Integer|String|IsOptInvar<T> val) {
         if (is IsOptInvar<T> val) {// ! (instanceof String || instanceof Integer)
-        } else if (is IsOptInvar<Integer> val) {// reified
+        } else if (is Integer val) {// reified
         } 
     }
     
