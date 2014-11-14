@@ -33,25 +33,25 @@ interface InterfaceMemberClassCtor {
     }
     void use(InterfaceMemberClassCtor other) {
         Member(0);
-        Member.Member(0);
-        Member.Other(0);
-        SharedMember(0);
-        SharedMember.SharedMember(0);
-        SharedMember.Other(0);
+        Member.Member(1);
+        Member.Other(2);
+        SharedMember(3);
+        SharedMember.SharedMember(4);
+        SharedMember.Other(5);
          
-        this.Member(0);
-        this.Member.Member(0);
-        this.Member.Other(0);
-        this.SharedMember(0);
-        this.SharedMember.SharedMember(0);
-        this.SharedMember.Other(0);
+        this.Member(6);
+        this.Member.Member(7);
+        this.Member.Other(8);
+        this.SharedMember(9);
+        this.SharedMember.SharedMember(10);
+        this.SharedMember.Other(11);
         
-        other.Member(0);
-        other.Member.Member(0);
-        other.Member.Other(0);
-        other.SharedMember(0);
-        other.SharedMember.SharedMember(0);
-        other.SharedMember.Other(0);
+        other.Member(12);
+        other.Member.Member(13);
+        other.Member.Other(14);
+        other.SharedMember(15);
+        other.SharedMember.SharedMember(16);
+        other.SharedMember.Other(17);
     }
 }
 class InterfaceMemberClassCtorImpl() satisfies InterfaceMemberClassCtor {

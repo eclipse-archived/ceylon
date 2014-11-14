@@ -32,47 +32,46 @@ class ClassMemberClassCtor() {
         }
     }
     void use(ClassMemberClassCtor other) {
-        value i = 0;
-        Member(i);
+        Member(0);
         Member{i=1;};
         Member{};
-        Member.Member(i);
-        Member.Member{i=1;};
+        Member.Member(2);
+        Member.Member{i=3;};
         Member.Member{};
-        Member.Other(i);
-        Member.Other{i=1;};
+        Member.Other(4);
+        Member.Other{i=5;};
         Member.Other{};
-        SharedMember(i);
-        SharedMember{i=1;};
-        SharedMember.SharedMember(i);
-        SharedMember.SharedMember{i=1;};
-        SharedMember.Other(i);
-        SharedMember.Other{i=1;};
-         
-        this.Member(i);
-        this.Member{i=1;};
-        this.Member{};
-        this.Member.Member(i);
-        this.Member.Member{i=1;};
-        this.Member.Member{};
-        this.Member.Other(i);
-        this.Member.Other{i=1;};
-        this.Member.Other{};
-        this.SharedMember(i);
-        this.SharedMember{i=1;};
-        this.SharedMember.SharedMember(i);
-        this.SharedMember.SharedMember{i=1;};
-        this.SharedMember.Other(i);
-        this.SharedMember.Other{i=1;};
+        SharedMember(6);
+        SharedMember{i=7;};
+        SharedMember.SharedMember(8);
+        SharedMember.SharedMember{i=9;};
+        SharedMember.Other(10);
+        SharedMember.Other{i=11;};
         
-        other.Member(i);
-        other.Member{i=1;};
+        this.Member(12);
+        this.Member{i=13;};
+        this.Member{};
+        this.Member.Member(14);
+        this.Member.Member{i=15;};
+        this.Member.Member{};
+        this.Member.Other(16);
+        this.Member.Other{i=17;};
+        this.Member.Other{};
+        this.SharedMember(18);
+        this.SharedMember{i=19;};
+        this.SharedMember.SharedMember(20);
+        this.SharedMember.SharedMember{i=21;};
+        this.SharedMember.Other(22);
+        this.SharedMember.Other{i=23;};
+        
+        other.Member(24);
+        other.Member{i=25;};
         other.Member{};
-        other.Member.Member(i);
-        other.Member.Member{i=1;};
+        other.Member.Member(26);
+        other.Member.Member{i=27;};
         other.Member.Member{};
-        other.Member.Other(i);
-        other.Member.Other{i=1;};
+        other.Member.Other(28);
+        other.Member.Other{i=29;};
         other.Member.Other{};
      }
     

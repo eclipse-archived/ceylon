@@ -134,23 +134,23 @@ final class InterfaceMemberClassCtor$impl {
     
     private void use$priv$(final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 2L);
+        $this.SharedMember$new$(3L);
+        $this.SharedMember$new$(4L);
+        $this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 5L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(6L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(7L);
+        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 8L);
+        $this.SharedMember$new$(9L);
+        $this.SharedMember$new$(10L);
+        $this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 11L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(12L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(13L);
+        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$Other, 14L);
+        other.SharedMember$new$(15L);
+        other.SharedMember$new$(16L);
+        other.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 17L);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -232,8 +232,8 @@ final class useInterfaceMemberClassCtor_ {
     static void useInterfaceMemberClassCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor")
     final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(0L);
-        other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new SharedMember(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
+        other.SharedMember$new$(0L);
+        other.SharedMember$new$(0L);
+        other.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$Other, 0L);
     }
 }
