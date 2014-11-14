@@ -430,6 +430,15 @@ public abstract class Declaration
         return false;
     }
     
+    /**
+     * Return true if this declaration has a system-generated name, rather than a user-generated name.
+     * At the moment only object expressions and function expressions are not named. This is different from
+     * isAnonymous() because named object declarations are anonymous but named.
+     */
+    public boolean isNamed() {
+        return true;
+    }
+    
     public abstract DeclarationKind getDeclarationKind();
     
     @Override
