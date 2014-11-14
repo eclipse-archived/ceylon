@@ -66,8 +66,7 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectDefinition that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = 
-                (Class) value.getType().getDeclaration();
+        Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
@@ -84,13 +83,28 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectArgument that) {
         Value value = that.getDeclarationModel();
-        Class anonymousClass = 
-                (Class) value.getType().getDeclaration();
+        Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = 
-                sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+                sortDAGAndBuildMetadata(anonymousClass, that);
+        checkForFormalsNotImplemented(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceNotOverridden(that, 
+                orderedTypes, anonymousClass);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, 
+                orderedTypes, anonymousClass);
+    }
+
+    @Override
+    public void visit(Tree.ObjectExpression that) {
+        Class anonymousClass = that.getAnonymousClass();
+        validateMemberRefinement(that, anonymousClass);
+        super.visit(that);
+        //an object definition is always concrete
+        List<Type> orderedTypes = 
+                sortDAGAndBuildMetadata(anonymousClass, that);
         checkForFormalsNotImplemented(that, 
                 orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceNotOverridden(that, 
@@ -159,7 +173,7 @@ public class TypeHierarchyVisitor extends Visitor {
         }
     }
 
-    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.StatementOrArgument that, 
+    private void checkForDoubleMemberInheritanceWoCommonAncestor(Node that, 
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
         for(Type currentType: orderedTypes) {
@@ -205,7 +219,7 @@ public class TypeHierarchyVisitor extends Visitor {
         }
     }
 
-    private void checkForDoubleMemberInheritanceNotOverridden(Tree.StatementOrArgument that, 
+    private void checkForDoubleMemberInheritanceNotOverridden(Node that, 
             List<Type> orderedTypes, ClassOrInterface classOrInterface) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
@@ -335,7 +349,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
-    private void checkForFormalsNotImplemented(Tree.StatementOrArgument that, 
+    private void checkForFormalsNotImplemented(Node that, 
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
@@ -562,7 +576,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return type;
     }
     
-    private void validateMemberRefinement(Tree.StatementOrArgument that, 
+    private void validateMemberRefinement(Node that, 
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
             Set<String> errors = new HashSet<String>();
