@@ -98,8 +98,38 @@ public class ExpressionVisitor extends Visitor {
     private boolean dynamic;
     private boolean inExtendsClause = false;
 
-    private Tree.IfStatement ifStatement;
-    private Tree.SwitchStatement switchStatement;
+    private Node ifStatementOrExpression;
+    private Node switchStatementOrExpression;
+    
+    private Tree.IfClause ifClause() {
+        if (ifStatementOrExpression instanceof Tree.IfStatement) {
+            return ((Tree.IfStatement) ifStatementOrExpression).getIfClause();
+        }
+        if (ifStatementOrExpression instanceof Tree.IfExpression) {
+            return ((Tree.IfExpression) ifStatementOrExpression).getIfClause();
+        }
+        return null;
+    }
+    
+    private Tree.SwitchClause switchClause() {
+        if (switchStatementOrExpression instanceof Tree.SwitchStatement) {
+            return ((Tree.SwitchStatement) switchStatementOrExpression).getSwitchClause();
+        }
+        if (switchStatementOrExpression instanceof Tree.SwitchExpression) {
+            return ((Tree.SwitchExpression) switchStatementOrExpression).getSwitchClause();
+        }
+        return null;
+    }
+    
+    private Tree.SwitchCaseList switchCaseList() {
+        if (switchStatementOrExpression instanceof Tree.SwitchStatement) {
+            return ((Tree.SwitchStatement) switchStatementOrExpression).getSwitchCaseList();
+        }
+        if (switchStatementOrExpression instanceof Tree.SwitchExpression) {
+            return ((Tree.SwitchExpression) switchStatementOrExpression).getSwitchCaseList();
+        }
+        return null;
+    }
     
     private Unit unit;
     
@@ -171,11 +201,19 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.IfExpression that) {
+        Node ose = switchStatementOrExpression;
+        Node oie = ifStatementOrExpression;
+        switchStatementOrExpression = that;
+        ifStatementOrExpression = null;
         super.visit(that);
-        List<ProducedType> list = new ArrayList<ProducedType>();
+        
+        List<ProducedType> list = 
+                new ArrayList<ProducedType>();
         Tree.IfClause ifClause = that.getIfClause();
-        if (ifClause!=null && ifClause.getExpression()!=null) {
-            ProducedType t = ifClause.getExpression().getTypeModel();
+        if (ifClause!=null && 
+                ifClause.getExpression()!=null) {
+            ProducedType t = 
+                    ifClause.getExpression().getTypeModel();
             if (t!=null) {
                 addToUnion(list, t);
             }
@@ -184,8 +222,10 @@ public class ExpressionVisitor extends Visitor {
             that.addError("missing then expression");
         }
         Tree.ElseClause elseClause = that.getElseClause();
-        if (elseClause!=null && elseClause.getExpression()!=null) {
-            ProducedType t = elseClause.getExpression().getTypeModel();
+        if (elseClause!=null && 
+                elseClause.getExpression()!=null) {
+            ProducedType t = 
+                    elseClause.getExpression().getTypeModel();
             if (t!=null) {
                 addToUnion(list, t);
             }
@@ -196,29 +236,43 @@ public class ExpressionVisitor extends Visitor {
         UnionType ut = new UnionType(unit);
         ut.setCaseTypes(list);
         that.setTypeModel(ut.getType());
+        
+        switchStatementOrExpression = ose;        
+        ifStatementOrExpression = oie;
     }
     
     @Override public void visit(Tree.SwitchExpression that) {
-        Tree.Expression ose = switchExpression;
-        switchExpression = that.getSwitchClause().getExpression();
+        Node ose = switchStatementOrExpression;
+        Node oie = ifStatementOrExpression;
+        switchStatementOrExpression = that;
+        ifStatementOrExpression = null;
         super.visit(that);
 
-        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
+        Tree.SwitchCaseList switchCaseList = 
+                that.getSwitchCaseList();
+        Tree.Expression switchExpression = 
+                that.getSwitchClause().getExpression();
         if (switchCaseList!=null && switchExpression!=null) {
             checkCases(switchCaseList);
             if (switchCaseList.getElseClause()==null) {
-                checkCasesExhaustive(switchCaseList, that.getSwitchClause());
+                checkCasesExhaustive(that.getSwitchClause(), 
+                        switchExpression, switchCaseList);
             }
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
-                ProducedType t = cc.getExpression().getTypeModel();
+            List<ProducedType> list = 
+                    new ArrayList<ProducedType>();
+            for (Tree.CaseClause cc: 
+                    that.getSwitchCaseList().getCaseClauses()) {
+                ProducedType t = 
+                        cc.getExpression().getTypeModel();
                 if (t!=null) {
                     addToUnion(list, t);
                 }
             }
-            Tree.ElseClause elseClause = that.getSwitchCaseList().getElseClause();
+            Tree.ElseClause elseClause = 
+                    that.getSwitchCaseList().getElseClause();
             if (elseClause!=null) {
-                ProducedType t = elseClause.getExpression().getTypeModel();
+                ProducedType t = 
+                        elseClause.getExpression().getTypeModel();
                 if (t!=null) {
                     addToUnion(list, t);
                 }
@@ -227,7 +281,8 @@ public class ExpressionVisitor extends Visitor {
             ut.setCaseTypes(list);
             that.setTypeModel(ut.getType());
         }
-        switchExpression = ose;        
+        switchStatementOrExpression = ose;        
+        ifStatementOrExpression = oie;
     }
     
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
@@ -5852,9 +5907,9 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    if (switchStatement!=null) {
+                    if (switchStatementOrExpression!=null) {
                         Tree.Expression switchExpression = 
-                                switchStatement.getSwitchClause().getExpression();
+                                switchClause().getExpression();
                         if (switchExpression!=null) {
                             ProducedType st = switchExpression.getTypeModel();
                             if (!isTypeUnknown(st)) {
@@ -5906,9 +5961,9 @@ public class ExpressionVisitor extends Visitor {
             t.visit(this);
         }
         Tree.Variable v = that.getVariable();
-        if (switchStatement!=null) {
+        if (switchStatementOrExpression!=null) {
             Tree.Expression switchExpression =
-                    switchStatement.getSwitchClause().getExpression();
+                    switchClause().getExpression();
             if (switchExpression!=null) {
                 ProducedType st = switchExpression.getTypeModel();
                 if (v!=null) {
@@ -5940,10 +5995,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
-        Tree.SwitchStatement oss = switchStatement;
-        Tree.IfStatement ois = ifStatement;
-        ifStatement = null;
-        switchStatement = that;
+        Node oss = switchStatementOrExpression;
+        Node ois = ifStatementOrExpression;
+        ifStatementOrExpression = null;
+        switchStatementOrExpression = that;
         Tree.SwitchClause switchClause = 
                 that.getSwitchClause();
         Tree.Expression switchExpression = 
@@ -5951,6 +6006,14 @@ public class ExpressionVisitor extends Visitor {
         Tree.SwitchCaseList switchCaseList = 
                 that.getSwitchCaseList();
         super.visit(that);
+        checkCasesExhaustive(switchClause, switchExpression, switchCaseList);
+        switchStatementOrExpression = oss;
+        ifStatementOrExpression = ois;
+    }
+
+    private void checkCasesExhaustive(Tree.SwitchClause switchClause,
+            Tree.Expression switchExpression, 
+            Tree.SwitchCaseList switchCaseList) {
         if (switchCaseList!=null && 
                 switchExpression!=null) {
             checkCases(switchCaseList);
@@ -5973,19 +6036,17 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-        switchStatement = oss;
-        ifStatement = ois;
     }
     
     @Override
     public void visit(Tree.IfStatement that) {
-        Tree.IfStatement ois = ifStatement;
-        Tree.SwitchStatement oss = switchStatement;
-        ifStatement = that;
-        switchStatement = null;
+        Node ois = ifStatementOrExpression;
+        Node oss = switchStatementOrExpression;
+        ifStatementOrExpression = that;
+        switchStatementOrExpression = null;
         super.visit(that);
-        ifStatement = ois;
-        switchStatement = oss;
+        ifStatementOrExpression = ois;
+        switchStatementOrExpression = oss;
     }
     
     @Override
@@ -5993,11 +6054,11 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable var = that.getVariable();
         if (var!=null) {
             var.visit(this);
-            if (switchStatement!=null) {
+            if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression = 
-                        switchStatement.getSwitchClause().getExpression();
+                        switchClause().getExpression();
                 Tree.SwitchCaseList switchCaseList = 
-                        switchStatement.getSwitchCaseList();
+                        switchCaseList();
                 if (switchExpression!=null && 
                         switchCaseList!=null) {
                     ProducedType st = 
@@ -6014,9 +6075,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            if (ifStatement!=null) {
+            if (ifStatementOrExpression!=null) {
                 Tree.ConditionList conditionList = 
-                        ifStatement.getIfClause().getConditionList();
+                        ifClause().getConditionList();
                 if (conditionList!=null) {
                     Tree.Condition c = 
                             conditionList.getConditions().get(0);
@@ -6046,6 +6107,8 @@ public class ExpressionVisitor extends Visitor {
         }
         Tree.Block block = that.getBlock();
         if (block!=null) block.visit(this);
+        Tree.Expression expression = that.getExpression();
+        if (expression!=null) expression.visit(this);
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
@@ -6061,9 +6124,9 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (hasIsCase) {
-            if (switchStatement!=null) {
+            if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression =
-                        switchStatement.getSwitchClause().getExpression();
+                        switchClause().getExpression();
                 if (switchExpression!=null) {
                     Tree.Term st = switchExpression.getTerm();
                     if (st instanceof Tree.BaseMemberExpression) {
