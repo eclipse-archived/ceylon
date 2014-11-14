@@ -64,6 +64,13 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 Sub$Sub4 = null;
     
+    public static final class Sub$Other {
+        
+        private Sub$Other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other Sub$Other = null;
+    
     public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member {
         
         public Sub(final long i) {
@@ -80,6 +87,10 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
         
         public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Sub4 $name$, final long i) {
             super(i);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$Other $name$, final long i) {
+            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$Other, i);
         }
         
         @.java.lang.Override

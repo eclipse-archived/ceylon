@@ -1,0 +1,145 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+interface InterfaceMemberCtorChaining {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member Member$new$(final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other $name$, final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining.class);
+}
+final class InterfaceMemberCtorChaining$impl {
+    
+    InterfaceMemberCtorChaining$impl(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member Member$new$(final long i) {
+        return new Member(i);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other $name$, final long i) {
+        return new Member($name$, i);
+    }
+    
+    public static final class Member$Other {
+        
+        private Member$Other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other Member$Other = null;
+    
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Member(final long i) {
+        }
+        
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other $name$, final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member.class));
+        }
+    }
+}
+interface InterfaceMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChainingSub$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub2 $name$, final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 $name$, final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 $name$, final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other $name$, final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub.class);
+}
+final class InterfaceMemberCtorChainingSub$impl {
+    
+    InterfaceMemberCtorChainingSub$impl(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(final long i) {
+        return new Sub(i);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub2 $name$, final long i) {
+        return new Sub($name$, i);
+    }
+    
+    public static final class Sub$Sub2 {
+        
+        private Sub$Sub2() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub2 Sub$Sub2 = null;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 $name$, final long i) {
+        return new Sub($name$, i);
+    }
+    
+    public static final class Sub$Sub3 {
+        
+        private Sub$Sub3() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 Sub$Sub3 = null;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 $name$, final long i) {
+        return new Sub($name$, i);
+    }
+    
+    public static final class Sub$Sub4 {
+        
+        private Sub$Sub4() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 Sub$Sub4 = null;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other $name$, final long i) {
+        return new Sub($name$, i);
+    }
+    
+    public static final class Sub$Other {
+        
+        private Sub$Other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other Sub$Other = null;
+    
+    public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member {
+        
+        public Sub(final long i) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub2 $name$, final long i) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub3 $name$, final long i) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Sub4 $name$, final long i) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(i);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$Other $name$, final long i) {
+            $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberCtorChaining$impl().super(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$Other, i);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub.class));
+        }
+    }
+}

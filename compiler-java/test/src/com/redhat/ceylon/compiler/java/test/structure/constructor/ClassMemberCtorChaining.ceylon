@@ -18,7 +18,8 @@ class ClassMemberCtorChainingSub() extends ClassMemberCtorChaining() {
         }
         shared new Sub4(Integer i) extends super.Member(i) {
         }
-        //shared new Other(Integer i) extends super.Other(i) {
-        //}
+        
+        shared new Other(Integer i) extends super.Other(i) {
+        }
     }
 }
