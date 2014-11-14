@@ -1679,9 +1679,10 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
         Scope scope = model.getContainer();
-        if(scope == null || scope instanceof Package)
+        boolean inlineObjectInToplevelAttr = Decl.isTopLevelObjectExpressionType(model);
+        if(scope == null || (scope instanceof Package && !inlineObjectInToplevelAttr))
             return;
-        if(scope instanceof ClassOrInterface){
+        if(scope instanceof ClassOrInterface && !inlineObjectInToplevelAttr){
             ClassOrInterface container = (ClassOrInterface) scope;
             List<JCAnnotation> atContainer = makeAtContainer(container.getType());
             classBuilder.annotations(atContainer);
@@ -4210,9 +4211,20 @@ public class ClassTransformer extends AbstractTransformer {
             if (error != null) {
                 methodBuilder.body(this.makeThrowUnresolvedCompilationError(error));
             } else {
-                JCExpression expr = expressionGen().transform(currentParam);
-                JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
-                methodBuilder.block(body);
+                java.util.List<TypeParameter> copiedTypeParameters = null;
+                if(container instanceof Functional) {
+                    copiedTypeParameters = ((Functional) container).getTypeParameters();
+                    if(copiedTypeParameters != null)
+                        addTypeParameterSubstitution(copiedTypeParameters);
+                }
+                try{
+                    JCExpression expr = expressionGen().transform(currentParam);
+                    JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
+                    methodBuilder.block(body);
+                }finally{
+                    if(copiedTypeParameters != null)
+                        popTypeParameterSubstitution();
+                }
             }
         }
 
@@ -4228,18 +4240,23 @@ public class ClassTransformer extends AbstractTransformer {
         return transformObject(def, def.getSatisfiedTypes(), def.getDeclarationModel(), 
                 def.getAnonymousClass(), null, false);
     }
+
+    public List<JCTree> transformObjectExpression(Tree.ObjectExpression def) {
+        return transformObject(def, def.getSatisfiedTypes(), null, 
+                def.getAnonymousClass(), null, false);
+    }
     
-    private List<JCTree> transformObject(Tree.StatementOrArgument def,
+    private List<JCTree> transformObject(Node def,
             Tree.SatisfiedTypes satisfiesTypes,
             Value model, 
             Class klass,
             ClassDefinitionBuilder containingClassBuilder,
             boolean makeLocalInstance) {
-        naming.clearSubstitutions(model);
+        naming.clearSubstitutions(klass);
         
-        String name = model.getName();
+        String name = klass.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, name, Decl.isLocal(model)).forDefinition(klass);
+                this, name, Decl.isLocal(klass)).forDefinition(klass);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
@@ -4262,9 +4279,9 @@ public class ClassTransformer extends AbstractTransformer {
         addMissingUnrefinedMembers(def, klass, objectClassBuilder);
         satisfaction(satisfiesTypes, klass, objectClassBuilder);
         serialization(klass, objectClassBuilder);
-        TypeDeclaration decl = model.getType().getDeclaration();
-
-        if (Decl.isToplevel(model)
+        
+        if (model != null
+                && Decl.isToplevel(model)
                 && def instanceof Tree.ObjectDefinition) {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
@@ -4274,7 +4291,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
-                    .is(PUBLIC, Decl.isShared(decl))
+                    .is(PUBLIC, Decl.isShared(klass))
                     .is(STATIC, true);
             if (def instanceof Tree.ObjectDefinition) {
                 builder.userAnnotations(expressionGen().transform(((Tree.ObjectDefinition) def).getAnnotationList()));
@@ -4285,20 +4302,24 @@ public class ClassTransformer extends AbstractTransformer {
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(objectClassBuilder, klass);
         if(supportsReifiedAlias(klass))
-            objectClassBuilder.reifiedAlias(model.getType());
+            objectClassBuilder.reifiedAlias(klass.getType());
         
         // make sure we set the container in case we move it out
         addAtContainer(objectClassBuilder, klass);
 
-        List<JCTree> result = objectClassBuilder
+        objectClassBuilder
             .annotations(makeAtObject())
-            .modelAnnotations(model.getAnnotations())
-            .modifiers(transformObjectDeclFlags(model))
             .constructorModifiers(PRIVATE)
-            .satisfies(decl.getSatisfiedTypes())
+            .satisfies(klass.getSatisfiedTypes())
             .init(childDefs)
-            .addGetTypeMethod(model.getType())
-            .build();
+            .addGetTypeMethod(klass.getType());
+        
+        if(model != null)
+            objectClassBuilder
+            .modelAnnotations(model.getAnnotations())
+            .modifiers(transformObjectDeclFlags(model));
+        
+        List<JCTree> result = objectClassBuilder.build();
         
         if (makeLocalInstance) {
             if(model.isSelfCaptured()){
@@ -4316,7 +4337,7 @@ public class ClassTransformer extends AbstractTransformer {
                 result = result.append(localDecl);
             }
             
-        } else if (Decl.withinClassOrInterface(model)) {
+        } else if (model != null && Decl.withinClassOrInterface(model)) {
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
             JCExpression type = makeJavaType(klass.getType());

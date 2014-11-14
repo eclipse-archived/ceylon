@@ -415,8 +415,7 @@ public class Enter extends JCTree.Visitor {
             // disable implicit outer instance from being passed.
             // (This would be an illegal access to "this before super").
             if (env.info.isSelfCall &&
-                    env.tree.getTag() == JCTree.NEWCLASS &&
-                    ((JCNewClass) env.tree).encl == null)
+                    (isNewAnonymousClass(env.tree) || isNewLetClass(env.tree)))
             {
                 c.flags_field |= CEYLON_NOOUTERTHIS;
             }
@@ -463,6 +462,29 @@ public class Enter extends JCTree.Visitor {
 
         result = c.type;
     }
+
+    /**
+     * Ceylon: return true if env.tree is a new unqualified anonymous class
+     */
+    private boolean isNewAnonymousClass(JCTree tree) {
+        return tree.getTag() == JCTree.NEWCLASS &&
+                ((JCNewClass) tree).encl == null;
+    }
+
+    /**
+     * Ceylon: return true if env.tree is a let with a statement containing a class
+     * and an expression which is an unqualified instanciation of that class
+     */
+    private boolean isNewLetClass(JCTree tree) {
+        if(tree.getTag() != JCTree.LETEXPR)
+            return false;
+        JCTree.LetExpr let = (JCTree.LetExpr)tree;
+        return let.stats.size() == 1
+                && let.stats.head.getTag() == JCTree.CLASSDEF
+                && let.expr != null
+                && isNewAnonymousClass(let.expr);
+    }
+
     //where
         /** Does class have the same name as the file it appears in?
          */

@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import org.antlr.runtime.Token;
@@ -140,6 +141,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected Log log;
     final Naming naming;
     private Errors errors;
+    private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -4001,7 +4003,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private RuntimeUtil utilInvocation = null;
-    
+
     RuntimeUtil utilInvocation() {
         if (utilInvocation == null) {
             utilInvocation = new RuntimeUtil(this);
@@ -4532,7 +4534,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
             String name = naming.getTypeArgumentDescriptorName(tp);
-            if(!qualified)
+            if(!qualified || isTypeParameterSubstituted(tp))
                 return makeUnquotedIdent(name);
             Scope container = tp.getContainer();
             JCExpression qualifier = null;
@@ -4647,7 +4649,10 @@ public abstract class AbstractTransformer implements Transformation {
         return !decl.isAlias() 
                 && decl.getTypeParameters().isEmpty()
                 && supportsReified(decl)
-                && Decl.isToplevel(decl);
+                && Decl.isToplevel(decl)
+                // those are not allowed because we can't have statics in them (for a reason I can't understand but
+                // is not worth wasting time on)
+                && !Decl.isTopLevelObjectExpressionType(decl);
     }
     
     boolean isSequencedAnnotation(Class klass) {
@@ -4811,6 +4816,24 @@ public abstract class AbstractTransformer implements Transformation {
         String errorMessage = error.getErrorMessage().getMessage();
         at(error.getNode());
         return makeThrowUnresolvedCompilationError(errorMessage != null ? errorMessage : "compiler bug: error with unknown message");
+    }
+    
+    protected void addTypeParameterSubstitution(java.util.List<TypeParameter> typeParameters) {
+        typeParameterSubstitutions.push(typeParameters);
+    }
+
+    protected void popTypeParameterSubstitution() {
+        typeParameterSubstitutions.pop();
+    }
+
+    private boolean isTypeParameterSubstituted(TypeParameter tp) {
+        for(java.util.List<TypeParameter> list : typeParameterSubstitutions){
+            for(TypeParameter tp2 : list){
+                if(tp2.equals(tp))
+                    return true;
+            }
+        }
+        return false;
     }
     
     JCThrow makeThrowAssertionException(JCExpression messageExpr) {

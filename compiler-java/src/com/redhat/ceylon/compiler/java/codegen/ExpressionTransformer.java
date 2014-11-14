@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.IfCondList;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
@@ -70,10 +71,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -4843,7 +4843,7 @@ public class ExpressionTransformer extends AbstractTransformer {
              */
             public IfComprehensionCondList(java.util.List<Tree.Condition> conditions,
                     List<JCStatement> preCheck, List<JCStatement> insideCheck, List<JCStatement> postCheck) {
-                statementGen().super(conditions, null);
+                statementGen().super(conditions, (Tree.Block)null);
                 if(preCheck == null) preCheck = List.<JCStatement>nil();
                 if(insideCheck == null) insideCheck = List.<JCStatement>nil();
                 if(postCheck == null) postCheck = List.<JCStatement>nil();
@@ -4854,7 +4854,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             @Override
             protected List<JCStatement> transformInnermost(Tree.Condition condition) {
-                Cond transformedCond = statementGen().transformCondition(condition, null);
+                Cond transformedCond = statementGen().transformCondition(condition);
                 // The innermost condition's test should be transformed before
                 // variable substitution
                 
@@ -4867,7 +4867,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
-                Cond transformedCond = statementGen().transformCondition(condition, null);
+                Cond transformedCond = statementGen().transformCondition(condition);
                 JCExpression test = transformedCond.makeTest();
                 SyntheticName resultVarName = addVarSubs(transformedCond);
                 return transformCommon(transformedCond, test, transformList(rest), resultVarName);
@@ -5707,6 +5707,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
         return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
+    }
+
+    public JCTree transform(Tree.ObjectExpression expr) {
+        at(expr);
+        List<JCTree> klass = classGen().transformObjectExpression(expr);
+        at(expr);
+        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(expr.getAnonymousClass().getName()+"_"), List.<JCTree.JCExpression>nil(), null);
+        return make().LetExpr((List)klass, newCall);
+    }
+
+    public JCExpression transform(Tree.IfExpression op) {
+        String tmpVar = naming.newTemp("ifResult");
+        Tree.Expression thenPart = op.getIfClause().getExpression();
+        Tree.Expression elsePart = op.getElseClause() != null ? op.getElseClause().getExpression() : null;
+        java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
+        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elsePart, tmpVar, op);
+        at(op);
+        JCExpression vartype = makeJavaType(op.getTypeModel());
+        return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
+    }
+
+    public JCTree transform(Tree.SwitchExpression op) {
+        String tmpVar = naming.newTemp("ifResult");
+        JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
+        at(op);
+        JCExpression vartype = makeJavaType(op.getTypeModel());
+        return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
+                              List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
 
 }

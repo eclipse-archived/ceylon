@@ -253,6 +253,10 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfConditionListNonemptyIsBool(){
         compareWithJavaSource("conditional/MethodIfConditionListNonemptyIsBool");
     }
+    @Test
+    public void testConMethodIfExpression(){
+        compareWithJavaSource("conditional/IfExpression");
+    }
 
     //
     // for
@@ -494,7 +498,13 @@ public class StatementTest extends CompilerTest {
     public void testSwitchIsVarSubst(){
         compareWithJavaSource("swtch/SwitchIsVarSubst");
     }
-    
+
+    @Test
+    public void testSwitchExpression(){
+        compareWithJavaSource("swtch/SwitchExpression");
+        run("com.redhat.ceylon.compiler.java.test.statement.swtch.switchExpressionTest");
+    }
+
     @Test
     public void testSwitchMatch(){
         compareWithJavaSource("swtch/SwitchMatch");

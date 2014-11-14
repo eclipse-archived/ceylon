@@ -883,4 +883,14 @@ public class Decl {
         }
         return scope;
     }
+    
+    /**
+     * Returns true if the given model is a toplevel object expression type.
+     */
+    public static boolean isTopLevelObjectExpressionType(Declaration model) {
+        return model instanceof Class
+                && model.isAnonymous()
+                && model.getContainer() instanceof Package
+                && !model.isNamed();
+    }
 }
