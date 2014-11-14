@@ -1102,7 +1102,10 @@ public class ClassTransformer extends AbstractTransformer {
                     break;
                 case OUTER_COMPANION:
                     cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(cls, true));
-                    cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
+                    if ((constructor == null || constructor.isShared())
+                            && cls.isShared()) {
+                        cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
+                    }
                     break;
                 default:
                     cbForDevaultValues = classBuilder.getCompanionBuilder(cls);
@@ -1111,8 +1114,7 @@ public class ClassTransformer extends AbstractTransformer {
                             || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
                     if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
                         cbForDevaultValues.method(makeParamDefaultValueMethod(false, constructor != null ? constructor : cls, paramList, param));
-                        if (cbForDevaultValuesDecls != null 
-                                && constructor == null || Strategy.generateInstantiator(constructor)) {
+                        if (cbForDevaultValuesDecls != null) {
                             cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
                         }
                     } else if (Strategy.hasDelegatedDpm(cls)) {

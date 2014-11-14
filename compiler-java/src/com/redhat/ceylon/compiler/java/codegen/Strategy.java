@@ -288,7 +288,7 @@ class Strategy {
         } else if (model instanceof Constructor) {
             Constructor ctor = (Constructor)model;
             Class cls = Decl.getConstructedClass(ctor);
-            return cls.isInterfaceMember()
+            return cls.isMember()
                     && cls.isShared()
                     && ctor.isShared();
         } else {
