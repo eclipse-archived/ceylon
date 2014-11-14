@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,9 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean overloaded;
     private boolean abstraction;
     private boolean anonymous;
+    private boolean named = true;
     private boolean fin;
+    private boolean serializable;
     private List<Declaration> overloads;
     private List<ProducedReference> unimplementedFormals = 
             Collections.<ProducedReference>emptyList();
@@ -27,6 +29,19 @@ public class Class extends ClassOrInterface implements Functional {
         this.anonymous = anonymous;
     }
 
+    /**
+     * Return true if we have are anonymous and have a name which is not system-generated. Currently
+     * only object expressions have no name.
+     */
+    @Override
+    public boolean isNamed() {
+        return named;
+    }
+    
+    public void setNamed(boolean named){
+        this.named = named;
+    }
+    
     @Override
     public boolean isAbstract() {
         return abstr;
@@ -61,7 +76,7 @@ public class Class extends ClassOrInterface implements Functional {
 
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && isNamed(name, d)) {
+            if (d.isParameter() && Util.isNamed(name, d)) {
                 return ((MethodOrValue)d).getInitializerParameter();
             }
         }
@@ -127,4 +142,14 @@ public class Class extends ClassOrInterface implements Functional {
             List<ProducedReference> unimplementedFormals) {
         this.unimplementedFormals = unimplementedFormals;
     }
+
+    public boolean isSerializable() {
+        return serializable;
+    }
+
+    public void setSerializable(boolean serializable) {
+        this.serializable = serializable;
+    }
+    
+
 }

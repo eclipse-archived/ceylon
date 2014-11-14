@@ -10,6 +10,8 @@ class Person(shared String name)
     Person.Address(String,String,String)(Person) addy = Person.Address;
 }
 
+alias IntegerOrFloat => Integer|Float;
+
 void funrefs<T>(T t) given T satisfies Category {
     value person = Person("Gavin");
     String(Person) nameFun = Person.name;
@@ -24,7 +26,7 @@ void funrefs<T>(T t) given T satisfies Category {
     @type:"Null|Character" List<Character>.get("hello")(1);
     @error List.get("hello")(1);
     @type:"Boolean" Category<Character>.contains("hello")('l');
-    @error @type:"Boolean" T.contains(t)('l');
+    @type:"Boolean" T.contains(t)('l');
     String(Singleton<String>) firstFun = Singleton<String>.first;
     @type:"String" value first = Singleton<String>.first(Singleton(""));
     String?(Integer)(Singleton<String>) get = Singleton<String>.get;
@@ -33,6 +35,10 @@ void funrefs<T>(T t) given T satisfies Category {
     String()(Person.Address) formatfun = Person.Address.format;
     String() format = Person.Address.format(person.Address("","", ""));
     @error String()(Person.Address) broke = person.Address.format;
+    Comparison(Nothing)(IntegerOrFloat) compare = IntegerOrFloat.compare;
+    Boolean(Object)(T) contains = T.contains;
+    @error value fold1 = Iterable.fold;
+    String(String(String, String))(String)({String*}) fold2 = Iterable<String>.fold<String>;
 }
 
 interface AB<T> { 

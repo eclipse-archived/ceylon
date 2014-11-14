@@ -54,7 +54,18 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE;
     }
-    
+
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        if (dec instanceof ClassOrInterface && 
+                equals(dec)) {
+            return true;
+        }
+        else {
+            return super.inherits(dec);
+        }
+    }
+
     @Override
     protected int hashCodeForCache() {
         int ret = 17;

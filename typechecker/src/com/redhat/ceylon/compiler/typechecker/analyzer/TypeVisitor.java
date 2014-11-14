@@ -671,6 +671,13 @@ public class TypeVisitor extends Visitor {
             if (arg==null) {
                 arg = new UnknownType(unit).getType();
             }
+            else if (st instanceof Tree.SpreadType) {
+                //currently we only allow a
+                //single spread type, but in
+                //future we should also allow
+                //X, Y, *Zs
+                return st.getTypeModel();
+            }
             else if (st instanceof Tree.DefaultedType) {
                 if (firstDefaulted==-1) {
                     firstDefaulted = i;
@@ -857,6 +864,7 @@ public class TypeVisitor extends Visitor {
         }
     }
 
+    @Override 
     public void visit(Tree.SequencedType that) {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
@@ -868,11 +876,24 @@ public class TypeVisitor extends Visitor {
         }
     }
 
+    @Override 
     public void visit(Tree.DefaultedType that) {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
             that.setTypeModel(type);
+        }
+    }
+
+    @Override 
+    public void visit(Tree.SpreadType that) {
+        super.visit(that);
+        Tree.Type t = that.getType();
+        if (t!=null) {
+            ProducedType type = t.getTypeModel();
+            if (type!=null) {
+                that.setTypeModel(type);
+            }
         }
     }
 
@@ -933,6 +954,15 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.ObjectArgument that) {
+        Class o = that.getAnonymousClass();
+        o.setExtendedType(null);
+        o.getSatisfiedTypes().clear();
+        defaultSuperclass(that.getExtendedType(), o);
+        super.visit(that);
+    }
+
+    @Override 
+    public void visit(Tree.ObjectExpression that) {
         Class o = that.getAnonymousClass();
         o.setExtendedType(null);
         o.getSatisfiedTypes().clear();

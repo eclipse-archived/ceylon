@@ -602,7 +602,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>This code is not legal, since the body of a function is an ordinary block:</para>
         
             <programlisting>Float->Float xy() {
-    Float x => y;  //compiler error: y is not referenceable
+    Float x => y;  //error: y is not referenceable
     Float y => x;
     return x->y;
 }</programlisting>
@@ -611,7 +611,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             section of the class body:</para>
         
             <programlisting>class Point() {
-    Float x => y;  //compiler error: y is not referenceable
+    Float x => y;  //error: y is not referenceable
     Float y => x;
     Float->Float xy = x->y;
 }</programlisting>
@@ -663,7 +663,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>The following code is not legal:</para>
             
             <programlisting>interface Point {
-    value x => y;  //compiler error: type of y is not inferrable
+    value x => y;  //error: type of y is not inferrable
     value y => x;
 }</programlisting>
             
@@ -1057,11 +1057,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>The persistent value of a forward-declared reference or the implementation 
             of a forward-declared function may be specified by a <emphasis>value specification 
             statement</emphasis>. The value specification statement consists of an unqualified 
-            value reference and an ordinary <literal>=</literal> specifier. The value reference 
-            must refer to a declaration which sequentially occurs earlier in the body in which 
-            the specification statement occurs.</para>
+            value reference, or a qualified value reference where the receiver expression is
+            `this`, and an ordinary <literal>=</literal> specifier. The value reference must 
+            refer to a declaration which sequentially occurs earlier in the body in which the 
+            specification statement occurs.</para>
             
-            <synopsis>ValueSpecification: MemberName Specifier ";"</synopsis>
+            <synopsis>ValueSpecification: ("this" ".")? MemberName Specifier ";"</synopsis>
             
             <para>The type of the specified expression must be assignable to the type of the 
             reference, or to the callable type of the function.</para>
@@ -1100,11 +1101,13 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>an unqualified value reference and a lazy 
+                    <para>an unqualified value reference, or a qualified value reference 
+                    where the receiver expression is `this`, and a lazy 
                     <literal>=&gt;</literal> specifier, or</para>
                 </listitem>
                 <listitem>
-                    <para>a unqualified callable reference, one or more parameter lists, 
+                    <para>a unqualified callable reference, or a qualified value reference 
+                    where the receiver expression is `this`, one or more parameter lists, 
                     and a lazy specifier.</para>
                 </listitem>
             </itemizedlist>
@@ -1120,7 +1123,7 @@ else {
             <literal>R</literal>. Then the type of the parameterized reference is
             <literal>R</literal>.</para>
             
-            <synopsis>ParameterizedReference: MemberName Parameters+</synopsis>
+            <synopsis>ParameterizedReference: ("this" ".")? MemberName Parameters+</synopsis>
             
             <para>Thus, the specification statement consists of a parameterized reference
             followed by a lazy specifier.</para>

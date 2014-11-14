@@ -131,15 +131,15 @@ public class ProducedTypeNamePrinter {
                     if (it.isNothing() && !nt.isNothing()) {
                     	return "{}";
                     }
-                    String etn = getProducedTypeName(it, unit);
+                    String itn = getProducedTypeName(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
                             it.getDeclaration() instanceof UnionType ||
                             it.getDeclaration() instanceof IntersectionType) {
-                        return "{" + etn + many + "}";
+                        return "{" + itn + many + "}";
                     }
                     else {
-                        return "{" + lt() + etn + gt() + many + "}";
+                        return "{" + lt() + itn + gt() + many + "}";
                     }
                 }
                 if (abbreviateEntry(pt)) {
@@ -150,14 +150,28 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateCallable(pt)) {
                     List<ProducedType> tal = pt.getTypeArgumentList();
                     ProducedType rt = tal.get(0);
-                    String paramTypes = getTupleElementTypeNames(tal.get(1), unit);
-                    if (rt!=null && paramTypes!=null) {
-                        String rtn = getProducedTypeName(rt, unit);
-                        if (isPrimitiveAbbreviatedType(rt)) {
+                    ProducedType at = tal.get(1);
+                    if (abbreviateCallableArg(at)) {
+                        String paramTypes = getTupleElementTypeNames(at, unit);
+                        if (rt!=null && paramTypes!=null) {
+                            String rtn = getProducedTypeName(rt, unit);
+                            if (!isPrimitiveAbbreviatedType(rt)) {
+                                rtn = lt() + rtn + gt();
+                            }
                             return rtn + "(" + paramTypes + ")";
                         }
-                        else {
-                            return lt() + rtn + gt() + "(" + paramTypes + ")";
+                    }
+                    else {
+                        if (rt!=null && at!=null) {
+                            String rtn = getProducedTypeName(rt, unit);
+                            String atn = getProducedTypeName(at, unit);
+                            if (!isPrimitiveAbbreviatedType(at)) {
+                                atn = lt() + atn + gt();
+                            }
+                            if (!isPrimitiveAbbreviatedType(rt)) {
+                                rtn = lt() + rtn + gt();
+                            }
+                            return rtn + "(*" + atn + ")";
                         }
                     }
                 }
@@ -300,8 +314,8 @@ public class ProducedTypeNamePrinter {
             Interface callableDeclaration = pt.getDeclaration().getUnit().getCallableDeclaration();
             return  pt.getDeclaration().equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
-                    pt.getTypeArgumentList().get(0)!=null && 
-                    abbreviateCallableArg(pt.getTypeArgumentList().get(1));
+                    pt.getTypeArgumentList().get(0)!=null /*&& 
+                    abbreviateCallableArg(pt.getTypeArgumentList().get(1))*/;
         }
         else {
             return false;

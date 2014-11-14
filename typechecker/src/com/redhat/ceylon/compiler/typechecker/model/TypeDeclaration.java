@@ -364,25 +364,14 @@ public abstract class TypeDeclaration extends Declaration
     public boolean inherits(TypeDeclaration dec) {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        if (this instanceof UnionType) {
-            ProducedType st = getType().getSupertype(dec);
-            return st!=null && !st.isNothing();
-        }
-        if (this instanceof ClassOrInterface && 
-        	dec instanceof ClassOrInterface && 
-        		equals(dec)) {
-        	return true;
-        }
         for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
             if (t.inherits(dec)) {
                 return true;
             }
         }
         TypeDeclaration et = getExtendedTypeDeclaration();
-        if (et!=null) {
-            if (et.inherits(dec)) {
-                return true;
-            }
+        if (et!=null && et.inherits(dec)) {
+            return true;
         }
         return false;
     }

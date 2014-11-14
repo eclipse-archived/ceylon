@@ -243,7 +243,8 @@ void switchInterface(Interface i) {
     case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
-        
+    
+    @error    
     switch(i)
     case (is Class4) {}
     case (is Class1) {}

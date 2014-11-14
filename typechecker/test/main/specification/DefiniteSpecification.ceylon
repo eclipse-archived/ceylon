@@ -685,3 +685,31 @@ class LocalFatArrows() {
     Integer fee { @error return fee; }
     Integer fum() { return fum(); }
 }
+
+void moreDefiniteSpec() {
+    class Count(shared Integer count){}
+    void fold2() {}
+    Integer integer=0;
+    @error integer++;
+    @error print(integer=10);
+    @error print++;
+    @error print=nothing;
+    @error print(print=nothing);
+    @error fold2++;
+    @error fold2=nothing;
+    @error print(fold2=nothing);
+    @error Count(12).count++;
+    @error Count(12).count=1;
+    @error print(Count(12).count=1);
+
+}
+
+class Trompon() {
+    shared String name;
+    this.name = "Trompon";
+    print(name);
+    print(this.name);
+    string=>name;
+    shared String getName();
+    this.getName() => name.uppercased;
+}

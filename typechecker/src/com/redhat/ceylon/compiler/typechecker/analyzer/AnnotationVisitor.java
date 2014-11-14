@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -315,6 +316,9 @@ public class AnnotationVisitor extends Visitor {
             if (t!=null && t.getDeclaration()!=null) {
                 if (t.getDeclaration().isAnnotation()) {
                     TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
+                    if (t.getDeclaration() instanceof NothingType) {
+                        that.addError("annotation constructor may not return 'Nothing'");
+                    }
                     if (!t.getDeclaration().inherits(annotationDec)) {
                         that.addError("annotation constructor must return a subtype of 'Annotation'");
                     }
