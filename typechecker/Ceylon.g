@@ -2060,26 +2060,33 @@ defaultCaseExpression returns [ElseClause clause]
 
 ifExpression returns [IfExpression term]
     : IF_CLAUSE
-      { $term = new IfExpression(null); 
-        IfClause ic = new IfClause($IF_CLAUSE);
-        ElseClause ec = new ElseClause(null);
-        $term.setIfClause(ic);
-        $term.setElseClause(ec); } 
-      conditions
-      { $term.getIfClause().setConditionList($conditions.conditionList); }
+      { $term = new IfExpression($IF_CLAUSE); }
+      thenElseClauses
+      { $term.setIfClause($thenElseClauses.ifClause);
+        $term.setElseClause($thenElseClauses.elseClause);
+        if ($thenElseClauses.ifClause==null && $thenElseClauses.conditionList!=null) 
+            $term.setIfClause(new IfClause(null));
+        $term.getIfClause().setConditionList($thenElseClauses.conditionList); }
+    ;
+
+thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
+    : conditions
+      { $conditionList = $conditions.conditionList; }
       (
         THEN_CLAUSE
+        { $ifClause = new IfClause($THEN_CLAUSE); }
         de1=disjunctionExpression
-        { Expression e = new Expression($THEN_CLAUSE);
+        { Expression e = new Expression(null);
           e.setTerm($de1.term);
-          $term.getIfClause().setExpression(e); }
+          $ifClause.setExpression(e); }
       )?
       (
         ELSE_CLAUSE
+        { $elseClause = new ElseClause($ELSE_CLAUSE); }
         de2=disjunctionExpression
-        { Expression e = new Expression($ELSE_CLAUSE);
+        { Expression e = new Expression(null);
           e.setTerm($de2.term);
-          $term.getElseClause().setExpression(e); }
+          $elseClause.setExpression(e); }
       )?
     ;
 
