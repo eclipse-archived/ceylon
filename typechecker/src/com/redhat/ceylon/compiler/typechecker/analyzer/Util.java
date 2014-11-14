@@ -698,23 +698,31 @@ public class Util {
         }
     }
 
-    private static boolean isIndirectInvocation(Tree.MemberOrTypeExpression mte) {
-        ProducedReference prf = mte.getTarget();
-        if (prf==null || 
-                mte.getStaticMethodReference() && 
-                    !prf.getDeclaration().isStaticallyImportable() ||
-                !prf.isFunctional() || 
-                //type parameters are not really callable even though they are Functional
-                prf.getDeclaration() instanceof TypeParameter) {
+    private static boolean isIndirectInvocation(Tree.MemberOrTypeExpression that) {
+        ProducedReference prf = that.getTarget();
+        if (prf==null) {
             return true;
         }
-        else if (mte.getStaticMethodReference() && 
-                mte instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.Primary primary = 
-                    ((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary();
-            return isIndirectInvocation(primary);
+        else {
+            Declaration d = prf.getDeclaration();
+            if (!prf.isFunctional() || 
+                    //type parameters are not really callable 
+                    //even though they are Functional
+                    d instanceof TypeParameter) {
+                return true;
+            }
+            if (that.getStaticMethodReference()) {
+                if (d.isStaticallyImportable()) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) that;
+                    return isIndirectInvocation(qmte.getPrimary());
+                }
+                else {
+                    return true;
+                }
+            }
+            return false;
         }
-        return false;
     }
     
     public static boolean isInstantiationExpression(Tree.Expression e) {
