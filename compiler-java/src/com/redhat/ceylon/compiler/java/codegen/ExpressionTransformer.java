@@ -3387,22 +3387,31 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             at(builder.getNode());
             JCExpression expr = null;
-            if (Strategy.generateInstantiator(builder.getPrimaryDeclaration())
-                    && builder.getPrimaryDeclaration().getContainer() instanceof Interface) {
+            Scope outerDeclaration;
+            if (primaryDeclaration instanceof Constructor) {
+                outerDeclaration= builder.getPrimaryDeclaration().getContainer().getContainer();
+            } else {
+                outerDeclaration= builder.getPrimaryDeclaration().getContainer();
+            }
+            
+            if ((Strategy.generateInstantiator(builder.getPrimaryDeclaration())
+                    || (builder.getPrimaryDeclaration() instanceof Class
+                    && ((Class)builder.getPrimaryDeclaration()).hasConstructors()))
+                    && outerDeclaration instanceof Interface) {
                 // If the subclass is inner to an interface then it will be 
                 // generated inner to the companion and we need to qualify the 
                 // super(), *unless* the subclass is nested within the same 
                 // interface as it's superclass.
                 Scope outer = builder.getSub().getContainer();
                 while (!(outer instanceof Package)) {
-                    if (outer == builder.getPrimaryDeclaration().getContainer()) {
+                    if (outer == outerDeclaration) {
                         expr = naming.makeSuper();
                         break;
                     }
                     outer = outer.getContainer();
                 }
                 if (expr == null) {
-                    Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
+                    Interface iface = (Interface)outerDeclaration;
                     JCExpression superQual;
                     if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
                         superQual = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), iface);
