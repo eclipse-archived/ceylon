@@ -24,6 +24,14 @@ object a411 {
     value aa = b411;
 }
 
+shared class Fuera455<A>() {
+  shared object dentro {
+    shared void conv(A t) {
+      check(`A`==`String`, "Related to #455 something's wrong");
+    }
+  }
+}
+
 void test_objects() {
   print("testing objects");
   value t1 = TestObjects(1,2,3).iterator();
@@ -53,5 +61,10 @@ void test_objects() {
   } catch (InitializationError er) {
     check(er.message == "Cyclic initialization trying to read the value of 'a411' before it was set",
           "InitializationError message ``er.message``");
+  }
+  try {
+    Fuera455<String>().dentro.conv("X");
+  } catch (Throwable t) {
+    fail("#455");
   }
 }
