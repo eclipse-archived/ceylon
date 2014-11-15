@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -1110,7 +1111,7 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.ClassDeclaration that) {
-        Class td = that.getDeclarationModel();
+        ClassAlias td = (ClassAlias) that.getDeclarationModel();
         td.setExtendedType(null);
         super.visit(that);
         Tree.ClassSpecifier cs = that.getClassSpecifier();
@@ -1146,12 +1147,13 @@ public class TypeVisitor extends Visitor {
                     }
                     else*/
                     TypeDeclaration dec = type.getDeclaration();
+                    td.setConstructor(dec);
                     if (dec instanceof Constructor) {
                         type = type.getExtendedType();
                         dec = dec.getExtendedTypeDeclaration();
                     }
                     if (dec instanceof Class) {
-                        that.getDeclarationModel().setExtendedType(type);
+                        td.setExtendedType(type);
                     }
                     else {
                         ct.addError("not a class: '" + dec.getName(unit) + "'");
