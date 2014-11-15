@@ -39,3 +39,11 @@ Boolean testSwitchExpression(Anything x) =>
   case (is Integer) x==1
   case (is Null) false
   else x is String;
+
+void testLetExpressions() {
+  value x=2;
+  value y=3;
+  check(let (dist = x^2+y^2) [x+dist,y+dist] == [15,16], "Let expr 1");
+  //check((let (e="K"->1, k=e.key, v=e.item) [v,k]) == [1,"K"], "Let expr 1");
+  //check((let (e="K"->1, k=e.key, v=k.lowercased) k->v) == "K"->"k", "Let expr 2");
+}
