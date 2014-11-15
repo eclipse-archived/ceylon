@@ -373,8 +373,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void initSelf(Node node) {
-        if (new NeedsThisVisitor(node).needsThisReference()) {
-            out("var ", names.self(prototypeOwner), "=this");
+        final NeedsThisVisitor ntv = new NeedsThisVisitor(node);
+        if (ntv.needsThisReference()) {
+            final String me=names.self(prototypeOwner);
+            out("var ", me, "=this");
+            if (ntv.needsOuterReference()) {
+                final Declaration od = Util.getContainingDeclaration(prototypeOwner);
+                if (od instanceof TypeDeclaration) {
+                    out(",", names.self((TypeDeclaration)od), "=", me, ".outer$");
+                }
+            }
             endLine(true);
         }
     }
@@ -382,6 +390,7 @@ public class GenerateJsVisitor extends Visitor
     /** Visitor that determines if a method definition will need the "this" reference. */
     class NeedsThisVisitor extends Visitor {
         private boolean refs=false;
+        private boolean outerRefs=false;
         NeedsThisVisitor(Node n) {
             if (prototypeOwner != null) {
                 n.visit(this);
@@ -396,19 +405,15 @@ public class GenerateJsVisitor extends Visitor
         @Override public void visit(Tree.Super that) {
             refs = true;
         }
-        public void visit(Tree.MemberOrTypeExpression that) {
-            if (refs)return;
-            if (that.getDeclaration() == null) {
-                //Some expressions in dynamic blocks can have null declarations
-                super.visit(that);
-                return;
-            }
-            final Scope origScope = that.getDeclaration().getContainer();
+        private boolean check(final Scope origScope) {
             Scope s = origScope;
             while (s != null) {
                 if (s == prototypeOwner || (s instanceof TypeDeclaration && prototypeOwner.inherits((TypeDeclaration)s))) {
                     refs = true;
-                    return;
+                    if (prototypeOwner.isAnonymous() && prototypeOwner.isMember()) {
+                        outerRefs=true;
+                    }
+                    return true;
                 }
                 s = s.getContainer();
             }
@@ -419,14 +424,33 @@ public class GenerateJsVisitor extends Visitor
                         (s instanceof TypeDeclaration && origScope instanceof TypeDeclaration
                                 && ((TypeDeclaration)s).inherits((TypeDeclaration)origScope))) {
                     refs = true;
-                    return;
+                    return true;
                 }
                 s = s.getContainer();
             }
-            super.visit(that);
+            return false;
+        }
+        public void visit(Tree.MemberOrTypeExpression that) {
+            if (refs)return;
+            if (that.getDeclaration() == null) {
+                //Some expressions in dynamic blocks can have null declarations
+                super.visit(that);
+                return;
+            }
+            if (!check(that.getDeclaration().getContainer())) {
+                super.visit(that);
+            }
+        }
+        public void visit(Tree.Type that) {
+            if (!check(that.getTypeModel().getDeclaration())) {
+                super.visit(that);
+            }
         }
         boolean needsThisReference() {
             return refs;
+        }
+        boolean needsOuterReference() {
+            return outerRefs;
         }
     }
 
