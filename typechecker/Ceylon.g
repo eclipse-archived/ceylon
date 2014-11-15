@@ -2095,9 +2095,11 @@ ifExpression returns [IfExpression term]
       thenElseClauses
       { $term.setIfClause($thenElseClauses.ifClause);
         $term.setElseClause($thenElseClauses.elseClause);
-        if ($thenElseClauses.ifClause==null && $thenElseClauses.conditionList!=null) 
-            $term.setIfClause(new IfClause(null));
-        $term.getIfClause().setConditionList($thenElseClauses.conditionList); }
+        if ($thenElseClauses.conditionList!=null) {
+            if ($thenElseClauses.ifClause==null) 
+                $term.setIfClause(new IfClause(null));
+            $term.getIfClause().setConditionList($thenElseClauses.conditionList); 
+        } }
     ;
 
 thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
