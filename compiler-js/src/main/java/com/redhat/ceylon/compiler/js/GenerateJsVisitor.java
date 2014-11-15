@@ -1488,6 +1488,8 @@ public class GenerateJsVisitor extends Visitor
         BmeGenerator.generateBme(that, this, false);
     }
 
+    /** Tells whether a declaration can be accessed directly (using its name) or
+     * through its getter. */
     boolean accessDirectly(Declaration d) {
         return !accessThroughGetter(d) || directAccess.contains(d) || d.isParameter();
     }
@@ -3144,6 +3146,11 @@ public class GenerateJsVisitor extends Visitor
         if (!isNaturalLiteral(that.getExpression().getTerm())) {
             super.visit(that);
         }
+    }
+
+    @Override public void visit(Tree.LetExpression that) {
+        if (errVisitor.hasErrors(that))return;
+        FunctionHelper.generateLet(that, directAccess, this);
     }
 
     boolean isNaturalLiteral(Tree.Term that) {
