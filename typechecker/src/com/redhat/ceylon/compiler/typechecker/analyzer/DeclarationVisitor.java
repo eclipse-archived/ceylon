@@ -925,6 +925,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ControlClause that) {
         ControlBlock cb = new ControlBlock();
+        cb.setLet(that instanceof Tree.LetClause);
         cb.setId(id++);
         that.setControlBlock(cb);
         visitElement(that, cb);
@@ -988,7 +989,9 @@ public class DeclarationVisitor extends Visitor {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
             if (scope instanceof ControlBlock) {
-                scope = scope.getContainer();
+                if (!((ControlBlock) scope).isLet()) {
+                    scope = scope.getContainer();
+                }
             }
             that.getSpecifierExpression().visit(this);
             scope = s;
