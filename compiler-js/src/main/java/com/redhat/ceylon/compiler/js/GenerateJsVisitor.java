@@ -377,6 +377,8 @@ public class GenerateJsVisitor extends Visitor
         if (ntv.needsThisReference()) {
             final String me=names.self(prototypeOwner);
             out("var ", me, "=this");
+            //Code inside anonymous inner types sometimes gens direct refs to the outer instance
+            //We can detect if that's going to happen and declare the ref right here
             if (ntv.needsOuterReference()) {
                 final Declaration od = Util.getContainingDeclaration(prototypeOwner);
                 if (od instanceof TypeDeclaration) {
