@@ -54,7 +54,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
     return coimoddcl$(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
-  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
   atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'container',function(){return coicont$(that); },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,

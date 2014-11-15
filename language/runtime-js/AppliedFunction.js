@@ -46,7 +46,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   }
   atr$(f,'string',function(){
     return funmodstr$(f);
-  },undefined,$_Object({}).$prop$getString.$crtmm$);
+  },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
   atr$(f,'parameterTypes',function(){
     return funparamtypes(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);

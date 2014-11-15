@@ -57,7 +57,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
     if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
     return eq && this.typeArguments.equals(o.typeArguments);
   };
-  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that); },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
   atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'declaration',function(){
     return coimoddcl$(that);

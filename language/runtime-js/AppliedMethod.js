@@ -70,7 +70,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   }
   atr$($$appliedMethod,'string',function(){
     return funmodstr$($$appliedMethod);
-  },undefined,$_Object({}).$prop$getString.$crtmm$);
+  },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
   atr$($$appliedMethod,'container',function(){
     if (this.toplevel || getrtmm$$(this.tipo).$cont===0)return this.containingPackage;
     if (this.$parent===undefined)this.$parent=typeLiteral$meta({Type$typeLiteral:getrtmm$$(this.tipo).$cont});
