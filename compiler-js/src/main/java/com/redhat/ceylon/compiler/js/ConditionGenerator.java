@@ -201,10 +201,18 @@ public class ConditionGenerator {
     }
 
     void generateSwitch(Tree.SwitchStatement that) {
-        //Put the expression in a tmp var
-        final String expvar = names.createTempVariable();
+        final String expvar;
+        final Expression expr;
+        if (that.getSwitchClause().getSwitched().getExpression() == null) {
+            expvar = names.name(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+            expr = that.getSwitchClause().getSwitched().getVariable().getSpecifierExpression().getExpression();
+            directAccess.add(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        } else {
+            //Put the expression in a tmp var
+            expr = that.getSwitchClause().getSwitched().getExpression();
+            expvar = names.createTempVariable();
+        }
         gen.out("var ", expvar, "=");
-        final Expression expr = that.getSwitchClause().getExpression();
         expr.visit(gen);
         gen.endLine(true);
         //For each case, do an if
@@ -226,8 +234,17 @@ public class ConditionGenerator {
     }
 
     void generateSwitchExpression(Tree.SwitchExpression that) {
-        final String expvar = names.createTempVariable();
-        final Expression expr = that.getSwitchClause().getExpression();
+        final String expvar;
+        final Expression expr;
+        if (that.getSwitchClause().getSwitched().getExpression() == null) {
+            expvar = names.name(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+            expr = that.getSwitchClause().getSwitched().getVariable().getSpecifierExpression().getExpression();
+            directAccess.add(that.getSwitchClause().getSwitched().getVariable().getDeclarationModel());
+        } else {
+            //Put the expression in a tmp var
+            expr = that.getSwitchClause().getSwitched().getExpression();
+            expvar = names.createTempVariable();
+        }
         gen.out("function(", expvar, "){");
         //For each case, do an if
         boolean first = true;
