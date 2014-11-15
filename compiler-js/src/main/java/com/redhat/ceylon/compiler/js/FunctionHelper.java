@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -317,6 +318,24 @@ public class FunctionHelper {
         if (!gen.share(d)) { gen.out(";"); }
     }
 
+    static void generateLet(final Tree.LetExpression that, final Set<Declaration> directs, final GenerateJsVisitor gen) {
+        gen.out("function(){var ");
+        boolean first=true;
+        for (Tree.Variable var : that.getLetClause().getVariables()) {
+            if (!first)gen.out(",");
+            gen.out(gen.getNames().name(var.getDeclarationModel()), "=");
+            var.getSpecifierExpression().getExpression().visit(gen);
+            directs.add(var.getDeclarationModel());
+            first=false;
+        }
+        gen.out(";return ");
+        that.getLetClause().getExpression().visit(gen);
+        gen.out(";}()");
+        for (Tree.Variable var : that.getLetClause().getVariables()) {
+            directs.remove(var.getDeclarationModel());
+        }
+    }
+
     private static void closeMPL(List<MplData> mpl, ProducedType rt, GenerateJsVisitor gen) {
         for (int i=mpl.size()-1; i>0; i--) {
             final MplData pl = mpl.get(i);
@@ -360,4 +379,5 @@ public class FunctionHelper {
                     firstDefaulted);
         }
     }
+
 }
