@@ -44,7 +44,7 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
   atr$(that,'container',function(){ return coicont$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-  atr$(that,'string',function(){return coistr$(that);},undefined,$_Object({}).$prop$getString.$crtmm$);
+  atr$(that,'string',function(){return coistr$(that);},undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
   atr$(that,'hash',function(){return coihash$(that);},undefined,Identifiable.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'typeArguments',function(){return coitarg$(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
