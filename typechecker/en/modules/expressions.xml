@@ -451,11 +451,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation | Meta | Dec</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
-        operators, including assignment operators, and anonymous functions.</para>    
+        operators, including assignment operators, and using inline conditional 
+        expressions, anonymous class expressions, and anonymous functions.</para>    
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression | OperatorInvocation | OperatorMemberExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | ConditionalExpression</synopsis>
         
         <comment><para>Note: the grammar of operator expressions is defined by
         the table of operator precedence and associativity in 
@@ -1502,23 +1503,27 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="inlineanonymousclassexpressions">
             <title>Inline anonymous class expressions</title>
             
-            <comment>
-            <para>Should we support inline <literal>object</literal> declarations, for 
-            example:</para>
-            <programlisting>iterator => object satisfies Iterable&lt;Nothing&gt; { next() => finished; }</programlisting>
-            <para>Or, alternatively, a kind of named argument "instantiation" syntax for
-            interfaces and abstract classes:</para>
-            <programlisting>iterator => Iterable { next() => finished; }</programlisting>
-            <para>The first option is more flexible, but also more verbose. The second is
-            streamlined for the common case and might even be able to do type argument
-            inference as shown here.</para> 
+            <para>An inline anonymous class expression resembles an anonymous
+            class declaration as defined in <xref linkend="anonymousclasses"/>.
+            The expression defines the schema, supertypes, and implementation 
+            of a class. It does not specify a type name. Instead, the type has 
+            a name assigned internally by the compiler that is not available at 
+            compilation time. The type of the expression is the type of this 
+            class.</para>
             
-            <para>If we go with the first option, should we support inline <literal>class</literal> 
-            declarations? This would be like an inline <literal>object</literal> and an 
-            anonymous function rolled into one. We could even support <literal>class</literal>
-            arguments in named argument lists.</para>
-            </comment>
-        
+            <synopsis>ObjectExpression: "object" ObjectInheritance ClassBody</synopsis>
+            
+            <para>The class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>is implicitly <literal>final</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>may not declare <literal>default</literal> members.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
     </section>
