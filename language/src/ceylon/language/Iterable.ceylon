@@ -479,36 +479,34 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default {Result+} scan<Result>(Result initial)
            ("The accumulating function that accepts
              the running total and the next element."
-            Result accumulating(Result partial, Element element)) {
-        object iterable satisfies {Result+} {
-            empty => false;
-            first => initial;
-            size => 1 + outer.size;
-            shared actual Iterator<Result> iterator() {
-                value iter = outer.iterator();
-                object iterator satisfies Iterator<Result> {
-                    variable value returnInitial = true;
-                    variable value partial = initial;
-                    shared actual Result|Finished next() {
-                        if (returnInitial) {
-                            returnInitial = false;
-                            return initial;
-                        }
-                        else if (!is Finished element = iter.next()) {
-                            partial = accumulating(partial, element);
-                            return partial;
-                        }
-                        else {
-                            return finished;
-                        }
+        Result accumulating(Result partial, Element element))
+            => object 
+            satisfies {Result+} {
+        empty => false;
+        first => initial;
+        size => 1 + outer.size;
+        shared actual Iterator<Result> iterator() {
+            value iter = outer.iterator();
+            return object satisfies Iterator<Result> {
+                variable value returnInitial = true;
+                variable value partial = initial;
+                shared actual Result|Finished next() {
+                    if (returnInitial) {
+                        returnInitial = false;
+                        return initial;
                     }
-                    string => outer.string + ".iterator()";
+                    else if (!is Finished element = iter.next()) {
+                        partial = accumulating(partial, element);
+                        return partial;
+                    }
+                    else {
+                        return finished;
+                    }
                 }
-                return iterator;
-            }
+                //string => outer.string + ".iterator()";
+            };
         }
-        return iterable;
-    }
+    };
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, or 
@@ -755,15 +753,15 @@ shared interface Iterable<out Element, out Absent=Null>
      stream has no elements. If the specified number of 
      elements to skip is zero or fewer, the resulting stream 
      contains the same elements as this stream."
-    see (`function List.sublistFrom`, 
-         `function skipWhile`, 
+    see (`function List.sublistFrom`,
+         `function skipWhile`,
          `function take`)
     shared default {Element*} skip(Integer skipping) {
         if (skipping <= 0) {
             return this;
         }
         else {
-            object iterable 
+            return object 
                     satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
                     //TODO: iterator has wrong string
@@ -773,8 +771,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             !iter.next() is Finished) {}
                     return iter;
                 }
-            }
-            return iterable;
+            };
         }
     }
     
@@ -795,24 +792,22 @@ shared interface Iterable<out Element, out Absent=Null>
             return {}; 
         }
         else {
-            object iterable 
+            return object 
                     satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
-                    object iterator
+                    return object
                             satisfies Iterator<Element> {
                         variable value i=0;
                         actual shared Element|Finished next() {
                             return ++i>taking then finished
-                                    else iter.next();
+                                              else iter.next();
                         }
-                        string => outer.string + ".iterator()";
-                    }
-                    return iterator;
+                        //string => outer.string + ".iterator()";
+                    };
                 }
-                shared actual Element? first => outer.first;
-            }
-            return iterable;
+                first => outer.first;
+            };
         }
     }
     
@@ -825,35 +820,32 @@ shared interface Iterable<out Element, out Absent=Null>
             "The function that returns `false` when the 
              resulting stream should stop skipping
              elements from the stream."
-            Boolean skipping(Element element)) {
-        object iterable 
-                satisfies {Element*} {
-            shared actual Iterator<Element> iterator() {
-                value iter = outer.iterator();
-                while (!is Finished elem=iter.next()) {
-                    if (!skipping(elem)) {
-                        object iterator 
-                                satisfies Iterator<Element> {
-                            variable Boolean first=true;
-                            actual shared Element|Finished next() {
-                                if (first) {
-                                    first=false;
-                                    return elem;
-                                }
-                                else {
-                                    return iter.next();
-                                }
+            Boolean skipping(Element element)) 
+            => object 
+            satisfies {Element*} {
+        shared actual Iterator<Element> iterator() {
+            value iter = outer.iterator();
+            while (!is Finished elem = iter.next()) {
+                if (!skipping(elem)) {
+                    return object 
+                            satisfies Iterator<Element> {
+                        variable Boolean first=true;
+                        actual shared Element|Finished next() {
+                            if (first) {
+                                first=false;
+                                return elem;
                             }
-                            string => outer.string + ".iterator()";
+                            else {
+                                return iter.next();
+                            }
                         }
-                        return iterator;
-                    }
+                        //string => outer.string + ".iterator()";
+                    };
                 }
-                return emptyIterator;
             }
+            return emptyIterator;
         }
-        return iterable;
-    }
+    };
     
     "Produces a stream containing the leading elements of 
      this stream until the given [[predicate function|taking]]
@@ -864,32 +856,29 @@ shared interface Iterable<out Element, out Absent=Null>
             "The function that returns `false` when the 
              resulting stream should stop taking elements
              from this stream."
-            Boolean taking(Element element)) {
-        object iterable 
-                satisfies {Element*} {
-            shared actual Iterator<Element> iterator() {
-                value iter = outer.iterator();
-                object iterator 
-                        satisfies Iterator<Element> {
-                    variable Boolean alive = true;
-                    actual shared Element|Finished next() {
-                        if (alive, !is Finished next = iter.next()) {
-                            if (taking(next)) {
-                                return next;
-                            }
-                            else {
-                                alive = false;
-                            }
+            Boolean taking(Element element)) 
+            => object 
+            satisfies {Element*} {
+        shared actual Iterator<Element> iterator() {
+            value iter = outer.iterator();
+            return object 
+                    satisfies Iterator<Element> {
+                variable Boolean alive = true;
+                actual shared Element|Finished next() {
+                    if (alive, !is Finished next = iter.next()) {
+                        if (taking(next)) {
+                            return next;
                         }
-                        return finished;
+                        else {
+                            alive = false;
+                        }
                     }
-                    string => outer.string + ".iterator()";
+                    return finished;
                 }
-                return iterator;
-            }
+                //string => outer.string + ".iterator()";
+            };
         }
-        return iterable;
-    }
+    };
     
     "Produces a stream formed by repeating the elements of 
      this stream the [[given number of times|times]], or an 
@@ -901,14 +890,13 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 1, 2, 1, 2, 1, 2 }`."
     see (`value cycled`)
-    shared default {Element*} repeat(Integer times) {
-        object iterable satisfies {Element*} {
-            size => times * outer.size;
-            string => "(``outer.string``).repeat(``times``)";
-            iterator() => CycledIterator(outer,times);
-        }
-        return iterable;
-    }
+    shared default {Element*} repeat(Integer times) 
+            => object 
+            satisfies {Element*} {
+        size => times * outer.size;
+        string => "(``outer.string``).repeat(``times``)";
+        iterator() => CycledIterator(outer,times);
+    };
     
     "Produces a stream containing every [[step]]th element 
      of this stream. If the step size is `1`, the resulting
@@ -931,26 +919,24 @@ shared interface Iterable<out Element, out Absent=Null>
             return this;
         } 
         else {
-            object iterable 
+            return object
                     satisfies Iterable<Element,Absent> {
                 string => "(``outer.string``).by(``step``)";
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
-                    object iterator 
+                    return object 
                             satisfies Iterator<Element> {
                         shared actual Element|Finished next() {
                             value next = iter.next();
                             variable value i=0;
                             while (++i<step && 
-                                    !iter.next() is Finished) {}
+                                !iter.next() is Finished) {}
                             return next;
                         }
-                        string => outer.string + ".iterator()";
-                    }
-                    return iterator;
+                        //string => outer.string + ".iterator()";
+                    };
                 }
-            }
-            return iterable;
+            };
         }
     }
     
@@ -994,29 +980,27 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
-    shared default Iterable<<Integer->Element>,Absent> indexed {
-        object indexes
-                satisfies Iterable<<Integer->Element>,Absent> {
-            shared actual Iterator<Integer->Element> iterator() {
-                value iter = outer.iterator();
-                object iterator 
-                        satisfies Iterator<Integer->Element> {
-                    variable value i=0;
-                    shared actual <Integer->Element>|Finished next() {
-                        if (!is Finished next = iter.next()) {
-                            return i++->next;
-                        }
-                        else {
-                            return finished;
-                        }
+    shared default Iterable<<Integer->Element>,Absent> indexed 
+            => object
+            satisfies Iterable<<Integer->Element>,Absent> {
+        shared actual Iterator<Integer->Element> iterator() {
+            value iter = outer.iterator();
+            return object 
+                    satisfies Iterator<Integer->Element> {
+                variable value i=0;
+                shared actual <Integer->Element>|Finished next() {
+                    if (!is Finished next = iter.next()) {
+                        return i++->next;
                     }
-                    string => outer.string + ".iterator()";
+                    else {
+                        return finished;
+                    }
                 }
-                return iterator;
-            }
+                //TODO: compiler bug, fix!!
+                //string => outer.string + ".iterator()";
+            };
         }
-        return indexes;
-    }
+    };
     
     "A stream containing whose elements are pairs (2-tuples)
      comprising an element of this stream paired with the 
@@ -1037,35 +1021,32 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`."
-    shared default {[Element,Element]*} paired {
-         object pairs 
-                 satisfies {[Element,Element]*} {
-             shared actual Integer size {
-                 value size = outer.size-1;
-                 return size<0 then 0 else size;
-             }
-             empty => outer.size<2;
-             shared actual Iterator<[Element,Element]> iterator() {
-                 value iter = outer.iterator();
-                 object iterator 
-                         satisfies Iterator<[Element,Element]> {
-                     variable value previous = iter.next();
-                     shared actual [Element,Element]|Finished next() {
-                         if (!is Finished head = previous,
-                             !is Finished tip = iter.next()) {
-                             previous = tip;
-                             return [head, tip];
-                         }
-                         else {
-                             return finished;
-                         }
-                     }
-                 }
-                 return iterator;
-             }
-         }
-         return pairs;
-    }
+    shared default {[Element,Element]*} paired 
+            => object 
+            satisfies {[Element,Element]*} {
+        shared actual Integer size {
+            value size = outer.size-1;
+            return size<0 then 0 else size;
+        }
+        empty => outer.size<2;
+        shared actual Iterator<[Element,Element]> iterator() {
+            value iter = outer.iterator();
+            return object
+                    satisfies Iterator<[Element,Element]> {
+                variable value previous = iter.next();
+                shared actual [Element,Element]|Finished next() {
+                    if (!is Finished head = previous,
+                        !is Finished tip = iter.next()) {
+                        previous = tip;
+                        return [head, tip];
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+            };
+        }
+    };
     
     "Produces a stream of sequences of the given [[length]],
      containing elements of this stream. Each sequence in 
@@ -1091,7 +1072,7 @@ shared interface Iterable<out Element, out Absent=Null>
     Iterable<[Element+],Absent> partition(Integer length) {
         "length must be strictly positive"
         assert (length>0);
-        object chunks 
+        return object 
                 satisfies Iterable<[Element+],Absent> {
             shared actual Integer size {
                 value outerSize = outer.size;
@@ -1102,7 +1083,8 @@ shared interface Iterable<out Element, out Absent=Null>
             empty => outer.empty;
             shared actual Iterator<[Element+]> iterator() {
                 value iter = outer.iterator();
-                object iterator satisfies Iterator<[Element+]> {
+                return object 
+                        satisfies Iterator<[Element+]> {
                     shared actual [Element+]|Finished next() {
                         if (!is Finished next = iter.next()) {
                             value array = arrayOfSize(length, next);
@@ -1121,11 +1103,9 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
-                }
-                return iterator;
+                };
             }
-        }
-        return chunks;
+        };
     }
     
     "Produces a stream with a given [[initial element|head]], 
@@ -1159,13 +1139,11 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function expand`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
-             given OtherAbsent satisfies Null {
-        object chained 
-                satisfies Iterable<Element|Other,Absent&OtherAbsent> {
-            iterator() => ChainedIterator(outer, other);
-        }
-        return chained;
-    }
+            given OtherAbsent satisfies Null 
+            => object 
+            satisfies Iterable<Element|Other,Absent&OtherAbsent> {
+        iterator() => ChainedIterator(outer, other);
+    };
     
     "A stream of pairs of elements of this stream and the 
      the given stream, where for each element `x` of this
@@ -1194,34 +1172,31 @@ shared interface Iterable<out Element, out Absent=Null>
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
     see (`function repeat`)
-    shared default Iterable<Element,Absent> cycled {
-        object iterable satisfies Iterable<Element,Absent> {
-            value orig => outer;
-            string => "(``outer.string``).cycled";
-            shared actual Integer size {
-                "stream is infinite" 
-                assert (false); 
-            }
-            shared actual Iterator<Element> iterator() {
-                object iterator satisfies Iterator<Element> {
-                    variable Iterator<Element> iter = emptyIterator;
-                    shared actual Element|Finished next() {
-                        if (!is Finished next = iter.next()) {
-                            return next;
-                        }
-                        else {
-                            iter = orig.iterator();
-                            return iter.next();
-                        }
-                        
-                    }
-                    string => outer.string + ".iterator()";
-                }
-                return iterator;
-            }
+    shared default Iterable<Element,Absent> cycled 
+            => object 
+            satisfies Iterable<Element,Absent> {
+        value orig => outer;
+        string => "(``outer.string``).cycled";
+        shared actual Integer size {
+            "stream is infinite" 
+            assert (false); 
         }
-        return iterable;
-    }
+        iterator() => object
+                satisfies Iterator<Element> {
+            variable Iterator<Element> iter = emptyIterator;
+            shared actual Element|Finished next() {
+                if (!is Finished next = iter.next()) {
+                    return next;
+                }
+                else {
+                    iter = orig.iterator();
+                    return iter.next();
+                }
+                
+            }
+            //string => outer.string + ".iterator()";
+        };
+    };
     
     "A stream that contains the given [[element]] interposed
      between blocks of [[step]] elements of this stream. The
@@ -1249,22 +1224,21 @@ shared interface Iterable<out Element, out Absent=Null>
         Integer step=1) {
         "step must be strictly positive"
         assert (step>=1);
-        object interposed satisfies Iterable<Element|Other,Absent> {
+        return object
+                satisfies Iterable<Element|Other,Absent> {
             shared actual Integer size {
                 value outerSize = outer.size;
-                if (outerSize>0) {
-                    return outerSize + (outerSize-1)/step;
-                }
-                else {
-                    return 0;
-                }
+                return if (outerSize>0) 
+                    then outerSize + (outerSize-1)/step 
+                    else 0;
             }
             empty => outer.empty;
             first => outer.first;
             last => outer.last;
             shared actual Iterator<Element|Other> iterator() {
                 value iter = outer.iterator();
-                object iterator satisfies Iterator<Element|Other> {
+                return object 
+                        satisfies Iterator<Element|Other> {
                     variable value current = iter.next();
                     variable value count = 0;
                     shared actual Element|Other|Finished next() {
@@ -1281,11 +1255,10 @@ shared interface Iterable<out Element, out Absent=Null>
                             return finished;
                         }
                     }
-                }
-                return iterator;
+                    //string => outer.string + ".iterator()";
+                };
             }
-        }
-        return interposed;
+        };
     }
     
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
@@ -1320,3 +1293,5 @@ Boolean ifExists(Boolean predicate(Object val))(Anything val) {
         return false;
     }
 }
+        //TODO: compiler bug: 
+        //=> if (exists val) then predicate(val) else false;

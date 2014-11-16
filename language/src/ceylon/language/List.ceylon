@@ -132,8 +132,7 @@ shared interface List<out Element>
             => getFromFirst(index);
     
     Element getElement(Integer index) {
-        value element = getFromFirst(index);
-        if (exists element) { 
+        if (exists element = getFromFirst(index)) { 
             return element;
         }
         else {
@@ -144,15 +143,14 @@ shared interface List<out Element>
     
     shared actual default Iterator<Element> iterator() {
         if (size>0) {
-            object listIterator
+            return object
                     satisfies Iterator<Element> {
                 variable Integer index = 0;
                 value size = outer.size;
                 next() => index>=size then finished 
                                       else getElement(index++);
                 string => outer.string + ".iterator()";
-            }
-            return listIterator;
+            };
         }
         else {
             return emptyIterator;
@@ -435,12 +433,9 @@ shared interface List<out Element>
             Anything element) {
         value elem = getFromFirst(index);
         if (exists element) {
-            if (exists elem) {
-                return elem==element;
-            }
-            else {
-                return false;
-            }
+            return if (exists elem) 
+                then elem==element 
+                else false;
         }
         else {
             return !elem exists;
@@ -670,8 +665,8 @@ shared interface List<out Element>
     shared default List<Element> terminal(Integer length) 
             => this[size-length...];
     
-    shared actual default List<Element> span
-                            (Integer from, Integer to) {
+    shared actual default 
+    List<Element> span(Integer from, Integer to) {
         if (size>0) {
             value end = size-1;
             if (from <= to) {
@@ -690,7 +685,8 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> spanFrom(Integer from) {
+    shared actual default 
+    List<Element> spanFrom(Integer from) {
         if (from<=0) {
             return clone();
         }
@@ -702,7 +698,8 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> spanTo(Integer to) {
+    shared actual default 
+    List<Element> spanTo(Integer to) {
         if (to>=size-1) {
             return this;
         }
@@ -714,8 +711,8 @@ shared interface List<out Element>
         }
     }
     
-    shared actual default List<Element> measure
-                            (Integer from, Integer length) {
+    shared actual default 
+    List<Element> measure(Integer from, Integer length) {
         if (length>size) {
             return this;
         }
@@ -741,14 +738,10 @@ shared interface List<out Element>
                     satisfies List<Result> {
                 lastIndex => outer.lastIndex;
                 size = outer.size;
-                shared actual Result? getFromFirst(Integer index) {
-                    if (0<=index<size) {
-                        return collecting(outer.getElement(index));
-                    }
-                    else {
-                        return null;
-                    }
-                }
+                getFromFirst(Integer index)
+                        => if (0<=index<size) 
+                        then collecting(outer.getElement(index))
+                        else null;
             }
             return ArraySequence(Array(list));
         }
@@ -773,23 +766,16 @@ shared interface List<out Element>
         spanFrom(Integer from) => clone()[from...];
         spanTo(Integer to) => clone()[...to];
         
-        shared actual String string {
-            if (exists endIndex=lastIndex) {
-                return "{ 0, ... , ``endIndex`` }";
-            }
-            else {
-                return "{}";
-            }
-        }
+        string => if (exists endIndex=lastIndex)
+                then "{ 0, ... , ``endIndex`` }"
+                else "{}";
         
-        shared actual Iterator<Integer> iterator() {
-            object iterator satisfies Iterator<Integer> {
-                variable value i=0;
-                next() => i<size then i++ else finished;
-                string => "``outer.string``.iterator()";
-            }
-            return iterator;
-        }
+        iterator() => object
+                satisfies Iterator<Integer> {
+            variable value i=0;
+            next() => i<size then i++ else finished;
+            string => "``outer.string``.iterator()";
+        };
         
     }
     
@@ -799,14 +785,10 @@ shared interface List<out Element>
         
         assert (from>=0);
         
-        shared actual Element? getFromFirst(Integer index) {
-            if (index<0) {
-                return null;
-            }
-            else {
-                return outer.getFromFirst(index+from);
-            }
-        }
+        getFromFirst(Integer index) 
+                => if (index<0)
+                then null 
+                else outer.getFromFirst(index+from);
         
         shared actual Integer? lastIndex {
             value size = outer.size-from;
@@ -829,11 +811,11 @@ shared interface List<out Element>
             while (i++<from) {
                 iter.next();
             }
-            object iterator satisfies Iterator<Element> {
+            return object 
+                    satisfies Iterator<Element> {
                 next() => iter.next();
                 string => "``outer.string``.iterator()";
-            }
-            return iterator;
+            };
         }
         
     }
@@ -844,23 +826,15 @@ shared interface List<out Element>
         
         assert (to>=0);
         
-        shared actual Element? getFromFirst(Integer index) {
-            if (index>=0 && index<=to) {
-                return outer.getFromFirst(index);
-            }
-            else {
-                return null;
-            }
-        }
+        getFromFirst(Integer index)
+                => if (index>=0 && index<=to) 
+                then outer.getFromFirst(index)
+                else null;
         
         shared actual Integer? lastIndex {
             value endIndex = outer.size-1;
-            if (endIndex>=0) {
-                return endIndex<to then endIndex else to;
-            }
-            else {
-                return null;
-            }
+            return endIndex>=0
+                then (endIndex<to then endIndex else to);
         }
         
         measure(Integer from, Integer length) 
@@ -883,11 +857,11 @@ shared interface List<out Element>
         shared actual Iterator<Element> iterator() {
             value iter = outer.iterator();
             variable value i=0;
-            object iterator satisfies Iterator<Element> {
+            return object
+                    satisfies Iterator<Element> {
                 next() => i++>to then finished else iter.next();
                 string => "``outer.string``.iterator()";
-            }
-            return iterator;
+            };
         }
         
     }
@@ -905,12 +879,9 @@ shared interface List<out Element>
         
         shared actual Element? getFromFirst(Integer index) {
             value size = outer.size;
-            if (index<size*times) {
-                return outer.getFromFirst(index%size);
-            }
-            else {
-                return null;
-            }
+            return if (index<size*times) 
+                then outer.getFromFirst(index%size)
+                else null;
         }
         
         clone() => outer.clone().Repeat(times);
@@ -953,7 +924,7 @@ shared interface List<out Element>
         shared actual Iterator<Element|Other> iterator() {
             value iter = outer.iterator();
             value patchIter = list.iterator();
-            object iterator satisfies Iterator<Element|Other> {
+            return object satisfies Iterator<Element|Other> {
                 variable value index = -1;
                 shared actual Element|Other|Finished next() {
                     if (++index==from) {
@@ -969,8 +940,7 @@ shared interface List<out Element>
                     }
                 }
                 string => "``outer.string``.iterator()";
-            }
-            return iterator;
+            };
         }
         
     }
@@ -986,14 +956,10 @@ shared interface List<out Element>
         
         reversed => outer;
         
-        shared actual Element? getFromFirst(Integer index) {
-            if (size>0) {
-                return outer.getFromFirst(size-1-index);
-            }
-            else {
-                return null;
-            }
-        }
+        getFromFirst(Integer index)
+            => if (size>0)
+            then outer.getFromFirst(size-1-index)
+            else null;
         
         shared actual List<Element> measure(Integer from, Integer length) {
             if (size>0, length>1) {
@@ -1009,35 +975,29 @@ shared interface List<out Element>
         
         shared actual List<Element> spanFrom(Integer from) {
             value endIndex = size-1;
-            if (endIndex>=0, from<=endIndex) { 
-                return outer[endIndex-from..0];
-            }
-            else {
-                return [];
-            }
+            return if (endIndex>=0, from<=endIndex) 
+                then outer[endIndex-from..0]
+                else [];
         }
         
         shared actual List<Element> spanTo(Integer to) {
             value endIndex = size-1;
-            if (endIndex>=0, to>=0) { 
-                return outer[endIndex..endIndex-to];
-            }
-            else {
-                return [];
-            }
+            return if (endIndex>=0, to>=0)
+                then outer[endIndex..endIndex-to]
+                else [];
         }
         
         clone() => outer.clone().reversed;
         
         shared actual Iterator<Element> iterator() {
             value outerList=outer;
-            object iterator satisfies Iterator<Element> {
+            return object 
+                    satisfies Iterator<Element> {
                 variable value index=outerList.size-1;
                 next() => index<0 then finished 
                                   else outerList.getElement(index--);
                 string => "``outer.string``.iterator()";
-            }
-            return iterator;
+            };
         }
         
     }

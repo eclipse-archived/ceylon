@@ -123,7 +123,7 @@ shared interface Sequential<out Element>
      is empty. If the collection iterator produces the value 
      `null`, the string representation contains the string 
      `\"null\"`."
-    shared actual default String string => 
-            empty then "[]" else "[``commaList(this)``]";
+    shared actual default String string 
+            => empty then "[]" else "[``commaList(this)``]";
     
 }

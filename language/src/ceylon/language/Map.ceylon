@@ -106,38 +106,34 @@ shared interface Map<out Key,out Item>
     }
     
     "A [[Collection]] containing the keys of this map."
-    actual shared default Collection<Key> keys {
-        object keys
-                satisfies Collection<Key> {
-            contains(Object key) => outer.defines(key);
-            iterator() => { for (k->v in outer) k }.iterator();
-            clone() => [*this];
-            size => outer.size;
-        }
-        return keys;
-    }
+    actual shared default Collection<Key> keys
+            => object
+            satisfies Collection<Key> {
+        contains(Object key) => outer.defines(key);
+        iterator() => { for (k->v in outer) k }.iterator();
+        clone() => [*this];
+        size => outer.size;
+    };
     
     "A [[Collection]] containing the items stored in this 
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
-    shared default Collection<Item> items {
-        object items
-                satisfies Collection<Item> {
-            shared actual Boolean contains(Object item) {
-                for (k->v in outer) {
-                    if (exists v, v==item) {
-                        return true;
-                    }
+    shared default Collection<Item> items
+            => object
+            satisfies Collection<Item> {
+        shared actual Boolean contains(Object item) {
+            for (k->v in outer) {
+                if (exists v, v==item) {
+                    return true;
                 }
-                return false;
             }
-            iterator() => { for (k->v in outer) v }.iterator();
-            clone() => [*this];
-            size => outer.size;
+            return false;
         }
-        return items;
-    }
+        iterator() => { for (k->v in outer) v }.iterator();
+        clone() => [*this];
+        size => outer.size;
+    };
     
     "Produces a map with the same [[keys]] as this map. 
      For every key, the item is the result of applying the 
@@ -148,36 +144,34 @@ shared interface Map<out Key,out Item>
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
-            given Result satisfies Object {
-        object map
-                extends Object()
-                satisfies Map<Key,Result> {
-            
-            defines(Object key) => outer.defines(key);
-            
-            shared actual Result? get(Object key) {
-                if (is Key key, defines(key)) {
-                    assert (is Item item = outer[key]);
-                    return mapping(key, item);
-                }
-                else {
-                    return null;
-                }
+            given Result satisfies Object
+            => object
+            extends Object()
+            satisfies Map<Key,Result> {
+        
+        defines(Object key) => outer.defines(key);
+        
+        shared actual Result? get(Object key) {
+            if (is Key key, defines(key)) {
+                assert (is Item item = outer[key]);
+                return mapping(key, item);
             }
-            
-            function mapEntry(Key->Item entry) 
-                    => entry.key -> 
-                        mapping(entry.key, entry.item);
-            
-            iterator() => outer.map(mapEntry).iterator();
-            
-            size => outer.size;
-            
-            clone() => outer.clone().mapItems(mapping);
-            
+            else {
+                return null;
+            }
         }
-        return map;
-    }
+        
+        function mapEntry(Key->Item entry) 
+                => entry.key
+                -> mapping(entry.key, entry.item);
+        
+        iterator() => outer.map(mapEntry).iterator();
+        
+        size => outer.size;
+        
+        clone() => outer.clone().mapItems(mapping);
+        
+    };
     
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
@@ -186,39 +180,29 @@ shared interface Map<out Key,out Item>
         "The predicate function that filters the keys of 
          this map, determining if there is a corresponding
          entry in the resulting map."
-        Boolean filtering(Key key)) {
-        object map
-                extends Object()
-                satisfies Map<Key,Item> {
-            
-            shared actual Item? get(Object key) {
-                if (is Key key, filtering(key)) {
-                    return outer[key];
-                }
-                else {
-                    return null;
-                }
-            }
-            
-            shared actual Boolean defines(Object key) {
-                if (is Key key, filtering(key)) {
-                    return outer.defines(key);
-                }
-                else {
-                    return false;
-                }
-            }
-            
-            function filterEntry(Key->Item entry) 
-                    => filtering(entry.key);
-            
-            iterator() => outer.filter(filterEntry).iterator();
-            
-            clone() => outer.clone().filterKeys(filtering);
-            
-        }
-        return map;
-    }
+        Boolean filtering(Key key))
+            => object
+            extends Object()
+            satisfies Map<Key,Item> {
+        
+        get(Object key)
+                => if (is Key key, filtering(key))
+                then outer[key] 
+                else null;
+        
+        defines(Object key) 
+                => if (is Key key, filtering(key))
+                then outer.defines(key) 
+                else false;
+             
+        function filterEntry(Key->Item entry) 
+                => filtering(entry.key);
+        
+        iterator() => outer.filter(filterEntry).iterator();
+        
+        clone() => outer.clone().filterKeys(filtering);
+        
+    };
     
     "Produces a map whose keys are the union of the keys
      of this map, with the keys of the given [[map|other]].

@@ -100,14 +100,10 @@ shared sealed interface Sequence<out Element>
                 satisfies List<Result> {
             lastIndex => outer.lastIndex;
             size = outer.size;
-            shared actual Result? getFromFirst(Integer index) {
-                if (0<=index<size) {
-                    return collecting(outer.getElement(index));
-                }
-                else {
-                    return null;
-                }
-            }
+            getFromFirst(Integer index)
+                    => if (0<=index<size) 
+                    then collecting(outer.getElement(index))
+                    else null;
         }
         return ArraySequence(Array(list)); 
     }
@@ -128,27 +124,19 @@ shared sealed interface Sequence<out Element>
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
     shared actual default 
-    [Element|Other+] append<Other>(Other[] elements) {
-        if (nonempty elements) {
-            return JoinedSequence(this, elements);
-        }
-        else {
-            return this;
-        }
-    }
+    [Element|Other+] append<Other>(Other[] elements)
+            => if (nonempty elements) 
+            then JoinedSequence(this, elements)
+            else this;
     
     "Return a nonempty sequence containing the given 
      [[elements]], followed by the elements of this 
      sequence."
     shared actual default 
-    [Element|Other+] prepend<Other>(Other[] elements) {
-        if (nonempty elements) {
-            return JoinedSequence(elements, this);
-        }
-        else {
-            return this;
-        }
-    }
+    [Element|Other+] prepend<Other>(Other[] elements)
+            => if (nonempty elements)
+            then JoinedSequence(elements, this)
+            else this;
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
@@ -189,8 +177,7 @@ shared sealed interface Sequence<out Element>
             => (super of Sequential<Element>).string;
     
     Element getElement(Integer index) {
-        value element = getFromFirst(index);
-        if (exists element) { 
+        if (exists element = getFromFirst(index)) { 
             return element;
         }
         else {
@@ -227,33 +214,27 @@ shared sealed interface Sequence<out Element>
         
         shared actual Element[] spanFrom(Integer from) {
             value endIndex = size-1;
-            if (from<=endIndex) { 
-                return outer[endIndex-from..0];
-            }
-            else {
-                return [];
-            }
+            return if (from<=endIndex)
+                then outer[endIndex-from..0]
+                else [];
         }
         
         shared actual Element[] spanTo(Integer to) {
             value endIndex = size-1;
-            if (to>=0) { 
-                return outer[endIndex..endIndex-to];
-            }
-            else {
-                return [];
-            }
+            return if (to>=0) 
+                then outer[endIndex..endIndex-to] 
+                else [];
         }
         
         shared actual Iterator<Element> iterator() {
             value outerList=outer;
-            object iterator satisfies Iterator<Element> {
+            return object 
+                    satisfies Iterator<Element> {
                 variable value index=outerList.size-1;
                 next() => index<0 then finished 
                                   else outerList.getElement(index--);
                 string => "``outer.string``.iterator()";
-            }
-            return iterator;
+            };
         }
 
     }
@@ -264,7 +245,7 @@ shared sealed interface Sequence<out Element>
         
         assert (times>0);
         
-        shared actual Element last => outer.last;
+        last => outer.last;
         
         first => outer.first;
         size => outer.size*times;
@@ -272,12 +253,9 @@ shared sealed interface Sequence<out Element>
         
         shared actual Element? getFromFirst(Integer index) {
             value size = outer.size;
-            if (index<size*times) {
-                return outer.getFromFirst(index%size);
-            }
-            else {
-                return null;
-            }
+            return if (index<size*times)
+                then outer.getFromFirst(index%size)
+                else null;
         }
         
         iterator() => CycledIterator(outer,times);
@@ -320,39 +298,27 @@ class JoinedSequence<Element>
     
     shared actual Element? getFromFirst(Integer index) {
         value cutover = firstSeq.size;
-        if (index < cutover) {
-            return firstSeq.getFromFirst(index);
-        }
-        else {
-            return secondSeq.getFromFirst(index-cutover);
-        }
+        return if (index < cutover)
+            then firstSeq.getFromFirst(index) 
+            else secondSeq.getFromFirst(index-cutover);
     }
     
     shared actual [Element[], Element[]] slice(Integer index) {
-        if (index==firstSeq.size) {
-            return [firstSeq,secondSeq];
-        }
-        else {
-            return super.slice(index);
-        }
+        return if (index==firstSeq.size)
+            then [firstSeq,secondSeq] 
+            else super.slice(index);
     }
     
     shared actual Element[] spanTo(Integer to) {
-        if (to==firstSeq.size-1) {
-            return firstSeq;
-        }
-        else {
-            return super.spanTo(to);
-        }
+        return if (to==firstSeq.size-1) 
+            then firstSeq 
+            else super.spanTo(to);
     }
     
     shared actual Element[] spanFrom(Integer from) {
-        if (from==firstSeq.size) {
-            return secondSeq;
-        }
-        else {
-            return super.spanFrom(from);
-        }
+        return if (from==firstSeq.size)
+            then secondSeq 
+            else super.spanFrom(from);
     }
     
     shared actual Element[] measure(Integer from, Integer length) {
