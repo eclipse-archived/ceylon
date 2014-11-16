@@ -1,4 +1,4 @@
-void inlineExpressions(Integer? arg, Boolean bool) {
+void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     
     @type:"Integer|Float" value someStuff 
             = if (exists arg) 
@@ -8,6 +8,19 @@ void inlineExpressions(Integer? arg, Boolean bool) {
             = switch (bool) 
                 case (true) "bar" 
                 case (false) "foo";
+    
+    @error value moreStuffBroken
+            = switch (bool) 
+                case (true) "bar";
+    
+    @type:"Integer|Float" value evenMoreStuff 
+            = switch (num) 
+                case (is Integer) -num 
+                case (is Float) num/2.0;
+    
+    @error value evenMoreStuffBroken
+            = switch (num) 
+                case (is Integer) -num;
     
     @type:"Basic&Category<String>" value xxx 
             = object extends Basic() 
