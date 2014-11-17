@@ -1150,11 +1150,13 @@ public class StatementTransformer extends AbstractTransformer {
         protected final C cond;
         protected final V var;
         protected final V elseVar;
+        protected final boolean negate;
         
-        SpecialFormCond(C cond, V var, V elseVar) {
+        SpecialFormCond(C cond, V var, V elseVar, boolean negate) {
             this.cond = cond;
             this.var = var;
             this.elseVar = elseVar;
+            this.negate = negate;
         }
         
         @Override
@@ -1175,12 +1177,9 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     class IsCond extends SpecialFormCond<Tree.IsCondition, IsVarTrans> {
-        /** Is this a negated is: {@code !is X} */
-        private final boolean negate;
         
         private IsCond(Tree.IsCondition isdecl, IsVarTrans var, IsVarTrans elseVar) {
-            super(isdecl, var, elseVar);
-            negate = isdecl.getNot();
+            super(isdecl, var, elseVar, isdecl.getNot());
         }
         
         @Override
@@ -1222,7 +1221,7 @@ public class StatementTransformer extends AbstractTransformer {
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition, ExistsVarTrans> {
 
         private ExistsCond(Tree.ExistsCondition exists, ExistsVarTrans var, ExistsVarTrans elseVar) {
-            super(exists, var, elseVar);
+            super(exists, var, elseVar, exists.getNot());
         }
         
         @Override
@@ -1236,16 +1235,20 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(var.getExpression(), BoxingStrategy.BOXED, specifierType);
             at(cond);
             // Assign the expression to test to the temporary variable
-            JCExpression firstTimeTestExpr = make().Assign(var.getTestVariableName().makeIdent(), expr);
+            expr = make().Assign(var.getTestVariableName().makeIdent(), expr);
             // Test on the tmpVar in the following condition
-            return make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());
+            expr = make().Binary(JCTree.NE, expr, makeNull());
+            if (negate) {
+                expr = make().Unary(JCTree.NOT, expr);
+            }
+            return expr;
         }
     }
     
     class NonemptyCond extends SpecialFormCond<Tree.NonemptyCondition, NonemptyVarTrans> {
 
         private NonemptyCond(Tree.NonemptyCondition nonempty, NonemptyVarTrans var, NonemptyVarTrans elseVar) {
-            super(nonempty, var, elseVar);
+            super(nonempty, var, elseVar, nonempty.getNot());
         }
         
         @Override
@@ -1254,9 +1257,13 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(var.getExpression());
             at(cond);
             // Assign the expression to test to the temporary variable
-            JCExpression firstTimeTestExpr = make().Assign(var.getTestVariableName().makeIdent(), expr);
+            expr = make().Assign(var.getTestVariableName().makeIdent(), expr);
             // Test on the tmpVar in the following condition
-            return makeNonEmptyTest(firstTimeTestExpr);
+            expr = makeNonEmptyTest(expr);
+            if (negate) {
+                expr = make().Unary(JCTree.NOT, expr);
+            }
+            return expr;
         }
     }
     
