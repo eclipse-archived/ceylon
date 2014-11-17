@@ -478,7 +478,6 @@ public class DeclarationVisitor extends Visitor {
         else {
             that.addError("constructor declaration must occur directly in the body of a class");
         }
-        c.setStaticallyImportable(true);
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
         Scope o = enterScope(c);
