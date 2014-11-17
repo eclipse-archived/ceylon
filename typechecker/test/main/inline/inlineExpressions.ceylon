@@ -1,4 +1,4 @@
-void inlineExpressions(Integer? arg, Boolean bool) {
+void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     
     @type:"Integer|Float" value someStuff 
             = if (exists arg) 
@@ -13,10 +13,23 @@ void inlineExpressions(Integer? arg, Boolean bool) {
                 case (true) "bar" 
                 case (false) "foo";
     
-    @type:"Boolean|Null" value evenMoreStuff 
+    @type:"Boolean|Null" value someMoreStuff 
             = switch (bool) 
                 case (true) true 
                 case (false) null;
+
+    @error value moreStuffBroken
+            = switch (bool) 
+                case (true) "bar";
+    
+    @type:"Integer|Float" value evenMoreStuff 
+            = switch (num) 
+                case (is Integer) -num 
+                case (is Float) num/2.0;
+    
+    @error value evenMoreStuffBroken
+            = switch (num) 
+                case (is Integer) -num;
     
     @type:"Basic&Category<String>" value xxx 
             = object extends Basic() 
@@ -27,6 +40,7 @@ void inlineExpressions(Integer? arg, Boolean bool) {
     print(if (exists arg) then arg else 0.0);
     print(switch (bool) case (true) "bar" case (false) "foo");
     print(object satisfies Category<String> {
+        print("creating object");
         contains(String that) => !that.empty;
     });
     
@@ -35,13 +49,19 @@ void inlineExpressions(Integer? arg, Boolean bool) {
     print { val = switch (bool) case (true) "bar" case (false) "foo"; };
     print { switch (bool) case (true) "bar" case (false) "foo"; };
     print { 
-        object satisfies Category<String> {
+        object extends Object() satisfies Category<String> {
             contains(String that) => !that.empty;
+            equals(Object that) => false;
+            hash => 0;
         };
     };
     print { 
-        val = object satisfies Category<String> {
+        val = object extends Object() satisfies Category<String> {
             contains(String that) => !that.empty;
+            equals(Object that) => false;
+            hash => 0;
         };
     };
+    @type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
+    @type:"Array<Basic>" value objs2 = Array {object{}};
 }
