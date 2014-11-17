@@ -5163,7 +5163,15 @@ public class ExpressionVisitor extends Visitor {
                             (Tree.QualifiedMemberOrTypeExpression) p;
                     Tree.MemberOrTypeExpression pp = 
                             (Tree.MemberOrTypeExpression) qmte.getPrimary();
-                    return accountForStaticReferenceType(qmte, pp.getDeclaration(), type);
+                    if (qmte.getDeclaration().isStaticallyImportable() && 
+                            !(member instanceof Constructor)) {
+                        //only for the case of a Java static member!
+                        return type;
+                    }
+                    else {
+                        return accountForStaticReferenceType(qmte, 
+                                pp.getDeclaration(), type);
+                    }
                 }
                 else {
                     return type;
