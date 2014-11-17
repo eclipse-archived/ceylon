@@ -2071,9 +2071,11 @@ ifExpression returns [IfExpression term]
       thenElseClauses
       { $term.setIfClause($thenElseClauses.ifClause);
         $term.setElseClause($thenElseClauses.elseClause);
-        if ($thenElseClauses.ifClause==null && $thenElseClauses.conditionList!=null) 
-            $term.setIfClause(new IfClause(null));
-        $term.getIfClause().setConditionList($thenElseClauses.conditionList); }
+        if ($thenElseClauses.conditionList!=null) {
+            if ($thenElseClauses.ifClause==null) 
+                $term.setIfClause(new IfClause(null));
+            $term.getIfClause().setConditionList($thenElseClauses.conditionList); 
+        } }
     ;
 
 thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
@@ -3053,8 +3055,14 @@ booleanCondition returns [BooleanCondition condition]
     ;
     
 existsCondition returns [ExistsCondition condition]
-    : EXISTS 
-      { $condition = new ExistsCondition($EXISTS); }
+    : (
+        NOT_OP
+        { $condition = new ExistsCondition($NOT_OP);
+          $condition.setNot(true); }
+      )?
+      EXISTS 
+      { if ($condition==null)
+            $condition = new ExistsCondition($EXISTS); }
     ( (compilerAnnotations (declarationStart|specificationStart)) =>
         specifiedVariable 
         { $condition.setVariable($specifiedVariable.variable); }
@@ -3067,8 +3075,14 @@ existsCondition returns [ExistsCondition condition]
     ;
     
 nonemptyCondition returns [NonemptyCondition condition]
-    : NONEMPTY 
-      { $condition = new NonemptyCondition($NONEMPTY); }
+    : (
+        NOT_OP
+        { $condition = new NonemptyCondition($NOT_OP);
+          $condition.setNot(true); }
+      )?
+      NONEMPTY 
+      { if ($condition==null)
+            $condition = new NonemptyCondition($NONEMPTY); }
     ( (compilerAnnotations (declarationStart|specificationStart)) =>
       specifiedVariable 
       { $condition.setVariable($specifiedVariable.variable); }
@@ -3157,7 +3171,40 @@ ifElse returns [IfStatement statement]
       { $statement.setIfClause($ifBlock.clause); }
       ( 
         elseBlock
-        { $statement.setElseClause($elseBlock.clause); }
+        { ElseClause ec = $elseBlock.clause;
+          $statement.setElseClause(ec);
+          ConditionList cl = $ifBlock.clause.getConditionList();
+          if (cl!=null) {
+            List<Condition> conditions = cl.getConditions();
+            if (conditions.size()==1) {
+              Condition c = conditions.get(0);
+              Identifier id = null;
+              Type t = null;
+              if (c instanceof ExistsOrNonemptyCondition) {
+                t = ((ExistsOrNonemptyCondition)c).getVariable().getType();
+                id = ((ExistsOrNonemptyCondition)c).getVariable().getIdentifier();
+              }
+              else if (c instanceof IsCondition) {
+                t = ((IsCondition)c).getVariable().getType();
+                id = ((IsCondition)c).getVariable().getIdentifier();
+              }
+              if (id!=null && t instanceof SyntheticVariable) { 
+                Variable ev = new Variable(null);
+                ev.setType(new SyntheticVariable(null));
+                SpecifierExpression ese = new SpecifierExpression(null);
+                Expression ee = new Expression(null);
+                BaseMemberExpression ebme = new BaseMemberExpression(null);
+                ebme.setTypeArguments( new InferredTypeArguments(null) );
+                ee.setTerm(ebme);
+                ese.setExpression(ee);
+                ev.setSpecifierExpression(ese);
+                ec.setVariable(ev);
+                ev.setIdentifier(id);
+                ebme.setIdentifier(id);
+              }
+            }
+          }
+        }
       )?
     ;
 
@@ -3210,19 +3257,34 @@ switchCaseElse returns [SwitchStatement statement]
               IsCase ic = (IsCase) item;
               Variable v = new Variable(null);
               v.setType(new SyntheticVariable(null));
-              v.setIdentifier(id);
               SpecifierExpression se = new SpecifierExpression(null);
               Expression e = new Expression(null);
               BaseMemberExpression bme = new BaseMemberExpression(null);
-              bme.setIdentifier(id);
               bme.setTypeArguments( new InferredTypeArguments(null) );
               e.setTerm(bme);
               se.setExpression(e);
               v.setSpecifierExpression(se);
               ic.setVariable(v);
+              bme.setIdentifier(id);
+              v.setIdentifier(id);
             }
-          } 
-        } 
+          }
+          ElseClause ec = $cases.switchCaseList.getElseClause();
+          if (ec!=null) {
+            Variable ev = new Variable(null);
+            ev.setType(new SyntheticVariable(null));
+            SpecifierExpression ese = new SpecifierExpression(null);
+            Expression ee = new Expression(null);
+            BaseMemberExpression ebme = new BaseMemberExpression(null);
+            ebme.setTypeArguments( new InferredTypeArguments(null) );
+            ee.setTerm(ebme);
+            ese.setExpression(ee);
+            ev.setSpecifierExpression(ese);
+            ec.setVariable(ev);
+            ebme.setIdentifier(id);
+            ev.setIdentifier(id);
+          }
+        }
       }
     ;
 
