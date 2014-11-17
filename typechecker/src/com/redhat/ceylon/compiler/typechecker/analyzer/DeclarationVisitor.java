@@ -150,7 +150,7 @@ public class DeclarationVisitor extends Visitor {
         setVisibleScope(model);
     }
 
-    private void visitArgument(Tree.FunctionArgument that, Declaration model) {
+    private void visitArgument(Tree.Term that, Declaration model) {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
@@ -685,6 +685,23 @@ public class DeclarationVisitor extends Visitor {
         visitArgument(that, v);
         that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
+        Scope o = enterScope(c);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.ObjectExpression that) {
+        /*if (that.getClassBody()==null) {
+            that.addError("missing named argument body");
+        }*/
+        Class c = new Class();
+        c.setName("anonymous#"+fid++);
+        c.setNamed(false);
+        defaultExtendedToBasic(c);
+        c.setAnonymous(true);
+        that.setAnonymousClass(c);
+        visitArgument(that, c);
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);

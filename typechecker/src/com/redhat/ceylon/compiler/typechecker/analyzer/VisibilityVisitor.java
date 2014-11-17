@@ -97,18 +97,23 @@ public class VisibilityVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectDefinition that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getAnonymousClass());
         super.visit(that);
     }
 
-    private void validateSupertypes(Tree.StatementOrArgument that, 
-            TypeDeclaration td) {
+    @Override public void visit(Tree.ObjectExpression that) {
+        validateSupertypes(that, 
+                that.getAnonymousClass());
+        super.visit(that);
+    }
+
+    private void validateSupertypes(Node that, TypeDeclaration td) {
         if (td instanceof TypeAlias) {
             ProducedType at = td.getExtendedType();
             if (at!=null) {

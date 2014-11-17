@@ -173,6 +173,66 @@ public class ExpressionVisitor extends Visitor {
                 .getFullType());
     }
     
+    @Override public void visit(Tree.IfExpression that) {
+        super.visit(that);
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        Tree.IfClause ifClause = that.getIfClause();
+        if (ifClause!=null && ifClause.getExpression()!=null) {
+            ProducedType t = ifClause.getExpression().getTypeModel();
+            if (t!=null) {
+                addToUnion(list, t);
+            }
+        }
+        else {
+            that.addError("missing then expression");
+        }
+        Tree.ElseClause elseClause = that.getElseClause();
+        if (elseClause!=null && elseClause.getExpression()!=null) {
+            ProducedType t = elseClause.getExpression().getTypeModel();
+            if (t!=null) {
+                addToUnion(list, t);
+            }
+        }
+        else {
+            that.addError("missing else expression");
+        }
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(list);
+        that.setTypeModel(ut.getType());
+    }
+    
+    @Override public void visit(Tree.SwitchExpression that) {
+        Tree.Expression ose = switchExpression;
+        switchExpression = that.getSwitchClause().getExpression();
+        super.visit(that);
+
+        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
+        if (switchCaseList!=null && switchExpression!=null) {
+            checkCases(switchCaseList);
+            if (switchCaseList.getElseClause()==null) {
+                checkCasesExhaustive(switchCaseList, that.getSwitchClause());
+            }
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
+                ProducedType t = cc.getExpression().getTypeModel();
+                if (t!=null) {
+                    addToUnion(list, t);
+                }
+            }
+            Tree.ElseClause elseClause = that.getSwitchCaseList().getElseClause();
+            if (elseClause!=null) {
+                ProducedType t = elseClause.getExpression().getTypeModel();
+                if (t!=null) {
+                    addToUnion(list, t);
+                }
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            that.setTypeModel(ut.getType());
+        }
+        switchExpression = ose;        
+    }
+    
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
         super.visit(that);
         that.setTypeModel(that.getExpression().getTypeModel());
@@ -980,30 +1040,34 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMember(refinedMethodOrValue, ci);
         List<ProducedType> refinedTypes = 
                 new ArrayList<ProducedType>();
-        ProducedType type = 
-                getRequiredSpecifiedType(that, 
-                        refinedProducedReference);
-        addToIntersection(refinedTypes, type, unit);
+//        ProducedType type = 
+//                getRequiredSpecifiedType(that, 
+//                        refinedProducedReference);
+        addToIntersection(refinedTypes, 
+                refinedProducedReference.getType(), 
+                unit);
         for (Declaration refinement: interveningRefinements) {
             if (refinement instanceof MethodOrValue && 
                     !refinement.equals(refinedMethodOrValue)) {
                 MethodOrValue rmv = (MethodOrValue) refinement;
                 ProducedReference refinedMember = 
                         getRefinedMember(rmv, ci);
-                ProducedType t = 
+                addToIntersection(refinedTypes, 
+                        refinedMember.getType(), 
+                        unit);
+                ProducedType requiredType = 
                         getRequiredSpecifiedType(that, 
                                 refinedMember);
-                if (!isTypeUnknown(t)) {
-                    addToIntersection(refinedTypes, t, unit);
-                    if (rhs!=null) {
-                        checkType(t, refinement, rhs, 2100);
-                    }
+                if (!isTypeUnknown(requiredType) && rhs!=null) {
+                    checkType(requiredType, refinement, rhs, 2100);
                 }
                 if (!refinement.isDefault() && !refinement.isFormal()) {
+                    Declaration container = 
+                            (Declaration) refinement.getContainer();
                     that.getBaseMemberExpression()
                         .addError("shortcut refinement refines non-formal, non-default member: '" +
                                 refinement.getName() + "' of '" +
-                                ((Declaration) refinement.getContainer()).getName(unit));
+                                container.getName(unit));
                 }
             }
         }        
@@ -1375,12 +1439,25 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type rt = 
                 beginReturnScope(new Tree.VoidModifier(that.getToken()));
         Declaration od = 
-                beginReturnDeclaration(that.getDeclarationModel());
+                beginReturnDeclaration(that.getAnonymousClass());
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
         validateEnumeratedSupertypes(that, 
                 that.getAnonymousClass());
+    }
+    
+    @Override public void visit(Tree.ObjectExpression that) {
+        Tree.Type rt = 
+                beginReturnScope(new Tree.VoidModifier(that.getToken()));
+        Declaration od = 
+                beginReturnDeclaration(that.getAnonymousClass());
+        super.visit(that);
+        endReturnDeclaration(od);
+        endReturnScope(rt, null);
+        validateEnumeratedSupertypes(that, 
+                that.getAnonymousClass());
+        that.setTypeModel(unit.denotableType(that.getAnonymousClass().getType()));
     }
     
     @Override public void visit(Tree.ClassDeclaration that) {

@@ -321,6 +321,18 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectExpression that) {
+        boolean c = beginDisabledSpecificationScope();
+        boolean oicoaf = inAnonFunctionOrComprehension;
+        inAnonFunctionOrComprehension = declared&&inExtends;
+        SpecificationState ss = beginSpecificationScope();
+        super.visit(that);
+        endSpecificationScope(ss);
+        inAnonFunctionOrComprehension = oicoaf;
+        endDisabledSpecificationScope(c);
+    }
+    
+    @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
         if (Util.isEffectivelyBaseMemberExpression(lt)) {

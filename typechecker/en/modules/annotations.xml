@@ -375,7 +375,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>final</literal> specifies that a class may not 
-                    be extended.</para>
+                    be extended, and may not declare <literal>default</literal>
+                    members.</para>
                 </listitem>
                 <listitem>
                     <para><literal>sealed</literal> specifies that a class may not 

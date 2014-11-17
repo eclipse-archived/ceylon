@@ -243,10 +243,12 @@ abstract class WithInnerSubClass3() {
 
 class Bug1(String s) {
     equals = s.equals;
+    string=equals("Y") then "Yay!" else "Nay...";
 }
 
 class Bug2(String s) {
     equals(Object that) => s.equals(that);
+    string=equals("Y") then "Yay!" else "Nay...";
 }
 
 class Bug3(String s) {
@@ -289,4 +291,22 @@ class BadSub3() extends Super0() {
 }
 class BadSub4() extends Mid1() {
     @error foo = (Integer i) => x;
+}
+
+void moreRefinements() {
+    class X() {
+        shared default String foo()(String s) => s;
+    }
+    
+    class Y() extends X() {
+        @error shared actual String(String) foo() => (String s) => s;
+    }
+    
+    class Z() extends X() {
+        foo() => (String s) => s;
+    }
+    
+    class W() extends X() {
+        foo = ()(String s) => s;
+    }
 }

@@ -344,6 +344,21 @@ objectDeclaration returns [ObjectDefinition declaration]
       )
     ;
 
+objectExpression returns [ObjectExpression term]
+    : OBJECT_DEFINITION
+      { $term = new ObjectExpression($OBJECT_DEFINITION); }
+      ( 
+        extendedType
+        { $term.setExtendedType($extendedType.extendedType); } 
+      )?
+      ( 
+        satisfiedTypes
+        { $term.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+      )?
+      classBody
+      { $term.setClassBody($classBody.classBody); }
+    ;
+
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
     @init { MethodDefinition def=null;
             MethodDeclaration dec=null; }
@@ -1147,7 +1162,7 @@ declarationStart
     | ASSIGN
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
-    | OBJECT_DEFINITION
+    | OBJECT_DEFINITION (LIDENTIFIER|UIDENTIFIER) //to disambiguate object expressions
     | NEW
     | ALIAS 
     | variadicType LIDENTIFIER
@@ -1191,7 +1206,10 @@ unambiguousType
     ;
 
 statement returns [Statement statement]
-    : directiveStatement
+    : /*(IF_CLAUSE conditions THEN_CLAUSE) => 
+      expressionOrSpecificationStatement
+      { $statement = $expressionOrSpecificationStatement.statement; }
+    |*/ directiveStatement
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
@@ -1665,6 +1683,11 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
       { sequencedArgument = new SequencedArgument(null);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
         (
+          (FOR_CLAUSE | IF_CLAUSE conditions ~THEN_CLAUSE)=>
+          c1=comprehension
+          { if ($c1.comprehension!=null)
+                $sequencedArgument.addPositionalArgument($c1.comprehension); }
+        | 
           pa1=positionalArgument
           { if ($pa1.positionalArgument!=null)
                 $sequencedArgument.addPositionalArgument($pa1.positionalArgument); }
@@ -1672,28 +1695,25 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
           sa1=spreadArgument
           { if ($sa1.positionalArgument!=null)
                 $sequencedArgument.addPositionalArgument($sa1.positionalArgument); }
-        |
-          c1=comprehension
-          { if ($c1.comprehension!=null)
-                $sequencedArgument.addPositionalArgument($c1.comprehension); }
         )
         (
           c=COMMA
           { $sequencedArgument.setEndToken($c); }
           (
+            (FOR_CLAUSE | IF_CLAUSE conditions ~THEN_CLAUSE)=>
+            c2=comprehension
+            { if ($c2.comprehension!=null) {
+                  $sequencedArgument.addPositionalArgument($c2.comprehension);
+                  sequencedArgument.setEndToken(null); } }
+          | 
             pa2=positionalArgument
             { if ($pa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($pa2.positionalArgument); 
                   sequencedArgument.setEndToken(null); } }
-          |
+          | 
             sa2=spreadArgument
             { if ($sa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($sa2.positionalArgument); 
-                  sequencedArgument.setEndToken(null); } }
-          |
-            c2=comprehension
-            { if ($c2.comprehension!=null) {
-                  $sequencedArgument.addPositionalArgument($c2.comprehension);
                   sequencedArgument.setEndToken(null); } }
           |
             { displayRecognitionError(getTokenNames(), 
@@ -2000,8 +2020,119 @@ functionOrExpression returns [Expression expression]
       f=anonymousFunction
       { $expression = new Expression(null);
         $expression.setTerm($f.function); }
+    | ce=conditionalExpression
+      { $expression = new Expression(null); 
+        $expression.setTerm($ce.term); }
     | e=expression
       { $expression = $e.expression; }
+    | oe=objectExpression
+      { $expression = new Expression(null); 
+        $expression.setTerm($oe.term); }
+    ;
+
+conditionalExpression returns [Term term]
+    : ifExpression
+      { $term = $ifExpression.term; }
+    | switchExpression
+      { $term = $switchExpression.term; }
+    ;
+
+switchExpression returns [SwitchExpression term]
+    : switchHeader
+      { $term = new SwitchExpression(null);
+        $term.setSwitchClause($switchHeader.clause); }
+      caseExpressions
+      { $term.setSwitchCaseList($caseExpressions.switchCaseList);
+        //TODO: huge copy/paste job from switchCaseElse 
+        Expression ex = $switchHeader.clause.getExpression();
+        if (ex!=null && ex.getTerm() instanceof BaseMemberExpression) {
+          Identifier id = ((BaseMemberExpression) ex.getTerm()).getIdentifier();
+          for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
+            CaseItem item = cc.getCaseItem();
+            if (item instanceof IsCase) {
+              IsCase ic = (IsCase) item;
+              Variable v = new Variable(null);
+              v.setType(new SyntheticVariable(null));
+              v.setIdentifier(id);
+              SpecifierExpression se = new SpecifierExpression(null);
+              Expression e = new Expression(null);
+              BaseMemberExpression bme = new BaseMemberExpression(null);
+              bme.setIdentifier(id);
+              bme.setTypeArguments( new InferredTypeArguments(null) );
+              e.setTerm(bme);
+              se.setExpression(e);
+              v.setSpecifierExpression(se);
+              ic.setVariable(v);
+            }
+          } 
+        }
+      }
+    ;
+
+caseExpressions returns [SwitchCaseList switchCaseList]
+    : { $switchCaseList = new SwitchCaseList(null); }
+      (
+        caseExpression
+        { $switchCaseList.addCaseClause($caseExpression.clause); }
+      )+
+      (
+        defaultCaseExpression
+        { $switchCaseList.setElseClause($defaultCaseExpression.clause); }
+      )?
+    ;
+    
+caseExpression returns [CaseClause clause]
+    : CASE_CLAUSE 
+      { $clause = new CaseClause($CASE_CLAUSE); }
+      caseItemList
+      { $clause.setCaseItem($caseItemList.item); }
+      disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($disjunctionExpression.term); 
+        $clause.setExpression(e); }
+    ;
+
+defaultCaseExpression returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      disjunctionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($disjunctionExpression.term); 
+        $clause.setExpression(e); }
+    ;
+
+ifExpression returns [IfExpression term]
+    : IF_CLAUSE
+      { $term = new IfExpression($IF_CLAUSE); }
+      thenElseClauses
+      { $term.setIfClause($thenElseClauses.ifClause);
+        $term.setElseClause($thenElseClauses.elseClause);
+        if ($thenElseClauses.conditionList!=null) {
+            if ($thenElseClauses.ifClause==null) 
+                $term.setIfClause(new IfClause(null));
+            $term.getIfClause().setConditionList($thenElseClauses.conditionList); 
+        } }
+    ;
+
+thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
+    : conditions
+      { $conditionList = $conditions.conditionList; }
+      (
+        THEN_CLAUSE
+        { $ifClause = new IfClause($THEN_CLAUSE); }
+        de1=disjunctionExpression
+        { Expression e = new Expression(null);
+          e.setTerm($de1.term);
+          $ifClause.setExpression(e); }
+      )?
+      (
+        ELSE_CLAUSE
+        { $elseClause = new ElseClause($ELSE_CLAUSE); }
+        de2=disjunctionExpression
+        { Expression e = new Expression(null);
+          e.setTerm($de2.term);
+          $elseClause.setExpression(e); }
+      )?
     ;
 
 anonymousFunction returns [FunctionArgument function]
@@ -2043,7 +2174,8 @@ comprehension returns [Comprehension comprehension]
 comprehensionClause returns [ComprehensionClause comprehensionClause]
     : forComprehensionClause 
       { $comprehensionClause = $forComprehensionClause.comprehensionClause; }
-    | ifComprehensionClause 
+    | (IF_CLAUSE conditions ~THEN_CLAUSE) => 
+      ifComprehensionClause 
       { $comprehensionClause = $ifComprehensionClause.comprehensionClause; }
     | expressionComprehensionClause 
       { $comprehensionClause = $expressionComprehensionClause.comprehensionClause; }
@@ -2121,11 +2253,7 @@ thenElseExpression returns [Term term]
     //      to distinguish between "if (...) then" and 
     //      the control structure "if (...) { ... }"
     /*| 
-      ( 
-        IF_CLAUSE LPAREN ( existsCondition | nonemptyCondition | isCondition ) RPAREN
-      | 
-        TYPE_CONSTRAINT LPAREN specifiedConditionVariable RPAREN 
-      )+
+      IF_CLAUSE conditions
       THEN_CLAUSE disjunctionExpression
       (ELSE_CLAUSE disjunctionExpression)?*/
     ;
@@ -3161,6 +3289,13 @@ caseBlock returns [CaseClause clause]
       { $clause.setBlock($block.block); }
     ;
 
+defaultCaseBlock returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      block
+      { $clause.setBlock($block.block); }
+    ;
+
 caseItemList returns [CaseItem item]
     : LPAREN //TODO: we really should not throw away this token!
       (
@@ -3170,13 +3305,6 @@ caseItemList returns [CaseItem item]
       RPAREN 
       { if ($item!=null) 
             $item.setEndToken($RPAREN); }
-    ;
-
-defaultCaseBlock returns [ElseClause clause]
-    : ELSE_CLAUSE 
-      { $clause = new ElseClause($ELSE_CLAUSE); }
-      block
-      { $clause.setBlock($block.block); }
     ;
 
 caseItem returns [CaseItem item]
