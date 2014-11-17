@@ -10,9 +10,10 @@ class SwitchIsNonExhaustive implements .com.redhat.ceylon.compiler.java.runtime.
         {
             .java.lang.Object sel$0 = b;
             if (.com.redhat.ceylon.compiler.java.Util.isBasic(sel$0)) {
-                final .java.lang.Object b$1 = (.java.lang.Object)sel$0;
+                final .java.lang.Object b$2 = (.java.lang.Object)sel$0;
                 name = "Basic";
             } else {
+                final .java.lang.Object b$1 = (.java.lang.Object)sel$0;
                 name = "Un-Basic";
             }
         }

@@ -46,9 +46,10 @@ final class switchExpression_ {
         {
             .java.lang.Object sel$6 = val2;
             if (sel$6 == null || sel$6 instanceof .ceylon.language.String) {
-                final .ceylon.language.String val2$7 = (.ceylon.language.String)sel$6;
-                .ceylon.language.print_.print(val2$7);
+                final .ceylon.language.String val2$8 = (.ceylon.language.String)sel$6;
+                .ceylon.language.print_.print(val2$8);
             } else {
+                final .java.lang.Object val2$7 = (.java.lang.Object)sel$6;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("asd"));
             }
         }
@@ -71,18 +72,18 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
         super((
             let
             {
-                .ceylon.language.String $ceylontmp$ifResult$8;
+                .ceylon.language.String $ceylontmp$ifResult$9;
                 {
-                    .java.lang.Object sel$9 = val;
-                    if (sel$9 == null || sel$9 instanceof .ceylon.language.String) {
-                        final .ceylon.language.String val$10 = (.ceylon.language.String)sel$9;
-                        $ceylontmp$ifResult$8 = val$10;
+                    .java.lang.Object sel$10 = val;
+                    if (sel$10 == null || sel$10 instanceof .ceylon.language.String) {
+                        final .ceylon.language.String val$11 = (.ceylon.language.String)sel$10;
+                        $ceylontmp$ifResult$9 = val$11;
                     } else {
-                        $ceylontmp$ifResult$8 = .ceylon.language.String.instance("asd");
+                        $ceylontmp$ifResult$9 = .ceylon.language.String.instance("asd");
                     }
                 }
             }
-            returning $ceylontmp$ifResult$8;
+            returning $ceylontmp$ifResult$9;
         ));
     }
     
