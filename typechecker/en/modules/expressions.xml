@@ -1524,7 +1524,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             </itemizedlist>
             
             <para>The type of an inline anonymous class expression is the 
-            intersection of the class type it extends, with all interface types 
+            intersection of the class type it extends with all interface types 
             it satisfies.</para>
             
         </section>
