@@ -3347,10 +3347,50 @@ public class StatementTransformer extends AbstractTransformer {
         protected java.util.List<CaseClause> getCaseClauses(Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList) {
             return caseList.getCaseClauses();
         }
-        protected JCStatement transformElse(Tree.SwitchCaseList caseList, String tmpVar, Tree.Term outerExpression) {
+        protected JCStatement transformElse(Naming.SyntheticName selectorAlias, Tree.SwitchCaseList caseList, String tmpVar, Tree.Term outerExpression) {
             Tree.ElseClause elseClause = caseList.getElseClause();
             if (elseClause != null) {
-                return transformElseClauseBlock(elseClause, tmpVar, outerExpression);
+                if (elseClause.getVariable() != null && selectorAlias != null) {
+                    at(elseClause);
+                    // Use the type of the variable, which is more precise than the type we test for.
+                    ProducedType varType = elseClause.getVariable().getDeclarationModel().getType();
+                    
+                    String name = elseClause.getVariable().getIdentifier().getText();
+    
+                    Naming.SyntheticName tmpVarName = selectorAlias;
+                    Name substVarName = naming.aliasName(name);
+    
+                    // Want raw type for instanceof since it can't be used with generic types
+                    JCExpression rawToTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES | JT_RAW);
+    
+                    // Substitute variable with the correct type to use in the rest of the code block
+                    
+                    JCExpression tmpVarExpr = at(elseClause).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                    JCExpression toTypeExpr;
+                    if (isCeylonBasicType(varType)) {
+                        toTypeExpr = makeJavaType(varType);
+                        tmpVarExpr = unboxType(tmpVarExpr, varType);
+                    } else {
+                        toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+                    }
+                    
+                    // The variable holding the result for the code inside the code block
+                    JCVariableDecl decl2 = at(elseClause).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
+    
+                    // Prepare for variable substitution in the following code block
+                    Substitution prevSubst = naming.addVariableSubst(elseClause.getVariable().getDeclarationModel(), substVarName.toString());
+    
+                    List<JCStatement> stats = List.<JCStatement> of(decl2);
+                    stats = stats.appendList(transformElseClause(elseClause, tmpVar, outerExpression));
+                    JCBlock block = at(elseClause).Block(0, stats);
+    
+                    // Deactivate the above variable substitution
+                    prevSubst.close();
+    
+                    return block;
+                } else {
+                    return transformElseClauseBlock(elseClause, tmpVar, outerExpression);
+                }
             } else {
                 // To avoid possible javac warnings about uninitialized vars we
                 // need to have an 'else' clause, even if the ceylon code doesn't
@@ -3422,7 +3462,7 @@ public class StatementTransformer extends AbstractTransformer {
                 cases.add(make().Case(transformCaseExpr(term), 
                         stmts));
             }
-            cases.add(make().Case(null, List.of(transformElse(caseList, tmpVar, outerExpression))));
+            cases.add(make().Case(null, List.of(transformElse(null, caseList, tmpVar, outerExpression))));
             
             
             JCStatement last = make().Switch(switchExpr, cases.toList());
@@ -3541,7 +3581,8 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCStatement transformSwitch(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, 
                                            String tmpVar, Tree.Term outerExpression) {
-            JCStatement last = transformElse(caseList, tmpVar, outerExpression);
+            Naming.SyntheticName selectorAlias = naming.alias("sel");
+            JCStatement last;
             final BoxingStrategy bs;
             final JCExpression selectorType;
             ProducedType switchExpressionType = getSwitchExpressionType(switchClause);
@@ -3550,6 +3591,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (primitiveSelector) {
                 bs = BoxingStrategy.UNBOXED;
                 selectorType = makeJavaType(switchExpressionType);
+                last = transformElse(null, caseList, tmpVar, outerExpression);
             } else {
                 bs = BoxingStrategy.BOXED;
                 if (allMatches && isCeylonBasicType(getDefiniteSwitchExpressionType(switchClause))) {
@@ -3557,9 +3599,9 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     selectorType = make().Type(syms().objectType);
                 }
+                last = transformElse(selectorAlias, caseList, tmpVar, outerExpression);
             }
             JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), bs, switchExpressionType);
-            Naming.SyntheticName selectorAlias = naming.alias("sel");
             
             JCVariableDecl selector = makeVar(selectorAlias, selectorType, selectorExpr);
             
