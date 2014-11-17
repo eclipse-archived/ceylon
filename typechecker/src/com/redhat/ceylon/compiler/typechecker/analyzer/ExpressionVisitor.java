@@ -5146,45 +5146,61 @@ public class ExpressionVisitor extends Visitor {
         if (that.getStaticMethodReference()) {
             Tree.MemberOrTypeExpression p = 
                     (Tree.MemberOrTypeExpression) that.getPrimary();
-            if (p instanceof Tree.QualifiedMemberOrTypeExpression &&
-                    !(member instanceof Constructor)) {
-                Tree.QualifiedMemberOrTypeExpression qmte =
-                        (Tree.QualifiedMemberOrTypeExpression) p;
-                Tree.Primary pp = qmte.getPrimary();
-                if (!(pp instanceof Tree.BaseTypeExpression) &&
-                    !(pp instanceof Tree.QualifiedTypeExpression) &&
-                    !(pp instanceof Tree.Package)) {
-                    pp.addError("non-static type expression qualifies static member reference");   
-                }
-            }
-            if (member.isStaticallyImportable()) {
+            if (member instanceof Constructor) {
+                //Ceylon named constructor
                 if (p.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) p;
                     Tree.MemberOrTypeExpression pp = 
                             (Tree.MemberOrTypeExpression) qmte.getPrimary();
-                    if (qmte.getDeclaration().isStaticallyImportable() && 
-                            !(member instanceof Constructor)) {
-                        //only for the case of a Java static member!
-                        return type;
-                    }
-                    else {
-                        return accountForStaticReferenceType(qmte, 
-                                pp.getDeclaration(), type);
-                    }
+                    return accountForStaticReferenceType(qmte, 
+                            pp.getDeclaration(), type);
                 }
                 else {
                     return type;
                 }
             }
             else {
-                ProducedReference target = p.getTarget();
-                if (target==null) {
-                    return new UnknownType(unit).getType();
+                //something other than a constructor 
+                if (p instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    Tree.QualifiedMemberOrTypeExpression qmte =
+                            (Tree.QualifiedMemberOrTypeExpression) p;
+                    Tree.Primary pp = qmte.getPrimary();
+                    if (!(pp instanceof Tree.BaseTypeExpression) &&
+                            !(pp instanceof Tree.QualifiedTypeExpression) &&
+                            !(pp instanceof Tree.Package)) {
+                        pp.addError("non-static type expression qualifies static member reference");   
+                    }
+                }
+                if (member.isStaticallyImportable()) {
+                    //static member of Java type
+                    if (p.getStaticMethodReference()) {
+                        Tree.QualifiedMemberOrTypeExpression qmte = 
+                                (Tree.QualifiedMemberOrTypeExpression) p;
+                        if (qmte.getDeclaration().isStaticallyImportable()) {
+                            return type;
+                        }
+                        else {
+                            Tree.MemberOrTypeExpression pp = 
+                                    (Tree.MemberOrTypeExpression) qmte.getPrimary();
+                            return accountForStaticReferenceType(qmte, 
+                                    pp.getDeclaration(), type);
+                        }
+                    }
+                    else {
+                        return type;
+                    }
                 }
                 else {
-                    return getStaticReferenceType(type, 
-                            target.getType());
+                    //ordinary non-static, non-constructor member
+                    ProducedReference target = p.getTarget();
+                    if (target==null) {
+                        return new UnknownType(unit).getType();
+                    }
+                    else {
+                        return getStaticReferenceType(type, 
+                                target.getType());
+                    }
                 }
             }
         }
