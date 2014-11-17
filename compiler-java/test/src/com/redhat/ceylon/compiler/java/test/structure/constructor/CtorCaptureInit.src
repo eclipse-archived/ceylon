@@ -53,6 +53,15 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         .ceylon.language.print_.print(.ceylon.language.String.instance(name));
         .ceylon.language.print_.print(.ceylon.language.String.instance(getSharedName()));
         final .java.lang.String capturedByCtor;
+        long local = 0L;
+        (
+            let
+            {
+                long $ceylontmp$op$0 = local + 2L;
+                local = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        );
         setCount$priv$(0L);
         setSharedCount(0L);
         init = getCount$priv$();
@@ -68,6 +77,15 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         .ceylon.language.print_.print(.ceylon.language.String.instance(name));
         .ceylon.language.print_.print(.ceylon.language.String.instance(getSharedName()));
         final .java.lang.String capturedByCtor;
+        long local = 0L;
+        (
+            let
+            {
+                long $ceylontmp$op$0 = local + 2L;
+                local = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        );
         setCount$priv$(initial);
         setSharedCount(initial);
         init = initial;
@@ -79,10 +97,10 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                long $ceylontmp$op$0 = getCount$priv$();
-                setCount$priv$($ceylontmp$op$0 + 1);
+                long $ceylontmp$op$1 = getCount$priv$();
+                setCount$priv$($ceylontmp$op$1 + 1);
             }
-            returning $ceylontmp$op$0;
+            returning $ceylontmp$op$1;
         );
     }
     
@@ -94,10 +112,10 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                long $ceylontmp$op$1 = getSharedCount();
-                setSharedCount($ceylontmp$op$1 + 1);
+                long $ceylontmp$op$2 = getSharedCount();
+                setSharedCount($ceylontmp$op$2 + 1);
             }
-            returning $ceylontmp$op$1;
+            returning $ceylontmp$op$2;
         );
     }
     
