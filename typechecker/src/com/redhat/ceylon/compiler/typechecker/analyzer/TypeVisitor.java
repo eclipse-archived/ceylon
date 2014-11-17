@@ -459,7 +459,8 @@ public class TypeVisitor extends Visitor {
                         name + "' of '" + td.getName() + "'");
             }
             else {
-                if (m.isStaticallyImportable()) {
+                if (m.isStaticallyImportable() && 
+                        (td.isToplevel() || !(m instanceof Constructor))) {
                     if (!checkForHiddenToplevel(id, i, alias)) {
                         addImport(member, il, i);
                     }

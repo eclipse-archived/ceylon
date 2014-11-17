@@ -151,7 +151,9 @@ public class Unit {
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                if (d.isToplevel() || d.isStaticallyImportable()) {
+                if (d.isToplevel() || 
+                        d.isStaticallyImportable() && 
+                            (i.getTypeDeclaration().isToplevel() || !(d instanceof Constructor))) {
                     return d.getContainer()
                             .getMember(d.getName(), 
                                     signature, ellipsis);
