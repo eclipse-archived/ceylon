@@ -2319,6 +2319,15 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact().getUnknownType();
     }
     
+    int getNumParameterLists(ProducedType typeModel) {
+        int result = 0;
+        while (isCeylonCallableSubtype(typeModel)) {
+            result++;
+            typeModel = getReturnTypeOfCallable(typeModel);
+        }
+        return result;
+    }
+    
     /**
      * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
      */

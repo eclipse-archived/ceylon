@@ -914,13 +914,13 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls, Constructor ctor, ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb) {
         // TODO Instantiators on companion classes
-        
+        ParameterList parameterList = ctor != null ? ctor.getParameterLists().get(0) : cls.getParameterList();
         if (Decl.withinInterface(cls)) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor);
             overloaded.makeOverload(
                     instBuilder,
-                    cls.getParameterList(),
+                    parameterList,
                     null,
                     cls.getTypeParameters());
             instantiatorDeclCb.method(instBuilder);
@@ -931,7 +931,7 @@ public class ClassTransformer extends AbstractTransformer {
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? daoThis : daoAbstract, cls, ctor);
             overloaded.makeOverload(
                     instBuilder,
-                    cls.getParameterList(),
+                    parameterList,
                     null,
                     cls.getTypeParameters());
             instantiatorImplCb.method(instBuilder);
