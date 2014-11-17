@@ -469,16 +469,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                     boolean exprIsRaw = exprType.isRaw();
                     boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
 
-                    // simplify the type
-                    // (without the underlying type, because the cast is always to a non-primitive)
-                    exprType = simplifyType(expectedType).withoutUnderlyingType();
-
-                    // We will need a raw cast if the expected type has type parameters, 
-                    // unless the expr is already raw
-                    if (!exprIsRaw && hasTypeParameters(expectedType)) {
-                        JCExpression rawType = makeJavaType(expectedType, 
+                    // We will need a raw cast if either the expected type or the
+                    // expression type has type parameters while the other hasn't 
+                    // (unless the other type is already raw)
+                    if ((!exprIsRaw && hasTypeParameters(expectedType))
+                            || (!expectedTypeIsRaw && hasTypeParameters(exprType))) {
+                        ProducedType rawType = hasTypeParameters(expectedType) ? expectedType : exprType;
+                        JCExpression rawTypeExpr = makeJavaType(rawType, 
                                 AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW | companionFlags);
-                        result = make().TypeCast(rawType, result);
+                        result = make().TypeCast(rawTypeExpr, result);
                         // expr is now raw
                         exprIsRaw = true;
                         // let's not add another downcast if we got a cast: one is enough
@@ -487,6 +486,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                         exprErased = false;
                         exprUntrustedType = false;
                     }
+
+                    // simplify the type
+                    // (without the underlying type, because the cast is always to a non-primitive)
+                    exprType = simplifyType(expectedType).withoutUnderlyingType();
 
                     // if the expr is not raw, we need a cast
                     // if the expr is raw:
