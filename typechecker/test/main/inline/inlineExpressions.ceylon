@@ -53,4 +53,6 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
             hash => 0;
         };
     };
+    @type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
+    @type:"Array<Basic>" value objs2 = Array {object{}};
 }
