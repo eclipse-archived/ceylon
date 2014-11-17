@@ -151,9 +151,7 @@ public class Unit {
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                if (d.isToplevel() || 
-                        d.isStaticallyImportable() && 
-                            (i.getTypeDeclaration().isToplevel() || !(d instanceof Constructor))) {
+                if (isToplevelImport(i, d)) {
                     return d.getContainer()
                             .getMember(d.getName(), 
                                     signature, ellipsis);
@@ -161,6 +159,12 @@ public class Unit {
             }
         }
         return null;
+    }
+
+    static boolean isToplevelImport(Import i, Declaration d) {
+        return d.isToplevel() || 
+            d.isStaticallyImportable() ||
+            (i.getTypeDeclaration().isToplevel() && d instanceof Constructor);
     }
     
     /**
@@ -195,7 +199,7 @@ public class Unit {
                     !i.isAmbiguous() &&
                     isNameMatching(startingWith, i)) {
                 Declaration d = i.getDeclaration();
-                if (d.isToplevel() || d.isStaticallyImportable()) {
+                if (isToplevelImport(i, d)) {
                     result.put(i.getAlias(), 
                             new DeclarationWithProximity(i, 
                                     proximity));
@@ -1307,7 +1311,8 @@ public class Unit {
     }
     
     public ProducedType getFunctionMetatype(ProducedTypedReference pr) {
-        Functional f = (Functional) pr.getDeclaration();
+        TypedDeclaration d = pr.getDeclaration();
+        Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
             return null;
         }
@@ -1320,7 +1325,7 @@ public class Unit {
         }
         else {
             if (pr.getQualifyingType() != null && 
-                    !pr.getDeclaration().isStaticallyImportable()) {
+                    !d.isStaticallyImportable()) {
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
                         pr.getQualifyingType(), returnType, parameterTuple);
             }
@@ -1332,7 +1337,8 @@ public class Unit {
     }
     
     public ProducedType getConstructorMetatype(ProducedType pr) {
-        Functional f = (Functional) pr.getDeclaration();
+        TypeDeclaration d = pr.getDeclaration();
+        Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
             return null;
         }
@@ -1344,10 +1350,11 @@ public class Unit {
             return null;
         }
         else {
-            if (pr.getQualifyingType() != null && 
-                    !pr.getDeclaration().isStaticallyImportable()) {
+            ProducedType qt = pr.getQualifyingType();
+            if (qt!=null && !qt.getDeclaration().isToplevel()) {
+                ProducedType qqt = qt.getQualifyingType();
                 return producedType(getLanguageModuleModelTypeDeclaration("Method"),
-                        pr.getQualifyingType(), returnType, parameterTuple);
+                        qqt, returnType, parameterTuple);
             }
             else {
                 return producedType(getLanguageModuleModelTypeDeclaration("Function"),

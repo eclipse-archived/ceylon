@@ -447,7 +447,8 @@ public class TypeVisitor extends Visitor {
                 }
             }
             i.setTypeDeclaration(td);
-            if (!m.isStaticallyImportable()) {
+            if (!m.isStaticallyImportable() && 
+                    !(m instanceof Constructor)) {
                 if (alias==null) {
                     member.addError("does not specify an alias");
                 }
@@ -459,8 +460,8 @@ public class TypeVisitor extends Visitor {
                         name + "' of '" + td.getName() + "'");
             }
             else {
-                if (m.isStaticallyImportable() && 
-                        (td.isToplevel() || !(m instanceof Constructor))) {
+                if (m.isStaticallyImportable() ||
+                        (td.isToplevel() && m instanceof Constructor)) {
                     if (!checkForHiddenToplevel(id, i, alias)) {
                         addImport(member, il, i);
                     }

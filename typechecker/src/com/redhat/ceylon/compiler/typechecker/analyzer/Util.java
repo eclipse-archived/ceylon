@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Constructor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -712,7 +713,7 @@ public class Util {
                 return true;
             }
             if (that.getStaticMethodReference()) {
-                if (d.isStaticallyImportable()) {
+                if (d.isStaticallyImportable() || (d instanceof Constructor)) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) that;
                     return isIndirectInvocation(qmte.getPrimary());

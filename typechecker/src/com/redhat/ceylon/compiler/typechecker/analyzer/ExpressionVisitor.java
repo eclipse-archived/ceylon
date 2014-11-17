@@ -6789,22 +6789,25 @@ public class ExpressionVisitor extends Visitor {
     private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
             ProducedType type) {
         ProducedType qt = type.getQualifyingType();
-        if (qt!=null && td instanceof ClassOrInterface &&
-        		!type.getDeclaration().isStaticallyImportable()) {
-            Scope s = td;
-            while (s!=null) {
-                s = s.getContainer();
-                if (s instanceof TypeDeclaration) {
-                	TypeDeclaration otd = (TypeDeclaration) s;
-                    if (otd.getType().isSubtypeOf(qt)) {
-                        return;
+        if (qt!=null && td instanceof ClassOrInterface) {
+            TypeDeclaration d = type.getDeclaration();
+            if (!d.isStaticallyImportable() &&
+                    !(d instanceof Constructor)) {
+                Scope s = td;
+                while (s!=null) {
+                    s = s.getContainer();
+                    if (s instanceof TypeDeclaration) {
+                        TypeDeclaration otd = (TypeDeclaration) s;
+                        if (otd.getType().isSubtypeOf(qt)) {
+                            return;
+                        }
                     }
                 }
+                that.addError("qualifying type '" + qt.getProducedTypeName(unit) + 
+                        "' of supertype '" + type.getProducedTypeName(unit) + 
+                        "' is not an outer type or supertype of any outer type of '" +
+                        td.getName(unit) + "'");
             }
-            that.addError("qualifying type '" + qt.getProducedTypeName(unit) + 
-                    "' of supertype '" + type.getProducedTypeName(unit) + 
-                    "' is not an outer type or supertype of any outer type of '" +
-                    td.getName(unit) + "'");
         }
     }
     
