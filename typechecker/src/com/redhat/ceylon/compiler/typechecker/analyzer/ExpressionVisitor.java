@@ -6047,19 +6047,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.SwitchCaseList switchCaseList) {
         Tree.Switched switched = 
                 switchClause.getSwitched();
-        Tree.Expression switchExpression = null;
-        Tree.Expression e = switched.getExpression();
-        Tree.Variable v = switched.getVariable();
-        if (e!=null) {
-            switchExpression = e;
-        }
-        else if (v!=null) {
-            Tree.SpecifierExpression sie = 
-                    v.getSpecifierExpression();
-            if (sie!=null) {
-                switchExpression = sie.getExpression();
-            }
-        }
+        Tree.Expression switchExpression = 
+                getSwitchedExpression(switched);
         if (switchCaseList!=null && 
                 switchExpression!=null) {
             checkCases(switchCaseList);
@@ -6083,6 +6072,22 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private static Tree.Expression getSwitchedExpression(Tree.Switched switched) {
+        Tree.Expression e = switched.getExpression();
+        Tree.Variable v = switched.getVariable();
+        if (e!=null) {
+            return e;
+        }
+        else if (v!=null) {
+            Tree.SpecifierExpression sie = 
+                    v.getSpecifierExpression();
+            if (sie!=null) {
+                return sie.getExpression();
+            }
+        }
+        return null;
+    }
     
     @Override
     public void visit(Tree.IfStatement that) {
@@ -6102,7 +6107,7 @@ public class ExpressionVisitor extends Visitor {
             var.visit(this);
             if (switchStatementOrExpression!=null) {
                 Tree.Expression switchExpression = 
-                        switchClause().getSwitched().getExpression();
+                        getSwitchedExpression(switchClause().getSwitched());
                 Tree.SwitchCaseList switchCaseList = 
                         switchCaseList();
                 if (switchExpression!=null && 
