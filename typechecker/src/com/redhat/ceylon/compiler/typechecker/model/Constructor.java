@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.DeclarationKind.CONSTRUCTOR;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && isNamed(name, d)) {
+            if (d.isParameter() && Util.isNamed(name, d)) {
                 return ((MethodOrValue) d).getInitializerParameter();
             }
         }
