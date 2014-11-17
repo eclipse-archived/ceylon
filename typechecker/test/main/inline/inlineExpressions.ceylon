@@ -4,11 +4,20 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
             = if (exists arg) 
                 then arg else 0.0;
     
+    @type:"Float" value otherStuff 
+            = if (exists arg) 
+                then 1.0 else 0.0;
+    
     @type:"String" value moreStuff 
             = switch (bool) 
                 case (true) "bar" 
                 case (false) "foo";
     
+    @type:"Boolean|Null" value someMoreStuff 
+            = switch (bool) 
+                case (true) true 
+                case (false) null;
+
     @error value moreStuffBroken
             = switch (bool) 
                 case (true) "bar";
