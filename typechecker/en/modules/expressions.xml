@@ -1508,8 +1508,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             The expression defines the schema, supertypes, and implementation 
             of a class. It does not specify a type name. Instead, the type has 
             a name assigned internally by the compiler that is not available at 
-            compilation time. The type of the expression is the type of this 
-            class.</para>
+            compilation time.</para>
             
             <synopsis>ObjectExpression: "object" ObjectInheritance ClassBody</synopsis>
             
@@ -1523,6 +1522,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>may not declare <literal>default</literal> members.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>The type of an inline anonymous class expression is the 
+            intersecton of the class type it extends, with the intersection
+            of all interface types it satisfies.</para>
             
         </section>
         
