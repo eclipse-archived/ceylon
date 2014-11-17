@@ -32,9 +32,10 @@ class CharacterBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final int successor3$priv$(final .ceylon.language.Character c) {
         .ceylon.language.Character c$4;
         if ((c$4 = c) != null) {
-            final int c$5 = c$4.intValue();
-            return .ceylon.language.Character.getSuccessor(c$5);
+            final int c$6 = c$4.intValue();
+            return .ceylon.language.Character.getSuccessor(c$6);
         } else {
+            final .java.lang.Object c$5 = c$4;
             return 32;
         }
     }

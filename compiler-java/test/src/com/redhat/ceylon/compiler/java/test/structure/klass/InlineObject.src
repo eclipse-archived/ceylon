@@ -199,13 +199,21 @@ final class inlineObject_ {
         );
         if (check) {
             if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).typeOf(p)) {
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+            }
             if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).typeOf(param)) {
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+            }
             if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).typeOf(l)) {
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(local).typeOf(l)"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(local).typeOf(l)"));
+            }
             if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).typeOf(local)) {
-            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(local).typeOf(local)"));
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(local).typeOf(local)"));
+            }
             return;
         }
         final .ceylon.language.meta.declaration.ClassDeclaration paramDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).getDeclaration();
@@ -519,17 +527,29 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object mp) {
         if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getParam()).typeOf(p)) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+        }
         if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getParam()).typeOf(getParam())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+        }
         if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getAttribute()).typeOf(a)) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(attribute).typeOf(a)"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(attribute).typeOf(a)"));
+        }
         if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getAttribute()).typeOf(getAttribute())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(attribute).typeOf(attribute)"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(attribute).typeOf(attribute)"));
+        }
         if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, method()).typeOf(mp)) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(method()).typeOf(mp)"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(method()).typeOf(mp)"));
+        }
         if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, method()).typeOf(method())) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(method()).typeOf(method())"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(method()).typeOf(method())"));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

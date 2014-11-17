@@ -127,7 +127,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$16 = (T)t;
+                T $ceylontmp$op$16 = (T)(.ceylon.language.Ordinal)t;
                 t = $ceylontmp$op$16.getSuccessor();
             }
             returning $ceylontmp$op$16;
@@ -143,7 +143,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$18 = (T)t;
+                T $ceylontmp$op$18 = (T)(.ceylon.language.Ordinal)t;
                 t = $ceylontmp$op$18.getPredecessor();
             }
             returning $ceylontmp$op$18;

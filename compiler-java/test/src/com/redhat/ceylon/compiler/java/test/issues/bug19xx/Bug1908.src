@@ -16,7 +16,9 @@ final class bug1908fun_ {
                     .java.lang.Object f$2 = null;
                     if (.com.redhat.ceylon.compiler.java.Util.isReified(f$2 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$R, .ceylon.language.Empty.$TypeDescriptor$))) {
                         f$3 = (.ceylon.language.Callable)f$2;
-                    } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Callable<R, []> f"));
+                    } else {
+                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Callable<R, []> f"));
+                    }
                     return (.ceylon.language.Sequence<? extends R>).ceylon.language.Tuple.instance($reified$R, new .java.lang.Object[]{f$3.$call$()});
                 }
                 .java.lang.Object f$5;

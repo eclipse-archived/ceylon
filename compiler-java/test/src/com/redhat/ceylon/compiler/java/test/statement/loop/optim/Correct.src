@@ -7,29 +7,53 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Correct() {
         final long expected = 55L;
         if (expected == notOptimizedIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == notOptimizedIteration()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == notOptimizedIteration()"));
+        }
         if (expected == rangeOpIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIteration()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIteration()"));
+        }
         if (expected == rangeOpIterationReverse$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIterationReverse()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIterationReverse()"));
+        }
         if (expected == rangeIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration()"));
+        }
         if (expected == rangeIterationReverse$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse()"));
+        }
         if (expected == rangeIteration2$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration2()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration2()"));
+        }
         if (expected == rangeIterationReverse2$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse2()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse2()"));
+        }
         if (expected == arrayIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationStatic()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationStatic()"));
+        }
         if (expected == javaArrayIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == javaArrayIterationStatic()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == javaArrayIterationStatic()"));
+        }
         if (expected == tupleIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == tupleIterationStatic()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == tupleIterationStatic()"));
+        }
         if (expected == rangeIterationDynamic$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()"));
+        }
         if (expected == arrayIterationDynamic$priv$()) {
-        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()"));
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()"));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")

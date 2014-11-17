@@ -51,13 +51,6 @@ class MethodIfNarrowedElse() {
             x.foo();
         }
     }
-    //shared void existsoptional2(Object x) {
-    //    if (is Foo? x, !exists x) {
-    //        // Nothing here
-    //    } else {
-    //        x.foo();
-    //    }
-    //}
     shared void nonemptyseq(Foo[] x) {
         if (!nonempty x) {
             // Nothing here

@@ -1,44 +1,73 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodIfNarrowedElse implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodIfIsFoo() {
+    MethodIfNarrowedElse() {
     }
     
-    public final void m(final .java.lang.Object x) {
+    public final void isoptional(final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x) {
         .java.lang.Object x$1;
-        if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
+        if (!((x$1 = x) != null)) {
+        } else {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$1;
             x$2.foo();
-            .java.lang.Object x$4;
-            if ((x$4 = x$2) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
-                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)x$4;
-                x$5.foo2();
+        }
+    }
+    
+    public final void isoptional2(final .java.lang.Object x) {
+        .java.lang.Object x$4;
+        if (!((x$4 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)) {
+        } else {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4;
+            x$5.foo();
+        }
+    }
+    
+    public final void isunion(final .java.lang.Object x) {
+        .java.lang.Object x$7;
+        if ((x$7 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$12 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$7;
+            x$12.foo();
+        } else {
+            .java.lang.Object x$9;
+            if ((x$9 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+                final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar x$11 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bar)x$9;
+                x$11.bar();
+            } else {
+                final .com.redhat.ceylon.compiler.java.test.statement.conditional.Baz x$10 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Baz)x$9;
+                x$10.baz();
             }
         }
     }
     
-    public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object x$7;
-        if ((x$7 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$8 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$7;
-            x$8.foo();
-            .java.lang.Object x$10;
-            if ((x$10 = x$8) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
-                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub x$8$11 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)x$10;
-                x$8$11.foo2();
-            }
+    public final void existsoptional(final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x) {
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$14;
+        if (!((x$14 = x) != null)) {
+            final .java.lang.Object x$16 = x$14;
+        } else {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$15 = x$14;
+            x$15.foo();
+        }
+    }
+    
+    public final void nonemptyseq(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo> x) {
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo> x$18;
+        if (!((x$18 = x) instanceof .ceylon.language.Sequence)) {
+            final .ceylon.language.Empty x$20 = (.ceylon.language.Empty)(.ceylon.language.Sequential)x$18;
+        } else {
+            final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo> x$19 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo>)(.ceylon.language.Sequence)x$18;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo y = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)(.java.lang.Object)x$19.getFirst();
         }
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsFoo();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNarrowedElse();
     }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsFoo.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNarrowedElse.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsFoo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNarrowedElse.class);
 }
