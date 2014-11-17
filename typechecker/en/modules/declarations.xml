@@ -1532,17 +1532,13 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>is implicitly <literal>final</literal>,</para>
+                    <para>may not be <literal>abstract</literal> nor 
+                    <literal>formal</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>may not be extended by another class,</para>
-                </listitem>
-                <listitem>
-                    <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
-                    and</para>
-                </listitem>
-                <listitem>
-                    <para>may not declare <literal>default</literal> members.</para>
+                    <para>is implicitly <literal>final</literal>, and therefore
+                    may not declare <literal>default</literal> members nor be
+                    extended by another class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1550,9 +1546,9 @@ TypeConstraints?
             the class is <literal>shared</literal>.</para>
             
             <para>This class never appears in types inferred by local declaration type 
-            inference or generic type argument inference. Instead, occurrences of the class 
-            are replaced with the intersection of the extended type with all satisfied
-            types.</para>
+            inference or generic type argument inference. Instead, occurrences of the 
+            class are replaced with the intersection of the extended type with all 
+            satisfied types.</para>
             
             <para>An <literal>object</literal> value is a reference, as defined in
             <xref linkend="references"/>, and:</para>
@@ -1562,7 +1558,8 @@ TypeConstraints?
                     <para>is non-<literal>variable</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>may not be refined or declared <literal>default</literal>.</para>
+                    <para>may not be refined, nor declared <literal>default</literal>
+                    nor <literal>formal</literal>.</para>
                 </listitem>
             </itemizedlist>
              

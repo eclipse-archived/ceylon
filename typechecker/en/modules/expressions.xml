@@ -451,11 +451,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation | Meta | Dec</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
-        operators, including assignment operators, and anonymous functions.</para>    
+        operators, including assignment operators, and using inline conditional 
+        expressions, anonymous class expressions, and anonymous functions.</para>    
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression | OperatorInvocation | OperatorMemberExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | ObjectExpression | ConditionalExpression</synopsis>
         
         <comment><para>Note: the grammar of operator expressions is defined by
         the table of operator precedence and associativity in 
@@ -1419,31 +1420,72 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <section id="inlineconditionalexpressions">
             <title>Inline conditional expressions</title>
-         
-            <comment>
-            <para>We plan to support inline <literal>if/then/else</literal> conditional 
-            expressions, for example:</para>
-            <programlisting>Integer port = if (exists setting = process.propertyValue("port")) 
-                        then parseInteger(setting) else 8080;</programlisting>
-            <para>Note that this is more powerful than the <literal>then</literal> and
-            <literal>else</literal> operators because it allows all kinds of conditions,
-            not only boolean conditions.</para>
-            <para>Should we also support:</para>
+            
+            <para>A conditional expression comes in two forms:</para>
+            
             <itemizedlist>
                 <listitem>
-                    <para>inline <literal>switch/case/else</literal> conditional 
-                    expressions, or even</para>
+                    <para>an <literal>if/then/else</literal> expression resembles 
+                    the <literal>if/else</literal> conditional defined in 
+                    <xref linkend="ifelse"/>, and</para>
                 </listitem>
                 <listitem>
-                    <para>inline <literal>try/catch</literal> exceptional conditions?</para>
+                    <para>a <literal>switch/case/else</literal> expression resembles 
+                    the <literal>switch/case/else</literal> conditional defined in 
+                    <xref linkend="switchcaseelse"/>.</para>
                 </listitem>
             </itemizedlist>
-            <para>For example:</para>
-            <programlisting>Float evaluated => switch (expr)
-        case (is Literal) expr.integer
-        case (is Plus) expr.left.evaluated + expr.right.evaluated
-        case (is Times) expr.left.evaluated * expr.right.evaluated;</programlisting>
-            </comment>
+            
+            <synopsis>ConditionalExpression: IfElseExpression | SwitchCaseElseExpression</synopsis>
+            
+            <para>An <literal>if/then/else</literal> expression has a condition 
+            list, as defined in <xref linkend="controlstructureconditions"/>, a
+            <literal>then</literal> expression, and an <literal>else</literal> 
+            expression. The <literal>else</literal> expression is not optional.</para>
+            
+            <synopsis>IfElseExpression: "if" ConditionList ThenExpression ElseExpression</synopsis>
+            
+            <para>The type of an <literal>if/then/else</literal> expression with
+            <literal>then</literal> expression of type <literal>X</literal> and
+            <literal>else</literal> expression of type <literal>Y</literal> is
+            <literal>X|Y</literal>.</para>
+            
+            <para>A <literal>switch/case/else</literal> expression has a 
+            <literal>switch</literal> expression, a list of <literal>case</literal>
+            expressions, and, optionally, an <literal>else</literal> expression.</para>
+            
+            <synopsis>SwitchCaseElseExpression: "switch" "(" Expression ")" CaseExpression ElseExpression</synopsis>
+            
+            <para>The type of an <literal>if/then/else</literal> expression with
+            <literal>case</literal> expressions of type <literal>X1</literal>,
+            <literal>X2</literal>, ..., <literal>Xn</literal> and
+            <literal>else</literal> expression of type <literal>Y</literal> is
+            <literal>X1|X2|...|Xn|Y</literal>.</para>
+            
+            <synopsis>ThenExpression: "then" Expression</synopsis>
+            <synopsis>ElseExpression: "else" Expression</synopsis>
+            <synopsis>CaseExpression: "case" "(" Case ")"  Expression</synopsis>
+            
+            <para>The expression following <literal>then</literal>, 
+            <literal>else</literal>, and <literal>case</literal> is parsed with 
+            precedence just higher than the <literal>||</literal> operator, and 
+            just lower than the <literal>then</literal> and <literal>else</literal> 
+            operators, that is, between the layers 3 and 4 defined in
+            <xref linkend="operatorprecedence"/>.</para>
+            
+            <para>Each <literal>case</literal> expression includes a value case or
+            type case, as defined in <xref linkend="switchcaseelse"/>. Just like
+            in a <literal>switch/case/else</literal> conditional statement:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>all cases must be disjoint, and</para>
+                </listitem>
+                <listitem>
+                    <para>if there is no <literal>else</literal> expression,
+                    the cases must be exhaustive.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
@@ -1461,23 +1503,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="inlineanonymousclassexpressions">
             <title>Inline anonymous class expressions</title>
             
-            <comment>
-            <para>Should we support inline <literal>object</literal> declarations, for 
-            example:</para>
-            <programlisting>iterator => object satisfies Iterable&lt;Nothing&gt; { next() => finished; }</programlisting>
-            <para>Or, alternatively, a kind of named argument "instantiation" syntax for
-            interfaces and abstract classes:</para>
-            <programlisting>iterator => Iterable { next() => finished; }</programlisting>
-            <para>The first option is more flexible, but also more verbose. The second is
-            streamlined for the common case and might even be able to do type argument
-            inference as shown here.</para> 
+            <para>An inline anonymous class expression resembles an anonymous
+            class declaration as defined in <xref linkend="anonymousclasses"/>.
+            The expression defines the schema, supertypes, and implementation 
+            of a class. It does not specify a type name. Instead, the type has 
+            a name assigned internally by the compiler that is not available at 
+            compilation time.</para>
             
-            <para>If we go with the first option, should we support inline <literal>class</literal> 
-            declarations? This would be like an inline <literal>object</literal> and an 
-            anonymous function rolled into one. We could even support <literal>class</literal>
-            arguments in named argument lists.</para>
-            </comment>
-        
+            <synopsis>ObjectExpression: "object" ObjectInheritance ClassBody</synopsis>
+            
+            <para>The class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>is implicitly <literal>final</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>may not declare <literal>default</literal> members.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The type of an inline anonymous class expression is the 
+            intersection of the class type it extends with all interface types 
+            it satisfies.</para>
+            
         </section>
         
     </section>
