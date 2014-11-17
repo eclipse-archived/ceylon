@@ -385,4 +385,10 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
     public R visitErroneous(ErroneousTree node, P p) {
         return null;
     }
+
+    @Override
+    public R visitLet(LetTree node, P p) {
+        R r = scan(node.getStatements(), p);
+        return scanAndReduce(node.getExpressio(), p, r);
+    }
 }

@@ -1,6 +1,6 @@
 package com.sun.source.tree;
 
-public interface LetTree {
-    java.util.List<StatementTree> getStatements();
-    ExpressionTree getExpressio();
+public interface LetTree extends Tree {
+    java.util.List<? extends StatementTree> getStatements();
+    Tree getExpressio();
 }

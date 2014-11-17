@@ -574,7 +574,9 @@ public interface Tree {
          * An implementation-reserved node. This is the not the node
          * you are looking for.
          */
-        OTHER(null);
+        OTHER(null),
+        
+        LET(LetTree.class);
 
 
         Kind(Class<? extends Tree> intf) {

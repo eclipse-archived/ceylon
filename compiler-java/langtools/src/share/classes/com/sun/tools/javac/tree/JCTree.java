@@ -2101,7 +2101,8 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
     }
 
     /** (let int x = 3; in x+2) */
-    public static class LetExpr extends JCExpression {
+    public static class LetExpr extends JCExpression 
+            implements com.sun.source.tree.LetTree {
         public JCTree expr;
         public List<JCStatement> stats;
         protected LetExpr(List<JCStatement> stats, JCTree expr) {
@@ -2113,15 +2114,25 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public void accept(Visitor v) { v.visitLetExpr(this); }
 
         public Kind getKind() {
-            throw new AssertionError("LetExpr is not part of a public API");
+            return Kind.LET; 
         }
         @Override
         public <R,D> R accept(TreeVisitor<R,D> v, D d) {
-            throw new AssertionError("LetExpr is not part of a public API");
+            return v.visitLet(this, d);
         }
         @Override
         public int getTag() {
             return LETEXPR;
+        }
+
+        @Override
+        public java.util.List<? extends JCStatement> getStatements() {
+            return stats;
+        }
+
+        @Override
+        public JCTree getExpressio() {
+            return expr;
         }
     }
 

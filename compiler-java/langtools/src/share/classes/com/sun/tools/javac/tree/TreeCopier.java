@@ -417,4 +417,10 @@ public class TreeCopier<P> implements TreeVisitor<JCTree,P> {
         }
     }
 
+    @Override
+    public JCTree visitLet(LetTree node, P p) {
+        LetExpr tree = (LetExpr)node;
+        return M.at(tree.pos).LetExpr(copy(tree.stats), copy(tree.expr));
+    }
+
 }

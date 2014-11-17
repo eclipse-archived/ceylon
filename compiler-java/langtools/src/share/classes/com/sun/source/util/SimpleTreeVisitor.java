@@ -255,4 +255,9 @@ public class SimpleTreeVisitor <R,P> implements TreeVisitor<R,P> {
     public R visitOther(Tree node, P p) {
         return defaultAction(node, p);
     }
+
+    @Override
+    public R visitLet(LetTree node, P p) {
+        return defaultAction(node, p);
+    }
 }

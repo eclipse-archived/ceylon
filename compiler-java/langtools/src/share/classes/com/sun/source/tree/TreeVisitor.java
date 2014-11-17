@@ -106,4 +106,6 @@ public interface TreeVisitor<R,P> {
     R visitWhileLoop(WhileLoopTree node, P p);
     R visitWildcard(WildcardTree node, P p);
     R visitOther(Tree node, P p);
+    
+    R visitLet(LetTree node, P p);
 }
