@@ -521,6 +521,12 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("swtch/SwitchValues");
     }
     
+    @Test
+    public void testSwitchNarrowedElse(){
+        compile("swtch/FooBar.ceylon");
+        compareWithJavaSource("swtch/SwitchNarrowedElse");
+    }
+    
     
     @Test
     public void testReturnAnonFunction(){
