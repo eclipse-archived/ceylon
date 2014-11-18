@@ -2199,7 +2199,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
         Constructor constructor = new Constructor();
         constructor.setName(getCtorName(ctor));
-        constructor.setStaticallyImportable(true);
         constructor.setContainer(klass);
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
