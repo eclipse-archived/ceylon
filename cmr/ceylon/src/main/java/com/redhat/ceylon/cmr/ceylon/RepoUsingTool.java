@@ -124,7 +124,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     @OptionArgument(longName="maven-overrides", argumentName="url")
-    @Description("Specifies the xml file to use to load Maven artifact overrides.")
+    @Description("Specifies the xml file to use to load Maven artifact overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. Experimental.")
     public void setMavenOverrides(String mavenOverrides) {
         this.mavenOverrides = mavenOverrides;
     }
