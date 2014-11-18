@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 
 /** This component is used by the main JS visitor to generate code for conditions.
  * 
@@ -104,6 +105,9 @@ public class ConditionGenerator {
 
     void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
+            if (((ExistsOrNonemptyCondition) condition).getNot()) {
+                gen.out("!");
+            }
             if (condition instanceof Tree.NonemptyCondition) {
                 gen.out(gen.getClAlias(), "ne$(");
                 specialConditionRHS(variableRHS, varName);
@@ -146,10 +150,22 @@ public class ConditionGenerator {
         final Tree.Block ifBlock = ifClause.getBlock();
         final Tree.ElseClause anoserque = that.getElseClause();
         final List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
-
         if (anoserque != null) {
+            final Tree.Variable elsevar = anoserque.getVariable();
+            if (elsevar != null) {
+                for (VarHolder vh : vars) {
+                    if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
+                        gen.getNames().forceName(elsevar.getDeclarationModel(), vh.name);
+                        directAccess.add(elsevar.getDeclarationModel());
+                        break;
+                    }
+                }
+            }
             gen.out("else");
             gen.encloseBlockInFunction(anoserque.getBlock(), true);
+            if (elsevar != null) {
+                directAccess.remove(anoserque.getVariable().getDeclarationModel());
+            }
         }
         for (VarHolder v : vars) {
             directAccess.remove(v.var.getDeclarationModel());
@@ -221,7 +237,15 @@ public class ConditionGenerator {
             }
         } else {
             gen.out("else");
+            final Variable elsevar = anoserque.getVariable();
+            if (elsevar != null) {
+                directAccess.add(elsevar.getDeclarationModel());
+                names.forceName(elsevar.getDeclarationModel(), expvar);
+            }
             anoserque.getBlock().visit(gen);
+            if (elsevar != null) {
+                directAccess.remove(elsevar.getDeclarationModel());
+            }
         }
     }
 

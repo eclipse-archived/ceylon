@@ -32,10 +32,8 @@ class Test310Class2<in In, out Out=Nothing>(TestInterface310<In, Out>|String obj
     shared Boolean test() {
         if (is String obj) {
             return false;
-        } else if (is TestInterface310<In,Out> obj) {
-            return true;
         } else {
-            throw Exception("Fail!!!");
+            return true;
         }
     }
 }
